@@ -3,6 +3,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import {
   AddIcon,
   AutoColumn,
+  AutoRenewIcon,
   Button,
   ButtonMenu,
   ButtonMenuItem,
@@ -13,27 +14,33 @@ import {
   Grid,
   Row,
   Text,
+  useToast,
 } from '@pancakeswap/uikit'
 import { DoubleCurrencyLogo } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import Divider from 'components/Divider'
+import { ToastDescriptionWithTx } from 'components/Toast'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import useCatchTxError from 'hooks/useCatchTxError'
 import { useCurrencyUsdPrice } from 'hooks/useCurrencyUsdPrice'
 import { usePoolWithChainId } from 'hooks/v3/usePools'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useAccountPositionDetailByPool } from 'state/farmsV4/hooks'
 import { PositionDetail, StableLPDetail, V2LPDetail } from 'state/farmsV4/state/accountPositions/type'
 import { PoolInfo } from 'state/farmsV4/state/type'
 import { useChainIdByQuery } from 'state/info/hooks'
 import styled from 'styled-components'
+import { useFarmsV3BatchHarvest } from 'views/Farms/hooks/v3/useFarmV3Actions'
 import {
   PositionItemSkeleton,
-  PositionStableItem,
-  PositionV2Item,
-  PositionV3Item,
+  StablePositionItem,
+  V2PositionItem,
+  V3PositionItem,
 } from 'views/universalFarms/components'
+import { useV2FarmActions } from 'views/universalFarms/hooks/useV2FarmActions'
 import { formatDollarAmount } from 'views/V3Info/utils/numbers'
 import { useV3Positions } from '../hooks/useV3Positions'
+import { V2PoolEarnings, V3PoolEarnings } from './PoolEarnings'
 
 export enum PositionFilter {
   All = 0,
@@ -80,6 +87,20 @@ export const MyPositions: React.FC<{ poolInfo: PoolInfo }> = ({ poolInfo }) => {
     }
     return ''
   }, [poolInfo.feeTier, poolInfo.protocol, poolInfo.token0.wrapped.address, poolInfo.token1.wrapped.address])
+  const [_handleHarvestAll, setHandleHarvestAll] = useState(() => () => Promise.resolve())
+  const [loading, setLoading] = useState(false)
+
+  const handleHarvestAll = useCallback(async () => {
+    if (loading) return
+    try {
+      setLoading(true)
+      await _handleHarvestAll()
+      setLoading(false)
+    } catch (error) {
+      console.error(error)
+      setLoading(false)
+    }
+  }, [_handleHarvestAll, loading, setLoading])
 
   return (
     <AutoColumn gap="lg">
@@ -116,15 +137,16 @@ export const MyPositions: React.FC<{ poolInfo: PoolInfo }> = ({ poolInfo }) => {
             </AutoColumn>
             <Divider />
             <Row justifyContent="space-between">
-              <AutoColumn>
-                <Text color="secondary" fontWeight={600} textTransform="uppercase">
-                  {t('total earning')}
-                </Text>
-                <Text as="h3" fontWeight={600} fontSize={24}>
-                  $0
-                </Text>
-              </AutoColumn>
-              <Button variant="secondary">{t('Harvest')}</Button>
+              {poolInfo.protocol === 'v3' ? <V3PoolEarnings pool={poolInfo} /> : <V2PoolEarnings pool={poolInfo} />}
+              <Button
+                variant="secondary"
+                onClick={handleHarvestAll}
+                endIcon={loading ? <AutoRenewIcon spin color="currentColor" /> : null}
+                isLoading={loading}
+                disabled={loading}
+              >
+                {loading ? t('Harvesting') : t('Harvest')}
+              </Button>
             </Row>
             <Button as="a" href={addLiquidityLink}>
               {t('Add Liquidity')}
@@ -155,10 +177,16 @@ export const MyPositions: React.FC<{ poolInfo: PoolInfo }> = ({ poolInfo }) => {
                 filter={filter}
                 setCount={setCount}
                 setTotalLiquidityUSD={setTotalLiquidityUSD}
+                setHandleHarvestAll={setHandleHarvestAll}
               />
             ) : null}
             {['v2', 'stable'].includes(poolInfo.protocol) ? (
-              <MyV2OrStablePositions poolInfo={poolInfo} setCount={setCount} setTotalTvlUsd={setTotalLiquidityUSD} />
+              <MyV2OrStablePositions
+                poolInfo={poolInfo}
+                setCount={setCount}
+                setTotalTvlUsd={setTotalLiquidityUSD}
+                setHandleHarvestAll={setHandleHarvestAll}
+              />
             ) : null}
           </PositionCardBody>
         </PositionsCard>
@@ -174,7 +202,8 @@ const MyV3Positions: React.FC<{
   filter: PositionFilter
   setCount: (count: number) => void
   setTotalLiquidityUSD: (value: string) => void
-}> = ({ poolInfo, filter, setCount, setTotalLiquidityUSD }) => {
+  setHandleHarvestAll: (fn: () => () => Promise<void>) => void
+}> = ({ poolInfo, filter, setCount, setTotalLiquidityUSD, setHandleHarvestAll }) => {
   const { t } = useTranslation()
   const chainId = useChainIdByQuery()
   const { account } = useAccountActiveChain()
@@ -207,6 +236,16 @@ const MyV3Positions: React.FC<{
     )
     return total
   }, [positionsData, price0Usd, price1Usd])
+  const { onHarvestAll } = useFarmsV3BatchHarvest()
+  const handleHarvestAll = useCallback(() => {
+    if (!onHarvestAll || !data) return async () => {}
+    const tokenIds = data.filter((p) => p.isStaked).map((p) => p.tokenId.toString())
+    return async () => onHarvestAll(tokenIds)
+  }, [data, onHarvestAll])
+
+  useEffect(() => {
+    setHandleHarvestAll(handleHarvestAll)
+  }, [handleHarvestAll, setHandleHarvestAll])
 
   useEffect(() => {
     setTotalLiquidityUSD(totalLiquidityUSD.toString())
@@ -268,7 +307,7 @@ const MyV3Positions: React.FC<{
             {t('active')}
           </Text>
           {positions?.[PositionFilter.Active]?.map((position) => {
-            return <PositionV3Item key={position.tokenId} data={position} />
+            return <V3PositionItem detailMode key={position.tokenId} data={position} />
           })}
         </AutoColumn>
       ) : null}
@@ -280,7 +319,7 @@ const MyV3Positions: React.FC<{
             {t('inactive')}
           </Text>
           {positions?.[PositionFilter.Inactive].map((position) => {
-            return <PositionV3Item detailMode key={position.tokenId} data={position} />
+            return <V3PositionItem detailMode key={position.tokenId} data={position} />
           })}
         </AutoColumn>
       ) : null}
@@ -291,7 +330,7 @@ const MyV3Positions: React.FC<{
             {t('closed')}
           </Text>
           {positions?.[PositionFilter.Closed]?.map((position) => {
-            return <PositionV3Item detailMode key={position.tokenId} data={position} />
+            return <V3PositionItem detailMode key={position.tokenId} data={position} />
           })}
         </AutoColumn>
       ) : null}
@@ -303,7 +342,9 @@ const MyV2OrStablePositions: React.FC<{
   poolInfo: PoolInfo
   setCount: (count: number) => void
   setTotalTvlUsd: (value: string) => void
-}> = ({ poolInfo, setCount, setTotalTvlUsd }) => {
+  setHandleHarvestAll: (fn: () => () => Promise<void>) => void
+}> = ({ poolInfo, setCount, setTotalTvlUsd, setHandleHarvestAll }) => {
+  const { t } = useTranslation()
   const chainId = useChainIdByQuery()
   const { account } = useAccountActiveChain()
   const { data, isLoading } = useAccountPositionDetailByPool<Protocol.STABLE | Protocol.V2>(chainId, account, poolInfo)
@@ -311,15 +352,44 @@ const MyV2OrStablePositions: React.FC<{
     if (!data) {
       return '0'
     }
-    return new BigNumber(data.balance.toExact())
+
+    return new BigNumber(data.nativeBalance.add(data.farmingBalance).toExact())
       .div(data.totalSupply.toExact())
       .times(Number(poolInfo.tvlUsd ?? 0))
       .toString()
   }, [data, poolInfo.tvlUsd])
+  const count = useMemo(() => {
+    if (!data) return 0
+    if (data && data.protocol === 'stable') {
+      return 1
+    }
+    const v2Data = data as V2LPDetail
+    return [v2Data.nativeBalance.greaterThan('0'), v2Data.farmingBalance.greaterThan('0')].filter(Boolean).length
+  }, [data])
+  const { onHarvest } = useV2FarmActions(poolInfo.lpAddress, chainId, poolInfo.protocol)
+  const { toastSuccess } = useToast()
+  const { fetchWithCatchTxError } = useCatchTxError()
+  const handleHarvest = useCallback(() => {
+    return async () => {
+      const receipt = await fetchWithCatchTxError(() => onHarvest())
+      if (receipt?.status) {
+        toastSuccess(
+          `${t('Harvested')}!`,
+          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+            {t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' })}
+          </ToastDescriptionWithTx>,
+        )
+      }
+    }
+  }, [fetchWithCatchTxError, onHarvest, t, toastSuccess])
 
   useEffect(() => {
-    setCount(data ? 1 : 0)
-  }, [data, setCount])
+    setHandleHarvestAll(handleHarvest)
+  }, [handleHarvest, setHandleHarvestAll])
+
+  useEffect(() => {
+    setCount(count)
+  }, [count, setCount])
 
   useEffect(() => {
     setTotalTvlUsd(totalTVLUsd)
@@ -342,19 +412,11 @@ const MyV2OrStablePositions: React.FC<{
   return (
     <AutoColumn gap="lg">
       {poolInfo.protocol === 'v2' ? (
-        <PositionV2Item detailMode key={data.pair.liquidityToken.address} data={data as V2LPDetail} pool={poolInfo} />
+        <V2PositionItem detailMode key={data.pair.liquidityToken.address} data={data as V2LPDetail} />
       ) : null}
       {poolInfo.protocol === 'stable' ? (
-        <PositionStableItem
-          detailMode
-          key={data.pair.liquidityToken.address}
-          data={data as StableLPDetail}
-          pool={poolInfo}
-        />
+        <StablePositionItem detailMode key={data.pair.liquidityToken.address} data={data as StableLPDetail} />
       ) : null}
-      {/* {data.map((detail: V2LPDetail) => {
-        return <PositionV2Item key={detail.pair.liquidityToken.address} data={detail} pool={poolInfo} />
-      })} */}
     </AutoColumn>
   )
 }

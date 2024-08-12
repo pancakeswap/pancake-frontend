@@ -1,4 +1,5 @@
-import { supportedChainIdV4, UNIVERSAL_BCAKEWRAPPER_FARMS } from '@pancakeswap/farms'
+import { Protocol, supportedChainIdV4, UNIVERSAL_BCAKEWRAPPER_FARMS } from '@pancakeswap/farms'
+import { LegacyRouter } from '@pancakeswap/smart-router/legacy-router'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { masterChefV3ABI } from '@pancakeswap/v3-sdk'
 import { create, windowedFiniteBatchScheduler } from '@yornaath/batshit'
@@ -147,9 +148,18 @@ const calcV3PoolApr = ({
   }
 }
 
-export const getUniversalBCakeWrapperForPool = (pool: PoolInfo) => {
+export const getUniversalBCakeWrapperForPool = (pool: { lpAddress: Address; chainId: number; protocol?: Protocol }) => {
+  let { lpAddress } = pool
+  if (pool.protocol === 'stable') {
+    const stablePair = LegacyRouter.stableSwapPairsByChainId[pool.chainId].find((pair) => {
+      return isAddressEqual(pair.stableSwapAddress, pool.lpAddress)
+    })
+    if (stablePair) {
+      lpAddress = stablePair.liquidityToken.address
+    }
+  }
   const config = UNIVERSAL_BCAKEWRAPPER_FARMS.find(
-    (farm) => isAddressEqual(farm.lpAddress, pool.lpAddress) && farm.chainId === pool.chainId,
+    (farm) => isAddressEqual(farm.lpAddress, lpAddress) && farm.chainId === pool.chainId,
   )
 
   return config
