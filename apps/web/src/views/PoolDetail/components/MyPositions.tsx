@@ -30,9 +30,9 @@ import styled from 'styled-components'
 import { useFarmsV3BatchHarvest } from 'views/Farms/hooks/v3/useFarmV3Actions'
 import {
   PositionItemSkeleton,
-  PositionStableItem,
-  PositionV2Item,
-  PositionV3Item,
+  StablePositionItem,
+  V2PositionItem,
+  V3PositionItem,
 } from 'views/universalFarms/components'
 import { formatDollarAmount } from 'views/V3Info/utils/numbers'
 import { useV3Positions } from '../hooks/useV3Positions'
@@ -309,7 +309,7 @@ const MyV3Positions: React.FC<{
             {t('active')}
           </Text>
           {positions?.[PositionFilter.Active]?.map((position) => {
-            return <PositionV3Item detailMode key={position.tokenId} data={position} />
+            return <V3PositionItem detailMode key={position.tokenId} data={position} />
           })}
         </AutoColumn>
       ) : null}
@@ -321,7 +321,7 @@ const MyV3Positions: React.FC<{
             {t('inactive')}
           </Text>
           {positions?.[PositionFilter.Inactive].map((position) => {
-            return <PositionV3Item detailMode key={position.tokenId} data={position} />
+            return <V3PositionItem detailMode key={position.tokenId} data={position} />
           })}
         </AutoColumn>
       ) : null}
@@ -332,7 +332,7 @@ const MyV3Positions: React.FC<{
             {t('closed')}
           </Text>
           {positions?.[PositionFilter.Closed]?.map((position) => {
-            return <PositionV3Item detailMode key={position.tokenId} data={position} />
+            return <V3PositionItem detailMode key={position.tokenId} data={position} />
           })}
         </AutoColumn>
       ) : null}
@@ -384,10 +384,10 @@ const MyV2OrStablePositions: React.FC<{
   return (
     <AutoColumn gap="lg">
       {poolInfo.protocol === 'v2' ? (
-        <PositionV2Item detailMode key={data.pair.liquidityToken.address} data={data as V2LPDetail} pool={poolInfo} />
+        <V2PositionItem detailMode key={data.pair.liquidityToken.address} data={data as V2LPDetail} pool={poolInfo} />
       ) : null}
       {poolInfo.protocol === 'stable' ? (
-        <PositionStableItem
+        <StablePositionItem
           detailMode
           key={data.pair.liquidityToken.address}
           data={data as StableLPDetail}
