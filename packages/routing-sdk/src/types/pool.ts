@@ -31,6 +31,8 @@ export type Pool<PType = any, Params = any> = {
 
   log: () => string
 
+  getPoolData: () => Params
+
   update: (p: Partial<Params>) => void
 
   type: PType

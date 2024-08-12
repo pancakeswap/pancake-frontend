@@ -11,6 +11,9 @@ test('exports', () => {
       "findBestTrade",
       "isSameRoute",
       "mergeRoute",
+      "getBetterTrade",
+      "groupPoolsByType",
+      "logCurrency",
     ]
   `)
 })
