@@ -49,6 +49,7 @@ import {
   useSelectedPoolTypes,
   V2PositionItem,
   V3PositionItem,
+  PositionItemSkeleton,
 } from './components'
 
 const ToggleWrapper = styled.div`
@@ -365,9 +366,12 @@ export const PositionPage = () => {
     }
     if (v3Loading && v2Loading && stableLoading) {
       return (
-        <Text color="textSubtle" textAlign="center">
-          <Dots>{t('Loading')}</Dots>
-        </Text>
+        <>
+          <PositionItemSkeleton />
+          <Text color="textSubtle" textAlign="center">
+            <Dots>{t('Loading')}</Dots>
+          </Text>
+        </>
       )
     }
 
