@@ -1,11 +1,10 @@
 import memoize from 'lodash/memoize'
 import uniqWith from 'lodash/uniqWith'
 import { ChainId } from '@pancakeswap/chains'
-import { BCakeWrapperFarmConfig, Protocol, UNIVERSAL_FARMS } from '@pancakeswap/farms'
-import { CurrencyAmount, erc20Abi, ERC20Token, Pair, pancakePairV2ABI } from '@pancakeswap/sdk'
+import { BCakeWrapperFarmConfig, Protocol, UNIVERSAL_BCAKEWRAPPER_FARMS, UNIVERSAL_FARMS } from '@pancakeswap/farms'
+import { CurrencyAmount, ERC20Token, Pair, pancakePairV2ABI } from '@pancakeswap/sdk'
 import { LegacyStableSwapPair } from '@pancakeswap/smart-router/legacy-router'
 import { deserializeToken } from '@pancakeswap/token-lists'
-import { masterChefV3ABI, NFT_POSITION_MANAGER_ADDRESSES, nonfungiblePositionManagerABI } from '@pancakeswap/v3-sdk'
 import BigNumber from 'bignumber.js'
 import { infoStableSwapABI } from 'config/abi/infoStableSwap'
 import { masterChefV2ABI } from 'config/abi/masterchefV2'
@@ -13,12 +12,11 @@ import { v2BCakeWrapperABI } from 'config/abi/v2BCakeWrapper'
 import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from 'config/constants/exchange'
 import { AppState } from 'state'
 import { safeGetAddress } from 'utils'
-import { getCrossFarmingVaultAddress, getMasterChefV2Address, getMasterChefV3Address } from 'utils/addressHelpers'
-import { getMasterChefV3Contract } from 'utils/contractHelpers'
+import { getCrossFarmingVaultAddress, getMasterChefV2Address } from 'utils/addressHelpers'
 import { publicClient } from 'utils/viem'
-import { Address, decodeFunctionResult, encodeFunctionData, Hex } from 'viem'
+import { Address, erc20Abi, isAddressEqual } from 'viem'
 import { StablePoolInfo, V2PoolInfo } from '../type'
-import { PositionDetail, StableLPDetail, V2LPDetail } from './type'
+import { StableLPDetail, V2LPDetail } from './type'
 
 /**
  * Given two tokens return the liquidity token that represents its liquidity shares
@@ -33,170 +31,6 @@ export function getV2LiquidityToken([tokenA, tokenB]: [ERC20Token, ERC20Token]):
     `${tokenA.symbol}-${tokenB.symbol} V2 LP`,
     'Pancake LPs',
   )
-}
-
-export const getAccountV3TokenIdsInContract = async (
-  chainId: number,
-  account: Address,
-  contractAddress: Address | undefined | null,
-) => {
-  const client = publicClient({ chainId })
-
-  if (!contractAddress || !account || !client) {
-    return []
-  }
-
-  const balance = await client.readContract({
-    abi: masterChefV3ABI,
-    address: contractAddress,
-    functionName: 'balanceOf',
-    args: [account] as const,
-  })
-
-  const tokenCalls = Array.from({ length: Number(balance) }, (_, i) => {
-    return {
-      abi: masterChefV3ABI,
-      address: contractAddress,
-      functionName: 'tokenOfOwnerByIndex',
-      args: [account, i] as const,
-    } as const
-  })
-
-  const tokenIds = await client.multicall({
-    contracts: tokenCalls,
-    allowFailure: false,
-  })
-
-  return tokenIds
-}
-
-export const getAccountV3TokenIds = async (chainId: number, account: Address) => {
-  const masterChefV3Address = getMasterChefV3Address(chainId)
-  const nftPositionManagerAddress = NFT_POSITION_MANAGER_ADDRESSES[chainId]
-
-  const [farmingTokenIds, nonFarmTokenIds] = await Promise.all([
-    getAccountV3TokenIdsInContract(chainId, account, masterChefV3Address),
-    getAccountV3TokenIdsInContract(chainId, account, nftPositionManagerAddress),
-  ])
-
-  return {
-    farmingTokenIds,
-    nonFarmTokenIds,
-  }
-}
-
-export const getV3PositionsFromTokenId = async (chainId: number, tokenIds: bigint[]): Promise<PositionDetail[]> => {
-  const nftPositionManagerAddress = NFT_POSITION_MANAGER_ADDRESSES[chainId]
-  const client = publicClient({ chainId })
-
-  if (!client || !nftPositionManagerAddress || !tokenIds.length) {
-    return []
-  }
-
-  const positionCalls = tokenIds.map((tokenId) => {
-    return {
-      abi: nonfungiblePositionManagerABI,
-      address: nftPositionManagerAddress,
-      functionName: 'positions',
-      args: [tokenId] as const,
-    } as const
-  })
-
-  const positions = await client.multicall({
-    contracts: positionCalls,
-    allowFailure: false,
-  })
-
-  return positions.map((position, index) => {
-    const [
-      nonce,
-      operator,
-      token0,
-      token1,
-      fee,
-      tickLower,
-      tickUpper,
-      liquidity,
-      feeGrowthInside0LastX128,
-      feeGrowthInside1LastX128,
-      tokensOwed0,
-      tokensOwed1,
-    ] = position
-    return {
-      tokenId: tokenIds[index],
-      nonce,
-      operator,
-      token0,
-      token1,
-      fee,
-      tickLower,
-      tickUpper,
-      liquidity,
-      feeGrowthInside0LastX128,
-      feeGrowthInside1LastX128,
-      tokensOwed0,
-      tokensOwed1,
-      chainId,
-      protocol: Protocol.V3,
-    } satisfies PositionDetail
-  })
-}
-
-export const getAccountV3Positions = async (chainId: number, account: Address): Promise<PositionDetail[]> => {
-  const { farmingTokenIds, nonFarmTokenIds } = await getAccountV3TokenIds(chainId, account)
-
-  const positions = await getV3PositionsFromTokenId(chainId, farmingTokenIds.concat(nonFarmTokenIds))
-
-  const farmingTokenIdsLength = farmingTokenIds.length
-  positions.forEach((_, index) => {
-    positions[index].isStaked = index < farmingTokenIdsLength
-  })
-
-  return positions
-}
-
-export const getAccountV3FarmingPendingCakeReward = async (
-  chainId: number,
-  account: Address,
-  tokenIds: bigint[],
-): Promise<bigint[]> => {
-  const masterChefV3 = getMasterChefV3Contract(undefined, chainId)
-  const isZkSync = [ChainId.ZKSYNC, ChainId.ZKSYNC_TESTNET].includes(chainId)
-
-  if (!masterChefV3 || !tokenIds.length) {
-    return []
-  }
-
-  const harvestCalls: Hex[] = []
-  tokenIds.forEach((tokenId) => {
-    if (isZkSync) {
-      harvestCalls.push(
-        encodeFunctionData({
-          abi: masterChefV3ABI,
-          functionName: 'pendingCake',
-          args: [tokenId],
-        }),
-      )
-    } else {
-      harvestCalls.push(
-        encodeFunctionData({
-          abi: masterChefV3ABI,
-          functionName: 'harvest',
-          args: [tokenId, account],
-        }),
-      )
-    }
-  })
-
-  const { result } = await masterChefV3.simulate.multicall([harvestCalls], { account, value: 0n })
-
-  return result.map((res) => {
-    return decodeFunctionResult({
-      abi: masterChefV3ABI,
-      functionName: isZkSync ? 'pendingCake' : 'harvest',
-      data: res,
-    })
-  })
 }
 
 export const getAccountV2FarmingStakedBalances = async (
@@ -232,38 +66,38 @@ export const getAccountV2FarmingStakedBalances = async (
   })
 }
 
-export const getAccountV2FarmingPendingCakeReward = async (
-  chainId: number,
-  account: Address,
-  pools: Array<V2PoolInfo | StablePoolInfo>,
-) => {
-  const masterChefV2Address =
-    chainId === ChainId.BSC ? getMasterChefV2Address(chainId) : getCrossFarmingVaultAddress(chainId)
-  if (!account || !chainId || pools.length === 0 || !masterChefV2Address) return []
+// export const getAccountV2FarmingPendingCakeReward = async (
+//   chainId: number,
+//   account: Address,
+//   pools: Array<V2PoolInfo | StablePoolInfo>,
+// ) => {
+//   const masterChefV2Address =
+//     chainId === ChainId.BSC ? getMasterChefV2Address(chainId) : getCrossFarmingVaultAddress(chainId)
+//   if (!account || !chainId || pools.length === 0 || !masterChefV2Address) return []
 
-  const validPools = pools.filter(
-    (pool) => ['v2', 'stable'].includes(pool.protocol) && pool.pid && pool.chainId === chainId,
-  )
-  const client = publicClient({ chainId })
+//   const validPools = pools.filter(
+//     (pool) => ['v2', 'stable'].includes(pool.protocol) && pool.pid && pool.chainId === chainId,
+//   )
+//   const client = publicClient({ chainId })
 
-  const earningCalls = validPools.map((pool) => {
-    return {
-      abi: masterChefV2ABI,
-      address: masterChefV2Address,
-      functionName: 'pendingCake',
-      args: [BigInt(pool.pid!), account] as const,
-    } as const
-  })
+//   const earningCalls = validPools.map((pool) => {
+//     return {
+//       abi: masterChefV2ABI,
+//       address: masterChefV2Address,
+//       functionName: 'pendingCake',
+//       args: [BigInt(pool.pid!), account] as const,
+//     } as const
+//   })
 
-  const earnings = await client.multicall({
-    contracts: earningCalls,
-    allowFailure: false,
-  })
+//   const earnings = await client.multicall({
+//     contracts: earningCalls,
+//     allowFailure: false,
+//   })
 
-  return earnings.map((earning) => {
-    return new BigNumber(earning.toString()).toString()
-  })
-}
+//   return earnings.map((earning) => {
+//     return new BigNumber(earning.toString()).toString()
+//   })
+// }
 
 export const getAccountV2FarmingBCakeWrapperEarning = async (
   chainId: number,
@@ -341,6 +175,14 @@ export const getTrackedV2LpTokens = memoize(
 const V2_UNIVERSAL_FARMS = UNIVERSAL_FARMS.filter((farm) => farm.protocol === Protocol.V2)
 const STABLE_UNIVERSAL_FARMS = UNIVERSAL_FARMS.filter((farm) => farm.protocol === Protocol.STABLE)
 
+const getBCakeWrapperAddress = (lpAddress: Address, chainId: number) => {
+  const f = UNIVERSAL_BCAKEWRAPPER_FARMS.find((farm) => {
+    return isAddressEqual(farm.lpAddress, lpAddress) && farm.chainId === chainId
+  })
+
+  return f?.bCakeWrapperAddress ?? '0x'
+}
+
 // @todo @ChefJerry add getAccountV2FarmingStakedBalances result
 export const getAccountV2LpDetails = async (
   chainId: number,
@@ -353,6 +195,10 @@ export const getAccountV2LpDetails = async (
   if (!account || !client || !lpTokens.length) return []
 
   const validLpTokens = lpTokens.filter((token) => token.chainId === chainId)
+  const bCakeWrapperAddresses = validReserveTokens.reduce((acc, tokens) => {
+    const lpAddress = getV2LiquidityToken(tokens).address
+    return [...acc, getBCakeWrapperAddress(lpAddress, chainId)]
+  }, [] as Array<Address>)
 
   const balanceCalls = validLpTokens.map((token) => {
     return {
@@ -362,6 +208,16 @@ export const getAccountV2LpDetails = async (
       args: [account] as const,
     } as const
   })
+  const farmingCalls = bCakeWrapperAddresses
+    .filter((addr) => addr !== '0x')
+    .map((address) => {
+      return {
+        abi: v2BCakeWrapperABI,
+        address,
+        functionName: 'userInfo',
+        args: [account] as const,
+      } as const
+    })
   const reserveCalls = validLpTokens.map((token) => {
     return {
       abi: pancakePairV2ABI,
@@ -376,9 +232,13 @@ export const getAccountV2LpDetails = async (
       functionName: 'totalSupply',
     } as const
   })
-  const [balances, reserves, totalSupplies] = await Promise.all([
+  const [balances, farming, reserves, totalSupplies] = await Promise.all([
     client.multicall({
       contracts: balanceCalls,
+      allowFailure: false,
+    }),
+    client.multicall({
+      contracts: farmingCalls,
       allowFailure: false,
     }),
     client.multicall({
@@ -392,7 +252,16 @@ export const getAccountV2LpDetails = async (
   ])
 
   return balances.map((_balance, index) => {
-    const balance = CurrencyAmount.fromRawAmount(validLpTokens[index], _balance)
+    const nativeBalance = CurrencyAmount.fromRawAmount(validLpTokens[index], _balance)
+    const farmingInfo = farming[index]
+    let farmingBalance = CurrencyAmount.fromRawAmount(validLpTokens[index], '0')
+    let farmingBoosterMultiplier = 0
+    let farmingBoostedAmount = CurrencyAmount.fromRawAmount(validLpTokens[index], '0')
+    if (farmingInfo) {
+      farmingBalance = CurrencyAmount.fromRawAmount(validLpTokens[index], farmingInfo[0].toString())
+      farmingBoosterMultiplier = Number(farmingInfo[1])
+      farmingBoostedAmount = CurrencyAmount.fromRawAmount(validLpTokens[index], farmingInfo[2].toString())
+    }
     const tokens = validReserveTokens[index]
     const [token0, token1] = tokens[0].sortsBefore(tokens[1]) ? tokens : tokens.reverse()
     const [reserve0, reserve1] = reserves[index]
@@ -401,15 +270,22 @@ export const getAccountV2LpDetails = async (
       CurrencyAmount.fromRawAmount(token1, reserve1.toString()),
     )
     const totalSupply = CurrencyAmount.fromRawAmount(validLpTokens[index], totalSupplies[index].toString())
-    const deposited0 = pair.getLiquidityValue(token0, totalSupply, balance, false)
-    const deposited1 = pair.getLiquidityValue(token1, totalSupply, balance, false)
+    const nativeDeposited0 = pair.getLiquidityValue(token0, totalSupply, nativeBalance, false)
+    const nativeDeposited1 = pair.getLiquidityValue(token1, totalSupply, nativeBalance, false)
+    const farmingDeposited0 = pair.getLiquidityValue(token0, totalSupply, farmingBalance, false)
+    const farmingDeposited1 = pair.getLiquidityValue(token1, totalSupply, farmingBalance, false)
     const isStaked = !!V2_UNIVERSAL_FARMS.find((farm) => farm.lpAddress === pair.liquidityToken.address)
     return {
-      balance,
+      nativeBalance,
+      farmingBalance,
       pair,
       totalSupply,
-      deposited0,
-      deposited1,
+      nativeDeposited0,
+      nativeDeposited1,
+      farmingDeposited0,
+      farmingDeposited1,
+      farmingBoosterMultiplier,
+      farmingBoostedAmount,
       isStaked,
       protocol: Protocol.V2,
     }
@@ -426,6 +302,10 @@ export const getStablePairDetails = async (
 
   if (!account || !client || !validStablePairs.length) return []
 
+  const bCakeWrapperAddresses = validStablePairs.reduce((acc, pair) => {
+    return [...acc, getBCakeWrapperAddress(pair.lpAddress, chainId)]
+  }, [] as Array<Address>)
+
   const balanceCalls = validStablePairs.map((pair) => {
     return {
       abi: erc20Abi,
@@ -439,9 +319,21 @@ export const getStablePairDetails = async (
       abi: erc20Abi,
       address: pair.liquidityToken.address,
       functionName: 'totalSupply',
+      account,
     } as const
   })
-  const [balances, totalSupplies] = await Promise.all([
+  const farmingCalls = bCakeWrapperAddresses
+    .filter((addr) => addr !== '0x')
+    .map((address) => {
+      return {
+        abi: v2BCakeWrapperABI,
+        address,
+        functionName: 'userInfo',
+        args: [account] as const,
+      } as const
+    })
+
+  const [balances, totalSupplies, farming] = await Promise.all([
     client.multicall({
       contracts: balanceCalls,
       allowFailure: false,
@@ -450,54 +342,77 @@ export const getStablePairDetails = async (
       contracts: totalSupplyCalls,
       allowFailure: false,
     }),
+    client.multicall({
+      contracts: farmingCalls,
+      allowFailure: false,
+    }),
   ])
-  const validBalances = balances.reduce((acc, balance, index) => {
-    if (balance && balance > 0n) {
-      acc.push({
-        balance,
-        index,
-      })
-    }
-    return acc
-  }, [] as { balance: bigint; index: number }[])
-  const calcCoinsAmountCalls = validBalances.map(({ balance, index }) => {
-    const pair = validStablePairs[index]
+  const nativeCalcCoinsAmountCalls = validStablePairs.map((pair, index) => {
     return {
       abi: infoStableSwapABI,
       address: pair.infoStableSwapAddress,
       functionName: 'calc_coins_amount',
-      args: [pair.stableSwapAddress, balance] as const,
+      args: [pair.stableSwapAddress, balances[index]] as const,
+    } as const
+  })
+  const farmingCalcCoinsAmountCalls = validStablePairs.map((pair, index) => {
+    return {
+      abi: infoStableSwapABI,
+      address: pair.infoStableSwapAddress,
+      functionName: 'calc_coins_amount',
+      args: [pair.stableSwapAddress, farming[index][0].toString()] as const,
     } as const
   })
 
-  const reserveResults = await client.multicall({
-    contracts: calcCoinsAmountCalls,
-    allowFailure: false,
-  })
-  let validIndex = 0
-  return validStablePairs.map((pair, index) => {
-    const balance = CurrencyAmount.fromRawAmount(pair.liquidityToken, balances[index])
-    let token0Amount = 0n
-    let token1Amount = 0n
-    if (balance.greaterThan(0)) {
-      ;[token0Amount, token1Amount] = reserveResults[validIndex]
-      validIndex++
+  const [nativeReserveResults, farmingReserveResults] = await Promise.all([
+    client.multicall({
+      contracts: nativeCalcCoinsAmountCalls,
+      allowFailure: false,
+    }),
+    client.multicall({
+      contracts: farmingCalcCoinsAmountCalls,
+      allowFailure: false,
+    }),
+  ])
+
+  const result = validStablePairs.map((pair, index) => {
+    const nativeBalance = CurrencyAmount.fromRawAmount(pair.liquidityToken, balances[index])
+    const farmingInfo = farming[index]
+    let farmingBalance = CurrencyAmount.fromRawAmount(pair.liquidityToken, '0')
+    let farmingBoosterMultiplier = 0
+    let farmingBoostedAmount = CurrencyAmount.fromRawAmount(pair.liquidityToken, '0')
+    if (farmingInfo) {
+      farmingBalance = CurrencyAmount.fromRawAmount(pair.liquidityToken, farmingInfo[0].toString())
+      farmingBoosterMultiplier = Number(farmingInfo[1])
+      farmingBoostedAmount = CurrencyAmount.fromRawAmount(pair.liquidityToken, farmingInfo[2].toString())
     }
     const { token0, token1 } = pair
     const totalSupply = CurrencyAmount.fromRawAmount(pair.liquidityToken, totalSupplies[index].toString())
-    const deposited0 = CurrencyAmount.fromRawAmount(token0.wrapped, token0Amount.toString())
-    const deposited1 = CurrencyAmount.fromRawAmount(token1.wrapped, token1Amount.toString())
+
+    const [nativeToken0Amount, nativeToken1Amount] = nativeReserveResults[index]
+    const nativeDeposited0 = CurrencyAmount.fromRawAmount(token0.wrapped, nativeToken0Amount.toString())
+    const nativeDeposited1 = CurrencyAmount.fromRawAmount(token1.wrapped, nativeToken1Amount.toString())
+
+    const [farmingToken0Amount, farmingToken1Amount] = farmingReserveResults[index]
+    const farmingDeposited0 = CurrencyAmount.fromRawAmount(token1.wrapped, farmingToken0Amount.toString())
+    const farmingDeposited1 = CurrencyAmount.fromRawAmount(token1.wrapped, farmingToken1Amount.toString())
 
     const isStaked = !!STABLE_UNIVERSAL_FARMS.find((farm) => farm.lpAddress === pair.lpAddress)
 
     return {
-      balance,
+      nativeBalance,
+      farmingBalance,
       pair,
       totalSupply,
-      deposited0,
-      deposited1,
+      nativeDeposited0,
+      farmingDeposited0,
+      nativeDeposited1,
+      farmingDeposited1,
+      farmingBoostedAmount,
+      farmingBoosterMultiplier,
       isStaked,
       protocol: Protocol.STABLE,
     }
   })
+  return result
 }
