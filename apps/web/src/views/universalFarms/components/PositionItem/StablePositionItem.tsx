@@ -37,7 +37,7 @@ export const StablePositionItem = memo(({ data, detailMode }: { data: StableLPDe
           removed={false}
           outOfRange={false}
           protocol={data.protocol}
-          fee={Number(pair.fee.numerator)}
+          fee={Number(pair.stableLpFee) * 10000}
           isStaked={false}
           amount0={nativeDeposited0}
           amount1={nativeDeposited1}
@@ -65,7 +65,7 @@ export const StablePositionItem = memo(({ data, detailMode }: { data: StableLPDe
           removed={false}
           outOfRange={false}
           protocol={data.protocol}
-          fee={Number(pair.fee.numerator)}
+          fee={Number(pair.stableLpFee) * 10000}
           isStaked
           amount0={farmingDeposited0}
           amount1={farmingDeposited1}
