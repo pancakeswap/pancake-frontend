@@ -1,6 +1,13 @@
-import BigNumber from 'bignumber.js'
+import { chainNames } from '@pancakeswap/chains'
+import { Protocol } from '@pancakeswap/farms'
+import { useTheme } from '@pancakeswap/hooks'
+import { useTranslation } from '@pancakeswap/localization'
+import { ERC20Token } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Price, Token } from '@pancakeswap/swap-sdk-core'
+import { unwrappedToken } from '@pancakeswap/tokens'
 import {
   AddIcon,
+  Box,
   Button,
   Column,
   FeeTier,
@@ -15,35 +22,30 @@ import {
   useMatchBreakpoints,
   useModalV2,
 } from '@pancakeswap/uikit'
-import { chainNames } from '@pancakeswap/chains'
-import { Protocol } from '@pancakeswap/farms'
-import { ERC20Token } from '@pancakeswap/sdk'
-import currencyId from 'utils/currencyId'
-import { useTranslation } from '@pancakeswap/localization'
-import { Currency, CurrencyAmount, Price, Token } from '@pancakeswap/swap-sdk-core'
-import { unwrappedToken } from '@pancakeswap/tokens'
+import { formatBigInt } from '@pancakeswap/utils/formatBalance'
 import { Bound, DoubleCurrencyLogo, FiatNumberDisplay } from '@pancakeswap/widgets-internal'
+import BigNumber from 'bignumber.js'
 import { RangeTag } from 'components/RangeTag'
 import { TokenPairImage } from 'components/TokenImage'
+import { useCakePrice } from 'hooks/useCakePrice'
+import { useCurrencyUsdPrice } from 'hooks/useCurrencyUsdPrice'
 import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
+import NextLink from 'next/link'
 import { memo, useCallback, useMemo, useState } from 'react'
+import { useStakedPositionsByUser } from 'state/farmsV3/hooks'
 import { getPoolAddressByToken, useExtraV3PositionInfo, usePoolInfo } from 'state/farmsV4/hooks'
 import type { PositionDetail, StableLPDetail, V2LPDetail } from 'state/farmsV4/state/accountPositions/type'
 import { type PoolInfo } from 'state/farmsV4/state/type'
 import styled from 'styled-components'
-import { useTheme } from '@pancakeswap/hooks'
-import { useCurrencyUsdPrice } from 'hooks/useCurrencyUsdPrice'
-import useFarmV3Actions from 'views/Farms/hooks/v3/useFarmV3Actions'
-import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
+import currencyId from 'utils/currencyId'
 import { logGTMClickStakeFarmEvent } from 'utils/customGTMEventTracking'
-import { formatBigInt } from '@pancakeswap/utils/formatBalance'
-import { useCakePrice } from 'hooks/useCakePrice'
+import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
+import useFarmV3Actions from 'views/Farms/hooks/v3/useFarmV3Actions'
 import { v2Fee } from 'views/PoolDetail/hooks/useStablePoolFee'
-import { useStakedPositionsByUser } from 'state/farmsV3/hooks'
+import { useCheckShouldSwitchNetwork } from '../hooks'
+import { addQueryToPath } from '../utils'
 import { PoolApyButton } from './PoolApyButton'
 import { StakeModal } from './StakeModal'
-import { addQueryToPath } from '../utils'
-import { useCheckShouldSwitchNetwork } from '../hooks'
 import { StyledNextLink } from './StyledCard'
 
 const Container = styled(Flex)`
@@ -438,6 +440,42 @@ const PositionDetailInfo = memo(
   },
 )
 
+const V3UnstakeModalContent: React.FC<IPositionItemDetailProps> = (props) => {
+  const { chainId, link, outOfRange, isStaked } = props
+  const { t } = useTranslation()
+  const linkWithChain = useMemo(
+    () => (link ? addQueryToPath(link, { chain: chainNames[chainId] }) : link),
+    [link, chainId],
+  )
+  return (
+    <>
+      <PositionDetailInfo {...props} />
+      {linkWithChain ? (
+        <Box mt="8px">
+          <NextLink href={linkWithChain}>
+            {outOfRange && !isStaked ? (
+              <Button
+                external
+                variant="primary"
+                width="100%"
+                as="a"
+                href={linkWithChain}
+                style={{ whiteSpace: 'nowrap' }}
+              >
+                {t('View Position')}
+              </Button>
+            ) : (
+              <Button variant="tertiary" width="100%" as="a">
+                {t('Manage Position')}
+              </Button>
+            )}
+          </NextLink>
+        </Box>
+      ) : null}
+    </>
+  )
+}
+
 export const PositionItemDetail = (props: IPositionItemDetailProps) => {
   const { link, currency0, currency1, removed, outOfRange, tokenId, isStaked, detailMode, chainId } = props
 
@@ -475,7 +513,7 @@ export const PositionItemDetail = (props: IPositionItemDetailProps) => {
             removed={removed}
             tokenId={tokenId}
             outOfRange={outOfRange}
-            modalContent={<PositionDetailInfo {...props} />}
+            modalContent={<V3UnstakeModalContent {...props} />}
             detailMode={detailMode}
           />
         </Column>

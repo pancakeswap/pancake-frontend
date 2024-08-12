@@ -268,7 +268,7 @@ const MyV3Positions: React.FC<{
             {t('active')}
           </Text>
           {positions?.[PositionFilter.Active]?.map((position) => {
-            return <PositionV3Item key={position.tokenId} data={position} />
+            return <PositionV3Item detailMode key={position.tokenId} data={position} />
           })}
         </AutoColumn>
       ) : null}

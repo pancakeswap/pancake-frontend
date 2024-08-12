@@ -1,9 +1,9 @@
-import styled from 'styled-components'
-import { AtomBox, AutoColumn, Button, Image, Modal, ModalV2, StyledTooltip, Text } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
 import { useTheme } from '@pancakeswap/hooks'
+import { useTranslation } from '@pancakeswap/localization'
+import { AtomBox, AutoColumn, Button, Image, Modal, ModalV2, StyledTooltip, Text } from '@pancakeswap/uikit'
 import { LightCard } from 'components/Card'
 import { ASSET_CDN } from 'config/constants/endpoints'
+import styled from 'styled-components'
 
 const Arrow = styled.div`
   position: absolute;
@@ -62,6 +62,8 @@ export const StakeModal: React.FC<React.PropsWithChildren<IStakeModalProps>> = (
                 bottom: '-23px',
                 display: 'flex',
                 justifyContent: 'flex-end',
+                alignItems: 'flex-end',
+                zIndex: 1,
               }}
             >
               <StyledTooltip
@@ -86,6 +88,7 @@ export const StakeModal: React.FC<React.PropsWithChildren<IStakeModalProps>> = (
                 src={`${ASSET_CDN}/web/universalFarms/bulb-bunny.png`}
                 width={135}
                 height={120}
+                style={{ marginBottom: '-20px' }}
                 alt="bulb bunny reminds unstaking"
               />
             </AtomBox>
