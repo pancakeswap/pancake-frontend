@@ -36,6 +36,7 @@ import {
 } from 'views/universalFarms/components'
 import { formatDollarAmount } from 'views/V3Info/utils/numbers'
 import { useV3Positions } from '../hooks/useV3Positions'
+import { V2PoolEarnings, V3PoolEarnings } from './PoolEarnings'
 
 export enum PositionFilter {
   All = 0,
@@ -132,14 +133,7 @@ export const MyPositions: React.FC<{ poolInfo: PoolInfo }> = ({ poolInfo }) => {
             </AutoColumn>
             <Divider />
             <Row justifyContent="space-between">
-              <AutoColumn>
-                <Text color="secondary" fontWeight={600} textTransform="uppercase">
-                  {t('total earning')}
-                </Text>
-                <Text as="h3" fontWeight={600} fontSize={24}>
-                  $0
-                </Text>
-              </AutoColumn>
+              {poolInfo.protocol === 'v3' ? <V3PoolEarnings pool={poolInfo} /> : <V2PoolEarnings pool={poolInfo} />}
               <Button
                 variant="secondary"
                 onClick={handleHarvestAll}
