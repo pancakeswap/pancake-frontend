@@ -2,7 +2,7 @@ import memoize from 'lodash/memoize'
 import uniqWith from 'lodash/uniqWith'
 import { ChainId } from '@pancakeswap/chains'
 import { BCakeWrapperFarmConfig, Protocol, UNIVERSAL_BCAKEWRAPPER_FARMS, UNIVERSAL_FARMS } from '@pancakeswap/farms'
-import { CurrencyAmount, erc20Abi, ERC20Token, Pair, pancakePairV2ABI } from '@pancakeswap/sdk'
+import { CurrencyAmount, ERC20Token, Pair, pancakePairV2ABI } from '@pancakeswap/sdk'
 import { LegacyStableSwapPair } from '@pancakeswap/smart-router/legacy-router'
 import { deserializeToken } from '@pancakeswap/token-lists'
 import BigNumber from 'bignumber.js'
@@ -14,7 +14,7 @@ import { AppState } from 'state'
 import { safeGetAddress } from 'utils'
 import { getCrossFarmingVaultAddress, getMasterChefV2Address } from 'utils/addressHelpers'
 import { publicClient } from 'utils/viem'
-import { Address, isAddressEqual } from 'viem'
+import { Address, erc20Abi, isAddressEqual } from 'viem'
 import { StablePoolInfo, V2PoolInfo } from '../type'
 import { StableLPDetail, V2LPDetail } from './type'
 
@@ -302,6 +302,10 @@ export const getStablePairDetails = async (
 
   if (!account || !client || !validStablePairs.length) return []
 
+  const bCakeWrapperAddresses = validStablePairs.reduce((acc, pair) => {
+    return [...acc, getBCakeWrapperAddress(pair.lpAddress, chainId)]
+  }, [] as Array<Address>)
+
   const balanceCalls = validStablePairs.map((pair) => {
     return {
       abi: erc20Abi,
@@ -315,15 +319,30 @@ export const getStablePairDetails = async (
       abi: erc20Abi,
       address: pair.liquidityToken.address,
       functionName: 'totalSupply',
+      account,
     } as const
   })
-  const [balances, totalSupplies] = await Promise.all([
+  const farmingCalls = bCakeWrapperAddresses
+    .filter((addr) => addr !== '0x')
+    .map((address) => {
+      return {
+        abi: v2BCakeWrapperABI,
+        address,
+        functionName: 'userInfo',
+        args: [account] as const,
+      } as const
+    })
+  const [balances, totalSupplies, farming] = await Promise.all([
     client.multicall({
       contracts: balanceCalls,
       allowFailure: false,
     }),
     client.multicall({
       contracts: totalSupplyCalls,
+      allowFailure: false,
+    }),
+    client.multicall({
+      contracts: farmingCalls,
       allowFailure: false,
     }),
   ])
@@ -351,29 +370,46 @@ export const getStablePairDetails = async (
     allowFailure: false,
   })
   let validIndex = 0
-  return validStablePairs.map((pair, index) => {
-    const balance = CurrencyAmount.fromRawAmount(pair.liquidityToken, balances[index])
+  const result = validStablePairs.map((pair, index) => {
+    const nativeBalance = CurrencyAmount.fromRawAmount(pair.liquidityToken, balances[index])
+    const farmingInfo = farming[index]
+    let farmingBalance = CurrencyAmount.fromRawAmount(pair.liquidityToken, '0')
+    let farmingBoosterMultiplier = 0
+    let farmingBoostedAmount = CurrencyAmount.fromRawAmount(pair.liquidityToken, '0')
+    if (farmingInfo) {
+      farmingBalance = CurrencyAmount.fromRawAmount(pair.liquidityToken, farmingInfo[0].toString())
+      farmingBoosterMultiplier = Number(farmingInfo[1])
+      farmingBoostedAmount = CurrencyAmount.fromRawAmount(pair.liquidityToken, farmingInfo[2].toString())
+    }
     let token0Amount = 0n
     let token1Amount = 0n
-    if (balance.greaterThan(0)) {
+    if (nativeBalance.greaterThan(0)) {
       ;[token0Amount, token1Amount] = reserveResults[validIndex]
       validIndex++
     }
     const { token0, token1 } = pair
     const totalSupply = CurrencyAmount.fromRawAmount(pair.liquidityToken, totalSupplies[index].toString())
-    const deposited0 = CurrencyAmount.fromRawAmount(token0.wrapped, token0Amount.toString())
-    const deposited1 = CurrencyAmount.fromRawAmount(token1.wrapped, token1Amount.toString())
+    const nativeDeposited0 = CurrencyAmount.fromRawAmount(token0.wrapped, token0Amount.toString())
+    const farmingDeposited0 = CurrencyAmount.fromRawAmount(token0.wrapped, token0Amount.toString())
+    const nativeDeposited1 = CurrencyAmount.fromRawAmount(token1.wrapped, token1Amount.toString())
+    const farmingDeposited1 = CurrencyAmount.fromRawAmount(token1.wrapped, token1Amount.toString())
 
     const isStaked = !!STABLE_UNIVERSAL_FARMS.find((farm) => farm.lpAddress === pair.lpAddress)
 
     return {
-      balance,
+      nativeBalance,
+      farmingBalance,
       pair,
       totalSupply,
-      deposited0,
-      deposited1,
+      nativeDeposited0,
+      farmingDeposited0,
+      nativeDeposited1,
+      farmingDeposited1,
+      farmingBoostedAmount,
+      farmingBoosterMultiplier,
       isStaked,
       protocol: Protocol.STABLE,
     }
   })
+  return result
 }

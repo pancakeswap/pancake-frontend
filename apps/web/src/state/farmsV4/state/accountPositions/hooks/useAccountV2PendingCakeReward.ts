@@ -14,7 +14,10 @@ export const useAccountV2PendingCakeReward = (
       bCakeWrapperConfig.chainId,
       bCakeWrapperConfig.bCakeWrapperAddress,
     ],
-    queryFn: () => getAccountV2FarmingBCakeWrapperEarning(bCakeWrapperConfig.chainId!, account!, [bCakeWrapperConfig]),
+    queryFn: () =>
+      getAccountV2FarmingBCakeWrapperEarning(bCakeWrapperConfig.chainId!, account!, [
+        bCakeWrapperConfig as BCakeWrapperFarmConfig,
+      ]),
     enabled: Boolean(account && bCakeWrapperConfig.chainId && bCakeWrapperConfig.bCakeWrapperAddress),
     select: (data) => data?.[0],
   })

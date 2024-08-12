@@ -16,7 +16,7 @@ export const useAccountStableLpDetails = (chainIds: number[], account?: Address 
         queryFn: () => getStablePairDetails(chainId, account!, stablePairs),
         enabled: !!account && stablePairs && stablePairs.length > 0,
         select(data) {
-          return data.filter((d) => d.balance.greaterThan('0'))
+          return data.filter((d) => d.nativeBalance.greaterThan('0') || d.farmingBalance.greaterThan('0'))
         },
         refetchOnMount: false,
         refetchOnWindowFocus: false,

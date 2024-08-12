@@ -353,18 +353,12 @@ const MyV2OrStablePositions: React.FC<{
     if (!data) {
       return '0'
     }
-    if (poolInfo.protocol === 'stable') {
-      return new BigNumber((data as StableLPDetail).balance.toExact())
-        .div(data.totalSupply.toExact())
-        .times(Number(poolInfo.tvlUsd ?? 0))
-        .toString()
-    }
-    const v2Data = data as V2LPDetail
-    return new BigNumber(v2Data.nativeBalance.add(v2Data.farmingBalance).toExact())
-      .div(v2Data.totalSupply.toExact())
+
+    return new BigNumber(data.nativeBalance.add(data.farmingBalance).toExact())
+      .div(data.totalSupply.toExact())
       .times(Number(poolInfo.tvlUsd ?? 0))
       .toString()
-  }, [data, poolInfo.protocol, poolInfo.tvlUsd])
+  }, [data, poolInfo.tvlUsd])
   const count = useMemo(() => {
     if (!data) return 0
     if (data && data.protocol === 'stable') {
@@ -399,15 +393,10 @@ const MyV2OrStablePositions: React.FC<{
   return (
     <AutoColumn gap="lg">
       {poolInfo.protocol === 'v2' ? (
-        <V2PositionItem detailMode key={data.pair.liquidityToken.address} data={data as V2LPDetail} pool={poolInfo} />
+        <V2PositionItem detailMode key={data.pair.liquidityToken.address} data={data as V2LPDetail} />
       ) : null}
       {poolInfo.protocol === 'stable' ? (
-        <StablePositionItem
-          detailMode
-          key={data.pair.liquidityToken.address}
-          data={data as StableLPDetail}
-          pool={poolInfo}
-        />
+        <StablePositionItem detailMode key={data.pair.liquidityToken.address} data={data as StableLPDetail} />
       ) : null}
     </AutoColumn>
   )

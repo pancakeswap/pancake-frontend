@@ -14,7 +14,8 @@ export const parseFarmPools = (
 ): PoolInfo[] => {
   return data.map((pool) => {
     const localFarm = UNIVERSAL_FARMS.find(
-      (farm) => isAddressEqual(farm.lpAddress, safeGetAddress(pool.id)!) && farm.chainId === pool.chainId,
+      (farm) =>
+        isAddressEqual(farm.lpAddress, safeGetAddress(pool.lpAddress ?? pool.id)!) && farm.chainId === pool.chainId,
     )
     let pid: number | undefined
     if (localFarm) {

@@ -25,7 +25,7 @@ export const useAccountPositionDetailByPool = <TProtocol extends keyof PoolPosit
     return [token0.wrapped, token1.wrapped]
   }, [poolInfo])
   const protocol = useMemo(() => poolInfo?.protocol, [poolInfo])
-  const queryFn = useCallback(() => {
+  const queryFn = useCallback(async () => {
     if (protocol === 'v2') {
       return getAccountV2LpDetails(
         chainId,
@@ -43,7 +43,7 @@ export const useAccountPositionDetailByPool = <TProtocol extends keyof PoolPosit
       return getAccountV3Positions(chainId, account!)
     }
     return Promise.resolve([])
-  }, [account, chainId, currency0, currency1, poolInfo?.lpAddress, protocol])
+  }, [account, chainId, currency0, currency1, poolInfo, protocol])
   const select = useCallback(
     (data) => {
       if (protocol === 'v3') {
@@ -61,14 +61,9 @@ export const useAccountPositionDetailByPool = <TProtocol extends keyof PoolPosit
         return d as PositionDetail[]
       }
 
-      if (protocol === 'v2') {
-        // v2
-        return data?.[0] && (data[0].nativeBalance.greaterThan('0') || data[0].farmingBalance.greaterThan('0'))
-          ? data[0]
-          : undefined
-      }
-
-      return data?.[0] && data[0].balance.greaterThan('0') ? data[0] : undefined
+      return data?.[0] && (data[0].nativeBalance.greaterThan('0') || data[0].farmingBalance.greaterThan('0'))
+        ? data[0]
+        : undefined
     },
     [poolInfo, protocol],
   )

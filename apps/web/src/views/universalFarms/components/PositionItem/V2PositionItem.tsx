@@ -51,8 +51,8 @@ export const V2PositionItem = memo(({ data, detailMode }: { data: V2LPDetail; de
           outOfRange={false}
           protocol={data.protocol}
           fee={feeAmount}
-          amount0={nativeDeposited0}
           isStaked={false}
+          amount0={nativeDeposited0}
           amount1={nativeDeposited1}
           detailMode={detailMode}
         >
