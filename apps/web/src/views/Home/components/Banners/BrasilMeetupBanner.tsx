@@ -1,8 +1,8 @@
+import { useCountdown } from '@pancakeswap/hooks'
+import { useTranslation } from '@pancakeswap/localization'
+import { Box, FlexGap, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { memo, useMemo } from 'react'
 import styled from 'styled-components'
-import { FlexGap, useMatchBreakpoints, Text, Box } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
-import { useCountdown } from '@pancakeswap/hooks'
 
 import {
   BackgroundGraphic,
@@ -15,8 +15,8 @@ import {
   LinkExternalAction,
   PancakeSwapBadge,
 } from '@pancakeswap/widgets-internal'
-import { useViewport } from 'hooks/useViewport'
 import { ASSET_CDN } from 'config/constants/endpoints'
+import { useViewport } from 'hooks/useViewport'
 
 const NumberDisplayContainer = styled(FlexGap)`
   border-radius: 1.5rem;
@@ -121,7 +121,6 @@ export const BrasilMeetupBanner = memo(function BrasilMeetupBanner() {
         desc={<Countdown />}
         actions={
           <BannerActionContainer>
-            <Action href="/swap" icon="arrowForward" alignItems="center" text={t('Start Trading')} color="#280D5F" />
             <Action
               href="https://lu.ma/bdw82pz2"
               display={width < 700 ? 'none' : 'flex'}
