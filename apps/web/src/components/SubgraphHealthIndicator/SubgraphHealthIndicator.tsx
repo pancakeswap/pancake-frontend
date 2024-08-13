@@ -3,8 +3,7 @@ import { styled } from 'styled-components'
 import { Card, Flex, Box, InfoIcon, Text, useTooltip } from '@pancakeswap/uikit'
 import { useSubgraphHealthIndicatorManager } from 'state/user/hooks'
 import useSubgraphHealth, { SubgraphStatus } from 'hooks/useSubgraphHealth'
-import { AVERAGE_CHAIN_BLOCK_TIMES } from 'config/constants/averageChainBlockTimes'
-import { ChainId, chainNames, getChainName } from '@pancakeswap/chains'
+import { AVERAGE_CHAIN_BLOCK_TIMES, ChainId, chainNames, getChainName } from '@pancakeswap/chains'
 import { useMemo } from 'react'
 
 const StyledCard = styled(Card)`
