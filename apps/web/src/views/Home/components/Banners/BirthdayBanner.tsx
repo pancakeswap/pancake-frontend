@@ -41,7 +41,7 @@ const yellowVariant = {
 }
 export const BirthdayBanner = () => {
   const { t } = useTranslation()
-  const { isMd } = useMatchBreakpoints()
+  const { isMd, isSm } = useMatchBreakpoints()
 
   const Action = ({ href, text, ...props }: IActions) => {
     return (
@@ -67,7 +67,7 @@ export const BirthdayBanner = () => {
       <BannerMain
         badges={<PancakeSwapBadge />}
         title={
-          <BannerTitle variant="purple" marginTop={isMd ? '-10px' : '0px'}>
+          <BannerTitle variant="purple" marginTop={isMd || isSm ? '-10px' : '0px'}>
             {t("Pancake4ever! Celebrate PancakeSwap's 4th Birthday with us!")}
           </BannerTitle>
         }
