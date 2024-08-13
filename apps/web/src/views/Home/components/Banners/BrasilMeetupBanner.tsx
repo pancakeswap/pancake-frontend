@@ -123,7 +123,7 @@ export const BrasilMeetupBanner = memo(function BrasilMeetupBanner() {
           <BannerActionContainer>
             <Action
               href="https://lu.ma/bdw82pz2"
-              display={width < 700 ? 'none' : 'flex'}
+              display="flex"
               icon="openNew"
               alignItems="center"
               text={t('Learn More')}
