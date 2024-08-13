@@ -179,13 +179,16 @@ export function useIsUserAddedToken(currency: Currency | undefined | null): bool
   return !!userAddedTokens.find((token) => currency?.equals(token))
 }
 
+export function useToken(tokenAddress?: string): ERC20Token | undefined | null {
+  const { chainId } = useActiveChainId()
+  return useTokenByChainId(tokenAddress, chainId)
+}
 // undefined if invalid or does not exist
 // null if loading
 // otherwise returns the token
-export function useToken(tokenAddress?: string): ERC20Token | undefined | null {
-  const { chainId } = useActiveChainId()
+export function useTokenByChainId(tokenAddress?: string, chainId?: number): ERC20Token | undefined | null {
   const unsupportedTokens = useUnsupportedTokens()
-  const tokens = useAllTokens()
+  const tokens = useAllTokensByChainIds(chainId ? [chainId] : [])
 
   const address = safeGetAddress(tokenAddress)
 
