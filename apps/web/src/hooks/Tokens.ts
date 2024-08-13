@@ -73,7 +73,7 @@ export function useAllTokens(): { [address: string]: ERC20Token } {
   }, [userAddedTokens, tokenMap, chainId])
 }
 
-type TokenChainAddressMap<TChainId extends number = number> = {
+export type TokenChainAddressMap<TChainId extends number = number> = {
   [chainId in TChainId]: {
     [tokenAddress: Address]: ERC20Token
   }
@@ -82,8 +82,12 @@ type TokenChainAddressMap<TChainId extends number = number> = {
 /**
  * Returns all tokens that are from active urls and user added tokens
  */
-export function useAllTokensByChainIds(chainIds: number[]): TokenChainAddressMap {
-  const tokenMap = useAtomValue(combinedTokenMapFromActiveUrlsAtom)
+export function useAllTokensByChainIds(
+  chainIds: number[],
+  allTokenMap_?: TokenAddressMap<ChainId>,
+): TokenChainAddressMap {
+  const allTokenMap = useAtomValue(combinedTokenMapFromActiveUrlsAtom)
+  const tokenMap = allTokenMap_ ?? allTokenMap
   const userAddedTokenMap = useUserAddedTokensByChainIds(chainIds)
   return useMemo(() => {
     return chainIds.reduce<TokenChainAddressMap>((tokenMap_, chainId) => {
@@ -112,6 +116,11 @@ export function useAllOnRampTokens(): { [address: string]: Currency } {
   return useMemo(() => {
     return mapWithoutUrlsBySymbol(tokenMap, chainId)
   }, [tokenMap, chainId])
+}
+
+export function useOfficialsAndUserAddedTokensByChainIds(chainIds: number[]): TokenChainAddressMap {
+  const tokenMap = useAtomValue(combinedTokenMapFromOfficialsUrlsAtom)
+  return useAllTokensByChainIds(chainIds, tokenMap)
 }
 
 /**
