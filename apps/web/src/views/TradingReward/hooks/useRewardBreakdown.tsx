@@ -5,6 +5,7 @@ import { tradingRewardPairConfigChainMap } from 'views/TradingReward/config/pair
 import { AllTradingRewardPairDetail } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
 import { useAccount } from 'wagmi'
+import dayjs from 'dayjs'
 
 interface UseRewardBreakdownProps {
   allUserCampaignInfo: UserCampaignInfoDetail[]
@@ -53,6 +54,15 @@ const useRewardBreakdown = ({
           const incentive = allTradingRewardPairData.campaignIdsIncentive.find(
             (i) => i.campaignId!.toLowerCase() === campaignId.toLowerCase(),
           )
+          const campaignInfo = allUserCampaignInfo.find(
+            (user) => user.campaignId.toLowerCase() === campaignId.toLowerCase(),
+          )
+          const showRewardEarned =
+            incentive && incentive.campaignClaimTime
+              ? incentive.campaignClaimTime <= dayjs().unix()
+                ? Boolean(campaignInfo?.isQualified)
+                : true
+              : true
 
           const pairs = Object.keys(campaignPairs?.[campaignId]).map((campaignChainId) => {
             // @ts-ignore
@@ -60,9 +70,8 @@ const useRewardBreakdown = ({
 
             const data = campaignPairs?.[campaignId]?.[campaignChainId].map((lpAddress) => {
               const pairInfo = farms.find((farm) => farm.lpAddress.toLowerCase() === lpAddress.toLowerCase())
-              const userData = allUserCampaignInfo
-                .find((user) => user.campaignId.toLowerCase() === campaignId.toLowerCase())
-                ?.tradingFeeArr.find((i) => i.pool.toLowerCase() === lpAddress.toLowerCase())
+
+              const userData = campaignInfo?.tradingFeeArr.find((i) => i.pool.toLowerCase() === lpAddress.toLowerCase())
 
               return {
                 chainId: Number(campaignChainId) as ChainId,
@@ -71,10 +80,10 @@ const useRewardBreakdown = ({
                 token: pairInfo?.token,
                 quoteToken: pairInfo?.quoteToken,
                 yourVolume: userData?.volume ?? 0,
-                rewardEarned: userData?.estimateRewardUSD ?? 0,
+                rewardEarned: (showRewardEarned && userData?.estimateRewardUSD) || 0,
                 yourTradingFee: userData?.tradingFee ?? '0',
                 feeAmount: pairInfo?.feeAmount ?? 0,
-                preCap: userData?.preCap ?? 0,
+                preCap: (showRewardEarned && userData?.preCap) || 0,
               }
             })
 
