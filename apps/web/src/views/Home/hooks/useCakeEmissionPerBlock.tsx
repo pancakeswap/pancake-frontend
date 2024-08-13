@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js'
 import { masterChefV2ABI } from 'config/abi/masterchefV2'
 import { getMasterChefV2Address } from 'utils/addressHelpers'
 import { formatEther } from 'viem'
-import { useReadContract } from 'wagmi'
+import { useReadContract } from '@pancakeswap/wagmi'
 
 const CAKE_PER_BLOCK = 40
 const masterChefAddress = getMasterChefV2Address(ChainId.BSC)!

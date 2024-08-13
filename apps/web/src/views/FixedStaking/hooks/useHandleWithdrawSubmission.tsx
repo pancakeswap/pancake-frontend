@@ -7,7 +7,7 @@ import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useFixedStakingContract } from 'hooks/useContract'
 import { createElement, useCallback, useMemo } from 'react'
-import { useReadContract } from 'wagmi'
+import { useReadContract } from '@pancakeswap/wagmi'
 
 import { getBep20Contract } from 'utils/contractHelpers'
 
