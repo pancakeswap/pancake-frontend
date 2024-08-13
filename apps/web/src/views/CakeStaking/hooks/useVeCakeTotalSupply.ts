@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js'
 import { veCakeABI } from 'config/abi/veCake'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useMemo } from 'react'
-import { useReadContract } from 'wagmi'
+import { useReadContract } from '@pancakeswap/wagmi'
 import { getVeCakeAddress, getVeCakeAddressNoFallback } from 'utils/addressHelpers'
 import { ChainId } from '@pancakeswap/chains'
 

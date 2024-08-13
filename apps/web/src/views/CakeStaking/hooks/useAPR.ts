@@ -16,7 +16,7 @@ import {
   getRevenueSharingVeCakeAddressNoFallback,
 } from 'utils/addressHelpers'
 import { publicClient } from 'utils/wagmi'
-import { useReadContract } from 'wagmi'
+import { useReadContract } from '@pancakeswap/wagmi'
 import { CakePoolType } from '../types'
 import { useCurrentBlockTimestamp } from './useCurrentBlockTimestamp'
 import { useVeCakeTotalSupply } from './useVeCakeTotalSupply'

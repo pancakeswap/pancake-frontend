@@ -3,6 +3,7 @@ import { request, gql } from 'graphql-request'
 import { GRAPH_HEALTH } from 'config/constants/endpoints'
 import { publicClient } from 'utils/wagmi'
 import { ChainId } from '@pancakeswap/chains'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useSlowRefreshEffect } from './useRefreshEffect'
 
 export enum SubgraphStatus {
@@ -24,7 +25,8 @@ export type SubgraphHealthState = {
 const NOT_OK_BLOCK_DIFFERENCE = 200 // ~15 minutes delay
 const WARNING_BLOCK_DIFFERENCE = 50 // ~2.5 minute delay
 
-const useSubgraphHealth = ({ chainId, subgraph }: { chainId: ChainId; subgraph?: string }) => {
+const useSubgraphHealth = ({ chainId: propChainId, subgraph }: { chainId: ChainId; subgraph?: string }) => {
+  const { chainId } = useActiveChainId()
   const [sgHealth, setSgHealth] = useState<SubgraphHealthState>({
     status: SubgraphStatus.UNKNOWN,
     currentBlock: 0,
@@ -114,9 +116,9 @@ const useSubgraphHealth = ({ chainId, subgraph }: { chainId: ChainId; subgraph?:
             }
           `,
             ),
-            currentBlockNumber
+            currentBlockNumber && propChainId === chainId
               ? Promise.resolve(currentBlockNumber)
-              : publicClient({ chainId })
+              : publicClient({ chainId: propChainId })
                   ?.getBlockNumber()
                   .then((blockNumber) => Number(blockNumber)),
           ])
@@ -159,7 +161,7 @@ const useSubgraphHealth = ({ chainId, subgraph }: { chainId: ChainId; subgraph?:
         getSubgraphHealth()
       }
     },
-    [subgraph, deploymentId, chainId],
+    [subgraph, deploymentId, propChainId, chainId],
   )
 
   return sgHealth

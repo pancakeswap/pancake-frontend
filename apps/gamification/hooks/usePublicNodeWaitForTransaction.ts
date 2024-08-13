@@ -1,7 +1,6 @@
-import { ChainId } from '@pancakeswap/chains'
+import { ChainId, AVERAGE_CHAIN_BLOCK_TIMES } from '@pancakeswap/chains'
 import { BSC_BLOCK_TIME } from 'config'
 import { CHAINS } from 'config/chains'
-import { AVERAGE_CHAIN_BLOCK_TIMES } from 'config/constants/averageChainBlockTimes'
 import first from 'lodash/first'
 import { useCallback } from 'react'
 import { RetryableError, retry } from 'state/multicall/retry'
@@ -17,6 +16,7 @@ import {
   http,
 } from 'viem'
 import { usePublicClient } from 'wagmi'
+import { useFetchBlockData } from '@pancakeswap/wagmi'
 import { useActiveChainId } from './useActiveChainId'
 
 export const viemClientsPublicNodes = CHAINS.reduce((prev, cur) => {
@@ -45,6 +45,7 @@ export type PublicNodeWaitForTransactionParams = GetTransactionReceiptParameters
 export function usePublicNodeWaitForTransaction() {
   const { chainId } = useActiveChainId()
   const provider = usePublicClient({ chainId })
+  const refetchBlockData = useFetchBlockData(chainId)
 
   const waitForTransaction_ = useCallback(
     async (opts: PublicNodeWaitForTransactionParams): Promise<TransactionReceipt> => {
@@ -53,12 +54,19 @@ export function usePublicNodeWaitForTransaction() {
           const selectedChain: ChainId = opts?.chainId ?? chainId
           // our custom node might be late to sync up
           if (selectedChain && viemClientsPublicNodes[selectedChain]) {
-            return await viemClientsPublicNodes[selectedChain].getTransactionReceipt({ hash: opts.hash })
+            const receipt = await viemClientsPublicNodes[selectedChain].getTransactionReceipt({ hash: opts.hash })
+            if (receipt.status === 'success') {
+              refetchBlockData()
+            }
           }
 
           if (!provider) return undefined
 
-          return await provider.getTransactionReceipt({ hash: opts.hash })
+          const receipt = await provider.getTransactionReceipt({ hash: opts.hash })
+          if (receipt.status === 'success') {
+            refetchBlockData()
+          }
+          return receipt
         } catch (error) {
           if (error instanceof TransactionNotFoundError) {
             throw new RetryableError(`Transaction not found: ${opts.hash}`)
@@ -79,7 +87,7 @@ export function usePublicNodeWaitForTransaction() {
         delay: (chainId ? AVERAGE_CHAIN_BLOCK_TIMES[chainId as ChainId] : BSC_BLOCK_TIME) * 1000 + 1000,
       }).promise as Promise<TransactionReceipt>
     },
-    [chainId, provider],
+    [chainId, provider, refetchBlockData],
   )
 
   return {

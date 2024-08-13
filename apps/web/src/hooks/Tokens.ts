@@ -16,7 +16,7 @@ import {
   useWarningTokenList,
 } from 'state/lists/hooks'
 import { safeGetAddress } from 'utils'
-import { useReadContracts } from 'wagmi'
+import { useReadContracts } from '@pancakeswap/wagmi'
 import { erc20Abi } from 'viem'
 import useUserAddedTokens from '../state/user/hooks/useUserAddedTokens'
 import { useActiveChainId } from './useActiveChainId'

@@ -121,7 +121,7 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
   const info = usePositionInfo(bCakeWrapperAddress ?? address, adapterAddress ?? '0x', Boolean(bCakeWrapperAddress))
 
   const tokensPriceUSD = useMemo(() => {
-    const farm = farmsV3.find((d) => d.pid === priceFromV3FarmPid)
+    const farm = priceFromV3FarmPid ? farmsV3.find((d) => d.pid === priceFromV3FarmPid) : undefined
     if (!farm)
       return {
         token0: token0Usd.data ?? 0,

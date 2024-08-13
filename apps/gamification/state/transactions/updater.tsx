@@ -1,9 +1,8 @@
-import { ChainId } from '@pancakeswap/chains'
+import { ChainId, AVERAGE_CHAIN_BLOCK_TIMES } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { useToast } from '@pancakeswap/uikit'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { BSC_BLOCK_TIME } from 'config'
-import { AVERAGE_CHAIN_BLOCK_TIMES } from 'config/constants/averageChainBlockTimes'
 import forEach from 'lodash/forEach'
 import merge from 'lodash/merge'
 import pickBy from 'lodash/pickBy'
@@ -17,6 +16,7 @@ import {
   WaitForTransactionReceiptTimeoutError,
 } from 'viem'
 import { usePublicClient } from 'wagmi'
+import { useFetchBlockData } from '@pancakeswap/wagmi'
 import { finalizeTransaction } from './actions'
 import { useAllChainTransactions } from './hooks'
 import { TransactionDetails } from './reducer'
@@ -35,6 +35,7 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
 
   const dispatch = useAppDispatch()
   const transactions = useAllChainTransactions(chainId)
+  const refetchBlockData = useFetchBlockData(chainId)
 
   const { toastError, toastSuccess } = useToast()
 
@@ -67,6 +68,9 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
               }),
             )
             const toast = receipt.status === 'success' ? toastSuccess : toastError
+            if (receipt.status === 'success') {
+              refetchBlockData()
+            }
             toast(
               t('Transaction receipt'),
               <ToastDescriptionWithTx txHash={receipt.transactionHash} txChainId={chainId} />,
@@ -94,7 +98,7 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
         })
       },
     )
-  }, [chainId, provider, transactions, dispatch, toastSuccess, toastError, t])
+  }, [chainId, provider, transactions, dispatch, toastSuccess, toastError, t, refetchBlockData])
 
   return null
 }

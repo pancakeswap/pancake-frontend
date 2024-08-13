@@ -9,7 +9,7 @@ import _toNumber from 'lodash/toNumber'
 import { useCallback, useMemo } from 'react'
 import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { CakeLockStatus } from 'views/CakeStaking/types'
-import { useReadContract } from 'wagmi'
+import { useReadContract } from '@pancakeswap/wagmi'
 import { PRECISION_FACTOR, getUserMultiplier } from './multiplierAPI'
 
 export const USER_ESTIMATED_MULTIPLIER = 2

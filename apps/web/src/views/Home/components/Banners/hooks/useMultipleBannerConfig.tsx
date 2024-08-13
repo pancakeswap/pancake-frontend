@@ -1,6 +1,8 @@
 import shuffle from 'lodash/shuffle'
 import { useMemo, type ReactElement } from 'react'
+import { BrasilMeetupBanner } from 'views/Home/components/Banners/BrasilMeetupBanner'
 import { AlloraBanner } from '../AlloraBanner'
+import { BirthdayBanner } from '../BirthdayBanner'
 import CompetitionBanner from '../CompetitionBanner'
 import { FeeRefundBanner } from '../FeeRefundBanner'
 import { FourMemeBanner } from '../FourMemeBanner'
@@ -45,6 +47,14 @@ export const useMultipleBannerConfig = () => {
       {
         shouldRender: isRenderUserBanner.shouldRender && !isRenderUserBanner.isEarningsBusdZero,
         banner: <UserBanner />,
+      },
+      {
+        shouldRender: true,
+        banner: <BrasilMeetupBanner />,
+      },
+      {
+        shouldRender: true,
+        banner: <BirthdayBanner />,
       },
       {
         shouldRender: true,
