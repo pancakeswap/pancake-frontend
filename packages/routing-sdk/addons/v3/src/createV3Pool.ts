@@ -1,17 +1,16 @@
 import { Currency, CurrencyAmount, Price, ONE, ZERO } from '@pancakeswap/swap-sdk-core'
-import { Pool, logCurrency } from '@pancakeswap/routing-sdk'
+import { logCurrency } from '@pancakeswap/routing-sdk'
 import { encodeSqrtRatioX96, TickList, TickMath, SwapMath, LiquidityMath } from '@pancakeswap/v3-sdk'
 import invariant from 'tiny-invariant'
 import memoize from 'lodash/memoize.js'
 
-import type { V3PoolData, V3PoolType } from './types'
+import type { V3Pool, V3PoolData } from './types'
 import { BASE_SWAP_COST_V3, COST_PER_HOP_V3, COST_PER_INIT_TICK, NEGATIVE_ONE, Q192, V3_POOL_TYPE } from './constants'
 
-export function createV3Pool(params: V3PoolData): Pool<V3PoolType, V3PoolData> {
+export function createV3Pool(params: V3PoolData): V3Pool {
   let p = { ...params, type: V3_POOL_TYPE }
 
-  const pool: Pool<V3PoolType, V3PoolData> = {
-    toSerializable: () => p,
+  const pool: V3Pool = {
     type: V3_POOL_TYPE,
     swapToPrice: (price) => {
       const sortedPrice = price.baseCurrency.wrapped.sortsBefore(price.quoteCurrency.wrapped) ? price : price.invert()
