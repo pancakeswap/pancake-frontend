@@ -14,6 +14,7 @@ import { useMemo, useState } from 'react'
 import { ConfirmDeleteModal } from 'views/DashboardQuestEdit/components/ConfirmDeleteModal'
 import { InputErrorText, StyledInput } from 'views/DashboardQuestEdit/components/InputStyle'
 import { DropdownList } from 'views/DashboardQuestEdit/components/Tasks/DropdownList'
+import { ExpandButton } from 'views/DashboardQuestEdit/components/Tasks/ExpandButton'
 import { StyledOptionIcon } from 'views/DashboardQuestEdit/components/Tasks/StyledOptionIcon'
 import { TaskSocialConfig } from 'views/DashboardQuestEdit/context/types'
 import { useQuestEdit } from 'views/DashboardQuestEdit/context/useQuestEdit'
@@ -31,7 +32,7 @@ export const SocialTask: React.FC<SocialTaskProps> = ({ task, isDrafted }) => {
   const { t } = useTranslation()
   const [isFirst, setIsFirst] = useState(true)
   const { tasks, onTasksChange, deleteTask } = useQuestEdit()
-
+  const [isExpanded, setIsExpanded] = useState(true)
   const [onPresentDeleteModal] = useModal(<ConfirmDeleteModal handleDelete={() => deleteTask(task.sid)} />)
 
   const social = task.taskType
@@ -74,6 +75,7 @@ export const SocialTask: React.FC<SocialTaskProps> = ({ task, isDrafted }) => {
   return (
     <Flex flexDirection="column">
       <Flex flexDirection={['row']}>
+        {!disableInput && <ExpandButton isExpanded={isExpanded} setIsExpanded={setIsExpanded} />}
         <Flex minWidth="200px">
           <Flex mr="8px" alignSelf="center" position="relative">
             {taskIcon(social)}
@@ -95,69 +97,71 @@ export const SocialTask: React.FC<SocialTaskProps> = ({ task, isDrafted }) => {
           </Flex>
         )}
       </Flex>
-      <FlexGap gap="8px" flexDirection="column" mt="8px">
-        <FlexGap gap="8px" flexDirection={['column', 'column', 'row']}>
-          <Flex width="100%" flexDirection="column">
-            <InputGroup
-              endIcon={
-                isUrlError ? (
-                  <ErrorFillIcon color="failure" width={16} height={16} />
-                ) : (
-                  <Box ref={targetRef} onClick={onclickOpenNewIcon}>
-                    <OpenNewIcon style={{ cursor: 'pointer' }} color="primary" width="20px" />
-                    {tooltipVisible && tooltip}
-                  </Box>
-                )
-              }
-            >
+      {isExpanded && (
+        <FlexGap gap="8px" flexDirection="column" mt="8px">
+          <FlexGap gap="8px" flexDirection={['column', 'column', 'row']}>
+            <Flex width="100%" flexDirection="column">
+              <InputGroup
+                endIcon={
+                  isUrlError ? (
+                    <ErrorFillIcon color="failure" width={16} height={16} />
+                  ) : (
+                    <Box ref={targetRef} onClick={onclickOpenNewIcon}>
+                      <OpenNewIcon style={{ cursor: 'pointer' }} color="primary" width="20px" />
+                      {tooltipVisible && tooltip}
+                    </Box>
+                  )
+                }
+              >
+                <StyledInput
+                  value={task.socialLink}
+                  isError={isUrlError}
+                  style={{ borderRadius: '24px' }}
+                  disabled={disableInput}
+                  placeholder={taskInputPlaceholder(social)}
+                  onChange={(e) => handleUrlChange(e, 'socialLink')}
+                />
+              </InputGroup>
+              {isUrlError && <InputErrorText errorText={t('Enter a valid website URL')} />}
+            </Flex>
+            <Flex width="100%" flexDirection="column">
+              <InputGroup
+                endIcon={isAccountIdError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}
+              >
+                <StyledInput
+                  value={task.accountId}
+                  isError={isAccountIdError}
+                  style={{ borderRadius: '24px' }}
+                  disabled={disableInput}
+                  placeholder={socialAccountIdName(task.taskType)}
+                  onChange={(e) => handleUrlChange(e, 'accountId')}
+                />
+              </InputGroup>
+              {isAccountIdError && <InputErrorText errorText={t('Account id is empty')} />}
+            </Flex>
+          </FlexGap>
+          <Flex flexDirection="column">
+            <InputGroup endIcon={isTitleError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}>
               <StyledInput
-                value={task.socialLink}
-                isError={isUrlError}
-                style={{ borderRadius: '24px' }}
+                placeholder={t('Title')}
+                value={task.title}
+                isError={isTitleError}
                 disabled={disableInput}
-                placeholder={taskInputPlaceholder(social)}
-                onChange={(e) => handleUrlChange(e, 'socialLink')}
+                style={{ borderRadius: '24px' }}
+                onChange={(e) => handleUrlChange(e, 'title')}
               />
             </InputGroup>
-            {isUrlError && <InputErrorText errorText={t('Enter a valid website URL')} />}
+            {isTitleError && <InputErrorText errorText={t('Title is empty')} />}
           </Flex>
-          <Flex width="100%" flexDirection="column">
-            <InputGroup
-              endIcon={isAccountIdError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}
-            >
-              <StyledInput
-                value={task.accountId}
-                isError={isAccountIdError}
-                style={{ borderRadius: '24px' }}
-                disabled={disableInput}
-                placeholder={socialAccountIdName(task.taskType)}
-                onChange={(e) => handleUrlChange(e, 'accountId')}
-              />
-            </InputGroup>
-            {isAccountIdError && <InputErrorText errorText={t('Account id is empty')} />}
-          </Flex>
+          <StyledInput
+            placeholder={t('Description (Optional)')}
+            value={task.description}
+            style={{ borderRadius: '24px' }}
+            disabled={disableInput}
+            onChange={(e) => handleUrlChange(e, 'description')}
+          />
         </FlexGap>
-        <Flex flexDirection="column">
-          <InputGroup endIcon={isTitleError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}>
-            <StyledInput
-              placeholder={t('Title')}
-              value={task.title}
-              isError={isTitleError}
-              disabled={disableInput}
-              style={{ borderRadius: '24px' }}
-              onChange={(e) => handleUrlChange(e, 'title')}
-            />
-          </InputGroup>
-          {isTitleError && <InputErrorText errorText={t('Title is empty')} />}
-        </Flex>
-        <StyledInput
-          placeholder={t('Description (Optional)')}
-          value={task.description}
-          style={{ borderRadius: '24px' }}
-          disabled={disableInput}
-          onChange={(e) => handleUrlChange(e, 'description')}
-        />
-      </FlexGap>
+      )}
     </Flex>
   )
 }
