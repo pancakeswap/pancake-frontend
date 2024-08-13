@@ -58,6 +58,41 @@ const v3TopFixedFarms: FarmConfigV3[] = [
 export const farmsV3 = defineFarmV3Configs([
   ...v3TopFixedFarms,
   {
+    pid: 34,
+    lpAddress: '0x2cAB6049d0697a2bfc658f35443c5BA85eE88695',
+    token0: baseTokens.usdz,
+    token1: baseTokens.weth,
+    feeAmount: FeeAmount.LOWEST,
+  },
+  {
+    pid: 33,
+    lpAddress: '0xebF0E4dA26A0d040C2343a9e072A0d0B8cF1E0b0',
+    token0: baseTokens.usdz,
+    token1: baseTokens.usdc,
+    feeAmount: FeeAmount.LOWEST,
+  },
+  {
+    pid: 32,
+    lpAddress: '0x504FbeB4Fe5E76A3E9747a88B4836F6dfa94185f',
+    token0: baseTokens.usdPlus,
+    token1: baseTokens.usdbc,
+    feeAmount: FeeAmount.LOWEST,
+  },
+  {
+    pid: 31,
+    lpAddress: '0x167c9F0AF189DDF58f4B43683404a45096c23b67',
+    token0: baseTokens.usdc,
+    token1: baseTokens.usdPlus,
+    feeAmount: FeeAmount.LOWEST,
+  },
+  {
+    pid: 30,
+    lpAddress: '0x29a857629E58C531f351Bb7fbd86aa46Ef6aF0B7',
+    token0: baseTokens.usdc,
+    token1: baseTokens.aero,
+    feeAmount: FeeAmount.LOW,
+  },
+  {
     pid: 29,
     lpAddress: '0x5f07bb9fEE6062e9D09A52E6d587c64bAD6bA706',
     token0: baseTokens.usdc,
