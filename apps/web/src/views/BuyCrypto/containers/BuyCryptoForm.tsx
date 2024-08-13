@@ -91,11 +91,6 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
   const { cryptoCurrency, fiatCurrency, currencyIn, currencyOut } = useOnRampCurrencyOrder(unit)
   const { fiatValue: defaultAmt } = useFiatCurrencyAmount({ currencyCode: fiatCurrency?.symbol, unit })
 
-  const isInValidBtcAddress = useMemo(
-    () => Boolean(isBtc && !btcError && !validAddress?.result),
-    [validAddress?.result, isBtc, btcError],
-  )
-
   const { inputError, amountError } = useLimitsAndInputError({
     typedValue: typedValue ?? '',
     cryptoCurrency,
@@ -108,7 +103,7 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
     enabled: isBtc,
   })
 
-  const btcError = useMemo(() => {
+  const isInValidBtcAddress = useMemo(() => {
     return Boolean(!validAddress?.result && !btcQueryError && isBtc)
   }, [isBtc, btcQueryError, validAddress?.result])
 
@@ -228,7 +223,7 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
           quotesError={quotesError}
         />
         <Box>
-          {Boolean(!inputError && !btcError && !quotesError) && (
+          {Boolean(!inputError && !isInValidBtcAddress && !quotesError) && (
             <Suspense fallback={null}>
               <EnableNotificationsTooltip
                 showNotificationsPopOver={showNotificationsPopOver}
