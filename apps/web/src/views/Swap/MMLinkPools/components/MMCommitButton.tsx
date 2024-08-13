@@ -97,6 +97,7 @@ SwapCommitButtonPropsType & CommitButtonProps) {
     resetState()
     // if there was a tx hash, we want to clear the input
     if (txHash) {
+      logGTMSwapTxSentEvent()
       onUserInput(Field.INPUT, '')
     }
   }, [afterCommit, resetState, txHash, onUserInput])
@@ -115,7 +116,6 @@ SwapCommitButtonPropsType & CommitButtonProps) {
     beforeCommit?.()
 
     callToAction()
-    logGTMSwapTxSentEvent()
   }, [beforeCommit, callToAction])
 
   const [onPresentConfirmModal] = useModal(

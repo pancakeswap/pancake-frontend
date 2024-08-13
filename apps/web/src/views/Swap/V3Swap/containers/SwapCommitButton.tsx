@@ -168,6 +168,7 @@ const SwapCommitButtonInner = memo(function SwapCommitButtonInner({
   const reset = useCallback(() => {
     afterCommit?.()
     if (confirmState === ConfirmModalState.COMPLETED) {
+      logGTMSwapTxSentEvent()
       onUserInput(Field.INPUT, '')
     }
     resetState()
@@ -191,7 +192,6 @@ const SwapCommitButtonInner = memo(function SwapCommitButtonInner({
   const onConfirm = useCallback(() => {
     beforeCommit?.()
     callToAction()
-    logGTMSwapTxSentEvent()
   }, [beforeCommit, callToAction])
 
   // modals
