@@ -192,7 +192,7 @@ export const CrossChainVeCakeModal: React.FC<{
       if (!account || !veCakeSenderV2Contract || !chainId || !isInitialized) return
       let syncFee = BigInt(
         new BigNumber(CROSS_CHAIN_CONFIG[chainId].layerZeroFee.toString())
-          .times(CROSS_CHAIN_CONFIG[chainId].layerZeroDeeBufferTimes ?? 1.1)
+          .times(CROSS_CHAIN_CONFIG[chainId].layerZeroFeeBufferTimes ?? 1.1)
           .toNumber()
           .toFixed(0),
       )
@@ -205,7 +205,7 @@ export const CrossChainVeCakeModal: React.FC<{
         if (feeData.nativeFee !== 0n) {
           syncFee = BigInt(
             new BigNumber(feeData.nativeFee.toString())
-              .times(CROSS_CHAIN_CONFIG[chainId].layerZeroDeeBufferTimes ?? 1.1)
+              .times(CROSS_CHAIN_CONFIG[chainId].layerZeroFeeBufferTimes ?? 1.1)
               .toNumber()
               .toFixed(0),
           )
