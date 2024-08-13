@@ -10,7 +10,7 @@ import { SettingsMode } from 'components/Menu/GlobalSettings/types'
 import { WrapType } from 'hooks/useWrapCallback'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Field } from 'state/swap/actions'
-import { logGTMClickSwapEvent } from 'utils/customGTMEventTracking'
+import { logGTMClickSwapEvent, logGTMSwapTxSentEvent } from 'utils/customGTMEventTracking'
 import { Address } from 'viem'
 import { parseMMError } from 'views/Swap/MMLinkPools/utils/exchange'
 import { ConfirmSwapModal } from 'views/Swap/V3Swap/containers/ConfirmSwapModal'
@@ -115,6 +115,7 @@ SwapCommitButtonPropsType & CommitButtonProps) {
     beforeCommit?.()
 
     callToAction()
+    logGTMSwapTxSentEvent()
   }, [beforeCommit, callToAction])
 
   const [onPresentConfirmModal] = useModal(

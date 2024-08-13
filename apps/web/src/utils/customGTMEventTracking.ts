@@ -1,6 +1,7 @@
 export enum GTMEvent {
   EventTracking = 'eventTracking',
   Swap = 'swap',
+  SwapTxSent = 'swapTxSent',
   AddLiquidity = 'addLiquidity',
   RemoveLiquidity = 'removeLiquidity',
   Farm = 'stakeFarm',
@@ -24,6 +25,7 @@ export enum GTMCategory {
 export enum GTMAction {
   ClickTradeButton = 'Click Trade Button',
   ClickSwapButton = 'Click Swap Button',
+  SwapTransactionSent = 'Swap Transaction Sent',
   ClickAddLiquidityButton = 'Click Add Liquidity Button',
   ClickRemoveLiquidityButton = 'Click Remove Liquidity Button',
   ClickStakeButton = 'Click Stake Button',
@@ -63,6 +65,15 @@ export const logGTMClickSwapEvent = () => {
   window?.dataLayer?.push({
     event: GTMEvent.Swap,
     action: GTMAction.ClickSwapButton,
+    category: GTMCategory.Swap,
+  })
+}
+
+export const logGTMSwapTxSentEvent = () => {
+  console.info('---SwapTxSent---')
+  window?.dataLayer?.push({
+    event: GTMEvent.SwapTxSent,
+    action: GTMAction.SwapTransactionSent,
     category: GTMCategory.Swap,
   })
 }
