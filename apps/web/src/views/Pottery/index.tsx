@@ -5,7 +5,7 @@ import { usePotteryFetch } from 'state/pottery/hook'
 import Banner from 'views/Pottery/components/Banner/index'
 import Pot from 'views/Pottery/components/Pot/index'
 import { useTranslation } from '@pancakeswap/localization'
-import SubgraphHealthIndicator from 'components/SubgraphHealthIndicator'
+import SubgraphHealthIndicator from 'components/ApiHealthIndicator'
 import { ChainId } from '@pancakeswap/chains'
 
 import { GRAPH_API_POTTERY } from 'config/constants/endpoints'

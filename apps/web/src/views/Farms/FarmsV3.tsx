@@ -49,6 +49,7 @@ import { getFarmApr } from 'utils/apr'
 import { getStakedFarms } from 'views/Farms/utils/getStakedFarms'
 import { BCakeMigrationBanner } from 'views/Home/components/Banners/BCakeMigrationBanner'
 import { useAccount } from 'wagmi'
+import { FloatingExplorerHealthIndicator } from 'components/ApiHealthIndicator/FloatingExplorerHealthIndicator'
 import Table from './components/FarmTable/FarmTable'
 import { FarmTypesFilter } from './components/FarmTypesFilter'
 import { BCakeBoosterCard } from './components/YieldBooster/components/bCakeV3/BCakeBoosterCard'
@@ -567,6 +568,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
         )}
         {chosenFarms.length > 0 && <div ref={observerRef} />}
         <StyledImage src="/images/decorations/3dpan.png" alt="Pancake illustration" width={120} height={103} />
+        <FloatingExplorerHealthIndicator protocol="v3" />
       </Page>
     </FarmsV3Context.Provider>
   )

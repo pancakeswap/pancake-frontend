@@ -81,6 +81,7 @@ import { AprCalculator } from 'views/AddLiquidityV3/components/AprCalculator'
 import RateToggle from 'views/AddLiquidityV3/formViews/V3FormView/components/RateToggle'
 import Page from 'views/Page'
 import { useSendTransaction, useWalletClient } from 'wagmi'
+import { FloatingExplorerHealthIndicator } from 'components/ApiHealthIndicator/FloatingExplorerHealthIndicator'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -825,6 +826,7 @@ export default function PoolPage() {
           </>
         )}
       </BodyWrapper>
+      <FloatingExplorerHealthIndicator protocol="v3" />
     </Page>
   )
 }

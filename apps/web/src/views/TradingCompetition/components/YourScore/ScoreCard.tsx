@@ -15,7 +15,7 @@ import {
 } from '@pancakeswap/uikit'
 import { CLAIM, OVER } from 'config/constants/trading-competition/phases'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import SubgraphHealthIndicator from 'components/SubgraphHealthIndicator'
+import SubgraphHealthIndicator from 'components/ApiHealthIndicator'
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/chains'
 import ClaimModal from '../ClaimModal'

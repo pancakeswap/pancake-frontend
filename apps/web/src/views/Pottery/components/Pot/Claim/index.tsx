@@ -5,7 +5,7 @@ import { usePotteryData } from 'state/pottery/hook'
 import { calculateCakeAmount } from 'views/Pottery/helpers'
 import BigNumber from 'bignumber.js'
 import { BIG_ONE } from '@pancakeswap/utils/bigNumber'
-import SubgraphHealthIndicator from 'components/SubgraphHealthIndicator'
+import SubgraphHealthIndicator from 'components/ApiHealthIndicator'
 import { useAccount } from 'wagmi'
 import { ChainId } from '@pancakeswap/chains'
 

@@ -6,7 +6,7 @@ import { GRAPH_API_PREDICTION_BNB } from '@pancakeswap/prediction'
 import { getPortalRoot } from '@pancakeswap/uikit'
 import { GRAPH_API_LOTTERY } from 'config/constants/endpoints'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { SubgraphHealthIndicator, SubgraphHealthIndicatorProps } from './SubgraphHealthIndicator'
+import { SubgraphHealthIndicator, SubgraphHealthIndicatorProps } from './HealthIndicator'
 
 interface FactoryParams {
   getSubgraph: (chainId: ChainId) => string
