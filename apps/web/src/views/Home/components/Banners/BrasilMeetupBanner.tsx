@@ -123,7 +123,7 @@ export const BrasilMeetupBanner = memo(function BrasilMeetupBanner() {
           <BannerActionContainer>
             <Action href="/swap" icon="arrowForward" alignItems="center" text={t('Start Trading')} color="#280D5F" />
             <Action
-              href="https://blog.pancakeswap.finance/articles/introducing-pancake-swap-quest-beta-your-ultimate-de-fi-quest-platform"
+              href="https://lu.ma/bdw82pz2"
               display={width < 700 ? 'none' : 'flex'}
               icon="openNew"
               alignItems="center"
