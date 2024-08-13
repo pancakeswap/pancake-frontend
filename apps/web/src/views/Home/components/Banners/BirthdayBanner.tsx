@@ -8,14 +8,13 @@ import {
   BannerMain,
   BannerTitle,
   FloatingGraphic,
-  LinkExternalAction,
   PancakeSwapBadge,
   type GraphicDetail,
 } from '@pancakeswap/widgets-internal'
 import { ASSET_CDN } from 'config/constants/endpoints'
-import { useViewport } from 'hooks/useViewport'
+import Link from 'next/link'
 
-type ActionsType = { href: string; text: string; icon?: 'arrowForward' | 'openNew' }
+type ActionsType = { href: string; text: string }
 type IActions = ActionsType & Partial<CSSStyleDeclaration>
 
 const BIRTHDAY_PATH = `${ASSET_CDN}/web/banners/birthday/2024`
@@ -32,19 +31,36 @@ const bgXsVariant: GraphicDetail = {
   width: 196,
   height: 164,
 }
-
+const yellowVariant = {
+  color: '#FAFF00',
+  strokeColor: '#4B229D',
+  strokeSize: 1.65,
+  fontSize: 22,
+  lineHeight: 20,
+  fontWeight: 900,
+}
 export const BirthdayBanner = () => {
   const { t } = useTranslation()
-  const { isMobile, isDesktop, isMd } = useMatchBreakpoints()
-  const { width } = useViewport()
+  const { isMd } = useMatchBreakpoints()
 
-  const Action = ({ href, icon, text, ...props }: IActions) => (
-    <Box display={props.display} marginTop={props.marginTop}>
-      <LinkExternalAction href={href} externalIcon={icon} color={props.color}>
-        {t(text)}
-      </LinkExternalAction>
-    </Box>
-  )
+  const Action = ({ href, text, ...props }: IActions) => {
+    return (
+      <Box
+        display={props.display}
+        marginTop={props.marginTop}
+        background="white"
+        paddingX="12px"
+        paddingY="8px"
+        borderRadius="8px"
+      >
+        <BannerTitle variant={yellowVariant}>
+          <Link href={href} target="_blank">
+            {t(text)}
+          </Link>
+        </BannerTitle>
+      </Box>
+    )
+  }
 
   return (
     <BannerContainer background="radial-gradient(110.52% 235.12% at 100% 103.33%, #C4FBFF 0%, #2BD1DE 61.43%)">
@@ -58,9 +74,7 @@ export const BirthdayBanner = () => {
         actions={
           <BannerActionContainer>
             <Action
-              // TO-DO Add on Aug 12th
-              href=""
-              icon="arrowForward"
+              href="https://blog.pancakeswap.finance/articles/pancake4ever-celebrating-4-years-of-pancakeswap"
               alignItems="center"
               text={t('Join Now')}
               color="#280D5F"
