@@ -1,7 +1,7 @@
-import shouldForwardProp from "@styled-system/should-forward-prop";
 import { m as motion, Variants } from "framer-motion";
+import shouldForwardProp from "@styled-system/should-forward-prop";
 import { styled } from "styled-components";
-import { background, border, color, layout, position, space } from "styled-system";
+import { background, border, layout, position, space, color } from "styled-system";
 import { BoxProps } from "./types";
 
 export { domAnimation, type AnimatePresence as AnimatePresenceType, type LazyMotion } from "framer-motion";
