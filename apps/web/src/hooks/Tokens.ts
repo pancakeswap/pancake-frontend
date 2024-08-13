@@ -79,15 +79,7 @@ export type TokenChainAddressMap<TChainId extends number = number> = {
   }
 }
 
-/**
- * Returns all tokens that are from active urls and user added tokens
- */
-export function useAllTokensByChainIds(
-  chainIds: number[],
-  allTokenMap_?: TokenAddressMap<ChainId>,
-): TokenChainAddressMap {
-  const allTokenMap = useAtomValue(combinedTokenMapFromActiveUrlsAtom)
-  const tokenMap = allTokenMap_ ?? allTokenMap
+export function useTokensByChainIds(chainIds: number[], tokenMap: TokenAddressMap<ChainId>): TokenChainAddressMap {
   const userAddedTokenMap = useUserAddedTokensByChainIds(chainIds)
   return useMemo(() => {
     return chainIds.reduce<TokenChainAddressMap>((tokenMap_, chainId) => {
@@ -110,17 +102,25 @@ export function useAllTokensByChainIds(
   }, [userAddedTokenMap, tokenMap, chainIds])
 }
 
+/**
+ * Returns all tokens that are from active urls and user added tokens
+ */
+export function useAllTokensByChainIds(chainIds: number[]): TokenChainAddressMap {
+  const allTokenMap = useAtomValue(combinedTokenMapFromActiveUrlsAtom)
+  return useTokensByChainIds(chainIds, allTokenMap)
+}
+
+export function useOfficialsAndUserAddedTokensByChainIds(chainIds: number[]): TokenChainAddressMap {
+  const tokenMap = useAtomValue(combinedTokenMapFromOfficialsUrlsAtom)
+  return useTokensByChainIds(chainIds, tokenMap)
+}
+
 export function useAllOnRampTokens(): { [address: string]: Currency } {
   const { chainId } = useActiveChainId()
   const tokenMap = useAtomValue(combinedCurrenciesMapFromActiveUrlsAtom)
   return useMemo(() => {
     return mapWithoutUrlsBySymbol(tokenMap, chainId)
   }, [tokenMap, chainId])
-}
-
-export function useOfficialsAndUserAddedTokensByChainIds(chainIds: number[]): TokenChainAddressMap {
-  const tokenMap = useAtomValue(combinedTokenMapFromOfficialsUrlsAtom)
-  return useAllTokensByChainIds(chainIds, tokenMap)
 }
 
 /**
@@ -201,7 +201,7 @@ export function useTokenByChainId(tokenAddress?: string, chainId?: number): ERC2
 
   const address = safeGetAddress(tokenAddress)
 
-  const token: ERC20Token | undefined = address ? tokens[address] : undefined
+  const token: ERC20Token | undefined = address && chainId ? tokens[chainId][address] : undefined
 
   const { data, isLoading } = useToken_({
     address: address || undefined,

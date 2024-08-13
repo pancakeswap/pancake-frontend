@@ -65,19 +65,8 @@ export const useColumnConfig = (): ITableViewProps<PoolInfo>['columns'] => {
         sorter: true,
         minWidth: '145px',
         display: mediaQueries.isXl || mediaQueries.isXxl,
-        render: (value, item) =>
-          value ? (
-            <FiatNumberDisplay
-              value={value}
-              tooltipText={
-                item.isFarming
-                  ? t('Total active (in-range) liquidity staked in the farm.')
-                  : t('Total Value Locked (TVL) in the pool.')
-              }
-            />
-          ) : (
-            <Skeleton width={60} />
-          ),
+        render: (value) =>
+          value ? <FiatNumberDisplay value={value} showFullDigitsTooltip={false} /> : <Skeleton width={60} />,
       },
       {
         title: t('Volume 24H'),
