@@ -118,4 +118,12 @@ export const baseTokens = {
     'Master Miggles',
     'https://mrmigglesbase.com/',
   ),
+  usdz: new ERC20Token(
+    ChainId.BASE,
+    '0x04D5ddf5f3a8939889F11E97f8c4BB48317F1938',
+    18,
+    'USDz',
+    'USDz',
+    'https://www.zedxion.io/',
+  ),
 }

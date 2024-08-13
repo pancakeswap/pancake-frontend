@@ -4909,14 +4909,4 @@ export const CONFIG_PROD: GaugeConfig[] = [
     token0Address: arbitrumTokens.usde.address,
     token1Address: arbitrumTokens.usdc.address,
   },
-  {
-    gid: 496,
-    pairName: 'ETH-SEED',
-    address: '0x87Fe0e807E3E92A7558303FB51F201dcBfb07cC1',
-    chainId: ChainId.ARBITRUM_ONE,
-    type: GaugeType.V3,
-    feeTier: FeeAmount.MEDIUM,
-    token0Address: arbitrumTokens.weth.address,
-    token1Address: arbitrumTokens.seed.address,
-  },
 ]

@@ -529,4 +529,12 @@ export const ethereumTokens = {
     'Ethena USDe',
     'https://ethena.fi/',
   ),
+  usd0: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0x73A15FeD60Bf67631dC6cd7Bc5B6e8da8190aCF5',
+    18,
+    'USD0',
+    'Usual USD',
+    'https://usual.money/',
+  ),
 }
