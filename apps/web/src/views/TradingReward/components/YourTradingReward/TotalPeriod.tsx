@@ -137,11 +137,7 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
         const currentReward = rewardInfo?.[available.campaignId]
         if (currentReward) {
           const reward = getBalanceAmount(new BigNumber(available.canClaim))
-          const rewardCakePrice = getBalanceAmount(
-            new BigNumber(currentReward.rewardPrice ?? '0'),
-            currentReward.rewardTokenDecimal ?? 0,
-          )
-          return reward.div(rewardCakePrice).isNaN() ? 0 : reward.div(rewardCakePrice).toNumber()
+          return reward.toNumber()
         }
         return 0
       })
