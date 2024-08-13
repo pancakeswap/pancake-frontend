@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { BetPosition, ROUND_BUFFER } from '@pancakeswap/prediction'
+import { BetPosition, TRANSACTION_BUFFER_BLOCKS } from '@pancakeswap/prediction'
 import {
   ArrowDownIcon,
   ArrowUpIcon,
@@ -14,12 +14,13 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { fetchLedgerData } from 'state/predictions'
 import { NodeLedger, NodeRound } from 'state/types'
 import { getNowInSeconds } from 'utils/getNowInSeconds'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
 import { useAccount } from 'wagmi'
+import { AVERAGE_CHAIN_BLOCK_TIMES } from '@pancakeswap/chains'
 import { formatTokenv2 } from '../../helpers'
 import CardFlip from '../CardFlip'
 import { PrizePoolRow, RoundResultBox } from '../RoundResult'
@@ -94,16 +95,16 @@ const OpenRoundCard: React.FC<React.PropsWithChildren<OpenRoundCardProps>> = ({
     if (secondsToLock > 0) {
       const setIsBufferPhaseTimeout = setTimeout(() => {
         setIsBufferPhase(true)
-      }, (secondsToLock - ROUND_BUFFER) * 1000)
+      }, (secondsToLock - AVERAGE_CHAIN_BLOCK_TIMES[chainId] * TRANSACTION_BUFFER_BLOCKS) * 1000)
 
       return () => {
         clearTimeout(setIsBufferPhaseTimeout)
       }
     }
     return undefined
-  }, [lockTimestamp])
+  }, [lockTimestamp, chainId])
 
-  const getHasEnteredPosition = () => {
+  const canEnterPosition = useMemo(() => {
     if (hasEnteredUp || hasEnteredDown) {
       return false
     }
@@ -113,47 +114,49 @@ const OpenRoundCard: React.FC<React.PropsWithChildren<OpenRoundCardProps>> = ({
     }
 
     return true
-  }
+  }, [hasEnteredUp, hasEnteredDown, round?.lockPrice])
 
-  const canEnterPosition = getHasEnteredPosition()
-
-  const handleBack = () =>
+  const handleBack = useCallback(() => {
     setState((prevState) => ({
       ...prevState,
       isSettingPosition: false,
     }))
+  }, [])
 
-  const handleSetPosition = (newPosition: BetPosition) => {
+  const handleSetPosition = useCallback((newPosition: BetPosition) => {
     setState((prevState) => ({
       ...prevState,
       isSettingPosition: true,
       position: newPosition,
     }))
-  }
+  }, [])
 
-  const togglePosition = () => {
+  const togglePosition = useCallback(() => {
     setState((prevState) => ({
       ...prevState,
       position: prevState.position === BetPosition.BULL ? BetPosition.BEAR : BetPosition.BULL,
     }))
-  }
+  }, [])
 
-  const handleSuccess = async (hash: string) => {
-    if (account && chainId) {
-      await dispatch(fetchLedgerData({ account, chainId, epochs: [round.epoch] }))
+  const handleSuccess = useCallback(
+    async (hash: string) => {
+      if (account && chainId) {
+        await dispatch(fetchLedgerData({ account, chainId, epochs: [round.epoch] }))
 
-      handleBack()
+        handleBack()
 
-      toastSuccess(
-        t('Success!'),
-        <ToastDescriptionWithTx txHash={hash}>
-          {t('%position% position entered', {
-            position: positionDisplay,
-          })}
-        </ToastDescriptionWithTx>,
-      )
-    }
-  }
+        toastSuccess(
+          t('Success!'),
+          <ToastDescriptionWithTx txHash={hash}>
+            {t('%position% position entered', {
+              position: positionDisplay,
+            })}
+          </ToastDescriptionWithTx>,
+        )
+      }
+    },
+    [account, chainId, dispatch, round?.epoch, handleBack, positionDisplay, t, toastSuccess],
+  )
 
   return (
     <CardFlip isFlipped={isSettingPosition} height="404px">

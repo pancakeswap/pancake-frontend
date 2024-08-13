@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { BetPosition, ROUND_BUFFER } from '@pancakeswap/prediction'
+import { BetPosition, TRANSACTION_BUFFER_BLOCKS } from '@pancakeswap/prediction'
 import {
   Box,
   Button,
@@ -18,7 +18,7 @@ import { ASSET_CDN } from 'config/constants/endpoints'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { fetchLedgerData } from 'state/predictions'
 import { NodeLedger, NodeRound } from 'state/types'
 import styled from 'styled-components'
@@ -26,6 +26,7 @@ import { getNowInSeconds } from 'utils/getNowInSeconds'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
 import { usePredictionPrice } from 'views/Predictions/hooks/usePredictionPrice'
 import { useAccount } from 'wagmi'
+import { AVERAGE_CHAIN_BLOCK_TIMES } from '@pancakeswap/chains'
 import { formatTokenv2 } from '../../../helpers'
 import CardFlip from '../../CardFlip'
 import { PrizePoolRow, RoundResultBox } from '../../RoundResult'
@@ -138,16 +139,16 @@ export const AIOpenRoundCard: React.FC<React.PropsWithChildren<AIOpenRoundCardPr
     if (secondsToLock > 0) {
       const setIsBufferPhaseTimeout = setTimeout(() => {
         setIsBufferPhase(true)
-      }, (secondsToLock - ROUND_BUFFER) * 1000)
+      }, (secondsToLock - AVERAGE_CHAIN_BLOCK_TIMES[chainId] * TRANSACTION_BUFFER_BLOCKS) * 1000)
 
       return () => {
         clearTimeout(setIsBufferPhaseTimeout)
       }
     }
     return undefined
-  }, [lockTimestamp])
+  }, [lockTimestamp, chainId])
 
-  const getHasEnteredPosition = () => {
+  const canEnterPosition = useMemo(() => {
     if (hasEnteredFor || hasEnteredAgainst) {
       return false
     }
@@ -157,48 +158,50 @@ export const AIOpenRoundCard: React.FC<React.PropsWithChildren<AIOpenRoundCardPr
     }
 
     return true
-  }
+  }, [hasEnteredFor, hasEnteredAgainst, round?.lockPrice])
 
-  const canEnterPosition = getHasEnteredPosition()
-
-  const handleBack = () =>
+  const handleBack = useCallback(() => {
     setState((prevState) => ({
       ...prevState,
       isSettingPosition: false,
     }))
+  }, [])
 
-  const handleSetPosition = (newPosition: BetPosition) => {
+  const handleSetPosition = useCallback((newPosition: BetPosition) => {
     setState((prevState) => ({
       ...prevState,
       isSettingPosition: true,
       position: newPosition,
     }))
-  }
+  }, [])
 
-  const togglePosition = () => {
+  const togglePosition = useCallback(() => {
     setState((prevState) => ({
       ...prevState,
       position: prevState.position === BetPosition.BULL ? BetPosition.BEAR : BetPosition.BULL,
     }))
-  }
+  }, [])
 
-  const handleSuccess = async (hash: string) => {
-    if (account && chainId) {
-      await dispatch(fetchLedgerData({ account, chainId, epochs: [round.epoch] }))
+  const handleSuccess = useCallback(
+    async (hash: string) => {
+      if (account && chainId) {
+        await dispatch(fetchLedgerData({ account, chainId, epochs: [round.epoch] }))
 
-      handleBack()
+        handleBack()
 
-      toastSuccess(
-        t('Success!'),
-        <ToastDescriptionWithTx txHash={hash}>
-          {t('You are %positionMessage% prediction!', {
-            // TODO: test reactivity of this by going BULL (following AI) and see if position is up to date
-            positionMessage: position === BetPosition.BULL ? t("following AI's") : t("going against AI's"),
-          })}
-        </ToastDescriptionWithTx>,
-      )
-    }
-  }
+        toastSuccess(
+          t('Success!'),
+          <ToastDescriptionWithTx txHash={hash}>
+            {t('You are %positionMessage% prediction!', {
+              // TODO: test reactivity of this by going BULL (following AI) and see if position is up to date
+              positionMessage: position === BetPosition.BULL ? t("following AI's") : t("going against AI's"),
+            })}
+          </ToastDescriptionWithTx>,
+        )
+      }
+    },
+    [account, chainId, dispatch, round?.epoch, handleBack, position, t, toastSuccess],
+  )
 
   return (
     <CardFlip isFlipped={isSettingPosition} height="404px">
