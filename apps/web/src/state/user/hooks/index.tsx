@@ -288,17 +288,20 @@ export function useFeeDataWithGasPrice(chainIdOverride?: number): {
 
 const DEFAULT_BSC_GAS_BIGINT = BigInt(GAS_PRICE_GWEI.default)
 const DEFAULT_BSC_TESTNET_GAS_BIGINT = BigInt(GAS_PRICE_GWEI.testnet)
+
 /**
  * Note that this hook will only works well for BNB chain
  */
-export function useGasPrice(chainIdOverride?: number): bigint | undefined {
-  const { chainId: chainId_ } = useActiveChainId()
+export function useDefaultGasPrice(chainIdOverride?: number, enabled = true): bigint | undefined {
+  const { chainId: chainId_, isWrongNetwork } = useActiveChainId()
   const chainId = chainIdOverride ?? chainId_
-  const { data: signer } = useWalletClient({ chainId })
-  const userGas = useSelector<AppState, AppState['user']['gasPrice']>((state) => state.user.gasPrice)
-  const { data: bscProviderGasPrice = DEFAULT_BSC_GAS_BIGINT } = useQuery({
-    queryKey: ['bscProviderGasPrice', signer],
 
+  const { data: signer } = useWalletClient({ chainId })
+
+  const queryEnabled = Boolean(!isWrongNetwork && signer && chainId === ChainId.BSC && enabled)
+
+  const { data: defaultGasPrice } = useQuery({
+    queryKey: ['bscProviderGasPrice', signer],
     queryFn: async () => {
       // @ts-ignore
       const gasPrice = await signer?.request({
@@ -306,11 +309,24 @@ export function useGasPrice(chainIdOverride?: number): bigint | undefined {
       })
       return hexToBigInt(gasPrice as Hex)
     },
-
-    enabled: Boolean(signer && chainId === ChainId.BSC && userGas === GAS_PRICE_GWEI.rpcDefault),
+    enabled: queryEnabled,
+    placeholderData: queryEnabled ? DEFAULT_BSC_GAS_BIGINT : undefined,
+    refetchOnMount: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
   })
+
+  return defaultGasPrice
+}
+
+/**
+ * Note that this hook will only works well for BNB chain
+ */
+export function useGasPrice(chainIdOverride?: number): bigint | undefined {
+  const { chainId: chainId_ } = useActiveChainId()
+  const chainId = chainIdOverride ?? chainId_
+  const userGas = useSelector<AppState, AppState['user']['gasPrice']>((state) => state.user.gasPrice)
+  const bscProviderGasPrice = useDefaultGasPrice(chainIdOverride, userGas === GAS_PRICE_GWEI.rpcDefault)
   if (chainId === ChainId.BSC) {
     return userGas === GAS_PRICE_GWEI.rpcDefault ? bscProviderGasPrice : BigInt(userGas ?? GAS_PRICE_GWEI.default)
   }
