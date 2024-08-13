@@ -10,7 +10,7 @@ import { PoolListItemAction } from './PoolListItemAction'
 import { getChainFullName } from '../utils'
 
 const FeeTierComponent = <T extends BasicDataType>({ fee, item }: { fee: number; item: T }) => {
-  const percent = useMemo(() => new Percent(fee ?? 0, item.feeTierBase ?? 1), [fee, item.feeTierBase])
+  const percent = useMemo(() => new Percent(fee ?? 0, item.feeTierBase || 1), [fee, item.feeTierBase])
   return <FeeTierTooltip type={item.protocol} percent={percent} />
 }
 
