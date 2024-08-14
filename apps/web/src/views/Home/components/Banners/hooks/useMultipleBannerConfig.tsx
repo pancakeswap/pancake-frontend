@@ -6,7 +6,6 @@ import { BirthdayBanner } from '../BirthdayBanner'
 import CompetitionBanner from '../CompetitionBanner'
 import { FeeRefundBanner } from '../FeeRefundBanner'
 import { FourMemeBanner } from '../FourMemeBanner'
-import { OortTradingBanner } from '../OortTradingBanner'
 import { OptionsBanner } from '../OptionsBanner'
 import { AthleticsBanner } from '../PancakeSwapAthleticsBanner'
 import { PaymasterBanner } from '../PaymasterBanner'
@@ -63,10 +62,6 @@ export const useMultipleBannerConfig = () => {
       {
         shouldRender: true,
         banner: <AlloraBanner />,
-      },
-      {
-        shouldRender: true,
-        banner: <OortTradingBanner />,
       },
       {
         shouldRender: true,
