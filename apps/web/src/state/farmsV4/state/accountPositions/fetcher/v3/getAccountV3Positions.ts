@@ -1,5 +1,7 @@
 import { Protocol } from '@pancakeswap/farms'
 import { NFT_POSITION_MANAGER_ADDRESSES, nonfungiblePositionManagerABI } from '@pancakeswap/v3-sdk'
+import BigNumber from 'bignumber.js'
+import { getMasterChefV3Contract } from 'utils/contractHelpers'
 import { publicClient } from 'utils/viem'
 import { Address } from 'viem'
 import { PositionDetail } from '../../type'
@@ -8,8 +10,9 @@ import { getAccountV3TokenIds } from './getAccountV3TokenIds'
 const readPositions = async (chainId: number, tokenIds: bigint[]): Promise<PositionDetail[]> => {
   const nftPositionManagerAddress = NFT_POSITION_MANAGER_ADDRESSES[chainId]
   const client = publicClient({ chainId })
+  const masterChefV3 = getMasterChefV3Contract(undefined, chainId)
 
-  if (!client || !nftPositionManagerAddress || !tokenIds.length) {
+  if (!client || !nftPositionManagerAddress || !tokenIds.length || !masterChefV3) {
     return []
   }
 
@@ -21,11 +24,25 @@ const readPositions = async (chainId: number, tokenIds: bigint[]): Promise<Posit
       args: [tokenId] as const,
     } as const
   })
-
-  const positions = await client.multicall({
-    contracts: positionCalls,
-    allowFailure: false,
+  const farmingCalls = tokenIds.map((tokenId) => {
+    return {
+      abi: masterChefV3.abi,
+      address: masterChefV3.address,
+      functionName: 'userPositionInfos',
+      args: [tokenId] as const,
+    } as const
   })
+
+  const [positions, farmingPosition] = await Promise.all([
+    client.multicall({
+      contracts: positionCalls,
+      allowFailure: false,
+    }),
+    client.multicall({
+      contracts: farmingCalls,
+      allowFailure: false,
+    }),
+  ])
 
   return positions.map((position, index) => {
     const [
@@ -42,6 +59,17 @@ const readPositions = async (chainId: number, tokenIds: bigint[]): Promise<Posit
       tokensOwed0,
       tokensOwed1,
     ] = position
+    const [
+      farmingLiquidity,
+      boostLiquidity,
+      tickLower_,
+      tickUpper_,
+      rewardGrowthInside,
+      reward,
+      user,
+      pid,
+      boostMultiplier,
+    ] = farmingPosition[index]
     return {
       tokenId: tokenIds[index],
       nonce,
@@ -58,6 +86,8 @@ const readPositions = async (chainId: number, tokenIds: bigint[]): Promise<Posit
       tokensOwed1,
       chainId,
       protocol: Protocol.V3,
+      farmingMultiplier: new BigNumber(Number(boostMultiplier)).div(1000000000000).toNumber() ?? 0,
+      farmingLiquidity,
     } satisfies PositionDetail
   })
 }

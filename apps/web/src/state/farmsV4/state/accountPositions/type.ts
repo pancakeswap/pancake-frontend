@@ -24,6 +24,9 @@ export type PositionDetail = {
   isStaked?: boolean
   chainId: number
   protocol: Protocol
+
+  farmingMultiplier: number
+  farmingLiquidity: bigint
 }
 
 export type V2LPDetail = {
