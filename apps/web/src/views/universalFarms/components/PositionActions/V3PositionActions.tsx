@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import { logGTMClickStakeFarmEvent } from 'utils/customGTMEventTracking'
 import useFarmV3Actions from 'views/Farms/hooks/v3/useFarmV3Actions'
 import { useCheckShouldSwitchNetwork } from 'views/universalFarms/hooks'
+import { Protocol, UNIVERSAL_FARMS } from '@pancakeswap/farms'
 import { V3StakeModal } from '../Modals/V3StakeModal'
 
 type ActionPanelProps = {
@@ -18,9 +19,11 @@ type ActionPanelProps = {
   currency0: Currency
   currency1: Currency
   fee: number
+  chainId: number
 }
 
 export const V3PositionActions = ({
+  chainId,
   currency0,
   currency1,
   isStaked,
@@ -38,6 +41,23 @@ export const V3PositionActions = ({
   })
   const stakeModal = useModalV2()
   const { switchNetworkIfNecessary, isLoading: isSwitchingNetwork } = useCheckShouldSwitchNetwork()
+  const isFarmLive = useMemo(() => {
+    const [token0, token1] = currency0.wrapped.sortsBefore(currency1.wrapped)
+      ? [currency0.wrapped, currency1.wrapped]
+      : [currency1.wrapped, currency0.wrapped]
+    return UNIVERSAL_FARMS.find((farm) => {
+      const [farmToken0, farmToken1] = farm.token0.sortsBefore(farm.token1)
+        ? [farm.token0, farm.token1]
+        : [farm.token1, farm.token0]
+      return (
+        farm.chainId === chainId &&
+        farm.protocol === Protocol.V3 &&
+        token0.equals(farmToken0) &&
+        token1.equals(farmToken1) &&
+        fee === farm.feeAmount
+      )
+    })
+  }, [chainId, currency0, currency1, fee])
 
   const handleStakeAndCheckInactive = useCallback(async () => {
     logGTMClickStakeFarmEvent()
@@ -159,7 +179,7 @@ export const V3PositionActions = ({
             </IconButton>
           </>
         ) : null} */}
-        {isStaked ? unstakeButton : !removed ? stakeButton : null}
+        {isStaked ? unstakeButton : !removed && isFarmLive ? stakeButton : null}
         {isStaked && !removed ? (
           <Button width={['100px']} scale="md" disabled={attemptingTxn || isSwitchingNetwork} onClick={handleHarvest}>
             {attemptingTxn ? t('Harvesting') : t('Harvest')}
@@ -170,7 +190,7 @@ export const V3PositionActions = ({
   }
   return (
     <ActionPanelContainer onClick={preventDefault}>
-      {!isStaked && !removed ? stakeButton : null}
+      {!isStaked && !removed && isFarmLive ? stakeButton : null}
       {isStaked && !removed ? (
         <Button width={['100px']} scale="md" disabled={attemptingTxn || isSwitchingNetwork} onClick={handleHarvest}>
           {attemptingTxn ? t('Harvesting') : t('Harvest')}
