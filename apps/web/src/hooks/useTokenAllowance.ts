@@ -16,7 +16,28 @@ function useTokenAllowance(
   refetch: () => Promise<QueryObserverResult<bigint>>
 } {
   const { chainId } = useActiveChainId()
+  return useTokenAllowanceByChainId({
+    chainId,
+    token,
+    owner,
+    spender,
+  })
+}
 
+export function useTokenAllowanceByChainId({
+  chainId,
+  token,
+  owner,
+  spender,
+}: {
+  chainId: number
+  token?: Token
+  owner?: string
+  spender?: string
+}): {
+  allowance: CurrencyAmount<Token> | undefined
+  refetch: () => Promise<QueryObserverResult<bigint>>
+} {
   const inputs = useMemo(() => [owner, spender] as [`0x${string}`, `0x${string}`], [owner, spender])
 
   const { data: allowance, refetch } = useQuery({
