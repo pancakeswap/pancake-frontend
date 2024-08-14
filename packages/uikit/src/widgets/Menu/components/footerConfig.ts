@@ -15,7 +15,7 @@ export const footerLinks: (t: ContextApi["t"]) => FooterLinkType[] = (t) => [
       },
       {
         label: t("Play"),
-        href: "https://pancakeswap.games/", // TODO
+        href: "https://pancakeswap.finance/prediction",
       },
       {
         label: t("veCAKE"),
@@ -32,7 +32,7 @@ export const footerLinks: (t: ContextApi["t"]) => FooterLinkType[] = (t) => [
     items: [
       {
         label: t("CAKE Incentives"),
-        href: "https://pancakeswap.finance/cake-staking", // TODO
+        href: "https://docs.pancakeswap.finance/ecosystem-and-partnerships/business-partnerships/syrup-pools-and-farms",
       },
       {
         label: t("Staking Pools"),
@@ -86,7 +86,7 @@ export const footerLinks: (t: ContextApi["t"]) => FooterLinkType[] = (t) => [
       },
       {
         label: t("Audits"),
-        href: "/", // TODO
+        href: "https://docs.pancakeswap.finance/readme/audits",
       },
       {
         label: t("Legacy products"),

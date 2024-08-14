@@ -5,7 +5,7 @@ import useMatchBreakpoints from "../../contexts/MatchBreakpoints/useMatchBreakpo
 import { useOnClickOutside } from "../../hooks";
 import { MenuContext } from "../../widgets/Menu/context";
 import { Box, Flex } from "../Box";
-import { ChevronDownIcon, ChevronUpIcon } from "../Svg";
+import { ChevronDownIcon, ChevronUpIcon, OpenNewIcon } from "../Svg";
 import {
   DropdownMenuDivider,
   DropdownMenuItem,
@@ -70,7 +70,7 @@ const MenuItem: React.FC<{
   };
 
   const handleToggleSubMenu = useCallback(
-    (e: MouseEvent) => {
+    (e: React.MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation();
       e.preventDefault();
       setIsSubMenuOpen(!isSubMenuOpen);
@@ -81,16 +81,24 @@ const MenuItem: React.FC<{
   return (
     <StyledDropdownMenuItemContainer key={label?.toString()}>
       {type === DropdownMenuItemType.BUTTON && (
-        <DropdownMenuItem type="button" {...(commonProps as any)}>
+        <DropdownMenuItem disabled={disabled || isDisabled} type="button" {...(commonProps as any)}>
           {MenuItemContent}
         </DropdownMenuItem>
       )}
       {type === DropdownMenuItemType.INTERNAL_LINK && (
         <DropdownMenuItem
+          disabled={disabled || isDisabled}
           as={linkComponent}
           href={href}
-          {...commonProps}
-          onClick={hasChildItems ? handleToggleSubMenu : null}
+          {...itemProps}
+          onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+            if (hasChildItems) {
+              handleToggleSubMenu(e);
+            } else {
+              setIsOpen(false);
+              itemProps.onClick?.(e);
+            }
+          }}
         >
           {MenuItemContent}
           {hasChildItems && (
@@ -105,9 +113,20 @@ const MenuItem: React.FC<{
         </DropdownMenuItem>
       )}
       {type === DropdownMenuItemType.EXTERNAL_LINK && (
-        <DropdownMenuItem as="a" href={href} target="_blank" {...(commonProps as any)}>
+        <DropdownMenuItem
+          disabled={disabled || isDisabled}
+          as="a"
+          href={href}
+          target="_blank"
+          {...(commonProps as any)}
+          onClick={(e: any) => {
+            setIsOpen(false);
+            itemProps.onClick?.(e);
+          }}
+        >
           <Flex alignItems="center" justifyContent="space-between" width="100%">
             {MenuItemContent}
+            <OpenNewIcon color={disabled ? "textDisabled" : "textSubtle"} />
           </Flex>
         </DropdownMenuItem>
       )}
