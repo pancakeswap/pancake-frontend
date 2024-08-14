@@ -1,8 +1,8 @@
 import { unwrappedToken } from '@pancakeswap/tokens'
 import { Position } from '@pancakeswap/v3-sdk'
+import { useTokenByChainId } from 'hooks/Tokens'
 import { usePoolWithChainId } from 'hooks/v3/usePools'
 import { useMemo } from 'react'
-import { useTokenByChainId } from 'state/farmsV4/state/accountPositions/hooks'
 import { PositionDetail } from 'state/farmsV4/state/accountPositions/type'
 import { Address } from 'viem'
 

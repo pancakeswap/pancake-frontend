@@ -1,6 +1,5 @@
 import { Address } from "viem";
 import { useTheme } from "@pancakeswap/hooks";
-import { useTranslation } from "@pancakeswap/localization";
 import { Currency, ERC20Token } from "@pancakeswap/sdk";
 import { Column, IMultiSelectProps, ISelectItem, MultiSelect, IMultiSelectChangeEvent } from "@pancakeswap/uikit";
 import { useCallback, useMemo } from "react";
@@ -100,7 +99,6 @@ export const TokenFilter: React.FC<ITokenProps> = ({
   getChainName = defaultGetChainName,
 }) => {
   const { theme } = useTheme();
-  const { t } = useTranslation();
 
   const selectedTokensNotInData = useMemo(
     () =>
@@ -161,7 +159,6 @@ export const TokenFilter: React.FC<ITokenProps> = ({
         options={tokenList}
         isShowFilter
         placeholder="All tokens"
-        panelFooterTemplate={() => <span>{t("Don’t see expected tokens?")}</span>}
         virtualScrollerOptions={{ itemSize: 58 }}
         itemTemplate={itemTemplate}
         value={value}
