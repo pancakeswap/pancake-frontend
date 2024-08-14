@@ -18,9 +18,10 @@ import { useRouter } from 'next/router'
 import { useCallback, useContext, useMemo } from 'react'
 import { useAppDispatch } from 'state'
 import { pickFarmTransactionTx } from 'state/global/actions'
-import { FarmTransactionStatus, CrossChainFarmStepType } from 'state/transactions/actions'
+import { CrossChainFarmStepType, FarmTransactionStatus } from 'state/transactions/actions'
 import { useCrossChainFarmPendingTransaction, useTransactionAdder } from 'state/transactions/hooks'
 import { styled } from 'styled-components'
+import { logGTMClickStakeFarmConfirmEvent, logGTMStakeFarmTxSentEvent } from 'utils/customGTMEventTracking'
 import { useIsBloctoETH } from 'views/Farms'
 import { useBCakeBoostLimitAndLockInfo } from 'views/Farms/components/YieldBooster/hooks/bCakeV3/useBCakeV3Info'
 import { useFirstTimeCrossFarming } from '../../hooks/useFirstTimeCrossFarming'
@@ -103,12 +104,14 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   }, [pendingFarm, router])
 
   const handleStake = async (amount: string) => {
+    logGTMClickStakeFarmConfirmEvent()
     if (vaultPid) {
       await handleCrossChainStake(amount)
       refreshFirstTime()
     } else {
       const receipt = await fetchWithCatchTxError(() => onStake(amount))
       if (receipt?.status) {
+        logGTMStakeFarmTxSentEvent()
         toastSuccess(
           `${t('Staked')}!`,
           <ToastDescriptionWithTx txHash={receipt.transactionHash}>
@@ -126,6 +129,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
     const amount = formatLpBalance(new BigNumber(amountAsBigNumber), 18)
 
     if (receipt) {
+      logGTMStakeFarmTxSentEvent()
       addTransaction(receipt, {
         type: 'cross-chain-farm',
         translatableSummary: {

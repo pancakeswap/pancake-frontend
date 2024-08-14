@@ -24,7 +24,11 @@ import {
 } from '@pancakeswap/widgets-internal'
 
 import { tryParsePrice } from 'hooks/v3/utils'
-import { logGTMClickAddLiquidityEvent } from 'utils/customGTMEventTracking'
+import {
+  logGTMAddLiquidityTxSentEvent,
+  logGTMClickAddLiquidityConfirmEvent,
+  logGTMClickAddLiquidityEvent,
+} from 'utils/customGTMEventTracking'
 
 import { useIsExpertMode, useUserSlippage } from '@pancakeswap/utils/user'
 import { FeeAmount, NonfungiblePositionManager } from '@pancakeswap/v3-sdk'
@@ -255,6 +259,7 @@ export default function V3FormView({
   const [allowedSlippage] = useUserSlippage() // custom from users
 
   const onAdd = useCallback(async () => {
+    logGTMClickAddLiquidityConfirmEvent()
     if (!chainId || !signer || !account || !nftPositionManagerAddress) return
 
     if (!positionManager || !baseCurrency || !quoteCurrency) {
@@ -292,6 +297,7 @@ export default function V3FormView({
             gas: calculateGasMargin(gas),
           })
             .then((hash) => {
+              logGTMAddLiquidityTxSentEvent()
               const baseAmount = formatRawAmount(
                 parsedAmounts[Field.CURRENCY_A]?.quotient?.toString() ?? '0',
                 baseCurrency.decimals,

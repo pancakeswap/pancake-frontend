@@ -7,6 +7,7 @@ import { useStableSwapNativeHelperContract } from 'hooks/useContract'
 import { PairState } from 'hooks/usePairs'
 import { useStableSwapAPR } from 'hooks/useStableSwapAPR'
 import { Dispatch, ReactElement, SetStateAction, useCallback, useContext, useMemo, useState } from 'react'
+import { logGTMAddLiquidityTxSentEvent, logGTMClickAddLiquidityConfirmEvent } from 'utils/customGTMEventTracking'
 import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
 import { isUserRejected, logError } from 'utils/sentry'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
@@ -184,6 +185,7 @@ export default function AddStableLiquidity({
   const addTransaction = useTransactionAdder()
 
   async function onAdd() {
+    logGTMClickAddLiquidityConfirmEvent()
     const contract = needWrapped ? nativeHelperContract : stableSwapContract
 
     if (!chainId || !account || !contract) return
@@ -267,7 +269,7 @@ export default function AddStableLiquidity({
     await call
       .then((response) => {
         setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response })
-
+        logGTMAddLiquidityTxSentEvent()
         const symbolA = currencies[Field.CURRENCY_A]?.symbol
         const amountA = parsedAmounts[Field.CURRENCY_A]?.toSignificant(3) || '0'
         const symbolB = currencies[Field.CURRENCY_B]?.symbol
