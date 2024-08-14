@@ -21,9 +21,10 @@ import { useCallback, useContext, useMemo, useState } from 'react'
 import { useAppDispatch } from 'state'
 import { fetchBCakeWrapperUserDataAsync, fetchFarmUserDataAsync } from 'state/farms'
 import { pickFarmTransactionTx } from 'state/global/actions'
-import { FarmTransactionStatus, CrossChainFarmStepType } from 'state/transactions/actions'
+import { CrossChainFarmStepType, FarmTransactionStatus } from 'state/transactions/actions'
 import { useCrossChainFarmPendingTransaction, useTransactionAdder } from 'state/transactions/hooks'
 import { styled } from 'styled-components'
+import { logGTMClickStakeFarmConfirmEvent } from 'utils/customGTMEventTracking'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { Hash } from 'viem'
 import { useIsBloctoETH } from 'views/Farms'
@@ -220,6 +221,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   }, [isFirstTime, native, t])
 
   const handleStake = async (amount: string) => {
+    logGTMClickStakeFarmConfirmEvent()
     if (vaultPid) {
       await handleCrossChainStake(amount)
       refreshFirstTime()
@@ -227,6 +229,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
       const receipt = await fetchWithCatchTxError(() => onStake(amount))
 
       if (receipt?.status) {
+        logGTMClickStakeFarmConfirmEvent()
         toastSuccess(
           `${t('Staked')}!`,
           <ToastDescriptionWithTx txHash={receipt.transactionHash}>
@@ -244,6 +247,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
     const amount = formatLpBalance(new BigNumber(amountAsBigNumber), 18)
 
     if (receipt && chainId) {
+      logGTMClickStakeFarmConfirmEvent()
       addTransaction(receipt, {
         type: 'cross-chain-farm',
         translatableSummary: {
