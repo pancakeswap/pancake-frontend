@@ -22,7 +22,7 @@ import { useSwapState } from 'state/swap/hooks'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { useRoutingSettingChanged } from 'state/user/smartRouter'
 import { useCurrencyBalances } from 'state/wallet/hooks'
-import { logGTMClickSwapEvent } from 'utils/customGTMEventTracking'
+import { logGTMClickSwapConfirmEvent, logGTMClickSwapEvent } from 'utils/customGTMEventTracking'
 import { warningSeverity } from 'utils/exchange'
 import { useAccount, useChainId } from 'wagmi'
 import { useParsedAmounts, useSlippageAdjustedAmounts, useSwapInputError } from '../hooks'
@@ -190,6 +190,7 @@ const SwapCommitButtonInner = memo(function SwapCommitButtonInner({
 
   const onConfirm = useCallback(() => {
     beforeCommit?.()
+    logGTMClickSwapConfirmEvent()
     callToAction()
   }, [beforeCommit, callToAction])
 

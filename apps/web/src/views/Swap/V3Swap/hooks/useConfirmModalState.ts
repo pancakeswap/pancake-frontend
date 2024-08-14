@@ -14,6 +14,7 @@ import { useSafeTxHashTransformer } from 'hooks/useSafeTxHashTransformer'
 import { useTransactionDeadline } from 'hooks/useTransactionDeadline'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { RetryableError, retry } from 'state/multicall/retry'
+import { logGTMSwapTxSentEvent } from 'utils/customGTMEventTracking'
 import { UserUnexpectedTxError } from 'utils/errors'
 import { publicClient } from 'utils/wagmi'
 import {
@@ -319,6 +320,7 @@ const useConfirmActions = (
           const result = await swap()
           if (result?.hash) {
             const hash = await safeTxHashTransformer(result.hash)
+            logGTMSwapTxSentEvent()
             setTxHash(hash)
 
             await retryWaitForTransaction({ hash })
