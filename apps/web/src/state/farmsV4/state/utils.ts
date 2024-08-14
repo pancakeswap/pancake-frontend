@@ -26,6 +26,7 @@ export const parseFarmPools = (
       chainId: pool.chainId,
       pid,
       lpAddress: safeGetAddress(pool.id)!,
+      stableLpAddress: safeGetAddress(pool.lpAddress ?? pool.id),
       protocol: pool.protocol as Protocol,
       token0: new Token(
         pool.chainId,
@@ -51,6 +52,8 @@ export const parseFarmPools = (
       vol24hUsd: pool.volumeUSD24h as `${number}`,
       vol48hUsd: pool.volumeUSD48h as `${number}`,
       totalFeeUSD: pool.totalFeeUSD as `${number}`,
+      fee24hUsd: pool.feeUSD24h as `${number}`,
+      liquidity: pool.liquidity,
       feeTier: Number(pool.feeTier ?? 2500),
       // @todo @ChefJerry get by protocols
       feeTierBase: 1_000_000,

@@ -41,7 +41,9 @@ const AprTooltip: React.FC<{
   hasBoost: boolean
   combinedBoostedApr: number
   combinedBaseApr: number
-}> = ({ hasBoost, pool, combinedBaseApr, combinedBoostedApr }) => {
+  multiplier?: number
+  lpAprValue: number
+}> = ({ hasBoost, pool, combinedBaseApr, combinedBoostedApr, multiplier = 1, lpAprValue }) => {
   const { t } = useTranslation()
   const key = useMemo(() => `${pool.chainId}:${pool.lpAddress}` as const, [pool.chainId, pool.lpAddress])
   const { lpApr, cakeApr, merklApr } = usePoolApr(key, pool)
@@ -68,13 +70,13 @@ const AprTooltip: React.FC<{
                 display="inline-block"
                 style={{ textDecoration: hasBoost ? 'line-through' : 'none', fontWeight: 800 }}
               >
-                {displayApr(Number(cakeApr?.value ?? 0))}%
+                {displayApr(Number(cakeApr?.value ?? 0) * (hasBoost ? 1 : multiplier))}%
               </Text>
             </b>
           </li>
         ) : null}
         <li>
-          {t('LP Fee APR')}: <b>{displayApr(Number(lpApr ?? 0))}%</b>
+          {t('LP Fee APR')}: <b>{displayApr(Number(lpAprValue ?? lpApr ?? 0))}%</b>
         </li>
         {merklApr ? (
           <li>
@@ -85,40 +87,60 @@ const AprTooltip: React.FC<{
           </li>
         ) : null}
       </ul>
-      <br />
-      <Text>
-        {t('Calculated using the total active liquidity staked versus the CAKE reward emissions for the farm.')}
-      </Text>
+      {hasBoost ? (
+        <>
+          <br />
+          <Text>
+            {t('Calculated using the total active liquidity staked versus the CAKE reward emissions for the farm.')}
+          </Text>
+        </>
+      ) : null}
       {hasBoost && ['v2', 'stable'].includes(pool.protocol) && (
         <Text mt="15px">
           {t('bCAKE only boosts Farm APR. Actual boost multiplier is subject to farm and pool conditions.')}
         </Text>
       )}
-      <Text mt="15px">{t('APRs for individual positions may vary depending on the configs.')}</Text>
+      {hasBoost ? <Text mt="15px">{t('APRs for individual positions may vary depending on the configs.')}</Text> : null}
     </>
   )
 }
 
-export const PoolApyButton: React.FC<{ pool: PoolInfo }> = ({ pool }) => {
+type PoolApyButtonProps = {
+  pool: PoolInfo
+  multiplier?: number
+  userLpApr?: number
+}
+
+export const PoolApyButton: React.FC<PoolApyButtonProps> = ({ pool, multiplier, userLpApr }) => {
   const { t } = useTranslation()
   const key = useMemo(() => `${pool.chainId}:${pool.lpAddress}` as const, [pool.chainId, pool.lpAddress])
   const { lpApr, cakeApr, merklApr } = usePoolApr(key, pool)
+
   const roiModal = useModalV2()
-  // @todo @ChefJerry display user apr if staking
-  const userIsStaking = false
-  const hasBoost = useMemo(() => Boolean(parseFloat(cakeApr?.boost ?? '0')), [cakeApr?.boost])
+  const hasBoost = useMemo(
+    () => !multiplier && Boolean(parseFloat(cakeApr?.boost ?? '0')),
+    [cakeApr?.boost, multiplier],
+  )
+  const cakAprValue = useMemo(() => {
+    if (multiplier) return Number(cakeApr?.value ?? 0) * multiplier
+    return Number(cakeApr?.value ?? 0)
+  }, [cakeApr?.value, multiplier])
+  const merklAprValue = Number(merklApr ?? 0)
+  const lpAprValue = Number(typeof userLpApr !== 'undefined' ? userLpApr : lpApr ?? 0)
   const combinedBaseApr = useMemo(() => {
-    return Number(lpApr ?? 0) + Number(cakeApr?.value ?? 0) + Number(merklApr ?? 0)
-  }, [lpApr, cakeApr, merklApr])
+    return cakAprValue + lpAprValue + merklAprValue
+  }, [cakAprValue, lpAprValue, merklAprValue])
   const combinedBoostedApr = useMemo(() => {
-    return Number(lpApr ?? 0) + Number(cakeApr?.boost ?? 0) + Number(merklApr ?? 0)
-  }, [lpApr, cakeApr, merklApr])
+    return lpAprValue + Number(cakeApr?.boost ?? 0) + merklAprValue
+  }, [lpAprValue, cakeApr?.boost, merklAprValue])
   const aprTooltip = useTooltip(
     <AprTooltip
       pool={pool}
       hasBoost={hasBoost}
+      lpAprValue={lpAprValue}
       combinedBaseApr={combinedBaseApr}
       combinedBoostedApr={combinedBoostedApr}
+      multiplier={multiplier}
     />,
     {
       trigger: 'hover',
@@ -159,7 +181,7 @@ export const PoolApyButton: React.FC<{ pool: PoolInfo }> = ({ pool }) => {
       {aprTooltip.tooltipVisible && aprTooltip.tooltip}
       {pool.protocol === 'v3' ? <V3ApyRoiModal poolInfo={pool} cakeApr={cakeApr} modal={roiModal} /> : null}
       {['v2', 'stable'].includes(pool.protocol) ? (
-        <V2ApyRoiModal poolInfo={pool} cakeApr={cakeApr} modal={roiModal} />
+        <V2ApyRoiModal poolInfo={pool} cakeApr={cakeApr} modal={roiModal} multiplier={multiplier} />
       ) : null}
     </>
   )
@@ -263,7 +285,8 @@ const V2ApyRoiModal: React.FC<{
   cakeApr?: CakeApr[keyof CakeApr]
   addLiquidityUrl?: string
   modal: UseModalV2Props
-}> = ({ poolInfo, cakeApr, addLiquidityUrl, modal }) => {
+  multiplier?: number
+}> = ({ poolInfo, cakeApr, addLiquidityUrl, modal, multiplier = 1 }) => {
   const { address: account } = useAccount()
   const { t } = useTranslation()
   const lpSymbol = useMemo(
@@ -281,8 +304,6 @@ const V2ApyRoiModal: React.FC<{
     return new BigNumber(poolInfo?.tvlUsd ?? 0).div(Number(lpTokenTotalSupply))
   }, [lpTokenTotalSupply, poolInfo?.tvlUsd])
   const cakePrice = useCakePrice()
-  // @todo @ChefJerry fetchFarmUserBCakeWrapperStakedBalances read user staked balance
-  const boosterMultiplier = 1
   const farmCakePerSecond = useMemo(() => {
     return displayCakePerSecond(cakeApr?.cakePerYear ? cakeApr.cakePerYear.div(365 / 24 / 60 / 60) : BIG_ZERO)
   }, [cakeApr?.cakePerYear])
@@ -304,9 +325,9 @@ const V2ApyRoiModal: React.FC<{
         stakingTokenDecimals={18}
         stakingTokenPrice={lpTokenPrice.toNumber()}
         earningTokenPrice={cakePrice.toNumber()}
-        apr={Number(cakeApr?.value ?? 0) * boosterMultiplier + Number(poolInfo?.lpApr ?? 0)}
+        apr={Number(cakeApr?.value ?? 0) * multiplier + Number(poolInfo?.lpApr ?? 0)}
         multiplier="1"
-        displayApr={displayApr(Number(cakeApr?.value ?? 0) * boosterMultiplier + Number(poolInfo?.lpApr ?? 0))}
+        displayApr={displayApr(Number(cakeApr?.value ?? 0) * multiplier + Number(poolInfo?.lpApr ?? 0))}
         linkHref={addLiquidityUrl}
         lpRewardsApr={Number(poolInfo?.lpApr ?? 0)}
         isFarm={cakeApr?.value && Number(cakeApr?.value) > 0}

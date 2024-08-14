@@ -47,7 +47,7 @@ export const getLpApr = async (pool: PoolInfo, signal?: AbortSignal): Promise<nu
       signal,
       params: {
         path: {
-          address: pool.lpAddress,
+          address: pool.stableLpAddress ?? pool.lpAddress,
           chainName,
         },
       },
@@ -165,6 +165,7 @@ export const getUniversalBCakeWrapperForPool = (pool: { lpAddress: Address; chai
   return config
 }
 
+export const DEFAULT_V2_CAKE_APR_BOOS_MULTIPLIER = 2.5
 export const getV2PoolCakeApr = async (
   pool: V2PoolInfo | StablePoolInfo,
   cakePrice: BigNumber,
@@ -187,7 +188,7 @@ export const getV2PoolCakeApr = async (
 
   return {
     value: baseApr.toString() as `${number}`,
-    boost: baseApr.times(2.5).toString() as `${number}`,
+    boost: baseApr.times(DEFAULT_V2_CAKE_APR_BOOS_MULTIPLIER).toString() as `${number}`,
   }
 }
 
@@ -294,13 +295,15 @@ const calcV2PoolApr = ({
   cakePrice: BigNumber
   cakePerSecond: bigint
 }) => {
-  const cakeOneYearUsd = cakePrice.times((cakePerSecond * BigInt(SECONDS_PER_YEAR)).toString()).dividedBy(1e18)
+  const cakePerYear = new BigNumber(SECONDS_PER_YEAR).times(cakePerSecond.toString()).dividedBy(1e18)
+  const cakeOneYearUsd = cakePrice.times(cakePerYear.toString())
 
   const baseApr = cakeOneYearUsd.dividedBy(pool.tvlUsd ?? 1)
 
   return {
     value: baseApr.toString() as `${number}`,
     boost: baseApr.times(2.5).toString() as `${number}`,
+    cakePerYear,
   }
 }
 

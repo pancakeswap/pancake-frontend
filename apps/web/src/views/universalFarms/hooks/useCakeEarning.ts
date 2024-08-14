@@ -40,8 +40,8 @@ export const useV3CakeEarning = (tokenIds: bigint[] = []) => {
   } = useStakedPositionsByUser(tokenIds)
   const earningsAmount = useMemo(() => +formatBigInt(pendingCake || 0n, 4), [pendingCake])
   const earningsBusd = useMemo(() => {
-    return new BigNumber(earningsAmount).times(cakePrice.toString()).toNumber()
-  }, [cakePrice, earningsAmount])
+    return new BigNumber(pendingCake.toString()).times(cakePrice.toString()).div(1e18).toNumber()
+  }, [cakePrice, pendingCake])
 
   return {
     earningsAmount,

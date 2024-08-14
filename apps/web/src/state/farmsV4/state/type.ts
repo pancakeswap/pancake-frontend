@@ -12,6 +12,7 @@ export type BasePoolInfo = {
   pid?: number
   chainId: number
   lpAddress: Address
+  stableLpAddress?: Address
   protocol: Protocol
   token0: Currency
   token1: Token
@@ -24,6 +25,8 @@ export type BasePoolInfo = {
   tvlUsd24h?: `${number}`
   vol24hUsd?: `${number}`
   vol48hUsd?: `${number}`
+  fee24hUsd?: `${number}`
+  liquidity?: bigint
   feeTier: number
   feeTierBase: number
   totalFeeUSD?: `${number}`
