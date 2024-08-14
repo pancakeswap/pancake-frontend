@@ -6,6 +6,7 @@ import { ConfirmModalState } from '@pancakeswap/widgets-internal'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { RetryableError, retry } from 'state/multicall/retry'
+import { logGTMSwapTxSentEvent } from 'utils/customGTMEventTracking'
 import { UserUnexpectedTxError } from 'utils/errors'
 import { publicClient } from 'utils/wagmi'
 import { Address, Hex, TransactionNotFoundError, TransactionReceipt, TransactionReceiptNotFoundError } from 'viem'
@@ -204,6 +205,7 @@ const useConfirmActions = (
       try {
         const result = await swap()
         if (result?.hash) {
+          logGTMSwapTxSentEvent()
           setTxHash(result.hash)
           const receipt = await retryWaitForTransaction({ hash: result.hash })
           if (receipt && receipt.status === 'reverted') {

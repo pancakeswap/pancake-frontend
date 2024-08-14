@@ -10,7 +10,7 @@ import { SettingsMode } from 'components/Menu/GlobalSettings/types'
 import { WrapType } from 'hooks/useWrapCallback'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Field } from 'state/swap/actions'
-import { logGTMClickSwapEvent, logGTMSwapTxSentEvent } from 'utils/customGTMEventTracking'
+import { logGTMClickSwapEvent } from 'utils/customGTMEventTracking'
 import { Address } from 'viem'
 import { parseMMError } from 'views/Swap/MMLinkPools/utils/exchange'
 import { ConfirmSwapModal } from 'views/Swap/V3Swap/containers/ConfirmSwapModal'
@@ -97,7 +97,6 @@ SwapCommitButtonPropsType & CommitButtonProps) {
     resetState()
     // if there was a tx hash, we want to clear the input
     if (txHash) {
-      logGTMSwapTxSentEvent()
       onUserInput(Field.INPUT, '')
     }
   }, [afterCommit, resetState, txHash, onUserInput])
