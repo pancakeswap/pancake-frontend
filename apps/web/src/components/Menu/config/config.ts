@@ -107,7 +107,7 @@ const config: (
               href: '/pools',
               supportChainIds: POOL_SUPPORTED_CHAINS,
             },
-          ],
+          ].map((item) => addMenuItemSupported(item, chainId)),
         },
       ].map((item) => addMenuItemSupported(item, chainId)),
     },
@@ -198,7 +198,7 @@ const config: (
               href: '/gauges-voting',
               supportChainIds: SUPPORT_CAKE_STAKING,
             },
-          ],
+          ].map((item) => addMenuItemSupported(item, chainId)),
         },
         {
           type: DropdownMenuItemType.DIVIDER,
