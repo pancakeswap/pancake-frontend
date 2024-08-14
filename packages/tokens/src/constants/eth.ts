@@ -537,4 +537,12 @@ export const ethereumTokens = {
     'Usual USD',
     'https://usual.money/',
   ),
+  swBTC: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0x8DB2350D78aBc13f5673A411D4700BCF87864dDE',
+    8,
+    'swBTC',
+    'swBTC',
+    'https://www.swellnetwork.io/',
+  ),
 }

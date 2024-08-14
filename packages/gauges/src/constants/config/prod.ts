@@ -5009,4 +5009,14 @@ export const CONFIG_PROD: GaugeConfig[] = [
     token0Address: baseTokens.weth.address,
     token1Address: baseTokens.miggles.address,
   },
+  {
+    gid: 506,
+    pairName: 'swBTC-BTC',
+    address: '0x365EA9E5Cec960390f35b6509548e84073168A8B',
+    chainId: ChainId.ETHEREUM,
+    type: GaugeType.V3,
+    feeTier: FeeAmount.LOW,
+    token0Address: ethereumTokens.wbtc.address,
+    token1Address: ethereumTokens.swBTC.address,
+  },
 ]
