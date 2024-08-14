@@ -29,6 +29,8 @@ export type PositionInfoProps = {
   amount1?: CurrencyAmount<Token>
   pool?: PoolInfo | null
   detailMode?: boolean
+  boosterMultiplier?: number
+  userLpApr?: number
 }
 
 export const PositionInfo = memo(
@@ -46,6 +48,8 @@ export const PositionInfo = memo(
     amount0,
     amount1,
     pool,
+    boosterMultiplier,
+    userLpApr,
   }: PositionInfoProps) => {
     const { t } = useTranslation()
     const { theme } = useTheme()
@@ -113,7 +117,11 @@ export const PositionInfo = memo(
           </Row>
           <Row gap="8px">
             <DetailInfoLabel>APR: </DetailInfoLabel>
-            {pool ? <PoolApyButton pool={pool} /> : <Skeleton width={60} />}
+            {pool ? (
+              <PoolApyButton multiplier={boosterMultiplier} pool={pool} userLpApr={userLpApr} />
+            ) : (
+              <Skeleton width={60} />
+            )}
           </Row>
           {isStaked ? protocol === Protocol.V3 ? <V3Earnings tokenId={tokenId} /> : <V2Earnings pool={pool} /> : null}
         </DetailInfoDesc>

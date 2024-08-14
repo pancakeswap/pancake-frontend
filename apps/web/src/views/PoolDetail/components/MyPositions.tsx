@@ -307,7 +307,15 @@ const MyV3Positions: React.FC<{
             {t('active')}
           </Text>
           {positions?.[PositionFilter.Active]?.map((position) => {
-            return <V3PositionItem detailMode key={position.tokenId} data={position} />
+            return (
+              <V3PositionItem
+                detailMode
+                key={position.tokenId}
+                data={position}
+                fee24h={poolInfo.fee24hUsd}
+                liquidity={poolInfo.liquidity}
+              />
+            )
           })}
         </AutoColumn>
       ) : null}
@@ -319,7 +327,15 @@ const MyV3Positions: React.FC<{
             {t('inactive')}
           </Text>
           {positions?.[PositionFilter.Inactive].map((position) => {
-            return <V3PositionItem detailMode key={position.tokenId} data={position} />
+            return (
+              <V3PositionItem
+                detailMode
+                key={position.tokenId}
+                data={position}
+                fee24h={poolInfo.fee24hUsd}
+                liquidity={poolInfo.liquidity}
+              />
+            )
           })}
         </AutoColumn>
       ) : null}
@@ -330,7 +346,15 @@ const MyV3Positions: React.FC<{
             {t('closed')}
           </Text>
           {positions?.[PositionFilter.Closed]?.map((position) => {
-            return <V3PositionItem detailMode key={position.tokenId} data={position} />
+            return (
+              <V3PositionItem
+                detailMode
+                key={position.tokenId}
+                data={position}
+                fee24h={poolInfo.fee24hUsd}
+                liquidity={poolInfo.liquidity}
+              />
+            )
           })}
         </AutoColumn>
       ) : null}

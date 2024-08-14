@@ -1,5 +1,3 @@
-import memoize from 'lodash/memoize'
-import uniqWith from 'lodash/uniqWith'
 import { ChainId } from '@pancakeswap/chains'
 import { BCakeWrapperFarmConfig, Protocol, UNIVERSAL_BCAKEWRAPPER_FARMS, UNIVERSAL_FARMS } from '@pancakeswap/farms'
 import { CurrencyAmount, ERC20Token, Pair, pancakePairV2ABI } from '@pancakeswap/sdk'
@@ -10,6 +8,8 @@ import { infoStableSwapABI } from 'config/abi/infoStableSwap'
 import { masterChefV2ABI } from 'config/abi/masterchefV2'
 import { v2BCakeWrapperABI } from 'config/abi/v2BCakeWrapper'
 import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from 'config/constants/exchange'
+import memoize from 'lodash/memoize'
+import uniqWith from 'lodash/uniqWith'
 import { AppState } from 'state'
 import { safeGetAddress } from 'utils'
 import { getCrossFarmingVaultAddress, getMasterChefV2Address } from 'utils/addressHelpers'
@@ -259,8 +259,8 @@ export const getAccountV2LpDetails = async (
     let farmingBoostedAmount = CurrencyAmount.fromRawAmount(validLpTokens[index], '0')
     if (farmingInfo) {
       farmingBalance = CurrencyAmount.fromRawAmount(validLpTokens[index], farmingInfo[0].toString())
-      farmingBoosterMultiplier = Number(farmingInfo[1])
-      farmingBoostedAmount = CurrencyAmount.fromRawAmount(validLpTokens[index], farmingInfo[2].toString())
+      farmingBoosterMultiplier = new BigNumber(Number(farmingInfo[2])).div(1000000000000).toNumber()
+      farmingBoostedAmount = CurrencyAmount.fromRawAmount(validLpTokens[index], farmingInfo[3].toString())
     }
     const tokens = validReserveTokens[index]
     const [token0, token1] = tokens[0].sortsBefore(tokens[1]) ? tokens : tokens.reverse()
@@ -383,8 +383,8 @@ export const getStablePairDetails = async (
     let farmingBoostedAmount = CurrencyAmount.fromRawAmount(pair.liquidityToken, '0')
     if (farmingInfo) {
       farmingBalance = CurrencyAmount.fromRawAmount(pair.liquidityToken, farmingInfo[0].toString())
-      farmingBoosterMultiplier = Number(farmingInfo[1])
-      farmingBoostedAmount = CurrencyAmount.fromRawAmount(pair.liquidityToken, farmingInfo[2].toString())
+      farmingBoosterMultiplier = new BigNumber(Number(farmingInfo[2])).div(1000000000000).toNumber()
+      farmingBoostedAmount = CurrencyAmount.fromRawAmount(pair.liquidityToken, farmingInfo[3].toString())
     }
     const { token0, token1 } = pair
     const totalSupply = CurrencyAmount.fromRawAmount(pair.liquidityToken, totalSupplies[index].toString())
