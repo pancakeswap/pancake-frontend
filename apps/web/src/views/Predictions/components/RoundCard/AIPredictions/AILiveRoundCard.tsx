@@ -114,7 +114,7 @@ export const AILiveRoundCard: React.FC<React.PropsWithChildren<AILiveRoundCardPr
     setFetchAlternate(true)
     setTimeout(() => {
       setFetchAlternate(false)
-    }, REFRESH_PRICE_BEFORE_SECONDS_TO_CLOSE * 1000)
+    }, REFRESH_PRICE_BEFORE_SECONDS_TO_CLOSE * 2 * 1000)
   }, [])
 
   useEffect(() => {
@@ -134,7 +134,7 @@ export const AILiveRoundCard: React.FC<React.PropsWithChildren<AILiveRoundCardPr
       }
     }
     return undefined
-  }, [closeTimestamp, config?.token.symbol, refreshLivePrice])
+  }, [closeTimestamp, refreshLivePrice])
 
   if (hasRoundFailed) {
     return <CanceledRoundCard round={round} />
