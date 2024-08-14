@@ -360,11 +360,7 @@ const MyV2OrStablePositions: React.FC<{
   }, [data, poolInfo.tvlUsd])
   const count = useMemo(() => {
     if (!data) return 0
-    if (data && data.protocol === 'stable') {
-      return 1
-    }
-    const v2Data = data as V2LPDetail
-    return [v2Data.nativeBalance.greaterThan('0'), v2Data.farmingBalance.greaterThan('0')].filter(Boolean).length
+    return [data.nativeBalance.greaterThan('0'), data.farmingBalance.greaterThan('0')].filter(Boolean).length
   }, [data])
   const { onHarvest } = useV2FarmActions(poolInfo.lpAddress, chainId, poolInfo.protocol)
   const { toastSuccess } = useToast()
