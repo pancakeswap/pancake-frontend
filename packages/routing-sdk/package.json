@@ -29,7 +29,8 @@
     "@pancakeswap/swap-sdk-evm": "workspace:*",
     "debug": "^4.3.4",
     "lodash": "^4.17.21",
-    "tiny-invariant": "^1.3.0"
+    "tiny-invariant": "^1.3.0",
+    "zod": "^3.22.3"
   },
   "devDependencies": {
     "@pancakeswap/tsconfig": "workspace:*",

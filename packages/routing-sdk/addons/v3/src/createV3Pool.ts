@@ -1,6 +1,14 @@
 import { Currency, CurrencyAmount, Price, ONE, ZERO } from '@pancakeswap/swap-sdk-core'
 import { logCurrency } from '@pancakeswap/routing-sdk'
-import { encodeSqrtRatioX96, TickList, TickMath, SwapMath, LiquidityMath } from '@pancakeswap/v3-sdk'
+import {
+  encodeSqrtRatioX96,
+  TickList,
+  TickMath,
+  SwapMath,
+  LiquidityMath,
+  TICK_SPACINGS,
+  FeeAmount,
+} from '@pancakeswap/v3-sdk'
 import invariant from 'tiny-invariant'
 import memoize from 'lodash/memoize.js'
 
@@ -9,6 +17,8 @@ import { BASE_SWAP_COST_V3, COST_PER_HOP_V3, COST_PER_INIT_TICK, NEGATIVE_ONE, Q
 
 export function createV3Pool(params: V3PoolData): V3Pool {
   let p = { ...params, type: V3_POOL_TYPE }
+  const tickSpacing = p.tickSpacing ?? TICK_SPACINGS[p.fee as FeeAmount]
+  invariant(Boolean(tickSpacing) === true, 'Invalid fee for v3 pool')
 
   const pool: V3Pool = {
     type: V3_POOL_TYPE,
@@ -22,8 +32,8 @@ export function createV3Pool(params: V3PoolData): V3Pool {
       }
       const zeroForOne = sqrtRatioLimit < p.sqrtRatioX96
       const outputReserve = zeroForOne ? p.reserve1 : p.reserve0
-      const outputCurrency = outputReserve.currency
-      const outputAmount = CurrencyAmount.fromRawAmount(outputCurrency.wrapped, outputReserve.quotient)
+      const outputCurrency = zeroForOne ? p.token1 : p.token0
+      const outputAmount = CurrencyAmount.fromRawAmount(outputCurrency.wrapped, outputReserve?.quotient ?? 0n)
       const [inputAmount] = getInputAmount(outputAmount, {
         ...p,
         sqrtPriceLimitX96: sqrtRatioLimit,
@@ -32,7 +42,10 @@ export function createV3Pool(params: V3PoolData): V3Pool {
         inputAmount,
       }
     },
-    getReserve: (c) => (p.token0.equals(c.wrapped) ? p.reserve0 : p.reserve1),
+    getReserve: (c) =>
+      p.token0.wrapped.equals(c.wrapped)
+        ? p.reserve0 ?? CurrencyAmount.fromRawAmount(p.token0, 0n)
+        : p.reserve1 ?? CurrencyAmount.fromRawAmount(p.token1, 0n),
     getCurrentPrice: (base) => {
       return priceOf(p, base.wrapped)
     },
@@ -85,8 +98,8 @@ export function createV3Pool(params: V3PoolData): V3Pool {
       const { tick, ticks, token0 } = p
       const { chainId } = token0
       const { tick: tickAfter } = poolAfter.getPoolData()
-      const numOfTicksCrossed = TickList.countInitializedTicksCrossed(ticks, tick, tickAfter)
       invariant(ticks !== undefined, '[Estimate gas]: No valid tick list found')
+      const numOfTicksCrossed = TickList.countInitializedTicksCrossed(ticks, tick, tickAfter)
       const tickGasUse = COST_PER_INIT_TICK(chainId) * BigInt(numOfTicksCrossed)
       return BASE_SWAP_COST_V3(chainId) + COST_PER_HOP_V3(chainId) + tickGasUse
     },
@@ -140,6 +153,7 @@ type SwapBaseParams = Omit<V3PoolData, 'reserve0' | 'reserve1' | 'address'> & {
 type SwapParams = SwapBaseParams & {
   zeroForOne: boolean
   amountSpecified: bigint
+  tickSpacing: number
 }
 
 type StepComputations = {
@@ -172,6 +186,8 @@ function getOutputAmount(
   { sqrtPriceLimitX96, ...pool }: SwapBaseParams,
 ): [CurrencyAmount<Currency>, Omit<SwapBaseParams, 'sqrtPriceLimitX96'>] {
   invariant(involvesToken(pool, inputAmount.currency), 'TOKEN')
+  const tickSpacing = pool.tickSpacing ?? TICK_SPACINGS[pool.fee as FeeAmount]
+  invariant(!!tickSpacing, 'Invalid tick spacing')
 
   const zeroForOne = inputAmount.currency.equals(pool.token0)
 
@@ -182,6 +198,7 @@ function getOutputAmount(
     tickCurrent,
   } = swap({
     ...pool,
+    tickSpacing,
     amountSpecified: inputAmount.quotient,
     zeroForOne,
     sqrtPriceLimitX96,
@@ -209,6 +226,8 @@ function getInputAmount(
   { sqrtPriceLimitX96, exactOut, ...pool }: SwapBaseParams & { exactOut?: boolean },
 ): [CurrencyAmount<Currency>, Omit<SwapBaseParams, 'sqrtPriceLimitX96'>] {
   invariant(outputAmount.currency.isToken && involvesToken(pool, outputAmount.currency), 'TOKEN')
+  const tickSpacing = pool.tickSpacing ?? TICK_SPACINGS[pool.fee as FeeAmount]
+  invariant(!!tickSpacing, 'Invalid tick spacing')
 
   const zeroForOne = outputAmount.currency.equals(pool.token1)
 
@@ -220,6 +239,7 @@ function getInputAmount(
     tickCurrent,
   } = swap({
     ...pool,
+    tickSpacing,
     amountSpecified: outputAmount.quotient * NEGATIVE_ONE,
     zeroForOne,
     sqrtPriceLimitX96,
@@ -258,6 +278,7 @@ function swap({
   tickCurrent: number
   amountSpecifiedRemaining: bigint
 } {
+  invariant(ticks !== undefined, '[Swap]: No valid tick list found')
   // eslint-disable-next-line no-param-reassign
   if (!sqrtPriceLimitX96) sqrtPriceLimitX96 = zeroForOne ? TickMath.MIN_SQRT_RATIO + ONE : TickMath.MAX_SQRT_RATIO - ONE
 

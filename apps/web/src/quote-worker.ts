@@ -1,5 +1,7 @@
 import 'utils/workerPolyfill'
 
+import { findBestTrade, toSerializableTrade } from '@pancakeswap/routing-sdk'
+import { V3_POOL_TYPE, createV3Pool, toSerializableV3Pool } from '@pancakeswap/routing-sdk-addon-v3'
 import { SmartRouter, V4Router } from '@pancakeswap/smart-router'
 import { Call } from 'state/multicall/actions'
 import { fetchChunk } from 'state/multicall/fetchChunk'
@@ -234,28 +236,43 @@ addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
       ? BigInt(gasPriceWei)
       : async () => BigInt((await onChainProvider({ chainId }).getGasPrice()).toString())
 
-    V4Router.getBestTrade(currencyAAmount, currencyB, tradeType, {
+    const testPools = pools.filter(SmartRouter.isV3Pool).map(createV3Pool)
+    findBestTrade({
+      amount: currencyAAmount,
+      quoteCurrency: currencyB,
+      tradeType,
       gasPriceWei: gasPrice,
+      candidatePools: testPools,
       maxHops,
       maxSplits,
-      candidatePools: pools,
-      signal: abortController.signal,
     })
-      .then((res) => {
+      .then((t) => {
+        if (!t) {
+          throw new Error('No valid trade route found')
+        }
+        const { graph, ...trade } = t
+        const serializableTrade = toSerializableTrade(trade, {
+          toSerializablePool: (p) => {
+            if (p.type === V3_POOL_TYPE) {
+              return toSerializableV3Pool(p)
+            }
+            throw new Error('Unknown pool type')
+          },
+        })
         postMessage([
           id,
           {
             success: true,
-            result: res && V4Router.Transformer.serializeTrade(res),
+            result: serializableTrade,
           },
         ])
       })
-      .catch((err) => {
+      .catch((e) => {
         postMessage([
           id,
           {
             success: false,
-            error: err.message,
+            error: e.message,
           },
         ])
       })

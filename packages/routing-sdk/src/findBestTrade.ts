@@ -3,12 +3,13 @@ import { Currency, CurrencyAmount, Fraction, TradeType } from '@pancakeswap/swap
 import invariant from 'tiny-invariant'
 
 import { PriceCalculator, createGraph, createPriceCalculator, getNeighbour } from './graph'
-import { Edge, Graph, Pool, Route, Trade, TradeConfig, Vertice } from './types'
+import { Edge, Graph, Pool, Route, TradeConfig, TradeWithGraph, Vertice } from './types'
 import { isSameRoute, mergeRoute } from './route'
 import { groupPoolsByType } from './utils/groupPoolsByType'
 import { getBetterTrade } from './utils/getBetterTrade'
+import { DEFAULT_STREAM, getBestStreamsConfig } from './stream'
 
-type FindBestTradeParams = TradeConfig & {
+export type FindBestTradeByStreamsParams = TradeConfig & {
   amount: CurrencyAmount<Currency>
   quoteCurrency: Currency
 
@@ -22,7 +23,49 @@ type FindBestTradeParams = TradeConfig & {
   graph?: Graph
 }
 
-export async function findBestTrade(params: FindBestTradeParams): Promise<Trade<TradeType> | undefined> {
+export type FindBestTradeParams = Omit<FindBestTradeByStreamsParams, 'streams'>
+
+export async function findBestTrade({
+  maxSplits,
+  ...params
+}: FindBestTradeParams): Promise<TradeWithGraph<TradeType> | undefined> {
+  // NOTE: there's no max split cap right now. This option is only used to control the on/off of multiple splits
+  const splitDisabled = maxSplits !== undefined && maxSplits === 0
+
+  let bestTrade: TradeWithGraph<TradeType> | undefined
+  try {
+    bestTrade = await findBestTradeByStreams({
+      ...params,
+      streams: 1,
+    })
+  } catch (e) {
+    if (splitDisabled) {
+      throw e
+    }
+    bestTrade = await findBestTradeByStreams({
+      ...params,
+      streams: DEFAULT_STREAM,
+    })
+  }
+
+  if (splitDisabled) {
+    return bestTrade
+  }
+  const streams = getBestStreamsConfig(bestTrade)
+  if (streams === 1) {
+    return bestTrade
+  }
+  const bestTradeWithStreams = await findBestTradeByStreams({
+    ...params,
+    streams,
+  })
+
+  return getBetterTrade(bestTrade, bestTradeWithStreams)
+}
+
+export async function findBestTradeByStreams(
+  params: FindBestTradeByStreamsParams,
+): Promise<TradeWithGraph<TradeType> | undefined> {
   const { tradeType, candidatePools, ...rest } = params
   const isExactIn = tradeType === TradeType.EXACT_INPUT
   if (isExactIn) {
@@ -34,7 +77,7 @@ export async function findBestTrade(params: FindBestTradeParams): Promise<Trade<
   const trades = await Promise.all(
     poolsByType.map((pools) => getBestTrade({ tradeType, candidatePools: pools, ...rest })),
   )
-  let bestTrade: Trade<TradeType> | undefined
+  let bestTrade: TradeWithGraph<TradeType> | undefined
   for (const trade of trades) {
     if (!trade) {
       continue
@@ -57,7 +100,7 @@ async function getBestTrade({
   graph: graphOverride,
   tradeType,
   maxHops = 10,
-}: FindBestTradeParams): Promise<Trade<TradeType> | undefined> {
+}: FindBestTradeByStreamsParams): Promise<TradeWithGraph<TradeType> | undefined> {
   const isExactIn = tradeType === TradeType.EXACT_INPUT
   const baseCurrency = totalAmount.currency
   const inputCurrency = isExactIn ? baseCurrency : quoteCurrency
@@ -88,7 +131,7 @@ async function getBestTrade({
     isExactIn ? quote : amount
   const getQuoteAmount = (r: Route) => (isExactIn ? r.outputAmount : r.inputAmount)
 
-  const buildTrade = (g: Graph, routes: Route[]): Trade<TradeType> => {
+  const buildTrade = (g: Graph, routes: Route[]): TradeWithGraph<TradeType> => {
     const {
       gasEstimate,
       quoteAmount,

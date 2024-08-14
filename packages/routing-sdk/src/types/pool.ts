@@ -35,3 +35,7 @@ export type Pool<PType = any, PoolData = any> = {
 
   type: PType
 }
+
+export type SerializablePool<PType = any, SerializablePoolData = any> = SerializablePoolData & {
+  key: PType
+}

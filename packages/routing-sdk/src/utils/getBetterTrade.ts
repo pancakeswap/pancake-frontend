@@ -2,7 +2,7 @@ import { TradeType } from '@pancakeswap/swap-sdk-core'
 
 import { Trade } from '../types'
 
-export function getBetterTrade(tradeA?: Trade<TradeType>, tradeB?: Trade<TradeType>): Trade<TradeType> | undefined {
+export function getBetterTrade<T extends Trade<TradeType>>(tradeA?: T, tradeB?: T): T | undefined {
   if (!tradeA && !tradeB) return undefined
   if (!tradeA && tradeB) return tradeB
   if (tradeA && !tradeB) return tradeA

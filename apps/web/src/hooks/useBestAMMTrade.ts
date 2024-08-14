@@ -8,10 +8,13 @@ import {
   PoolType,
   QuoteProvider,
   Route,
+  RouteType,
   SmartRouter,
   SmartRouterTrade,
   V4Router,
 } from '@pancakeswap/smart-router'
+import { parseTrade } from '@pancakeswap/routing-sdk'
+import { V3_POOL_TYPE, parseV3Pool } from '@pancakeswap/routing-sdk-addon-v3'
 import { BigintIsh } from '@pancakeswap/swap-sdk-core'
 import { AbortControl } from '@pancakeswap/utils/abortControl'
 import { keepPreviousData, useQuery, useQueryClient } from '@tanstack/react-query'
@@ -467,7 +470,31 @@ function createUseWorkerGetBestTradeOffchain() {
           if (!result) {
             throw new NoValidRouteError()
           }
-          return V4Router.Transformer.parseTrade(currency.chainId, result) ?? null
+          const parsed = parseTrade(currency.chainId, result, {
+            parsePool: (chainId, p) => {
+              if (p.type === V3_POOL_TYPE) {
+                return parseV3Pool(chainId, p)
+              }
+              throw new Error('Invalid pool type')
+            },
+          })
+          return {
+            ...parsed,
+            routes: parsed.routes.map((r) => {
+              let type = RouteType.MIXED
+              const pools = r.pools.map((p) => ({
+                ...p.getPoolData(),
+                type: PoolType.V3,
+              }))
+              if (pools.every((p) => p.type === PoolType.V3)) {
+                type = RouteType.V3
+              }
+              return {
+                ...r,
+                pools,
+              }
+            }),
+          } as V4GetBestTradeReturnType
         } catch (e) {
           console.error(e)
           throw new NoValidRouteError()

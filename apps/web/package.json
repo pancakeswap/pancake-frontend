@@ -60,6 +60,8 @@
     "@pancakeswap/position-managers": "workspace:*",
     "@pancakeswap/prediction": "workspace:*",
     "@pancakeswap/price-api-sdk": "workspace:*",
+    "@pancakeswap/routing-sdk": "workspace:*",
+    "@pancakeswap/routing-sdk-addon-v3": "workspace:*",
     "@pancakeswap/sdk": "workspace:*",
     "@pancakeswap/smart-router": "workspace:*",
     "@pancakeswap/stable-swap-sdk": "workspace:*",

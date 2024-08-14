@@ -13,7 +13,7 @@ export type V3PoolData = {
   token1: Currency
   // Different fee tier
   fee: number
-  tickSpacing: number
+  tickSpacing?: number
   liquidity: bigint
   sqrtRatioX96: bigint
   tick: number
@@ -22,10 +22,10 @@ export type V3PoolData = {
   token1ProtocolFee: Percent
 
   // Allow pool with no ticks data provided
-  ticks: Tick[]
+  ticks?: Tick[]
 
-  reserve0: CurrencyAmount<Currency>
-  reserve1: CurrencyAmount<Currency>
+  reserve0?: CurrencyAmount<Currency>
+  reserve1?: CurrencyAmount<Currency>
 }
 
 export type V3Pool = Pool<V3PoolType, V3PoolData>
@@ -34,7 +34,7 @@ export type SerializableV3Pool = {
   token0: SerializableCurrency
   token1: SerializableCurrency
   fee: number
-  tickSpacing: number
+  tickSpacing?: number
   liquidity: string
   sqrtRatioX96: string
   tick: number
@@ -42,10 +42,10 @@ export type SerializableV3Pool = {
   token0ProtocolFee: string
   token1ProtocolFee: string
 
-  ticks: SerializableTick[]
+  ticks?: SerializableTick[]
 
-  reserve0: SerializableCurrencyAmount
-  reserve1: SerializableCurrencyAmount
+  reserve0?: SerializableCurrencyAmount
+  reserve1?: SerializableCurrencyAmount
 }
 
 export type SerializableTick = {
