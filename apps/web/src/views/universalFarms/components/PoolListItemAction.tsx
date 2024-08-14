@@ -1,4 +1,3 @@
-import { getChainName } from '@pancakeswap/chains'
 import { Protocol } from '@pancakeswap/farms'
 import { useTheme } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'

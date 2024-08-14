@@ -122,8 +122,8 @@ const useWithdrawModal = (
   data: V2LPDetail | StableLPDetail,
   lpAddress: Address,
   chainId: number,
-  pid: number,
-  tvlUsd,
+  _pid: number,
+  tvlUsd?: `${number}` | number | undefined,
 ) => {
   const { t } = useTranslation()
   const { onUnStake } = useV2FarmActions(lpAddress, chainId)
