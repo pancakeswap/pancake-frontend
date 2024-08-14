@@ -4,16 +4,17 @@ import { useToast } from '@pancakeswap/uikit'
 import { MasterChefV3, NonfungiblePositionManager } from '@pancakeswap/v3-sdk'
 import { useQueryClient } from '@tanstack/react-query'
 import { ToastDescriptionWithTx } from 'components/Toast'
+import { BOOSTED_FARM_V3_GAS_LIMIT } from 'config'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
+import { useIsSmartContract } from 'hooks/useIsSmartContract'
 import { useCallback } from 'react'
 import { calculateGasMargin } from 'utils'
+import { logGTMClickStakeFarmConfirmEvent, logGTMStakeFarmTxSentEvent } from 'utils/customGTMEventTracking'
 import { getViemClients, viemClients } from 'utils/viem'
 import { Address, hexToBigInt } from 'viem'
 import { useAccount, useSendTransaction, useWalletClient } from 'wagmi'
-import { useIsSmartContract } from 'hooks/useIsSmartContract'
-import { BOOSTED_FARM_V3_GAS_LIMIT } from 'config'
 
 interface FarmV3ActionContainerChildrenProps {
   attemptingTxn: boolean
@@ -105,6 +106,7 @@ const useFarmV3Actions = ({
   ])
 
   const onStake = useCallback(async () => {
+    logGTMClickStakeFarmConfirmEvent()
     if (!account || !nftPositionManagerAddress) return
 
     const { calldata, value } = NonfungiblePositionManager.safeTransferFromParameters({
@@ -133,6 +135,7 @@ const useFarmV3Actions = ({
     )
 
     if (resp?.status) {
+      logGTMStakeFarmTxSentEvent()
       onDone?.()
       toastSuccess(
         `${t('Staked')}!`,
