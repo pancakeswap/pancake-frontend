@@ -6,7 +6,11 @@ import type { ParsedUrlQuery } from 'querystring'
 import { useCallback, useEffect } from 'react'
 import { buyCryptoReducerAtom, type BuyCryptoState } from 'state/buyCrypto/reducer'
 
-import { OnRampChainId as ChainId, type OnRampCurrency as Currency } from 'views/BuyCrypto/constants'
+import {
+  OnRampChainId as ChainId,
+  onRampCurrenciesMap,
+  type OnRampCurrency as Currency,
+} from 'views/BuyCrypto/constants'
 import { Field, replaceBuyCryptoState, selectCurrency, switchCurrencies, typeInput } from './actions'
 
 const useEnableBtcPurchases = atomWithStorage<boolean>('pcs:enable-buy-btc-native', false)
@@ -64,13 +68,39 @@ export async function queryParametersToBuyCryptoState(
   parsedQs: ParsedUrlQuery,
   chainId: ChainId,
 ): Promise<BuyCryptoState> {
-  const DEFAULT_FIAT_CURRENCY = [ChainId.BASE, ChainId.LINEA].includes(chainId) ? 'EUR' : 'USD'
+  const parsedChainId = parsedQs.outputCurrency ? (parsedQs.outputCurrency as string).split('_')[1] : undefined
+
+  const DEFAULT_FIAT_CURRENCY = [ChainId.BASE, ChainId.LINEA].find((c) => {
+    if (parsedChainId) {
+      return c.valueOf() === parseInt(parsedQs.chainId as string)
+    }
+    return c === chainId
+  })
+    ? 'EUR'
+    : 'USD'
+
+  let outputCurrencyId
+  if (parsedQs.outputCurrency) {
+    const parsedKey = parsedChainId ? (parsedQs.outputCurrency as string) : `${parsedQs.outputCurrency}_${chainId}`
+    if (onRampCurrenciesMap[parsedKey]) {
+      outputCurrencyId = parsedKey
+    } else {
+      const defaultChainCurrency = Object.keys(onRampCurrenciesMap).find(([key]) => {
+        const [, id] = key.split('_')
+        return parseInt(id) === (parsedChainId ?? chainId)
+      })
+      if (defaultChainCurrency) {
+        outputCurrencyId = defaultChainCurrency
+      }
+    }
+  }
+
   return {
     [Field.INPUT]: {
       currencyId: DEFAULT_FIAT_CURRENCY,
     },
     [Field.OUTPUT]: {
-      currencyId: 'BNB_56',
+      currencyId: outputCurrencyId ?? 'BNB_56',
     },
     typedValue: parseTokenAmountURLParameter(parsedQs.exactAmount),
     independentField: Field.INPUT,

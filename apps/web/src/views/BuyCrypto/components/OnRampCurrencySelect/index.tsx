@@ -1,9 +1,10 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { useMemo } from 'react'
 import { Currency, Token } from '@pancakeswap/sdk'
 import { ArrowDropDownIcon, Box, BoxProps, Flex, SkeletonText, Text, useModal } from '@pancakeswap/uikit'
 import { NumberDisplay, NumericalInput } from '@pancakeswap/widgets-internal'
 import OnRampCurrencySearchModal, { CurrencySearchModalProps } from 'components/SearchModal/OnRampCurrencyModal'
-import { fiatCurrencyMap, getNetworkDisplay, onRampCurrencies } from 'views/BuyCrypto/constants'
+import { fiatCurrencyMap, getNetworkDisplay, onRampCurrenciesMap } from 'views/BuyCrypto/constants'
 import { DropDownContainer, OptionSelectButton } from 'views/BuyCrypto/styles'
 import { OnRampUnit } from 'views/BuyCrypto/types'
 import { OnRampCurrencyLogo } from '../OnRampProviderLogo/OnRampProviderLogo'
@@ -73,7 +74,10 @@ export const BuyCryptoSelector = ({
   unit,
   ...props
 }: BuyCryptoSelectorProps) => {
-  const tokensToShow = id === 'onramp-fiat' ? Object.values(fiatCurrencyMap) : onRampCurrencies
+  const tokensToShow = useMemo(() => {
+    return id === 'onramp-fiat' ? Object.values(fiatCurrencyMap) : Object.values(onRampCurrenciesMap)
+  }, [id])
+
   const [onPresentCurrencyModal] = useModal(
     <OnRampCurrencySearchModal
       onCurrencySelect={onCurrencySelect}
