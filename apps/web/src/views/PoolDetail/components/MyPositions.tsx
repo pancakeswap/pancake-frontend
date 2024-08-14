@@ -39,6 +39,7 @@ import {
 } from 'views/universalFarms/components'
 import { useV2FarmActions } from 'views/universalFarms/hooks/useV2FarmActions'
 import { formatDollarAmount } from 'views/V3Info/utils/numbers'
+import { CHAIN_QUERY_NAME } from 'config/chains'
 import { useV3Positions } from '../hooks/useV3Positions'
 import { V2PoolEarnings, V3PoolEarnings } from './PoolEarnings'
 
@@ -76,17 +77,24 @@ export const MyPositions: React.FC<{ poolInfo: PoolInfo }> = ({ poolInfo }) => {
   const [filter, setFilter] = useState(PositionFilter.All)
   const addLiquidityLink = useMemo(() => {
     const token0Token1 = `${poolInfo.token0.wrapped.address}/${poolInfo.token1.wrapped.address}`
+    let link = ''
     if (poolInfo.protocol === 'v3') {
-      return `/add/${token0Token1}/${poolInfo.feeTier}`
+      link = `/add/${token0Token1}/${poolInfo.feeTier}`
     }
     if (poolInfo.protocol === 'v2') {
-      return `/v2/add/${token0Token1}`
+      link = `/v2/add/${token0Token1}`
     }
     if (poolInfo.protocol === 'stable') {
-      return `/stable/add/${token0Token1}`
+      link = `/stable/add/${token0Token1}`
     }
-    return ''
-  }, [poolInfo.feeTier, poolInfo.protocol, poolInfo.token0.wrapped.address, poolInfo.token1.wrapped.address])
+    return `${link}?chain=${CHAIN_QUERY_NAME[poolInfo.chainId]}`
+  }, [
+    poolInfo.feeTier,
+    poolInfo.protocol,
+    poolInfo.token0.wrapped.address,
+    poolInfo.token1.wrapped.address,
+    poolInfo.chainId,
+  ])
   const [_handleHarvestAll, setHandleHarvestAll] = useState(() => () => Promise.resolve())
   const [loading, setLoading] = useState(false)
 
