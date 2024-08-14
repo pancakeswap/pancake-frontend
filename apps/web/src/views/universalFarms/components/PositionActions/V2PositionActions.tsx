@@ -7,7 +7,7 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useCakePrice } from 'hooks/useCakePrice'
 import useCatchTxError from 'hooks/useCatchTxError'
-import useTokenAllowance from 'hooks/useTokenAllowance'
+import useTokenAllowance, { useTokenAllowanceByChainId } from 'hooks/useTokenAllowance'
 import React, { useCallback, useMemo } from 'react'
 import { useAccountV2PendingCakeReward } from 'state/farmsV4/state/accountPositions/hooks/useAccountV2PendingCakeReward'
 import { StableLPDetail, V2LPDetail } from 'state/farmsV4/state/accountPositions/type'
@@ -47,7 +47,12 @@ const useDepositModal = (data: V2LPDetail | StableLPDetail, lpAddress: Address, 
   const isBSCNetwork = useMemo(() => verifyBscNetwork(chainId), [chainId])
 
   const bCakeAddress = getBCakeWrapperAddress(lpAddress, chainId)
-  const { allowance } = useTokenAllowance(data.pair.liquidityToken, account, bCakeAddress)
+  const { allowance } = useTokenAllowanceByChainId({
+    chainId,
+    token: data.pair.liquidityToken,
+    owner: account,
+    spender: bCakeAddress,
+  })
 
   const totalSupply = useMemo(() => {
     return new BigNumber(data.totalSupply.quotient.toString())
