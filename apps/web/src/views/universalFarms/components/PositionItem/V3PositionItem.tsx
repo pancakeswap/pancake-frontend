@@ -76,6 +76,7 @@ export const V3PositionItem = memo(({ data, detailMode, fee24h, liquidity }: V3P
     >
       {currency0 && currency1 ? (
         <V3PositionActions
+          chainId={data.chainId}
           currency0={currency0}
           currency1={currency1}
           isStaked={data.isStaked}

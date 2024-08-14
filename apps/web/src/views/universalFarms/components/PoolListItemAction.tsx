@@ -1,4 +1,3 @@
-import { getChainName } from '@pancakeswap/chains'
 import { Protocol } from '@pancakeswap/farms'
 import { useTheme } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
@@ -49,7 +48,7 @@ export const PoolListItemAction = memo(({ pool }: { pool: PoolInfo }) => {
 })
 
 export const getPoolDetailPageLink = (pool: PoolInfo) => {
-  return `/liquidity/pool/${getChainName(pool.chainId)}/${pool.lpAddress}`
+  return `/liquidity/pool${multiChainPaths[pool.chainId] || '/bsc'}/${pool.lpAddress}`
 }
 
 export const ActionItems = ({ pool, icon }: { pool: PoolInfo; icon?: React.ReactNode }) => {

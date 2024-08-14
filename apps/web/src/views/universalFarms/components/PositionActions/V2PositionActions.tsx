@@ -7,12 +7,12 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useCakePrice } from 'hooks/useCakePrice'
 import useCatchTxError from 'hooks/useCatchTxError'
-import useTokenAllowance from 'hooks/useTokenAllowance'
+import useTokenAllowance, { useTokenAllowanceByChainId } from 'hooks/useTokenAllowance'
 import React, { useCallback, useMemo } from 'react'
 import { useAccountV2PendingCakeReward } from 'state/farmsV4/state/accountPositions/hooks/useAccountV2PendingCakeReward'
 import { StableLPDetail, V2LPDetail } from 'state/farmsV4/state/accountPositions/type'
 import { getUniversalBCakeWrapperForPool } from 'state/farmsV4/state/poolApr/fetcher'
-import { getCrossFarmingVaultAddress, getMasterChefV2Address } from 'utils/addressHelpers'
+import { getBCakeWrapperAddress } from 'state/farmsV4/state/accountPositions/fetcher'
 import { verifyBscNetwork } from 'utils/verifyBscNetwork'
 import { Address } from 'viem'
 import { useV2FarmActions } from 'views/universalFarms/hooks/useV2FarmActions'
@@ -42,13 +42,17 @@ const useDepositModal = (data: V2LPDetail | StableLPDetail, lpAddress: Address, 
   const { account } = useAccountActiveChain()
   const cakePrice = useCakePrice()
   const { toastSuccess } = useToast()
-  const { fetchWithCatchTxError, fetchTxResponse, loading: pendingTx } = useCatchTxError()
+  const { fetchWithCatchTxError } = useCatchTxError()
   const { t } = useTranslation()
   const isBSCNetwork = useMemo(() => verifyBscNetwork(chainId), [chainId])
-  const allowanceTarget = useMemo(() => {
-    return isBSCNetwork ? getMasterChefV2Address(chainId)! : getCrossFarmingVaultAddress(chainId)
-  }, [chainId, isBSCNetwork])
-  const { allowance } = useTokenAllowance(data.pair.liquidityToken, account, allowanceTarget)
+
+  const bCakeAddress = getBCakeWrapperAddress(lpAddress, chainId)
+  const { allowance } = useTokenAllowanceByChainId({
+    chainId,
+    token: data.pair.liquidityToken,
+    owner: account,
+    spender: bCakeAddress,
+  })
 
   const totalSupply = useMemo(() => {
     return new BigNumber(data.totalSupply.quotient.toString())
@@ -118,8 +122,8 @@ const useWithdrawModal = (
   data: V2LPDetail | StableLPDetail,
   lpAddress: Address,
   chainId: number,
-  pid: number,
-  tvlUsd,
+  _pid: number,
+  tvlUsd?: `${number}` | number | undefined,
 ) => {
   const { t } = useTranslation()
   const { onUnStake } = useV2FarmActions(lpAddress, chainId)

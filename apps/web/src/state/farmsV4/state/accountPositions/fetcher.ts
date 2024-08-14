@@ -168,14 +168,20 @@ export const getTrackedV2LpTokens = memoize(
       })
     }
 
-    return uniqWith(pairTokens, (a: ITokenPair, b: ITokenPair) => a[0].equals(b[0]) && a[1].equals(b[1]))
+    return uniqWith(
+      pairTokens,
+      (a: ITokenPair, b: ITokenPair) =>
+        (a[0].equals(b[0]) && a[1].equals(b[1])) || (a[0].equals(b[1]) && a[1].equals(b[0])),
+    )
   },
+  (chainId, presetTokens, userSavedPairs) =>
+    `${chainId}:${Object.keys(presetTokens).length}:${Object.values(userSavedPairs).length}`,
 )
 
 const V2_UNIVERSAL_FARMS = UNIVERSAL_FARMS.filter((farm) => farm.protocol === Protocol.V2)
 const STABLE_UNIVERSAL_FARMS = UNIVERSAL_FARMS.filter((farm) => farm.protocol === Protocol.STABLE)
 
-const getBCakeWrapperAddress = (lpAddress: Address, chainId: number) => {
+export const getBCakeWrapperAddress = (lpAddress: Address, chainId: number) => {
   const f = UNIVERSAL_BCAKEWRAPPER_FARMS.find((farm) => {
     return isAddressEqual(farm.lpAddress, lpAddress) && farm.chainId === chainId
   })
@@ -195,10 +201,11 @@ export const getAccountV2LpDetails = async (
   if (!account || !client || !lpTokens.length) return []
 
   const validLpTokens = lpTokens.filter((token) => token.chainId === chainId)
-  const bCakeWrapperAddresses = validReserveTokens.reduce((acc, tokens) => {
+
+  const bCakeWrapperAddresses = validReserveTokens.map((tokens) => {
     const lpAddress = getV2LiquidityToken(tokens).address
-    return [...acc, getBCakeWrapperAddress(lpAddress, chainId)]
-  }, [] as Array<Address>)
+    return getBCakeWrapperAddress(lpAddress, chainId)
+  })
 
   const balanceCalls = validLpTokens.map((token) => {
     return {
@@ -360,7 +367,7 @@ export const getStablePairDetails = async (
       abi: infoStableSwapABI,
       address: pair.infoStableSwapAddress,
       functionName: 'calc_coins_amount',
-      args: [pair.stableSwapAddress, farming[index][0].toString()] as const,
+      args: [pair.stableSwapAddress, farming[index]?.[0]?.toString() ?? '0'] as const,
     } as const
   })
 
