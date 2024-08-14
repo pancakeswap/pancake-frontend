@@ -136,7 +136,7 @@ const Earnings: React.FC<{ earningsAmount?: number; earningsBusd?: number }> = (
 }) => {
   const { t } = useTranslation()
   return (
-    earningsAmount > 0 && (
+    earningsBusd > 0 && (
       <Row gap="8px">
         <DetailInfoLabel>
           {t('CAKE earned')}: {earningsAmount} (~${formatNumber(earningsBusd)})
