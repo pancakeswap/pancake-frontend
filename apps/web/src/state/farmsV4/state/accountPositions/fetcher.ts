@@ -181,7 +181,7 @@ export const getTrackedV2LpTokens = memoize(
 const V2_UNIVERSAL_FARMS = UNIVERSAL_FARMS.filter((farm) => farm.protocol === Protocol.V2)
 const STABLE_UNIVERSAL_FARMS = UNIVERSAL_FARMS.filter((farm) => farm.protocol === Protocol.STABLE)
 
-const getBCakeWrapperAddress = (lpAddress: Address, chainId: number) => {
+export const getBCakeWrapperAddress = (lpAddress: Address, chainId: number) => {
   const f = UNIVERSAL_BCAKEWRAPPER_FARMS.find((farm) => {
     return isAddressEqual(farm.lpAddress, lpAddress) && farm.chainId === chainId
   })
