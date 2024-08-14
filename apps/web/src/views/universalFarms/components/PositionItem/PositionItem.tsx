@@ -29,6 +29,8 @@ type PositionItemProps = {
   amount1?: CurrencyAmount<Token>
   pool?: PoolInfo | null
   detailMode?: boolean
+  boosterMultiplier?: number
+  userLpApr?: number
 }
 export const PositionItem: React.FC<PropsWithChildren<PositionItemProps>> = (props) => {
   const { link, currency0, currency1, chainId, children } = props

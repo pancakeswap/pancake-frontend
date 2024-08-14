@@ -1,4 +1,5 @@
-import { memo } from 'react'
+import BigNumber from 'bignumber.js'
+import { memo, useMemo } from 'react'
 import { getPoolAddressByToken, useExtraV3PositionInfo, usePoolInfo } from 'state/farmsV4/hooks'
 import { PositionDetail } from 'state/farmsV4/state/accountPositions/type'
 import { useTotalPriceUSD } from 'views/universalFarms/hooks/useTotalPriceUSD'
@@ -10,11 +11,26 @@ import { PriceRange } from './PriceRange'
 type V3PositionItemProps = {
   data: PositionDetail
   detailMode?: boolean
+  fee24h?: `${number}`
+  liquidity?: bigint
 }
 
-export const V3PositionItem = memo(({ data, detailMode }: V3PositionItemProps) => {
+export const V3PositionItem = memo(({ data, detailMode, fee24h, liquidity }: V3PositionItemProps) => {
   const { currency0, currency1, removed, outOfRange, priceUpper, priceLower, tickAtLimit, position } =
     useExtraV3PositionInfo(data)
+  const userLpApr = useMemo(() => {
+    if (!fee24h || !data.isStaked) return undefined
+    if (outOfRange || !data.farmingLiquidity || removed || !liquidity) return 0
+    const userTVL = data.farmingLiquidity
+    const totalTVL = liquidity
+    const rewardPerDayUSD = Number(fee24h)
+    return new BigNumber(rewardPerDayUSD)
+      .times(100)
+      .times(365)
+      .times(userTVL.toString())
+      .div(totalTVL.toString())
+      .toNumber()
+  }, [data.farmingLiquidity, data.isStaked, fee24h, liquidity, outOfRange, removed])
 
   const poolAddress = getPoolAddressByToken(data.chainId, data.token0, data.token1, data.fee)
   const pool = usePoolInfo({ poolAddress, chainId: data.chainId })
@@ -55,6 +71,8 @@ export const V3PositionItem = memo(({ data, detailMode }: V3PositionItemProps) =
       isStaked={data.isStaked}
       tokenId={data.tokenId}
       detailMode={detailMode}
+      boosterMultiplier={data.farmingMultiplier}
+      userLpApr={userLpApr}
     >
       {currency0 && currency1 ? (
         <V3PositionActions
