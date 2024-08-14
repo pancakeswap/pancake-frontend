@@ -3,13 +3,13 @@ import { BetPosition } from '@pancakeswap/prediction'
 import { Card, CardBody, Flex, PlayCircleOutlineIcon, Text, useTooltip } from '@pancakeswap/uikit'
 import { formatBigInt, formatNumber } from '@pancakeswap/utils/formatBalance'
 import RoundProgress from 'components/RoundProgress'
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { getHasRoundFailed } from 'state/predictions/helpers'
 import { useGetBufferSeconds } from 'state/predictions/hooks'
 import { NodeLedger, NodeRound } from 'state/types'
 import styled from 'styled-components'
 import { getNowInSeconds } from 'utils/getNowInSeconds'
-import { usePredictionPrice, usePredictionPriceUpdate } from 'views/Predictions/hooks/usePredictionPrice'
+import { usePredictionPrice } from 'views/Predictions/hooks/usePredictionPrice'
 import { useConfig } from '../../../context/ConfigProvider'
 import PositionTag from '../../PositionTag'
 import { LockPriceRow, PrizePoolRow, RoundResultBox } from '../../RoundResult'
@@ -39,7 +39,7 @@ interface AILiveRoundCardProps {
   formattedBearMultiplier: string
 }
 
-const REFRESH_PRICE_BEFORE_SECONDS_TO_CLOSE = 2
+const REFRESH_PRICE_BEFORE_SECONDS_TO_CLOSE = 3
 
 export const AILiveRoundCard: React.FC<React.PropsWithChildren<AILiveRoundCardProps>> = ({
   round,
@@ -54,13 +54,15 @@ export const AILiveRoundCard: React.FC<React.PropsWithChildren<AILiveRoundCardPr
   const bufferSeconds = useGetBufferSeconds()
   const config = useConfig()
 
+  const [fetchAlternate, setFetchAlternate] = useState(false)
+
   // Fetch Live Price for AI Predictions Open and Live Round Cards
   const {
     data: { price },
   } = usePredictionPrice({
     currencyA: config?.token.symbol,
+    useAlternateSource: fetchAlternate,
   })
-  const { updatePriceFromSource } = usePredictionPriceUpdate()
 
   const [isCalculatingPhase, setIsCalculatingPhase] = useState(false)
 
@@ -107,13 +109,19 @@ export const AILiveRoundCard: React.FC<React.PropsWithChildren<AILiveRoundCardPr
   const bullMultiplier = aiPosition === 'UP' ? formattedBullMultiplier : formattedBearMultiplier
   const bearMultiplier = aiPosition === 'DOWN' ? formattedBullMultiplier : formattedBearMultiplier
 
+  const refreshLivePrice = useCallback(() => {
+    // Fetch live price before round ends
+    setFetchAlternate(true)
+    setTimeout(() => {
+      setFetchAlternate(false)
+    }, REFRESH_PRICE_BEFORE_SECONDS_TO_CLOSE * 1000)
+  }, [])
+
   useEffect(() => {
     const secondsToClose = closeTimestamp ? closeTimestamp - getNowInSeconds() : 0
     if (secondsToClose > 0) {
       const refreshPriceTimeout = setTimeout(() => {
-        updatePriceFromSource({
-          currencyA: config?.token.symbol,
-        })
+        refreshLivePrice()
       }, (secondsToClose - REFRESH_PRICE_BEFORE_SECONDS_TO_CLOSE) * 1000)
 
       const calculatingPhaseTimeout = setTimeout(() => {
@@ -126,7 +134,7 @@ export const AILiveRoundCard: React.FC<React.PropsWithChildren<AILiveRoundCardPr
       }
     }
     return undefined
-  }, [closeTimestamp, config?.token.symbol, updatePriceFromSource])
+  }, [closeTimestamp, config?.token.symbol, refreshLivePrice])
 
   if (hasRoundFailed) {
     return <CanceledRoundCard round={round} />
