@@ -2,10 +2,14 @@ export enum GTMEvent {
   EventTracking = 'eventTracking',
   Swap = 'swap',
   SwapTxSent = 'swapTxSent',
-  SwapConfirmed = 'SwapConfirmed',
+  SwapConfirmed = 'swapConfirmed',
   AddLiquidity = 'addLiquidity',
+  AddLiquidityConfirmed = 'addLiquidityConfirmed',
+  AddLiquidityTxSent = 'addLiquidityTxSent',
   RemoveLiquidity = 'removeLiquidity',
-  Farm = 'stakeFarm',
+  StakeFarm = 'stakeFarm',
+  StakeFarmConfirmed = 'stakeFarmConfirmed',
+  StakeFarmTxSent = 'stakeFarmTxSent',
   UnStakeFarm = 'unStakeFarm',
   WalletConnect = 'walletConnect',
   Web3WalletView = 'Web3WalletView',
@@ -28,10 +32,14 @@ export enum GTMAction {
   ClickSwapButton = 'Click Swap Button',
   ClickSwapConfirmButton = 'Click Swap Confirm Button',
   SwapTransactionSent = 'Swap Transaction Sent',
+  ClickAddLiquidityConfirmButton = 'Click Add Liquidity Confirm Button',
+  AddLiquidityTransactionSent = 'Add Liquidity Transaction Sent',
   ClickAddLiquidityButton = 'Click Add Liquidity Button',
   ClickRemoveLiquidityButton = 'Click Remove Liquidity Button',
-  ClickStakeButton = 'Click Stake Button',
-  ClickUnStakeButton = 'Click UnStake Button',
+  ClickStakeFarmButton = 'Click Stake Farm Button',
+  ClickStakeFarmConfirmButton = 'Click Stake Farm Confirm Button',
+  StakeFarmTransactionSent = 'Stake Farm Transaction Sent',
+  ClickUnStakeFarmButton = 'Click UnStake Farm Button',
   ClickWalletConnectButton = 'Click Wallet Connect and Connected',
   Web3WalletView = 'Web3 Wallet Page View',
 }
@@ -71,15 +79,6 @@ export const logGTMClickSwapEvent = () => {
   })
 }
 
-export const logGTMSwapTxSentEvent = () => {
-  console.info('---SwapTxSent---')
-  window?.dataLayer?.push({
-    event: GTMEvent.SwapTxSent,
-    action: GTMAction.SwapTransactionSent,
-    category: GTMCategory.Swap,
-  })
-}
-
 export const logGTMClickSwapConfirmEvent = () => {
   console.info('---SwapClickConfirm---')
   window?.dataLayer?.push({
@@ -89,11 +88,38 @@ export const logGTMClickSwapConfirmEvent = () => {
   })
 }
 
+export const logGTMSwapTxSentEvent = () => {
+  console.info('---SwapTxSent---')
+  window?.dataLayer?.push({
+    event: GTMEvent.SwapTxSent,
+    action: GTMAction.SwapTransactionSent,
+    category: GTMCategory.Swap,
+  })
+}
+
 export const logGTMClickStakeFarmEvent = () => {
   console.info('---Stake---')
   window?.dataLayer?.push({
-    event: GTMEvent.Farm,
-    action: GTMAction.ClickStakeButton,
+    event: GTMEvent.StakeFarm,
+    action: GTMAction.ClickStakeFarmButton,
+    category: GTMCategory.Farm,
+  })
+}
+
+export const logGTMClickStakeFarmConfirmEvent = () => {
+  console.info('---StakeFarmConfirmed---')
+  window?.dataLayer?.push({
+    event: GTMEvent.StakeFarmConfirmed,
+    action: GTMAction.ClickStakeFarmConfirmButton,
+    category: GTMCategory.Farm,
+  })
+}
+
+export const logGTMStakeFarmTxSentEvent = () => {
+  console.info('---StakeFarmTxSent---')
+  window?.dataLayer?.push({
+    event: GTMEvent.StakeFarmTxSent,
+    action: GTMAction.StakeFarmTransactionSent,
     category: GTMCategory.Farm,
   })
 }
@@ -102,7 +128,7 @@ export const logGTMClickUnStakeFarmEvent = () => {
   console.info('---UnStake---')
   window?.dataLayer?.push({
     event: GTMEvent.UnStakeFarm,
-    action: GTMAction.ClickUnStakeButton,
+    action: GTMAction.ClickUnStakeFarmButton,
     category: GTMCategory.UnStakeFarm,
   })
 }
@@ -112,6 +138,24 @@ export const logGTMClickAddLiquidityEvent = () => {
   window?.dataLayer?.push({
     event: GTMEvent.AddLiquidity,
     action: GTMAction.ClickAddLiquidityButton,
+    category: GTMCategory.AddLiquidity,
+  })
+}
+
+export const logGTMClickAddLiquidityConfirmEvent = () => {
+  console.info('---AddLiquidityConfirmed---')
+  window?.dataLayer?.push({
+    event: GTMEvent.AddLiquidityConfirmed,
+    action: GTMAction.ClickAddLiquidityConfirmButton,
+    category: GTMCategory.AddLiquidity,
+  })
+}
+
+export const logGTMAddLiquidityTxSentEvent = () => {
+  console.info('---AddLiquidityTxSent---')
+  window?.dataLayer?.push({
+    event: GTMEvent.AddLiquidityTxSent,
+    action: GTMAction.AddLiquidityTransactionSent,
     category: GTMCategory.AddLiquidity,
   })
 }
