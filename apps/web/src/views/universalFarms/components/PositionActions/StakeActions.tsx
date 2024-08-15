@@ -3,6 +3,7 @@ import { AddIcon, AutoRow, Button, IconButton, MinusIcon } from '@pancakeswap/ui
 import { PropsWithChildren, useCallback } from 'react'
 
 type StakeActionsProps = {
+  increaseDisabled?: boolean
   decreaseDisabled?: boolean
   onIncrease: () => void
   onDecrease?: () => void
@@ -23,6 +24,7 @@ const StopPropagation: React.FC<PropsWithChildren> = ({ children }) => {
 }
 
 export const ModifyStakeActions: React.FC<StakeActionsProps> = ({
+  increaseDisabled = false,
   decreaseDisabled = false,
   onIncrease,
   onDecrease,
@@ -33,7 +35,7 @@ export const ModifyStakeActions: React.FC<StakeActionsProps> = ({
         <IconButton variant="secondary" disabled={decreaseDisabled} onClick={onDecrease}>
           <MinusIcon color="primary" width="24px" />
         </IconButton>
-        <IconButton variant="secondary" onClick={onIncrease}>
+        <IconButton variant="secondary" disabled={increaseDisabled} onClick={onIncrease}>
           <AddIcon color="primary" width="24px" />
         </IconButton>
       </AutoRow>
