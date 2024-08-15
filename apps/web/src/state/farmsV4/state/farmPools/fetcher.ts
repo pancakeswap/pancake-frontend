@@ -66,9 +66,9 @@ export const fetchFarmPools = async (
     const pool = remotePools.find(
       (p) =>
         p.chainId === farm.chainId &&
+        p.lpAddress === farm.lpAddress &&
         p.protocol === farm.protocol &&
-        p.token0.equals(farm.token0) &&
-        p.token1.equals(farm.token1),
+        p.pid === farm.pid,
     )
 
     if (pool)
