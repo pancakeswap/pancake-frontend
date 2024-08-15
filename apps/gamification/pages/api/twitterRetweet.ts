@@ -1,26 +1,41 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
+import { zAddress, zQuestId } from 'config/validations'
 import { withSiweAuth } from 'middlewares/withSiwe'
+import qs from 'qs'
 import { getOAuthHeader } from 'utils/getOAuthHeader'
 import { TaskType } from 'views/DashboardQuestEdit/type'
 import { TWITTER_CONSUMER_KEY, TwitterFollowersId } from 'views/Profile/utils/verifyTwitterFollowersIds'
+import { object as zObject, string as zString } from 'zod'
 
+const zQuery = zObject({
+  account: zAddress,
+  questId: zQuestId,
+  token: zString(),
+  tokenSecret: zString(),
+  userId: zString(),
+  providerId: zString(),
+  twitterPostId: zString(),
+  taskId: zQuestId,
+})
+
+// eslint-disable-next-line consistent-return
 const handler = withSiweAuth(async (req, res) => {
   if (req.method === 'GET') {
     try {
-      const { account, questId, taskId, token, tokenSecret, userId, providerId, twitterPostId } = req.query
-
-      if (!account || !questId || !token || !tokenSecret || !taskId || !userId || !providerId || !twitterPostId) {
-        res.status(400).json({ message: 'Missing required parameters: token, tokenSecret, userId, targetUserId' })
-        return
+      const queryString = qs.stringify(req.query)
+      const queryParsed = qs.parse(queryString)
+      const parsed = zQuery.safeParse(queryParsed)
+      if (parsed.success === false) {
+        return res.status(400).json({ message: 'Invalid query', reason: parsed.error })
       }
+
+      const { account, questId, taskId, token, tokenSecret, userId, providerId, twitterPostId } = req.query
 
       const isValidTwitterId = /^[0-9]{1,19}$/.test(twitterPostId as string)
       if (!isValidTwitterId) {
-        res.status(400).json({
+        return res.status(400).json({
           message: 'Invalid twitter id',
         })
-        return
       }
 
       const url = `https://api.twitter.com/2/users/${userId}/retweets`
@@ -66,21 +81,21 @@ const handler = withSiweAuth(async (req, res) => {
       if (!response.ok) {
         if (result?.errors?.[0]?.message === 'You cannot retweet a Tweet that you have already retweeted.') {
           await fetchApiInfoBackend()
-          return
+          return res.status(200).json({ message: 'Twitter already retweeted' })
         }
 
-        res.status(500).json({ message: result.title })
-        return
+        return res.status(500).json({ message: result.title })
       }
 
       if (result.data.retweeted) {
         await fetchApiInfoBackend()
+        return res.status(200).json({ message: 'Twitter already retweeted' })
       }
     } catch (error) {
-      res.status(500).json({ message: (error as Error).message })
+      return res.status(500).json({ message: (error as Error).message })
     }
   } else {
-    res.status(405).json({ error: 'Method Not Allowed' })
+    return res.status(405).json({ error: 'Method Not Allowed' })
   }
 })
 

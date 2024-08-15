@@ -1,19 +1,34 @@
-import { TaskType } from 'views/DashboardQuestEdit/type'
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-import { getOAuthHeader } from 'utils/getOAuthHeader'
-import { TWITTER_CONSUMER_KEY, TwitterFollowersId } from 'views/Profile/utils/verifyTwitterFollowersIds'
 import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
+import { zAddress, zQuestId } from 'config/validations'
 import { withSiweAuth } from 'middlewares/withSiwe'
+import qs from 'qs'
+import { getOAuthHeader } from 'utils/getOAuthHeader'
+import { TaskType } from 'views/DashboardQuestEdit/type'
+import { TWITTER_CONSUMER_KEY, TwitterFollowersId } from 'views/Profile/utils/verifyTwitterFollowersIds'
+import { object as zObject, string as zString } from 'zod'
 
+const zQuery = zObject({
+  account: zAddress,
+  questId: zQuestId,
+  token: zString(),
+  tokenSecret: zString(),
+  targetUserId: zString(),
+  providerId: zString(),
+  taskId: zQuestId,
+})
+
+// eslint-disable-next-line consistent-return
 const handler = withSiweAuth(async (req, res) => {
   if (req.method === 'GET') {
     try {
-      const { account, questId, token, tokenSecret, userId, targetUserId, providerId, taskId } = req.query
-      if (!token || !tokenSecret || !userId || !targetUserId) {
-        res.status(400).json({ message: 'Missing required parameters: token, tokenSecret, userId, targetUserId' })
-        return
+      const queryString = qs.stringify(req.query)
+      const queryParsed = qs.parse(queryString)
+      const parsed = zQuery.safeParse(queryParsed)
+      if (parsed.success === false) {
+        return res.status(400).json({ message: 'Invalid query', reason: parsed.error })
       }
 
+      const { account, questId, token, tokenSecret, userId, targetUserId, providerId, taskId } = req.query
       const url = `https://api.twitter.com/2/users/${userId}/following`
       const method = 'POST'
       const consumerKey = TWITTER_CONSUMER_KEY[providerId as TwitterFollowersId].consumerKey as string
@@ -31,8 +46,7 @@ const handler = withSiweAuth(async (req, res) => {
 
       const result = await response.json()
       if (!response.ok) {
-        res.status(500).json({ message: result.title })
-        return
+        return res.status(500).json({ message: result.title })
       }
 
       if (result.data.following) {
@@ -54,17 +68,16 @@ const handler = withSiweAuth(async (req, res) => {
 
         const responseMarkTaskResult = await apiRes.json()
         if (apiRes.ok) {
-          res.status(200).json(responseMarkTaskResult)
-          return
+          return res.status(200).json(responseMarkTaskResult)
         }
 
-        res.status(500).json({ message: responseMarkTaskResult.title })
+        return res.status(500).json({ message: responseMarkTaskResult.title })
       }
     } catch (error) {
-      res.status(500).json({ message: (error as Error).message })
+      return res.status(500).json({ message: (error as Error).message })
     }
   } else {
-    res.status(405).json({ error: 'Method Not Allowed' })
+    return res.status(405).json({ error: 'Method Not Allowed' })
   }
 })
 

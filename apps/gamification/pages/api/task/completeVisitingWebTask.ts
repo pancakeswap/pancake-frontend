@@ -1,6 +1,16 @@
 import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
-import { TaskType } from 'views/DashboardQuestEdit/type'
+import { zAddress, zQuestId } from 'config/validations'
 import { withSiweAuth } from 'middlewares/withSiwe'
+import qs from 'qs'
+import { TaskType } from 'views/DashboardQuestEdit/type'
+import { object as zObject, string as zString } from 'zod'
+
+const zQuery = zObject({
+  account: zAddress,
+  questId: zQuestId,
+  taskId: zQuestId,
+  taskName: zString(),
+})
 
 const handler = withSiweAuth(async (req, res) => {
   if (!GAMIFICATION_PUBLIC_API || !req.query || req.method !== 'POST') {
@@ -13,6 +23,13 @@ const handler = withSiweAuth(async (req, res) => {
   }
   if (taskName !== TaskType.VISIT_BLOG_POST) {
     return res.status(400).json({ message: 'Invalid task' })
+  }
+
+  const queryString = qs.stringify(req.query)
+  const queryParsed = qs.parse(queryString)
+  const parsed = zQuery.safeParse(queryParsed)
+  if (parsed.success === false) {
+    return res.status(400).json({ message: 'Invalid query', reason: parsed.error })
   }
 
   const response = await fetch(
