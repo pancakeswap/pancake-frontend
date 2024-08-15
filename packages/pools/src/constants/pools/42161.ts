@@ -13,6 +13,15 @@ export const livePools: SerializedPool[] = [
     tokenPerSecond: '0.043402',
     version: 3,
   },
+].map((p) => ({
+  ...p,
+  contractAddress: getAddress(p.contractAddress),
+  stakingToken: p.stakingToken.serialize,
+  earningToken: p.earningToken.serialize,
+}))
+
+// known finished pools
+export const finishedPools: SerializedPool[] = [
   {
     sousId: 5,
     stakingToken: arbitrumTokens.alp,
@@ -31,15 +40,6 @@ export const livePools: SerializedPool[] = [
     tokenPerSecond: '0.0310019841',
     version: 3,
   },
-].map((p) => ({
-  ...p,
-  contractAddress: getAddress(p.contractAddress),
-  stakingToken: p.stakingToken.serialize,
-  earningToken: p.earningToken.serialize,
-}))
-
-// known finished pools
-export const finishedPools: SerializedPool[] = [
   {
     sousId: 3,
     stakingToken: arbitrumTokens.alp,
