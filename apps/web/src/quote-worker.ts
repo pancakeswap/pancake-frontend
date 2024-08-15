@@ -2,7 +2,8 @@ import 'utils/workerPolyfill'
 
 import { findBestTrade, toSerializableTrade } from '@pancakeswap/routing-sdk'
 import { V3_POOL_TYPE, createV3Pool, toSerializableV3Pool } from '@pancakeswap/routing-sdk-addon-v3'
-import { PoolType, SmartRouter, V4Router, getRouteTypeByPools } from '@pancakeswap/smart-router'
+import { V2_POOL_TYPE, createV2Pool, toSerializableV2Pool } from '@pancakeswap/routing-sdk-addon-v2'
+import { PoolType, SmartRouter, V4Router, getRouteTypeByPools, V2Pool } from '@pancakeswap/smart-router'
 import { Call } from 'state/multicall/actions'
 import { fetchChunk } from 'state/multicall/fetchChunk'
 import { getLogger } from 'utils/datadog'
@@ -236,7 +237,14 @@ addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
       ? BigInt(gasPriceWei)
       : async () => BigInt((await onChainProvider({ chainId }).getGasPrice()).toString())
 
-    const testPools = pools.filter(SmartRouter.isV3Pool).map(createV3Pool)
+    const testPools = pools
+      .filter((p) => SmartRouter.isV3Pool(p) || SmartRouter.isV2Pool(p))
+      .map((p) => {
+        if (SmartRouter.isV3Pool(p)) {
+          return createV3Pool(p)
+        }
+        return createV2Pool(p as V2Pool)
+      })
     findBestTrade({
       amount: currencyAAmount,
       quoteCurrency: currencyB,
@@ -257,6 +265,12 @@ addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
               return {
                 ...toSerializableV3Pool(p),
                 type: PoolType.V3,
+              }
+            }
+            if (p.type === V2_POOL_TYPE) {
+              return {
+                ...toSerializableV2Pool(p),
+                type: PoolType.V2,
               }
             }
             throw new Error('Unknown pool type')

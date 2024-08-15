@@ -23,7 +23,7 @@ export type Pool<PType = any, PoolData = any> = {
 
   estimateGasCostForQuote: (quote: PoolQuoteResult) => bigint
 
-  swapToPrice: (p: Price<Currency, Currency>) => {
+  swapToPrice?: (p: Price<Currency, Currency>) => {
     inputAmount: CurrencyAmount<Currency>
   }
 
