@@ -22,6 +22,7 @@ export type PositionInfoProps = {
   link?: string
   tokenId?: bigint
   fee: number
+  feeTierBase?: number
   isStaked?: boolean
   protocol: Protocol
   totalPriceUSD: number
@@ -42,6 +43,7 @@ export const PositionInfo = memo(
     desc,
     tokenId,
     fee,
+    feeTierBase,
     isStaked,
     protocol,
     totalPriceUSD,
@@ -67,7 +69,7 @@ export const PositionInfo = memo(
                 showChainLogo
                 innerMargin="-10px"
               />
-              <FeeTier type={protocol} fee={fee} />
+              <FeeTier type={protocol} fee={fee} denominator={feeTierBase} />
             </Row>
             <Row>
               <Text bold>{`${currency0?.symbol} / ${currency1?.symbol} LP`}</Text>
@@ -86,7 +88,7 @@ export const PositionInfo = memo(
           <DetailInfoTitle>
             <Text bold>{`${currency0?.symbol} / ${currency1?.symbol} LP`}</Text>
             {tokenId ? <Text color="textSubtle">(#{tokenId.toString()})</Text> : null}
-            <FeeTier type={protocol} fee={fee} />
+            <FeeTier type={protocol} fee={fee} denominator={feeTierBase} />
             <TagCell>
               {isStaked && (
                 <Tag variant="primary60" mr="8px">
@@ -97,7 +99,7 @@ export const PositionInfo = memo(
             </TagCell>
           </DetailInfoTitle>
         ),
-      [currency0, currency1, fee, isMobile, isTablet, isStaked, outOfRange, protocol, removed, t, tokenId],
+      [feeTierBase, currency0, currency1, fee, isMobile, isTablet, isStaked, outOfRange, protocol, removed, t, tokenId],
     )
 
     return (
