@@ -22,6 +22,7 @@ type PositionItemProps = {
   link?: string
   tokenId?: bigint
   fee: number
+  feeTierBase?: number
   isStaked?: boolean
   protocol: Protocol
   totalPriceUSD: number
