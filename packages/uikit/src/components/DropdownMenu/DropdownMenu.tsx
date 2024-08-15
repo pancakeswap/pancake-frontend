@@ -26,17 +26,8 @@ const MenuItem: React.FC<{
 }> = ({ item, isChildItems, isDisabled, linkComponent, activeItem, activeSubItemChildItem, setIsOpen }) => {
   const [isSubMenuOpen, setIsSubMenuOpen] = useState(true);
   const { isMobile, isMd } = useMatchBreakpoints();
-  const {
-    type = DropdownMenuItemType.INTERNAL_LINK,
-    label,
-    href = "/",
-    status,
-    disabled,
-    items: childItemsData,
-    ...itemProps
-  } = item;
-
-  const hasChildItems = useMemo(() => Boolean(childItemsData && childItemsData.length > 0), [childItemsData]);
+  const { type = DropdownMenuItemType.INTERNAL_LINK, label, href = "/", status, disabled, items, ...itemProps } = item;
+  const hasChildItems = useMemo(() => Boolean(items && items.length > 0), [items]);
 
   const isActive = useMemo(() => {
     return Boolean(
@@ -59,16 +50,6 @@ const MenuItem: React.FC<{
     </Flex>
   );
 
-  const commonProps = {
-    $isActive: isActive,
-    disabled: disabled || isDisabled,
-    onClick: (e: any) => {
-      setIsOpen(false);
-      itemProps.onClick?.(e);
-    },
-    ...itemProps,
-  };
-
   const handleToggleSubMenu = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation();
@@ -81,7 +62,7 @@ const MenuItem: React.FC<{
   return (
     <StyledDropdownMenuItemContainer key={label?.toString()}>
       {type === DropdownMenuItemType.BUTTON && (
-        <DropdownMenuItem disabled={disabled || isDisabled} type="button" {...(commonProps as any)}>
+        <DropdownMenuItem $isActive={isActive} disabled={disabled || isDisabled} type="button">
           {MenuItemContent}
         </DropdownMenuItem>
       )}
@@ -91,6 +72,7 @@ const MenuItem: React.FC<{
           as={linkComponent}
           href={href}
           {...itemProps}
+          $isActive={isActive}
           onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
             if (hasChildItems) {
               handleToggleSubMenu(e);
@@ -104,9 +86,13 @@ const MenuItem: React.FC<{
           {hasChildItems && (
             <>
               {isSubMenuOpen ? (
-                <ChevronDownIcon width="24px" height="24px" color="textSubtle" />
+                <ChevronDownIcon
+                  width="24px"
+                  height="24px"
+                  color={disabled || isDisabled ? "disabled" : "textSubtle"}
+                />
               ) : (
-                <ChevronUpIcon width="24px" height="24px" color="textSubtle" />
+                <ChevronUpIcon width="24px" height="24px" color={disabled || isDisabled ? "disabled" : "textSubtle"} />
               )}
             </>
           )}
@@ -114,11 +100,11 @@ const MenuItem: React.FC<{
       )}
       {type === DropdownMenuItemType.EXTERNAL_LINK && (
         <DropdownMenuItem
+          $isActive={isActive}
           disabled={disabled || isDisabled}
           as="a"
           href={href}
           target="_blank"
-          {...(commonProps as any)}
           onClick={(e: any) => {
             setIsOpen(false);
             itemProps.onClick?.(e);
@@ -135,7 +121,7 @@ const MenuItem: React.FC<{
 
       {isSubMenuOpen &&
         hasChildItems &&
-        childItemsData
+        items
           ?.filter((childItem) => ((isMobile || isMd) && childItem.isMobileOnly) || !childItem.isMobileOnly)
           ?.map((childItem) => (
             <MenuItem

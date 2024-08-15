@@ -23,7 +23,7 @@ export type ConfigMenuItemsType = Omit<MenuItemsType, 'items'> & { hideSubNav?: 
   items?: ConfigMenuDropDownItemsType[]
 }
 
-const addMenuItemSupported = (item, chainId) => {
+export const addMenuItemSupported = (item, chainId) => {
   if (!chainId || !item.supportChainIds) {
     return item
   }
@@ -83,6 +83,7 @@ const config: (
       fillIcon: EarnFillIcon,
       image: '/images/decorations/pe2.png',
       supportChainIds: SUPPORT_FARMS,
+      hideSubNav: true,
       items: [
         {
           label: t('Farms'),
@@ -96,6 +97,7 @@ const config: (
         },
         {
           label: t('Staking'),
+          supportChainIds: SUPPORT_CAKE_STAKING,
           items: [
             {
               label: t('CAKE Staking'),
