@@ -25,13 +25,11 @@ type V2PoolAprModalProps = {
   lpApr?: number
 }
 
-export const V2PoolAprModal: React.FC<V2PoolAprModalProps> = ({
-  modal,
-  poolInfo,
-  combinedApr,
-  boostMultiplier,
-  lpApr,
-}) => {
+export const V2PoolAprModal: React.FC<V2PoolAprModalProps> = ({ modal, ...props }) => {
+  return <ModalV2 {...modal}>{modal.isOpen && <AprModal {...props} />}</ModalV2>
+}
+
+const AprModal: React.FC<Omit<V2PoolAprModalProps, 'modal'>> = ({ poolInfo, combinedApr, boostMultiplier, lpApr }) => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const lpSymbol = useMemo(
@@ -53,10 +51,7 @@ export const V2PoolAprModal: React.FC<V2PoolAprModalProps> = ({
     )
   }, [userPosition?.farmingBalance, userPosition?.nativeBalance])
 
-  const { data: lpTokenTotalSupply } = useV2LpTokenTotalSupply(
-    poolInfo.lpAddress, // @todo check if stable swap use poolInfo.stableSwapLpAddress
-    poolInfo.chainId,
-  )
+  const { data: lpTokenTotalSupply } = useV2LpTokenTotalSupply(poolInfo.lpAddress, poolInfo.chainId)
   const lpTokenPrice = useMemo(() => {
     return new BigNumber(poolInfo.tvlUsd ?? 0).div((lpTokenTotalSupply ?? 1).toString()).times(1e18)
   }, [poolInfo.tvlUsd, lpTokenTotalSupply])
@@ -91,28 +86,26 @@ export const V2PoolAprModal: React.FC<V2PoolAprModalProps> = ({
   }, [masterChefV2Data])
 
   return (
-    <ModalV2 {...modal}>
-      <RoiCalculatorModal
-        account={account}
-        pid={poolInfo.pid}
-        linkLabel={t('Add %symbol%', { symbol: lpLabel })}
-        stakingTokenBalance={stakingTokenBalance}
-        stakingTokenDecimals={18}
-        stakingTokenSymbol={lpSymbol}
-        stakingTokenPrice={lpTokenPrice.toNumber()}
-        earningTokenPrice={cakePrice?.toNumber() ?? 0}
-        apr={combinedApr * 100}
-        multiplier={boostMultiplier ? `${boostMultiplier}X` : undefined}
-        displayApr={displayApr(combinedApr)}
-        linkHref={addLiquidityUrl}
-        lpRewardsApr={(lpApr ?? 0) * 100}
-        isFarm={poolInfo.isFarming}
-        stableSwapAddress={stableConfig?.stableSwapAddress}
-        stableLpFee={stableConfig?.stableLpFee}
-        farmCakePerSecond={farmCakePerSecond ? farmCakePerSecond.toString() : '0'}
-        totalMultipliers={totalMultipliers}
-        isBCakeBooster={poolInfo.isFarming}
-      />
-    </ModalV2>
+    <RoiCalculatorModal
+      account={account}
+      pid={poolInfo.pid}
+      linkLabel={t('Add %symbol%', { symbol: lpLabel })}
+      stakingTokenBalance={stakingTokenBalance}
+      stakingTokenDecimals={18}
+      stakingTokenSymbol={lpSymbol}
+      stakingTokenPrice={lpTokenPrice.toNumber()}
+      earningTokenPrice={cakePrice?.toNumber() ?? 0}
+      apr={combinedApr * 100}
+      multiplier={boostMultiplier ? `${Number(boostMultiplier.toFixed(1))}X` : undefined}
+      displayApr={displayApr(combinedApr, { suffix: '' })}
+      linkHref={addLiquidityUrl}
+      lpRewardsApr={(lpApr ?? 0) * 100}
+      isFarm={poolInfo.isFarming}
+      stableSwapAddress={stableConfig?.stableSwapAddress}
+      stableLpFee={stableConfig?.stableLpFee}
+      farmCakePerSecond={farmCakePerSecond ? farmCakePerSecond.toString() : '0'}
+      totalMultipliers={totalMultipliers}
+      isBCakeBooster={poolInfo.isFarming}
+    />
   )
 }
