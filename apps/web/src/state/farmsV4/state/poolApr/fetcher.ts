@@ -47,7 +47,7 @@ export const getLpApr = async (pool: PoolInfo, signal?: AbortSignal): Promise<nu
       signal,
       params: {
         path: {
-          address: pool.stableLpAddress ?? pool.lpAddress,
+          address: pool.lpAddress,
           chainName,
         },
       },
