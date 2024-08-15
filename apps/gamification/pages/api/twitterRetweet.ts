@@ -15,7 +15,7 @@ const zQuery = zObject({
   userId: zString(),
   providerId: zString(),
   twitterPostId: zString(),
-  taskId: zString(),
+  taskId: zQuestId,
 })
 
 // eslint-disable-next-line consistent-return

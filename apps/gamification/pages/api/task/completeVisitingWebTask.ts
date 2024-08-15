@@ -8,7 +8,7 @@ import { object as zObject, string as zString } from 'zod'
 const zQuery = zObject({
   account: zAddress,
   questId: zQuestId,
-  taskId: zString(),
+  taskId: zQuestId,
   taskName: zString(),
 })
 

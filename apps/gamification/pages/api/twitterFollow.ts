@@ -14,7 +14,7 @@ const zQuery = zObject({
   tokenSecret: zString(),
   targetUserId: zString(),
   providerId: zString(),
-  taskId: zString(),
+  taskId: zQuestId,
 })
 
 // eslint-disable-next-line consistent-return
