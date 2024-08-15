@@ -22,8 +22,8 @@ export const useTotalPriceUSD = ({
   })
   return useMemo(() => {
     return (
-      Number(currency0PriceFromApi) * Number(amount0 ? amount0.toExact() : 0) +
-      Number(currency1PriceFromApi) * Number(amount1 ? amount1.toExact() : 0)
+      Number(currency0PriceFromApi ?? 0) * Number(amount0 ? amount0.toExact() : 0) +
+      Number(currency1PriceFromApi ?? 0) * Number(amount1 ? amount1.toExact() : 0)
     )
   }, [amount0, amount1, currency0PriceFromApi, currency1PriceFromApi])
 }
