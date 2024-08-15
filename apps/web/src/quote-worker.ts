@@ -2,7 +2,7 @@ import 'utils/workerPolyfill'
 
 import { findBestTrade, toSerializableTrade } from '@pancakeswap/routing-sdk'
 import { V3_POOL_TYPE, createV3Pool, toSerializableV3Pool } from '@pancakeswap/routing-sdk-addon-v3'
-import { SmartRouter, V4Router } from '@pancakeswap/smart-router'
+import { PoolType, SmartRouter, V4Router, getRouteTypeByPools } from '@pancakeswap/smart-router'
 import { Call } from 'state/multicall/actions'
 import { fetchChunk } from 'state/multicall/fetchChunk'
 import { getLogger } from 'utils/datadog'
@@ -254,16 +254,26 @@ addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
         const serializableTrade = toSerializableTrade(trade, {
           toSerializablePool: (p) => {
             if (p.type === V3_POOL_TYPE) {
-              return toSerializableV3Pool(p)
+              return {
+                ...toSerializableV3Pool(p),
+                type: PoolType.V3,
+              }
             }
             throw new Error('Unknown pool type')
           },
         })
+        const v4Trade = {
+          ...serializableTrade,
+          routes: serializableTrade.routes.map((r) => ({
+            ...r,
+            type: getRouteTypeByPools(r.pools),
+          })),
+        }
         postMessage([
           id,
           {
             success: true,
-            result: serializableTrade,
+            result: v4Trade,
           },
         ])
       })
