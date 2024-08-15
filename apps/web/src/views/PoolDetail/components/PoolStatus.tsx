@@ -17,14 +17,14 @@ export const PoolStatus: React.FC<PoolStatusProps> = ({ poolInfo }) => {
     if (!poolInfo) return null
     const tvlUsd = Number(poolInfo.tvlUsd ?? 0)
     const tvlUsd24h = Number(poolInfo.tvlUsd24h ?? 0)
-    return new Percent(BigInt((tvlUsd - tvlUsd24h).toFixed(0)), BigInt((tvlUsd24h || 1).toFixed(0)))
+    return new Percent(BigInt((tvlUsd - tvlUsd24h).toFixed(0)), BigInt(tvlUsd24h.toFixed(0)) || 1)
   }, [poolInfo])
 
   const volChange = useMemo(() => {
     if (!poolInfo) return null
     const vol24hUsd = Number(poolInfo.vol24hUsd ?? 0)
     const vol48hUsd = Number(poolInfo.vol48hUsd ?? 0)
-    return new Percent(BigInt((vol24hUsd - vol48hUsd).toFixed(0)), BigInt((vol48hUsd || 1).toFixed(0)))
+    return new Percent(BigInt((vol24hUsd - vol48hUsd).toFixed(0)), BigInt(vol48hUsd.toFixed(0)) || 1)
   }, [poolInfo])
 
   if (!poolInfo) {
