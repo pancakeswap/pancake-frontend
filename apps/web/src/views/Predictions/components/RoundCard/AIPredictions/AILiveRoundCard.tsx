@@ -39,7 +39,7 @@ interface AILiveRoundCardProps {
   formattedBearMultiplier: string
 }
 
-const REFRESH_PRICE_BEFORE_SECONDS_TO_CLOSE = 3
+const REFRESH_PRICE_BEFORE_SECONDS_TO_CLOSE = 2
 
 export const AILiveRoundCard: React.FC<React.PropsWithChildren<AILiveRoundCardProps>> = ({
   round,
