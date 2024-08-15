@@ -124,7 +124,7 @@ export const Quest: React.FC<QuestProps> = ({ quest, showStatus, hideClick, cust
           {quest?.reward?.currency && (
             <Card isActive style={{ width: 'fit-content', padding: '2px', marginTop: '16px' }}>
               <Flex padding="8px">
-                <TokenWithChain currency={currency} width={20} height={20} />
+                <TokenWithChain currency={currency} width={24} height={24} />
                 <Flex ml="8px">
                   <Text bold fontSize="20px" lineHeight="24px">
                     {getFullDisplayBalance(new BigNumber(quest?.reward?.totalRewardAmount ?? 0), currency.decimals, 2)}

@@ -14,6 +14,7 @@ import { useMemo, useState } from 'react'
 import { ConfirmDeleteModal } from 'views/DashboardQuestEdit/components/ConfirmDeleteModal'
 import { InputErrorText, StyledInput } from 'views/DashboardQuestEdit/components/InputStyle'
 import { DropdownList } from 'views/DashboardQuestEdit/components/Tasks/DropdownList'
+import { ExpandButton } from 'views/DashboardQuestEdit/components/Tasks/ExpandButton'
 import { StyledOptionIcon } from 'views/DashboardQuestEdit/components/Tasks/StyledOptionIcon'
 import { TaskBlogPostConfig } from 'views/DashboardQuestEdit/context/types'
 import { useQuestEdit } from 'views/DashboardQuestEdit/context/useQuestEdit'
@@ -31,6 +32,7 @@ type SocialKeyType = 'title' | 'description' | 'blogUrl'
 export const AddBlogPost: React.FC<AddBlogPostProps> = ({ task, isDrafted }) => {
   const { t } = useTranslation()
   const [isFirst, setIsFirst] = useState(true)
+  const [isExpanded, setIsExpanded] = useState(true)
   const { tasks, onTasksChange, deleteTask } = useQuestEdit()
 
   const [onPresentDeleteModal] = useModal(<ConfirmDeleteModal handleDelete={() => deleteTask(task.sid)} />)
@@ -72,6 +74,7 @@ export const AddBlogPost: React.FC<AddBlogPostProps> = ({ task, isDrafted }) => 
   return (
     <Flex flexDirection="column">
       <Flex flexDirection={['row']}>
+        {!disableInput && <ExpandButton isExpanded={isExpanded} setIsExpanded={setIsExpanded} />}
         <Flex>
           <Flex mr="8px" alignSelf="center" position="relative">
             {taskIcon(TaskType.VISIT_BLOG_POST)}
@@ -93,47 +96,49 @@ export const AddBlogPost: React.FC<AddBlogPostProps> = ({ task, isDrafted }) => 
           </Flex>
         )}
       </Flex>
-      <FlexGap gap="8px" flexDirection="column" mt="8px">
-        <Flex flexDirection="column">
-          <InputGroup
-            m={['8px 0', '8px 0', '0 8px 0 0']}
-            endIcon={
-              isUrlError ? (
-                <ErrorFillIcon color="failure" width={16} height={16} />
-              ) : (
-                <Box ref={targetRef} onClick={onclickOpenNewIcon}>
-                  <OpenNewIcon style={{ cursor: 'pointer' }} color="primary" width="20px" />
-                  {tooltipVisible && tooltip}
-                </Box>
-              )
-            }
-          >
-            <StyledInput
-              value={task.blogUrl}
-              isError={isUrlError}
-              style={{ borderRadius: '24px' }}
-              disabled={disableInput}
-              placeholder={taskInputPlaceholder(TaskType.VISIT_BLOG_POST)}
-              onChange={(e) => handleUrlChange(e, 'blogUrl')}
-            />
-          </InputGroup>
-          {isUrlError && <InputErrorText errorText={t('Enter a valid website URL')} />}
-        </Flex>
-        <StyledInput
-          placeholder={t('Title')}
-          value={task.title}
-          style={{ borderRadius: '24px' }}
-          disabled={disableInput}
-          onChange={(e) => handleUrlChange(e, 'title')}
-        />
-        <StyledInput
-          placeholder={t('Description (Optional)')}
-          value={task.description}
-          style={{ borderRadius: '24px' }}
-          disabled={disableInput}
-          onChange={(e) => handleUrlChange(e, 'description')}
-        />
-      </FlexGap>
+      {isExpanded && (
+        <FlexGap gap="8px" flexDirection="column" mt="8px">
+          <Flex flexDirection="column">
+            <InputGroup
+              m={['8px 0', '8px 0', '0 8px 0 0']}
+              endIcon={
+                isUrlError ? (
+                  <ErrorFillIcon color="failure" width={16} height={16} />
+                ) : (
+                  <Box ref={targetRef} onClick={onclickOpenNewIcon}>
+                    <OpenNewIcon style={{ cursor: 'pointer' }} color="primary" width="20px" />
+                    {tooltipVisible && tooltip}
+                  </Box>
+                )
+              }
+            >
+              <StyledInput
+                value={task.blogUrl}
+                isError={isUrlError}
+                style={{ borderRadius: '24px' }}
+                disabled={disableInput}
+                placeholder={taskInputPlaceholder(TaskType.VISIT_BLOG_POST)}
+                onChange={(e) => handleUrlChange(e, 'blogUrl')}
+              />
+            </InputGroup>
+            {isUrlError && <InputErrorText errorText={t('Enter a valid website URL')} />}
+          </Flex>
+          <StyledInput
+            placeholder={t('Title')}
+            value={task.title}
+            style={{ borderRadius: '24px' }}
+            disabled={disableInput}
+            onChange={(e) => handleUrlChange(e, 'title')}
+          />
+          <StyledInput
+            placeholder={t('Description (Optional)')}
+            value={task.description}
+            style={{ borderRadius: '24px' }}
+            disabled={disableInput}
+            onChange={(e) => handleUrlChange(e, 'description')}
+          />
+        </FlexGap>
+      )}
     </Flex>
   )
 }

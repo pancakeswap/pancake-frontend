@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react'
 import { ConfirmDeleteModal } from 'views/DashboardQuestEdit/components/ConfirmDeleteModal'
 import { InputErrorText, StyledInput, StyledInputGroup } from 'views/DashboardQuestEdit/components/InputStyle'
 import { DropdownList } from 'views/DashboardQuestEdit/components/Tasks/DropdownList'
+import { ExpandButton } from 'views/DashboardQuestEdit/components/Tasks/ExpandButton'
 import { StyledOptionIcon } from 'views/DashboardQuestEdit/components/Tasks/StyledOptionIcon'
 import { TaskLotteryConfig } from 'views/DashboardQuestEdit/context/types'
 import { useQuestEdit } from 'views/DashboardQuestEdit/context/useQuestEdit'
@@ -21,6 +22,7 @@ type KeyFillType = 'minAmount' | 'fromRound' | 'toRound' | 'title' | 'descriptio
 export const AddLottery: React.FC<AddLotteryProps> = ({ task, isDrafted }) => {
   const { t } = useTranslation()
   const [isFirst, setIsFirst] = useState(true)
+  const [isExpanded, setIsExpanded] = useState(true)
   const { taskIcon, taskNaming } = useTaskInfo(false, 22)
   const { tasks, onTasksChange, deleteTask } = useQuestEdit()
 
@@ -63,6 +65,7 @@ export const AddLottery: React.FC<AddLotteryProps> = ({ task, isDrafted }) => {
   return (
     <Flex flexDirection={['column']}>
       <Flex width="100%">
+        {!disableInput && <ExpandButton isExpanded={isExpanded} setIsExpanded={setIsExpanded} />}
         <Flex mr="8px" alignSelf="center" position="relative">
           {taskIcon(TaskType.PARTICIPATE_LOTTERY)}
           {task.isOptional && <StyledOptionIcon />}
@@ -80,74 +83,76 @@ export const AddLottery: React.FC<AddLotteryProps> = ({ task, isDrafted }) => {
           />
         )}
       </Flex>
-      <FlexGap gap="8px" flexDirection="column" mt="12px">
-        <Flex flexDirection="column">
-          <StyledInputGroup
-            endIcon={isMinAmountError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}
-          >
-            <StyledInput
-              pattern="^[0-9]+$"
-              inputMode="numeric"
-              value={task.minAmount}
-              isError={isMinAmountError}
-              disabled={disableInput}
-              placeholder={t('Min. ticket’s amount')}
-              onChange={(e) => handleInputChange(e, 'minAmount')}
-            />
-          </StyledInputGroup>
-          {isMinAmountError && <InputErrorText errorText={t('Cannot be 0')} />}
-        </Flex>
-        <Flex flexDirection="column">
-          <Flex>
-            <Text fontSize={14} style={{ alignSelf: 'center' }} color="textSubtle" mr="8px">
-              {t('Rounds:')}
-            </Text>
+      {isExpanded && (
+        <FlexGap gap="8px" flexDirection="column" mt="12px">
+          <Flex flexDirection="column">
             <StyledInputGroup
-              endIcon={isFromRoundError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}
+              endIcon={isMinAmountError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}
             >
               <StyledInput
-                placeholder={t('From')}
                 pattern="^[0-9]+$"
                 inputMode="numeric"
-                value={task.fromRound}
+                value={task.minAmount}
+                isError={isMinAmountError}
                 disabled={disableInput}
-                isError={isFromRoundError}
-                onChange={(e) => handleInputChange(e, 'fromRound')}
+                placeholder={t('Min. ticket’s amount')}
+                onChange={(e) => handleInputChange(e, 'minAmount')}
               />
             </StyledInputGroup>
-            <Text fontSize={14} style={{ alignSelf: 'center' }} color="textSubtle" m="0 8px 0 0">
-              -
-            </Text>
-            <StyledInputGroup
-              endIcon={isToRoundError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}
-            >
-              <StyledInput
-                placeholder={t('To')}
-                pattern="^[0-9]+$"
-                inputMode="numeric"
-                value={task.toRound}
-                isError={isToRoundError}
-                disabled={disableInput}
-                onChange={(e) => handleInputChange(e, 'toRound')}
-              />
-            </StyledInputGroup>
+            {isMinAmountError && <InputErrorText errorText={t('Cannot be 0')} />}
           </Flex>
-          {(isFromRoundError || isToRoundError) && <InputErrorText errorText={t('Wrong rounds numbers')} />}
-        </Flex>
-        <StyledInput
-          placeholder={t('Title')}
-          value={task.description}
-          style={{ borderRadius: '24px' }}
-          onChange={(e) => handleInputChange(e, 'title')}
-        />
-        <StyledInput
-          placeholder={t('Description (Optional)')}
-          value={task.description}
-          style={{ borderRadius: '24px' }}
-          disabled={disableInput}
-          onChange={(e) => handleInputChange(e, 'description')}
-        />
-      </FlexGap>
+          <Flex flexDirection="column">
+            <Flex>
+              <Text fontSize={14} style={{ alignSelf: 'center' }} color="textSubtle" mr="8px">
+                {t('Rounds:')}
+              </Text>
+              <StyledInputGroup
+                endIcon={isFromRoundError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}
+              >
+                <StyledInput
+                  placeholder={t('From')}
+                  pattern="^[0-9]+$"
+                  inputMode="numeric"
+                  value={task.fromRound}
+                  disabled={disableInput}
+                  isError={isFromRoundError}
+                  onChange={(e) => handleInputChange(e, 'fromRound')}
+                />
+              </StyledInputGroup>
+              <Text fontSize={14} style={{ alignSelf: 'center' }} color="textSubtle" m="0 8px 0 0">
+                -
+              </Text>
+              <StyledInputGroup
+                endIcon={isToRoundError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}
+              >
+                <StyledInput
+                  placeholder={t('To')}
+                  pattern="^[0-9]+$"
+                  inputMode="numeric"
+                  value={task.toRound}
+                  isError={isToRoundError}
+                  disabled={disableInput}
+                  onChange={(e) => handleInputChange(e, 'toRound')}
+                />
+              </StyledInputGroup>
+            </Flex>
+            {(isFromRoundError || isToRoundError) && <InputErrorText errorText={t('Wrong rounds numbers')} />}
+          </Flex>
+          <StyledInput
+            placeholder={t('Title')}
+            value={task.description}
+            style={{ borderRadius: '24px' }}
+            onChange={(e) => handleInputChange(e, 'title')}
+          />
+          <StyledInput
+            placeholder={t('Description (Optional)')}
+            value={task.description}
+            style={{ borderRadius: '24px' }}
+            disabled={disableInput}
+            onChange={(e) => handleInputChange(e, 'description')}
+          />
+        </FlexGap>
+      )}
     </Flex>
   )
 }

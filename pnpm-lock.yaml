@@ -715,6 +715,9 @@ importers:
       '@pancakeswap/utils':
         specifier: workspace:*
         version: link:../../packages/utils
+      '@pancakeswap/v3-sdk':
+        specifier: workspace:*
+        version: link:../../packages/v3-sdk
       '@pancakeswap/wagmi':
         specifier: workspace:*
         version: link:../../packages/wagmi

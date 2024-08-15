@@ -1,7 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, Text } from '@pancakeswap/uikit'
 import { useCallback } from 'react'
-import Jazzicon from 'react-jazzicon'
 import styled from 'styled-components'
 import { useGetAllUserIdsByQuestId } from 'views/Quest/hooks/useGetAllUserIdsByQuestId'
 
@@ -15,18 +14,15 @@ const AssetSetContainer = styled(Box)`
   height: 26px;
   width: 90%;
   max-width: 100%;
+`
 
-  &:before {
-    content: '';
-    position: absolute;
-    top: -6px;
-    right: -10px;
-    width: 58px;
-    height: 100%;
-    z-index: 2;
-    background: ${({ theme }) =>
-      `linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, ${theme.colors.backgroundAlt} 100%)`};
-  }
+const BunnyNftIcon = styled(Box)<{ $width: number; $height: number }>`
+  height: ${({ $height }) => `${$height}px`};
+  width: ${({ $width }) => `${$width}px`};
+  border-radius: 50%;
+  background-size: contain;
+  border: solid 2.4px white;
+  background-image: url('https://static-nft.pancakeswap.com/mainnet/0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07/the-bunny-1000.png');
 `
 
 export const Questers = ({
@@ -72,7 +68,7 @@ export const Questers = ({
               zIndex: `${index - totalLength}`,
             }}
           >
-            <Jazzicon seed={index} diameter={size} />
+            <BunnyNftIcon $width={size} $height={size} />
           </Box>
         ))}
       </AssetSetContainer>

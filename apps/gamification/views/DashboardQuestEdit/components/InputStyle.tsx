@@ -7,6 +7,24 @@ export const StyledInputGroup = styled(InputGroup)`
 
 export const StyledInput = styled(Input)`
   height: 32px;
+
+  box-shadow: ${({ theme, isError }) => {
+    if (isError) {
+      return `0px 0px 0px 2px ${theme.colors.failure}`
+    }
+
+    return theme.shadows.inset
+  }};
+
+  &:focus:not(:disabled) {
+    box-shadow: ${({ theme, isError }) => {
+      if (isError) {
+        return `0px 0px 0px 2px ${theme.colors.failure}`
+      }
+
+      return theme.shadows.focus
+    }};
+  }
 `
 
 export const InputErrorText = ({ errorText }: { errorText: string }) => {

@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import {
+  ArrowBackIcon,
   Box,
   Card,
   CardBody,
@@ -8,6 +9,7 @@ import {
   FlexGap,
   Heading,
   Input,
+  Link,
   ReactMarkdown,
   Tag,
   Text,
@@ -38,6 +40,12 @@ const TimelineGroup = styled(Flex)`
   }
 `
 
+const StyledBackButton = styled(Link)`
+  &:hover {
+    text-decoration: none;
+  }
+`
+
 const EasyMde = dynamic(() => import('components/EasyMde'), {
   ssr: false,
 })
@@ -46,6 +54,7 @@ interface EditTemplateProps {
   titleText: string
   state: StateType
   questId?: string
+  backButtonUrl: string
   uploadImageComponent?: JSX.Element
   updateValue: (key: string, value: string | Date) => void
 }
@@ -55,6 +64,7 @@ export const EditTemplate: React.FC<React.PropsWithChildren<EditTemplateProps>> 
   state,
   questId,
   uploadImageComponent,
+  backButtonUrl,
   updateValue,
   children,
 }) => {
@@ -71,6 +81,14 @@ export const EditTemplate: React.FC<React.PropsWithChildren<EditTemplateProps>> 
       p={['0 0 150px 0', '0 0 150px 0', '0 0 150px 0', '0 0 150px 0', '40px 40px 200px 40px']}
     >
       <Box>
+        <StyledBackButton href={backButtonUrl} mb="32px">
+          <Flex>
+            <ArrowBackIcon color="primary" />
+            <Text ml="6px" color="primary" bold>
+              {t('Back')}
+            </Text>
+          </Flex>
+        </StyledBackButton>
         <Flex mb="8px">
           <Text bold fontSize="24px" lineHeight="28px" mr="16px">
             {titleText}

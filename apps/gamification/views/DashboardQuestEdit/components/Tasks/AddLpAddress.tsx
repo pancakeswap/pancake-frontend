@@ -3,14 +3,18 @@ import { useTranslation } from '@pancakeswap/localization'
 import {
   Box,
   Button,
+  ButtonMenu,
+  ButtonMenuItem,
   ChevronDownIcon,
   ErrorFillIcon,
   Flex,
+  FlexGap,
   OpenNewIcon,
   Text,
   useModal,
   useTooltip,
 } from '@pancakeswap/uikit'
+import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { NetworkSelectorModal } from 'components/NetworkSelectorModal'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import { useMemo, useState } from 'react'
@@ -18,17 +22,13 @@ import { styled } from 'styled-components'
 import { ConfirmDeleteModal } from 'views/DashboardQuestEdit/components/ConfirmDeleteModal'
 import { InputErrorText, StyledInput, StyledInputGroup } from 'views/DashboardQuestEdit/components/InputStyle'
 import { DropdownList } from 'views/DashboardQuestEdit/components/Tasks/DropdownList'
+import { ExpandButton } from 'views/DashboardQuestEdit/components/Tasks/ExpandButton'
 import { StyledOptionIcon } from 'views/DashboardQuestEdit/components/Tasks/StyledOptionIcon'
 import { TaskLiquidityConfig } from 'views/DashboardQuestEdit/context/types'
 import { useQuestEdit } from 'views/DashboardQuestEdit/context/useQuestEdit'
 import { useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
 import { TaskType } from 'views/DashboardQuestEdit/type'
-import {
-  validateIsNotEmpty,
-  validateLpAddress,
-  validateNumber,
-  validateUrl,
-} from 'views/DashboardQuestEdit/utils/validateFormat'
+import { validateLpAddress, validateNumber, validateUrl } from 'views/DashboardQuestEdit/utils/validateFormat'
 
 const StyleSelector = styled(Button)`
   position: absolute;
@@ -63,10 +63,13 @@ type SocialKeyType =
   | 'lpAddress'
   | 'stakePeriodInDays'
 
+const feeTierData = [FeeAmount.LOWEST, FeeAmount.LOW, FeeAmount.MEDIUM, FeeAmount.HIGH]
+
 export const AddLpAddress: React.FC<AddLpAddressProps> = ({ task, isDrafted }) => {
   const { t } = useTranslation()
   const { taskIcon, taskNaming } = useTaskInfo(false, 22)
   const [isFirst, setIsFirst] = useState(true)
+  const [isExpanded, setIsExpanded] = useState(true)
   const { tasks, onTasksChange, deleteTask } = useQuestEdit()
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(t('Open in new tab'), {
@@ -120,12 +123,20 @@ export const AddLpAddress: React.FC<AddLpAddressProps> = ({ task, isDrafted }) =
     }
   }
 
+  const onSelectFee = (index: number) => {
+    const newData = feeTierData[index].toString()
+    const forkTasks = Object.assign(tasks)
+    const indexToUpdate = forkTasks.findIndex((i: TaskLiquidityConfig) => i.sid === task.sid)
+    forkTasks[indexToUpdate].feeTier = newData
+
+    onTasksChange([...forkTasks])
+  }
+
   const disableInput = useMemo(() => !isDrafted, [isDrafted])
 
   const isMinAmountError = useMemo(() => !isFirst && validateNumber(task.minAmount), [isFirst, task?.minAmount])
   const isLpAddressError = useMemo(() => !isFirst && validateLpAddress(task.lpAddress), [isFirst, task?.lpAddress])
   const isLpAddressUrlError = useMemo(() => !isFirst && validateUrl(task.lpAddressLink), [isFirst, task?.lpAddressLink])
-  const isFeeTierError = useMemo(() => !isFirst && validateIsNotEmpty(task.feeTier), [isFirst, task?.feeTier])
   const isStakePeriodInDaysError = useMemo(
     () => !isFirst && validateNumber(task.stakePeriodInDays.toString()),
     [isFirst, task?.stakePeriodInDays],
@@ -134,6 +145,7 @@ export const AddLpAddress: React.FC<AddLpAddressProps> = ({ task, isDrafted }) =
   return (
     <Flex flexDirection={['column']}>
       <Flex width="100%">
+        {!disableInput && <ExpandButton isExpanded={isExpanded} setIsExpanded={setIsExpanded} />}
         <Flex mr="8px" alignSelf="center" position="relative">
           {taskIcon(TaskType.ADD_LIQUIDITY)}
           {task.isOptional && <StyledOptionIcon />}
@@ -151,118 +163,133 @@ export const AddLpAddress: React.FC<AddLpAddressProps> = ({ task, isDrafted }) =
           />
         )}
       </Flex>
-      <Flex flexDirection={['column']} width="100%" mt="12px">
-        <Flex flex="6" flexDirection="column">
-          <Flex>
-            <Flex
-              position="relative"
-              paddingRight="45px"
-              style={{ cursor: 'pointer' }}
-              onClick={onPresentNetworkSelectorModal}
-            >
-              <StyleNetwork style={{ backgroundImage: `url(${ASSET_CDN}/web/chains/${task.network}.png)` }} />
-              <StyleSelector variant="light" scale="sm" endIcon={<ChevronDownIcon />} />
+      {isExpanded && (
+        <Flex flexDirection={['column']} width="100%" mt="12px">
+          <Flex flex="6" flexDirection="column">
+            <Flex flexDirection={['column', 'column', 'row']}>
+              <Flex width="100%">
+                <Flex
+                  position="relative"
+                  paddingRight="45px"
+                  style={{ cursor: 'pointer' }}
+                  onClick={onPresentNetworkSelectorModal}
+                >
+                  <StyleNetwork style={{ backgroundImage: `url(${ASSET_CDN}/web/chains/${task.network}.png)` }} />
+                  <StyleSelector variant="light" scale="sm" endIcon={<ChevronDownIcon />} />
+                </Flex>
+                <Flex width="100%" flexDirection="column">
+                  <StyledInputGroup
+                    endIcon={isMinAmountError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}
+                  >
+                    <StyledInput
+                      inputMode="numeric"
+                      pattern="^[0-9]*[.,]?[0-9]*$"
+                      value={task.minAmount}
+                      isError={isMinAmountError}
+                      disabled={disableInput}
+                      placeholder={t('Min. $ Amount worth of liquidity')}
+                      onChange={(e) => handleInputChange(e, 'minAmount')}
+                    />
+                  </StyledInputGroup>
+                  {isMinAmountError && <InputErrorText errorText={t('Cannot be 0')} />}
+                </Flex>
+              </Flex>
+              <Flex width={['100%', '100%', '80%']} m={['8px 0 0 0', '8px 0 0 0', '0 0 0 8px']} flexDirection="column">
+                <StyledInputGroup
+                  endIcon={
+                    isStakePeriodInDaysError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined
+                  }
+                >
+                  <StyledInput
+                    inputMode="numeric"
+                    pattern="^[0-9]+$"
+                    placeholder={t('Days to hold')}
+                    disabled={disableInput}
+                    isError={isStakePeriodInDaysError}
+                    value={task?.stakePeriodInDays > 0 ? task?.stakePeriodInDays : ''}
+                    onChange={(e) => handleInputChange(e, 'stakePeriodInDays')}
+                  />
+                </StyledInputGroup>
+                {isStakePeriodInDaysError && <InputErrorText errorText={t('Cannot be 0')} />}
+              </Flex>
             </Flex>
-            <StyledInputGroup
-              endIcon={isLpAddressError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}
-            >
-              <StyledInput
-                isError={isLpAddressError}
-                value={task.lpAddress}
-                placeholder={t('LP address')}
-                disabled={disableInput}
-                onChange={(e) => handleInputChange(e, 'lpAddress')}
-              />
-            </StyledInputGroup>
+            <FlexGap gap="8px" flexDirection="column" mt="8px">
+              <Flex flexDirection="column">
+                <StyledInputGroup
+                  endIcon={
+                    isLpAddressUrlError ? (
+                      <ErrorFillIcon color="failure" width={16} height={16} />
+                    ) : (
+                      <Box ref={targetRef} onClick={onclickOpenNewIcon}>
+                        <OpenNewIcon style={{ cursor: 'pointer' }} color="primary" width="20px" />
+                        {tooltipVisible && tooltip}
+                      </Box>
+                    )
+                  }
+                >
+                  <StyledInput
+                    placeholder={t('LP Address Link')}
+                    isError={isLpAddressUrlError}
+                    value={task.lpAddressLink}
+                    disabled={disableInput}
+                    onChange={(e) => handleInputChange(e, 'lpAddressLink')}
+                  />
+                </StyledInputGroup>
+                {isLpAddressUrlError && <InputErrorText errorText={t('Enter a valid website URL')} />}
+              </Flex>
+              <Flex flexDirection="column">
+                <StyledInputGroup
+                  endIcon={isLpAddressError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}
+                >
+                  <StyledInput
+                    isError={isLpAddressError}
+                    value={task.lpAddress}
+                    placeholder={t('LP address')}
+                    disabled={disableInput}
+                    onChange={(e) => handleInputChange(e, 'lpAddress')}
+                  />
+                </StyledInputGroup>
+                {isLpAddressError && <InputErrorText errorText={t('This is not an LP address')} />}
+              </Flex>
+              <Flex>
+                <Text fontSize="14px" color="textSubtle" mr="8px" minWidth="50px" style={{ alignSelf: 'center' }}>
+                  {t('Fee Tier')}
+                </Text>
+                <ButtonMenu
+                  scale="sm"
+                  fullWidth
+                  activeIndex={feeTierData.findIndex((data) => data.toString() === task.feeTier)}
+                  onItemClick={(index) => onSelectFee(index)}
+                  variant="subtle"
+                >
+                  {feeTierData.map((fee) => (
+                    <ButtonMenuItem key={fee}>{fee}</ButtonMenuItem>
+                  ))}
+                </ButtonMenu>
+              </Flex>
+              <Flex flexDirection="column">
+                <StyledInputGroup>
+                  <StyledInput
+                    placeholder={t('Title')}
+                    value={task.title}
+                    onChange={(e) => handleInputChange(e, 'title')}
+                  />
+                </StyledInputGroup>
+              </Flex>
+              <Flex flexDirection="column">
+                <StyledInputGroup>
+                  <StyledInput
+                    placeholder={t('Description (Optional)')}
+                    value={task.description}
+                    disabled={disableInput}
+                    onChange={(e) => handleInputChange(e, 'description')}
+                  />
+                </StyledInputGroup>
+              </Flex>
+            </FlexGap>
           </Flex>
-          {isLpAddressError && <InputErrorText errorText={t('This is not an LP address')} />}
         </Flex>
-        <Flex flex="4" m={['8px 0 0 0']} flexDirection="column">
-          <StyledInputGroup>
-            <StyledInput placeholder={t('Title')} value={task.title} onChange={(e) => handleInputChange(e, 'title')} />
-          </StyledInputGroup>
-        </Flex>
-        <Flex flex="4" m={['8px 0 0 0']} flexDirection="column">
-          <StyledInputGroup>
-            <StyledInput
-              placeholder={t('Description (Optional)')}
-              value={task.description}
-              disabled={disableInput}
-              onChange={(e) => handleInputChange(e, 'description')}
-            />
-          </StyledInputGroup>
-        </Flex>
-        <Flex flex="4" m={['8px 0 0 0']} flexDirection="column">
-          <StyledInputGroup
-            endIcon={
-              isLpAddressUrlError ? (
-                <ErrorFillIcon color="failure" width={16} height={16} />
-              ) : (
-                <Box ref={targetRef} onClick={onclickOpenNewIcon}>
-                  <OpenNewIcon style={{ cursor: 'pointer' }} color="primary" width="20px" />
-                  {tooltipVisible && tooltip}
-                </Box>
-              )
-            }
-          >
-            <StyledInput
-              placeholder={t('LP Address Link')}
-              isError={isLpAddressUrlError}
-              value={task.lpAddressLink}
-              disabled={disableInput}
-              onChange={(e) => handleInputChange(e, 'lpAddressLink')}
-            />
-          </StyledInputGroup>
-          {isLpAddressUrlError && <InputErrorText errorText={t('Enter a valid website URL')} />}
-        </Flex>
-        <Flex flex="4" m={['8px 0 0 0']} flexDirection="column">
-          <StyledInputGroup
-            endIcon={isFeeTierError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}
-          >
-            <StyledInput
-              pattern="^[0-9]+$"
-              inputMode="numeric"
-              placeholder={t('Fee Tier 100,500,2500,10000')}
-              isError={isFeeTierError}
-              disabled={disableInput}
-              value={task.feeTier}
-              onChange={(e) => handleInputChange(e, 'feeTier')}
-            />
-          </StyledInputGroup>
-          {isFeeTierError && <InputErrorText errorText={t('Cannot be 0')} />}
-        </Flex>
-        <Flex flex="4" m={['8px 0 0 0']} flexDirection="column">
-          <StyledInputGroup
-            endIcon={isMinAmountError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}
-          >
-            <StyledInput
-              inputMode="numeric"
-              pattern="^[0-9]*[.,]?[0-9]*$"
-              value={task.minAmount}
-              isError={isMinAmountError}
-              disabled={disableInput}
-              placeholder={t('Min. $ Amount worth of liquidity')}
-              onChange={(e) => handleInputChange(e, 'minAmount')}
-            />
-          </StyledInputGroup>
-          {isMinAmountError && <InputErrorText errorText={t('Cannot be 0')} />}
-        </Flex>
-        <Flex flex="4" m={['8px 0 0 0']} flexDirection="column">
-          <StyledInputGroup
-            endIcon={isStakePeriodInDaysError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}
-          >
-            <StyledInput
-              inputMode="numeric"
-              pattern="^[0-9]+$"
-              placeholder={t('Days to hold')}
-              disabled={disableInput}
-              value={task?.stakePeriodInDays > 0 ? task?.stakePeriodInDays : ''}
-              onChange={(e) => handleInputChange(e, 'stakePeriodInDays')}
-            />
-          </StyledInputGroup>
-          {isStakePeriodInDaysError && <InputErrorText errorText={t('Cannot be 0')} />}
-        </Flex>
-      </Flex>
+      )}
     </Flex>
   )
 }

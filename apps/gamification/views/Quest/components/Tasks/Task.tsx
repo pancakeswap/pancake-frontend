@@ -470,7 +470,8 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
                 <FlexGap gap="8px" width="100%">
                   <Button
                     width="100%"
-                    scale="sm"
+                    scale="md"
+                    style={{ borderRadius: '999px' }}
                     endIcon={<OpenNewIcon color="invertedContrast" />}
                     onClick={handleAction}
                   >
@@ -480,9 +481,10 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
                     <>
                       {isError ? (
                         <Button
-                          scale="sm"
+                          scale="md"
                           width="100%"
                           variant="danger"
+                          style={{ borderRadius: '999px' }}
                           disabled={isPending}
                           endIcon={
                             <RefreshIcon
@@ -498,8 +500,9 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
                         </Button>
                       ) : (
                         <VerifyButton
-                          scale="sm"
+                          scale="md"
                           width="100%"
+                          style={{ borderRadius: '999px' }}
                           disabled={isPending}
                           endIcon={isPending && <Loading width={16} height={16} />}
                           onClick={handleVerifyButton}
@@ -511,7 +514,13 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
                   )}
                 </FlexGap>
               ) : (
-                <Button variant="success" scale="sm" width="100%" endIcon={<CheckmarkCircleFillIcon color="white" />}>
+                <Button
+                  scale="md"
+                  width="100%"
+                  variant="success"
+                  style={{ borderRadius: '999px' }}
+                  endIcon={<CheckmarkCircleFillIcon color="white" />}
+                >
                   {t('Completed')}
                 </Button>
               )}

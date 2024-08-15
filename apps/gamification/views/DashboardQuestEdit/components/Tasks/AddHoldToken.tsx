@@ -13,6 +13,7 @@ import { Address } from 'viem'
 import { ConfirmDeleteModal } from 'views/DashboardQuestEdit/components/ConfirmDeleteModal'
 import { InputErrorText, StyledInput, StyledInputGroup } from 'views/DashboardQuestEdit/components/InputStyle'
 import { DropdownList } from 'views/DashboardQuestEdit/components/Tasks/DropdownList'
+import { ExpandButton } from 'views/DashboardQuestEdit/components/Tasks/ExpandButton'
 import { StyledOptionIcon } from 'views/DashboardQuestEdit/components/Tasks/StyledOptionIcon'
 import { TaskHoldTokenConfig } from 'views/DashboardQuestEdit/context/types'
 import { useQuestEdit } from 'views/DashboardQuestEdit/context/useQuestEdit'
@@ -40,6 +41,7 @@ export const AddHoldToken: React.FC<AddHoldTokenProps> = ({ task, isDrafted }) =
   const { t } = useTranslation()
   const { taskIcon, taskNaming } = useTaskInfo(false, 22)
   const [isFirst, setIsFirst] = useState(true)
+  const [isExpanded, setIsExpanded] = useState(true)
   const [minAmount, setMinAmount] = useState('')
   const { tasks, onTasksChange, deleteTask } = useQuestEdit()
 
@@ -122,6 +124,7 @@ export const AddHoldToken: React.FC<AddHoldTokenProps> = ({ task, isDrafted }) =
   return (
     <Flex flexDirection={['column']}>
       <Flex width="100%">
+        {!disableInput && <ExpandButton isExpanded={isExpanded} setIsExpanded={setIsExpanded} />}
         <Flex mr="8px" alignSelf="center" position="relative">
           {taskIcon(TaskType.HOLD_A_TOKEN)}
           {task.isOptional && <StyledOptionIcon />}
@@ -139,68 +142,70 @@ export const AddHoldToken: React.FC<AddHoldTokenProps> = ({ task, isDrafted }) =
           />
         )}
       </Flex>
-      <Flex flexDirection={['column']} width="100%" mt="12px">
-        <Flex flexDirection="column">
-          <Flex flexDirection={['column', 'column', 'row']}>
-            <Flex width="100%">
-              <Flex position="relative" paddingRight="45px" onClick={onPresentCurrencyModal}>
-                <TokenWithChain width={32} height={32} currency={selectedCurrency} />
-                <StyleSelector variant="light" scale="sm" endIcon={<ChevronDownIcon />} />
+      {isExpanded && (
+        <Flex flexDirection={['column']} width="100%" mt="12px">
+          <Flex flexDirection="column">
+            <Flex flexDirection={['column', 'column', 'row']}>
+              <Flex width="100%">
+                <Flex position="relative" paddingRight="45px" onClick={onPresentCurrencyModal}>
+                  <TokenWithChain width={32} height={32} currency={selectedCurrency} />
+                  <StyleSelector variant="light" scale="sm" endIcon={<ChevronDownIcon />} />
+                </Flex>
+                <Flex width="100%" flexDirection="column">
+                  <StyledInputGroup
+                    endIcon={isError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}
+                  >
+                    <StyledInput
+                      inputMode="numeric"
+                      pattern="^[0-9]*[.,]?[0-9]*$"
+                      isError={isError}
+                      value={minAmount}
+                      disabled={disableInput}
+                      placeholder={t('Minimum no. of token')}
+                      onChange={(e) => handleInputChange(e, 'minAmount')}
+                    />
+                  </StyledInputGroup>
+                  {isError && <InputErrorText errorText={t('Cannot be 0')} />}
+                </Flex>
               </Flex>
-              <Flex width="100%" flexDirection="column">
+              <Flex width={['100%', '100%', '80%']} m={['8px 0 0 0', '8px 0 0 0', '0 0 0 8px']} flexDirection="column">
                 <StyledInputGroup
-                  endIcon={isError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}
+                  endIcon={isMinHoldDaysError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}
                 >
                   <StyledInput
                     inputMode="numeric"
-                    pattern="^[0-9]*[.,]?[0-9]*$"
-                    isError={isError}
-                    value={minAmount}
+                    pattern="^[0-9]+$"
+                    placeholder={t('Days to hold')}
+                    isError={isMinHoldDaysError}
+                    value={task.minHoldDays}
                     disabled={disableInput}
-                    placeholder={t('Minimum no. of token')}
-                    onChange={(e) => handleInputChange(e, 'minAmount')}
+                    onChange={(e) => handleInputChange(e, 'minHoldDays')}
                   />
                 </StyledInputGroup>
-                {isError && <InputErrorText errorText={t('Cannot be 0')} />}
+                {isMinHoldDaysError && <InputErrorText errorText={t('Days to hold cannot be 0')} />}
               </Flex>
             </Flex>
-            <Flex width={['100%', '100%', '80%']} m={['8px 0 0 0', '8px 0 0 0', '0 0 0 8px']} flexDirection="column">
-              <StyledInputGroup
-                endIcon={isMinHoldDaysError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}
-              >
+            <FlexGap gap="8px" flexDirection="column" mt="8px">
+              <InputGroup>
                 <StyledInput
-                  inputMode="numeric"
-                  pattern="^[0-9]+$"
-                  placeholder={t('Days to hold')}
-                  isError={isMinHoldDaysError}
-                  value={task.minHoldDays}
+                  placeholder={t('Title')}
+                  value={task.title}
                   disabled={disableInput}
-                  onChange={(e) => handleInputChange(e, 'minHoldDays')}
+                  style={{ borderRadius: '24px' }}
+                  onChange={(e) => handleInputChange(e, 'title')}
                 />
-              </StyledInputGroup>
-              {isMinHoldDaysError && <InputErrorText errorText={t('Days to hold cannot be 0')} />}
-            </Flex>
-          </Flex>
-          <FlexGap gap="8px" flexDirection="column" mt="8px">
-            <InputGroup>
+              </InputGroup>
               <StyledInput
-                placeholder={t('Title')}
-                value={task.title}
+                placeholder={t('Description (Optional)')}
+                value={task.description}
                 disabled={disableInput}
                 style={{ borderRadius: '24px' }}
-                onChange={(e) => handleInputChange(e, 'title')}
+                onChange={(e) => handleInputChange(e, 'description')}
               />
-            </InputGroup>
-            <StyledInput
-              placeholder={t('Description (Optional)')}
-              value={task.description}
-              disabled={disableInput}
-              style={{ borderRadius: '24px' }}
-              onChange={(e) => handleInputChange(e, 'description')}
-            />
-          </FlexGap>
+            </FlexGap>
+          </Flex>
         </Flex>
-      </Flex>
+      )}
     </Flex>
   )
 }

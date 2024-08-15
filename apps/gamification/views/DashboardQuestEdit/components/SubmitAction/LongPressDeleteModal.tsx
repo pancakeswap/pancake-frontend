@@ -1,14 +1,13 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Button, DeleteOutlineIcon, Flex, InjectedModalProps, Modal, Text } from '@pancakeswap/uikit'
 import { useEffect, useRef, useState } from 'react'
+import { HOLD_DURATION } from 'views/DashboardQuestEdit/config/index'
 import { LongPressSvg } from './LongPressSvg'
 
 interface LongPressDeleteModalProps extends InjectedModalProps {
   targetTitle: string
   handleDelete: () => void
 }
-
-const DURATION = 3000 // 3s
 
 export const LongPressDeleteModal: React.FC<LongPressDeleteModalProps> = ({ targetTitle, handleDelete, onDismiss }) => {
   const { t } = useTranslation()
@@ -20,16 +19,16 @@ export const LongPressDeleteModal: React.FC<LongPressDeleteModalProps> = ({ targ
     timerRef.current = window.setTimeout(() => {
       setProgress(100)
       handleClickDelete()
-    }, DURATION)
+    }, HOLD_DURATION)
 
     let start: number | null = null
     const animate = (timestamp: number) => {
       if (!start) start = timestamp
       const elapsed = timestamp - start
-      const percentage = Math.min((elapsed / DURATION) * 100, 100)
+      const percentage = Math.min((elapsed / HOLD_DURATION) * 100, 100)
       setProgress(percentage)
 
-      if (elapsed < DURATION) {
+      if (elapsed < HOLD_DURATION) {
         animationFrameRef.current = requestAnimationFrame(animate)
       }
     }

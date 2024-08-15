@@ -1,4 +1,5 @@
-import { Box, Card, Flex, Spinner, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Box, Card, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { SpinnerWithLoadingText } from 'components/SpinnerWithLoadingText'
 import { styled } from 'styled-components'
 import { SingleQuestData } from 'views/DashboardQuestEdit/hooks/useGetSingleQuestData'
 import { CompletionStatusIndex } from 'views/DashboardQuestEdit/type'
@@ -50,9 +51,7 @@ export const Records: React.FC<RecordsProps> = ({
           ))}
         </StyledRows>
       </Card>
-      <Flex justifyContent="center" ref={hasNextPage ? sentryRef : undefined} pb="20px">
-        {isFetching && <Spinner size={100} />}
-      </Flex>
+      <Box ref={hasNextPage ? sentryRef : undefined}>{isFetching && <SpinnerWithLoadingText />}</Box>
     </Box>
   )
 }

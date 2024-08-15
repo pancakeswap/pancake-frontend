@@ -48,6 +48,7 @@
     "@pancakeswap/uikit": "workspace:*",
     "@pancakeswap/utils": "workspace:*",
     "@pancakeswap/wagmi": "workspace:*",
+    "@pancakeswap/v3-sdk": "workspace:*",
     "@pancakeswap/widgets-internal": "workspace:*",
     "@reduxjs/toolkit": "^1.9.1",
     "@tanstack/react-query": "^5.28.4",

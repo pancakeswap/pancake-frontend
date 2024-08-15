@@ -19,6 +19,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { styled } from 'styled-components'
 import { Address, toHex } from 'viem'
 import { LongPressSvg } from 'views/DashboardQuestEdit/components/SubmitAction/LongPressSvg'
+import { HOLD_DURATION } from 'views/DashboardQuestEdit/config/index'
 import { StateType } from 'views/DashboardQuestEdit/context/types'
 import { useQuestRewardApprovalStatus } from 'views/DashboardQuestEdit/hooks/useQuestRewardApprovalStatus'
 import { combineDateAndTime } from 'views/DashboardQuestEdit/utils/combineDateAndTime'
@@ -49,8 +50,6 @@ interface AddRewardModalProps extends InjectedModalProps {
   state: StateType
   handlePickedRewardToken: (value: Currency, totalRewardAmount: string, amountOfWinnersInModal: number) => void
 }
-
-const DURATION = 3000 // 3s
 
 export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProps>> = ({
   state,
@@ -180,16 +179,16 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
     timerRef.current = window.setTimeout(() => {
       setProgress(100)
       handleContinue()
-    }, DURATION)
+    }, HOLD_DURATION)
 
     let start: number | null = null
     const animate = (timestamp: number) => {
       if (!start) start = timestamp
       const elapsed = timestamp - start
-      const percentage = Math.min((elapsed / DURATION) * 100, 100)
+      const percentage = Math.min((elapsed / HOLD_DURATION) * 100, 100)
       setProgress(percentage)
 
-      if (elapsed < DURATION) {
+      if (elapsed < HOLD_DURATION) {
         animationFrameRef.current = requestAnimationFrame(animate)
       }
     }

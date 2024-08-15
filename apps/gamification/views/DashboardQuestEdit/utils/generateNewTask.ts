@@ -1,5 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
 import { CAKE } from '@pancakeswap/tokens'
+import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { nanoid } from '@reduxjs/toolkit'
 import { TaskConfigType } from 'views/DashboardQuestEdit/context/types'
 import { TaskType } from 'views/DashboardQuestEdit/type'
@@ -64,7 +65,7 @@ export const generateNewTask = (tasks: TaskConfigType[], taskType: TaskType): Ta
         orderNumber: 0,
         isOptional: false,
         lpAddressLink: '',
-        feeTier: '',
+        feeTier: FeeAmount.LOW.toString(),
         stakePeriodInDays: 0,
       }
     case TaskType.VISIT_BLOG_POST:
