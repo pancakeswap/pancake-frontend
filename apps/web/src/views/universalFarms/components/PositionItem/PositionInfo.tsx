@@ -10,7 +10,7 @@ import React, { memo, useMemo } from 'react'
 import { PoolInfo } from 'state/farmsV4/state/type'
 import styled from 'styled-components'
 import { useV2CakeEarning, useV3CakeEarning } from 'views/universalFarms/hooks/useCakeEarning'
-import { PoolApyButton } from '../PoolApyButton'
+import { PoolGlobalAprButton } from '../PoolAprButton'
 
 export type PositionInfoProps = {
   chainId: number
@@ -120,7 +120,12 @@ export const PositionInfo = memo(
           <Row gap="8px">
             <DetailInfoLabel>APR: </DetailInfoLabel>
             {pool ? (
-              <PoolApyButton multiplier={boosterMultiplier} pool={pool} userLpApr={userLpApr} />
+              // isStaked ? (
+              //   <PoolApyButton multiplier={boosterMultiplier} pool={pool} userLpApr={userLpApr} />
+              // ) : (
+              //   <PoolGlobalAprButton pool={pool} />
+              // )
+              <PoolGlobalAprButton pool={pool} />
             ) : (
               <Skeleton width={60} />
             )}

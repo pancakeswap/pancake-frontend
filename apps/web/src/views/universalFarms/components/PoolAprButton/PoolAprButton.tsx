@@ -6,6 +6,7 @@ import { StopPropagation } from '../StopPropagation'
 import { AprButton } from './AprButton'
 import { AprTooltipContent, BCakeWrapperFarmAprTipContent } from './AprTooltipContent'
 import { V2PoolAprModal } from './V2PoolAprModal'
+import { V3PoolAprModal } from './V3PoolAprModal'
 
 type PoolGlobalAprButtonProps = {
   pool: PoolInfo
@@ -58,7 +59,9 @@ export const PoolGlobalAprButton: React.FC<PoolGlobalAprButtonProps> = ({ pool }
           lpApr={Number(lpApr ?? 0)}
           boostMultiplier={cakeApr && cakeApr.boost ? Number(cakeApr.boost) / Number(cakeApr.value) : 0}
         />
-      ) : null}
+      ) : (
+        <V3PoolAprModal modal={modal} poolInfo={pool} cakeApr={cakeApr} />
+      )}
     </StopPropagation>
   )
 }
