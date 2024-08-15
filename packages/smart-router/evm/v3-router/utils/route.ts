@@ -52,7 +52,7 @@ function getRouteTypeFromPool(pool: Pick<Pool, 'type'>) {
 export function getRouteTypeByPools(pools: Pick<Pool, 'type'>[]) {
   let routeType: RouteType | undefined
   for (const p of pools) {
-    if (!routeType) {
+    if (routeType === undefined) {
       routeType = getRouteTypeFromPool(p)
       continue
     }
