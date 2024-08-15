@@ -5,6 +5,34 @@ import { defineFarmV3Configs } from '../src/defineFarmV3Configs'
 
 const v3TopFixedLps: FarmConfigV3[] = [
   {
+    pid: 29,
+    lpAddress: '0xC081eACC77c75CE1f39a43c04b53D90ADaD35fFd',
+    token0: zksyncTokens.zk,
+    token1: zksyncTokens.weth,
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 33,
+    lpAddress: '0xBc30878378FCb442E6dE822329d87714AFe43557',
+    token0: zksyncTokens.usdcNative,
+    token1: zksyncTokens.zk,
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 31,
+    lpAddress: '0x2c39aB1C4e5376F03A7FF5947e842719Fb267f6e',
+    token0: zksyncTokens.usdc,
+    token1: zksyncTokens.zk,
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 5,
+    lpAddress: '0x3c11CAACc9FC70d9130792c39702C5F96cE68a93',
+    token0: zksyncTokens.cake,
+    token1: zksyncTokens.weth,
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
     pid: 8,
     lpAddress: '0x7C0e7D6066aF191977a4483B445B5C06FC41ECd6',
     token0: zksyncTokens.usdc,
@@ -57,13 +85,7 @@ export const farmsV3 = defineFarmV3Configs([
     token1: zksyncTokens.rf,
     feeAmount: FeeAmount.HIGH,
   },
-  {
-    pid: 33,
-    lpAddress: '0xBc30878378FCb442E6dE822329d87714AFe43557',
-    token0: zksyncTokens.usdcNative,
-    token1: zksyncTokens.zk,
-    feeAmount: FeeAmount.MEDIUM,
-  },
+
   {
     pid: 32,
     lpAddress: '0x1fE7E46AA40Ea3b051348A58eE3c9135C1F9AEb3',
@@ -71,13 +93,7 @@ export const farmsV3 = defineFarmV3Configs([
     token1: zksyncTokens.zk,
     feeAmount: FeeAmount.HIGH,
   },
-  {
-    pid: 31,
-    lpAddress: '0x2c39aB1C4e5376F03A7FF5947e842719Fb267f6e',
-    token0: zksyncTokens.usdc,
-    token1: zksyncTokens.zk,
-    feeAmount: FeeAmount.MEDIUM,
-  },
+
   {
     pid: 30,
     lpAddress: '0x3bF35ac7BF2E4aaF98e007c9C3e0d214562A3DBB',
@@ -85,13 +101,7 @@ export const farmsV3 = defineFarmV3Configs([
     token1: zksyncTokens.zk,
     feeAmount: FeeAmount.HIGH,
   },
-  {
-    pid: 29,
-    lpAddress: '0xC081eACC77c75CE1f39a43c04b53D90ADaD35fFd',
-    token0: zksyncTokens.zk,
-    token1: zksyncTokens.weth,
-    feeAmount: FeeAmount.MEDIUM,
-  },
+
   {
     pid: 28,
     lpAddress: '0x96d33cF093857AC8C7a5f2183f405A0FCcC42444',
@@ -234,13 +244,7 @@ export const farmsV3 = defineFarmV3Configs([
     token1: zksyncTokens.tes,
     feeAmount: FeeAmount.HIGH,
   },
-  {
-    pid: 5,
-    lpAddress: '0x3c11CAACc9FC70d9130792c39702C5F96cE68a93',
-    token0: zksyncTokens.cake,
-    token1: zksyncTokens.weth,
-    feeAmount: FeeAmount.MEDIUM,
-  },
+
   {
     pid: 7,
     lpAddress: '0x662cD659F91528FF27D7Cb6Ac25e6EBA11c4003C',
