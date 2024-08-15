@@ -29,31 +29,35 @@ export const AprTooltipContent: React.FC<PropsWithChildren<AprTooltipContentProp
   const { t } = useTranslation()
   return (
     <>
-      <Text fontSize="14px" color="textSubtle">
+      <Text>
         {t('Combined APR')}: <b>{displayApr(combinedApr)}</b>
       </Text>
       <ul>
         {cakeApr ? (
           <li>
-            {t('Farm APR')}:{cakeApr.boost ? <b>{displayApr(Number(cakeApr.boost ?? 0))}</b> : null}
+            {t('Farm APR')}: &nbsp;&nbsp;
+            {cakeApr.boost ? (
+              <>
+                <b>{displayApr(Number(cakeApr.boost ?? 0))}</b>
+                &nbsp;&nbsp;
+              </>
+            ) : null}
             <b style={{ textDecoration: cakeApr.boost ? 'line-through' : 'none' }}>
               {displayApr(Number(cakeApr.value ?? 0))}
             </b>
           </li>
         ) : null}
         <li>
-          {t('LP Fee APR')}: <b>{displayApr(lpFeeApr)}</b>
+          {t('LP Fee APR')}:&nbsp;&nbsp;<b>{displayApr(lpFeeApr)}</b>
         </li>
-        {merklApr && (
+        {merklApr ? (
           <li>
-            <Text fontSize="14px" color="textSubtle">
-              {t('Merkl APR')}: <b>{displayApr(merklApr)}</b>
-            </Text>
+            {t('Merkl APR')}:&nbsp;&nbsp;<b>{displayApr(merklApr)}</b>
             <LinkExternal display="inline-block" href={merklLink}>
               {t('Check')}
             </LinkExternal>
           </li>
-        )}
+        ) : null}
       </ul>
 
       {showDesc && (
