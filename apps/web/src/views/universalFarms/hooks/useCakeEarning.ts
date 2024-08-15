@@ -35,10 +35,17 @@ export const useV2CakeEarning = (pool: PoolInfo | null | undefined) => {
 
 export const useV3CakeEarning = (tokenIds: bigint[] = []) => {
   const cakePrice = useCakePrice()
+  // compiled code will be like:
+  // ```
+  // {tokenIdResults: [n]} = (0, l.md)(e)
+  // earningsBusd: (0,
+  // s.useMemo)((()=>new o.Z(n.toString()).times(t.toString()).div(1e18).toNumber()), [t, n])
+  // ```
+  // and if n is undefined, n.toString() will throw error, so it's better to assign a default value for pendingCake
   const {
-    tokenIdResults: [pendingCake],
+    tokenIdResults: [pendingCake = 0n],
   } = useStakedPositionsByUser(tokenIds)
-  const earningsAmount = useMemo(() => +formatBigInt(pendingCake || 0n, 4), [pendingCake])
+  const earningsAmount = useMemo(() => +formatBigInt(pendingCake, 4), [pendingCake])
   const earningsBusd = useMemo(() => {
     return new BigNumber(pendingCake.toString()).times(cakePrice.toString()).div(1e18).toNumber()
   }, [cakePrice, pendingCake])
