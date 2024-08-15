@@ -12,16 +12,12 @@ export function withSiweAuth(handler: ExtendedApiHandler): ExtendedApiHandler {
   return async (req, res) => {
     const unauthorized = () => res.status(401).json({ message: 'Unauthorized' })
     const encodedMessage = req.headers['x-g-siwe-message']
-    console.log('encodedMessage', encodedMessage)
     const signature = req.headers['x-g-siwe-signature']
-    console.log('signature', signature)
     if (!encodedMessage || !signature || typeof encodedMessage !== 'string' || typeof signature !== 'string') {
       return unauthorized()
     }
     const message = decodeURIComponent(encodedMessage)
-    console.log('message', message)
     const siweMessage = parseSiweMessage(message)
-    console.log('siweMessage', siweMessage)
     const { address, chainId } = siweMessage
     const isMessageValid = validateSiweMessage({
       address,
