@@ -30,14 +30,8 @@ const MenuItem: React.FC<{
   const hasChildItems = useMemo(() => Boolean(items && items.length > 0), [items]);
 
   const isActive = useMemo(() => {
-    return Boolean(
-      hasChildItems
-        ? item.items?.find((i) => i.href === activeSubItemChildItem)
-        : isChildItems
-        ? item.href === activeSubItemChildItem
-        : item.href === activeItem
-    );
-  }, [hasChildItems, item, isChildItems, activeSubItemChildItem, activeItem]);
+    return Boolean(isChildItems ? item.href === activeSubItemChildItem : item.href === activeItem);
+  }, [item, isChildItems, activeSubItemChildItem, activeItem]);
 
   const MenuItemContent = (
     <Flex alignItems="center" ml={isChildItems ? "16px" : "0px"}>
@@ -58,6 +52,15 @@ const MenuItem: React.FC<{
     },
     [isSubMenuOpen]
   );
+
+  const chevronIconColor = useMemo(() => {
+    const isActiveChevron = hasChildItems && item.items?.find((i) => i.href === activeSubItemChildItem);
+    if (isActiveChevron) {
+      return "secondary";
+    }
+
+    return disabled || isDisabled ? "disabled" : "textSubtle";
+  }, [activeSubItemChildItem, disabled, hasChildItems, isDisabled, item]);
 
   return (
     <StyledDropdownMenuItemContainer key={label?.toString()}>
@@ -86,13 +89,9 @@ const MenuItem: React.FC<{
           {hasChildItems && (
             <>
               {isSubMenuOpen ? (
-                <ChevronDownIcon
-                  width="24px"
-                  height="24px"
-                  color={disabled || isDisabled ? "disabled" : "textSubtle"}
-                />
+                <ChevronDownIcon width="24px" height="24px" color={chevronIconColor} />
               ) : (
-                <ChevronUpIcon width="24px" height="24px" color={disabled || isDisabled ? "disabled" : "textSubtle"} />
+                <ChevronUpIcon width="24px" height="24px" color={chevronIconColor} />
               )}
             </>
           )}
