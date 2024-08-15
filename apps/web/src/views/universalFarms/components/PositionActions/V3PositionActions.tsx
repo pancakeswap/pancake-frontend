@@ -6,7 +6,8 @@ import styled from 'styled-components'
 import { logGTMClickStakeFarmEvent } from 'utils/customGTMEventTracking'
 import useFarmV3Actions from 'views/Farms/hooks/v3/useFarmV3Actions'
 import { useCheckShouldSwitchNetwork } from 'views/universalFarms/hooks'
-import { Protocol, UNIVERSAL_FARMS } from '@pancakeswap/farms'
+import { useIsFarmLive } from 'views/universalFarms/hooks/useIsFarmLive'
+import { Protocol } from '@pancakeswap/farms'
 import { V3StakeModal } from '../Modals/V3StakeModal'
 
 type ActionPanelProps = {
@@ -41,23 +42,13 @@ export const V3PositionActions = ({
   })
   const stakeModal = useModalV2()
   const { switchNetworkIfNecessary, isLoading: isSwitchingNetwork } = useCheckShouldSwitchNetwork()
-  const isFarmLive = useMemo(() => {
-    const [token0, token1] = currency0.wrapped.sortsBefore(currency1.wrapped)
-      ? [currency0.wrapped, currency1.wrapped]
-      : [currency1.wrapped, currency0.wrapped]
-    return UNIVERSAL_FARMS.find((farm) => {
-      const [farmToken0, farmToken1] = farm.token0.sortsBefore(farm.token1)
-        ? [farm.token0, farm.token1]
-        : [farm.token1, farm.token0]
-      return (
-        farm.chainId === chainId &&
-        farm.protocol === Protocol.V3 &&
-        token0.equals(farmToken0) &&
-        token1.equals(farmToken1) &&
-        fee === farm.feeAmount
-      )
-    })
-  }, [chainId, currency0, currency1, fee])
+  const isFarmLive = useIsFarmLive({
+    protocol: Protocol.V3,
+    chainId,
+    currency0,
+    currency1,
+    fee,
+  })
 
   const handleStakeAndCheckInactive = useCallback(async () => {
     logGTMClickStakeFarmEvent()
@@ -169,16 +160,6 @@ export const V3PositionActions = ({
   if (detailMode) {
     return (
       <ActionPanelContainer onClick={preventDefault}>
-        {/* {isStaked ? (
-          <>
-            <IconButton mr="6px" variant="secondary" disabled={removed} onClick={handleDecreasePosition}>
-              <MinusIcon color="primary" width="14px" />
-            </IconButton>
-            <IconButton variant="secondary" onClick={handleIncreasePosition}>
-              <AddIcon color="primary" width="14px" />
-            </IconButton>
-          </>
-        ) : null} */}
         {isStaked ? unstakeButton : !removed && isFarmLive ? stakeButton : null}
         {isStaked && !removed ? (
           <Button width={['100px']} scale="md" disabled={attemptingTxn || isSwitchingNetwork} onClick={handleHarvest}>
