@@ -202,7 +202,7 @@ const useTooltip = (content: React.ReactNode, options?: TooltipOptions): Tooltip
     e.stopPropagation();
   }, []);
 
-  const tooltip = (
+  const tooltip = visible ? (
     <StyledTooltip
       onClick={stopPropagation}
       data-theme={isDark ? "light" : "dark"}
@@ -216,16 +216,16 @@ const useTooltip = (content: React.ReactNode, options?: TooltipOptions): Tooltip
       {content}
       <Arrow ref={setArrowElement} style={styles.arrow} />
     </StyledTooltip>
-  );
+  ) : null;
 
-  const AnimatedTooltip = (
+  const AnimatedTooltip = visible ? (
     <LazyMotion features={domAnimation}>
-      <AnimatePresence>{visible && tooltip}</AnimatePresence>
+      <AnimatePresence>{tooltip}</AnimatePresence>
     </LazyMotion>
-  );
+  ) : null;
 
-  const portal = getPortalRoot();
-  const tooltipInPortal = portal && isInPortal ? createPortal(AnimatedTooltip, portal) : null;
+  const portal = visible && isInPortal && getPortalRoot();
+  const tooltipInPortal = visible && isInPortal && portal ? createPortal(AnimatedTooltip, portal) : null;
 
   return {
     targetRef: setTargetElement,
