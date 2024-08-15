@@ -202,25 +202,23 @@ const useTooltip = (content: React.ReactNode, options?: TooltipOptions): Tooltip
     e.stopPropagation();
   }, []);
 
-  const tooltip = visible ? (
-    <StyledTooltip
-      onClick={stopPropagation}
-      data-theme={isDark ? "light" : "dark"}
-      {...animationMap}
-      variants={animationVariants}
-      transition={{ duration: 0.3 }}
-      ref={setTooltipElement}
-      style={styles.popper}
-      {...attributes.popper}
-    >
-      {content}
-      <Arrow ref={setArrowElement} style={styles.arrow} />
-    </StyledTooltip>
-  ) : null;
-
   const AnimatedTooltip = visible ? (
     <LazyMotion features={domAnimation}>
-      <AnimatePresence>{tooltip}</AnimatePresence>
+      <AnimatePresence>
+        <StyledTooltip
+          onClick={stopPropagation}
+          data-theme={isDark ? "light" : "dark"}
+          {...animationMap}
+          variants={animationVariants}
+          transition={{ duration: 0.3 }}
+          ref={setTooltipElement}
+          style={styles.popper}
+          {...attributes.popper}
+        >
+          {content}
+          <Arrow ref={setArrowElement} style={styles.arrow} />
+        </StyledTooltip>
+      </AnimatePresence>
     </LazyMotion>
   ) : null;
 
