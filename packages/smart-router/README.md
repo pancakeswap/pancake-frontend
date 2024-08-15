@@ -11,6 +11,8 @@ $ pnpm add @pancakeswap/smart-router
 
 ## Usage (V4Router)
 
+**NOTE**: `V4Router` will be replaced by `@pancakeswap/routing-sdk` in the future
+
 V4Router is utilize the new routing strategy introduced in smart router v5. Use BSC as an example. Here's how we use v4 router to find the best trade route swapping from BNB to CAKE.
 
 For working code example, please refer to [v4 router usage example](https://github.com/pancakeswap/smart-router-example).

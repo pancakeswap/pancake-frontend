@@ -135,7 +135,7 @@ export function createGraph({ pools, graph }: GraphParams): Graph {
         )
         const edge = getEdge(p, vertA, vertB)
         invariant(edge !== undefined, '[Apply swap]: No valid edge found')
-        const quoteCurrency = quote.currency.wrapped.equals(vertA.currency.wrapped) ? vertA.currency : vertB.currency
+        const quoteCurrency = quote.currency.wrapped.equals(vertA.currency.wrapped) ? vertB.currency : vertA.currency
         // eslint-disable-next-line no-await-in-loop
         const quoteResult = edge.pool.getQuote({
           amount: quote,

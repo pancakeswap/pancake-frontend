@@ -3,7 +3,12 @@ import 'utils/workerPolyfill'
 import { findBestTrade, toSerializableTrade } from '@pancakeswap/routing-sdk'
 import { V3_POOL_TYPE, createV3Pool, toSerializableV3Pool } from '@pancakeswap/routing-sdk-addon-v3'
 import { V2_POOL_TYPE, createV2Pool, toSerializableV2Pool } from '@pancakeswap/routing-sdk-addon-v2'
-import { PoolType, SmartRouter, V4Router, getRouteTypeByPools, V2Pool } from '@pancakeswap/smart-router'
+import {
+  STABLE_POOL_TYPE,
+  createStablePool,
+  toSerializableStablePool,
+} from '@pancakeswap/routing-sdk-addon-stable-swap'
+import { PoolType, SmartRouter, V4Router, getRouteTypeByPools } from '@pancakeswap/smart-router'
 import { Call } from 'state/multicall/actions'
 import { fetchChunk } from 'state/multicall/fetchChunk'
 import { getLogger } from 'utils/datadog'
@@ -237,20 +242,22 @@ addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
       ? BigInt(gasPriceWei)
       : async () => BigInt((await onChainProvider({ chainId }).getGasPrice()).toString())
 
-    const testPools = pools
-      .filter((p) => SmartRouter.isV3Pool(p) || SmartRouter.isV2Pool(p))
-      .map((p) => {
-        if (SmartRouter.isV3Pool(p)) {
-          return createV3Pool(p)
-        }
-        return createV2Pool(p as V2Pool)
-      })
+    const initializedPools = pools.map((p) => {
+      if (SmartRouter.isV3Pool(p)) {
+        return createV3Pool(p)
+      }
+      if (SmartRouter.isV2Pool(p)) {
+        return createV2Pool(p)
+      }
+      return createStablePool(p)
+    })
+
     findBestTrade({
       amount: currencyAAmount,
       quoteCurrency: currencyB,
       tradeType,
       gasPriceWei: gasPrice,
-      candidatePools: testPools,
+      candidatePools: initializedPools,
       maxHops,
       maxSplits,
     })
@@ -271,6 +278,12 @@ addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
               return {
                 ...toSerializableV2Pool(p),
                 type: PoolType.V2,
+              }
+            }
+            if (p.type === STABLE_POOL_TYPE) {
+              return {
+                ...toSerializableStablePool(p),
+                type: PoolType.STABLE,
               }
             }
             throw new Error('Unknown pool type')
