@@ -67,6 +67,7 @@ export const V3PositionItem = memo(({ data, detailMode, fee24h, liquidity }: V3P
       removed={removed}
       outOfRange={outOfRange}
       fee={data.fee}
+      feeTierBase={1_000_000}
       protocol={data.protocol}
       isStaked={data.isStaked}
       tokenId={data.tokenId}

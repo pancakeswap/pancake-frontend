@@ -16,6 +16,7 @@ import { getBCakeWrapperAddress } from 'state/farmsV4/state/accountPositions/fet
 import { verifyBscNetwork } from 'utils/verifyBscNetwork'
 import { Address } from 'viem'
 import { useV2FarmActions } from 'views/universalFarms/hooks/useV2FarmActions'
+import { useIsFarmLive } from 'views/universalFarms/hooks/useIsFarmLive'
 import { DepositStakeAction, HarvestAction, ModifyStakeActions } from './StakeActions'
 
 type V2PositionActionsProps = {
@@ -168,10 +169,18 @@ const useWithdrawModal = (
 }
 
 const V2FarmingAction: React.FC<V2PositionActionsProps> = ({ data, chainId, lpAddress, pid, tvlUsd }) => {
+  const isFarmLive = useIsFarmLive({
+    protocol: data.protocol,
+    chainId,
+    currency0: data.pair.token0,
+    currency1: data.pair.token1,
+  })
   const onPresentDeposit = useDepositModal(data, lpAddress, chainId, pid)
   const onPresentWithdraw = useWithdrawModal(data, lpAddress, chainId, pid, tvlUsd)
 
-  return <ModifyStakeActions onIncrease={onPresentDeposit} onDecrease={onPresentWithdraw} />
+  return (
+    <ModifyStakeActions increaseDisabled={!isFarmLive} onIncrease={onPresentDeposit} onDecrease={onPresentWithdraw} />
+  )
 }
 
 const V2NativeAction: React.FC<V2PositionActionsProps> = ({ data, chainId, lpAddress, pid }) => {
