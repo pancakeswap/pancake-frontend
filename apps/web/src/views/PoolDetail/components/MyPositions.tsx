@@ -20,6 +20,7 @@ import { DoubleCurrencyLogo } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import Divider from 'components/Divider'
 import { ToastDescriptionWithTx } from 'components/Toast'
+import { CHAIN_QUERY_NAME } from 'config/chains'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useCurrencyUsdPrice } from 'hooks/useCurrencyUsdPrice'
@@ -39,7 +40,6 @@ import {
 } from 'views/universalFarms/components'
 import { useV2FarmActions } from 'views/universalFarms/hooks/useV2FarmActions'
 import { formatDollarAmount } from 'views/V3Info/utils/numbers'
-import { CHAIN_QUERY_NAME } from 'config/chains'
 import { useV3Positions } from '../hooks/useV3Positions'
 import { V2PoolEarnings, V3PoolEarnings } from './PoolEarnings'
 
@@ -315,15 +315,7 @@ const MyV3Positions: React.FC<{
             {t('active')}
           </Text>
           {positions?.[PositionFilter.Active]?.map((position) => {
-            return (
-              <V3PositionItem
-                detailMode
-                key={position.tokenId}
-                data={position}
-                fee24h={poolInfo.fee24hUsd}
-                liquidity={poolInfo.liquidity}
-              />
-            )
+            return <V3PositionItem detailMode key={position.tokenId} data={position} />
           })}
         </AutoColumn>
       ) : null}
@@ -335,15 +327,7 @@ const MyV3Positions: React.FC<{
             {t('inactive')}
           </Text>
           {positions?.[PositionFilter.Inactive].map((position) => {
-            return (
-              <V3PositionItem
-                detailMode
-                key={position.tokenId}
-                data={position}
-                fee24h={poolInfo.fee24hUsd}
-                liquidity={poolInfo.liquidity}
-              />
-            )
+            return <V3PositionItem detailMode key={position.tokenId} data={position} />
           })}
         </AutoColumn>
       ) : null}
@@ -354,15 +338,7 @@ const MyV3Positions: React.FC<{
             {t('closed')}
           </Text>
           {positions?.[PositionFilter.Closed]?.map((position) => {
-            return (
-              <V3PositionItem
-                detailMode
-                key={position.tokenId}
-                data={position}
-                fee24h={poolInfo.fee24hUsd}
-                liquidity={poolInfo.liquidity}
-              />
-            )
+            return <V3PositionItem detailMode key={position.tokenId} data={position} />
           })}
         </AutoColumn>
       ) : null}

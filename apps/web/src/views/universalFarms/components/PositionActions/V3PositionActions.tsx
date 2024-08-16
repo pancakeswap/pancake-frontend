@@ -1,3 +1,4 @@
+import { Protocol } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/swap-sdk-core'
 import { Button, Flex, useModalV2 } from '@pancakeswap/uikit'
@@ -7,9 +8,8 @@ import { logGTMClickStakeFarmEvent } from 'utils/customGTMEventTracking'
 import useFarmV3Actions from 'views/Farms/hooks/v3/useFarmV3Actions'
 import { useCheckShouldSwitchNetwork } from 'views/universalFarms/hooks'
 import { useIsFarmLive } from 'views/universalFarms/hooks/useIsFarmLive'
-import { Protocol } from '@pancakeswap/farms'
 import { V3StakeModal } from '../Modals/V3StakeModal'
-import { StopPropagation } from './StakeActions'
+import { StopPropagation } from '../StopPropagation'
 
 type ActionPanelProps = {
   removed: boolean
