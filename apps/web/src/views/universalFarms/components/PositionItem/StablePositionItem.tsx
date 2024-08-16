@@ -76,7 +76,6 @@ export const StablePositionItem = memo(({ data, detailMode }: { data: StableLPDe
           amount0={farmingDeposited0}
           amount1={farmingDeposited1}
           detailMode={detailMode}
-          boosterMultiplier={data.farmingBoosterMultiplier}
         >
           {pair.liquidityToken.chainId && pair.liquidityToken.address && pool?.pid ? (
             <V2PositionActions

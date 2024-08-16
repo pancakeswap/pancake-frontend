@@ -1,10 +1,11 @@
-import { CHAIN_QUERY_NAME } from 'config/chains'
-import { useRouter } from 'next/router'
 import { Protocol } from '@pancakeswap/farms'
 import { Currency, CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
 import { Column, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { TokenPairImage } from 'components/TokenImage'
+import { CHAIN_QUERY_NAME } from 'config/chains'
+import { useRouter } from 'next/router'
 import React, { PropsWithChildren } from 'react'
+import { PositionDetail, StableLPDetail, V2LPDetail } from 'state/farmsV4/state/accountPositions/type'
 import { PoolInfo } from 'state/farmsV4/state/type'
 import styled from 'styled-components'
 import { PositionInfo } from './PositionInfo'
@@ -29,8 +30,7 @@ type PositionItemProps = {
   amount1?: CurrencyAmount<Token>
   pool?: PoolInfo | null
   detailMode?: boolean
-  boosterMultiplier?: number
-  userLpApr?: number
+  userPosition?: PositionDetail | V2LPDetail | StableLPDetail
 }
 export const PositionItem: React.FC<PropsWithChildren<PositionItemProps>> = (props) => {
   const { link, currency0, currency1, chainId, children } = props
