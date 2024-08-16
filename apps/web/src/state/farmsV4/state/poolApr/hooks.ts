@@ -15,6 +15,11 @@ export const usePoolApr = (key: ChainIdAddressKey, pool: PoolInfo) => {
     const [lpApr, cakeApr] = await Promise.all([getLpApr(pool), getCakeApr(pool)])
     updatePools([{ ...pool, lpApr: `${lpApr}` }])
     updateCakeApr(cakeApr)
+    return {
+      lpApr: `${lpApr}`,
+      cakeApr,
+      merklApr: '0',
+    }
   }, [pool, updateCakeApr, updatePools])
 
   useQuery({

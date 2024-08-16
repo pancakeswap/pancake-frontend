@@ -1,7 +1,8 @@
 import { useModalV2, useTooltip } from '@pancakeswap/uikit'
 import { useMemo } from 'react'
-import { usePoolApr } from 'state/farmsV4/hooks'
-import { PoolInfo } from 'state/farmsV4/state/type'
+import { CakeApr } from 'state/farmsV4/atom'
+import { ChainIdAddressKey, PoolInfo } from 'state/farmsV4/state/type'
+import { sumApr } from '../../utils/sumApr'
 import { StopPropagation } from '../StopPropagation'
 import { AprButton } from './AprButton'
 import { AprTooltipContent, BCakeWrapperFarmAprTipContent } from './AprTooltipContent'
@@ -10,26 +11,17 @@ import { V3PoolAprModal } from './V3PoolAprModal'
 
 type PoolGlobalAprButtonProps = {
   pool: PoolInfo
+  lpApr: number
+  cakeApr: CakeApr[ChainIdAddressKey]
+  merklApr?: number
 }
 
-const sumApr = (...aprs: Array<number | `${number}` | undefined>): number => {
-  const sum = aprs.reduce((acc, apr) => {
-    if (typeof apr === 'undefined') {
-      return acc ?? 0
-    }
-    return Number(acc ?? 0) + Number(apr ?? 0)
-  }, 0)
-  return Number(sum) ? Number(sum) : 0
-}
-
-export const PoolGlobalAprButton: React.FC<PoolGlobalAprButtonProps> = ({ pool }) => {
-  const key = useMemo(() => `${pool.chainId}:${pool.lpAddress}` as const, [pool.chainId, pool.lpAddress])
-  const { lpApr, cakeApr, merklApr } = usePoolApr(key, pool)
+export const PoolAprButton: React.FC<PoolGlobalAprButtonProps> = ({ pool, lpApr, cakeApr, merklApr }) => {
   const baseApr = useMemo(() => {
     return sumApr(lpApr, cakeApr?.value, merklApr)
   }, [lpApr, cakeApr?.value, merklApr])
   const boostApr = useMemo(() => {
-    return sumApr(lpApr, cakeApr?.boost, merklApr)
+    return typeof cakeApr?.boost !== 'undefined' ? sumApr(lpApr, cakeApr?.boost, merklApr) : undefined
   }, [cakeApr?.boost, lpApr, merklApr])
   const hasBCake = pool.protocol === 'v2' || pool.protocol === 'stable'
 
@@ -37,7 +29,7 @@ export const PoolGlobalAprButton: React.FC<PoolGlobalAprButtonProps> = ({ pool }
 
   const { tooltip, targetRef, tooltipVisible } = useTooltip(
     <AprTooltipContent
-      combinedApr={boostApr}
+      combinedApr={boostApr ?? baseApr}
       cakeApr={cakeApr}
       lpFeeApr={Number(lpApr) ?? 0}
       merklApr={Number(merklApr) ?? 0}
@@ -55,7 +47,7 @@ export const PoolGlobalAprButton: React.FC<PoolGlobalAprButtonProps> = ({ pool }
         <V2PoolAprModal
           modal={modal}
           poolInfo={pool}
-          combinedApr={boostApr}
+          combinedApr={boostApr ?? baseApr}
           lpApr={Number(lpApr ?? 0)}
           boostMultiplier={cakeApr && cakeApr.boost ? Number(cakeApr.boost) / Number(cakeApr.value) : 0}
         />

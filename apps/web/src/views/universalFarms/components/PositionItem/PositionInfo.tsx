@@ -7,10 +7,12 @@ import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import { DoubleCurrencyLogo, FiatNumberDisplay } from '@pancakeswap/widgets-internal'
 import { RangeTag } from 'components/RangeTag'
 import React, { memo, useMemo } from 'react'
+import { PositionDetail, StableLPDetail, V2LPDetail } from 'state/farmsV4/state/accountPositions/type'
 import { PoolInfo } from 'state/farmsV4/state/type'
 import styled from 'styled-components'
+import { stringify } from 'viem'
 import { useV2CakeEarning, useV3CakeEarning } from 'views/universalFarms/hooks/useCakeEarning'
-import { PoolGlobalAprButton } from '../PoolAprButton'
+import { PoolGlobalAprButton, V2PoolPositionAprButton, V3PoolPositionAprButton } from '../PoolAprButton'
 
 export type PositionInfoProps = {
   chainId: number
@@ -30,8 +32,7 @@ export type PositionInfoProps = {
   amount1?: CurrencyAmount<Token>
   pool?: PoolInfo | null
   detailMode?: boolean
-  boosterMultiplier?: number
-  userLpApr?: number
+  userPosition?: PositionDetail | V2LPDetail | StableLPDetail
 }
 
 export const PositionInfo = memo(
@@ -50,8 +51,7 @@ export const PositionInfo = memo(
     amount0,
     amount1,
     pool,
-    boosterMultiplier,
-    userLpApr,
+    userPosition,
   }: PositionInfoProps) => {
     const { t } = useTranslation()
     const { theme } = useTheme()
@@ -117,15 +117,21 @@ export const PositionInfo = memo(
             ({amount0 ? amount0.toFixed(6) : 0} {currency0?.symbol ?? '-'} / {amount1 ? amount1.toFixed(6) : 0}{' '}
             {currency1?.symbol ?? '-'})
           </Row>
+          {stringify({
+            isStaked: userPosition?.isStaked,
+          })}
           <Row gap="8px">
             <DetailInfoLabel>APR: </DetailInfoLabel>
             {pool ? (
-              // isStaked ? (
-              //   <PoolApyButton multiplier={boosterMultiplier} pool={pool} userLpApr={userLpApr} />
-              // ) : (
-              //   <PoolGlobalAprButton pool={pool} />
-              // )
-              <PoolGlobalAprButton pool={pool} />
+              userPosition ? (
+                pool.protocol === Protocol.V3 ? (
+                  <V3PoolPositionAprButton pool={pool} userPosition={userPosition as PositionDetail} />
+                ) : (
+                  <V2PoolPositionAprButton pool={pool} userPosition={userPosition as V2LPDetail | StableLPDetail} />
+                )
+              ) : (
+                <PoolGlobalAprButton pool={pool} />
+              )
             ) : (
               <Skeleton width={60} />
             )}
