@@ -16,6 +16,8 @@ const noopStorage: AsyncStorage<any> = {
 // eslint-disable-next-line symbol-description
 const EMPTY = Symbol()
 
+const isClient = typeof window !== 'undefined'
+
 export const createListsAtom = (storeName: string, reducer: any, initialState: any) => {
   /**
    * Persist you redux state using IndexedDB
@@ -45,7 +47,12 @@ export const createListsAtom = (storeName: string, reducer: any, initialState: a
     return noopStorage
   }
 
-  const listsStorageAtom = atomWithStorage<ListsState | typeof EMPTY>('lists', EMPTY, IndexedDBStorage('lists'))
+  const listsStorageAtom = atomWithStorage<ListsState | typeof EMPTY>(
+    'lists',
+    EMPTY,
+    IndexedDBStorage('lists'),
+    isClient ? { unstable_getOnInit: true } : undefined,
+  )
 
   const defaultStateAtom = atom<ListsState, any, void>(
     (get) => {

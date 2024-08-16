@@ -1,10 +1,16 @@
 import { Percent } from '@pancakeswap/swap-sdk-core'
 import { atom, useAtom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
+import { isClient } from './isClient'
 
 export const INITIAL_ALLOWED_SLIPPAGE = 50
 
-const userSlippageAtom = atomWithStorage('pcs:slippage', INITIAL_ALLOWED_SLIPPAGE)
+const userSlippageAtom = atomWithStorage(
+  'pcs:slippage',
+  INITIAL_ALLOWED_SLIPPAGE,
+  undefined,
+  isClient ? { unstable_getOnInit: true } : undefined,
+)
 
 const userSlippageAtomWithLocalStorage = atom(
   (get) => get(userSlippageAtom),

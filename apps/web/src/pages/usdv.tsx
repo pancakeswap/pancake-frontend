@@ -4,13 +4,13 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Flex, useMatchBreakpoints, useModal } from '@pancakeswap/uikit'
 import { ClientOnly, CurrencyLogo, PoweredBy } from '@pancakeswap/widgets-internal'
 import { useAtom } from 'jotai'
-import { atomWithStorage } from 'jotai/utils'
 import { useCallback, useEffect, useMemo } from 'react'
 import styled from 'styled-components'
 
 import DisclaimerModal from 'components/DisclaimerModal'
+import atomWithStorageWithErrorCatch from 'utils/atomWithStorageWithErrorCatch'
 
-const usdvDisclaimer = atomWithStorage('pcs:usdv-disclaimer-accept', false, undefined, { unstable_getOnInit: true })
+const usdvDisclaimer = atomWithStorageWithErrorCatch('pcs:usdv-disclaimer-accept', false)
 
 let initialized = false
 

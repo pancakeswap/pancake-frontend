@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useAtom } from 'jotai'
-import { atomWithStorage } from 'jotai/utils'
+import atomWithStorageWithErrorCatch from 'utils/atomWithStorageWithErrorCatch'
 
-const airdropModal = atomWithStorage('pcs:v3-airdrop-modal', false)
+const airdropModal = atomWithStorageWithErrorCatch('pcs:v3-airdrop-modal', false)
 
 export function useShowOnceAirdropModal() {
   return useAtom(airdropModal)

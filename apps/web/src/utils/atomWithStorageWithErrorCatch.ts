@@ -2,15 +2,15 @@ import { atomWithStorage } from 'jotai/utils'
 import { createJSONStorage } from 'jotai/vanilla/utils'
 import { logError } from './sentry'
 
+const isClient = typeof window !== 'undefined'
+
 export default function atomWithStorageWithErrorCatch<Value>(
   key: string,
   initialValue: Value,
   getStringStorage?: () => Storage,
 ) {
   const tryCatchStorage = createJSONStorage<Value>(() => {
-    const getStorage =
-      getStringStorage ||
-      (() => (typeof window !== 'undefined' ? window.localStorage : (undefined as unknown as Storage)))
+    const getStorage = getStringStorage || (() => (isClient ? window.localStorage : (undefined as unknown as Storage)))
     const stringStorage = getStorage?.()
     return stringStorage
       ? {
@@ -32,5 +32,5 @@ export default function atomWithStorageWithErrorCatch<Value>(
         }
       : stringStorage
   })
-  return atomWithStorage(key, initialValue, tryCatchStorage)
+  return atomWithStorage(key, initialValue, tryCatchStorage, isClient ? { unstable_getOnInit: true } : undefined)
 }

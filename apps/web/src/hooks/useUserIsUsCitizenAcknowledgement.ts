@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useAtom } from 'jotai'
-import { atomWithStorage } from 'jotai/utils'
+import atomWithStorageWithErrorCatch from 'utils/atomWithStorageWithErrorCatch'
 
 export enum IdType {
   IFO = 'ifo',
@@ -9,10 +9,10 @@ export enum IdType {
   OPTIONS = 'options',
 }
 
-const perpetuals = atomWithStorage('pcs:NotUsCitizenAcknowledgement-perpetuals', false)
-const ifo = atomWithStorage<boolean>('pcs:NotUsCitizenAcknowledgement-ifo', false)
-const affiliateProgram = atomWithStorage<boolean>('pcs:NotUsCitizenAcknowledgement-affiliate-program', false)
-const options = atomWithStorage<boolean>('pcs:NotUsCitizenAcknowledgement-options', false)
+const perpetuals = atomWithStorageWithErrorCatch('pcs:NotUsCitizenAcknowledgement-perpetuals', false)
+const ifo = atomWithStorageWithErrorCatch('pcs:NotUsCitizenAcknowledgement-ifo', false)
+const affiliateProgram = atomWithStorageWithErrorCatch('pcs:NotUsCitizenAcknowledgement-affiliate-program', false)
+const options = atomWithStorageWithErrorCatch('pcs:NotUsCitizenAcknowledgement-options', false)
 
 export function useUserNotUsCitizenAcknowledgement(id: IdType) {
   switch (id) {
