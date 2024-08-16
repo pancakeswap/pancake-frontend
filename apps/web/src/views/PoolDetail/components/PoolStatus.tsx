@@ -60,10 +60,10 @@ export const PoolStatus: React.FC<PoolStatusProps> = ({ poolInfo }) => {
           </Column>
           <Column>
             <Text color="textSubtle" textTransform="uppercase">
-              {t('fee')}
+              {t('fee 24h')}
             </Text>
             <Text as="h3" fontSize="24px" fontWeight={600}>
-              {formatDollarAmount(Number(poolInfo.totalFeeUSD ?? 0))}
+              {formatDollarAmount(Number(poolInfo.fee24hUsd ?? 0))}
             </Text>
           </Column>
         </AutoColumn>
