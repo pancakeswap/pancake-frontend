@@ -1,6 +1,14 @@
 import 'utils/workerPolyfill'
 
-import { SmartRouter, V4Router } from '@pancakeswap/smart-router'
+import { findBestTrade, toSerializableTrade } from '@pancakeswap/routing-sdk'
+import { V3_POOL_TYPE, createV3Pool, toSerializableV3Pool } from '@pancakeswap/routing-sdk-addon-v3'
+import { V2_POOL_TYPE, createV2Pool, toSerializableV2Pool } from '@pancakeswap/routing-sdk-addon-v2'
+import {
+  STABLE_POOL_TYPE,
+  createStablePool,
+  toSerializableStablePool,
+} from '@pancakeswap/routing-sdk-addon-stable-swap'
+import { PoolType, SmartRouter, V4Router, getRouteTypeByPools } from '@pancakeswap/smart-router'
 import { Call } from 'state/multicall/actions'
 import { fetchChunk } from 'state/multicall/fetchChunk'
 import { getLogger } from 'utils/datadog'
@@ -234,28 +242,74 @@ addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
       ? BigInt(gasPriceWei)
       : async () => BigInt((await onChainProvider({ chainId }).getGasPrice()).toString())
 
-    V4Router.getBestTrade(currencyAAmount, currencyB, tradeType, {
+    const initializedPools = pools.map((p) => {
+      if (SmartRouter.isV3Pool(p)) {
+        return createV3Pool(p)
+      }
+      if (SmartRouter.isV2Pool(p)) {
+        return createV2Pool(p)
+      }
+      return createStablePool(p)
+    })
+
+    findBestTrade({
+      amount: currencyAAmount,
+      quoteCurrency: currencyB,
+      tradeType,
       gasPriceWei: gasPrice,
+      candidatePools: initializedPools,
       maxHops,
       maxSplits,
-      candidatePools: pools,
-      signal: abortController.signal,
     })
-      .then((res) => {
+      .then((t) => {
+        if (!t) {
+          throw new Error('No valid trade route found')
+        }
+        const { graph, ...trade } = t
+        const serializableTrade = toSerializableTrade(trade, {
+          toSerializablePool: (p) => {
+            if (p.type === V3_POOL_TYPE) {
+              return {
+                ...toSerializableV3Pool(p),
+                type: PoolType.V3,
+              }
+            }
+            if (p.type === V2_POOL_TYPE) {
+              return {
+                ...toSerializableV2Pool(p),
+                type: PoolType.V2,
+              }
+            }
+            if (p.type === STABLE_POOL_TYPE) {
+              return {
+                ...toSerializableStablePool(p),
+                type: PoolType.STABLE,
+              }
+            }
+            throw new Error('Unknown pool type')
+          },
+        })
+        const v4Trade = {
+          ...serializableTrade,
+          routes: serializableTrade.routes.map((r) => ({
+            ...r,
+            type: getRouteTypeByPools(r.pools),
+          })),
+        }
         postMessage([
           id,
           {
             success: true,
-            result: res && V4Router.Transformer.serializeTrade(res),
+            result: v4Trade,
           },
         ])
       })
-      .catch((err) => {
+      .catch((e) => {
         postMessage([
           id,
           {
             success: false,
-            error: err.message,
+            error: e.message,
           },
         ])
       })

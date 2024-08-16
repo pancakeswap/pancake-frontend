@@ -1,0 +1,49 @@
+{
+  "name": "@pancakeswap/routing-sdk-addon-stable-swap",
+  "version": "0.0.1",
+  "description": "Routing sdk addon for pcs stable swap",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pancakeswap/pancake-frontend.git",
+    "directory": "packages/routing-sdk/addons/stable-swap"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "private": true,
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest --run",
+    "test:u": "vitest --run -u",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "typechecks": "tsc --noEmit -p ./tsconfig.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "peerDependencies": {
+    "@pancakeswap/routing-sdk": "workspace:*"
+  },
+  "dependencies": {
+    "@pancakeswap/chains": "workspace:*",
+    "@pancakeswap/stable-swap-sdk": "workspace:*",
+    "@pancakeswap/swap-sdk-core": "workspace:*",
+    "tiny-invariant": "^1.3.0"
+  },
+  "devDependencies": {
+    "@pancakeswap/routing-sdk": "workspace:*",
+    "@pancakeswap/tsconfig": "workspace:*",
+    "@pancakeswap/utils": "workspace:*",
+    "tsup": "^6.7.0"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  }
+}

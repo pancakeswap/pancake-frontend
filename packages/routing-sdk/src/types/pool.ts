@@ -5,9 +5,7 @@ export type PoolQuoteResult = {
   poolAfter: Pool
 }
 
-export type Pool<PType = any, Params = any> = {
-  toSerializable: () => Params
-
+export type Pool<PType = any, PoolData = any> = {
   getReserve: (c: Currency) => CurrencyAmount<Currency>
   getCurrentPrice: (base: Currency, quote: Currency) => Price<Currency, Currency>
 
@@ -25,13 +23,19 @@ export type Pool<PType = any, Params = any> = {
 
   estimateGasCostForQuote: (quote: PoolQuoteResult) => bigint
 
-  swapToPrice: (p: Price<Currency, Currency>) => {
+  swapToPrice?: (p: Price<Currency, Currency>) => {
     inputAmount: CurrencyAmount<Currency>
   }
 
   log: () => string
 
-  update: (p: Partial<Params>) => void
+  getPoolData: () => PoolData
+
+  update: (p: Partial<PoolData>) => void
 
   type: PType
+}
+
+export type SerializablePool<PType = any, SerializablePoolData = any> = SerializablePoolData & {
+  key: PType
 }

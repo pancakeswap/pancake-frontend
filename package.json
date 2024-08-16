@@ -5,6 +5,7 @@
   "workspaces": [
     "apps/*",
     "packages/*",
+    "packages/routing-sdk/addons/**",
     "apis/*",
     "scripts"
   ],

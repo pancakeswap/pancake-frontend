@@ -968,6 +968,18 @@ importers:
       '@pancakeswap/price-api-sdk':
         specifier: workspace:*
         version: link:../../packages/price-api-sdk
+      '@pancakeswap/routing-sdk':
+        specifier: workspace:*
+        version: link:../../packages/routing-sdk
+      '@pancakeswap/routing-sdk-addon-stable-swap':
+        specifier: workspace:*
+        version: link:../../packages/routing-sdk/addons/stable-swap
+      '@pancakeswap/routing-sdk-addon-v2':
+        specifier: workspace:*
+        version: link:../../packages/routing-sdk/addons/v2
+      '@pancakeswap/routing-sdk-addon-v3':
+        specifier: workspace:*
+        version: link:../../packages/routing-sdk/addons/v3
       '@pancakeswap/sdk':
         specifier: workspace:*
         version: link:../../packages/swap-sdk
@@ -1905,13 +1917,106 @@ importers:
       tiny-invariant:
         specifier: ^1.3.0
         version: 1.3.3
+      zod:
+        specifier: ^3.22.3
+        version: 3.22.4
     devDependencies:
       '@pancakeswap/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
+      '@pancakeswap/utils':
+        specifier: workspace:*
+        version: link:../utils
       '@types/debug':
         specifier: ^4.1.7
         version: 4.1.12
+      '@types/lodash':
+        specifier: ^4.14.168
+        version: 4.14.202
+      tsup:
+        specifier: ^6.7.0
+        version: 6.7.0(postcss@8.4.33)(ts-node@10.9.1(@types/node@18.18.9)(typescript@5.2.2))(typescript@5.2.2)
+
+  packages/routing-sdk/addons/stable-swap:
+    dependencies:
+      '@pancakeswap/chains':
+        specifier: workspace:*
+        version: link:../../../chains
+      '@pancakeswap/stable-swap-sdk':
+        specifier: workspace:*
+        version: link:../../../stable-swap-sdk
+      '@pancakeswap/swap-sdk-core':
+        specifier: workspace:*
+        version: link:../../../swap-sdk-core
+      tiny-invariant:
+        specifier: ^1.3.0
+        version: 1.3.3
+    devDependencies:
+      '@pancakeswap/routing-sdk':
+        specifier: workspace:*
+        version: link:../..
+      '@pancakeswap/tsconfig':
+        specifier: workspace:*
+        version: link:../../../tsconfig
+      '@pancakeswap/utils':
+        specifier: workspace:*
+        version: link:../../../utils
+      tsup:
+        specifier: ^6.7.0
+        version: 6.7.0(postcss@8.4.33)(ts-node@10.9.1(@types/node@18.18.9)(typescript@5.2.2))(typescript@5.2.2)
+
+  packages/routing-sdk/addons/v2:
+    dependencies:
+      '@pancakeswap/chains':
+        specifier: workspace:*
+        version: link:../../../chains
+      '@pancakeswap/swap-sdk-core':
+        specifier: workspace:*
+        version: link:../../../swap-sdk-core
+      '@pancakeswap/v2-sdk':
+        specifier: workspace:*
+        version: link:../../../v2-sdk
+      tiny-invariant:
+        specifier: ^1.3.0
+        version: 1.3.3
+    devDependencies:
+      '@pancakeswap/routing-sdk':
+        specifier: workspace:*
+        version: link:../..
+      '@pancakeswap/tsconfig':
+        specifier: workspace:*
+        version: link:../../../tsconfig
+      tsup:
+        specifier: ^6.7.0
+        version: 6.7.0(postcss@8.4.33)(ts-node@10.9.1(@types/node@18.18.9)(typescript@5.2.2))(typescript@5.2.2)
+
+  packages/routing-sdk/addons/v3:
+    dependencies:
+      '@pancakeswap/chains':
+        specifier: workspace:*
+        version: link:../../../chains
+      '@pancakeswap/swap-sdk-core':
+        specifier: workspace:*
+        version: link:../../../swap-sdk-core
+      '@pancakeswap/v3-sdk':
+        specifier: workspace:*
+        version: link:../../../v3-sdk
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
+      tiny-invariant:
+        specifier: ^1.3.0
+        version: 1.3.3
+    devDependencies:
+      '@pancakeswap/routing-sdk':
+        specifier: workspace:*
+        version: link:../..
+      '@pancakeswap/tsconfig':
+        specifier: workspace:*
+        version: link:../../../tsconfig
+      '@pancakeswap/utils':
+        specifier: workspace:*
+        version: link:../../../utils
       '@types/lodash':
         specifier: ^4.14.168
         version: 4.14.202
