@@ -5026,8 +5026,8 @@ export const CONFIG_PROD: GaugeConfig[] = [
     chainId: ChainId.BSC,
     type: GaugeType.V3,
     feeTier: FeeAmount.LOWEST,
-    token0Address: baseTokens.eth.address,
-    token1Address: baseTokens.wstETH.address,
+    token0Address: bscTokens.eth.address,
+    token1Address: bscTokens.wstETH.address,
   },
   {
     gid: 508,
@@ -5036,8 +5036,8 @@ export const CONFIG_PROD: GaugeConfig[] = [
     chainId: ChainId.BSC,
     type: GaugeType.V3,
     feeTier: FeeAmount.LOW,
-    token0Address: baseTokens.wstETH.address,
-    token1Address: baseTokens.btcb.address,
+    token0Address: bscTokens.wstETH.address,
+    token1Address: bscTokens.btcb.address,
   },
   {
     gid: 509,
@@ -5046,7 +5046,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
     chainId: ChainId.BSC,
     type: GaugeType.V3,
     feeTier: FeeAmount.LOW,
-    token0Address: baseTokens.wstETH.address,
-    token1Address: baseTokens.wbnb.address,
+    token0Address: bscTokens.wstETH.address,
+    token1Address: bscTokens.wbnb.address,
   },
 ]
