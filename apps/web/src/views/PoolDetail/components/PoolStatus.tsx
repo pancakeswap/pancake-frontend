@@ -1,8 +1,8 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Percent } from '@pancakeswap/swap-sdk-core'
 import { AutoColumn, AutoRow, Card, CardBody, Column, Text } from '@pancakeswap/uikit'
 import { useMemo } from 'react'
 import { PoolInfo } from 'state/farmsV4/state/type'
+import { getPercentChange } from 'utils/infoDataHelpers'
 import { formatDollarAmount } from 'views/V3Info/utils/numbers'
 import { ChangePercent } from './ChangePercent'
 import { PoolTokens } from './PoolTokens'
@@ -17,14 +17,14 @@ export const PoolStatus: React.FC<PoolStatusProps> = ({ poolInfo }) => {
     if (!poolInfo) return null
     const tvlUsd = Number(poolInfo.tvlUsd ?? 0)
     const tvlUsd24h = Number(poolInfo.tvlUsd24h ?? 0)
-    return new Percent(BigInt((tvlUsd - tvlUsd24h).toFixed(0)), BigInt(tvlUsd24h.toFixed(0)) || 1)
+    return getPercentChange(tvlUsd, tvlUsd24h)
   }, [poolInfo])
 
   const volChange = useMemo(() => {
     if (!poolInfo) return null
-    const vol24hUsd = Number(poolInfo.vol24hUsd ?? 0)
-    const vol48hUsd = Number(poolInfo.vol48hUsd ?? 0)
-    return new Percent(BigInt((vol24hUsd - vol48hUsd).toFixed(0)), BigInt(vol48hUsd.toFixed(0)) || 1)
+    const volNow = poolInfo.vol24hUsd ? parseFloat(poolInfo.vol24hUsd) : 0
+    const volBefore = poolInfo.vol48hUsd ? parseFloat(poolInfo.vol48hUsd) - volNow : 0
+    return getPercentChange(volNow, volBefore)
   }, [poolInfo])
 
   if (!poolInfo) {
