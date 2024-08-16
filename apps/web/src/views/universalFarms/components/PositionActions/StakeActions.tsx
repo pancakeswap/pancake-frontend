@@ -9,7 +9,7 @@ type StakeActionsProps = {
   onDecrease?: () => void
 }
 
-const StopPropagation: React.FC<PropsWithChildren> = ({ children }) => {
+export const StopPropagation: React.FC<PropsWithChildren> = ({ children }) => {
   const handleClick = useCallback((e) => {
     e.stopPropagation()
     e.preventDefault()
