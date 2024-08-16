@@ -31,7 +31,7 @@ import { useDataDogRUM } from 'hooks/useDataDogRUM'
 import { useLoadExperimentalFeatures } from 'hooks/useExperimentalFeatureEnabled'
 import { useVercelFeatureFlagOverrides } from 'hooks/useVercelToolbar'
 import { useWeb3WalletView } from 'hooks/useWeb3WalletView'
-import { useInitGlobalWorker } from 'hooks/useWorker'
+// import { useInitGlobalWorker } from 'hooks/useWorker'
 import { persistor, useStore } from 'state'
 import { usePollBlockNumber } from 'state/block/hooks'
 import { Blocklist, Updaters } from '..'
@@ -49,7 +49,7 @@ BigNumber.config({
 })
 
 function GlobalHooks() {
-  useInitGlobalWorker()
+  // useInitGlobalWorker()
   useDataDogRUM()
   useWeb3WalletView()
   useLoadExperimentalFeatures()
