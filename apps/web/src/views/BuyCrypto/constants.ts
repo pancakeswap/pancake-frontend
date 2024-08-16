@@ -226,6 +226,10 @@ export const fiatCurrencyMap: Record<string, { symbol: string; name: string }> =
     name: 'Vietnamese Dong',
     symbol: 'VND',
   },
+  IDR: {
+    name: 'Indonesian Rupiah',
+    symbol: 'Rps',
+  },
 }
 
 export type OnRampCurrency = Currency | NativeBtc
