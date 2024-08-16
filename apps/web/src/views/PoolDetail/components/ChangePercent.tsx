@@ -1,4 +1,3 @@
-import { Percent } from '@pancakeswap/swap-sdk-core'
 import { Flex, Text } from '@pancakeswap/uikit'
 import { useMemo } from 'react'
 import styled from 'styled-components'
@@ -10,7 +9,7 @@ const StyledChangePercent = styled(Flex)<{ $negative: boolean }>`
 `
 
 type ChangePercentProps = {
-  percent: Percent
+  percent: number
 }
 
 const IconUp = () => {
@@ -36,9 +35,9 @@ const IconDown = () => {
 }
 
 export const ChangePercent: React.FC<ChangePercentProps> = ({ percent }) => {
-  const negative = useMemo(() => percent.lessThan(0), [percent])
+  const negative = percent < 0
   const absValue = useMemo(() => {
-    const p = percent.lessThan(0) ? percent.multiply(-1) : percent
+    const p = Math.abs(percent)
     return p.toFixed(2)
   }, [percent])
   return (
