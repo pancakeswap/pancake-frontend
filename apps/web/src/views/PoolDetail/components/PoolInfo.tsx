@@ -1,13 +1,13 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { Percent } from '@pancakeswap/swap-sdk-core'
 import { AutoColumn, AutoRow, Column, Flex, FlexGap, Grid, Row, Spinner, Text } from '@pancakeswap/uikit'
 import { ChainLogo, DoubleCurrencyLogo, FeatureStack, FeeTierTooltip } from '@pancakeswap/widgets-internal'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useMemo } from 'react'
 import { useChainIdByQuery, useChainNameByQuery } from 'state/info/hooks'
 import { multiChainNameConverter } from 'utils/chainNameConverter'
-import { PoolApyButton } from 'views/universalFarms/components/PoolApyButton'
+import { PoolGlobalAprButton } from 'views/universalFarms/components/PoolAprButton'
 import { usePoolInfoByQuery } from '../hooks/usePoolInfo'
-import { usePoolFee } from '../hooks/useStablePoolFee'
 import { MyPositions } from './MyPositions'
 import { PoolCharts } from './PoolCharts'
 import { PoolCurrencies } from './PoolCurrencies'
@@ -24,7 +24,9 @@ export const PoolInfo = () => {
     const { token0, token1 } = poolInfo
     return [token0.wrapped, token1.wrapped]
   }, [poolInfo])
-  const { fee } = usePoolFee(poolInfo?.lpAddress, poolInfo?.protocol)
+  const fee = useMemo(() => {
+    return new Percent(poolInfo?.feeTier ?? 0n, poolInfo?.feeTierBase)
+  }, [poolInfo?.feeTier, poolInfo?.feeTierBase])
   const { account } = useAccountActiveChain()
 
   if (!poolInfo)
@@ -76,7 +78,7 @@ export const PoolInfo = () => {
             <Text fontSize={12} bold color="textSubtle" textTransform="uppercase">
               {t('apr')}
             </Text>
-            {poolInfo ? <PoolApyButton pool={poolInfo} /> : null}
+            {poolInfo ? <PoolGlobalAprButton pool={poolInfo} /> : null}
           </AutoColumn>
           <AutoColumn rowGap="4px">
             <Text fontSize={12} bold color="textSubtle" textTransform="uppercase">

@@ -1,10 +1,10 @@
 import { unwrappedToken } from '@pancakeswap/tokens'
 import { Position } from '@pancakeswap/v3-sdk'
+import { useTokenByChainId } from 'hooks/Tokens'
 import useIsTickAtLimit from 'hooks/v3/useIsTickAtLimit'
 import { usePoolWithChainId } from 'hooks/v3/usePools'
 import getPriceOrderingFromPositionForUI from 'hooks/v3/utils/getPriceOrderingFromPositionForUI'
 import { useMemo } from 'react'
-import { useTokenByChainId } from 'hooks/Tokens'
 import { PositionDetail } from '../type'
 
 // @todo @ChefJerry consider merge to useAccountV3Positions
@@ -50,6 +50,10 @@ export const useExtraV3PositionInfo = (positionDetail?: PositionDetail) => {
     return positionDetail ? positionDetail.liquidity === 0n : false
   }, [positionDetail])
 
+  const price = useMemo(() => {
+    return pool && token0 ? pool.priceOf(token0) : undefined
+  }, [pool, token0])
+
   const { priceLower, priceUpper } = useMemo(() => getPriceOrderingFromPositionForUI(position), [position])
 
   return {
@@ -58,6 +62,7 @@ export const useExtraV3PositionInfo = (positionDetail?: PositionDetail) => {
     tickAtLimit,
     outOfRange,
     removed,
+    price,
     priceLower,
     priceUpper,
     currency0,

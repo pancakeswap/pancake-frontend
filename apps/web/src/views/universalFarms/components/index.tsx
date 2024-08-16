@@ -1,3 +1,4 @@
+export * from './PoolAprButton'
 export * from './PoolListItemAction'
 export * from './PoolListView'
 export * from './PoolsBanner'

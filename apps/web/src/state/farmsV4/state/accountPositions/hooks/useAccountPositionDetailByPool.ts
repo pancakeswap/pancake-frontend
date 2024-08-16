@@ -35,7 +35,7 @@ export const useAccountPositionDetailByPool = <TProtocol extends keyof PoolPosit
     }
     if (protocol === 'stable') {
       const stablePair = LegacyRouter.stableSwapPairsByChainId[chainId].find((pair) => {
-        return isAddressEqual(pair.stableSwapAddress, poolInfo?.lpAddress as Address)
+        return isAddressEqual(pair.stableSwapAddress, poolInfo?.stableLpAddress as Address)
       })
       return getStablePairDetails(chainId, account!, stablePair ? [stablePair] : [])
     }

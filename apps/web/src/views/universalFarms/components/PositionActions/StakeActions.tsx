@@ -1,26 +1,13 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { AddIcon, AutoRow, Button, IconButton, MinusIcon } from '@pancakeswap/uikit'
-import { PropsWithChildren, useCallback } from 'react'
+import { useCallback } from 'react'
+import { StopPropagation } from 'views/universalFarms/components/StopPropagation'
 
 type StakeActionsProps = {
   increaseDisabled?: boolean
   decreaseDisabled?: boolean
   onIncrease: () => void
   onDecrease?: () => void
-}
-
-export const StopPropagation: React.FC<PropsWithChildren> = ({ children }) => {
-  const handleClick = useCallback((e) => {
-    e.stopPropagation()
-    e.preventDefault()
-    return false
-  }, [])
-
-  return (
-    <div onClick={handleClick} aria-hidden>
-      {children}
-    </div>
-  )
 }
 
 export const ModifyStakeActions: React.FC<StakeActionsProps> = ({

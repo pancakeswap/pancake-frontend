@@ -51,10 +51,7 @@ export type PoolApr = Record<
   ChainIdAddressKey,
   {
     lpApr: `${number}`
-    cakeApr: {
-      value: `${number}`
-      boost?: `${number}`
-    }
+    cakeApr: CakeApr[ChainIdAddressKey]
     merklApr: `${number}`
   }
 >

@@ -2,6 +2,7 @@ import { getChainNameInKebabCase } from '@pancakeswap/chains'
 import { FarmV4SupportedChainId, Protocol, supportedChainIdV4, UNIVERSAL_FARMS } from '@pancakeswap/farms'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { explorerApiClient } from 'state/info/api/client'
+import { isAddressEqual } from 'viem'
 import { PoolInfo } from '../type'
 import { parseFarmPools } from '../utils'
 
@@ -63,13 +64,14 @@ export const fetchFarmPools = async (
   const remoteMissedPoolsIndex: number[] = []
 
   const finalPools = localPools.map((farm, index) => {
-    const pool = remotePools.find(
-      (p) =>
+    const pool = remotePools.find((p) => {
+      return (
         p.chainId === farm.chainId &&
-        p.lpAddress === farm.lpAddress &&
+        isAddressEqual(p.lpAddress, farm.lpAddress) &&
         p.protocol === farm.protocol &&
-        p.pid === farm.pid,
-    )
+        p.pid === farm.pid
+      )
+    })
 
     if (pool)
       return {
