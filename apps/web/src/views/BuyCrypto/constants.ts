@@ -228,7 +228,7 @@ export const fiatCurrencyMap: Record<string, { symbol: string; name: string }> =
   },
   IDR: {
     name: 'Indonesian Rupiah',
-    symbol: 'Rps',
+    symbol: 'IDR',
   },
 }
 
