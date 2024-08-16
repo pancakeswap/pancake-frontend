@@ -10,7 +10,6 @@ import React, { memo, useMemo } from 'react'
 import { PositionDetail, StableLPDetail, V2LPDetail } from 'state/farmsV4/state/accountPositions/type'
 import { PoolInfo } from 'state/farmsV4/state/type'
 import styled from 'styled-components'
-import { stringify } from 'viem'
 import { useV2CakeEarning, useV3CakeEarning } from 'views/universalFarms/hooks/useCakeEarning'
 import { PoolGlobalAprButton, V2PoolPositionAprButton, V3PoolPositionAprButton } from '../PoolAprButton'
 
@@ -117,9 +116,6 @@ export const PositionInfo = memo(
             ({amount0 ? amount0.toFixed(6) : 0} {currency0?.symbol ?? '-'} / {amount1 ? amount1.toFixed(6) : 0}{' '}
             {currency1?.symbol ?? '-'})
           </Row>
-          {stringify({
-            isStaked: userPosition?.isStaked,
-          })}
           <Row gap="8px">
             <DetailInfoLabel>APR: </DetailInfoLabel>
             {pool ? (

@@ -28,12 +28,7 @@ export const V2PoolPositionAprButton: React.FC<PoolPositionAprButtonProps<Stable
 }) => {
   const { lpApr, cakeApr, merklApr } = useV2PositionApr(pool, userPosition)
 
-  return (
-    <>
-      P: {cakeApr?.value}
-      <PoolAprButton pool={pool} lpApr={lpApr} cakeApr={cakeApr} merklApr={merklApr} />
-    </>
-  )
+  return <PoolAprButton pool={pool} lpApr={lpApr} cakeApr={cakeApr} merklApr={merklApr} />
 }
 
 export const V3PoolPositionAprButton: React.FC<PoolPositionAprButtonProps<PositionDetail>> = ({
