@@ -72,6 +72,7 @@ export const V3PositionItem = memo(({ data, detailMode }: V3PositionItemProps) =
           modalContent={
             <V3UnstakeModalContent
               chainId={data.chainId}
+              userPosition={data}
               link={`/liquidity/${data.tokenId}`}
               pool={pool}
               totalPriceUSD={totalPriceUSD}
