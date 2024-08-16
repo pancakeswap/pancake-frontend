@@ -18,7 +18,7 @@ const PoolEarnings: React.FC<PoolEarningsProps> = ({ earningsBusd }) => {
   return (
     <AutoColumn>
       <Text color="secondary" fontWeight={600} textTransform="uppercase">
-        {t('total earning')}
+        {t('total farming earning')}
       </Text>
       <Text as="h3" fontWeight={600} fontSize={24}>
         ${formatNumber(earningsBusd)}
