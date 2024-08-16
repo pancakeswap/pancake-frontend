@@ -1,13 +1,13 @@
-import { TokenPairImage } from 'components/TokenImage'
+import { BottomDrawer, Button, ChevronRightIcon, Column, MoreIcon } from '@pancakeswap/uikit'
 import { TokenOverview } from '@pancakeswap/widgets-internal'
+import { TokenPairImage } from 'components/TokenImage'
+import { memo, ReactNode, useCallback, useState } from 'react'
 import { PoolInfo } from 'state/farmsV4/state/type'
 import styled from 'styled-components'
-import { BottomDrawer, Column, Button, MoreIcon, ChevronRightIcon } from '@pancakeswap/uikit'
-import { ReactNode, useCallback, memo, useState } from 'react'
-import { useColumnMobileConfig } from './useColumnConfig'
-import { ActionItems } from './PoolListItemAction'
-import { PoolApyButton } from './PoolApyButton'
 import { getChainFullName } from '../utils'
+import { PoolGlobalAprButton } from './PoolAprButton'
+import { ActionItems } from './PoolListItemAction'
+import { useColumnMobileConfig } from './useColumnConfig'
 
 const ListContainer = styled.ul``
 
@@ -55,7 +55,7 @@ export const ListView: React.FC<IPoolListViewProps> = ({ data }) => {
                 />
               }
             />
-            <PoolApyButton pool={item} />
+            <PoolGlobalAprButton pool={item} />
           </Column>
 
           <Column>

@@ -14,7 +14,7 @@ import { chainIdToExplorerInfoChainName, explorerApiClient } from 'state/info/ap
 import { safeGetAddress } from 'utils'
 import { getMasterChefV3Contract, getV2SSBCakeWrapperContract } from 'utils/contractHelpers'
 import { publicClient } from 'utils/wagmi'
-import { Address, isAddressEqual } from 'viem'
+import { Address, erc20Abi, isAddressEqual } from 'viem'
 import { PoolInfo, StablePoolInfo, V2PoolInfo, V3PoolInfo } from '../type'
 import { CakeApr, MerklApr } from './atom'
 
@@ -47,7 +47,7 @@ export const getLpApr = async (pool: PoolInfo, signal?: AbortSignal): Promise<nu
       signal,
       params: {
         path: {
-          address: pool.stableLpAddress ?? pool.lpAddress,
+          address: pool.lpAddress,
           chainName,
         },
       },
@@ -290,15 +290,21 @@ const calcV2PoolApr = ({
   pool,
   cakePrice,
   cakePerSecond,
+  totalBoostShare,
+  totalSupply,
 }: {
   pool: V2PoolInfo | StablePoolInfo
   cakePrice: BigNumber
   cakePerSecond: bigint
+  totalBoostShare: bigint
+  totalSupply: bigint
 }) => {
   const cakePerYear = new BigNumber(SECONDS_PER_YEAR).times(cakePerSecond.toString()).dividedBy(1e18)
   const cakeOneYearUsd = cakePrice.times(cakePerYear.toString())
+  const usdPerShare = new BigNumber(pool.tvlUsd ?? 0).times(1e18).div(totalSupply.toString() ?? 1)
+  const farmingTVLUsd = usdPerShare.times(totalBoostShare.toString() ?? 0).dividedBy(1e18)
 
-  const baseApr = cakeOneYearUsd.dividedBy(pool.tvlUsd ?? 1)
+  const baseApr = cakeOneYearUsd.dividedBy((farmingTVLUsd ?? 1).toString())
 
   return {
     value: baseApr.toString() as `${number}`,
@@ -333,7 +339,7 @@ const getV2PoolsCakeAprByChainId = async (
     return prev
   }, [] as (PoolInfo & { bCakeWrapperAddress: Address })[])
 
-  const calls = validPools.map((pool) => {
+  const rewardPerSecondCalls = validPools.map((pool) => {
     return {
       address: pool.bCakeWrapperAddress,
       functionName: 'rewardPerSecond',
@@ -341,14 +347,41 @@ const getV2PoolsCakeAprByChainId = async (
     } as const
   })
 
-  const results = await client.multicall({
-    contracts: calls,
-    allowFailure: false,
+  const totalSupplyCalls = validPools.map((pool) => {
+    return {
+      address: pool.lpAddress,
+      functionName: 'totalSupply',
+      abi: erc20Abi,
+    } as const
   })
 
+  const totalBoostedShareCalls = validPools.map((pool) => {
+    return {
+      address: pool.bCakeWrapperAddress,
+      functionName: 'totalBoostedShare',
+      abi: v2BCakeWrapperABI,
+    } as const
+  })
+
+  const [rewardPerSecondResults, totalBoostedShareResults, totalSupplies] = await Promise.all([
+    client.multicall({
+      contracts: rewardPerSecondCalls,
+      allowFailure: false,
+    }),
+    client.multicall({
+      contracts: totalBoostedShareCalls,
+      allowFailure: false,
+    }),
+    client.multicall({
+      contracts: totalSupplyCalls,
+      allowFailure: false,
+    }),
+  ])
+
   return validPools.reduce((acc, pool, index) => {
-    const result = results[index]
-    if (!result) return acc
+    const rewardPerSecond = rewardPerSecondResults[index]
+    const totalBoostShare = totalBoostedShareResults[index]
+    if (!rewardPerSecond) return acc
     const key = `${chainId}:${safeGetAddress(pool.lpAddress)}`
     set(
       acc,
@@ -356,7 +389,9 @@ const getV2PoolsCakeAprByChainId = async (
       calcV2PoolApr({
         pool: pool as V2PoolInfo | StablePoolInfo,
         cakePrice,
-        cakePerSecond: result,
+        cakePerSecond: rewardPerSecond,
+        totalBoostShare,
+        totalSupply: totalSupplies[index],
       }),
     )
     return acc

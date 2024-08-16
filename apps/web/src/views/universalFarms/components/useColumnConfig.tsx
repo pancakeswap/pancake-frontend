@@ -5,9 +5,9 @@ import { FeatureStack, FeeTierTooltip, FiatNumberDisplay, TokenOverview } from '
 import { TokenPairImage } from 'components/TokenImage'
 import { useMemo } from 'react'
 import type { PoolInfo } from 'state/farmsV4/state/type'
-import { PoolApyButton } from './PoolApyButton'
-import { PoolListItemAction } from './PoolListItemAction'
 import { getChainFullName } from '../utils'
+import { PoolGlobalAprButton } from './PoolAprButton'
+import { PoolListItemAction } from './PoolListItemAction'
 
 const FeeTierComponent = <T extends BasicDataType>({ fee, item }: { fee: number; item: T }) => {
   const percent = useMemo(() => new Percent(fee ?? 0, item.feeTierBase || 1), [fee, item.feeTierBase])
@@ -56,7 +56,7 @@ export const useColumnConfig = (): ITableViewProps<PoolInfo>['columns'] => {
         key: 'apr',
         sorter: true,
         minWidth: '260px',
-        render: (value, info) => (value ? <PoolApyButton pool={info} /> : <Skeleton width={60} />),
+        render: (value, info) => (value ? <PoolGlobalAprButton pool={info} /> : <Skeleton width={60} />),
       },
       {
         title: t('TVL'),
@@ -108,7 +108,7 @@ export const useColumnMobileConfig = (): ITableViewProps<PoolInfo>['columns'] =>
         title: t('APR'),
         dataIndex: 'lpApr',
         key: 'apr',
-        render: (value, info) => (value ? <PoolApyButton pool={info} /> : <Skeleton width={60} />),
+        render: (value, info) => (value ? <PoolGlobalAprButton pool={info} /> : <Skeleton width={60} />),
       },
       {
         title: t('Fee Tier'),

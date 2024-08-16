@@ -1,8 +1,9 @@
 import { Protocol, UNIVERSAL_FARMS } from '@pancakeswap/farms'
+import { LegacyRouter } from '@pancakeswap/smart-router/legacy-router'
 import { Token } from '@pancakeswap/swap-sdk-core'
 import { paths } from 'state/info/api/schema'
 import { safeGetAddress } from 'utils'
-import { isAddressEqual } from 'viem'
+import { Address, isAddressEqual } from 'viem'
 import { PoolInfo } from './type'
 
 export const parseFarmPools = (
@@ -13,9 +14,21 @@ export const parseFarmPools = (
   options: { isFarming?: boolean } = {},
 ): PoolInfo[] => {
   return data.map((pool) => {
+    let stableSwapAddress: Address | undefined
+    let lpAddress = safeGetAddress(pool.id)!
+    let feeTier = Number(pool.feeTier ?? 2500)
+    if (pool.protocol === 'stable') {
+      const stableConfig = LegacyRouter.stableSwapPairsByChainId[pool.chainId]?.find((pair) => {
+        return isAddressEqual(pair.stableSwapAddress, pool.id as Address)
+      })
+      if (stableConfig) {
+        stableSwapAddress = safeGetAddress(stableConfig.stableSwapAddress)
+        lpAddress = safeGetAddress(stableConfig.lpAddress)!
+        feeTier = stableConfig.stableLpFee * 1000000
+      }
+    }
     const localFarm = UNIVERSAL_FARMS.find(
-      (farm) =>
-        isAddressEqual(farm.lpAddress, safeGetAddress(pool.lpAddress ?? pool.id)!) && farm.chainId === pool.chainId,
+      (farm) => isAddressEqual(farm.lpAddress, lpAddress) && farm.chainId === pool.chainId,
     )
     let pid: number | undefined
     if (localFarm) {
@@ -25,8 +38,8 @@ export const parseFarmPools = (
     return {
       chainId: pool.chainId,
       pid,
-      lpAddress: safeGetAddress(pool.id)!,
-      stableLpAddress: safeGetAddress(pool.lpAddress ?? pool.id),
+      lpAddress,
+      stableLpAddress: stableSwapAddress,
       protocol: pool.protocol as Protocol,
       token0: new Token(
         pool.chainId,
@@ -54,7 +67,7 @@ export const parseFarmPools = (
       totalFeeUSD: pool.totalFeeUSD as `${number}`,
       fee24hUsd: pool.feeUSD24h as `${number}`,
       liquidity: pool.liquidity,
-      feeTier: Number(pool.feeTier ?? 2500),
+      feeTier,
       // @todo @ChefJerry get by protocols
       feeTierBase: 1_000_000,
       isFarming: !!options?.isFarming,
