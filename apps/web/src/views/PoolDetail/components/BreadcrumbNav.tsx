@@ -18,7 +18,7 @@ export const BreadcrumbNav: React.FC = () => {
   return (
     <Flex justifyContent="space-between">
       <Breadcrumbs mb="32px">
-        <NextLinkFromReactRouter to="/farms">
+        <NextLinkFromReactRouter to="/liquidity/pools">
           <Text color="primary">{t('Farms')}</Text>
         </NextLinkFromReactRouter>
         <Flex>

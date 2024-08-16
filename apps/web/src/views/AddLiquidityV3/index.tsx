@@ -36,7 +36,6 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import noop from 'lodash/noop'
 import { resetMintState } from 'state/mint/actions'
 import { useAddLiquidityV2FormDispatch } from 'state/mint/reducer'
-import { useStableSwapPairs } from 'state/swap/useStableSwapPairs'
 import { safeGetAddress } from 'utils'
 import FeeSelector from './formViews/V3FormView/components/FeeSelector'
 
@@ -398,29 +397,12 @@ export function AddLiquidityV3Layout({
 
   const title = SELECTOR_TYPE_T[selectType] || t('Add Liquidity')
 
-  const lpTokens = useStableSwapPairs()
-
-  const backToLink = useMemo(() => {
-    if (preferredSelectType === SELECTOR_TYPE.V2) {
-      return `/v2/pair/${currencyIdA}/${currencyIdB}`
-    }
-    if (preferredSelectType === SELECTOR_TYPE.STABLE) {
-      const selectedLp = lpTokens.find(
-        ({ token0, token1 }) =>
-          token0?.wrapped?.address?.toLowerCase() === baseCurrency?.wrapped?.address?.toLowerCase() &&
-          token1?.wrapped?.address?.toLowerCase() === quoteCurrency?.wrapped?.address?.toLowerCase(),
-      )
-      return `/stable/${selectedLp?.lpAddress}`
-    }
-    return '/liquidity'
-  }, [lpTokens, baseCurrency, quoteCurrency, currencyIdA, currencyIdB, preferredSelectType])
-
   return (
     <Page>
       <BodyWrapper>
         <AppHeader
           title={title}
-          backTo={backToLink}
+          backTo="/liquidity/positions"
           IconSlot={
             <>
               {selectType === SELECTOR_TYPE.V3 && (
