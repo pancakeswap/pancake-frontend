@@ -9,6 +9,7 @@ import { useCheckShouldSwitchNetwork } from 'views/universalFarms/hooks'
 import { useIsFarmLive } from 'views/universalFarms/hooks/useIsFarmLive'
 import { Protocol } from '@pancakeswap/farms'
 import { V3StakeModal } from '../Modals/V3StakeModal'
+import { StopPropagation } from './StakeActions'
 
 type ActionPanelProps = {
   removed: boolean
@@ -76,29 +77,9 @@ export const V3PositionActions = ({
     await onHarvest()
   }, [onHarvest, switchNetworkIfNecessary, currency0.chainId])
 
-  const preventDefault = useCallback((e: React.MouseEvent) => {
-    e.preventDefault()
-  }, [])
-
-  const handleIncreasePosition = useCallback(() => {
-    window.open(
-      `/increase/${currency0.wrapped.address}/${currency1.wrapped.address}/${fee}/${tokenId}`,
-      '_blank',
-      'noopener',
-    )
-  }, [currency0.wrapped.address, currency1.wrapped.address, fee, tokenId])
-
-  const handleDecreasePosition = useCallback(() => {
-    window.open(
-      `/decrease/${currency0.wrapped.address}/${currency1.wrapped.address}/${fee}/${tokenId}`,
-      '_blank',
-      'noopener',
-    )
-  }, [currency0.wrapped.address, currency1.wrapped.address, fee, tokenId])
-
   const stakeButton = useMemo(
     () => (
-      <>
+      <StopPropagation>
         <Button
           scale="md"
           width={['100px']}
@@ -116,7 +97,7 @@ export const V3PositionActions = ({
         >
           {modalContent}
         </V3StakeModal>
-      </>
+      </StopPropagation>
     ),
     [
       isSwitchingNetwork,
@@ -133,7 +114,7 @@ export const V3PositionActions = ({
 
   const unstakeButton = useMemo(
     () => (
-      <>
+      <StopPropagation>
         <Button
           scale="md"
           width={['100px']}
@@ -152,32 +133,36 @@ export const V3PositionActions = ({
         >
           {modalContent}
         </V3StakeModal>
-      </>
+      </StopPropagation>
     ),
     [isSwitchingNetwork, handleUnStake, isStaked, modalContent, t, outOfRange, stakeModal, attemptingTxn],
   )
 
   if (detailMode) {
     return (
-      <ActionPanelContainer onClick={preventDefault}>
-        {isStaked ? unstakeButton : !removed && isFarmLive ? stakeButton : null}
+      <StopPropagation>
+        <ActionPanelContainer>
+          {isStaked ? unstakeButton : !removed && isFarmLive ? stakeButton : null}
+          {isStaked && !removed ? (
+            <Button width={['100px']} scale="md" disabled={attemptingTxn || isSwitchingNetwork} onClick={handleHarvest}>
+              {attemptingTxn ? t('Harvesting') : t('Harvest')}
+            </Button>
+          ) : null}
+        </ActionPanelContainer>
+      </StopPropagation>
+    )
+  }
+  return (
+    <StopPropagation>
+      <ActionPanelContainer>
+        {!isStaked && !removed && isFarmLive ? stakeButton : null}
         {isStaked && !removed ? (
           <Button width={['100px']} scale="md" disabled={attemptingTxn || isSwitchingNetwork} onClick={handleHarvest}>
             {attemptingTxn ? t('Harvesting') : t('Harvest')}
           </Button>
         ) : null}
       </ActionPanelContainer>
-    )
-  }
-  return (
-    <ActionPanelContainer onClick={preventDefault}>
-      {!isStaked && !removed && isFarmLive ? stakeButton : null}
-      {isStaked && !removed ? (
-        <Button width={['100px']} scale="md" disabled={attemptingTxn || isSwitchingNetwork} onClick={handleHarvest}>
-          {attemptingTxn ? t('Harvesting') : t('Harvest')}
-        </Button>
-      ) : null}
-    </ActionPanelContainer>
+    </StopPropagation>
   )
 }
 
