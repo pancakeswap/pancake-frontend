@@ -3261,4 +3261,12 @@ export const bscTokens = {
     'BitU USD',
     'https://www.bitu.io',
   ),
+  wstETH: new ERC20Token(
+    ChainId.BSC,
+    '0x26c5e01524d2E6280A48F2c50fF6De7e52E9611C',
+    18,
+    'wstETH',
+    'Wrapped liquid staked Ether 2.0',
+    'https://lido.fi/',
+  ),
 }
