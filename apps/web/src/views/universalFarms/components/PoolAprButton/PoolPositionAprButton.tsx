@@ -1,6 +1,7 @@
-import { encodeSqrtRatioX96 } from '@pancakeswap/v3-sdk'
-import { useRoi } from '@pancakeswap/widgets-internal/roi'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { FeeAmount } from '@pancakeswap/v3-sdk'
 import BigNumber from 'bignumber.js'
+import { useCakePrice } from 'hooks/useCakePrice'
 import { useCurrencyUsdPrice } from 'hooks/useCurrencyUsdPrice'
 import { useMemo } from 'react'
 import { useExtraV3PositionInfo, usePoolApr } from 'state/farmsV4/hooks'
@@ -8,6 +9,13 @@ import { PositionDetail, StableLPDetail, V2LPDetail } from 'state/farmsV4/state/
 import { PoolInfo } from 'state/farmsV4/state/type'
 import { useLmPoolLiquidity } from 'views/Farms/hooks/useLmPoolLiquidity'
 import { PoolAprButton } from './PoolAprButton'
+
+const V3_LP_FEE_RATE = {
+  [FeeAmount.LOWEST]: 0.67,
+  [FeeAmount.LOW]: 0.66,
+  [FeeAmount.MEDIUM]: 0.68,
+  [FeeAmount.HIGH]: 0.68,
+}
 
 type PoolPositionAprButtonProps<TPosition> = {
   pool: PoolInfo
@@ -54,27 +62,21 @@ export const useV2PositionApr = (pool: PoolInfo, userPosition: StableLPDetail | 
 
 export const useV3PositionApr = (pool: PoolInfo, userPosition: PositionDetail) => {
   const key = useMemo(() => `${pool.chainId}:${pool.lpAddress}` as const, [pool.chainId, pool.lpAddress])
-  const { currency0, currency1, removed, outOfRange, price, position } = useExtraV3PositionInfo(userPosition)
-  const { lpApr: globalLpApr, cakeApr: globalCakeApr, merklApr } = usePoolApr(key, pool)
+  const { removed, outOfRange, position } = useExtraV3PositionInfo(userPosition)
+  const { cakeApr: globalCakeApr, merklApr } = usePoolApr(key, pool)
   const lmPoolLiquidity = useLmPoolLiquidity(pool.lpAddress, pool.chainId)
-  const sqrtPriceX96 = price && encodeSqrtRatioX96(price.numerator, price.denominator)
   const { data: token0UsdPrice } = useCurrencyUsdPrice(pool.token0)
   const { data: token1UsdPrice } = useCurrencyUsdPrice(pool.token1)
 
-  const { apr: userLpApr } = useRoi({
-    tickLower: position?.tickLower,
-    tickUpper: position?.tickUpper,
-    sqrtRatioX96: sqrtPriceX96,
-    fee: pool.feeTier,
-    mostActiveLiquidity: BigInt(pool?.liquidity ?? 0),
-    amountA: position?.amount0,
-    amountB: position?.amount1,
-    compoundOn: false,
-    currencyAUsdPrice: token0UsdPrice,
-    currencyBUsdPrice: token1UsdPrice,
-    volume24H: Number(pool.vol24hUsd) ?? 0,
-    debug: userPosition.tokenId === 261766n,
-  })
+  const cakePrice = useCakePrice()
+
+  const userTVLUsd = useMemo(() => {
+    return position?.amount0 && position?.amount1 && token0UsdPrice && token1UsdPrice
+      ? new BigNumber(position.amount0.toExact())
+          .times(token0UsdPrice)
+          .plus(new BigNumber(position.amount1.toExact()).times(token1UsdPrice))
+      : BIG_ZERO
+  }, [position?.amount0, position?.amount1, token0UsdPrice, token1UsdPrice])
 
   const cakeApr = useMemo(() => {
     if (outOfRange || removed || !userPosition.isStaked) {
@@ -85,43 +87,41 @@ export const useV3PositionApr = (pool: PoolInfo, userPosition: PositionDetail) =
       }
     }
     if (userPosition.isStaked) {
+      const apr = new BigNumber(globalCakeApr.cakePerYear ?? 0)
+        .times(globalCakeApr.poolWeight ?? 0)
+        .times(cakePrice)
+        .times(new BigNumber(userPosition.farmingLiquidity.toString()).dividedBy(lmPoolLiquidity?.toString() ?? 1))
+        .div(userTVLUsd)
+
       return {
         ...globalCakeApr,
-        value: String(Number(globalCakeApr.value) * userPosition.farmingMultiplier) as `${number}`,
+        value: apr.toString() as `${number}`,
         boost: undefined,
       }
     }
     return globalCakeApr
-  }, [globalCakeApr, outOfRange, removed, userPosition.farmingMultiplier, userPosition.isStaked])
-
-  const lpApr = useMemo(() => {
-    if (outOfRange || removed) return 0
-    // native lp fee apr
-    if (!userPosition.isStaked) {
-      // return new BigNumber(userLpApr.numerator.toString()).div(userLpApr.denominator.toString()).toNumber()
-
-      return new BigNumber(pool.fee24hUsd ?? 0)
-        .times(365)
-        .times(100)
-        .times(new BigNumber(userPosition.liquidity.toString()).dividedBy(pool.liquidity?.toString() ?? 0))
-        .toNumber()
-    }
-    const apr = new BigNumber(pool.fee24hUsd ?? 0)
-      .times(365)
-      .times(100)
-      .times(new BigNumber(userPosition.farmingLiquidity.toString()).dividedBy(lmPoolLiquidity?.toString() ?? 0))
-      .toNumber()
-    return apr
   }, [
+    cakePrice,
+    globalCakeApr,
     lmPoolLiquidity,
     outOfRange,
-    pool.fee24hUsd,
-    pool.liquidity,
     removed,
     userPosition.farmingLiquidity,
     userPosition.isStaked,
-    userPosition.liquidity,
+    userTVLUsd,
   ])
+
+  const lpApr = useMemo(() => {
+    if (outOfRange || removed) return 0
+
+    const apr = new BigNumber(pool.fee24hUsd ?? 0)
+      .times(365)
+      .times(V3_LP_FEE_RATE[pool.feeTier] ?? 1)
+      .times(new BigNumber(userPosition.liquidity.toString()).dividedBy(pool.liquidity?.toString() ?? 0))
+      .div(userTVLUsd)
+      .toNumber()
+    return apr
+  }, [outOfRange, pool.fee24hUsd, pool.feeTier, pool.liquidity, removed, userPosition.liquidity, userTVLUsd])
 
   return {
     lpApr,
