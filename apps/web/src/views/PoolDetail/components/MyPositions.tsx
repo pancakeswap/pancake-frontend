@@ -12,6 +12,7 @@ import {
   CardHeader,
   Flex,
   Grid,
+  Image,
   Row,
   Text,
   useToast,
@@ -66,6 +67,10 @@ const PositionCardBody = styled(CardBody)`
   max-height: 848px;
   overflow-y: auto;
   overflow-x: hidden;
+`
+
+const StyledImage = styled(Image)`
+  margin: 76px auto;
 `
 
 export const MyPositions: React.FC<{ poolInfo: PoolInfo }> = ({ poolInfo }) => {
@@ -146,15 +151,17 @@ export const MyPositions: React.FC<{ poolInfo: PoolInfo }> = ({ poolInfo }) => {
             <Divider />
             <Row justifyContent="space-between">
               {poolInfo.protocol === 'v3' ? <V3PoolEarnings pool={poolInfo} /> : <V2PoolEarnings pool={poolInfo} />}
-              <Button
-                variant="secondary"
-                onClick={handleHarvestAll}
-                endIcon={loading ? <AutoRenewIcon spin color="currentColor" /> : null}
-                isLoading={loading}
-                disabled={loading}
-              >
-                {loading ? t('Harvesting') : t('Harvest')}
-              </Button>
+              {count > 0 ? (
+                <Button
+                  variant="secondary"
+                  onClick={handleHarvestAll}
+                  endIcon={loading ? <AutoRenewIcon spin color="currentColor" /> : null}
+                  isLoading={loading}
+                  disabled={loading}
+                >
+                  {loading ? t('Harvesting') : t('Harvest')}
+                </Button>
+              ) : null}
             </Row>
             <Button as="a" href={addLiquidityLink}>
               {t('Add Liquidity')}
@@ -196,6 +203,9 @@ export const MyPositions: React.FC<{ poolInfo: PoolInfo }> = ({ poolInfo }) => {
                 setHandleHarvestAll={setHandleHarvestAll}
               />
             ) : null}
+            {count === 0 && (
+              <StyledImage src="/images/decorations/3dpan.png" alt="Pancake illustration" width={120} height={103} />
+            )}
           </PositionCardBody>
         </PositionsCard>
       </Grid>
