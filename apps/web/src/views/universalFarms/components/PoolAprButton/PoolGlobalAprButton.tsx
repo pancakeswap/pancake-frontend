@@ -11,5 +11,12 @@ export const PoolGlobalAprButton: React.FC<PoolGlobalAprButtonProps> = ({ pool }
   const key = useMemo(() => `${pool.chainId}:${pool.lpAddress}` as const, [pool.chainId, pool.lpAddress])
   const { lpApr, cakeApr, merklApr } = usePoolApr(key, pool)
 
-  return <PoolAprButton pool={pool} lpApr={lpApr} cakeApr={cakeApr} merklApr={merklApr} />
+  return (
+    <PoolAprButton
+      pool={pool}
+      lpApr={Number(lpApr ?? 0) ?? 0}
+      cakeApr={cakeApr}
+      merklApr={Number(merklApr ?? 0) ?? 0}
+    />
+  )
 }
