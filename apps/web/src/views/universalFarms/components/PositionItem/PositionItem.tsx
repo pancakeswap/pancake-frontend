@@ -1,13 +1,12 @@
-import { chainNames } from '@pancakeswap/chains'
+import { CHAIN_QUERY_NAME } from 'config/chains'
+import { useRouter } from 'next/router'
 import { Protocol } from '@pancakeswap/farms'
 import { Currency, CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
 import { Column, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { TokenPairImage } from 'components/TokenImage'
-import NextLink from 'next/link'
-import React, { PropsWithChildren, useMemo } from 'react'
+import React, { PropsWithChildren } from 'react'
 import { PoolInfo } from 'state/farmsV4/state/type'
 import styled from 'styled-components'
-import { addQueryToPath } from '../../utils'
 import { PositionInfo } from './PositionInfo'
 import { PositionItemSkeleton } from './PositionItemSkeleton'
 import { Container } from './styled'
@@ -37,10 +36,7 @@ export const PositionItem: React.FC<PropsWithChildren<PositionItemProps>> = (pro
   const { link, currency0, currency1, chainId, children } = props
 
   const { isDesktop } = useMatchBreakpoints()
-  const linkWithChain = useMemo(
-    () => (link ? addQueryToPath(link, { chain: chainNames[chainId] }) : link),
-    [link, chainId],
-  )
+  const nextRouter = useRouter()
 
   if (!(currency0 && currency1)) {
     return <PositionItemSkeleton />
@@ -67,10 +63,23 @@ export const PositionItem: React.FC<PropsWithChildren<PositionItemProps>> = (pro
     </Container>
   )
 
-  if (!linkWithChain) {
+  if (!link) {
     return content
   }
-  return <NextLink href={linkWithChain}>{content}</NextLink>
+  return (
+    <a
+      href={link}
+      onClick={(e) => {
+        e.preventDefault()
+        nextRouter.push({
+          pathname: link,
+          query: { chain: CHAIN_QUERY_NAME[chainId] },
+        })
+      }}
+    >
+      {content}
+    </a>
+  )
 }
 
 const DetailsContainer = styled(Flex)`
