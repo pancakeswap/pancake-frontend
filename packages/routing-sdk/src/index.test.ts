@@ -9,11 +9,23 @@ test('exports', () => {
       "createGraph",
       "createPriceCalculator",
       "findBestTrade",
+      "findBestTradeByStreams",
       "isSameRoute",
       "mergeRoute",
       "getBetterTrade",
       "groupPoolsByType",
       "logCurrency",
+      "toSerializableCurrency",
+      "toSerializableCurrencyAmount",
+      "toSerializableRoute",
+      "toSerializableTrade",
+      "parseCurrency",
+      "parseCurrencyAmount",
+      "parseRoute",
+      "parseTrade",
+      "getPriceImpact",
+      "getMidPrice",
+      "ADDRESS_ZERO",
     ]
   `)
 })

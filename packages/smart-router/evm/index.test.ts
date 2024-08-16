@@ -36,6 +36,7 @@ test('exports', () => {
       "SmartRouter",
       "SwapRouter",
       "getPoolAddress",
+      "getRouteTypeByPools",
       "Transformer",
       "PoolType",
       "RouteType",
