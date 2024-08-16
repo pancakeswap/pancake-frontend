@@ -231,14 +231,9 @@ export function usePoolsWithChainId(
       if (!tokens) return [PoolState.INVALID, null]
       const [token0, token1, fee] = tokens
 
-      if (!slot0s[index]) return [PoolState.INVALID, null]
       const slot0 = slot0s[index]
-
-      if (!liquidities[index]) return [PoolState.INVALID, null]
       const liquidity = liquidities[index]
-
-      if (!tokens || !slot0 || !liquidity) return [PoolState.INVALID, null]
-      if (!slot0 || typeof liquidity === 'undefined') return [PoolState.NOT_EXISTS, null]
+      if (typeof slot0 === 'undefined' || typeof liquidity === 'undefined') return [PoolState.INVALID, null]
       const [sqrtPriceX96, tick, , , , feeProtocol] = slot0
       if (!sqrtPriceX96 || sqrtPriceX96 === 0n) return [PoolState.NOT_EXISTS, null]
 
