@@ -15,7 +15,6 @@ import { PositionDetail } from 'state/farmsV4/state/accountPositions/type'
 import { PoolInfo } from 'state/farmsV4/state/type'
 import { useV3FormState } from 'views/AddLiquidityV3/formViews/V3FormView/form/reducer'
 import { useLmPoolLiquidity } from 'views/Farms/hooks/useLmPoolLiquidity'
-import { useAccount } from 'wagmi'
 
 type V3PoolAprModalProps = {
   modal: UseModalV2Props
@@ -31,32 +30,15 @@ export const V3PoolAprModal: React.FC<V3PoolAprModalProps> = ({ modal, ...props 
   return modal.isOpen ? <AprModal modal={modal} {...props} /> : null
 }
 
-const AprModal: React.FC<V3PoolAprModalProps> = ({
-  modal,
-  poolInfo,
-  userPosition,
-  boostMultiplier,
-  lpApr,
-  cakeApr,
-}) => {
+const AprModal: React.FC<V3PoolAprModalProps> = ({ modal, poolInfo, userPosition, cakeApr }) => {
   const { t } = useTranslation()
-  const { address: account } = useAccount()
   const cakePrice = useCakePrice()
-  const {
-    currency0,
-    currency1,
-    removed,
-    outOfRange: positionOutOfRange,
-    priceUpper,
-    priceLower,
-    tickAtLimit,
-    position,
-  } = useExtraV3PositionInfo(userPosition)
+  const { priceUpper, priceLower, position } = useExtraV3PositionInfo(userPosition)
   const { data: token0PriceUsd } = useCurrencyUsdPrice(poolInfo.token0, { enabled: !!poolInfo.token0 })
   const { data: token1PriceUsd } = useCurrencyUsdPrice(poolInfo.token1, { enabled: !!poolInfo.token1 })
   const formState = useV3FormState()
   const [priceTimeWindow, setPriceTimeWindow] = useState(PairDataTimeWindowEnum.DAY)
-  const { pool, ticks, price, pricesAtTicks, currencyBalances, outOfRange } = useV3DerivedInfo(
+  const { pool, price, currencyBalances } = useV3DerivedInfo(
     poolInfo?.token0 ?? undefined,
     poolInfo?.token1 ?? undefined,
     poolInfo?.feeTier,
