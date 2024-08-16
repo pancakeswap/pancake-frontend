@@ -1,3 +1,4 @@
+import { ChainId } from '@pancakeswap/chains'
 import { Protocol, supportedChainIdV4, UNIVERSAL_BCAKEWRAPPER_FARMS } from '@pancakeswap/farms'
 import { LegacyRouter } from '@pancakeswap/smart-router/legacy-router'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
@@ -102,10 +103,11 @@ export const getV3PoolCakeApr = async (pool: V3PoolInfo, cakePrice: BigNumber): 
   const liquidityBooster = new BigNumber(totalBoostLiquidity.toString()).dividedBy(totalLiquidity.toString())
 
   const baseApr = cakePerYearUsd.times(poolWeight).dividedBy(liquidityBooster.times(pool.tvlUsd ?? 1))
+  const multiplier = DEFAULT_V3_CAKE_APR_BOOST_MULTIPLIER[pool.chainId]
 
   return {
     value: baseApr.toString() as `${number}`,
-    boost: baseApr.times(2).toString() as `${number}`, //
+    boost: multiplier ? (baseApr.times(multiplier).toString() as `${number}`) : undefined,
     cakePerYear,
     poolWeight,
   }
@@ -136,13 +138,16 @@ const calcV3PoolApr = ({
       ? BIG_ZERO
       : new BigNumber(totalBoostLiquidity.toString()).dividedBy(totalLiquidity.toString())
 
-  const baseApr = liquidityBooster.isZero()
-    ? BIG_ZERO
-    : cakePerYearUsd.times(poolWeight).dividedBy(liquidityBooster.times(pool.tvlUsd ?? 1))
+  const baseApr =
+    liquidityBooster.isZero() || Number(pool.tvlUsd) === 0
+      ? BIG_ZERO
+      : cakePerYearUsd.times(poolWeight).dividedBy(liquidityBooster.times(pool.tvlUsd ?? 1))
+
+  const multiplier = DEFAULT_V3_CAKE_APR_BOOST_MULTIPLIER[pool.chainId]
 
   return {
     value: baseApr.toString() as `${number}`,
-    boost: baseApr.times(2).toString() as `${number}`,
+    boost: multiplier ? (baseApr.times(multiplier).toString() as `${number}`) : undefined,
     cakePerYear,
     poolWeight,
   }
@@ -165,7 +170,18 @@ export const getUniversalBCakeWrapperForPool = (pool: { lpAddress: Address; chai
   return config
 }
 
-export const DEFAULT_V2_CAKE_APR_BOOS_MULTIPLIER = 2.5
+export const DEFAULT_V2_CAKE_APR_BOOST_MULTIPLIER = {
+  [ChainId.ETHEREUM]: 2.5,
+  [ChainId.BSC]: 2.5,
+  [ChainId.ZKSYNC]: 2.5,
+  [ChainId.ARBITRUM_ONE]: 2.5,
+}
+export const DEFAULT_V3_CAKE_APR_BOOST_MULTIPLIER = {
+  [ChainId.ETHEREUM]: 2,
+  [ChainId.BSC]: 2,
+  [ChainId.ZKSYNC]: 2,
+  [ChainId.ARBITRUM_ONE]: 2,
+}
 export const getV2PoolCakeApr = async (
   pool: V2PoolInfo | StablePoolInfo,
   cakePrice: BigNumber,
@@ -185,10 +201,11 @@ export const getV2PoolCakeApr = async (
   const cakeOneYearUsd = cakePrice.times((cakePerSecond * BigInt(SECONDS_PER_YEAR)).toString()).dividedBy(1e18)
 
   const baseApr = cakeOneYearUsd.dividedBy(pool.tvlUsd ?? 1)
+  const multiplier = DEFAULT_V2_CAKE_APR_BOOST_MULTIPLIER[pool.chainId]
 
   return {
     value: baseApr.toString() as `${number}`,
-    boost: baseApr.times(DEFAULT_V2_CAKE_APR_BOOS_MULTIPLIER).toString() as `${number}`,
+    boost: multiplier ? (baseApr.times(multiplier).toString() as `${number}`) : undefined,
   }
 }
 
@@ -305,10 +322,11 @@ const calcV2PoolApr = ({
   const farmingTVLUsd = usdPerShare.times(totalBoostShare.toString() ?? 0).dividedBy(1e18)
 
   const baseApr = cakeOneYearUsd.dividedBy((farmingTVLUsd ?? 1).toString())
+  const multiplier = DEFAULT_V2_CAKE_APR_BOOST_MULTIPLIER[pool.chainId]
 
   return {
     value: baseApr.toString() as `${number}`,
-    boost: baseApr.times(2.5).toString() as `${number}`,
+    boost: multiplier ? (baseApr.times(multiplier).toString() as `${number}`) : undefined,
     cakePerYear,
   }
 }
