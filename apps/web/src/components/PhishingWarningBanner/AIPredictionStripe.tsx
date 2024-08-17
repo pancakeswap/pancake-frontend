@@ -31,40 +31,22 @@ export const AIPrediction = ({
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
 
-  const content = (
-    <Box>
-      <Text bold as="span" color="white" fontSize={['12px', '12px', '12px']}>
-        {t("PancakeSwap's AI-Prediction Market is now live on Arbitrum.")}
-      </Text>
-      <Text bold as="span" color="#FFE238" fontSize={['12px', '12px', '12px']}>
-        {t('60,000 ARB')}{' '}
-      </Text>
-      <Text bold as="span" color="white" fontSize={['12px', '12px', '12px']}>
-        {t('in rewards and up to 100% Fund Protection.')}
-      </Text>
-    </Box>
-  )
-
-  const mobileContent = (
-    <Box>
-      <Text bold as="span" color="white" fontSize={['12px', '12px', '14px']}>
-        {t('Predict ETH Price on Arbitrum & Win')}
-      </Text>
-      <Text bold as="span" color="#FFE238" fontSize={['12px', '12px', '14px']}>
-        {t('60,000 $ARB')}{' '}
-      </Text>
-      <Text bold as="span" color="white" fontSize={['12px', '12px', '14px']}>
-        {t('Reward!')}
-      </Text>
-    </Box>
-  )
-
   if (isMobile) {
     return (
       <Flex alignItems="center" flexWrap="nowrap">
         <MobileImage src={stripeImage} alt={stripeImageAlt} />
         <Column>
-          {mobileContent}
+          <Box>
+            <Text bold as="span" color="white" fontSize={['12px', '12px', '14px']}>
+              {t('Predict ETH Price on Arbitrum & Win')}
+            </Text>
+            <Text bold as="span" color="#FFE238" fontSize={['12px', '12px', '14px']}>
+              {t('60,000 $ARB')}{' '}
+            </Text>
+            <Text bold as="span" color="white" fontSize={['12px', '12px', '14px']}>
+              {t('Reward!')}
+            </Text>
+          </Box>
           <Link
             external
             fontSize={['12px', '12px', '14px']}
@@ -81,7 +63,17 @@ export const AIPrediction = ({
 
   return (
     <Flex mr={['6px']} alignItems="center" flexWrap="wrap">
-      {content}
+      <Box>
+        <Text bold as="span" color="white" fontSize={['12px', '12px', '12px']}>
+          {t("PancakeSwap's AI-Prediction Market is now live on Arbitrum.")}
+        </Text>
+        <Text bold as="span" color="#FFE238" fontSize={['12px', '12px', '12px']}>
+          {t('60,000 ARB')}{' '}
+        </Text>
+        <Text bold as="span" color="white" fontSize={['12px', '12px', '12px']}>
+          {t('in rewards and up to 100% Fund Protection.')}
+        </Text>
+      </Box>
       <FlexGap>
         <Link
           color="primary"

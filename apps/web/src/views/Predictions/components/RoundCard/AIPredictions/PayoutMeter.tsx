@@ -1,8 +1,11 @@
 import { Box, BoxProps, Flex, Grid, Text } from '@pancakeswap/uikit'
-import Lottie from 'lottie-react'
 import styled, { useTheme } from 'styled-components'
+import dynamic from 'next/dynamic'
+import { useTranslation } from '@pancakeswap/localization'
 import MeterJSON from '../../../../../../public/images/predictions/meter.json'
 import MeterDarkJSON from '../../../../../../public/images/predictions/meter_dark.json'
+
+const Lottie = dynamic(() => import('lottie-react'), { ssr: false })
 
 interface PayoutMeterProps extends BoxProps {
   bearMultiplier?: string
@@ -24,6 +27,7 @@ const StyledGrid = styled(Grid)`
 `
 
 export const PayoutMeter = ({ bearMultiplier = '0', bullMultiplier = '0', ...props }: PayoutMeterProps) => {
+  const { t } = useTranslation()
   const isRoundEmpty = bearMultiplier === '0' && bullMultiplier === '0'
 
   return (
@@ -40,7 +44,7 @@ export const PayoutMeter = ({ bearMultiplier = '0', bullMultiplier = '0', ...pro
           <div />
         )}
         <Text color="textSubtle" textAlign="center" bold small>
-          Payout
+          {t('Payout')}
         </Text>
         {!isRoundEmpty && (
           <Text small bold>
