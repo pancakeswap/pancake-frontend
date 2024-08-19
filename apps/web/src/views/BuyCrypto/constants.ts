@@ -233,26 +233,6 @@ export const fiatCurrencyMap: Record<string, { symbol: string; name: string }> =
 }
 
 export type OnRampCurrency = Currency | NativeBtc
-export const onRampCurrencies: OnRampCurrency[] = [
-  NativeBtc.onChain(),
-  Native.onChain(OnRampChainId.ETHEREUM),
-  Native.onChain(OnRampChainId.BSC),
-  Native.onChain(OnRampChainId.ARBITRUM_ONE),
-  Native.onChain(OnRampChainId.POLYGON_ZKEVM),
-  Native.onChain(OnRampChainId.ZKSYNC),
-  Native.onChain(OnRampChainId.LINEA),
-  Native.onChain(OnRampChainId.BASE),
-  ethereumTokens.usdt,
-  bscTokens.usdt,
-  bscTokens.usdc,
-  ethereumTokens.usdc,
-  arbitrumTokens.usdc,
-  lineaTokens.usdc,
-  baseTokens.usdc,
-  ethereumTokens.dai,
-  ethereumTokens.wbtc,
-  // arbitrumTokens.usdce,
-]
 
 export const onRampCurrenciesMap: { [tokenSymbol: string]: Currency } = {
   BTC_0: NativeBtc.onChain(),

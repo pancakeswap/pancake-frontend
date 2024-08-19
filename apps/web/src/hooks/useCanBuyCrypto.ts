@@ -1,7 +1,7 @@
 import type { ChainId } from '@pancakeswap/chains'
 import { useMemo } from 'react'
 
-const SUPPORTED_ONRAMP_TOKENS = ['ETH', 'DAI', 'USDT', 'USDC', 'BUSD', 'BNB', 'WBTC']
+const SUPPORTED_ONRAMP_TOKENS = ['ETH', 'DAI', 'USDT', 'USDC', 'BNB', 'WBTC']
 
 interface Params {
   currencySymbol?: string
