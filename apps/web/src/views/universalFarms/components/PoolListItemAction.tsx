@@ -1,6 +1,7 @@
 import { Protocol } from '@pancakeswap/farms'
 import { useTheme } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
+import { LegacyRouter } from '@pancakeswap/smart-router/legacy-router'
 import { Button, Flex, MoreIcon, SubMenu } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 import ConnectWalletButton from 'components/ConnectWalletButton'
@@ -9,6 +10,7 @@ import { memo, useCallback, useMemo } from 'react'
 import type { PoolInfo } from 'state/farmsV4/state/type'
 import { multiChainPaths } from 'state/info/constant'
 import styled, { css } from 'styled-components'
+import { isAddressEqual } from 'viem'
 import { useAccount } from 'wagmi'
 
 const BaseButtonStyle = css`
@@ -48,7 +50,36 @@ export const PoolListItemAction = memo(({ pool }: { pool: PoolInfo }) => {
 })
 
 export const getPoolDetailPageLink = (pool: PoolInfo) => {
-  return `/liquidity/pool${multiChainPaths[pool.chainId] || '/bsc'}/${pool.stableLpAddress ?? pool.lpAddress}`
+  const linkPrefix = `/liquidity/pool${multiChainPaths[pool.chainId] || '/bsc'}`
+  if (pool.protocol === Protocol.STABLE) {
+    if (pool.stableLpAddress) {
+      return `${linkPrefix}/${pool.stableLpAddress}`
+    }
+    const ssPair = LegacyRouter.stableSwapPairsByChainId[pool.chainId]?.find((pair) => {
+      return isAddressEqual(pair.lpAddress, pool.lpAddress)
+    })
+    if (ssPair) {
+      return `${linkPrefix}/${ssPair.stableSwapAddress}`
+    }
+  }
+  return `${linkPrefix}/${pool.lpAddress}`
+}
+
+const getPoolInfoPageLink = (pool: PoolInfo) => {
+  const toLink = (lpAddress: string, protocol: string, query?: string) => {
+    return `/info/${protocol}${multiChainPaths[pool.chainId]}/pairs/${lpAddress}?chain=${
+      CHAIN_QUERY_NAME[pool.chainId]
+    }${query}`
+  }
+  if (pool.protocol === Protocol.STABLE) {
+    const ssPair = LegacyRouter.stableSwapPairsByChainId[pool.chainId]?.find((pair) => {
+      return isAddressEqual(pair.lpAddress, pool.lpAddress)
+    })
+    if (ssPair) {
+      return toLink(ssPair.stableSwapAddress, '', '&type=stableSwap')
+    }
+  }
+  return toLink(pool.lpAddress, pool.protocol)
 }
 
 export const ActionItems = ({ pool, icon }: { pool: PoolInfo; icon?: React.ReactNode }) => {
@@ -59,20 +90,8 @@ export const ActionItems = ({ pool, icon }: { pool: PoolInfo; icon?: React.React
     const addLiqLink = `/add/${pool.token0.wrapped.address}/${pool.token1.address}?chain=${
       CHAIN_QUERY_NAME[pool.chainId]
     }`
-
-    if (pool.protocol === Protocol.STABLE) {
-      return {
-        infoLink: `/info${multiChainPaths[pool.chainId]}/pairs/${pool.lpAddress}?type=stableSwap&chain=${
-          CHAIN_QUERY_NAME[pool.chainId]
-        }`,
-        detailLink: getPoolDetailPageLink(pool),
-        addLiquidityLink: addLiqLink,
-      }
-    }
     return {
-      infoLink: `/info/${pool.protocol}${multiChainPaths[pool.chainId]}/pairs/${pool.lpAddress}?chain=${
-        CHAIN_QUERY_NAME[pool.chainId]
-      }`,
+      infoLink: getPoolInfoPageLink(pool),
       detailLink: getPoolDetailPageLink(pool),
       addLiquidityLink: addLiqLink,
     }
