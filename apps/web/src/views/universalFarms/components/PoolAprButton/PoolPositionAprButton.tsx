@@ -121,6 +121,6 @@ export const useV3PositionApr = (pool: PoolInfo, userPosition: PositionDetail) =
   return {
     lpApr,
     cakeApr,
-    merklApr: Number(merklApr ?? 0) ?? 0,
+    merklApr: outOfRange ? 0 : Number(merklApr ?? 0) ?? 0,
   }
 }
