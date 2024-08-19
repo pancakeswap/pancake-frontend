@@ -9,6 +9,7 @@ import {
   ScanLink,
   SortArrowIcon,
   Text,
+  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import orderBy from 'lodash/orderBy'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
@@ -22,7 +23,16 @@ import HoverInlineText from 'views/V3Info/components/HoverInlineText'
 import { shortenAddress } from 'views/V3Info/utils'
 import { formatTime } from 'views/V3Info/utils/date'
 import { formatDollarAmount } from 'views/V3Info/utils/numbers'
-import { ClickableColumnHeader, ResponsiveGrid, SortButton, SortText } from './styled'
+import {
+  BodyCell,
+  ClickableColumnHeader,
+  HeadCell,
+  LastCell,
+  ResponsiveGrid,
+  SortButton,
+  SortText,
+  TableHeader,
+} from './styled'
 import { SortDirection, Transaction, TransactionType } from './type'
 
 enum SortField {
@@ -36,6 +46,8 @@ const DataRow = ({ transaction }: { transaction: Transaction; color?: string }) 
   const abs1 = Math.abs(transaction.amount1)
   const chainName = useChainNameByQuery()
   const chainId = useChainIdByQuery()
+  const breakPoints = useMatchBreakpoints()
+  const { isLg, isSm, isXs } = useMatchBreakpoints()
 
   const token0Symbol = getTokenSymbolAlias(
     transaction.token0.wrapped.address,
@@ -52,32 +64,63 @@ const DataRow = ({ transaction }: { transaction: Transaction; color?: string }) 
 
   return (
     <ResponsiveGrid>
-      <ScanLink
-        useBscCoinFallback={ChainLinkSupportChains.includes(chainId)}
-        href={getBlockExploreLink(transaction.transactionHash, 'transaction', chainId)}
-      >
-        <Text fontWeight={600}>
-          {transaction.type === TransactionType.Add
-            ? `Add ${token0Symbol} and ${token1Symbol}`
-            : transaction.type === TransactionType.Swap
-            ? `Swap ${inputTokenSymbol} for ${outputTokenSymbol}`
-            : `Remove ${token0Symbol} and ${token1Symbol}`}
-        </Text>
-      </ScanLink>
-      <AutoColumn>
+      <HeadCell>
+        <ScanLink
+          useBscCoinFallback={ChainLinkSupportChains.includes(chainId)}
+          href={getBlockExploreLink(transaction.transactionHash, 'transaction', chainId)}
+        >
+          <Text fontWeight={600}>
+            {transaction.type === TransactionType.Add
+              ? `Add ${token0Symbol} and ${token1Symbol}`
+              : transaction.type === TransactionType.Swap
+              ? `Swap ${inputTokenSymbol} for ${outputTokenSymbol}`
+              : `Remove ${token0Symbol} and ${token1Symbol}`}
+          </Text>
+        </ScanLink>
+        <Flex>
+          <Text fontWeight={400}>{formatDollarAmount(transaction.amountUSD)}</Text>&nbsp;
+          <Text color="textSubtle">
+            <Flex>
+              (
+              <HoverInlineText color="textSubtle" text={`${formatAmount(abs0)}  ${token0Symbol}`} maxCharacters={16} />
+              ,&nbsp;
+              <HoverInlineText color="textSubtle" text={`${formatAmount(abs1)}  ${token1Symbol}`} maxCharacters={16} />)
+            </Flex>
+          </Text>
+        </Flex>
+      </HeadCell>
+
+      <BodyCell>
         <Text fontWeight={400} textAlign="right">
           {formatDollarAmount(transaction.amountUSD)}
         </Text>
         <Text color="textSubtle">
           <Flex justifyContent="flex-end">
-            (<HoverInlineText color="textSubtle" text={`${formatAmount(abs0)}  ${token0Symbol}`} maxCharacters={16} />
+            (<HoverInlineText color="textSubtle" text={`${formatAmount(abs0)} ${token0Symbol}`} maxCharacters={16} />
             ,&nbsp;
-            <HoverInlineText color="textSubtle" text={`${formatAmount(abs1)}  ${token1Symbol}`} maxCharacters={16} />)
+            <HoverInlineText color="textSubtle" text={`${formatAmount(abs1)} ${token1Symbol}`} maxCharacters={16} />)
           </Flex>
         </Text>
-      </AutoColumn>
-      <Text fontWeight={400} textAlign="right">
-        <Flex justifyContent="flex-end">
+      </BodyCell>
+
+      <BodyCell>
+        <Text fontWeight={400} textAlign="right">
+          <Flex justifyContent="flex-end">
+            <ScanLink
+              useBscCoinFallback={ChainLinkSupportChains.includes(multiChainId[chainName])}
+              href={getBlockExploreLink(transaction.sender, 'address', multiChainId[chainName])}
+              fontWeight={400}
+            >
+              {shortenAddress(transaction.sender)}
+            </ScanLink>
+          </Flex>
+        </Text>
+      </BodyCell>
+      <LastCell>
+        <Text fontWeight={400} textAlign="right">
+          {formatTime(transaction.timestamp.toString(), 0)}
+        </Text>
+        {isLg ? null : (
           <ScanLink
             useBscCoinFallback={ChainLinkSupportChains.includes(multiChainId[chainName])}
             href={getBlockExploreLink(transaction.sender, 'address', multiChainId[chainName])}
@@ -85,11 +128,8 @@ const DataRow = ({ transaction }: { transaction: Transaction; color?: string }) 
           >
             {shortenAddress(transaction.sender)}
           </ScanLink>
-        </Flex>
-      </Text>
-      <Text fontWeight={400} textAlign="right">
-        {formatTime(transaction.timestamp.toString(), 0)}
-      </Text>
+        )}
+      </LastCell>
     </ResponsiveGrid>
   )
 }
@@ -107,6 +147,7 @@ const DEFAULT_FIELD_SORT_DIRECTION = {
 
 export const TransactionsTable: React.FC<TransactionTableProps> = ({ transactions, maxItems = 10 }) => {
   const { t } = useTranslation()
+  const { isLg } = useMatchBreakpoints()
 
   // for sorting
   const [sortField, setSortField] = useState(SortField.Timestamp)
@@ -179,7 +220,7 @@ export const TransactionsTable: React.FC<TransactionTableProps> = ({ transaction
   return (
     <TableWrapper>
       <AutoColumn gap="16px">
-        <ResponsiveGrid>
+        <TableHeader>
           <RowFixed>
             <SortText
               onClick={() => {
@@ -247,8 +288,7 @@ export const TransactionsTable: React.FC<TransactionTableProps> = ({ transaction
               <SortArrowIcon />
             </SortButton>
           </ClickableColumnHeader>
-        </ResponsiveGrid>
-        <Break />
+        </TableHeader>
 
         {sortedTransactions.map((d) => {
           if (d) {
