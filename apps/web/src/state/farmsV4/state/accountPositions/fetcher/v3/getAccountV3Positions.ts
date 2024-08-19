@@ -7,7 +7,7 @@ import { Address } from 'viem'
 import { PositionDetail } from '../../type'
 import { getAccountV3TokenIds } from './getAccountV3TokenIds'
 
-const readPositions = async (chainId: number, tokenIds: bigint[]): Promise<PositionDetail[]> => {
+export const readPositions = async (chainId: number, tokenIds: bigint[]): Promise<PositionDetail[]> => {
   const nftPositionManagerAddress = NFT_POSITION_MANAGER_ADDRESSES[chainId]
   const client = publicClient({ chainId })
   const masterChefV3 = getMasterChefV3Contract(undefined, chainId)
@@ -88,6 +88,7 @@ const readPositions = async (chainId: number, tokenIds: bigint[]): Promise<Posit
       protocol: Protocol.V3,
       farmingMultiplier: new BigNumber(Number(boostMultiplier)).div(1000000000000).toNumber() ?? 0,
       farmingLiquidity,
+      isStaked: farmingLiquidity > 0n,
     } satisfies PositionDetail
   })
 }

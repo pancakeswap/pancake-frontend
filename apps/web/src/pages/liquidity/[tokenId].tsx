@@ -77,7 +77,7 @@ import { getViemClients } from 'utils/viem'
 import { CHAIN_IDS } from 'utils/wagmi'
 import { unwrappedToken } from 'utils/wrappedCurrency'
 import { hexToBigInt } from 'viem'
-import { AprCalculator } from 'views/AddLiquidityV3/components/AprCalculator'
+import { AprCalculatorV2 } from 'views/AddLiquidityV3/components/AprCalculatorV2'
 import RateToggle from 'views/AddLiquidityV3/formViews/V3FormView/components/RateToggle'
 import Page from 'views/Page'
 import { useSendTransaction, useWalletClient } from 'wagmi'
@@ -627,17 +627,7 @@ export default function PoolPage() {
                 >
                   <Box width="100%" mb={['8px', '8px', 0]} position="relative">
                     <Flex position="absolute" right={0}>
-                      <AprCalculator
-                        allowApply={false}
-                        showQuestion
-                        baseCurrency={currencyBase}
-                        quoteCurrency={currencyQuote}
-                        feeAmount={feeAmount}
-                        positionDetails={positionDetails}
-                        defaultDepositUsd={fiatValueOfLiquidity?.toFixed(2)}
-                        tokenAmount0={inRange ? position?.amount0 : undefined}
-                        tokenAmount1={inRange ? position?.amount1 : undefined}
-                      />
+                      <AprCalculatorV2 tokenId={BigInt(tokenId ?? 0)} poolAddress={poolAddress} chainId={chainId} />
                     </Flex>
                     <Text fontSize="12px" color="secondary" bold textTransform="uppercase">
                       {t('Liquidity')}
