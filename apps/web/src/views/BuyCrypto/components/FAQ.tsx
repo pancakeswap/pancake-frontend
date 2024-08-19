@@ -1,7 +1,42 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Card, CardBody, CardHeader, Heading, LinkExternal, Text } from '@pancakeswap/uikit'
+import { Box, Card, CardBody, CardHeader, Heading, LinkExternal, Text, useTooltip } from '@pancakeswap/uikit'
 
 import FoldableText from 'components/FoldableSection/FoldableText'
+import { ONRAMP_PROVIDERS } from '../constants'
+
+type LinkDataMap = {
+  [key in ONRAMP_PROVIDERS]: string
+}
+
+const linkData: LinkDataMap = {
+  [ONRAMP_PROVIDERS.Mercuryo]:
+    'https://help.mercuryo.io/hc/en-gb/articles/14495507502749-Which-fiat-currencies-are-supported',
+  [ONRAMP_PROVIDERS.MoonPay]: 'https://support.moonpay.com/customers/docs/moonpays-supported-currencies',
+  [ONRAMP_PROVIDERS.Transak]: 'https://transak.com/global-coverage',
+  [ONRAMP_PROVIDERS.Topper]:
+    'https://support.topperpay.com/hc/en-us/articles/8926553047708-What-fiat-currencies-does-Topper-support',
+}
+
+const PartnersDocumentation = ({ t }) => {
+  const { tooltip, tooltipVisible, targetRef } = useTooltip(
+    <Box>
+      {Object.entries(linkData).map(([provider, href]) => (
+        <LinkExternal key={provider} href={href}>
+          {provider}
+        </LinkExternal>
+      ))}
+    </Box>,
+  )
+
+  return (
+    <>
+      {tooltipVisible && tooltip}
+      <Text ref={targetRef} style={{ display: 'inline-flex', textDecoration: 'underline dotted' }}>
+        {t('partners documentation')}
+      </Text>
+    </>
+  )
+}
 
 const config = (t) => [
   {
@@ -28,14 +63,7 @@ const config = (t) => [
         >
           {t('documentation')}
         </LinkExternal>{' '}
-        {t('or')}{' '}
-        <LinkExternal
-          style={{ display: 'inline-flex' }}
-          href="https://help.mercuryo.io/en/articles/6122838-on-and-off-ramps"
-        >
-          {t('partners documentation')}
-        </LinkExternal>{' '}
-        {t('for more info.')}
+        {t('or')} <PartnersDocumentation t={t} /> {t('for more info.')}
       </>
     ),
   },
