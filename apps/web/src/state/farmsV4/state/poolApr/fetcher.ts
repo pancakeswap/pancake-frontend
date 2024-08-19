@@ -7,6 +7,7 @@ import { create, windowedFiniteBatchScheduler } from '@yornaath/batshit'
 import BigNumber from 'bignumber.js'
 import { SECONDS_PER_YEAR } from 'config'
 import { v2BCakeWrapperABI } from 'config/abi/v2BCakeWrapper'
+import dayjs from 'dayjs'
 import { getCakePriceFromOracle } from 'hooks/useCakePrice'
 import assign from 'lodash/assign'
 import groupBy from 'lodash/groupBy'
@@ -316,6 +317,12 @@ const calcV2PoolApr = ({
   totalBoostShare: bigint
   totalSupply: bigint
 }) => {
+  if (cakePerSecond === 0n) {
+    return {
+      value: '0',
+      cakePerYear: new BigNumber(0),
+    }
+  }
   const cakePerYear = new BigNumber(SECONDS_PER_YEAR).times(cakePerSecond.toString()).dividedBy(1e18)
   const cakeOneYearUsd = cakePrice.times(cakePerYear.toString())
   const usdPerShare = new BigNumber(pool.tvlUsd ?? 0).times(1e18).div(totalSupply.toString() ?? 1)
@@ -326,7 +333,7 @@ const calcV2PoolApr = ({
 
   return {
     value: baseApr.toString() as `${number}`,
-    boost: multiplier ? (baseApr.times(multiplier).toString() as `${number}`) : undefined,
+    boost: multiplier && baseApr.gt(0) ? (baseApr.times(multiplier).toString() as `${number}`) : undefined,
     cakePerYear,
   }
 }
@@ -381,7 +388,15 @@ const getV2PoolsCakeAprByChainId = async (
     } as const
   })
 
-  const [rewardPerSecondResults, totalBoostedShareResults, totalSupplies] = await Promise.all([
+  const endTimestampCalls = validPools.map((pool) => {
+    return {
+      address: pool.bCakeWrapperAddress,
+      functionName: 'endTimestamp',
+      abi: v2BCakeWrapperABI,
+    } as const
+  })
+
+  const [rewardPerSecondResults, totalBoostedShareResults, totalSupplies, endTimestamps] = await Promise.all([
     client.multicall({
       contracts: rewardPerSecondCalls,
       allowFailure: false,
@@ -394,12 +409,18 @@ const getV2PoolsCakeAprByChainId = async (
       contracts: totalSupplyCalls,
       allowFailure: false,
     }),
+    client.multicall({
+      contracts: endTimestampCalls,
+      allowFailure: false,
+    }),
   ])
 
   return validPools.reduce((acc, pool, index) => {
     const rewardPerSecond = rewardPerSecondResults[index]
     const totalBoostShare = totalBoostedShareResults[index]
-    if (!rewardPerSecond) return acc
+    const endTimestamp = endTimestamps[index]
+    const expired = endTimestamp && Number(endTimestamp) < dayjs().unix()
+    if (!rewardPerSecond || expired) return acc
     const key = `${chainId}:${safeGetAddress(pool.lpAddress)}`
     set(
       acc,

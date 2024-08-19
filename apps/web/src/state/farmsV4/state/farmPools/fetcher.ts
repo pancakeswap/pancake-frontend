@@ -49,7 +49,7 @@ export const fetchFarmPools = async (
   },
   signal?: AbortSignal,
 ) => {
-  let remotePools: PoolInfo[]
+  let remotePools: PoolInfo[] | undefined
   try {
     remotePools = await fetchExplorerFarmPools(args, signal)
   } catch (error) {
@@ -64,7 +64,7 @@ export const fetchFarmPools = async (
   const remoteMissedPoolsIndex: number[] = []
 
   const finalPools = localPools.map((farm, index) => {
-    const pool = remotePools.find((p) => {
+    const pool = remotePools?.find((p) => {
       return (
         p.chainId === farm.chainId &&
         isAddressEqual(p.lpAddress, farm.lpAddress) &&
@@ -89,8 +89,7 @@ export const fetchFarmPools = async (
       tvlUsd: undefined,
       vol24hUsd: undefined,
       feeTier:
-        farm.protocol === Protocol.V3 ? Number(farm.feeAmount) : farm.protocol === Protocol.V2 ? FeeAmount.MEDIUM : 100, // @todo @ChefJerry add stable fee
-      // @todo @ChefJerry get by protocols
+        farm.protocol === Protocol.V3 ? Number(farm.feeAmount) : farm.protocol === Protocol.V2 ? FeeAmount.MEDIUM : 100,
       feeTierBase: 1_000_000,
       isFarming: true,
     } satisfies PoolInfo
