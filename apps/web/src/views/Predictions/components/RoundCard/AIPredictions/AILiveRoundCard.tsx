@@ -112,9 +112,6 @@ export const AILiveRoundCard: React.FC<React.PropsWithChildren<AILiveRoundCardPr
     // Fetch live price before round ends
     currentUseAlternateSource.current = true
     refetch()
-    setTimeout(() => {
-      currentUseAlternateSource.current = false
-    }, REFRESH_PRICE_BEFORE_SECONDS_TO_CLOSE * 2 * 1000)
   }, [currentUseAlternateSource, refetch])
 
   useEffect(() => {
