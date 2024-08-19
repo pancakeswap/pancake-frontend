@@ -9,6 +9,7 @@ import {
   ScanLink,
   SortArrowIcon,
   Text,
+  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import orderBy from 'lodash/orderBy'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
@@ -36,6 +37,7 @@ const DataRow = ({ transaction }: { transaction: Transaction; color?: string }) 
   const abs1 = Math.abs(transaction.amount1)
   const chainName = useChainNameByQuery()
   const chainId = useChainIdByQuery()
+  const { isMobile } = useMatchBreakpoints()
 
   const token0Symbol = getTokenSymbolAlias(
     transaction.token0.wrapped.address,
@@ -52,32 +54,74 @@ const DataRow = ({ transaction }: { transaction: Transaction; color?: string }) 
 
   return (
     <ResponsiveGrid>
-      <ScanLink
-        useBscCoinFallback={ChainLinkSupportChains.includes(chainId)}
-        href={getBlockExploreLink(transaction.transactionHash, 'transaction', chainId)}
-      >
-        <Text fontWeight={600}>
-          {transaction.type === TransactionType.Add
-            ? `Add ${token0Symbol} and ${token1Symbol}`
-            : transaction.type === TransactionType.Swap
-            ? `Swap ${inputTokenSymbol} for ${outputTokenSymbol}`
-            : `Remove ${token0Symbol} and ${token1Symbol}`}
-        </Text>
-      </ScanLink>
       <AutoColumn>
+        <ScanLink
+          useBscCoinFallback={ChainLinkSupportChains.includes(chainId)}
+          href={getBlockExploreLink(transaction.transactionHash, 'transaction', chainId)}
+        >
+          <Text fontWeight={600}>
+            {transaction.type === TransactionType.Add
+              ? `Add ${token0Symbol} and ${token1Symbol}`
+              : transaction.type === TransactionType.Swap
+              ? `Swap ${inputTokenSymbol} for ${outputTokenSymbol}`
+              : `Remove ${token0Symbol} and ${token1Symbol}`}
+          </Text>
+        </ScanLink>
+        {isMobile ? (
+          <Flex>
+            <Text fontWeight={400}>{formatDollarAmount(transaction.amountUSD)}</Text>&nbsp;
+            <Text color="textSubtle">
+              <Flex>
+                (
+                <HoverInlineText
+                  color="textSubtle"
+                  text={`${formatAmount(abs0)}  ${token0Symbol}`}
+                  maxCharacters={16}
+                />
+                ,&nbsp;
+                <HoverInlineText
+                  color="textSubtle"
+                  text={`${formatAmount(abs1)}  ${token1Symbol}`}
+                  maxCharacters={16}
+                />
+                )
+              </Flex>
+            </Text>
+          </Flex>
+        ) : null}
+      </AutoColumn>
+      {isMobile ? null : (
+        <AutoColumn>
+          <Text fontWeight={400} textAlign="right">
+            {formatDollarAmount(transaction.amountUSD)}
+          </Text>
+          <Text color="textSubtle">
+            <Flex justifyContent="flex-end">
+              (<HoverInlineText color="textSubtle" text={`${formatAmount(abs0)} ${token0Symbol}`} maxCharacters={16} />
+              ,&nbsp;
+              <HoverInlineText color="textSubtle" text={`${formatAmount(abs1)} ${token1Symbol}`} maxCharacters={16} />)
+            </Flex>
+          </Text>
+        </AutoColumn>
+      )}
+      {isMobile ? null : (
         <Text fontWeight={400} textAlign="right">
-          {formatDollarAmount(transaction.amountUSD)}
-        </Text>
-        <Text color="textSubtle">
           <Flex justifyContent="flex-end">
-            (<HoverInlineText color="textSubtle" text={`${formatAmount(abs0)}  ${token0Symbol}`} maxCharacters={16} />
-            ,&nbsp;
-            <HoverInlineText color="textSubtle" text={`${formatAmount(abs1)}  ${token1Symbol}`} maxCharacters={16} />)
+            <ScanLink
+              useBscCoinFallback={ChainLinkSupportChains.includes(multiChainId[chainName])}
+              href={getBlockExploreLink(transaction.sender, 'address', multiChainId[chainName])}
+              fontWeight={400}
+            >
+              {shortenAddress(transaction.sender)}
+            </ScanLink>
           </Flex>
         </Text>
-      </AutoColumn>
-      <Text fontWeight={400} textAlign="right">
-        <Flex justifyContent="flex-end">
+      )}
+      <AutoColumn justifyContent="flex-end">
+        <Text fontWeight={400} textAlign="right">
+          {formatTime(transaction.timestamp.toString(), 0)}
+        </Text>
+        {isMobile ? (
           <ScanLink
             useBscCoinFallback={ChainLinkSupportChains.includes(multiChainId[chainName])}
             href={getBlockExploreLink(transaction.sender, 'address', multiChainId[chainName])}
@@ -85,11 +129,8 @@ const DataRow = ({ transaction }: { transaction: Transaction; color?: string }) 
           >
             {shortenAddress(transaction.sender)}
           </ScanLink>
-        </Flex>
-      </Text>
-      <Text fontWeight={400} textAlign="right">
-        {formatTime(transaction.timestamp.toString(), 0)}
-      </Text>
+        ) : null}
+      </AutoColumn>
     </ResponsiveGrid>
   )
 }
@@ -107,6 +148,7 @@ const DEFAULT_FIELD_SORT_DIRECTION = {
 
 export const TransactionsTable: React.FC<TransactionTableProps> = ({ transactions, maxItems = 10 }) => {
   const { t } = useTranslation()
+  const { isMobile } = useMatchBreakpoints()
 
   // for sorting
   const [sortField, setSortField] = useState(SortField.Timestamp)
@@ -179,76 +221,80 @@ export const TransactionsTable: React.FC<TransactionTableProps> = ({ transaction
   return (
     <TableWrapper>
       <AutoColumn gap="16px">
-        <ResponsiveGrid>
-          <RowFixed>
-            <SortText
-              onClick={() => {
-                setTxFilter(undefined)
-              }}
-              $active={txFilter === undefined}
-            >
-              {t('All')}
-            </SortText>
-            <SortText
-              onClick={() => {
-                setTxFilter(TransactionType.Swap)
-              }}
-              $active={txFilter === TransactionType.Swap}
-            >
-              {t('Swaps')}
-            </SortText>
-            <SortText
-              onClick={() => {
-                setTxFilter(TransactionType.Add)
-              }}
-              $active={txFilter === TransactionType.Add}
-            >
-              {t('Adds')}
-            </SortText>
-            <SortText
-              onClick={() => {
-                setTxFilter(TransactionType.Remove)
-              }}
-              $active={txFilter === TransactionType.Remove}
-            >
-              {t('Removes')}
-            </SortText>
-          </RowFixed>
-          <ClickableColumnHeader color="secondary" textTransform="uppercase">
-            {t('transaction value')}
-            <SortButton
-              scale="sm"
-              variant="subtle"
-              onClick={() => handleSort(SortField.TransactionValue)}
-              $direction={fieldSortDirection[SortField.TransactionValue]}
-            >
-              <SortArrowIcon />
-            </SortButton>
-          </ClickableColumnHeader>
-          <ClickableColumnHeader color="secondary" textTransform="uppercase">
-            {t('account')}
-            <SortButton
-              scale="sm"
-              variant="subtle"
-              onClick={() => handleSort(SortField.Account)}
-              $direction={fieldSortDirection[SortField.Account]}
-            >
-              <SortArrowIcon />
-            </SortButton>
-          </ClickableColumnHeader>
-          <ClickableColumnHeader color="secondary" textTransform="uppercase">
-            {t('time')}
-            <SortButton
-              scale="sm"
-              variant="subtle"
-              onClick={() => handleSort(SortField.Timestamp)}
-              className={fieldSortDirection[SortField.Timestamp]}
-            >
-              <SortArrowIcon />
-            </SortButton>
-          </ClickableColumnHeader>
-        </ResponsiveGrid>
-        <Break />
+        {isMobile ? null : (
+          <>
+            <ResponsiveGrid>
+              <RowFixed>
+                <SortText
+                  onClick={() => {
+                    setTxFilter(undefined)
+                  }}
+                  $active={txFilter === undefined}
+                >
+                  {t('All')}
+                </SortText>
+                <SortText
+                  onClick={() => {
+                    setTxFilter(TransactionType.Swap)
+                  }}
+                  $active={txFilter === TransactionType.Swap}
+                >
+                  {t('Swaps')}
+                </SortText>
+                <SortText
+                  onClick={() => {
+                    setTxFilter(TransactionType.Add)
+                  }}
+                  $active={txFilter === TransactionType.Add}
+                >
+                  {t('Adds')}
+                </SortText>
+                <SortText
+                  onClick={() => {
+                    setTxFilter(TransactionType.Remove)
+                  }}
+                  $active={txFilter === TransactionType.Remove}
+                >
+                  {t('Removes')}
+                </SortText>
+              </RowFixed>
+              <ClickableColumnHeader color="secondary" textTransform="uppercase">
+                {t('transaction value')}
+                <SortButton
+                  scale="sm"
+                  variant="subtle"
+                  onClick={() => handleSort(SortField.TransactionValue)}
+                  $direction={fieldSortDirection[SortField.TransactionValue]}
+                >
+                  <SortArrowIcon />
+                </SortButton>
+              </ClickableColumnHeader>
+              <ClickableColumnHeader color="secondary" textTransform="uppercase">
+                {t('account')}
+                <SortButton
+                  scale="sm"
+                  variant="subtle"
+                  onClick={() => handleSort(SortField.Account)}
+                  $direction={fieldSortDirection[SortField.Account]}
+                >
+                  <SortArrowIcon />
+                </SortButton>
+              </ClickableColumnHeader>
+              <ClickableColumnHeader color="secondary" textTransform="uppercase">
+                {t('time')}
+                <SortButton
+                  scale="sm"
+                  variant="subtle"
+                  onClick={() => handleSort(SortField.Timestamp)}
+                  className={fieldSortDirection[SortField.Timestamp]}
+                >
+                  <SortArrowIcon />
+                </SortButton>
+              </ClickableColumnHeader>
+            </ResponsiveGrid>
+            <Break />
+          </>
+        )}
 
         {sortedTransactions.map((d) => {
           if (d) {

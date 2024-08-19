@@ -7,7 +7,11 @@ export const ResponsiveGrid = styled.div`
   grid-gap: 1em;
   align-items: center;
 
-  grid-template-columns: 1.5fr repeat(3, 1fr);
+  ${({ theme }) => theme.mediaQueries.sm} {
+    grid-template-columns: 1.5fr 1.7fr repeat(2, 1fr);
+  }
+
+  grid-template-columns: 2fr 1fr;
   padding: 0 24px;
 `
 

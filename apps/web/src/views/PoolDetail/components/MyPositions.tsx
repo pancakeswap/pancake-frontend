@@ -120,7 +120,7 @@ export const MyPositions: React.FC<{ poolInfo: PoolInfo }> = ({ poolInfo }) => {
       <Text as="h3" bold fontSize={24}>
         {t('My Positions')}
       </Text>
-      <Grid gridGap={24} gridTemplateColumns="1fr 2fr">
+      <Grid gridGap={24} gridTemplateColumns={['1fr', '1fr', '1fr', '1fr 2fr']}>
         <OverviewCard innerCardProps={{ p: 24 }}>
           <AutoColumn gap="lg">
             <AutoColumn gap="8px">

@@ -101,14 +101,14 @@ export const PoolInfo = () => {
       </Header>
       {account && poolInfo ? <MyPositions poolInfo={poolInfo} /> : null}
 
-      <AutoRow gap="lg">
+      <AutoRow gap="lg" flexWrap="wrap">
         <Text as="h3" fontWeight={600} fontSize={24}>
           {t('Pair info')}
         </Text>
         <PoolCurrencies poolInfo={poolInfo} />
       </AutoRow>
 
-      <Grid gridGap="24px" gridTemplateColumns="1fr 2fr">
+      <Grid gridGap="24px" gridTemplateColumns={['1fr', '1fr', '1fr', '1fr 2fr']}>
         <PoolStatus poolInfo={poolInfo} />
         <PoolCharts poolInfo={poolInfo} />
       </Grid>
