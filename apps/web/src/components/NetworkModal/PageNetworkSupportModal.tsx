@@ -42,7 +42,7 @@ export function PageNetworkSupportModal() {
 
   return (
     <Modal title={title || t('Check your network')} hideCloseButton headerBackground="gradientCardHeader">
-      <Grid style={{ gap: '16px' }} maxWidth="360px">
+      <Grid style={{ gap: '16px' }} maxWidth={['100%', null, '336px']}>
         <Text bold>{t('It’s a BNB Smart Chain only feature')}</Text>
 
         {image && (
