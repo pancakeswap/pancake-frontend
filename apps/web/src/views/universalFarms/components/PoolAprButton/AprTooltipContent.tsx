@@ -1,7 +1,31 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { LinkExternal, Text } from '@pancakeswap/uikit'
 import { PropsWithChildren } from 'react'
+import styled from 'styled-components'
 import { displayApr } from '../../utils/displayApr'
+
+const StyledLi = styled.li`
+  flex-wrap: nowrap;
+  display: flex;
+  gap: 5px;
+  position: relative;
+  padding-left: 22px;
+  &::before {
+    content: '';
+    position: absolute;
+    transform: translateY(-50%);
+    top: 50%;
+    border-radius: 50%;
+    left: 0;
+    width: 6px;
+    height: 6px;
+    background: ${({ theme }) => theme.colors.text};
+  }
+
+  & > a {
+    cursor: pointer;
+  }
+`
 
 type AprValue = {
   value: number | `${number}`
@@ -51,12 +75,14 @@ export const AprTooltipContent: React.FC<PropsWithChildren<AprTooltipContentProp
           {t('LP Fee APR')}:&nbsp;&nbsp;<b>{displayApr(lpFeeApr)}</b>
         </li>
         {merklApr ? (
-          <li>
-            {t('Merkl APR')}:&nbsp;&nbsp;<b>{displayApr(merklApr)}</b>
-            <LinkExternal display="inline-block" href={merklLink}>
+          <StyledLi>
+            <Text lineHeight={1.5}>
+              {t('Merkl APR')}:&nbsp;&nbsp;<b>{displayApr(merklApr)}</b>
+            </Text>
+            <LinkExternal ml={2} href={merklLink}>
               {t('Check')}
             </LinkExternal>
-          </li>
+          </StyledLi>
         ) : null}
       </ul>
 
