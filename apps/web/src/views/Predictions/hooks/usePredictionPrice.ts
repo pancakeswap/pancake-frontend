@@ -46,7 +46,7 @@ export const usePredictionPrice = ({
               currencyA,
               currencyB,
             }))
-        : fetch(`${PREDICTION_PRICE_API}/?currencyA=${currencyA}&currencyB=${currencyB}`).then((res) => res.json())
+        : fetch(`${PREDICTION_PRICE_API}?currencyA=${currencyA}&currencyB=${currencyB}`).then((res) => res.json())
     },
     refetchInterval: () => (config?.ai?.useAlternateSource?.current ? false : pollingInterval),
     retry: 2,
