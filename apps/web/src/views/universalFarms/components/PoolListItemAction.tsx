@@ -52,17 +52,34 @@ export const PoolListItemAction = memo(({ pool }: { pool: PoolInfo }) => {
 export const getPoolDetailPageLink = (pool: PoolInfo) => {
   const linkPrefix = `/liquidity/pool${multiChainPaths[pool.chainId] || '/bsc'}`
   if (pool.protocol === Protocol.STABLE) {
-    if (!pool.stableLpAddress) {
-      const ssPair = LegacyRouter.stableSwapPairsByChainId[pool.chainId]?.find((pair) => {
-        return isAddressEqual(pair.lpAddress, pool.lpAddress)
-      })
-      if (ssPair) {
-        return `${linkPrefix}/${ssPair.stableSwapAddress}`
-      }
+    if (pool.stableLpAddress) {
+      return `${linkPrefix}/${pool.stableLpAddress}`
     }
-    return `${linkPrefix}/${pool.stableLpAddress}`
+    const ssPair = LegacyRouter.stableSwapPairsByChainId[pool.chainId]?.find((pair) => {
+      return isAddressEqual(pair.lpAddress, pool.lpAddress)
+    })
+    if (ssPair) {
+      return `${linkPrefix}/${ssPair.stableSwapAddress}`
+    }
   }
   return `${linkPrefix}/${pool.lpAddress}`
+}
+
+const getPoolInfoPageLink = (pool: PoolInfo) => {
+  const toLink = (lpAddress: string, protocol: string, query?: string) => {
+    return `/info/${protocol}${multiChainPaths[pool.chainId]}/pairs/${lpAddress}?chain=${
+      CHAIN_QUERY_NAME[pool.chainId]
+    }${query}`
+  }
+  if (pool.protocol === Protocol.STABLE) {
+    const ssPair = LegacyRouter.stableSwapPairsByChainId[pool.chainId]?.find((pair) => {
+      return isAddressEqual(pair.lpAddress, pool.lpAddress)
+    })
+    if (ssPair) {
+      return toLink(ssPair.stableSwapAddress, '', '&type=stableSwap')
+    }
+  }
+  return toLink(pool.lpAddress, pool.protocol)
 }
 
 export const ActionItems = ({ pool, icon }: { pool: PoolInfo; icon?: React.ReactNode }) => {
@@ -73,20 +90,8 @@ export const ActionItems = ({ pool, icon }: { pool: PoolInfo; icon?: React.React
     const addLiqLink = `/add/${pool.token0.wrapped.address}/${pool.token1.address}?chain=${
       CHAIN_QUERY_NAME[pool.chainId]
     }`
-
-    if (pool.protocol === Protocol.STABLE) {
-      return {
-        infoLink: `/info${multiChainPaths[pool.chainId]}/pairs/${pool.lpAddress}?type=stableSwap&chain=${
-          CHAIN_QUERY_NAME[pool.chainId]
-        }`,
-        detailLink: getPoolDetailPageLink(pool),
-        addLiquidityLink: addLiqLink,
-      }
-    }
     return {
-      infoLink: `/info/${pool.protocol}${multiChainPaths[pool.chainId]}/pairs/${pool.lpAddress}?chain=${
-        CHAIN_QUERY_NAME[pool.chainId]
-      }`,
+      infoLink: getPoolInfoPageLink(pool),
       detailLink: getPoolDetailPageLink(pool),
       addLiquidityLink: addLiqLink,
     }
