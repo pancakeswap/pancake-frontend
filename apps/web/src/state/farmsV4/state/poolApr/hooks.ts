@@ -7,10 +7,10 @@ import { ChainIdAddressKey, PoolInfo } from '../type'
 import { cakeAprSetterAtom, emptyCakeAprPoolsAtom, merklAprAtom, poolAprAtom } from './atom'
 import { getAllNetworkMerklApr, getCakeApr, getLpApr } from './fetcher'
 
-export const usePoolApr = (key: ChainIdAddressKey, pool: PoolInfo) => {
+export const usePoolApr = (key: ChainIdAddressKey | null, pool: PoolInfo) => {
   const updatePools = useSetAtom(extendPoolsAtom)
   const updateCakeApr = useSetAtom(cakeAprSetterAtom)
-  const poolApr = useAtomValue(poolAprAtom)[key]
+  const poolApr = useAtomValue(poolAprAtom)[key ?? '']
   const updateCallback = useCallback(async () => {
     const [lpApr, cakeApr] = await Promise.all([getLpApr(pool), getCakeApr(pool)])
     updatePools([{ ...pool, lpApr: `${lpApr}` }])
@@ -25,7 +25,7 @@ export const usePoolApr = (key: ChainIdAddressKey, pool: PoolInfo) => {
   useQuery({
     queryKey: ['apr', key],
     queryFn: updateCallback,
-    enabled: !!pool && !poolApr?.lpApr,
+    enabled: !!pool && !poolApr?.lpApr && !!key,
     refetchInterval: 0,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
