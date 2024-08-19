@@ -1,11 +1,11 @@
-import { Address } from "viem";
+import { ChainId, getChainName as defaultGetChainName } from "@pancakeswap/chains";
 import { useTheme } from "@pancakeswap/hooks";
 import { Currency, ERC20Token } from "@pancakeswap/sdk";
-import { Column, IMultiSelectProps, ISelectItem, MultiSelect, IMultiSelectChangeEvent } from "@pancakeswap/uikit";
+import { getTokenByAddress } from "@pancakeswap/tokens";
+import { Column, IMultiSelectChangeEvent, IMultiSelectProps, ISelectItem, MultiSelect } from "@pancakeswap/uikit";
 import { useCallback, useMemo } from "react";
 import styled from "styled-components";
-import { ChainId, getChainName as defaultGetChainName } from "@pancakeswap/chains";
-import { getTokenByAddress } from "@pancakeswap/tokens";
+import { Address } from "viem";
 import { CurrencyLogo } from "../CurrencyLogo";
 
 export interface ITokenProps {
@@ -123,6 +123,7 @@ export const TokenFilter: React.FC<ITokenProps> = ({
         icon: <CurrencyLogoWithChain currency={token} />,
         value: toTokenValueByCurrency(token),
         label: token.symbol,
+        key: toTokenValue(token),
       })),
     [data, selectedTokensNotInData]
   );
