@@ -5,7 +5,7 @@ import makeStore from 'contexts/LocalRedux/makeStore'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import _toUpper from 'lodash/toUpper'
 import { useRouter } from 'next/router'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import reducers, { initialState } from 'state/predictions'
 import { usePredictionConfigs } from 'views/Predictions/hooks/usePredictionConfigs'
 import { usePredictionToken } from 'views/Predictions/hooks/usePredictionToken'
@@ -17,6 +17,7 @@ const PredictionConfigProviders = ({ children }) => {
   const predictionConfigs = usePredictionConfigs()
   const [selectedPickedToken, setSelectedPickedToken] = useState('')
   const [prevSelectedToken, setPrevSelectedToken] = usePredictionToken()
+  const useAlternateSourceRef = useRef(false)
 
   const supportedSymbol = useMemo(() => (predictionConfigs ? Object.keys(predictionConfigs) : []), [predictionConfigs])
 
@@ -63,7 +64,16 @@ const PredictionConfigProviders = ({ children }) => {
     return selectedPickedToken || supportedSymbol?.[0]
   }, [chainId, prevSelectedToken, selectedPickedToken, supportedSymbol])
 
-  const config = useMemo(() => predictionConfigs?.[selectedToken], [predictionConfigs, selectedToken])
+  const config = useMemo(() => {
+    const selected = predictionConfigs?.[selectedToken]
+    if (selected?.ai) {
+      return {
+        ...selected,
+        ai: { ...selected.ai, useAlternateSource: useAlternateSourceRef },
+      }
+    }
+    return selected
+  }, [predictionConfigs, selectedToken])
 
   const store = useMemo(() => makeStore(reducers, initialState, config), [config])
 

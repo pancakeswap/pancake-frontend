@@ -29,8 +29,13 @@ export enum PredictionsChartView {
   Pyth = 'Pyth Oracle',
 }
 
+interface MutableRefObject<T> {
+  current: T
+}
+
 type AIPredictionConfig = {
   aiPriceDecimals?: number
+  useAlternateSource?: MutableRefObject<boolean>
 }
 
 export interface PredictionConfig {

@@ -39,7 +39,7 @@ interface AILiveRoundCardProps {
   formattedBearMultiplier: string
 }
 
-const REFRESH_PRICE_BEFORE_SECONDS_TO_CLOSE = 2
+const REFRESH_PRICE_BEFORE_SECONDS_TO_CLOSE = 3
 
 export const AILiveRoundCard: React.FC<React.PropsWithChildren<AILiveRoundCardProps>> = ({
   round,
@@ -58,7 +58,6 @@ export const AILiveRoundCard: React.FC<React.PropsWithChildren<AILiveRoundCardPr
   const {
     data: { price },
     refetch,
-    currentUseAlternateSource,
   } = usePredictionPrice({
     currencyA: config?.token.symbol,
   })
@@ -108,17 +107,15 @@ export const AILiveRoundCard: React.FC<React.PropsWithChildren<AILiveRoundCardPr
   const bullMultiplier = aiPosition === 'UP' ? formattedBullMultiplier : formattedBearMultiplier
   const bearMultiplier = aiPosition === 'DOWN' ? formattedBullMultiplier : formattedBearMultiplier
 
-  const refreshLivePrice = useCallback(() => {
-    // Fetch live price before round ends
-    currentUseAlternateSource.current = true
-    refetch()
-  }, [currentUseAlternateSource, refetch])
-
   useEffect(() => {
     const secondsToClose = closeTimestamp ? closeTimestamp - getNowInSeconds() : 0
     if (secondsToClose > 0) {
       const refreshPriceTimeout = setTimeout(() => {
-        refreshLivePrice()
+        // Fetch live price before round ends
+        if (config?.ai?.useAlternateSource) {
+          config.ai.useAlternateSource.current = true
+          refetch()
+        }
       }, (secondsToClose - REFRESH_PRICE_BEFORE_SECONDS_TO_CLOSE) * 1000)
 
       const calculatingPhaseTimeout = setTimeout(() => {
@@ -128,10 +125,13 @@ export const AILiveRoundCard: React.FC<React.PropsWithChildren<AILiveRoundCardPr
       return () => {
         clearTimeout(refreshPriceTimeout)
         clearTimeout(calculatingPhaseTimeout)
+        if (config?.ai?.useAlternateSource) {
+          config.ai.useAlternateSource.current = false
+        }
       }
     }
     return undefined
-  }, [closeTimestamp, refreshLivePrice])
+  }, [closeTimestamp, config, refetch])
 
   if (hasRoundFailed) {
     return <CanceledRoundCard round={round} />
