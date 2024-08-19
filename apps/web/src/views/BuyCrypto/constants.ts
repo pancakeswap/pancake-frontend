@@ -1,6 +1,6 @@
 import { Native } from '@pancakeswap/sdk'
 import type { Currency } from '@pancakeswap/swap-sdk-core'
-import { arbitrumTokens, baseTokens, bscTokens, ethereumTokens, lineaTokens } from '@pancakeswap/tokens'
+import { arbitrumTokens, baseTokens, bscTokens, ethereumTokens, lineaTokens, opBnbTokens } from '@pancakeswap/tokens'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import { Field } from 'state/buyCrypto/actions'
 import { OnRampUnit } from './types'
@@ -91,6 +91,8 @@ export const getNetworkDisplay = (chainId: number | undefined): string => {
       return 'base'
     case OnRampChainId.BTC:
       return 'bitcoin'
+    case OnRampChainId.OPBNB:
+      return 'opbnb mainnet'
     default:
       return ''
   }
@@ -114,6 +116,8 @@ export const getNetworkFullName = (chainId: number | undefined): string => {
       return 'Base Mainnet'
     case OnRampChainId.BTC:
       return 'Bitcoin Network'
+    case OnRampChainId.OPBNB:
+      return 'OpBnb Mainnet'
     default:
       return ''
   }
@@ -128,6 +132,7 @@ export const chainIdToMercuryoNetworkId: { [id: number]: string } = {
   [OnRampChainId.LINEA]: 'LINEA',
   [OnRampChainId.BASE]: 'BASE',
   [OnRampChainId.BTC]: 'BITCOIN',
+  [OnRampChainId.OPBNB]: '',
 }
 
 export const chainIdToMoonPayNetworkId: { [id: number]: string } = {
@@ -139,6 +144,7 @@ export const chainIdToMoonPayNetworkId: { [id: number]: string } = {
   [OnRampChainId.LINEA]: '_linea',
   [OnRampChainId.BASE]: '_base',
   [OnRampChainId.BTC]: '',
+  [OnRampChainId.OPBNB]: '',
 }
 
 export const chainIdToTransakNetworkId: { [id: number]: string } = {
@@ -150,6 +156,7 @@ export const chainIdToTransakNetworkId: { [id: number]: string } = {
   [OnRampChainId.LINEA]: 'linea',
   [OnRampChainId.BASE]: 'base',
   [OnRampChainId.BTC]: 'mainnet',
+  [OnRampChainId.OPBNB]: 'opBNB',
 }
 
 export const chainIdToTopperNetworkId: { [id: number]: string } = {
@@ -237,13 +244,16 @@ export const onRampCurrencies: OnRampCurrency[] = [
   NativeBtc.onChain(),
   Native.onChain(OnRampChainId.ETHEREUM),
   Native.onChain(OnRampChainId.BSC),
+  Native.onChain(OnRampChainId.OPBNB),
   Native.onChain(OnRampChainId.ARBITRUM_ONE),
   Native.onChain(OnRampChainId.POLYGON_ZKEVM),
   Native.onChain(OnRampChainId.ZKSYNC),
   Native.onChain(OnRampChainId.LINEA),
   Native.onChain(OnRampChainId.BASE),
+  bscTokens.fdusd,
   ethereumTokens.usdt,
   bscTokens.usdt,
+  opBnbTokens.usdt,
   bscTokens.usdc,
   ethereumTokens.usdc,
   arbitrumTokens.usdc,
@@ -251,20 +261,24 @@ export const onRampCurrencies: OnRampCurrency[] = [
   baseTokens.usdc,
   ethereumTokens.dai,
   ethereumTokens.wbtc,
-  // arbitrumTokens.usdce,
+  arbitrumTokens.usdce,
 ]
 
 export const onRampCurrenciesMap: { [tokenSymbol: string]: Currency } = {
   BTC_0: NativeBtc.onChain(),
   ETH_1: Native.onChain(OnRampChainId.ETHEREUM),
   BNB_56: Native.onChain(OnRampChainId.BSC),
+  BNB_204: Native.onChain(OnRampChainId.OPBNB),
   ETH_42161: Native.onChain(OnRampChainId.ARBITRUM_ONE),
   ETH_1101: Native.onChain(OnRampChainId.POLYGON_ZKEVM),
   ETH_324: Native.onChain(OnRampChainId.ZKSYNC),
   ETH_59144: Native.onChain(OnRampChainId.LINEA),
   ETH_8453: Native.onChain(OnRampChainId.BASE),
   // Add more entries for other currencies as needed
+  FDUSD_56: bscTokens.fdusd,
   USDT_1: ethereumTokens.usdt,
+  USDT_97: bscTokens.usdt,
+  USDT_204: opBnbTokens.usdt,
   USDT_56: bscTokens.usdt,
   USDC_56: bscTokens.usdc,
   USDC_1: ethereumTokens.usdc,
@@ -273,5 +287,4 @@ export const onRampCurrenciesMap: { [tokenSymbol: string]: Currency } = {
   USDC_8453: baseTokens.usdc,
   DAI_1: ethereumTokens.dai,
   WBTC_1: ethereumTokens.wbtc,
-  // 'USDC.e_42161': arbitrumTokens.usdce,
 }
