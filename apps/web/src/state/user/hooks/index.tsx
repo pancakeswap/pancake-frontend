@@ -314,7 +314,6 @@ export function useDefaultGasPrice(chainIdOverride?: number, enabled = true): bi
     refetchOnMount: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
-    refetchOnMount: false,
   })
 
   return defaultGasPrice
