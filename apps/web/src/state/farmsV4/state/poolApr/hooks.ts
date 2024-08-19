@@ -31,7 +31,11 @@ export const usePoolApr = (key: ChainIdAddressKey | null, pool: PoolInfo) => {
     refetchOnWindowFocus: false,
   })
 
-  return poolApr ?? { lpApr: '0', cakeApr: { value: '0' }, merklApr: '0' }
+  return {
+    lpApr: poolApr?.lpApr ?? '0',
+    cakeApr: poolApr?.cakeApr ?? { value: '0' },
+    merklApr: poolApr?.merklApr ?? '0',
+  }
 }
 
 export const usePoolsApr = () => {
