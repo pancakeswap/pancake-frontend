@@ -48,13 +48,13 @@ export const AIPrediction = ({
             </Text>
           </Box>
           <Link
-            external
-            fontSize={['12px', '12px', '14px']}
-            style={{ display: 'inline-flex', alignItems: 'center', whiteSpace: 'nowrap' }}
-            href={learnMoreLink}
+            color="primary"
+            fontSize={['12px', '12px', '12px']}
+            style={{ display: 'flex', alignItems: 'center', whiteSpace: 'nowrap' }}
+            href={ctaLink}
           >
-            {t('Learn More')}
-            <ArrowForwardIcon width="14px" mt="2px" color="primary" />
+            {t('Participate Now')}
+            <ArrowForwardIcon width="12px" color="primary" style={{ marginRight: '-8px' }} />
           </Link>
         </Column>
       </Flex>
