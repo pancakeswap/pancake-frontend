@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { BINANCE_DATA_API, PREDICTION_PRICE_API } from 'config/constants/endpoints'
 import { PriceApiWhitelistedCurrency } from 'config/constants/prediction/price'
+import { useRef } from 'react'
 
 interface UsePredictionPriceParameters {
   /** Default: ETH */
@@ -13,8 +14,6 @@ interface UsePredictionPriceParameters {
   pollingInterval?: number
 
   enabled?: boolean
-
-  useAlternateSource?: boolean
 }
 
 interface PriceResponse {
@@ -33,12 +32,13 @@ export const usePredictionPrice = ({
   currencyB = DEFAULT_CURRENCY_B,
   pollingInterval = DEFAULT_POLLING_INTERVAL,
   enabled = true,
-  useAlternateSource = false,
 }: UsePredictionPriceParameters = {}) => {
-  return useQuery<PriceResponse>({
-    queryKey: ['price', currencyA, currencyB, useAlternateSource],
+  const currentUseAlternateSource = useRef(false)
+
+  const queryResult = useQuery<PriceResponse>({
+    queryKey: ['price', currencyA, currencyB],
     queryFn: async () =>
-      useAlternateSource
+      currentUseAlternateSource.current
         ? fetch(`${BINANCE_DATA_API}/v3/ticker/price?symbol=${currencyA}${currencyB}`)
             .then((res) => res.json())
             .then((result) => ({
@@ -47,7 +47,7 @@ export const usePredictionPrice = ({
               currencyB,
             }))
         : fetch(`${PREDICTION_PRICE_API}/?currencyA=${currencyA}&currencyB=${currencyB}`).then((res) => res.json()),
-    refetchInterval: () => (useAlternateSource ? false : pollingInterval),
+    refetchInterval: () => (currentUseAlternateSource.current ? false : pollingInterval),
     retry: 2,
     initialData: {
       price: 0,
@@ -56,4 +56,6 @@ export const usePredictionPrice = ({
     },
     enabled,
   })
+
+  return { ...queryResult, currentUseAlternateSource }
 }

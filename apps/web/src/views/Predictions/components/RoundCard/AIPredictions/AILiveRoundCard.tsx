@@ -54,14 +54,13 @@ export const AILiveRoundCard: React.FC<React.PropsWithChildren<AILiveRoundCardPr
   const bufferSeconds = useGetBufferSeconds()
   const config = useConfig()
 
-  const [fetchAlternate, setFetchAlternate] = useState(false)
-
   // Fetch Live Price for AI Predictions Open and Live Round Cards
   const {
     data: { price },
+    refetch,
+    currentUseAlternateSource,
   } = usePredictionPrice({
     currencyA: config?.token.symbol,
-    useAlternateSource: fetchAlternate,
   })
 
   const [isCalculatingPhase, setIsCalculatingPhase] = useState(false)
@@ -111,11 +110,12 @@ export const AILiveRoundCard: React.FC<React.PropsWithChildren<AILiveRoundCardPr
 
   const refreshLivePrice = useCallback(() => {
     // Fetch live price before round ends
-    setFetchAlternate(true)
+    currentUseAlternateSource.current = true
+    refetch()
     setTimeout(() => {
-      setFetchAlternate(false)
+      currentUseAlternateSource.current = false
     }, REFRESH_PRICE_BEFORE_SECONDS_TO_CLOSE * 2 * 1000)
-  }, [])
+  }, [currentUseAlternateSource, refetch])
 
   useEffect(() => {
     const secondsToClose = closeTimestamp ? closeTimestamp - getNowInSeconds() : 0
