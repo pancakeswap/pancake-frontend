@@ -16,12 +16,19 @@ import {
   useModal,
 } from '@pancakeswap/uikit'
 import { useExpertMode } from '@pancakeswap/utils/user'
-import { INetworkProps, ITokenProps, toTokenValue, toTokenValueByCurrency } from '@pancakeswap/widgets-internal'
+import {
+  INetworkProps,
+  ITokenProps,
+  Liquidity,
+  toTokenValue,
+  toTokenValueByCurrency,
+} from '@pancakeswap/widgets-internal'
 import TransactionsModal from 'components/App/Transactions/TransactionsModal'
 import GlobalSettings from 'components/Menu/GlobalSettings'
 import { SettingsMode } from 'components/Menu/GlobalSettings/types'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import assign from 'lodash/assign'
+import intersection from 'lodash/intersection'
 import NextLink from 'next/link'
 import { useCallback, useMemo, useState } from 'react'
 import {
@@ -38,6 +45,7 @@ import { getTokenByAddress } from '@pancakeswap/tokens'
 import { Pool } from '@pancakeswap/v3-sdk'
 import { usePoolsWithChainId } from 'hooks/v3/usePools'
 import { PositionDetail } from 'state/farmsV4/state/accountPositions/type'
+import { V3_MIGRATION_SUPPORTED_CHAINS } from 'config/constants/supportChains'
 import {
   Card,
   IPoolsFilterPanelProps,
@@ -439,7 +447,20 @@ export const PositionPage = () => {
           </ButtonContainer>
         </SubPanel>
       </CardHeader>
-      <CardBody>{mainSection}</CardBody>
+      <CardBody>
+        {mainSection}
+        {selectedPoolTypes.length === 1 && selectedPoolTypes.includes(Protocol.V2) ? (
+          <Liquidity.FindOtherLP>
+            {!!intersection(V3_MIGRATION_SUPPORTED_CHAINS, filters.selectedNetwork).length && (
+              <NextLink style={{ marginTop: '8px' }} href="/migration">
+                <Button id="migration-link" variant="secondary" scale="sm">
+                  {t('Migrate to V3')}
+                </Button>
+              </NextLink>
+            )}
+          </Liquidity.FindOtherLP>
+        ) : null}
+      </CardBody>
     </Card>
   )
 }
