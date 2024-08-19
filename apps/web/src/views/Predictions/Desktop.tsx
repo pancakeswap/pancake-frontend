@@ -7,7 +7,7 @@ import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import debounce from 'lodash/debounce'
 import delay from 'lodash/delay'
 import dynamic from 'next/dynamic'
-import { memo, useEffect, useMemo, useRef } from 'react'
+import { memo, useCallback, useEffect, useMemo, useRef } from 'react'
 import Split, { SplitInstance } from 'split-grid'
 import { setChartPaneState, setChartView } from 'state/predictions'
 import {
@@ -17,6 +17,7 @@ import {
   useIsHistoryPaneOpen,
 } from 'state/predictions/hooks'
 import { styled } from 'styled-components'
+import { InPageBanner } from 'views/Predictions/components/InPageBanner'
 import History from './History'
 import Positions from './Positions'
 import LoadingSection from './components/LoadingSection'
@@ -71,7 +72,7 @@ const StyledDesktop = styled.div`
 
   ${({ theme }) => theme.mediaQueries.lg} {
     display: flex;
-    height: calc(100vh - 100px);
+    height: 100%;
   }
 `
 
@@ -132,7 +133,7 @@ const Desktop: React.FC<React.PropsWithChildren> = () => {
     }
   }, [config, dispatch])
 
-  const openChartPane = () => {
+  const openChartPane = useCallback(() => {
     if (splitWrapperRef.current) {
       splitWrapperRef.current.style.transition = 'grid-template-rows 150ms'
       splitWrapperRef.current.style.gridTemplateRows = GRID_TEMPLATE_ROW
@@ -147,7 +148,7 @@ const Desktop: React.FC<React.PropsWithChildren> = () => {
     }, 150)
 
     dispatch(setChartPaneState(true))
-  }
+  }, [dispatch])
 
   const splitInstance = useRef<SplitInstance>()
 
@@ -213,86 +214,84 @@ const Desktop: React.FC<React.PropsWithChildren> = () => {
   }, [chartView, tokenSymbol])
 
   return (
-    <>
-      <StyledDesktop>
-        <SplitWrapper ref={splitWrapperRef}>
-          <PositionPane>
-            {status === PredictionStatus.ERROR && <ErrorNotification />}
-            {status === PredictionStatus.PAUSED && <PauseNotification />}
-            {[PredictionStatus.INITIAL, PredictionStatus.LIVE].includes(status) && (
-              <Box>
-                <Menu />
-                {status === PredictionStatus.LIVE ? <Positions /> : <LoadingSection />}
-              </Box>
-            )}
-          </PositionPane>
+    <StyledDesktop>
+      <SplitWrapper ref={splitWrapperRef}>
+        <PositionPane>
+          {status === PredictionStatus.ERROR && <ErrorNotification />}
+          {status === PredictionStatus.PAUSED && <PauseNotification />}
+          {[PredictionStatus.INITIAL, PredictionStatus.LIVE].includes(status) && (
+            <Box>
+              <Menu />
+              {status === PredictionStatus.LIVE ? <Positions /> : <LoadingSection />}
+            </Box>
+          )}
+        </PositionPane>
 
-          <Gutter ref={gutterRef} $isChartPaneOpen={isChartPaneOpen} onClick={() => openChartPane()}>
+        <Gutter ref={gutterRef} $isChartPaneOpen={isChartPaneOpen} onClick={openChartPane}>
+          {config?.chainlinkOracleAddress && (
+            <PowerLinkStyle href="https://chain.link/" external>
+              <img src="/images/powered-by-chainlink.svg" alt="Powered by ChainLink" width="170px" height="48px" />
+            </PowerLinkStyle>
+          )}
+          {config?.galetoOracleAddress && (
+            <PowerLinkStyle href="https://pyth.network/" external>
+              <img src="/images/powered-by-pyth.svg" alt="Powered by PYTH" width="170px" height="48px" />
+            </PowerLinkStyle>
+          )}
+          <ExpandButtonGroup>
+            <TabToggle
+              height="42px"
+              as={Button}
+              style={{ whiteSpace: 'nowrap', alignItems: 'center' }}
+              isActive={chartView === PredictionsChartView.TradingView}
+              onMouseDown={(e) => {
+                e.stopPropagation()
+                e.preventDefault()
+                dispatch(setChartView(PredictionsChartView.TradingView))
+              }}
+            >
+              {chartView === PredictionsChartView.TradingView && <ChartIcon mr="10px" />} TradingView {t('Chart')}
+            </TabToggle>
             {config?.chainlinkOracleAddress && (
-              <PowerLinkStyle href="https://chain.link/" external>
-                <img src="/images/powered-by-chainlink.svg" alt="Powered by ChainLink" width="170px" height="48px" />
-              </PowerLinkStyle>
-            )}
-            {config?.galetoOracleAddress && (
-              <PowerLinkStyle href="https://pyth.network/" external>
-                <img src="/images/powered-by-pyth.svg" alt="Powered by PYTH" width="170px" height="48px" />
-              </PowerLinkStyle>
-            )}
-            <ExpandButtonGroup>
               <TabToggle
-                height="42px"
                 as={Button}
+                height="42px"
                 style={{ whiteSpace: 'nowrap', alignItems: 'center' }}
-                isActive={chartView === PredictionsChartView.TradingView}
+                isActive={chartView === PredictionsChartView.Chainlink}
                 onMouseDown={(e) => {
                   e.stopPropagation()
                   e.preventDefault()
-                  dispatch(setChartView(PredictionsChartView.TradingView))
+                  dispatch(setChartView(PredictionsChartView.Chainlink))
                 }}
               >
-                {chartView === PredictionsChartView.TradingView && <ChartIcon mr="10px" />} TradingView {t('Chart')}
+                {chartView === PredictionsChartView.Chainlink && <ChartIcon mr="10px" />} Chainlink {t('Chart')}
               </TabToggle>
-              {config?.chainlinkOracleAddress && (
-                <TabToggle
-                  as={Button}
-                  height="42px"
-                  style={{ whiteSpace: 'nowrap', alignItems: 'center' }}
-                  isActive={chartView === PredictionsChartView.Chainlink}
-                  onMouseDown={(e) => {
-                    e.stopPropagation()
-                    e.preventDefault()
-                    dispatch(setChartView(PredictionsChartView.Chainlink))
-                  }}
-                >
-                  {chartView === PredictionsChartView.Chainlink && <ChartIcon mr="10px" />} Chainlink {t('Chart')}
-                </TabToggle>
-              )}
-            </ExpandButtonGroup>
-            {isChartPaneOpen && (
-              <ChartByLabel
-                justifyContent="flex-end"
-                symbol={`${tokenSymbol}/USD`}
-                by={chartView}
-                linkProps={{
-                  onMouseDown: (e) => {
-                    window.open(sourceUrl, '_blank', 'noopener noreferrer')
-                    e.stopPropagation()
-                    e.preventDefault()
-                  },
-                }}
-                link={sourceUrl}
-              />
             )}
-          </Gutter>
-          <ChartPane ref={chartRef}>
-            {isChartPaneOpen && (chartView === PredictionsChartView.TradingView ? <TradingView /> : <ChainlinkChart />)}
-          </ChartPane>
-        </SplitWrapper>
-        <HistoryPane $isHistoryPaneOpen={isHistoryPaneOpen} $isChartPaneOpen={isChartPaneOpen}>
-          <History />
-        </HistoryPane>
-      </StyledDesktop>
-    </>
+          </ExpandButtonGroup>
+          {isChartPaneOpen && (
+            <ChartByLabel
+              justifyContent="flex-end"
+              symbol={`${tokenSymbol}/USD`}
+              by={chartView}
+              linkProps={{
+                onMouseDown: (e) => {
+                  window.open(sourceUrl, '_blank', 'noopener noreferrer')
+                  e.stopPropagation()
+                  e.preventDefault()
+                },
+              }}
+              link={sourceUrl}
+            />
+          )}
+        </Gutter>
+        <ChartPane ref={chartRef}>
+          {isChartPaneOpen && (chartView === PredictionsChartView.TradingView ? <TradingView /> : <ChainlinkChart />)}
+        </ChartPane>
+      </SplitWrapper>
+      <HistoryPane $isHistoryPaneOpen={isHistoryPaneOpen} $isChartPaneOpen={isChartPaneOpen}>
+        <History />
+      </HistoryPane>
+    </StyledDesktop>
   )
 }
 

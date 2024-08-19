@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, PocketWatchIcon, Text } from '@pancakeswap/uikit'
-import { useGetCurrentRoundCloseTimestamp, useGetInternalTimeInMinutes } from 'state/predictions/hooks'
+import { useGetCurrentRoundCloseTimestamp, useGetIntervalTimeInMinutes } from 'state/predictions/hooks'
 import { keyframes, styled } from 'styled-components'
 import { formatRoundTime } from '../helpers'
 import useCountdown from '../hooks/useCountdown'
@@ -137,15 +137,16 @@ const Label = styled(Flex)<{ dir: 'left' | 'right'; backgroundOpacity?: boolean 
 `
 
 export const TimerLabel = () => {
-  const interval = useGetInternalTimeInMinutes()
+  const { t } = useTranslation()
+  const interval = useGetIntervalTimeInMinutes()
   const currentRoundCloseTimestamp = useGetCurrentRoundCloseTimestamp()
   const { secondsRemaining } = useCountdown(currentRoundCloseTimestamp ?? 0)
-  const countdown = formatRoundTime(secondsRemaining)
-  const { t } = useTranslation()
 
   if (!currentRoundCloseTimestamp) {
     return null
   }
+
+  const countdown = formatRoundTime(secondsRemaining)
 
   return (
     <Box pr="24px" position="relative">

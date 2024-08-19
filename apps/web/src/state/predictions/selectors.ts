@@ -98,6 +98,6 @@ export const getCurrentRoundCloseTimestampSelector = createSelector(
   },
 )
 
-export const getInternalTimeInMinutes = createSelector([selectIntervalSeconds], (intervalSeconds: number) => {
+export const getIntervalTimeInMinutes = createSelector([selectIntervalSeconds], (intervalSeconds: number) => {
   return new BigNumber(intervalSeconds).div(MINUTE_IN_SECONDS).toNumber()
 })

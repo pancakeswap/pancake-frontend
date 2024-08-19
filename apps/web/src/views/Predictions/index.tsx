@@ -67,17 +67,15 @@ const Predictions = () => {
   usePollPredictions()
 
   return (
-    <>
-      <Warnings />
-      <RiskDisclaimer />
+    <SwiperProvider>
       <InPageBanner />
-      <SwiperProvider>
-        <Container>
-          {isDesktop ? <Desktop /> : <Mobile />}
-          <CollectWinningsPopup />
-        </Container>
-      </SwiperProvider>
-    </>
+      <Container>
+        <Warnings />
+        <RiskDisclaimer />
+        {isDesktop ? <Desktop /> : <Mobile />}
+        <CollectWinningsPopup />
+      </Container>
+    </SwiperProvider>
   )
 }
 

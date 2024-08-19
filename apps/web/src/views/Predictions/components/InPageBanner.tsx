@@ -20,6 +20,13 @@ const Container = styled(Flex).withConfig({ shouldForwardProp: (prop) => !['$bac
     background: #7a6eaa;
     ${({ $background }) => $background && `background: ${$background};`}
   }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
 `
 
 const InnerContainer = styled(Flex)`
@@ -69,11 +76,12 @@ const SpeechBubble = styled(Flex)`
 export const InPageBanner = () => {
   const { chainId } = useActiveChainId()
   const { isDesktop, isLg } = useMatchBreakpoints()
-  const showInBigDevice = isDesktop || isLg
 
   const showBanner = useMemo(() => chainId !== ChainId.ARBITRUM_ONE && SUPPORTED_CHAIN_IDS.includes(chainId), [chainId])
 
   if (!showBanner) return <></>
+
+  const showInBigDevice = isDesktop || isLg
 
   return (
     <Container className="warning-banner" $background={AIPrediction.background}>
