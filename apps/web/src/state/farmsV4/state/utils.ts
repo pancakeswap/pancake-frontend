@@ -1,5 +1,6 @@
 import { Protocol, UNIVERSAL_FARMS } from '@pancakeswap/farms'
 import { LegacyRouter } from '@pancakeswap/smart-router/legacy-router'
+import { getTokenByAddress } from '@pancakeswap/tokens'
 import { Token } from '@pancakeswap/swap-sdk-core'
 import { paths } from 'state/info/api/schema'
 import { safeGetAddress } from 'utils'
@@ -35,30 +36,26 @@ export const parseFarmPools = (
       // eslint-disable-next-line prefer-destructuring
       pid = Number(localFarm.pid) ?? undefined
     }
+    const token0Address = safeGetAddress(pool.token0.id)!
+    const token0 =
+      getTokenByAddress(pool.chainId, token0Address) ??
+      new Token(pool.chainId, token0Address, pool.token1.decimals, pool.token1.symbol, pool.token1.name)
+    const token1Address = safeGetAddress(pool.token1.id)!
+    const token1 =
+      getTokenByAddress(pool.chainId, token1Address) ??
+      new Token(pool.chainId, token1Address, pool.token1.decimals, pool.token1.symbol, pool.token1.name)
     return {
       chainId: pool.chainId,
       pid,
       lpAddress,
       stableLpAddress: stableSwapAddress,
       protocol: pool.protocol as Protocol,
-      token0: new Token(
-        pool.chainId,
-        safeGetAddress(pool.token0.id)!,
-        pool.token0.decimals,
-        pool.token0.symbol,
-        pool.token0.name,
-      ),
+      token0,
+      token1,
       token0Price: (pool.token0Price as `${number}`) ?? '0',
       token1Price: (pool.token1Price as `${number}`) ?? '0',
       tvlToken0: (pool.tvlToken0 as `${number}`) ?? '0',
       tvlToken1: (pool.tvlToken1 as `${number}`) ?? '0',
-      token1: new Token(
-        pool.chainId,
-        safeGetAddress(pool.token1.id)!,
-        pool.token1.decimals,
-        pool.token1.symbol,
-        pool.token1.name,
-      ),
       lpApr: pool.apr24h as `${number}`,
       tvlUsd: pool.tvlUSD as `${number}`,
       tvlUsd24h: pool.tvlUSD24h as `${number}`,
