@@ -46,8 +46,7 @@ const DataRow = ({ transaction }: { transaction: Transaction; color?: string }) 
   const abs1 = Math.abs(transaction.amount1)
   const chainName = useChainNameByQuery()
   const chainId = useChainIdByQuery()
-  const breakPoints = useMatchBreakpoints()
-  const { isLg, isSm, isXs } = useMatchBreakpoints()
+  const { isLg } = useMatchBreakpoints()
 
   const token0Symbol = getTokenSymbolAlias(
     transaction.token0.wrapped.address,

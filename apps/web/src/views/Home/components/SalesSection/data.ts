@@ -30,7 +30,7 @@ export const earnSectionData = (t: TranslateFunction): SalesSectionProps => ({
   bodyText: t('PancakeSwap makes it easy to make your crypto work for you.'),
   reverse: true,
   primaryButton: {
-    to: '/farms',
+    to: '/liquidity/pools',
     text: t('Explore'),
     external: false,
   },

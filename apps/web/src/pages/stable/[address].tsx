@@ -17,13 +17,13 @@ import { usePoolTokenPercentage, useTotalUSDValue } from 'components/PositionCar
 import { useInfoStableSwapContract } from 'hooks/useContract'
 import useTotalSupply from 'hooks/useTotalSupply'
 import { useSingleCallResult } from 'state/multicall/hooks'
+import { useLPApr } from 'state/swap/useLPApr'
 import { useTokenBalance } from 'state/wallet/hooks'
 import currencyId from 'utils/currencyId'
 import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
+import { formatAmount } from 'utils/formatInfoNumbers'
 import { useGetRemovedTokenAmountsNoContext } from 'views/RemoveLiquidity/RemoveStableLiquidity/hooks/useStableDerivedBurnInfo'
 import { useAccount } from 'wagmi'
-import { formatAmount } from 'utils/formatInfoNumbers'
-import { useLPApr } from 'state/swap/useLPApr'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -112,7 +112,7 @@ export default function StablePoolPage() {
       <BodyWrapper>
         <AppHeader
           title={`${stableLp?.token0?.symbol}-${stableLp?.token1?.symbol} LP`}
-          backTo="/liquidity"
+          backTo="/liquidity/pools"
           noConfig
           buttons={
             !isMobile && (
