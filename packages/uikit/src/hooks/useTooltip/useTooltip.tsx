@@ -202,30 +202,28 @@ const useTooltip = (content: React.ReactNode, options?: TooltipOptions): Tooltip
     e.stopPropagation();
   }, []);
 
-  const tooltip = (
-    <StyledTooltip
-      onClick={stopPropagation}
-      data-theme={isDark ? "light" : "dark"}
-      {...animationMap}
-      variants={animationVariants}
-      transition={{ duration: 0.3 }}
-      ref={setTooltipElement}
-      style={styles.popper}
-      {...attributes.popper}
-    >
-      {content}
-      <Arrow ref={setArrowElement} style={styles.arrow} />
-    </StyledTooltip>
-  );
-
-  const AnimatedTooltip = (
+  const AnimatedTooltip = visible ? (
     <LazyMotion features={domAnimation}>
-      <AnimatePresence>{visible && tooltip}</AnimatePresence>
+      <AnimatePresence>
+        <StyledTooltip
+          onClick={stopPropagation}
+          data-theme={isDark ? "light" : "dark"}
+          {...animationMap}
+          variants={animationVariants}
+          transition={{ duration: 0.3 }}
+          ref={setTooltipElement}
+          style={styles.popper}
+          {...attributes.popper}
+        >
+          {content}
+          <Arrow ref={setArrowElement} style={styles.arrow} />
+        </StyledTooltip>
+      </AnimatePresence>
     </LazyMotion>
-  );
+  ) : null;
 
-  const portal = getPortalRoot();
-  const tooltipInPortal = portal && isInPortal ? createPortal(AnimatedTooltip, portal) : null;
+  const portal = visible && isInPortal && getPortalRoot();
+  const tooltipInPortal = visible && isInPortal && portal ? createPortal(AnimatedTooltip, portal) : null;
 
   return {
     targetRef: setTargetElement,
