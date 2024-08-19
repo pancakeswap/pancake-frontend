@@ -13,7 +13,6 @@ import { getBCakeWrapperAddress } from 'state/farmsV4/state/accountPositions/fet
 import { useAccountV2PendingCakeReward } from 'state/farmsV4/state/accountPositions/hooks/useAccountV2PendingCakeReward'
 import { StableLPDetail, V2LPDetail } from 'state/farmsV4/state/accountPositions/type'
 import { getUniversalBCakeWrapperForPool } from 'state/farmsV4/state/poolApr/fetcher'
-import { verifyBscNetwork } from 'utils/verifyBscNetwork'
 import { Address } from 'viem'
 import { useIsFarmLive } from 'views/universalFarms/hooks/useIsFarmLive'
 import { useV2FarmActions } from 'views/universalFarms/hooks/useV2FarmActions'
@@ -39,13 +38,13 @@ export const V2PositionActions: React.FC<V2PositionActionsProps> = ({ isStaked, 
   return <V2NativeAction {...props} />
 }
 
-const useDepositModal = (data: V2LPDetail | StableLPDetail, lpAddress: Address, chainId: number, pid: number) => {
+const useDepositModal = (props: V2PositionActionsProps) => {
+  const { chainId, data, pid, lpAddress, tvlUsd } = props
   const { account } = useAccountActiveChain()
   const cakePrice = useCakePrice()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError } = useCatchTxError()
   const { t } = useTranslation()
-  const isBSCNetwork = useMemo(() => verifyBscNetwork(chainId), [chainId])
 
   const bCakeAddress = getBCakeWrapperAddress(lpAddress, chainId)
   const { allowance } = useTokenAllowanceByChainId({
@@ -68,6 +67,9 @@ const useDepositModal = (data: V2LPDetail | StableLPDetail, lpAddress: Address, 
   const lpSymbol = useMemo(() => {
     return `${data.pair.token0.symbol}-${data.pair.token1.symbol} LP`
   }, [data.pair.token0.symbol, data.pair.token1.symbol])
+  const lpTokenPrice = useMemo(() => {
+    return new BigNumber(tvlUsd ?? 0).dividedBy(data.totalSupply.toExact())
+  }, [data.totalSupply, tvlUsd])
 
   const handleStake = useCallback(
     async (amount: string) => {
@@ -106,10 +108,9 @@ const useDepositModal = (data: V2LPDetail | StableLPDetail, lpAddress: Address, 
       decimals={18}
       cakePrice={cakePrice}
       allowance={allowance ? new BigNumber(allowance.quotient.toString()) : BIG_ZERO}
-      // @TODO @ChefJerry Cross chain farm
-      showCrossChainFarmWarning={!isBSCNetwork}
       onConfirm={handleStake}
       handleApprove={handleApprove}
+      lpPrice={lpTokenPrice}
     />,
     true,
     true,
@@ -132,14 +133,13 @@ const useWithdrawModal = (
     return `${data.pair.token0.symbol}-${data.pair.token1.symbol} LP`
   }, [data.pair.token0.symbol, data.pair.token1.symbol])
   const lpTokenPrice = useMemo(() => {
-    return new BigNumber(tvlUsd ?? 0).dividedBy(data.totalSupply.quotient.toString())
-  }, [data.totalSupply.quotient, tvlUsd])
+    return new BigNumber(tvlUsd ?? 0).dividedBy(data.totalSupply.toExact())
+  }, [data.totalSupply, tvlUsd])
   const stakedBalance = useMemo(() => {
     return new BigNumber(data.farmingBalance.quotient.toString())
   }, [data.farmingBalance])
-  const isBSCNetwork = useMemo(() => verifyBscNetwork(chainId), [chainId])
   const { toastSuccess } = useToast()
-  const { fetchWithCatchTxError, fetchTxResponse, loading: pendingTx } = useCatchTxError()
+  const { fetchWithCatchTxError } = useCatchTxError()
   const handleUnstake = useCallback(
     async (amount: string) => {
       const receipt = await fetchWithCatchTxError(() => onUnStake(amount))
@@ -160,7 +160,6 @@ const useWithdrawModal = (
       onConfirm={handleUnstake}
       lpPrice={lpTokenPrice}
       tokenName={lpSymbol}
-      showCrossChainFarmWarning={!isBSCNetwork}
       decimals={18}
     />,
   )
@@ -168,14 +167,15 @@ const useWithdrawModal = (
   return onPresentWithdraw
 }
 
-const V2FarmingAction: React.FC<V2PositionActionsProps> = ({ data, chainId, lpAddress, pid, tvlUsd }) => {
+const V2FarmingAction: React.FC<V2PositionActionsProps> = (props) => {
+  const { data, chainId, lpAddress, pid, tvlUsd } = props
   const isFarmLive = useIsFarmLive({
     protocol: data.protocol,
     chainId,
     currency0: data.pair.token0,
     currency1: data.pair.token1,
   })
-  const onPresentDeposit = useDepositModal(data, lpAddress, chainId, pid)
+  const onPresentDeposit = useDepositModal(props)
   const onPresentWithdraw = useWithdrawModal(data, lpAddress, chainId, pid, tvlUsd)
 
   return (
@@ -183,16 +183,16 @@ const V2FarmingAction: React.FC<V2PositionActionsProps> = ({ data, chainId, lpAd
   )
 }
 
-const V2NativeAction: React.FC<V2PositionActionsProps> = ({ data, chainId, lpAddress, pid }) => {
-  const onPresentDeposit = useDepositModal(data, lpAddress, chainId, pid)
+const V2NativeAction: React.FC<V2PositionActionsProps> = (props) => {
+  const onPresentDeposit = useDepositModal(props)
   return <DepositStakeAction onDeposit={onPresentDeposit} />
 }
 
-const V2HarvestAction: React.FC<V2PositionActionsProps> = ({ data, chainId, lpAddress, pid }) => {
+const V2HarvestAction: React.FC<V2PositionActionsProps> = ({ chainId, lpAddress }) => {
   const { t } = useTranslation()
   const { onHarvest } = useV2FarmActions(lpAddress, chainId)
   const { toastSuccess } = useToast()
-  const { fetchWithCatchTxError, fetchTxResponse, loading: pendingTx } = useCatchTxError()
+  const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { account } = useAccountActiveChain()
   const bCakeConfig = useMemo(() => {
     return getUniversalBCakeWrapperForPool({ chainId, lpAddress })
