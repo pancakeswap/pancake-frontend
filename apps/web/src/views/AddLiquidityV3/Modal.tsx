@@ -1,17 +1,18 @@
-import { useCallback } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
-import { usePublicNodeWaitForTransaction } from 'hooks/usePublicNodeWaitForTransaction'
 import { AutoRow, Box, Modal, ModalV2, UseModalV2Props } from '@pancakeswap/uikit'
-import { FeeAmount } from '@pancakeswap/v3-sdk'
+import { FeeAmount, Pool } from '@pancakeswap/v3-sdk'
 import GlobalSettings from 'components/Menu/GlobalSettings'
 import { SettingsMode } from 'components/Menu/GlobalSettings/types'
 import { useCurrency } from 'hooks/Tokens'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { usePublicNodeWaitForTransaction } from 'hooks/usePublicNodeWaitForTransaction'
 import { useRouter } from 'next/router'
+import { useCallback, useMemo } from 'react'
 import currencyId from 'utils/currencyId'
 import AddLiquidityV2FormProvider from 'views/AddLiquidity/AddLiquidityV2FormProvider'
-import { AprCalculator } from './components/AprCalculator'
 import { UniversalAddLiquidity } from '.'
+import { AprCalculatorV2 } from './components/AprCalculatorV2'
 import LiquidityFormProvider from './formViews/V3FormView/form/LiquidityFormProvider'
 import { SELECTOR_TYPE } from './types'
 
@@ -30,6 +31,7 @@ export function AddLiquidityV3Modal({
 } & UseModalV2Props) {
   const { t } = useTranslation()
   const router = useRouter()
+  const { chainId } = useActiveChainId()
 
   const [currencyIdA, currencyIdB] =
     typeof router.query.currency === 'string'
@@ -38,6 +40,12 @@ export function AddLiquidityV3Modal({
 
   const baseCurrency = useCurrency(currencyIdA)
   const quoteCurrency = useCurrency(currencyIdB)
+
+  const poolAddress = useMemo(
+    () =>
+      currency0 && currency1 && feeAmount ? Pool.getAddress(currency0.wrapped, currency1.wrapped, feeAmount) : null,
+    [currency0, currency1, feeAmount],
+  )
 
   const { waitForTransaction } = usePublicNodeWaitForTransaction()
 
@@ -87,12 +95,7 @@ export function AddLiquidityV3Modal({
             title={t('Add Liquidity')}
             headerRightSlot={
               <AutoRow width="auto" gap="8px">
-                <AprCalculator
-                  baseCurrency={baseCurrency}
-                  quoteCurrency={quoteCurrency}
-                  feeAmount={feeAmount}
-                  showTitle={false}
-                />
+                <AprCalculatorV2 poolAddress={poolAddress} chainId={chainId} showTitle={false} />
                 <GlobalSettings mode={SettingsMode.SWAP_LIQUIDITY} />
               </AutoRow>
             }
