@@ -18,7 +18,7 @@ import {
   Text,
   useModal,
 } from '@pancakeswap/uikit'
-import { Liquidity } from '@pancakeswap/widgets-internal'
+import { Liquidity, NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 import { AppBody, AppHeader } from 'components/App'
 import TransactionsModal from 'components/App/Transactions/TransactionsModal'
 import { RangeTag } from 'components/RangeTag'
@@ -335,11 +335,11 @@ export default function PoolListPage() {
           {selectedTypeIndex === FILTER.V2 ? (
             <Liquidity.FindOtherLP>
               {chainId && V3_MIGRATION_SUPPORTED_CHAINS.includes(chainId) && (
-                <Link style={{ marginTop: '8px' }} href="/migration">
+                <NextLinkFromReactRouter style={{ marginTop: '8px' }} to="/migration">
                   <Button id="migration-link" variant="secondary" scale="sm">
                     {t('Migrate to V3')}
                   </Button>
-                </Link>
+                </NextLinkFromReactRouter>
               )}
             </Liquidity.FindOtherLP>
           ) : null}
