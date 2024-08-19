@@ -13,7 +13,24 @@ import {
   StyledDropdownMenu,
   StyledDropdownMenuItemContainer,
 } from "./styles";
-import { DropdownMenuItems, DropdownMenuItemType, DropdownMenuProps } from "./types";
+import { DropdownMenuItems, DropdownMenuItemType, DropdownMenuProps, LinkStatus as LinkStatusType } from "./types";
+
+const MenuItemComponent: React.FC<{
+  label: React.ReactNode;
+  status: LinkStatusType | undefined;
+  isChildItems: boolean | undefined;
+}> = ({ label, status, isChildItems }) => {
+  return (
+    <Flex alignItems="center" ml={isChildItems ? "16px" : "0px"}>
+      {label}
+      {status && (
+        <LinkStatus textTransform="uppercase" color={status.color} fontSize="14px">
+          {status.text}
+        </LinkStatus>
+      )}
+    </Flex>
+  );
+};
 
 const MenuItem: React.FC<{
   item: DropdownMenuItems;
@@ -33,16 +50,7 @@ const MenuItem: React.FC<{
     return Boolean(isChildItems ? item.href === activeSubItemChildItem : item.href === activeItem);
   }, [item, isChildItems, activeSubItemChildItem, activeItem]);
 
-  const MenuItemContent = (
-    <Flex alignItems="center" ml={isChildItems ? "16px" : "0px"}>
-      {label}
-      {status && (
-        <LinkStatus textTransform="uppercase" color={status.color} fontSize="14px">
-          {status.text}
-        </LinkStatus>
-      )}
-    </Flex>
-  );
+  const MenuItemContent = <MenuItemComponent label={label} status={status} isChildItems={isChildItems} />;
 
   const handleToggleSubMenu = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
