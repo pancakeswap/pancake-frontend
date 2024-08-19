@@ -12,11 +12,6 @@ export const PoolGlobalAprButton: React.FC<PoolGlobalAprButtonProps> = ({ pool }
   const { lpApr, cakeApr, merklApr } = usePoolApr(key, pool)
 
   return (
-    <PoolAprButton
-      pool={pool}
-      lpApr={Number(lpApr ?? 0) ?? 0}
-      cakeApr={cakeApr}
-      merklApr={Number(merklApr ?? 0) ?? 0}
-    />
+    <PoolAprButton pool={pool} lpApr={parseFloat(lpApr) ?? 0} cakeApr={cakeApr} merklApr={parseFloat(merklApr) ?? 0} />
   )
 }
