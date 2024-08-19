@@ -113,7 +113,7 @@ const config: (
     },
     {
       label: t('Earn'),
-      href: '/farms',
+      href: '/liquidity/pools',
       icon: EarnIcon,
       fillIcon: EarnFillIcon,
       image: '/images/decorations/pe2.png',
