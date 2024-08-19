@@ -7,7 +7,16 @@ export const ResponsiveGrid = styled.div`
   grid-gap: 1em;
   align-items: center;
 
-  grid-template-columns: 1.5fr repeat(3, 1fr);
+  grid-template-columns: 1fr;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    grid-template-columns: 2fr 1fr;
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    grid-template-columns: 1.5fr 1.7fr repeat(2, 1fr);
+  }
+
   padding: 0 24px;
 `
 
@@ -74,4 +83,59 @@ export const SortButton = styled(Button)<{ $direction?: SortDirection }>`
       : $direction === SortDirection.Descending
       ? DescSortButtonStyle
       : ''}
+`
+
+export const LastCell = styled.div`
+  display: grid;
+  & > a {
+    grid-row-start: 1;
+  }
+  grid-template-columns: 1fr 1fr;
+  grid-auto-flow: dense;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: unset;
+    grid-auto-flow: row;
+    justify-content: flex-end;
+  }
+`
+
+export const TableHeader = styled(ResponsiveGrid)`
+  display: none;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    display: grid;
+    border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder};
+    padding-bottom: 16px;
+  }
+`
+
+export const HeadCell = styled.div`
+  display: grid;
+
+  & > div {
+    display: none;
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    & > div {
+      display: flex;
+    }
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    & > div {
+      display: none;
+    }
+  }
+`
+
+export const BodyCell = styled.div`
+  display: none;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    display: grid;
+    grid-auto-rows: auto;
+  }
 `

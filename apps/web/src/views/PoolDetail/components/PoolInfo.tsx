@@ -1,10 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Percent } from '@pancakeswap/swap-sdk-core'
-import { AutoColumn, AutoRow, Column, Flex, FlexGap, Grid, Row, Spinner, Text } from '@pancakeswap/uikit'
+import { AutoColumn, AutoRow, Box, Column, Flex, FlexGap, Grid, Spinner, Text } from '@pancakeswap/uikit'
 import { ChainLogo, DoubleCurrencyLogo, FeatureStack, FeeTierTooltip } from '@pancakeswap/widgets-internal'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useMemo } from 'react'
 import { useChainIdByQuery, useChainNameByQuery } from 'state/info/hooks'
+import styled from 'styled-components'
 import { multiChainNameConverter } from 'utils/chainNameConverter'
 import { PoolGlobalAprButton } from 'views/universalFarms/components/PoolAprButton'
 import { usePoolInfoByQuery } from '../hooks/usePoolInfo'
@@ -13,6 +14,14 @@ import { PoolCharts } from './PoolCharts'
 import { PoolCurrencies } from './PoolCurrencies'
 import { PoolStatus } from './PoolStatus'
 import { Transactions } from './Transactions/Transactions'
+
+const Header = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 24px;
+`
 
 export const PoolInfo = () => {
   const { t } = useTranslation()
@@ -38,7 +47,7 @@ export const PoolInfo = () => {
 
   return (
     <Column gap="24px">
-      <Row justifyContent="space-between">
+      <Header>
         <Flex alignItems="center">
           <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={48} innerMargin="-8px" />
           <FlexGap gap="4px" ml="12px">
@@ -54,13 +63,15 @@ export const PoolInfo = () => {
             </Text>
           </FlexGap>
         </Flex>
-        <FlexGap gap="16px">
+        <FlexGap gap="16px" flexWrap="wrap">
           {poolInfo?.protocol ? (
             <AutoColumn rowGap="4px">
               <Text fontSize={12} bold color="textSubtle" textTransform="uppercase">
                 {t('fee tier')}
               </Text>
-              <FeeTierTooltip type={poolInfo.protocol} percent={fee} />
+              <Box>
+                <FeeTierTooltip type={poolInfo.protocol} percent={fee} />
+              </Box>
             </AutoColumn>
           ) : null}
           <AutoColumn rowGap="4px">
@@ -87,17 +98,17 @@ export const PoolInfo = () => {
             <FeatureStack features={[poolInfo?.protocol]} />
           </AutoColumn>
         </FlexGap>
-      </Row>
+      </Header>
       {account && poolInfo ? <MyPositions poolInfo={poolInfo} /> : null}
 
-      <AutoRow gap="lg">
+      <AutoRow gap="lg" flexWrap="wrap">
         <Text as="h3" fontWeight={600} fontSize={24}>
           {t('Pair info')}
         </Text>
         <PoolCurrencies poolInfo={poolInfo} />
       </AutoRow>
 
-      <Grid gridGap="24px" gridTemplateColumns="1fr 2fr">
+      <Grid gridGap="24px" gridTemplateColumns={['1fr', '1fr', '1fr', '1fr 2fr']}>
         <PoolStatus poolInfo={poolInfo} />
         <PoolCharts poolInfo={poolInfo} />
       </Grid>
