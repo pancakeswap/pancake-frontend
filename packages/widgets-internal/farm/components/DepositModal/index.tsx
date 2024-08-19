@@ -179,12 +179,6 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
     [fullBalanceNumber, decimals, lpPrice]
   );
 
-  console.log({
-    display: isBooster ? (_toNumber(displayApr) - apr + apr * (boosterMultiplier ?? 1)).toFixed(2) : displayApr,
-    apr,
-    lpRewardsApr,
-  });
-
   if (showRoiCalculator) {
     return (
       <ModalV2 isOpen={showRoiCalculator}>
