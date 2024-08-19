@@ -123,6 +123,7 @@ export const TokenFilter: React.FC<ITokenProps> = ({
         icon: <CurrencyLogoWithChain currency={token} />,
         value: toTokenValueByCurrency(token),
         label: token.symbol,
+        key: toTokenValue(token),
       })),
     [data, selectedTokensNotInData]
   );
