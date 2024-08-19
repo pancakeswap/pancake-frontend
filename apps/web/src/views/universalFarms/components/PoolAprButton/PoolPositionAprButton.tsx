@@ -45,13 +45,13 @@ export const useV2PositionApr = (pool: PoolInfo, userPosition: StableLPDetail | 
   const { lpApr: globalLpApr, cakeApr: globalCakeApr, merklApr } = usePoolApr(key, pool)
 
   return {
-    lpApr: Number(globalLpApr) ?? 0,
+    lpApr: parseFloat(globalLpApr) ?? 0,
     cakeApr: {
       ...globalCakeApr,
-      value: String(Number(globalCakeApr.value) * userPosition.farmingBoosterMultiplier) as `${number}`,
+      value: String(parseFloat(globalCakeApr?.value) * userPosition.farmingBoosterMultiplier) as `${number}`,
       boost: undefined,
     },
-    merklApr: Number(merklApr ?? 0) ?? 0,
+    merklApr: parseFloat(merklApr ?? 0) ?? 0,
   }
 }
 
