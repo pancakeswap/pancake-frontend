@@ -78,7 +78,7 @@ export const TransactionFeeDetails = ({
             {selectedQuote && (
               <>
                 <Text fontWeight="600" fontSize="14px" px="2px">
-                  {t('total fees:')}
+                  {t('Est total fees:')}
                 </Text>
                 <SkeletonText loading={Boolean(loading || inputError)} initialWidth={40} fontSize="14px">
                   {t('%fees%', {
