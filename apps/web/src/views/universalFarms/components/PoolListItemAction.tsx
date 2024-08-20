@@ -66,7 +66,7 @@ export const getPoolDetailPageLink = (pool: PoolInfo) => {
 }
 
 const getPoolInfoPageLink = (pool: PoolInfo) => {
-  const toLink = (lpAddress: string, protocol: string, query?: string) => {
+  const toLink = (lpAddress: string, protocol: string, query: string = '') => {
     return `/info/${protocol}${multiChainPaths[pool.chainId]}/pairs/${lpAddress}?chain=${
       CHAIN_QUERY_NAME[pool.chainId]
     }${query}`
