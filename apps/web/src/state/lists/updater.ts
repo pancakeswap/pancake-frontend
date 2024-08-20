@@ -6,13 +6,16 @@ import { UNSUPPORTED_LIST_URLS } from 'config/constants/lists'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo } from 'react'
-import { useAllLists } from 'state/lists/hooks'
+import { useActiveListUrlsByChainId, useAllListsByChainId } from 'state/lists/hooks'
 import { usePublicClient } from 'wagmi'
-import { useActiveListUrls } from './hooks'
 import { initialState, useListState, useListStateReady } from './lists'
 
 export default function Updater(): null {
   const { chainId } = useActiveChainId()
+  return UpdaterByChainId({ chainId })
+}
+
+export function UpdaterByChainId({ chainId }: { chainId: number }): null {
   const provider = usePublicClient({ chainId })
 
   const [listState, dispatch] = useListState()
@@ -26,8 +29,8 @@ export default function Updater(): null {
   const isReady = useListStateReady()
 
   // get all loaded lists, and the active urls
-  const lists = useAllLists()
-  const activeListUrls = useActiveListUrls()
+  const lists = useAllListsByChainId(chainId)
+  const activeListUrls = useActiveListUrlsByChainId(chainId)
 
   useEffect(() => {
     if (isReady) {
