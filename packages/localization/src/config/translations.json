@@ -3238,7 +3238,7 @@
   "We have detected that this address is associated with a Prohibited Activity": "We have detected that this address is associated with a Prohibited Activity",
   "If you believe that your address has been misclassified, please email": "If you believe that your address has been misclassified, please email",
   "on %network%": "on %network%",
-  "Est total fees:": "Est total fees:",
+  "total fees:": "total fees:",
   "%fees%": "%fees%",
   "Show details": "Show details",
   "New LP position successfully added. You will be notified on important updates.": "New LP position successfully added. You will be notified on important updates.",
