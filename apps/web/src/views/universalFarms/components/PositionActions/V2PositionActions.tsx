@@ -9,14 +9,17 @@ import { useCakePrice } from 'hooks/useCakePrice'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useTokenAllowanceByChainId } from 'hooks/useTokenAllowance'
 import React, { useCallback, useMemo } from 'react'
+import { usePoolApr } from 'state/farmsV4/hooks'
 import { getBCakeWrapperAddress } from 'state/farmsV4/state/accountPositions/fetcher'
 import { useAccountV2PendingCakeReward } from 'state/farmsV4/state/accountPositions/hooks/useAccountV2PendingCakeReward'
 import { StableLPDetail, V2LPDetail } from 'state/farmsV4/state/accountPositions/type'
 import { getUniversalBCakeWrapperForPool } from 'state/farmsV4/state/poolApr/fetcher'
+import { PoolInfo } from 'state/farmsV4/state/type'
 import { Address } from 'viem'
-import { useIsFarmLive } from 'views/universalFarms/hooks/useIsFarmLive'
 import { useCheckShouldSwitchNetwork } from 'views/universalFarms/hooks'
+import { useIsFarmLive } from 'views/universalFarms/hooks/useIsFarmLive'
 import { useV2FarmActions } from 'views/universalFarms/hooks/useV2FarmActions'
+import { sumApr } from 'views/universalFarms/utils/sumApr'
 import { DepositStakeAction, HarvestAction, ModifyStakeActions } from './StakeActions'
 
 type V2PositionActionsProps = {
@@ -26,6 +29,7 @@ type V2PositionActionsProps = {
   pid: number
   isStaked?: boolean
   tvlUsd?: `${number}` | number | undefined
+  poolInfo: PoolInfo
 }
 export const V2PositionActions: React.FC<V2PositionActionsProps> = ({ isStaked, ...props }) => {
   if (isStaked) {
@@ -40,12 +44,17 @@ export const V2PositionActions: React.FC<V2PositionActionsProps> = ({ isStaked, 
 }
 
 const useDepositModal = (props: V2PositionActionsProps) => {
-  const { chainId, data, pid, lpAddress, tvlUsd } = props
+  const { chainId, data, pid, lpAddress, tvlUsd, poolInfo } = props
   const { account } = useAccountActiveChain()
   const cakePrice = useCakePrice()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError } = useCatchTxError()
   const { t } = useTranslation()
+  const key = useMemo(() => `${chainId}:${lpAddress}` as const, [chainId, lpAddress])
+  const { lpApr, cakeApr, merklApr } = usePoolApr(key, poolInfo)
+  const displayApr = useMemo(() => {
+    return sumApr(lpApr, cakeApr.value, merklApr)
+  }, [lpApr, cakeApr, merklApr])
 
   const bCakeAddress = getBCakeWrapperAddress(lpAddress, chainId)
   const { allowance } = useTokenAllowanceByChainId({
@@ -104,6 +113,7 @@ const useDepositModal = (props: V2PositionActionsProps) => {
       pid={pid}
       lpTotalSupply={totalSupply}
       tokenName={lpSymbol}
+      hideTokenName
       max={nativeBalance}
       stakedBalance={stakedBalance}
       decimals={18}
@@ -112,6 +122,11 @@ const useDepositModal = (props: V2PositionActionsProps) => {
       onConfirm={handleStake}
       handleApprove={handleApprove}
       lpPrice={lpTokenPrice}
+      apr={parseFloat(cakeApr?.value ?? '0') * 100}
+      displayApr={(displayApr * 100).toString()}
+      lpRewardsApr={parseFloat(lpApr) * 100}
+      isBooster={!!cakeApr?.boost}
+      boosterMultiplier={cakeApr?.boost ? parseFloat(cakeApr.boost) / parseFloat(cakeApr.value) : undefined}
     />,
     true,
     true,
