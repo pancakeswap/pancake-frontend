@@ -56,25 +56,33 @@ export const V3PositionActions = ({
     if (outOfRange && !isStaked) {
       stakeModal.onOpen()
     } else {
-      await switchNetworkIfNecessary(currency0.chainId)
-      await onStake()
+      const shouldSwitch = await switchNetworkIfNecessary(currency0.chainId)
+      if (!shouldSwitch) {
+        await onStake()
+      }
     }
   }, [isStaked, onStake, outOfRange, stakeModal, switchNetworkIfNecessary, currency0.chainId])
 
   const handleStake = useCallback(async () => {
     logGTMClickStakeFarmEvent()
-    await switchNetworkIfNecessary(currency0.chainId)
-    await onStake()
+    const shouldSwitch = await switchNetworkIfNecessary(currency0.chainId)
+    if (!shouldSwitch) {
+      await onStake()
+    }
   }, [onStake, switchNetworkIfNecessary, currency0.chainId])
 
   const handleUnStake = useCallback(async () => {
-    await switchNetworkIfNecessary(currency0.chainId)
-    await onUnstake()
+    const shouldSwitch = await switchNetworkIfNecessary(currency0.chainId)
+    if (!shouldSwitch) {
+      await onUnstake()
+    }
   }, [onUnstake, switchNetworkIfNecessary, currency0.chainId])
 
   const handleHarvest = useCallback(async () => {
-    await switchNetworkIfNecessary(currency0.chainId)
-    await onHarvest()
+    const shouldSwitch = await switchNetworkIfNecessary(currency0.chainId)
+    if (!shouldSwitch) {
+      await onHarvest()
+    }
   }, [onHarvest, switchNetworkIfNecessary, currency0.chainId])
 
   const stakeButton = useMemo(

@@ -15,6 +15,7 @@ import { StableLPDetail, V2LPDetail } from 'state/farmsV4/state/accountPositions
 import { getUniversalBCakeWrapperForPool } from 'state/farmsV4/state/poolApr/fetcher'
 import { Address } from 'viem'
 import { useIsFarmLive } from 'views/universalFarms/hooks/useIsFarmLive'
+import { useCheckShouldSwitchNetwork } from 'views/universalFarms/hooks'
 import { useV2FarmActions } from 'views/universalFarms/hooks/useV2FarmActions'
 import { DepositStakeAction, HarvestAction, ModifyStakeActions } from './StakeActions'
 
@@ -175,17 +176,38 @@ const V2FarmingAction: React.FC<V2PositionActionsProps> = (props) => {
     currency0: data.pair.token0,
     currency1: data.pair.token1,
   })
+  const { switchNetworkIfNecessary } = useCheckShouldSwitchNetwork()
   const onPresentDeposit = useDepositModal(props)
   const onPresentWithdraw = useWithdrawModal(data, lpAddress, chainId, pid, tvlUsd)
 
-  return (
-    <ModifyStakeActions increaseDisabled={!isFarmLive} onIncrease={onPresentDeposit} onDecrease={onPresentWithdraw} />
-  )
+  const handleIncrease = useCallback(async () => {
+    const shouldSwitch = await switchNetworkIfNecessary(chainId)
+    if (!shouldSwitch) {
+      onPresentDeposit()
+    }
+  }, [chainId, onPresentDeposit, switchNetworkIfNecessary])
+
+  const handleDecrease = useCallback(async () => {
+    const shouldSwitch = await switchNetworkIfNecessary(chainId)
+    if (!shouldSwitch) {
+      onPresentWithdraw()
+    }
+  }, [chainId, onPresentWithdraw, switchNetworkIfNecessary])
+
+  return <ModifyStakeActions increaseDisabled={!isFarmLive} onIncrease={handleIncrease} onDecrease={handleDecrease} />
 }
 
 const V2NativeAction: React.FC<V2PositionActionsProps> = (props) => {
+  const { chainId } = props
+  const { switchNetworkIfNecessary } = useCheckShouldSwitchNetwork()
   const onPresentDeposit = useDepositModal(props)
-  return <DepositStakeAction onDeposit={onPresentDeposit} />
+  const handleDeposit = useCallback(async () => {
+    const shouldSwitch = await switchNetworkIfNecessary(chainId)
+    if (!shouldSwitch) {
+      onPresentDeposit()
+    }
+  }, [chainId, switchNetworkIfNecessary, onPresentDeposit])
+  return <DepositStakeAction onDeposit={handleDeposit} />
 }
 
 const V2HarvestAction: React.FC<V2PositionActionsProps> = ({ chainId, lpAddress }) => {
@@ -194,6 +216,7 @@ const V2HarvestAction: React.FC<V2PositionActionsProps> = ({ chainId, lpAddress 
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { account } = useAccountActiveChain()
+  const { switchNetworkIfNecessary } = useCheckShouldSwitchNetwork()
   const bCakeConfig = useMemo(() => {
     return getUniversalBCakeWrapperForPool({ chainId, lpAddress })
   }, [chainId, lpAddress])
@@ -206,6 +229,10 @@ const V2HarvestAction: React.FC<V2PositionActionsProps> = ({ chainId, lpAddress 
     return new BigNumber(pendingReward_?.toString() ?? '0')
   }, [pendingReward_])
   const handleHarvest = useCallback(async () => {
+    const shouldSwitch = await switchNetworkIfNecessary(chainId)
+    if (shouldSwitch) {
+      return
+    }
     const receipt = await fetchWithCatchTxError(() => onHarvest())
     if (receipt?.status) {
       toastSuccess(
@@ -215,7 +242,7 @@ const V2HarvestAction: React.FC<V2PositionActionsProps> = ({ chainId, lpAddress 
         </ToastDescriptionWithTx>,
       )
     }
-  }, [fetchWithCatchTxError, onHarvest, t, toastSuccess])
+  }, [chainId, switchNetworkIfNecessary, fetchWithCatchTxError, onHarvest, t, toastSuccess])
 
   if (!pendingReward || pendingReward.isZero()) {
     return null

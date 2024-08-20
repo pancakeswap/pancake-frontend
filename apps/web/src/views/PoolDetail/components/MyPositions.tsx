@@ -41,6 +41,7 @@ import {
 } from 'views/universalFarms/components'
 import { useV2FarmActions } from 'views/universalFarms/hooks/useV2FarmActions'
 import { formatDollarAmount } from 'views/V3Info/utils/numbers'
+import { useCheckShouldSwitchNetwork } from 'views/universalFarms/hooks'
 import { useV3Positions } from '../hooks/useV3Positions'
 import { V2PoolEarnings, V3PoolEarnings } from './PoolEarnings'
 
@@ -77,8 +78,6 @@ export const MyPositions: React.FC<{ poolInfo: PoolInfo }> = ({ poolInfo }) => {
   const { t } = useTranslation()
   const [count, setCount] = useState(0)
   const [totalLiquidityUSD, setTotalLiquidityUSD] = useState('0')
-  const [totalAPR, setTotalAPR] = useState(0)
-  const [totalEarning, setTotalEarning] = useState(0)
   const [filter, setFilter] = useState(PositionFilter.All)
   const addLiquidityLink = useMemo(() => {
     const token0Token1 = `${poolInfo.token0.wrapped.address}/${poolInfo.token1.wrapped.address}`
@@ -102,9 +101,14 @@ export const MyPositions: React.FC<{ poolInfo: PoolInfo }> = ({ poolInfo }) => {
   ])
   const [_handleHarvestAll, setHandleHarvestAll] = useState(() => () => Promise.resolve())
   const [loading, setLoading] = useState(false)
+  const { switchNetworkIfNecessary } = useCheckShouldSwitchNetwork()
 
   const handleHarvestAll = useCallback(async () => {
     if (loading) return
+    const shouldSwitch = await switchNetworkIfNecessary(poolInfo.chainId)
+    if (shouldSwitch) {
+      return
+    }
     try {
       setLoading(true)
       await _handleHarvestAll()
@@ -113,7 +117,7 @@ export const MyPositions: React.FC<{ poolInfo: PoolInfo }> = ({ poolInfo }) => {
       console.error(error)
       setLoading(false)
     }
-  }, [_handleHarvestAll, loading, setLoading])
+  }, [_handleHarvestAll, loading, setLoading, poolInfo.chainId, switchNetworkIfNecessary])
 
   return (
     <AutoColumn gap="lg">
