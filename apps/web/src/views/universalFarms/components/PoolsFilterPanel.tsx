@@ -1,4 +1,7 @@
-import isEmpty from 'lodash/isEmpty'
+import { getChainNameInKebabCase } from '@pancakeswap/chains'
+import { Protocol } from '@pancakeswap/farms'
+import { useTranslation } from '@pancakeswap/localization'
+import { ERC20Token } from '@pancakeswap/sdk'
 import { Flex } from '@pancakeswap/uikit'
 import {
   INetworkProps,
@@ -8,17 +11,14 @@ import {
   PoolTypeMenu,
   TokenFilter,
 } from '@pancakeswap/widgets-internal'
-import { useActiveChainId } from 'hooks/useActiveChainId'
-import styled from 'styled-components'
 import { CHAINS } from 'config/chains'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import { useAllTokensByChainIds } from 'hooks/Tokens'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import isEmpty from 'lodash/isEmpty'
 import React, { useMemo } from 'react'
-import { useTranslation } from '@pancakeswap/localization'
-import { getChainNameInKebabCase } from '@pancakeswap/chains'
-import { Protocol } from '@pancakeswap/farms'
-import { ERC20Token } from '@pancakeswap/sdk'
 import { UpdaterByChainId } from 'state/lists/updater'
+import styled from 'styled-components'
 import { getChainFullName } from '../utils'
 
 const PoolsFilterContainer = styled(Flex)<{ $childrenCount: number }>`
@@ -164,7 +164,7 @@ export const PoolsFilterPanel: React.FC<React.PropsWithChildren<IPoolsFilterPane
   return (
     <>
       {MAINNET_CHAINS.map((c) => (
-        <UpdaterByChainId chainId={c.id} />
+        <UpdaterByChainId key={c.id} chainId={c.id} />
       ))}
       <PoolsFilterContainer $childrenCount={childrenCount}>
         <NetworkFilter data={chainsOpts} value={selectedNetwork} onChange={handleNetworkChange} />

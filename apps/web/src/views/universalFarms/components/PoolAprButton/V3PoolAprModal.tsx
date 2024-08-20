@@ -74,7 +74,7 @@ const AprModal: React.FC<V3PoolAprModalProps> = ({ modal, poolInfo, userPosition
   return (
     <RoiCalculatorModalV2
       {...modal}
-      isFarm={poolInfo.isFarming}
+      isFarm={userPosition?.isStaked}
       maxLabel={userPosition ? t('My Position') : undefined}
       closeOnOverlayClick={false}
       depositAmountInUsd={depositUsdAsBN?.toString()}
