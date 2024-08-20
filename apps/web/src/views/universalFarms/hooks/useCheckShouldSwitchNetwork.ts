@@ -10,9 +10,10 @@ export const useCheckShouldSwitchNetwork = () => {
     switchNetworkIfNecessary: useCallback(
       async (chainId: number) => {
         if (canSwitch && currentChainId !== chainId) {
-          return switchNetworkAsync(chainId)
+          await switchNetworkAsync(chainId)
+          return true
         }
-        return Promise.resolve()
+        return false
       },
       [canSwitch, currentChainId, switchNetworkAsync],
     ),
