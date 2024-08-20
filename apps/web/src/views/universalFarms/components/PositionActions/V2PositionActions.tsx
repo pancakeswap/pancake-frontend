@@ -54,7 +54,7 @@ const useDepositModal = (props: V2PositionActionsProps) => {
   const { lpApr, cakeApr, merklApr } = usePoolApr(key, poolInfo)
   const displayApr = useMemo(() => {
     return sumApr(lpApr, cakeApr.value, merklApr)
-  }, [lpApr, cakeApr, merklApr])
+  }, [lpApr, cakeApr.value, merklApr])
 
   const bCakeAddress = getBCakeWrapperAddress(lpAddress, chainId)
   const { allowance } = useTokenAllowanceByChainId({
@@ -126,7 +126,13 @@ const useDepositModal = (props: V2PositionActionsProps) => {
       displayApr={(displayApr * 100).toString()}
       lpRewardsApr={parseFloat(lpApr) * 100}
       isBooster={!!cakeApr?.boost}
-      boosterMultiplier={cakeApr?.boost ? parseFloat(cakeApr.boost) / parseFloat(cakeApr.value) : undefined}
+      boosterMultiplier={
+        data.farmingBalance && data.farmingBalance.greaterThan(0)
+          ? data.farmingBoosterMultiplier
+          : cakeApr?.boost
+          ? parseFloat(cakeApr.boost) / parseFloat(cakeApr.value)
+          : undefined
+      }
     />,
     true,
     true,
