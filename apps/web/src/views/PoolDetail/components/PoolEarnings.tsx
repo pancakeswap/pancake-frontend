@@ -41,7 +41,7 @@ export const V3PoolEarnings: React.FC<{ pool: PoolInfo | null | undefined }> = (
     if (!data) return []
     return data.filter((item) => item.isStaked).map((item) => item.tokenId)
   }, [data])
-  const { earningsBusd } = useV3CakeEarning(tokenIds)
+  const { earningsBusd } = useV3CakeEarning(tokenIds, chainId)
 
   return <PoolEarnings earningsBusd={earningsBusd} />
 }
