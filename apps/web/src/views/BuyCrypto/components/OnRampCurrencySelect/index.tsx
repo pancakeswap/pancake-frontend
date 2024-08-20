@@ -26,7 +26,7 @@ interface BuyCryptoSelectorProps extends Omit<CurrencySearchModalProps, 'mode'>,
   onInputBlur?: () => void
   disableInput?: boolean
   unit: OnRampUnit
-  fiatCurrency?: FiatCurrency
+  fiatCurrency: FiatCurrency
 }
 
 const ButtonAsset = ({
@@ -96,8 +96,8 @@ export const BuyCryptoSelector = ({
     />,
   )
   const blockDecimal = (e: KeyboardEvent<HTMLInputElement>) => {
-    const blockDecimalInput = !!(fiatCurrency && NON_DECIMAL_FIAT_CURRENCIES.includes(fiatCurrency?.symbol))
-    if ((e.key === '.' || e.key === 'e') && fiatCurrency && blockDecimalInput) e.preventDefault()
+    const blockDecimalInput = NON_DECIMAL_FIAT_CURRENCIES.includes(fiatCurrency?.symbol)
+    if ((e.key === '.' || e.key === 'e') && blockDecimalInput) e.preventDefault()
   }
   return (
     <Box width="100%" {...props} position="relative">
