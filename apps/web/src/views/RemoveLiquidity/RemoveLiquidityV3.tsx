@@ -307,7 +307,7 @@ function Remove({ tokenId }: { tokenId?: bigint }) {
     // if there was a tx hash, we want to clear the input
     if (txnHash) {
       if (percentForSlider === 100) {
-        router.push('/liquidity')
+        router.push('/liquidity/positions')
       } else {
         onPercentSelectForSlider(0)
       }
