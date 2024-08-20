@@ -108,11 +108,10 @@ export const useV3PositionApr = (pool: PoolInfo, userPosition: PositionDetail) =
 
   const lpApr = useMemo(() => {
     if (outOfRange || removed) return 0
-
     const apr = new BigNumber(pool.fee24hUsd ?? 0)
       .times(365)
       .times(V3_LP_FEE_RATE[pool.feeTier] ?? 1)
-      .times(new BigNumber(userPosition.liquidity.toString()).dividedBy(pool.liquidity?.toString() ?? 0))
+      .times(new BigNumber(userPosition.liquidity.toString()).dividedBy(pool.liquidity?.toString() ?? 1))
       .div(userTVLUsd)
       .toNumber()
     return apr
