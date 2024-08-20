@@ -163,7 +163,7 @@ export const V3PositionActions = ({
   return (
     <StopPropagation>
       <ActionPanelContainer>
-        {!isStaked && !removed && isFarmLive ? stakeButton : null}
+        {isStaked ? unstakeButton : !removed && isFarmLive ? stakeButton : null}
         {isStaked && !removed ? (
           <Button width={['100px']} scale="md" disabled={attemptingTxn || isSwitchingNetwork} onClick={handleHarvest}>
             {attemptingTxn ? t('Harvesting') : t('Harvest')}
