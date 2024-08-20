@@ -2,6 +2,7 @@ import { useModalV2, useTooltip } from '@pancakeswap/uikit'
 import { useMemo } from 'react'
 import { CakeApr } from 'state/farmsV4/atom'
 import { ChainIdAddressKey, PoolInfo } from 'state/farmsV4/state/type'
+import { getMerklLink } from 'utils/getMerklLink'
 import { sumApr } from '../../utils/sumApr'
 import { StopPropagation } from '../StopPropagation'
 import { AprButton } from './AprButton'
@@ -26,6 +27,9 @@ export const PoolAprButton: React.FC<PoolGlobalAprButtonProps> = ({ pool, lpApr,
       : undefined
   }, [cakeApr?.boost, lpApr, merklApr])
   const hasBCake = pool.protocol === 'v2' || pool.protocol === 'stable'
+  const merklLink = useMemo(() => {
+    return getMerklLink({ chainId: pool.chainId, lpAddress: pool.lpAddress })
+  }, [pool.chainId, pool.lpAddress])
 
   const modal = useModalV2()
 
@@ -35,6 +39,7 @@ export const PoolAprButton: React.FC<PoolGlobalAprButtonProps> = ({ pool, lpApr,
       cakeApr={cakeApr}
       lpFeeApr={Number(lpApr) ?? 0}
       merklApr={Number(merklApr) ?? 0}
+      merklLink={merklLink}
       showDesc
     >
       {hasBCake ? <BCakeWrapperFarmAprTipContent /> : null}
