@@ -163,6 +163,7 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
           currencyLoading={Boolean(!currencyOut)}
           value={typedValue || ''}
           onUserInput={handleTypeInput}
+          fiatCurrency={fiatCurrency}
           error={Boolean(inputError)}
           disableInput={false}
           unit={unit}
@@ -176,6 +177,7 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
           onCurrencySelect={onCurrencySelection}
           selectedCurrency={currencyIn}
           currencyLoading={Boolean(!currencyIn)}
+          fiatCurrency={fiatCurrency}
           value={outputValue ?? '0.0'}
           disableInput
           unit={unit}

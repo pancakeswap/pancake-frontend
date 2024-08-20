@@ -48,7 +48,7 @@ export function useFiatCurrencyAmount({
       if (typeof rate !== 'number' || typeof value !== 'number') {
         return undefined
       }
-      return (value * rate).toFixed(2)
+      return Math.ceil(value * rate).toString()
     },
     [rate],
   )
