@@ -110,7 +110,7 @@ export const BuyCryptoSelector = ({
             className="token-amount-input"
             value={inputLoading ? '' : value}
             onBlur={onInputBlur}
-            onKeyDown={(e) => blockDecimal(e)}
+            onKeyDown={blockDecimal}
             onUserInput={(val) => {
               onUserInput?.(val)
             }}
