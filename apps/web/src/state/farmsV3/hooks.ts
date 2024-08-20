@@ -24,7 +24,12 @@ import { useCakePrice } from 'hooks/useCakePrice'
 
 import { masterChefV3ABI } from '@pancakeswap/v3-sdk'
 import BN from 'bignumber.js'
-import { useBCakeFarmBoosterVeCakeContract, useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
+import {
+  useBCakeFarmBoosterVeCakeContract,
+  useMasterchefV3,
+  useMasterchefV3ByChain,
+  useV3NFTPositionManagerContract,
+} from 'hooks/useContract'
 import { useV3PositionsFromTokenIds, useV3TokenIdsByAccount } from 'hooks/v3/useV3Positions'
 import toLower from 'lodash/toLower'
 import { useMemo } from 'react'
@@ -198,10 +203,11 @@ export const useFarmsV3 = ({ mockApr = false, boosterLiquidityX = {} }: UseFarms
 
 const zkSyncChains = [ChainId.ZKSYNC_TESTNET, ChainId.ZKSYNC]
 
-export const useStakedPositionsByUser = (stakedTokenIds: bigint[]) => {
+export const useStakedPositionsByUser = (stakedTokenIds: bigint[], _chainId?: number) => {
   const { address: account } = useAccount()
-  const { chainId } = useActiveChainId()
-  const masterchefV3 = useMasterchefV3()
+  const { chainId: activeChainId } = useActiveChainId()
+  const chainId = _chainId ?? activeChainId
+  const masterchefV3 = useMasterchefV3ByChain(chainId)
 
   const harvestCalls = useMemo(() => {
     if (!masterchefV3?.abi || !account || !supportedChainIdV3.includes(chainId ?? -1)) return []
@@ -225,6 +231,7 @@ export const useStakedPositionsByUser = (stakedTokenIds: bigint[]) => {
         )
       }
     }
+
     return callData
   }, [account, masterchefV3?.abi, stakedTokenIds, chainId])
 
