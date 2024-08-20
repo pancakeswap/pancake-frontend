@@ -91,8 +91,7 @@ export const BuyCryptoSelector = ({
     />,
   )
   const blockDecimal = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (!fiatCurrency || fiatCurrency.symbol !== 'IDR') return
-    if (e.key === '.' || e.key === 'e') e.preventDefault()
+    if (e.key === '.' && fiatCurrency?.symbol === 'IDR') e.preventDefault()
   }
   return (
     <Box width="100%" {...props} position="relative">
