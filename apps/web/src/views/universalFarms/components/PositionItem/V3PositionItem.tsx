@@ -13,7 +13,7 @@ type V3PositionItemProps = {
 }
 
 export const V3PositionItem = memo(({ data, detailMode }: V3PositionItemProps) => {
-  const { currency0, currency1, removed, outOfRange, priceUpper, priceLower, tickAtLimit, position } =
+  const { quote, base, currency0, currency1, removed, outOfRange, priceUpper, priceLower, tickAtLimit, position } =
     useExtraV3PositionInfo(data)
 
   const poolAddress = getPoolAddressByToken(data.chainId, data.token0, data.token1, data.fee)
@@ -27,14 +27,8 @@ export const V3PositionItem = memo(({ data, detailMode }: V3PositionItemProps) =
   })
 
   const desc =
-    currency1 && currency0 ? (
-      <PriceRange
-        currency0={currency0}
-        currency1={currency1}
-        priceLower={priceLower}
-        priceUpper={priceUpper}
-        tickAtLimit={tickAtLimit}
-      />
+    base && quote ? (
+      <PriceRange base={base} quote={quote} priceLower={priceLower} priceUpper={priceUpper} tickAtLimit={tickAtLimit} />
     ) : null
 
   return (
