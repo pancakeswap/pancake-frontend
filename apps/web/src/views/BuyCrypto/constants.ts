@@ -232,6 +232,8 @@ export const fiatCurrencyMap: Record<string, { symbol: string; name: string }> =
   },
 }
 
+export const NON_DECIMAL_FIAT_CURRENCIES = [fiatCurrencyMap.IDR.symbol]
+
 export type OnRampCurrency = Currency | NativeBtc
 
 export const onRampCurrenciesMap: { [tokenSymbol: string]: Currency } = {

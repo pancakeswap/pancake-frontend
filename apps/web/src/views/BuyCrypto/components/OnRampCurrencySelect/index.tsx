@@ -4,7 +4,12 @@ import { ArrowDropDownIcon, Box, BoxProps, Flex, SkeletonText, Text, useModal } 
 import { NumberDisplay, NumericalInput } from '@pancakeswap/widgets-internal'
 import OnRampCurrencySearchModal, { CurrencySearchModalProps } from 'components/SearchModal/OnRampCurrencyModal'
 import { KeyboardEvent, useMemo } from 'react'
-import { fiatCurrencyMap, getNetworkDisplay, onRampCurrenciesMap } from 'views/BuyCrypto/constants'
+import {
+  fiatCurrencyMap,
+  getNetworkDisplay,
+  NON_DECIMAL_FIAT_CURRENCIES,
+  onRampCurrenciesMap,
+} from 'views/BuyCrypto/constants'
 import { DropDownContainer, OptionSelectButton } from 'views/BuyCrypto/styles'
 import { FiatCurrency, OnRampUnit } from 'views/BuyCrypto/types'
 import { OnRampCurrencyLogo } from '../OnRampProviderLogo/OnRampProviderLogo'
@@ -91,7 +96,8 @@ export const BuyCryptoSelector = ({
     />,
   )
   const blockDecimal = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === '.' && fiatCurrency?.symbol === 'IDR') e.preventDefault()
+    const blockDecimalInput = !!(fiatCurrency && NON_DECIMAL_FIAT_CURRENCIES.includes(fiatCurrency?.symbol))
+    if ((e.key === '.' || e.key === 'e') && fiatCurrency && blockDecimalInput) e.preventDefault()
   }
   return (
     <Box width="100%" {...props} position="relative">
