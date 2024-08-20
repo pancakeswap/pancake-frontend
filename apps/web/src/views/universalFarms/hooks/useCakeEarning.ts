@@ -33,7 +33,7 @@ export const useV2CakeEarning = (pool: PoolInfo | null | undefined) => {
   }
 }
 
-export const useV3CakeEarning = (tokenIds: bigint[] = []) => {
+export const useV3CakeEarning = (tokenIds: bigint[] = [], chainId: number) => {
   const cakePrice = useCakePrice()
   // compiled code will be like:
   // ```
@@ -44,7 +44,7 @@ export const useV3CakeEarning = (tokenIds: bigint[] = []) => {
   // and if n is undefined, n.toString() will throw error, so it's better to assign a default value for pendingCake
   const {
     tokenIdResults: [pendingCake = 0n],
-  } = useStakedPositionsByUser(tokenIds)
+  } = useStakedPositionsByUser(tokenIds, chainId)
   const earningsAmount = useMemo(() => +formatBigInt(pendingCake, 4), [pendingCake])
   const earningsBusd = useMemo(() => {
     return new BigNumber(pendingCake.toString()).times(cakePrice.toString()).div(1e18).toNumber()

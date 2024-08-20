@@ -24,6 +24,7 @@ import {
   getChainlinkOracleContract,
   getContract,
   getCrossFarmingProxyContract,
+  getCrossFarmingVaultContract,
   getFarmAuctionContract,
   getFixedStakingContract,
   getGaugesVotingContract,
@@ -33,7 +34,6 @@ import {
   getMasterChefV3Contract,
   getNftMarketContract,
   getNftSaleContract,
-  getCrossFarmingVaultContract,
   getPancakeVeSenderV2Contract,
   getPointCenterIfoContract,
   getPositionManagerAdapterContract,
@@ -440,6 +440,11 @@ export function useV3NFTPositionManagerContract() {
 
 export function useMasterchefV3() {
   const { chainId } = useActiveChainId()
+  const { data: signer } = useWalletClient()
+  return useMemo(() => getMasterChefV3Contract(signer ?? undefined, chainId), [signer, chainId])
+}
+
+export function useMasterchefV3ByChain(chainId: ChainId) {
   const { data: signer } = useWalletClient()
   return useMemo(() => getMasterChefV3Contract(signer ?? undefined, chainId), [signer, chainId])
 }
