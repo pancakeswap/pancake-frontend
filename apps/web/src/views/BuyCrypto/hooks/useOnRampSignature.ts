@@ -4,13 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import { ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
 import qs from 'qs'
 import { useAccount } from 'wagmi'
-import {
-  ONRAMP_PROVIDERS,
-  WidgetTheme,
-  combinedNetworkIdMap,
-  getIsNetworkEnabled,
-  type OnRampChainId,
-} from '../constants'
+import { ONRAMP_PROVIDERS, WidgetTheme, combinedNetworkIdMap, type OnRampChainId } from '../constants'
 import {
   createQueryKey,
   type Evaluate,
@@ -66,7 +60,7 @@ export const useOnRampSignature = <selectData = GetOnRampSignatureReturnType>(
         theme,
       },
     ]),
-    enabled: Boolean(externalTransactionId && quote && walletAddress && getIsNetworkEnabled(chainId)),
+    enabled: Boolean(externalTransactionId && quote && walletAddress && chainId?.toString() && onRampUnit),
     queryFn: async () => {
       if (!quote || !walletAddress || !externalTransactionId || chainId === undefined || !onRampUnit) {
         throw new Error('Invalid parameters')

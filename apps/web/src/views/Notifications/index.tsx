@@ -1,9 +1,8 @@
 import { Box } from '@pancakeswap/uikit'
-import { initWeb3InboxClient, useSubscription, useWeb3InboxAccount, useWeb3InboxClient } from '@web3inbox/react'
+import { useSubscription } from '@web3inbox/react'
+import { useInitializeNotifications } from 'hooks/useInitializeNotifications'
 import React, { memo, useCallback, useEffect, useState } from 'react'
-import { useAccount } from 'wagmi'
 import NotificationMenu from './components/NotificationDropdown/NotificationMenu'
-import { APP_DOMAIN } from './constants'
 import NotificationSettings from './containers/NotificationSettings'
 import NotificationView from './containers/NotificationView'
 import OnBoardingView from './containers/OnBoardingView'
@@ -11,29 +10,14 @@ import { ViewContainer } from './styles'
 import { PAGE_VIEW } from './types'
 import { disableGlobalScroll, enableGlobalScroll } from './utils/toggleEnableScroll'
 
-interface INotificationWidget {
-  isRegistered: boolean
-}
-
-initWeb3InboxClient({
-  projectId: 'e542ff314e26ff34de2d4fba98db70bb',
-  domain: APP_DOMAIN,
-  allApps: true,
-})
-
 const Notifications = () => {
-  const { address } = useAccount()
+  const { isReady } = useInitializeNotifications()
 
-  const { data: client } = useWeb3InboxClient()
-  const { data: account, isRegistered } = useWeb3InboxAccount(`eip155:1:${address}`)
-
-  const isReady = Boolean(client)
-
-  if (!isReady || !account) return null
-  return <NotificationsWidget isRegistered={isRegistered} />
+  if (!isReady) return null
+  return <NotificationsWidget />
 }
 
-const NotificationsWidget = memo(({ isRegistered }: INotificationWidget) => {
+const NotificationsWidget = memo(() => {
   const [viewIndex, setViewIndex] = useState<PAGE_VIEW>(PAGE_VIEW.OnboardView)
 
   const { data: subscription } = useSubscription()
@@ -59,7 +43,7 @@ const NotificationsWidget = memo(({ isRegistered }: INotificationWidget) => {
     <NotificationMenu viewIndex={viewIndex} subscriptionId={subscription?.topic}>
       <Box tabIndex={-1} onMouseEnter={disableGlobalScroll} onMouseLeave={enableGlobalScroll}>
         <ViewContainer $viewIndex={viewIndex}>
-          <OnBoardingView isReady={isSubscribed} isRegistered={isRegistered} />
+          <OnBoardingView />
 
           <NotificationView toggleSettings={toggleSettings} subscription={subscription} />
 

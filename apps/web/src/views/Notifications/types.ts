@@ -66,7 +66,7 @@ export type NotificationType = {
 }
 
 export enum BuilderNames {
-  OnBoardNotification = 'OnBoardNotification',
+  onBoardingNotification = 'onBoardingNotification',
   newLpNotification = 'newLpNotification',
 }
 export type pushNotification = {
@@ -90,5 +90,8 @@ export interface PancakeNotificationBuilders {
       token1Amount: string,
       token2Amount: string,
     ) => pushNotification
+  }
+  ['onBoardingNotification']: {
+    onBoardingNotification: () => pushNotification
   }
 }

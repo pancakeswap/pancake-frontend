@@ -29,6 +29,7 @@ import { V4CakeIcon } from 'views/Home/components/V4CakeIcon'
 import { ZKSyncAirdropModalWithAutoPopup } from 'components/ClaimZksyncAirdropModal'
 import { useDataDogRUM } from 'hooks/useDataDogRUM'
 import { useLoadExperimentalFeatures } from 'hooks/useExperimentalFeatureEnabled'
+import useInitNotificationsClient from 'hooks/useInitNotificationsClient'
 import { useVercelFeatureFlagOverrides } from 'hooks/useVercelToolbar'
 import { useWeb3WalletView } from 'hooks/useWeb3WalletView'
 import { useInitGlobalWorker } from 'hooks/useWorker'
@@ -61,6 +62,7 @@ function GlobalHooks() {
   useSentryUser()
   useThemeCookie()
   useLockedEndNotification()
+  useInitNotificationsClient()
   return null
 }
 
@@ -70,6 +72,7 @@ function MPGlobalHooks() {
   useAccountEventListener()
   useSentryUser()
   useLockedEndNotification()
+  useInitNotificationsClient()
   return null
 }
 
