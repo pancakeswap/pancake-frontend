@@ -3269,4 +3269,12 @@ export const bscTokens = {
     'Wrapped liquid staked Ether 2.0',
     'https://lido.fi/',
   ),
+  kbtc: new ERC20Token(
+    ChainId.BSC,
+    '0x9356f6d95b8E109F4b7Ce3E49D672967d3B48383',
+    18,
+    'kBTC',
+    'Kinza Babylon Staked BTC',
+    'https://kinza.finance/',
+  ),
 }

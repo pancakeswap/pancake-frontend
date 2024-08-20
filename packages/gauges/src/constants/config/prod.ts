@@ -5049,4 +5049,14 @@ export const CONFIG_PROD: GaugeConfig[] = [
     token0Address: bscTokens.wstETH.address,
     token1Address: bscTokens.wbnb.address,
   },
+  {
+    gid: 510,
+    pairName: 'kBTC-BTCB',
+    address: '0x7b0240618CfE1cf4c576a905CA2557f287F97911',
+    chainId: ChainId.BSC,
+    type: GaugeType.V3,
+    feeTier: FeeAmount.LOW,
+    token0Address: bscTokens.btcb.address,
+    token1Address: bscTokens.kbtc.address,
+  },
 ]
