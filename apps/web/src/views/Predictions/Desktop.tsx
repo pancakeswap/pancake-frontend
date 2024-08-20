@@ -17,7 +17,6 @@ import {
   useIsHistoryPaneOpen,
 } from 'state/predictions/hooks'
 import { styled } from 'styled-components'
-import { InPageBanner } from 'views/Predictions/components/InPageBanner'
 import History from './History'
 import Positions from './Positions'
 import LoadingSection from './components/LoadingSection'
