@@ -3,7 +3,7 @@ import { Currency, Token } from '@pancakeswap/sdk'
 import { ArrowDropDownIcon, Box, BoxProps, Flex, SkeletonText, Text, useModal } from '@pancakeswap/uikit'
 import { NumberDisplay, NumericalInput } from '@pancakeswap/widgets-internal'
 import OnRampCurrencySearchModal, { CurrencySearchModalProps } from 'components/SearchModal/OnRampCurrencyModal'
-import { KeyboardEvent, useMemo } from 'react'
+import { KeyboardEvent, useCallback, useMemo } from 'react'
 import {
   fiatCurrencyMap,
   getNetworkDisplay,
@@ -95,10 +95,14 @@ export const BuyCryptoSelector = ({
       unit={unit}
     />,
   )
-  const blockDecimal = (e: KeyboardEvent<HTMLInputElement>) => {
-    const blockDecimalInput = NON_DECIMAL_FIAT_CURRENCIES.includes(fiatCurrency?.symbol)
-    if ((e.key === '.' || e.key === 'e') && blockDecimalInput) e.preventDefault()
-  }
+  const blockDecimal = useCallback(
+    (e: KeyboardEvent<HTMLInputElement>) => {
+      const blockDecimalInput = NON_DECIMAL_FIAT_CURRENCIES.includes(fiatCurrency?.symbol)
+      if ((e.key === '.' || e.key === 'e') && blockDecimalInput) e.preventDefault()
+    },
+    [fiatCurrency],
+  )
+
   return (
     <Box width="100%" {...props} position="relative">
       <DropDownContainer error={Boolean(error)}>
