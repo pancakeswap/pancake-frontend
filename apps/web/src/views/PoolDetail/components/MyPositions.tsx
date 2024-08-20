@@ -39,9 +39,9 @@ import {
   V2PositionItem,
   V3PositionItem,
 } from 'views/universalFarms/components'
+import { useCheckShouldSwitchNetwork } from 'views/universalFarms/hooks'
 import { useV2FarmActions } from 'views/universalFarms/hooks/useV2FarmActions'
 import { formatDollarAmount } from 'views/V3Info/utils/numbers'
-import { useCheckShouldSwitchNetwork } from 'views/universalFarms/hooks'
 import { useV3Positions } from '../hooks/useV3Positions'
 import { V2PoolEarnings, V3PoolEarnings } from './PoolEarnings'
 

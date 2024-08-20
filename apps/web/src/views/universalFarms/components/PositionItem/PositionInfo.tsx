@@ -132,7 +132,13 @@ export const PositionInfo = memo(
               <Skeleton width={60} />
             )}
           </Row>
-          {isStaked ? protocol === Protocol.V3 ? <V3Earnings tokenId={tokenId} /> : <V2Earnings pool={pool} /> : null}
+          {isStaked ? (
+            protocol === Protocol.V3 && pool?.chainId ? (
+              <V3Earnings tokenId={tokenId} chainId={pool?.chainId} />
+            ) : (
+              <V2Earnings pool={pool} />
+            )
+          ) : null}
         </DetailInfoDesc>
       </>
     )
@@ -160,8 +166,8 @@ const V2Earnings = ({ pool }: { pool: PoolInfo | null | undefined }) => {
   return <Earnings earningsAmount={earningsAmount} earningsBusd={earningsBusd} />
 }
 
-const V3Earnings = ({ tokenId }: { tokenId?: bigint }) => {
-  const { earningsAmount, earningsBusd } = useV3CakeEarning(tokenId ? [tokenId] : [])
+const V3Earnings = ({ tokenId, chainId }: { tokenId?: bigint; chainId: number }) => {
+  const { earningsAmount, earningsBusd } = useV3CakeEarning(tokenId ? [tokenId] : [], chainId)
   return <Earnings earningsAmount={earningsAmount} earningsBusd={earningsBusd} />
 }
 
