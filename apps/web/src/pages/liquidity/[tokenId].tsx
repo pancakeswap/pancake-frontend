@@ -514,7 +514,7 @@ export default function PoolPage() {
               'has an active PancakeSwap farm. Stake your position in the farm to start earning with the indicated APR with CAKE farming.',
             )}
           </Text>
-          <NextLinkFromReactRouter to="/farms">
+          <NextLinkFromReactRouter to="/liquidity/pools">
             <Text display="inline" bold ml="0.25em" style={{ textDecoration: 'underline' }}>
               {t('Go to Farms')} {' >>'}
             </Text>
