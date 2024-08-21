@@ -30,7 +30,7 @@ export const RewardAmount: React.FC<RewardAmountProps> = ({ reward, proofData, i
 
   const amountDisplay = useMemo(() => {
     const balance = getBalanceNumber(new BigNumber(proofData?.rewardAmount ?? 0), currency.decimals)
-    return new BigNumber(balance).lte(0.01)
+    return new BigNumber(balance).lt(0.01)
       ? '< 0.01'
       : getFullDisplayBalance(new BigNumber(proofData?.rewardAmount ?? 0), currency.decimals, 2)
   }, [currency, proofData])
