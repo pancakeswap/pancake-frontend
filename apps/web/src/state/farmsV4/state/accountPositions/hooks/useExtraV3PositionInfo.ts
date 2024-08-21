@@ -2,7 +2,7 @@ import { unwrappedToken } from '@pancakeswap/tokens'
 import { Position } from '@pancakeswap/v3-sdk'
 import { useTokenByChainId } from 'hooks/Tokens'
 import useIsTickAtLimit from 'hooks/v3/useIsTickAtLimit'
-import { usePoolWithChainId } from 'hooks/v3/usePools'
+import { usePoolByChainId } from 'hooks/v3/usePools'
 import getPriceOrderingFromPositionForUI from 'hooks/v3/utils/getPriceOrderingFromPositionForUI'
 import { useMemo } from 'react'
 import { PositionDetail } from '../type'
@@ -15,7 +15,7 @@ export const useExtraV3PositionInfo = (positionDetail?: PositionDetail) => {
   const currency0 = token0 ? unwrappedToken(token0) : undefined
   const currency1 = token1 ? unwrappedToken(token1) : undefined
 
-  const [, pool] = usePoolWithChainId(
+  const [, pool] = usePoolByChainId(
     currency0 ?? undefined,
     currency1 ?? undefined,
     positionDetail?.fee as number,

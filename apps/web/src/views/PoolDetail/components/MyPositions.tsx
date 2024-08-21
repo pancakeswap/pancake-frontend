@@ -25,7 +25,7 @@ import { CHAIN_QUERY_NAME } from 'config/chains'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useCurrencyUsdPrice } from 'hooks/useCurrencyUsdPrice'
-import { usePoolWithChainId } from 'hooks/v3/usePools'
+import { usePoolByChainId } from 'hooks/v3/usePools'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useAccountPositionDetailByPool } from 'state/farmsV4/hooks'
 import { PositionDetail, StableLPDetail, V2LPDetail } from 'state/farmsV4/state/accountPositions/type'
@@ -230,7 +230,7 @@ const MyV3Positions: React.FC<{
   const chainId = useChainIdByQuery()
   const { account } = useAccountActiveChain()
   const { data, isLoading } = useAccountPositionDetailByPool<Protocol.V3>(chainId, account, poolInfo)
-  const [, pool] = usePoolWithChainId(poolInfo.token0.wrapped, poolInfo.token1.wrapped, poolInfo.feeTier, chainId)
+  const [, pool] = usePoolByChainId(poolInfo.token0.wrapped, poolInfo.token1.wrapped, poolInfo.feeTier, chainId)
   const { data: price0Usd } = useCurrencyUsdPrice(poolInfo.token0.wrapped, {
     enabled: !!poolInfo.token0.wrapped,
   })
