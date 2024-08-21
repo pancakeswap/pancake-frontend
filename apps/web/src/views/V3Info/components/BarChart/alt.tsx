@@ -2,9 +2,8 @@ import { RowBetween } from '@pancakeswap/uikit'
 import Card from 'components/Card'
 import dayjs from 'dayjs'
 import useTheme from 'hooks/useTheme'
-import React, { ComponentProps, Dispatch, ReactNode, SetStateAction } from 'react'
+import React, { ComponentProps, Dispatch, SetStateAction } from 'react'
 import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis } from 'recharts'
-import { Margin } from 'recharts/types/util/types'
 import { styled } from 'styled-components'
 import { VolumeWindow } from '../../types'
 import { LoadingRows } from '../Loader'
@@ -31,7 +30,7 @@ const DEFAULT_MARGIN = {
 }
 
 export type LineChartProps = {
-  data: Array<{ time: string; value: number }>
+  data: Array<{ time: string; value: number; [key: string]: any }>
   color?: string | undefined
   height?: number | undefined
   minHeight?: number
