@@ -8,7 +8,7 @@
   - @pancakeswap/chains@0.4.6
   - @pancakeswap/permit2-sdk@1.0.9
 
-## 0.0.9 
+## 0.0.9
 
 ### Patch Changes
 
