@@ -31,7 +31,7 @@ export const EXPERIMENTAL_FEATURE_CONFIGS: ExperimentalFeatureConfigs = [
   },
   {
     feature: EXPERIMENTAL_FEATURES.PriceAPI,
-    percentage: 0.1,
+    percentage: 0.2,
     whitelist: [],
   },
 ]
