@@ -7,7 +7,7 @@ import { NodeRound, Round } from 'state/types'
 import { DefaultTheme, styled } from 'styled-components'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
 import { formatTokenv2, getPriceDifference, getRoundPosition } from '../../helpers'
-import { formatBnb, formatUsd } from '../History/helpers'
+import { formatToken, formatUsd } from '../History/helpers'
 import PositionTag from '../PositionTag'
 
 // PrizePoolRow
@@ -78,7 +78,7 @@ export const PayoutRow: React.FC<React.PropsWithChildren<PayoutRowProps>> = ({
           {t('%multiplier% Payout', { multiplier: formattedMultiplier })}
         </Text>
         <Text mx="4px">|</Text>
-        <Text fontSize="12px" lineHeight="18px">{`${formatBnb(amount, config?.displayedDecimals ?? 0)} ${
+        <Text fontSize="12px" lineHeight="18px">{`${formatToken(amount, config?.displayedDecimals ?? 0)} ${
           config?.token?.symbol
         }`}</Text>
       </Flex>
@@ -231,7 +231,7 @@ const getPrizePoolAmountHistory = (totalAmount: PrizePoolHistoryRowProps['totalA
     return '0'
   }
 
-  return formatBnb(totalAmount, displayedDecimals)
+  return formatToken(totalAmount, displayedDecimals)
 }
 
 export const PrizePoolHistoryRow: React.FC<React.PropsWithChildren<PrizePoolHistoryRowProps>> = ({

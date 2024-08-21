@@ -1,5 +1,5 @@
 import { BetPosition } from '@pancakeswap/prediction'
-import { formatBnb, formatUsd, getMultiplier, getPayout } from 'views/Predictions/components/History/helpers'
+import { formatToken, formatUsd, getMultiplier, getPayout } from 'views/Predictions/components/History/helpers'
 
 describe('formatUsd', () => {
   it.each([
@@ -25,11 +25,11 @@ describe('formatBnb', () => {
     [10.8829, '10.8829'],
     [10.88296, '10.8830'],
   ])('format %i BNB correctly with 4 decimals', (value, expected) => {
-    expect(formatBnb(value, 4)).toEqual(expected)
+    expect(formatToken(value, 4)).toEqual(expected)
   })
 
   it('returns 0 if BNB is undefined', () => {
-    expect(formatBnb(undefined, 4)).toEqual('0')
+    expect(formatToken(undefined, 4)).toEqual('0')
   })
 })
 

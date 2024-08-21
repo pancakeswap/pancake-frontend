@@ -6,9 +6,9 @@ export const formatUsd = (usd: number | undefined, displayedDecimals: number) =>
   return `$${formatNumber(usd || 0, displayedDecimals, displayedDecimals)}`
 }
 
-export const formatBnb = (bnb: number | undefined, displayedDecimals: number) => {
-  return bnb
-    ? bnb.toLocaleString(undefined, {
+export const formatToken = (token: number | undefined, displayedDecimals: number) => {
+  return token
+    ? token.toLocaleString(undefined, {
         minimumFractionDigits: displayedDecimals,
         maximumFractionDigits: displayedDecimals,
       })

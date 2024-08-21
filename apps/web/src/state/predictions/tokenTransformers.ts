@@ -94,8 +94,8 @@ export const transformBetResponseToken = (betResponse): Bet => {
     claimedHash: betResponse.claimedHash,
     createdAt: numberOrNull(betResponse.createdAt),
     updatedAt: numberOrNull(betResponse.updatedAt),
-    claimedNetBNB: betResponse.amount ? parseFloat(betResponse.claimedNetAmount) : 0,
-    claimedBNB: betResponse.amount ? parseFloat(betResponse.claimedAmount) : 0,
+    claimedNetToken: betResponse.amount ? parseFloat(betResponse.claimedNetAmount) : 0,
+    claimedToken: betResponse.amount ? parseFloat(betResponse.claimedAmount) : 0,
   } as Bet
 }
 
@@ -113,11 +113,11 @@ export const transformUserResponseToken = (userResponse): PredictionUser => {
     totalBetsBear: numberOrNull(totalBetsBear) ?? 0,
     totalBetsClaimed: numberOrNull(totalBetsClaimed) ?? 0,
     winRate: winRate ? parseFloat(winRate) : 0,
-    totalBNB: 0,
-    totalBNBBull: 0,
-    totalBNBBear: 0,
-    totalBNBClaimed: 0,
-    averageBNB: 0,
-    netBNB: 0,
+    totalToken: 0,
+    totalTokenBull: 0,
+    totalTokenBear: 0,
+    totalTokenClaimed: 0,
+    averageToken: 0,
+    netToken: 0,
   }
 }

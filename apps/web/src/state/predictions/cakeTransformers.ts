@@ -5,8 +5,8 @@ export const transformBetResponseCAKE = (betResponse): Bet => {
   const baseBet = transformBetResponseToken(betResponse)
   const bet = {
     ...baseBet,
-    claimedBNB: betResponse.claimedCAKE ? parseFloat(betResponse.claimedCAKE) : 0,
-    claimedNetBNB: betResponse.claimedNetCAKE ? parseFloat(betResponse.claimedNetCAKE) : 0,
+    claimedToken: betResponse.claimedCAKE ? parseFloat(betResponse.claimedCAKE) : 0,
+    claimedNetToken: betResponse.claimedNetCAKE ? parseFloat(betResponse.claimedNetCAKE) : 0,
   } as Bet
 
   if (betResponse.user) {
@@ -26,11 +26,11 @@ export const transformUserResponseCAKE = (userResponse): PredictionUser => {
 
   return {
     ...baseUserResponse,
-    totalBNB: totalCAKE ? parseFloat(totalCAKE) : 0,
-    totalBNBBull: totalCAKEBull ? parseFloat(totalCAKEBull) : 0,
-    totalBNBBear: totalCAKEBear ? parseFloat(totalCAKEBear) : 0,
-    totalBNBClaimed: totalCAKEClaimed ? parseFloat(totalCAKEClaimed) : 0,
-    averageBNB: averageCAKE ? parseFloat(averageCAKE) : 0,
-    netBNB: netCAKE ? parseFloat(netCAKE) : 0,
+    totalToken: totalCAKE ? parseFloat(totalCAKE) : 0,
+    totalTokenBull: totalCAKEBull ? parseFloat(totalCAKEBull) : 0,
+    totalTokenBear: totalCAKEBear ? parseFloat(totalCAKEBear) : 0,
+    totalTokenClaimed: totalCAKEClaimed ? parseFloat(totalCAKEClaimed) : 0,
+    averageToken: averageCAKE ? parseFloat(averageCAKE) : 0,
+    netToken: netCAKE ? parseFloat(netCAKE) : 0,
   }
 }
