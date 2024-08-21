@@ -31,7 +31,7 @@ const DEFAULT_MARGIN = {
 }
 
 export type LineChartProps = {
-  data: Array<{ time: string; value: number }>
+  data: Array<{ time: string; value: number; [key: string]: any }>
   color?: string | undefined
   height?: number | undefined
   minHeight?: number
