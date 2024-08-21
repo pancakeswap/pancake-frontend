@@ -144,7 +144,7 @@ export const fetchNodeHistory = createAsyncThunk<
   { account: Address; chainId: ChainId; page?: number },
   { state: PredictionsState; extra: PredictionConfig }
 >('predictions/fetchNodeHistory', async ({ account, chainId, page = 1 }, { getState, extra }) => {
-  const userRoundsLength = Number(await fetchUsersRoundsLength(account, chainId, extra.address))
+  const userRoundsLength = Number(await fetchUsersRoundsLength(account, chainId, extra.address, extra.isNativeToken))
   const emptyResult = { bets: [], claimableStatuses: {}, totalHistory: userRoundsLength }
   const maxPages = userRoundsLength <= ROUNDS_PER_PAGE ? 1 : Math.ceil(userRoundsLength / ROUNDS_PER_PAGE)
 
@@ -163,7 +163,14 @@ export const fetchNodeHistory = createAsyncThunk<
     maxPages === page
       ? userRoundsLength - ROUNDS_PER_PAGE * (page - 1) // Previous page's cursor
       : ROUNDS_PER_PAGE
-  const userRounds = await fetchUserRounds(account, chainId, cursor < 0 ? 0 : cursor, size, extra.address)
+  const userRounds = await fetchUserRounds(
+    account,
+    chainId,
+    cursor < 0 ? 0 : cursor,
+    size,
+    extra.address,
+    extra.isNativeToken,
+  )
 
   if (!userRounds) {
     return emptyResult
