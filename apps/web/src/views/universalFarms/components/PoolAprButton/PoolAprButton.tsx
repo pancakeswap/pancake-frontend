@@ -1,6 +1,7 @@
 import { useModalV2, useTooltip } from '@pancakeswap/uikit'
 import { useMemo } from 'react'
 import { CakeApr } from 'state/farmsV4/atom'
+import { PositionDetail } from 'state/farmsV4/state/accountPositions/type'
 import { ChainIdAddressKey, PoolInfo } from 'state/farmsV4/state/type'
 import { getMerklLink } from 'utils/getMerklLink'
 import { sumApr } from '../../utils/sumApr'
@@ -15,9 +16,10 @@ type PoolGlobalAprButtonProps = {
   lpApr: number
   cakeApr: CakeApr[ChainIdAddressKey]
   merklApr?: number
+  userPosition?: PositionDetail
 }
 
-export const PoolAprButton: React.FC<PoolGlobalAprButtonProps> = ({ pool, lpApr, cakeApr, merklApr }) => {
+export const PoolAprButton: React.FC<PoolGlobalAprButtonProps> = ({ pool, lpApr, cakeApr, merklApr, userPosition }) => {
   const baseApr = useMemo(() => {
     return sumApr(lpApr, cakeApr?.value, merklApr)
   }, [lpApr, cakeApr?.value, merklApr])
@@ -59,7 +61,7 @@ export const PoolAprButton: React.FC<PoolGlobalAprButtonProps> = ({ pool, lpApr,
           boostMultiplier={cakeApr && cakeApr.boost ? Number(cakeApr.boost) / Number(cakeApr.value) : 0}
         />
       ) : (
-        <V3PoolAprModal modal={modal} poolInfo={pool} cakeApr={cakeApr} />
+        <V3PoolAprModal modal={modal} poolInfo={pool} cakeApr={cakeApr} userPosition={userPosition} />
       )}
     </StopPropagation>
   )
