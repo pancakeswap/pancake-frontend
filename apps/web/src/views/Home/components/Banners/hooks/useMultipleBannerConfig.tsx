@@ -4,7 +4,6 @@ import { BrasilMeetupBanner } from 'views/Home/components/Banners/BrasilMeetupBa
 import { AlloraBanner } from '../AlloraBanner'
 import { BirthdayBanner } from '../BirthdayBanner'
 import CompetitionBanner from '../CompetitionBanner'
-import { FeeRefundBanner } from '../FeeRefundBanner'
 import { FourMemeBanner } from '../FourMemeBanner'
 import { OptionsBanner } from '../OptionsBanner'
 import { AthleticsBanner } from '../PancakeSwapAthleticsBanner'
@@ -86,10 +85,6 @@ export const useMultipleBannerConfig = () => {
       {
         shouldRender: true,
         banner: <PaymasterBanner />,
-      },
-      {
-        shouldRender: true,
-        banner: <FeeRefundBanner />,
       },
       {
         shouldRender: true,
