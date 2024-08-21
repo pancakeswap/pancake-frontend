@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react'
-import { usePredictionsContract } from 'hooks/useContract'
+import { getPredictionsV2Contract } from 'utils/contractHelpers'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useConfig } from '../context/ConfigProvider'
 
 const useIsRefundable = (epoch: number, enabled = true) => {
+  const [isRefundable, setIsRefundable] = useState(false)
   const { account, chainId } = useAccountActiveChain()
   const config = useConfig()
-  const predictionsContract = usePredictionsContract(config?.address ?? '0x', config?.isNativeToken ?? true)
-  const [isRefundable, setIsRefundable] = useState(false)
 
   useEffect(() => {
     if (config?.address && account && epoch && chainId && enabled) {
       const fetchRefundableStatus = async () => {
+        const predictionsContract = getPredictionsV2Contract(config.address, chainId)
         const refundable = await predictionsContract.read.refundable([BigInt(epoch), account])
 
         if (refundable) {
@@ -25,7 +25,7 @@ const useIsRefundable = (epoch: number, enabled = true) => {
 
       fetchRefundableStatus()
     }
-  }, [account, epoch, config?.address, predictionsContract, chainId, enabled])
+  }, [account, epoch, config?.address, chainId, enabled])
 
   return { isRefundable, setIsRefundable }
 }

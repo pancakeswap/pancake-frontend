@@ -18,7 +18,7 @@ import {
   ReduxNodeRound,
   RoundData,
 } from 'state/types'
-import { getPredictionsV2Contract, getPredictionsV3Contract } from 'utils/contractHelpers'
+import { getPredictionsV2Contract } from 'utils/contractHelpers'
 import { PredictionsLedgerResponse, PredictionsRoundsResponse } from 'utils/types'
 import { publicClient } from 'utils/wagmi'
 import { Address } from 'viem'
@@ -496,16 +496,9 @@ export const serializePredictionsRoundsResponse = (response: PredictionsRoundsRe
   }
 }
 
-export const fetchUsersRoundsLength = async (
-  account: Address,
-  chainId: ChainId,
-  address: Address,
-  isNativeToken: boolean,
-) => {
+export const fetchUsersRoundsLength = async (account: Address, chainId: ChainId, address: Address) => {
   try {
-    const contract = isNativeToken
-      ? getPredictionsV2Contract(address, chainId)
-      : getPredictionsV3Contract(address, chainId)
+    const contract = getPredictionsV2Contract(address, chainId)
     const length = await contract.read.getUserRoundsLength([account])
     return length
   } catch {
@@ -522,11 +515,8 @@ export const fetchUserRounds = async (
   cursor = 0,
   size = ROUNDS_PER_PAGE,
   address: Address,
-  isNativeToken: boolean,
 ): Promise<null | { [key: string]: ReduxNodeLedger }> => {
-  const contract = isNativeToken
-    ? getPredictionsV2Contract(address, chainId)
-    : getPredictionsV3Contract(address, chainId)
+  const contract = getPredictionsV2Contract(address, chainId)
 
   try {
     const [rounds, ledgers] = await contract.read.getUserRounds([account, BigInt(cursor), BigInt(size)])
