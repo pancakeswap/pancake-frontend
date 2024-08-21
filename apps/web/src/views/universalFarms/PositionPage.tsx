@@ -43,7 +43,7 @@ import { useAccount } from 'wagmi'
 import { Currency } from '@pancakeswap/swap-sdk-core'
 import { getTokenByAddress } from '@pancakeswap/tokens'
 import { Pool } from '@pancakeswap/v3-sdk'
-import { usePoolsWithChainId } from 'hooks/v3/usePools'
+import { usePoolsWithMultiChains } from 'hooks/v3/usePools'
 import { PositionDetail } from 'state/farmsV4/state/accountPositions/type'
 import { V3_MIGRATION_SUPPORTED_CHAINS } from 'config/constants/supportChains'
 import {
@@ -167,7 +167,7 @@ const useV3Positions = ({
       ),
     [v3Positions],
   )
-  const pools = usePoolsWithChainId(v3PoolKeys)
+  const pools = usePoolsWithMultiChains(v3PoolKeys)
   const v3PositionsWithStatus = useMemo(
     () =>
       v3Positions.map((pos, idx) =>
