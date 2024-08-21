@@ -107,7 +107,7 @@ export const BuyCryptoSelector = ({
       const pastedValue = e.clipboardData.getData('text')
       const blockDecimalInput = NON_DECIMAL_FIAT_CURRENCIES.includes(fiatCurrency?.symbol)
 
-      if (pastedValue && blockDecimalInput && (pastedValue.includes('.') || pastedValue.includes(','))) {
+      if (blockDecimalInput && (pastedValue.includes('.') || pastedValue.includes(','))) {
         e.preventDefault()
         onUserInput?.(Number(pastedValue).toFixed(0))
       }
