@@ -1,12 +1,10 @@
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useEffect, useState } from 'react'
-import { useAccount } from 'wagmi'
 import { usePredictionsContract } from 'hooks/useContract'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useConfig } from '../context/ConfigProvider'
 
 const useIsRefundable = (epoch: number, enabled = true) => {
-  const { chainId } = useActiveChainId()
-  const { address: account } = useAccount()
+  const { account, chainId } = useAccountActiveChain()
   const config = useConfig()
   const predictionsContract = usePredictionsContract(config?.address ?? '0x', config?.isNativeToken ?? true)
   const [isRefundable, setIsRefundable] = useState(false)
