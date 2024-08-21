@@ -88,6 +88,7 @@ const AprModal: React.FC<V3PoolAprModalProps> = ({ modal, poolInfo, userPosition
       currencyBUsdPrice={token1PriceUsd}
       sqrtRatioX96={sqrtRatioX96}
       liquidity={pool?.liquidity}
+      customCakeApr={new BigNumber(cakeApr?.value ?? 0).times(100)}
       feeAmount={poolInfo.feeTier}
       ticks={ticksData}
       volume24H={Number(poolInfo.vol24hUsd) || 0}

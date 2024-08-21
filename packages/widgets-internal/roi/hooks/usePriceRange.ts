@@ -21,7 +21,7 @@ interface Params {
   priceUpper?: Price<Token, Token>;
 }
 
-interface PriceRangeInfo {
+export interface PriceRangeInfo {
   tickLower?: number;
   tickUpper?: number;
   priceLower?: Price<Token, Token>;

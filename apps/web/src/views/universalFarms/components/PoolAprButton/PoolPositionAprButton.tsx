@@ -37,7 +37,7 @@ export const V3PoolPositionAprButton: React.FC<PoolPositionAprButtonProps<Positi
 }) => {
   const { lpApr, cakeApr, merklApr } = useV3PositionApr(pool, userPosition)
 
-  return <PoolAprButton pool={pool} lpApr={lpApr} cakeApr={cakeApr} merklApr={merklApr} />
+  return <PoolAprButton pool={pool} lpApr={lpApr} cakeApr={cakeApr} merklApr={merklApr} userPosition={userPosition} />
 }
 
 export const useV2PositionApr = (pool: PoolInfo, userPosition: StableLPDetail | V2LPDetail) => {
