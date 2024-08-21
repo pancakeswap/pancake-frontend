@@ -8,6 +8,7 @@ import { Address } from 'viem'
 import { SLOW_INTERVAL } from 'config/constants'
 import { getAccountV2LpDetails, getTrackedV2LpTokens } from '../fetcher'
 import { V2LPDetail } from '../type'
+import { useLatestTxReceipt } from './useLatestTxReceipt'
 
 export const useAccountV2LpDetails = (chainIds: number[], account?: Address | null) => {
   const tokens = useOfficialsAndUserAddedTokensByChainIds(chainIds)
@@ -22,10 +23,11 @@ export const useAccountV2LpDetails = (chainIds: number[], account?: Address | nu
     })
     return result
   }, [chainIds, tokens, userSavedPairs])
+  const [latestTxReceipt] = useLatestTxReceipt()
   const queries = useMemo(() => {
     return Object.entries(lpTokensByChain).map(([chainId, lpTokens]) => {
       return {
-        queryKey: ['accountV2LpDetails', account, chainId],
+        queryKey: ['accountV2LpDetails', account, chainId, latestTxReceipt?.blockHash],
         // @todo @ChefJerry add signal
         queryFn: () => getAccountV2LpDetails(Number(chainId), account!, lpTokens),
         enabled: !!account && lpTokens && lpTokens.length > 0,
@@ -40,7 +42,7 @@ export const useAccountV2LpDetails = (chainIds: number[], account?: Address | nu
         staleTime: SLOW_INTERVAL,
       } satisfies UseQueryOptions<V2LPDetail[]>
     })
-  }, [account, lpTokensByChain])
+  }, [account, lpTokensByChain, latestTxReceipt?.blockHash])
 
   const combine = useCallback((results: UseQueryResult<V2LPDetail[], Error>[]) => {
     return {
