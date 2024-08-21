@@ -1,6 +1,6 @@
 {
   "name": "@pancakeswap/pcsx-sdk",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "sideEffects": false,
   "scripts": {
     "build": "tsup",

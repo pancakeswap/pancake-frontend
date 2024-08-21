@@ -1,5 +1,11 @@
 # @pancakeswap/routing-sdk
 
+## 0.1.0
+
+### Minor Changes
+
+- b1d1eaf: Introduce routing sdk addons
+
 ## 0.0.7
 
 ### Patch Changes
