@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { DeserializedLockedCakeVault, ONE_WEEK_DEFAULT, VaultKey } from '@pancakeswap/pools'
+import { ONE_WEEK_DEFAULT } from '@pancakeswap/pools'
 import {
   AtomBox,
   Balance,
@@ -31,7 +31,6 @@ import { useCakePrice } from 'hooks/useCakePrice'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useRevenueSharingPoolGatewayContract } from 'hooks/useContract'
 import { useCallback, useMemo } from 'react'
-import { useVaultPoolByKey } from 'state/pools/hooks'
 import styled from 'styled-components'
 import { getRevenueSharingCakePoolAddress, getRevenueSharingVeCakeAddress } from 'utils/addressHelpers'
 import { stringify } from 'viem'
@@ -47,6 +46,7 @@ import {
 import { useCurrentBlockTimestamp } from '../hooks/useCurrentBlockTimestamp'
 import { useRevenueSharingCakePool, useRevenueSharingVeCake } from '../hooks/useRevenueSharingProxy'
 import { MyVeCakeCard } from './MyVeCakeCard'
+import { useCakeLockStatus } from '../hooks/useVeCakeUserInfo'
 
 const StyledModalHeader = styled(ModalHeader)`
   padding: 0;
@@ -95,7 +95,7 @@ export const CakeRewardsCard = ({ onDismiss }) => {
   } = useTranslation()
   const { isDesktop } = useMatchBreakpoints()
   const cakePriceBusd = useCakePrice()
-  const { userData } = useVaultPoolByKey(VaultKey.CakeVault) as DeserializedLockedCakeVault
+  const { cakeUnlockTime, cakeLockedAmount } = useCakeLockStatus()
   const { balanceOfAt, totalSupplyAt, nextDistributionTimestamp, lastTokenTimestamp, availableClaim } =
     useRevenueSharingVeCake()
   const yourShare = useMemo(() => getBalanceAmount(new BigNumber(balanceOfAt)).toNumber(), [balanceOfAt])
@@ -136,13 +136,10 @@ export const CakeRewardsCard = ({ onDismiss }) => {
 
   const showExpireSoonWarning = useMemo(() => {
     const endTime = new BigNumber(nextDistributionTimestamp).plus(ONE_WEEK_DEFAULT)
-    return new BigNumber(userData?.lockEndTime ?? '0').lt(endTime)
-  }, [nextDistributionTimestamp, userData?.lockEndTime])
+    return new BigNumber(cakeUnlockTime ?? '0').lt(endTime)
+  }, [nextDistributionTimestamp, cakeUnlockTime])
 
-  const showNoCakeAmountWarning = useMemo(
-    () => new BigNumber(userData?.lockedAmount ?? '0').lte(0),
-    [userData?.lockedAmount],
-  )
+  const showNoCakeAmountWarning = cakeLockedAmount <= 0
   const currentDate = useCurrentBlockTimestamp()
   // const currentDate = Date.now() / 1000
   const timeRemaining = nextDistributionTimestamp - Number(currentDate || 0)
