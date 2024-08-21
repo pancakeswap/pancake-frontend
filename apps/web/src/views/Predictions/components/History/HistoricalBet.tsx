@@ -42,19 +42,12 @@ const YourResult = styled(Box)`
   flex: 1;
 `
 
-const getRoundColor = (result: Result) => {
-  switch (result) {
-    case Result.WIN:
-      return 'success'
-    case Result.LOSE:
-      return 'failure'
-    case Result.CANCELED:
-      return 'textDisabled'
-    case Result.HOUSE:
-      return 'textDisabled'
-    default:
-      return 'text'
-  }
+const roundColorMap = {
+  [Result.WIN]: 'success',
+  [Result.LOSE]: 'failure',
+  [Result.CANCELED]: 'textDisabled',
+  [Result.HOUSE]: 'textDisabled',
+  default: 'text',
 }
 
 const getRoundPrefix = (result: Result, payout: number) => {
@@ -72,7 +65,7 @@ const getRoundPrefix = (result: Result, payout: number) => {
 const BetLabel = ({ isOpenRound, isLiveRound, roundResult, payout }) => {
   const { t } = useTranslation()
   const config = useConfig()
-  const resultTextColor = getRoundColor(roundResult)
+  const resultTextColor = roundColorMap[roundResult] || roundColorMap.default
   const resultTextPrefix = getRoundPrefix(roundResult, payout)
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
