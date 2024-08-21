@@ -42,10 +42,39 @@ const YourResult = styled(Box)`
   flex: 1;
 `
 
-const HistoricalBet: React.FC<React.PropsWithChildren<BetProps>> = ({ bet }) => {
-  const [isOpen, setIsOpen] = useState(false)
-  const { amount, round } = bet
+const getRoundColor = (result: Result) => {
+  switch (result) {
+    case Result.WIN:
+      return 'success'
+    case Result.LOSE:
+      return 'failure'
+    case Result.CANCELED:
+      return 'textDisabled'
+    case Result.HOUSE:
+      return 'textDisabled'
+    default:
+      return 'text'
+  }
+}
+
+const getRoundPrefix = (result: Result, payout: number) => {
+  if (result === Result.LOSE) {
+    return '-'
+  }
+
+  if (result === Result.WIN && payout >= 0) {
+    return '+'
+  }
+
+  return ''
+}
+
+const BetLabel = ({ isOpenRound, isLiveRound, roundResult, payout }) => {
   const { t } = useTranslation()
+  const config = useConfig()
+  const resultTextColor = getRoundColor(roundResult)
+  const resultTextPrefix = getRoundPrefix(roundResult, payout)
+
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <>
       <Text bold mb="4px">
@@ -60,6 +89,57 @@ const HistoricalBet: React.FC<React.PropsWithChildren<BetProps>> = ({ bet }) => 
     { placement: 'top' },
   )
 
+  if (isOpenRound) {
+    return (
+      <Flex alignItems="center">
+        <WaitIcon color="primary" mr="6px" width="24px" />
+        <Text color="primary" bold>
+          {t('Starting Soon')}
+        </Text>
+      </Flex>
+    )
+  }
+
+  if (isLiveRound) {
+    return (
+      <Flex alignItems="center">
+        <PlayCircleOutlineIcon color="secondary" mr="6px" width="24px" />
+        <Text color="secondary" bold>
+          {t('Live Now')}
+        </Text>
+      </Flex>
+    )
+  }
+
+  return (
+    <>
+      <Text fontSize="12px" color="textSubtle">
+        {t('Your Result')}
+      </Text>
+      <Text bold color={resultTextColor} lineHeight={1}>
+        {roundResult === Result.CANCELED ? (
+          t('Cancelled')
+        ) : roundResult === Result.HOUSE ? (
+          <>
+            {tooltipVisible && tooltip}
+            <Flex alignItems="center" ref={targetRef}>
+              {t('To Burn')}
+              <InfoIcon width="16px" ml="4px" color="secondary" />
+            </Flex>
+          </>
+        ) : (
+          `${resultTextPrefix}${formatBnb(payout, config?.balanceDecimals ?? config?.displayedDecimals ?? 4)}`
+        )}
+      </Text>
+    </>
+  )
+}
+
+const HistoricalBet: React.FC<React.PropsWithChildren<BetProps>> = ({ bet }) => {
+  const [isOpen, setIsOpen] = useState(false)
+  const { amount, round } = bet
+  const { t } = useTranslation()
+
   const currentEpoch = useGetCurrentEpoch()
   const status = useGetPredictionsStatus()
   const { chainId } = useActiveChainId()
@@ -70,88 +150,12 @@ const HistoricalBet: React.FC<React.PropsWithChildren<BetProps>> = ({ bet }) => 
 
   const toggleOpen = () => setIsOpen(!isOpen)
 
-  const getRoundColor = (result) => {
-    switch (result) {
-      case Result.WIN:
-        return 'success'
-      case Result.LOSE:
-        return 'failure'
-      case Result.CANCELED:
-        return 'textDisabled'
-      case Result.HOUSE:
-        return 'textDisabled'
-      default:
-        return 'text'
-    }
-  }
-
   const roundResult = getRoundResult(bet, currentEpoch)
-  const resultTextColor = getRoundColor(roundResult)
   const isOpenRound = round?.epoch === currentEpoch
   const isLiveRound = status === PredictionStatus.LIVE && round?.epoch === currentEpoch - 1
 
   // Winners get the payout, otherwise the claim what they put it if it was canceled
   const payout = roundResult === Result.WIN ? getNetPayout(bet, REWARD_RATE) : amount
-
-  const getRoundPrefix = (result) => {
-    if (result === Result.LOSE) {
-      return '-'
-    }
-
-    if (result === Result.WIN && payout >= 0) {
-      return '+'
-    }
-
-    return ''
-  }
-  const resultTextPrefix = getRoundPrefix(roundResult)
-
-  const renderBetLabel = () => {
-    if (isOpenRound) {
-      return (
-        <Flex alignItems="center">
-          <WaitIcon color="primary" mr="6px" width="24px" />
-          <Text color="primary" bold>
-            {t('Starting Soon')}
-          </Text>
-        </Flex>
-      )
-    }
-
-    if (isLiveRound) {
-      return (
-        <Flex alignItems="center">
-          <PlayCircleOutlineIcon color="secondary" mr="6px" width="24px" />
-          <Text color="secondary" bold>
-            {t('Live Now')}
-          </Text>
-        </Flex>
-      )
-    }
-
-    return (
-      <>
-        <Text fontSize="12px" color="textSubtle">
-          {t('Your Result')}
-        </Text>
-        <Text bold color={resultTextColor} lineHeight={1}>
-          {roundResult === Result.CANCELED ? (
-            t('Cancelled')
-          ) : roundResult === Result.HOUSE ? (
-            <>
-              {tooltipVisible && tooltip}
-              <Flex alignItems="center" ref={targetRef}>
-                {t('To Burn')}
-                <InfoIcon width="16px" ml="4px" color="secondary" />
-              </Flex>
-            </>
-          ) : (
-            `${resultTextPrefix}${formatBnb(payout, config?.balanceDecimals ?? config?.displayedDecimals ?? 4)}`
-          )}
-        </Text>
-      </>
-    )
-  }
 
   const handleSuccess = async () => {
     if (account && chainId && bet?.round?.epoch) {
@@ -174,7 +178,9 @@ const HistoricalBet: React.FC<React.PropsWithChildren<BetProps>> = ({ bet }) => 
             </Text>
           </Text>
         </Box>
-        <YourResult px="24px">{renderBetLabel()}</YourResult>
+        <YourResult px="24px">
+          <BetLabel isOpenRound={isOpenRound} isLiveRound={isLiveRound} roundResult={roundResult} payout={payout} />
+        </YourResult>
         {roundResult === Result.WIN && canClaim && (
           <CollectWinningsButton hasClaimed={!canClaim} onSuccess={handleSuccess} scale="sm" mr="8px">
             {t('Collect')}

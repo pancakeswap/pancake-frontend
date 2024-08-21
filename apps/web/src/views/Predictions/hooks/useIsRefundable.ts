@@ -4,14 +4,14 @@ import { getPredictionsV2Contract } from 'utils/contractHelpers'
 import { useAccount } from 'wagmi'
 import { useConfig } from '../context/ConfigProvider'
 
-const useIsRefundable = (epoch: number) => {
+const useIsRefundable = (epoch: number, enabled = true) => {
   const [isRefundable, setIsRefundable] = useState(false)
   const { address: account } = useAccount()
   const config = useConfig()
   const { chainId } = useActiveChainId()
 
   useEffect(() => {
-    if (config?.address && account) {
+    if (config?.address && account && epoch && chainId && enabled) {
       const fetchRefundableStatus = async () => {
         const predictionsContract = getPredictionsV2Contract(config.address, chainId)
         const refundable = await predictionsContract.read.refundable([BigInt(epoch), account])
@@ -27,7 +27,7 @@ const useIsRefundable = (epoch: number) => {
 
       fetchRefundableStatus()
     }
-  }, [account, epoch, setIsRefundable, config, chainId])
+  }, [account, epoch, config?.address, chainId, enabled])
 
   return { isRefundable, setIsRefundable }
 }

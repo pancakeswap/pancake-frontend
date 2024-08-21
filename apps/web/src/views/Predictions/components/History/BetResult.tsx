@@ -39,7 +39,7 @@ const BetResult: React.FC<React.PropsWithChildren<BetResultProps>> = ({ bet, res
   const { t } = useTranslation()
   const dispatch = useLocalDispatch()
   const { address: account } = useAccount()
-  const { isRefundable } = useIsRefundable(bet?.round?.epoch ?? 0)
+  const { isRefundable } = useIsRefundable(bet?.round?.epoch ?? 0, result === Result.CANCELED)
   const canClaim = useGetIsClaimable(bet?.round?.epoch)
   const config = useConfig()
   const tokenPrice = useTokenUsdPriceBigNumber(config?.token)
