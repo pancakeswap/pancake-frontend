@@ -29,7 +29,7 @@ export const ChartTVL: React.FC<ChartTVLProps> = ({ address, poolInfo }) => {
       </Flex>
       <Box height="380px">
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={data ?? []} setHoverDate={setHoverDate} setHoverValue={setHoverValue} />
+          <LineChart data={data ?? []} setHoverDate={setHoverDate} setHoverValue={setHoverValue} dateFormat="DD" />
         </ResponsiveContainer>
       </Box>
     </>
