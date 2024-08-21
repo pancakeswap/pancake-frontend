@@ -103,12 +103,12 @@ export const BuyCryptoSelector = ({
     [fiatCurrency],
   )
   const handlePaste = useCallback(
-    (event: ClipboardEvent<HTMLInputElement>) => {
-      const pastedValue = event.clipboardData.getData('text')
+    (e: ClipboardEvent<HTMLInputElement>) => {
+      const pastedValue = e.clipboardData.getData('text')
       const blockDecimalInput = NON_DECIMAL_FIAT_CURRENCIES.includes(fiatCurrency?.symbol)
 
       if (pastedValue && blockDecimalInput && (pastedValue.includes('.') || pastedValue.includes(','))) {
-        event.preventDefault()
+        e.preventDefault()
         onUserInput?.(Number(pastedValue).toFixed(0))
       }
     },
