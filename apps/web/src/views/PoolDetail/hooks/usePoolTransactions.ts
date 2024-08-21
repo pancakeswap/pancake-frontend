@@ -67,5 +67,6 @@ export const usePoolTransactions = (address?: string, protocol?: Protocol, chain
     queryFn: () =>
       fetchPoolTransactions(address!, protocol!, chainName! as components['schemas']['ChainName'], chainId!),
     enabled: !!address && !!protocol && !!chainName && !!chainId,
+    select: (data) => data.filter((tx) => tx.amountUSD > 0),
   })
 }
