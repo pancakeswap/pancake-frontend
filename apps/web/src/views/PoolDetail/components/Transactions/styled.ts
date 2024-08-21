@@ -99,6 +99,13 @@ export const LastCell = styled.div`
     grid-auto-flow: row;
     justify-content: flex-end;
   }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    grid-template-rows: 1fr;
+    & > a {
+      display: none;
+    }
+  }
 `
 
 export const TableHeader = styled(ResponsiveGrid)`
