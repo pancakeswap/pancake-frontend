@@ -1,7 +1,6 @@
 import { Protocol } from '@pancakeswap/farms'
 import { useQuery } from '@tanstack/react-query'
 import { QUERY_SETTINGS_IMMUTABLE, QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH } from 'config/constants'
-import dayjs from 'dayjs'
 import { explorerApiClient } from 'state/info/api/client'
 import { useExplorerChainNameByQuery } from 'state/info/api/hooks'
 import { components } from 'state/info/api/schema'
@@ -33,9 +32,7 @@ const fetchChartVolumeData = async (
 
     return resp.data.map((d) => {
       return {
-        time: dayjs(d.bucket as string)
-          .unix()
-          .toString(),
+        time: d.bucket as string,
         value: d.volumeUSD ? parseFloat(d.volumeUSD) ?? 0 : 0,
       }
     })

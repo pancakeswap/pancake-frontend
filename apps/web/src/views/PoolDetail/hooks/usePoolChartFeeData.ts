@@ -26,9 +26,8 @@ const fetchChartFeeData = async (
 
     return resp.data.map((d) => {
       return {
-        time: dayjs(d.bucket as string)
-          .unix()
-          .toString(),
+        time: d.bucket as string,
+        dateTime: dayjs(d.bucket as string).format('YYYY-MM-DD HH:mm:ss'),
         value: d.feeUSD ? parseFloat(d.feeUSD) ?? 0 : 0,
       }
     })
