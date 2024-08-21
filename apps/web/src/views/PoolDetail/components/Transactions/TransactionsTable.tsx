@@ -9,8 +9,8 @@ import {
   ScanLink,
   SortArrowIcon,
   Text,
-  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
+import truncateHash from '@pancakeswap/utils/truncateHash'
 import orderBy from 'lodash/orderBy'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { ChainLinkSupportChains, multiChainId } from 'state/info/constant'
@@ -46,7 +46,6 @@ const DataRow = ({ transaction }: { transaction: Transaction; color?: string }) 
   const abs1 = Math.abs(transaction.amount1)
   const chainName = useChainNameByQuery()
   const chainId = useChainIdByQuery()
-  const { isLg } = useMatchBreakpoints()
 
   const token0Symbol = getTokenSymbolAlias(
     transaction.token0.wrapped.address,
@@ -119,15 +118,14 @@ const DataRow = ({ transaction }: { transaction: Transaction; color?: string }) 
         <Text fontWeight={400} textAlign="right">
           {formatTime(transaction.timestamp.toString(), 0)}
         </Text>
-        {isLg ? null : (
-          <ScanLink
-            useBscCoinFallback={ChainLinkSupportChains.includes(multiChainId[chainName])}
-            href={getBlockExploreLink(transaction.sender, 'address', multiChainId[chainName])}
-            fontWeight={400}
-          >
-            {shortenAddress(transaction.sender)}
-          </ScanLink>
-        )}
+
+        <ScanLink
+          useBscCoinFallback={ChainLinkSupportChains.includes(multiChainId[chainName])}
+          href={getBlockExploreLink(transaction.transactionHash, 'transaction', multiChainId[chainName])}
+          fontWeight={400}
+        >
+          {truncateHash(transaction.transactionHash, 8, 0)}
+        </ScanLink>
       </LastCell>
     </ResponsiveGrid>
   )
@@ -146,7 +144,6 @@ const DEFAULT_FIELD_SORT_DIRECTION = {
 
 export const TransactionsTable: React.FC<TransactionTableProps> = ({ transactions, maxItems = 10 }) => {
   const { t } = useTranslation()
-  const { isLg } = useMatchBreakpoints()
 
   // for sorting
   const [sortField, setSortField] = useState(SortField.Timestamp)
