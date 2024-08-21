@@ -9,7 +9,6 @@ import { ASSET_CDN } from 'config/constants/endpoints'
 import { AIPrediction } from './AIPredictionStripe'
 import { Allora } from './Allora'
 import { Countdown } from './Countdown'
-import { FeeRefund } from './FeeRefund'
 import { PerpetualSeason } from './PerpetualSeason'
 import { Step1 } from './Step1'
 import { Step2 } from './Step2'
@@ -111,14 +110,6 @@ const CONFIG: BannerConfig[] = [
     stripeImage: `${ASSET_CDN}/web/phishing-warning/phishing-warning-bunny-2.png`,
     stripeImageWidth: '92px',
     stripeImageAlt: 'Phishing Warning',
-  },
-  {
-    component: FeeRefund,
-    stripeImage: FeeRefund.stripeImage,
-    stripeImageWidth: FeeRefund.stripeImageWidth,
-    stripeImageAlt: FeeRefund.stripeImageAlt,
-    background: FeeRefund.background,
-    customStyle: { position: 'relative', transform: 'scale(1.25) translateX(-10px)' },
   },
   {
     component: PerpetualSeason,
