@@ -1,8 +1,12 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { LegacyRouter } from '@pancakeswap/smart-router/legacy-router'
 import { AutoColumn, AutoRow, Card, CardBody, Column, Text } from '@pancakeswap/uikit'
+import BigNumber from 'bignumber.js'
 import { useMemo } from 'react'
 import { PoolInfo } from 'state/farmsV4/state/type'
+import { getLpFeesAndApr } from 'utils/getLpFeesAndApr'
 import { getPercentChange } from 'utils/infoDataHelpers'
+import { Address, isAddressEqual } from 'viem'
 import { formatDollarAmount } from 'views/V3Info/utils/numbers'
 import { ChangePercent } from './ChangePercent'
 import { PoolTokens } from './PoolTokens'
@@ -25,6 +29,28 @@ export const PoolStatus: React.FC<PoolStatusProps> = ({ poolInfo }) => {
     const volNow = poolInfo.vol24hUsd ? parseFloat(poolInfo.vol24hUsd) : 0
     const volBefore = poolInfo.vol48hUsd ? parseFloat(poolInfo.vol48hUsd) - volNow : 0
     return getPercentChange(volNow, volBefore)
+  }, [poolInfo])
+  const fee24hUsd = useMemo(() => {
+    if (!poolInfo) return 0
+    if (poolInfo.fee24hUsd) {
+      return parseFloat(poolInfo.fee24hUsd)
+    }
+    if (poolInfo.protocol === 'v2') {
+      const { lpFees24h } = getLpFeesAndApr(
+        parseFloat(poolInfo.vol24hUsd ?? '0'),
+        parseFloat(poolInfo.vol7dUsd ?? '0'),
+        parseFloat(poolInfo.tvlUsd ?? '0'),
+      )
+      return lpFees24h
+    }
+
+    const stablePair = LegacyRouter.stableSwapPairsByChainId[poolInfo.chainId].find((pair) => {
+      return isAddressEqual(pair.stableSwapAddress, poolInfo?.stableLpAddress as Address)
+    })
+
+    if (!stablePair) return 0
+
+    return new BigNumber(stablePair.stableLpFee).times(poolInfo.vol24hUsd ?? 0).toNumber()
   }, [poolInfo])
 
   if (!poolInfo) {
@@ -63,7 +89,7 @@ export const PoolStatus: React.FC<PoolStatusProps> = ({ poolInfo }) => {
               {t('fee 24h')}
             </Text>
             <Text as="h3" fontSize="24px" fontWeight={600}>
-              {formatDollarAmount(Number(poolInfo.fee24hUsd ?? 0))}
+              {formatDollarAmount(Number(fee24hUsd ?? 0))}
             </Text>
           </Column>
         </AutoColumn>
