@@ -13,15 +13,10 @@ function SwellTips() {
   return (
     <Box>
       <Text display="inline" color="currentColor">
-        {t('Users who deposit funds into this vault will earn Pearls by Swell. To track your Pearls balance, visit')}
-        <InlineLink external display="inline" href="https://app.swellnetwork.io/portfolio">
+        {t('Users who deposit funds into this farm will earn Black Pearls by Swell. To track your balance, visit')}
+        <InlineLink external display="inline" href="https://app.swellnetwork.io/dao/swell-city ">
           {t("Swell's website")}
         </InlineLink>
-
-        <br />
-        <br />
-
-        {t('Please note that the Pearls earned from this vault will only appear in your balance at a later time.')}
       </Text>
     </Box>
   )
