@@ -1,5 +1,12 @@
 # @pancakeswap/tokens
 
+## 0.6.24
+
+### Patch Changes
+
+- 103dd63: List USDT-BITU stable pool
+- c6e9e02: Added WSI token on bsc
+
 ## 0.6.23
 
 ### Patch Changes
