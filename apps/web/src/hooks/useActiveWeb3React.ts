@@ -42,8 +42,7 @@ export function useNetworkConnectorUpdater() {
     if (!parsedQueryChainId && chainId === ChainId.BSC) return setPrevChainId()
     // universal page contains multiple chains,
     // so the query of chain on the url should be high priority than the activeChainId
-    if (UNIVERSAL_PAGE_PATHS.includes(previousUrlPathRef.current)) {
-      setSessionChainId(0)
+    if (UNIVERSAL_PAGE_PATHS.includes(previousUrlPathRef.current) || UNIVERSAL_PAGE_PATHS.includes(router.pathname)) {
       return setPrevChainId()
     }
     if (parsedQueryChainId !== chainId && chainId && isChainSupported(chainId)) {

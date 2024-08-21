@@ -15,12 +15,7 @@ export const useExtraV3PositionInfo = (positionDetail?: PositionDetail) => {
   const currency0 = token0 ? unwrappedToken(token0) : undefined
   const currency1 = token1 ? unwrappedToken(token1) : undefined
 
-  const [, pool] = usePoolByChainId(
-    currency0 ?? undefined,
-    currency1 ?? undefined,
-    positionDetail?.fee as number,
-    chainId,
-  )
+  const [, pool] = usePoolByChainId(currency0 ?? undefined, currency1 ?? undefined, positionDetail?.fee as number)
 
   const position = useMemo(() => {
     if (pool && positionDetail) {
