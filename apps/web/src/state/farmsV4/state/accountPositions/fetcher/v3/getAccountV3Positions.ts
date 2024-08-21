@@ -59,17 +59,7 @@ export const readPositions = async (chainId: number, tokenIds: bigint[]): Promis
       tokensOwed0,
       tokensOwed1,
     ] = position
-    const [
-      farmingLiquidity,
-      boostLiquidity,
-      tickLower_,
-      tickUpper_,
-      rewardGrowthInside,
-      reward,
-      user,
-      pid,
-      boostMultiplier,
-    ] = farmingPosition[index]
+    const [farmingLiquidity, boostMultiplier] = farmingPosition[index]
     return {
       tokenId: tokenIds[index],
       nonce,

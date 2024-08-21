@@ -1,3 +1,4 @@
+import type { TransactionReceipt } from 'viem'
 import { useTranslation } from '@pancakeswap/localization'
 import { useToast } from '@pancakeswap/uikit'
 import { MasterChefV3, NonfungiblePositionManager } from '@pancakeswap/v3-sdk'
@@ -24,7 +25,7 @@ const useFarmV3Actions = ({
   onDone,
 }: {
   tokenId: string
-  onDone?: () => void
+  onDone?: (resp: TransactionReceipt | null) => void
 }): FarmV3ActionContainerChildrenProps => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
@@ -64,7 +65,7 @@ const useFarmV3Actions = ({
       }),
     )
     if (resp?.status) {
-      onDone?.()
+      onDone?.(resp)
       toastSuccess(
         `${t('Unstaked')}!`,
         <ToastDescriptionWithTx txHash={resp.transactionHash}>
@@ -114,7 +115,7 @@ const useFarmV3Actions = ({
     )
 
     if (resp?.status) {
-      onDone?.()
+      onDone?.(resp)
       toastSuccess(
         `${t('Staked')}!`,
         <ToastDescriptionWithTx txHash={resp.transactionHash}>
