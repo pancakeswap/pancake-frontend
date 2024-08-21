@@ -3,7 +3,7 @@ import { Currency, Token } from '@pancakeswap/sdk'
 import { ArrowDropDownIcon, Box, BoxProps, Flex, SkeletonText, Text, useModal } from '@pancakeswap/uikit'
 import { NumberDisplay, NumericalInput } from '@pancakeswap/widgets-internal'
 import OnRampCurrencySearchModal, { CurrencySearchModalProps } from 'components/SearchModal/OnRampCurrencyModal'
-import { KeyboardEvent, useCallback, useMemo } from 'react'
+import { ClipboardEvent, KeyboardEvent, useCallback, useMemo } from 'react'
 import {
   fiatCurrencyMap,
   getNetworkDisplay,
@@ -98,9 +98,24 @@ export const BuyCryptoSelector = ({
   const blockDecimal = useCallback(
     (e: KeyboardEvent<HTMLInputElement>) => {
       const blockDecimalInput = NON_DECIMAL_FIAT_CURRENCIES.includes(fiatCurrency?.symbol)
-      if ((e.key === '.' || e.key === 'e') && blockDecimalInput) e.preventDefault()
+      if ((e.key === '.' || e.key === ',') && blockDecimalInput) e.preventDefault()
     },
     [fiatCurrency],
+  )
+  const handlePaste = useCallback(
+    (event: ClipboardEvent<HTMLInputElement>) => {
+      const paste = event.clipboardData.getData('text')
+      const flooredVal = Number(paste).toFixed(0)
+
+      const isDecimalNumber = paste.includes('.') || paste.includes(',')
+      const blockDecimalInput = NON_DECIMAL_FIAT_CURRENCIES.includes(fiatCurrency?.symbol)
+
+      if (isDecimalNumber && blockDecimalInput) {
+        event.preventDefault()
+        onUserInput?.(flooredVal)
+      }
+    },
+    [value, fiatCurrency],
   )
 
   return (
@@ -115,6 +130,7 @@ export const BuyCryptoSelector = ({
             value={inputLoading ? '' : value}
             onBlur={onInputBlur}
             onKeyDown={blockDecimal}
+            onPaste={handlePaste}
             onUserInput={(val) => {
               onUserInput?.(val)
             }}
