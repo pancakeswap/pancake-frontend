@@ -25,6 +25,7 @@ export type BasePoolInfo = {
   tvlUsd24h?: `${number}`
   vol24hUsd?: `${number}`
   vol48hUsd?: `${number}`
+  vol7dUsd?: `${number}`
   fee24hUsd?: `${number}`
   liquidity?: bigint
   feeTier: number
