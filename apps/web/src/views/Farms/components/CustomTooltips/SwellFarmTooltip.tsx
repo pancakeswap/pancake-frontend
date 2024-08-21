@@ -1,6 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, InfoFilledIcon, LinkExternal, Text, useTooltip } from '@pancakeswap/uikit'
-import React from 'react'
 import styled from 'styled-components'
 
 const InlineLink = styled(LinkExternal)`
@@ -15,11 +14,16 @@ export const SwellFarmTooltip = () => {
     <Box>
       <Text display="inline" color="currentColor">
         {t('Users who deposit liquidity into this pool will earn Pills by')}
-        <InlineLink m="0 4px 0 0" external display="inline" href="https://bridge.taiko.xyz/">
+        <InlineLink m="0 4px 0 0" external display="inline" href="https://usual.money/">
           {t('Usual')}
         </InlineLink>
         {t('retroactively.')}
-        <InlineLink m="0 4px 0 0" external display="inline" href="https://bridge.taiko.xyz/">
+        <InlineLink
+          m="0 4px 0 0"
+          external
+          display="inline"
+          href="https://docs.usual.money/pre-launch-rules/pills-campaign-rules"
+        >
           {t(' Learn more')}
         </InlineLink>
       </Text>

@@ -13,7 +13,7 @@ function SwellTips() {
   return (
     <Box>
       <Text display="inline" color="currentColor">
-        {t('Users who deposit funds into this vault will earn Pearls by Swell. To track your Pearls balance, visit')}
+        {t('Users who deposit funds into this farm will earn Black Pearls by Swell. To track your balance visit')}
         <InlineLink external display="inline" href="https://app.swellnetwork.io/portfolio">
           {t("Swell's website")}
         </InlineLink>
