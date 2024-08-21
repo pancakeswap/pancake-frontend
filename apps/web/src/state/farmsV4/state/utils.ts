@@ -1,7 +1,7 @@
 import { Protocol, UNIVERSAL_FARMS } from '@pancakeswap/farms'
 import { LegacyRouter } from '@pancakeswap/smart-router/legacy-router'
-import { getTokenByAddress } from '@pancakeswap/tokens'
 import { Token } from '@pancakeswap/swap-sdk-core'
+import { getTokenByAddress } from '@pancakeswap/tokens'
 import { paths } from 'state/info/api/schema'
 import { safeGetAddress } from 'utils'
 import { Address, isAddressEqual } from 'viem'
@@ -61,6 +61,7 @@ export const parseFarmPools = (
       tvlUsd24h: pool.tvlUSD24h as `${number}`,
       vol24hUsd: pool.volumeUSD24h as `${number}`,
       vol48hUsd: pool.volumeUSD48h as `${number}`,
+      vol7dUsd: pool.volumeUSD7d as `${number}`,
       totalFeeUSD: pool.totalFeeUSD as `${number}`,
       fee24hUsd: pool.feeUSD24h as `${number}`,
       liquidity: pool.liquidity,
