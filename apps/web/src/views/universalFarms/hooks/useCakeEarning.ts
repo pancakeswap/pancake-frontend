@@ -17,7 +17,7 @@ export const useV2CakeEarning = (pool: PoolInfo | null | undefined) => {
       ? getUniversalBCakeWrapperForPool({ chainId, lpAddress, protocol: pool?.protocol })
       : null
   }, [chainId, lpAddress, pool?.protocol])
-  const { data: pendingCake } = useAccountV2PendingCakeReward(account, {
+  const { data: pendingCake, isLoading } = useAccountV2PendingCakeReward(account, {
     chainId,
     lpAddress,
     bCakeWrapperAddress: bCakeConfig?.bCakeWrapperAddress,
@@ -30,28 +30,23 @@ export const useV2CakeEarning = (pool: PoolInfo | null | undefined) => {
   return {
     earningsAmount,
     earningsBusd,
+    isLoading,
   }
 }
 
 export const useV3CakeEarning = (tokenIds: bigint[] = [], chainId: number) => {
   const cakePrice = useCakePrice()
-  // compiled code will be like:
-  // ```
-  // {tokenIdResults: [n]} = (0, l.md)(e)
-  // earningsBusd: (0,
-  // s.useMemo)((()=>new o.Z(n.toString()).times(t.toString()).div(1e18).toNumber()), [t, n])
-  // ```
-  // and if n is undefined, n.toString() will throw error, so it's better to assign a default value for pendingCake
-  const {
-    tokenIdResults: [pendingCake = 0n],
-  } = useStakedPositionsByUser(tokenIds, chainId)
-  const earningsAmount = useMemo(() => +formatBigInt(pendingCake, 4), [pendingCake])
+  const { tokenIdResults: results, isLoading } = useStakedPositionsByUser(tokenIds, chainId)
+  const earningsAmount = useMemo(() => {
+    return results.reduce((acc, pendingCake = 0n) => acc + pendingCake, 0n)
+  }, [results])
   const earningsBusd = useMemo(() => {
-    return new BigNumber(pendingCake.toString()).times(cakePrice.toString()).div(1e18).toNumber()
-  }, [cakePrice, pendingCake])
+    return new BigNumber(earningsAmount.toString()).times(cakePrice.toString()).div(1e18).toNumber()
+  }, [cakePrice, earningsAmount])
 
   return {
-    earningsAmount,
+    earningsAmount: +formatBigInt(earningsAmount, 5),
     earningsBusd,
+    isLoading,
   }
 }
