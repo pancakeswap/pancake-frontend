@@ -58,6 +58,7 @@ export const V2PositionItem = memo(({ data, detailMode }: { data: V2LPDetail; de
         >
           {pair.chainId && pool?.lpAddress && pool.pid ? (
             <V2PositionActions
+              poolInfo={pool}
               isStaked={false}
               data={data}
               lpAddress={pool.lpAddress}
@@ -90,6 +91,7 @@ export const V2PositionItem = memo(({ data, detailMode }: { data: V2LPDetail; de
             <V2PositionActions
               isStaked
               data={data}
+              poolInfo={pool}
               lpAddress={pool.lpAddress}
               chainId={pair.chainId}
               pid={pool.pid}

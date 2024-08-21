@@ -4,10 +4,17 @@ import { useAtomValue, useSetAtom } from 'jotai'
 import { useCallback } from 'react'
 import { extendPoolsAtom } from '../extendPools/atom'
 import { ChainIdAddressKey, PoolInfo } from '../type'
-import { cakeAprSetterAtom, emptyCakeAprPoolsAtom, merklAprAtom, poolAprAtom } from './atom'
+import { CakeApr, cakeAprSetterAtom, emptyCakeAprPoolsAtom, merklAprAtom, poolAprAtom } from './atom'
 import { getAllNetworkMerklApr, getCakeApr, getLpApr } from './fetcher'
 
-export const usePoolApr = (key: ChainIdAddressKey | null, pool: PoolInfo) => {
+export const usePoolApr = (
+  key: ChainIdAddressKey | null,
+  pool: PoolInfo,
+): {
+  lpApr: `${number}`
+  cakeApr: CakeApr[keyof CakeApr]
+  merklApr: `${number}`
+} => {
   const updatePools = useSetAtom(extendPoolsAtom)
   const updateCakeApr = useSetAtom(cakeAprSetterAtom)
   const poolApr = useAtomValue(poolAprAtom)[key ?? '']
