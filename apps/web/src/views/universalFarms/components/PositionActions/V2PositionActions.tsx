@@ -1,4 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { useLatestTxReceipt } from 'state/farmsV4/state/accountPositions/hooks/useLatestTxReceipt'
 import { AutoRow, useModal, useToast } from '@pancakeswap/uikit'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
@@ -72,12 +73,15 @@ const useDepositModal = (props: V2PositionActionsProps) => {
     return new BigNumber(tvlUsd ?? 0).dividedBy(data.totalSupply.toExact())
   }, [data.totalSupply, tvlUsd])
 
+  const [, setLatestTxReceipt] = useLatestTxReceipt()
+
   const handleStake = useCallback(
     async (amount: string) => {
       const receipt = await fetchWithCatchTxError(() => {
         return onStake(amount)
       })
       if (receipt?.status) {
+        setLatestTxReceipt(receipt)
         toastSuccess(
           `${t('Staked')}!`,
           <ToastDescriptionWithTx txHash={receipt.transactionHash}>
@@ -86,7 +90,7 @@ const useDepositModal = (props: V2PositionActionsProps) => {
         )
       }
     },
-    [fetchWithCatchTxError, onStake, t, toastSuccess],
+    [setLatestTxReceipt, fetchWithCatchTxError, onStake, t, toastSuccess],
   )
 
   const handleApprove = useCallback(async () => {
@@ -94,9 +98,10 @@ const useDepositModal = (props: V2PositionActionsProps) => {
       return onApprove()
     })
     if (receipt?.status) {
+      setLatestTxReceipt(receipt)
       toastSuccess(t('Contract Enabled'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
     }
-  }, [fetchWithCatchTxError, onApprove, t, toastSuccess])
+  }, [setLatestTxReceipt, fetchWithCatchTxError, onApprove, t, toastSuccess])
 
   const [onPresentDeposit] = useModal(
     <FarmWidget.DepositModal
@@ -141,10 +146,12 @@ const useWithdrawModal = (
   }, [data.farmingBalance])
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError } = useCatchTxError()
+  const [, setLatestTxReceipt] = useLatestTxReceipt()
   const handleUnstake = useCallback(
     async (amount: string) => {
       const receipt = await fetchWithCatchTxError(() => onUnStake(amount))
       if (receipt?.status) {
+        setLatestTxReceipt(receipt)
         toastSuccess(
           `${t('Unstaked')}!`,
           <ToastDescriptionWithTx txHash={receipt.transactionHash}>
@@ -153,7 +160,7 @@ const useWithdrawModal = (
         )
       }
     },
-    [fetchWithCatchTxError, onUnStake, t, toastSuccess],
+    [setLatestTxReceipt, fetchWithCatchTxError, onUnStake, t, toastSuccess],
   )
   const [onPresentWithdraw] = useModal(
     <FarmWidget.WithdrawModal
@@ -228,6 +235,7 @@ const V2HarvestAction: React.FC<V2PositionActionsProps> = ({ chainId, lpAddress 
   const pendingReward = useMemo(() => {
     return new BigNumber(pendingReward_?.toString() ?? '0')
   }, [pendingReward_])
+  const [, setLatestTxReceipt] = useLatestTxReceipt()
   const handleHarvest = useCallback(async () => {
     const shouldSwitch = await switchNetworkIfNecessary(chainId)
     if (shouldSwitch) {
@@ -235,6 +243,7 @@ const V2HarvestAction: React.FC<V2PositionActionsProps> = ({ chainId, lpAddress 
     }
     const receipt = await fetchWithCatchTxError(() => onHarvest())
     if (receipt?.status) {
+      setLatestTxReceipt(receipt)
       toastSuccess(
         `${t('Harvested')}!`,
         <ToastDescriptionWithTx txHash={receipt.transactionHash}>
@@ -242,7 +251,7 @@ const V2HarvestAction: React.FC<V2PositionActionsProps> = ({ chainId, lpAddress 
         </ToastDescriptionWithTx>,
       )
     }
-  }, [chainId, switchNetworkIfNecessary, fetchWithCatchTxError, onHarvest, t, toastSuccess])
+  }, [setLatestTxReceipt, chainId, switchNetworkIfNecessary, fetchWithCatchTxError, onHarvest, t, toastSuccess])
 
   if (!pendingReward || pendingReward.isZero()) {
     return null
