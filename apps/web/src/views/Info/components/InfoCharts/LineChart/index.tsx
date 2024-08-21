@@ -12,12 +12,13 @@ export type LineChartProps = {
   data: any[]
   setHoverValue: Dispatch<SetStateAction<number | undefined>> // used for value on hover
   setHoverDate: Dispatch<SetStateAction<string | undefined>> // used for label of value
+  dateFormat?: string
 } & React.HTMLAttributes<HTMLDivElement>
 
 /**
  * Note: remember that it needs to be mounted inside the container with fixed height
  */
-const LineChart = ({ data, setHoverValue, setHoverDate }: LineChartProps) => {
+const LineChart = ({ data, setHoverValue, setHoverDate, dateFormat = 'h:mm a' }: LineChartProps) => {
   const { isDark } = useTheme()
   const {
     currentLanguage: { locale },
@@ -60,7 +61,7 @@ const LineChart = ({ data, setHoverValue, setHoverDate }: LineChartProps) => {
         borderVisible: false,
         secondsVisible: false,
         tickMarkFormatter: (unixTime: number) => {
-          return dayjs.unix(unixTime).format('h:mm a')
+          return dayjs.unix(unixTime).format(dateFormat)
         },
       },
       grid: {
@@ -136,7 +137,7 @@ const LineChart = ({ data, setHoverValue, setHoverDate }: LineChartProps) => {
     return () => {
       chart.remove()
     }
-  }, [isDark, locale, transformedData, setHoverValue, setHoverDate])
+  }, [isDark, locale, transformedData, setHoverValue, setHoverDate, dateFormat])
 
   return (
     <>
