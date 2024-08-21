@@ -24,7 +24,7 @@ export const SwellFarmTooltip = () => {
           display="inline"
           href="https://docs.usual.money/pre-launch-rules/pills-campaign-rules"
         >
-          {t(' Learn more')}
+          {t('Learn more')}
         </InlineLink>
       </Text>
     </Box>,
