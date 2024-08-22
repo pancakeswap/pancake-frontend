@@ -8,6 +8,7 @@ import { useExtraV3PositionInfo, usePoolApr } from 'state/farmsV4/hooks'
 import { PositionDetail, StableLPDetail, V2LPDetail } from 'state/farmsV4/state/accountPositions/type'
 import { PoolInfo } from 'state/farmsV4/state/type'
 import { useLmPoolLiquidity } from 'views/Farms/hooks/useLmPoolLiquidity'
+import { useUserMultiplier } from 'views/universalFarms/hooks/useUserMultiplier'
 import { PoolAprButton } from './PoolAprButton'
 
 const V3_LP_FEE_RATE = {
@@ -57,6 +58,7 @@ export const useV2PositionApr = (pool: PoolInfo, userPosition: StableLPDetail | 
 
 export const useV3PositionApr = (pool: PoolInfo, userPosition: PositionDetail) => {
   const key = useMemo(() => `${pool.chainId}:${pool.lpAddress}` as const, [pool.chainId, pool.lpAddress])
+  const { data: userMultiplier } = useUserMultiplier(pool.chainId, userPosition.tokenId)
   const { removed, outOfRange, position } = useExtraV3PositionInfo(userPosition)
   const { cakeApr: globalCakeApr, merklApr } = usePoolApr(key, pool)
   const lmPoolLiquidity = useLmPoolLiquidity(pool.lpAddress, pool.chainId)
@@ -74,19 +76,22 @@ export const useV3PositionApr = (pool: PoolInfo, userPosition: PositionDetail) =
   }, [position?.amount0, position?.amount1, token0UsdPrice, token1UsdPrice])
 
   const cakeApr = useMemo(() => {
-    if (outOfRange || removed || !userPosition.isStaked) {
+    if (outOfRange || removed) {
       return {
         ...globalCakeApr,
         value: '0' as const,
         boost: undefined,
       }
     }
+
     if (userPosition.isStaked) {
       const apr = new BigNumber(globalCakeApr.cakePerYear ?? 0)
         .times(globalCakeApr.poolWeight ?? 0)
         .times(cakePrice)
         .times(new BigNumber(userPosition.farmingLiquidity.toString()).dividedBy(lmPoolLiquidity?.toString() ?? 1))
         .div(userTVLUsd)
+        .times(userPosition.farmingMultiplier)
+        .div(1e12)
 
       return {
         ...globalCakeApr,
@@ -94,15 +99,30 @@ export const useV3PositionApr = (pool: PoolInfo, userPosition: PositionDetail) =
         boost: undefined,
       }
     }
-    return globalCakeApr
+
+    const baseApr = new BigNumber(globalCakeApr.cakePerYear ?? 0)
+      .times(globalCakeApr.poolWeight ?? 0)
+      .times(cakePrice)
+      .times(new BigNumber(userPosition.liquidity.toString()).dividedBy(lmPoolLiquidity?.toString() ?? 1))
+      .div(userTVLUsd)
+    const apr = baseApr.times(userMultiplier ?? 0)
+
+    return {
+      ...globalCakeApr,
+      value: apr.toString() as `${number}`,
+      boost: undefined,
+    }
   }, [
     cakePrice,
     globalCakeApr,
     lmPoolLiquidity,
     outOfRange,
     removed,
+    userMultiplier,
     userPosition.farmingLiquidity,
+    userPosition.farmingMultiplier,
     userPosition.isStaked,
+    userPosition.liquidity,
     userTVLUsd,
   ])
 
