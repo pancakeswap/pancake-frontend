@@ -3318,7 +3318,7 @@
   "USDV Disclaimer": "USDV 면책 조항",
   "Verified USD ($USDV), is a product offered by USDV.money and is not associated with PancakeSwap.": "인증된 USD($USDV)는 USDV.money에서 제공하는 제품이며 PancakeSwap과 관련이 없습니다.",
   "By checking this box, I understand that I am using USDV at my own risk. I accept full responsibility for any losses incurred due to my actions.": "이 상자를 선택함으로써 본인은 USDV 사용은 본인의 책임이라는 것을 이해합니다. 본인은 본인의 행동으로 인해 발생하는 모든 손실에 대해 전적으로 책임을 집니다.",
-  "Users who deposit funds into this vault will earn Pearls by Swell. To track your Pearls balance, visit": "이 볼트에 자금을 예치하는 사용자는 Swell의 Pearl을 획득하게 됩니다. Pearls 잔액을 추적하려면 다음을 방문하세요:",
+  "Users who deposit funds into this farm will earn Black Pearls by Swell. To track your balance, visit": "Users who deposit funds into this farm will earn Black Pearls by Swell. To track your balance, visit",
   "Swell's website": "Swell 웹사이트",
   "Done": "완료",
   "Single-Sided Strategy": "단면 전략",
@@ -3330,7 +3330,6 @@
   "View Migrated Position": "마이그레이션된 포지션 보기",
   "Renew your veCAKE position to continue enjoying the benefits of weekly CAKE yield, revenue share, gauges voting, farm yield boosting, participating in IFOs, and so much more!": "veCAKE 포지션을 갱신하여 주간 CAKE 일드, 수익 공유, 게이지 투표, 팜 일드 부스팅, IFO 참여 등의 혜택을 계속 즐겨보세요!",
   "Exact number: %numberWithFullDigits%": "정확한 번호: %numberWithFullDigits%",
-  "Please note that the Pearls earned from this vault will only appear in your balance at a later time.": "이 볼트에서 획득한 Pearl은 잔액에 표시되기까지 시간이 걸리므로 주의하시기 바랍니다.",
   "Fee saved": "수수료 절감",
   "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "주요 DEX에서 부과하는 수수료 대비 PancakeSwap에서 절감된 수수료",
   "Gauge Not Found": "게이지 없음",
@@ -3516,5 +3515,8 @@
   "Enable Notifications From PancakeSwap": "Enable Notifications From PancakeSwap",
   "Subscribe to stay informed on the latest news and updates that PancakeSwap has to offer.": "Subscribe to stay informed on the latest news and updates that PancakeSwap has to offer.",
   "Pancake4ever! Celebrate PancakeSwap's 4th Birthday with us!": "Pancake4ever! PancakeSwap의 4번째 생일을 함께 축하해 주세요!",
-  "Join Now": "지금 참여하세요"
+  "Join Now": "지금 참여하세요",
+  "Users who deposit liquidity into this pool will earn Pills by": "Users who deposit liquidity into this pool will earn Pills by",
+  "Usual": "Usual",
+  "retroactively.": "retroactively."
 }
