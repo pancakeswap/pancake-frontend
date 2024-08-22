@@ -277,7 +277,7 @@ addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
               path: _path,
               amount: _amount,
             },
-            client: getViemClients({ chainId: amount.currency.chainId }),
+            client: getViemClients({ chainId: _amount.currency.chainId }),
           })
             .then((res) => {
               console.log('[QUOTE]', res?.quotient, outputAmount.quotient)
