@@ -64,6 +64,10 @@ const StyledLi = styled.li`
     height: 6px;
     background: ${({ theme }) => theme.colors.text};
   }
+
+  @-moz-document url-prefix() {
+    padding-left: 16px; /* Apply padding-left: 16px in Firefox only */
+  }
 `
 
 type FarmV3ApyButtonProps = {
@@ -259,7 +263,7 @@ function FarmV3ApyButton_({
           {t('LP Fee APR')}: <b>{lpAprDisplay}%</b>
         </li>
         {additionAprInfo && (
-          <StyledLi style={{ paddingLeft: '16px' }}>
+          <StyledLi>
             <Flex style={{ flexWrap: 'nowrap', alignItems: 'center', gap: 5 }}>
               {additionAprInfo.aprTitle}: <b>{additionalAprDisplay}%</b>
               <LinkExternal display="inline-block" href={additionAprInfo.aprLink}>
