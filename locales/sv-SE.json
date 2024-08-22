@@ -3318,7 +3318,7 @@
   "USDV Disclaimer": "USDV-ansvarsfriskrivning",
   "Verified USD ($USDV), is a product offered by USDV.money and is not associated with PancakeSwap.": "Verified USD ($USDV), är en produkt som erbjuds av USDV.money och är inte associerad med PancakeSwap.",
   "By checking this box, I understand that I am using USDV at my own risk. I accept full responsibility for any losses incurred due to my actions.": "Genom att kryssa i denna ruta förstår jag att jag använder USDV på egen risk. Jag tar fullt ansvar för eventuella förluster som uppkommer på grund av mina handlingar.",
-  "Users who deposit funds into this vault will earn Pearls by Swell. To track your Pearls balance, visit": "Användare som sätter in pengar i detta valv kommer att tjäna Pearls by Swell. För att hålla koll på ditt Pearls-saldo, besök",
+  "Users who deposit funds into this farm will earn Black Pearls by Swell. To track your balance, visit": "Users who deposit funds into this farm will earn Black Pearls by Swell. To track your balance, visit",
   "Swell's website": "Swells webbplats",
   "Done": "Klart",
   "Single-Sided Strategy": "Enkelsidig strategi",
@@ -3330,7 +3330,6 @@
   "View Migrated Position": "Visa migrerad position",
   "Renew your veCAKE position to continue enjoying the benefits of weekly CAKE yield, revenue share, gauges voting, farm yield boosting, participating in IFOs, and so much more!": "Förnya din veCAKE-position för att fortsätta njuta av fördelarna med veckovis CAKE-avkastning, intäktsdelning, mätarröstning, ökad farmavkastning, deltagande i IFO:er och så mycket mer!",
   "Exact number: %numberWithFullDigits%": "Exakt nummer: %numberWithFullDigits%",
-  "Please note that the Pearls earned from this vault will only appear in your balance at a later time.": "Observera att de pärlor som tjänas in från detta valv kommer att visas i ditt saldo först vid en senare tidpunkt.",
   "Fee saved": "Sparad avgift",
   "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "Avgifter som sparas på PancakeSwap jämfört med större DEX som tar ut gränssnittsavgifter",
   "Gauge Not Found": "Mätare hittades inte",
@@ -3516,5 +3515,8 @@
   "Enable Notifications From PancakeSwap": "Enable Notifications From PancakeSwap",
   "Subscribe to stay informed on the latest news and updates that PancakeSwap has to offer.": "Subscribe to stay informed on the latest news and updates that PancakeSwap has to offer.",
   "Pancake4ever! Celebrate PancakeSwap's 4th Birthday with us!": "Pancake4ever! Celebrate PancakeSwap's 4th Birthday with us!",
-  "Join Now": "Join Now"
+  "Join Now": "Join Now",
+  "Users who deposit liquidity into this pool will earn Pills by": "Users who deposit liquidity into this pool will earn Pills by",
+  "Usual": "Usual",
+  "retroactively.": "retroactively."
 }
