@@ -21,10 +21,10 @@ export const ChartTVL: React.FC<ChartTVLProps> = ({ address, poolInfo }) => {
     <>
       <Flex flexDirection="column">
         <Text bold fontSize={24}>
-          {formatDollarAmount(hoverValue ?? data?.[data.length - 1].value)}
+          {formatDollarAmount(hoverValue ?? data?.[data.length - 1]?.value)}
         </Text>
         <Text small color="secondary">
-          {`${dayjs(hoverDate ?? data?.[data.length - 1].time).format('MMM D, YYYY, HH:mm A')} (UTC)`}
+          {`${dayjs(hoverDate ?? data?.[data.length - 1]?.time).format('MMM D, YYYY, HH:mm A')} (UTC)`}
         </Text>
       </Flex>
       <Box height="380px">
