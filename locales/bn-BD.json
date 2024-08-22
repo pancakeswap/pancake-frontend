@@ -3318,7 +3318,7 @@
   "USDV Disclaimer": "USDV দায়মুক্তি",
   "Verified USD ($USDV), is a product offered by USDV.money and is not associated with PancakeSwap.": "যাচাইকৃত USD ($USDV) হলো USDV.money-এর প্রস্তাবিত একটি পণ্য এবং তা PancakeSwap-এর সাথে যুক্ত নয়।",
   "By checking this box, I understand that I am using USDV at my own risk. I accept full responsibility for any losses incurred due to my actions.": "এই ঘরে টিক দেওয়ার অর্থ হলো, আমি বুঝতে পারছি যে আমি আমার নিজের ঝুঁকিতে USDV ব্যবহার করছি। আমি আমার কাজের জন্য যেকোনো ক্ষতির সম্পূর্ণ দায় মেনে নিচ্ছি।",
-  "Users who deposit funds into this vault will earn Pearls by Swell. To track your Pearls balance, visit": "এই ভল্টে তহবিল জমাকারী ব্যবহারকারীরা Swell-এর মাধ্যমে Pearls উপার্জন করবে। আপনার Pearls ব্যালেন্স ট্র্যাক করতে, দেখুন",
+  "Users who deposit funds into this farm will earn Black Pearls by Swell. To track your balance, visit": "Users who deposit funds into this farm will earn Black Pearls by Swell. To track your balance, visit",
   "Swell's website": "Swell-এর ওয়েবসাইট",
   "Done": "সম্পন্ন",
   "Single-Sided Strategy": "একক-পাক্ষিক কৌশল",
@@ -3330,7 +3330,6 @@
   "View Migrated Position": "স্থানান্তরিত অবস্থান দেখুন",
   "Renew your veCAKE position to continue enjoying the benefits of weekly CAKE yield, revenue share, gauges voting, farm yield boosting, participating in IFOs, and so much more!": "সাপ্তাহিক CAKE প্রাপ্তি, মুনাফার শেয়ার, গেজ ভোটিং, খামারের প্রাপ্তি বৃদ্ধি, IFO-এ অংশগ্রহণ এবং আরো অনেক সুবিধা উপভোগ করা চালিয়ে যেতে আপনার veCAKE অবস্থান নবায়ন করুন!",
   "Exact number: %numberWithFullDigits%": "সঠিক সংখ্যা: %numberWithFullDigits%",
-  "Please note that the Pearls earned from this vault will only appear in your balance at a later time.": "অনুগ্রহ করে মনে রাখবেন যে এই ভল্ট থেকে অর্জিত মুক্তা শুধুমাত্র পরবর্তী সময়ে আপনার ব্যালেন্সে প্রদর্শিত হবে।",
   "Fee saved": "ফি সাশ্রয় করা হয়েছে",
   "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "প্রধান প্রধান DEX-এর ইন্টারফেস-এর ফি চার্জ করার তুলনায় PancakeSwap-এ ফি সাশ্রয় করা হয়েছে",
   "Gauge Not Found": "গেজ পাওয়া যায়নি",
@@ -3516,5 +3515,8 @@
   "Enable Notifications From PancakeSwap": "Enable Notifications From PancakeSwap",
   "Subscribe to stay informed on the latest news and updates that PancakeSwap has to offer.": "Subscribe to stay informed on the latest news and updates that PancakeSwap has to offer.",
   "Pancake4ever! Celebrate PancakeSwap's 4th Birthday with us!": "Pancake4ever! Celebrate PancakeSwap's 4th Birthday with us!",
-  "Join Now": "Join Now"
+  "Join Now": "Join Now",
+  "Users who deposit liquidity into this pool will earn Pills by": "Users who deposit liquidity into this pool will earn Pills by",
+  "Usual": "Usual",
+  "retroactively.": "retroactively."
 }
