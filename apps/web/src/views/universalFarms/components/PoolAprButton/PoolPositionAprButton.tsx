@@ -8,7 +8,7 @@ import { useExtraV3PositionInfo, usePoolApr } from 'state/farmsV4/hooks'
 import { PositionDetail, StableLPDetail, V2LPDetail } from 'state/farmsV4/state/accountPositions/type'
 import { PoolInfo } from 'state/farmsV4/state/type'
 import { useLmPoolLiquidity } from 'views/Farms/hooks/useLmPoolLiquidity'
-import { useUserMultiplier } from 'views/universalFarms/hooks/useUserMultiplier'
+import { useEstimateUserMultiplier } from 'views/universalFarms/hooks/useEstimateUserMultiplier'
 import { PoolAprButton } from './PoolAprButton'
 
 const V3_LP_FEE_RATE = {
@@ -58,7 +58,7 @@ export const useV2PositionApr = (pool: PoolInfo, userPosition: StableLPDetail | 
 
 export const useV3PositionApr = (pool: PoolInfo, userPosition: PositionDetail) => {
   const key = useMemo(() => `${pool.chainId}:${pool.lpAddress}` as const, [pool.chainId, pool.lpAddress])
-  const { data: userMultiplier } = useUserMultiplier(pool.chainId, userPosition.tokenId)
+  const { data: estimateUserMultiplier } = useEstimateUserMultiplier(pool.chainId, userPosition.tokenId)
   const { removed, outOfRange, position } = useExtraV3PositionInfo(userPosition)
   const { cakeApr: globalCakeApr, merklApr } = usePoolApr(key, pool)
   const lmPoolLiquidity = useLmPoolLiquidity(pool.lpAddress, pool.chainId)
@@ -105,7 +105,7 @@ export const useV3PositionApr = (pool: PoolInfo, userPosition: PositionDetail) =
       .times(cakePrice)
       .times(new BigNumber(userPosition.liquidity.toString()).dividedBy(lmPoolLiquidity?.toString() ?? 1))
       .div(userTVLUsd)
-    const apr = baseApr.times(userMultiplier ?? 0)
+    const apr = baseApr.times(estimateUserMultiplier ?? 0)
 
     return {
       ...globalCakeApr,
@@ -118,7 +118,7 @@ export const useV3PositionApr = (pool: PoolInfo, userPosition: PositionDetail) =
     lmPoolLiquidity,
     outOfRange,
     removed,
-    userMultiplier,
+    estimateUserMultiplier,
     userPosition.farmingLiquidity,
     userPosition.farmingMultiplier,
     userPosition.isStaked,
