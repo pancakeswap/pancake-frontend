@@ -35,7 +35,7 @@ export function withSiweAuth(handler: ExtendedApiHandler): ExtendedApiHandler {
       return unauthorized()
     }
 
-    /* eslint-disable no-param-reassign */
+    // eslint-disable-next-line no-param-reassign
     req.siwe = siweMessage
     return handler(req, res)
   }
