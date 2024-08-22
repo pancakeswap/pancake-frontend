@@ -77,8 +77,9 @@ export const V3PositionActions = ({
     const shouldSwitch = await switchNetworkIfNecessary(currency0.chainId)
     if (!shouldSwitch) {
       await onUnstake()
+      stakeModal.onDismiss()
     }
-  }, [onUnstake, switchNetworkIfNecessary, currency0.chainId])
+  }, [onUnstake, switchNetworkIfNecessary, currency0.chainId, stakeModal])
 
   const handleHarvest = useCallback(async () => {
     const shouldSwitch = await switchNetworkIfNecessary(currency0.chainId)
@@ -136,6 +137,7 @@ export const V3PositionActions = ({
           {t('Unstake')}
         </Button>
         <V3StakeModal
+          disabled={attemptingTxn || isSwitchingNetwork}
           isOpen={stakeModal.isOpen}
           staking={outOfRange && !isStaked}
           onUnStake={handleUnStake}

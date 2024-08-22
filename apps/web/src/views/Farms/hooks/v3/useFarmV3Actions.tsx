@@ -167,6 +167,7 @@ const useFarmV3Actions = ({
     )
 
     if (resp?.status) {
+      onDone?.(resp)
       toastSuccess(
         `${t('Harvested')}!`,
         <ToastDescriptionWithTx txHash={resp.transactionHash}>
@@ -176,6 +177,7 @@ const useFarmV3Actions = ({
       queryClient.invalidateQueries({ queryKey: ['mcv3-harvest'] })
     }
   }, [
+    onDone,
     account,
     fetchWithCatchTxError,
     masterChefV3Address,

@@ -7,6 +7,7 @@ import { PoolInfo } from '../../type'
 import { getAccountV2LpDetails, getStablePairDetails } from '../fetcher'
 import { getAccountV3Positions } from '../fetcher/v3'
 import { PositionDetail, StableLPDetail, V2LPDetail } from '../type'
+import { useLatestTxReceipt } from './useLatestTxReceipt'
 
 type PoolPositionDetail = {
   [Protocol.STABLE]: StableLPDetail
@@ -67,8 +68,9 @@ export const useAccountPositionDetailByPool = <TProtocol extends keyof PoolPosit
     },
     [poolInfo, protocol],
   )
+  const [latestTxReceipt] = useLatestTxReceipt()
   return useQuery({
-    queryKey: ['accountPosition', account, chainId, poolInfo?.lpAddress],
+    queryKey: ['accountPosition', account, chainId, poolInfo?.lpAddress, latestTxReceipt?.blockHash],
     queryFn,
     enabled: !!account && !!poolInfo?.lpAddress,
     select,
