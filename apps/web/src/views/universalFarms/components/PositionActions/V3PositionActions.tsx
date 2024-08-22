@@ -89,7 +89,7 @@ export const V3PositionActions = ({
 
   const stakeButton = useMemo(
     () => (
-      <StopPropagation>
+      <>
         <Button
           scale="md"
           width={['100px']}
@@ -107,7 +107,7 @@ export const V3PositionActions = ({
         >
           {modalContent}
         </V3StakeModal>
-      </StopPropagation>
+      </>
     ),
     [
       isSwitchingNetwork,
@@ -124,7 +124,7 @@ export const V3PositionActions = ({
 
   const unstakeButton = useMemo(
     () => (
-      <StopPropagation>
+      <>
         <Button
           scale="md"
           width={['100px']}
@@ -143,7 +143,7 @@ export const V3PositionActions = ({
         >
           {modalContent}
         </V3StakeModal>
-      </StopPropagation>
+      </>
     ),
     [isSwitchingNetwork, handleUnStake, isStaked, modalContent, t, outOfRange, stakeModal, attemptingTxn],
   )
