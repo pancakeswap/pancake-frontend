@@ -182,7 +182,9 @@ export const Tasks: React.FC<TasksProps> = ({
                       <Text bold fontSize="12px" mb="8px" textAlign="center" color="textSubtle">
                         {t('Start the quest to get access to the tasks')}
                       </Text>
-                      <StyleButton onClick={handleStartQuest}>{t('Start the Quest')}</StyleButton>
+                      <StyleButton disabled={isQuestFinished} onClick={handleStartQuest}>
+                        {t('Start the Quest')}
+                      </StyleButton>
                     </Flex>
                   )}
                 </>
