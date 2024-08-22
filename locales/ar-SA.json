@@ -3318,7 +3318,7 @@
   "USDV Disclaimer": "إخلاء مسؤولية USDV",
   "Verified USD ($USDV), is a product offered by USDV.money and is not associated with PancakeSwap.": "الدولار الأمريكي المتحقق منه ($USDV)، هو منتج مقدم من USDV.money ولا يرتبط بـ PancakeSwap.",
   "By checking this box, I understand that I am using USDV at my own risk. I accept full responsibility for any losses incurred due to my actions.": "بتحديد هذه الخانة، أنا أفهم أني أستخدم USDV مع تحملي للمخاطرة. وأتحمل المسؤولية الكاملة عن أي خسائر متكبدة بسبب إجراءاتي.",
-  "Users who deposit funds into this vault will earn Pearls by Swell. To track your Pearls balance, visit": "المستخدمون الذين يودعون أموالاً في هذه الخزينة سوف يربحون Pearls من Swell. لتتبع رصيد Pearls الخاص بك، زر",
+  "Users who deposit funds into this farm will earn Black Pearls by Swell. To track your balance, visit": "Users who deposit funds into this farm will earn Black Pearls by Swell. To track your balance, visit",
   "Swell's website": "موقع Swell على الويب",
   "Done": "تم",
   "Single-Sided Strategy": "استراتيجية من جانب واحد",
@@ -3330,7 +3330,6 @@
   "View Migrated Position": "عرض المركز المُرحّل",
   "Renew your veCAKE position to continue enjoying the benefits of weekly CAKE yield, revenue share, gauges voting, farm yield boosting, participating in IFOs, and so much more!": "جدد مركز veCAKE الخاص بك للاستمرار في الاستمتاع بفوائد عائد CAKE الأسبوعي، ومشاركة الإيراد وقياس التصويت، وتعزيز عائد المزرعة، والمشاركة في العروض الأولية للمزرعة (IFO) وغير ذلك الكثير!",
   "Exact number: %numberWithFullDigits%": "الرقم الفعلي: %numberWithFullDigits%",
-  "Please note that the Pearls earned from this vault will only appear in your balance at a later time.": "الرجاء ملاحظة أن Pearls التي ربحتها من هذا المخزن سوف تظهر فقط في رصيدك في وقت لاحق.",
   "Fee saved": "الرسوم المحفوظة",
   "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "الرسوم المحفوظة على PancakeSwap مقارنة برسوم واجهة شحن DEXs الرئيسية",
   "Gauge Not Found": "المقياس غير موجود",
@@ -3516,5 +3515,8 @@
   "Enable Notifications From PancakeSwap": "Enable Notifications From PancakeSwap",
   "Subscribe to stay informed on the latest news and updates that PancakeSwap has to offer.": "Subscribe to stay informed on the latest news and updates that PancakeSwap has to offer.",
   "Pancake4ever! Celebrate PancakeSwap's 4th Birthday with us!": "Pancake4ever! Celebrate PancakeSwap's 4th Birthday with us!",
-  "Join Now": "Join Now"
+  "Join Now": "Join Now",
+  "Users who deposit liquidity into this pool will earn Pills by": "Users who deposit liquidity into this pool will earn Pills by",
+  "Usual": "Usual",
+  "retroactively.": "retroactively."
 }
