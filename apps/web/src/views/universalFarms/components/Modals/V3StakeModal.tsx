@@ -28,9 +28,11 @@ interface IStakeModalProps {
   onUnStake?: (e: React.MouseEvent) => void
   onDismiss: () => void
   isOpen: boolean
+  disabled?: boolean
 }
 
 export const V3StakeModal: React.FC<React.PropsWithChildren<IStakeModalProps>> = ({
+  disabled,
   staking,
   onStake,
   onUnStake,
@@ -93,7 +95,12 @@ export const V3StakeModal: React.FC<React.PropsWithChildren<IStakeModalProps>> =
             </AtomBox>
           </AtomBox>
           <LightCard style={{ position: 'relative' }}>{children}</LightCard>
-          <Button variant={staking ? 'subtle' : 'primary'} onClick={staking ? onStake : onUnStake} width="100%">
+          <Button
+            variant={staking ? 'subtle' : 'primary'}
+            onClick={staking ? onStake : onUnStake}
+            width="100%"
+            disabled={disabled}
+          >
             {staking ? t('Continue Staking') : t('Unstake')}
           </Button>
           {staking ? null : (
