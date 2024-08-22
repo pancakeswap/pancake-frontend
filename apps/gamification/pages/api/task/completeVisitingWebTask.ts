@@ -17,9 +17,6 @@ const handler = async (req, res) => {
   }
 
   const { account, questId, taskName, taskId } = req.query
-  if (account !== req.siwe.address) {
-    return res.status(400).json({ message: 'Invalid wallet address' })
-  }
 
   const encodedMessage = req.headers['x-g-siwe-message']
   const signature = req.headers['x-g-siwe-signature']
