@@ -28,6 +28,10 @@ const handler = withSiweAuth(async (req, res) => {
         return res.status(400).json({ message: 'Invalid query', reason: parsed.error })
       }
 
+      if (!req.signature || !req.encodedMessage) {
+        return res.status(400).json({ message: 'Missing signature or encodedMessage' })
+      }
+
       const { account, questId, token, tokenSecret, userId, targetUserId, providerId, taskId } = req.query
       const url = `https://api.twitter.com/2/users/${userId}/following`
       const method = 'POST'
@@ -62,6 +66,10 @@ const handler = withSiweAuth(async (req, res) => {
               taskName: TaskType.X_FOLLOW_ACCOUNT,
               taskId,
               isCompleted: true,
+              verificationData: {
+                signature: req.signature,
+                encodedMessage: req.encodedMessage,
+              },
             }),
           },
         )

@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Button, Flex, FlexGap, Tag, Text, useModal } from '@pancakeswap/uikit'
+import { Box, Button, Flex, FlexGap, Tag, Text, useModal, useToast } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useProfile } from 'hooks/useProfile'
 import { useSiwe } from 'hooks/useSiwe'
@@ -64,6 +64,7 @@ export const Tasks: React.FC<TasksProps> = ({
 }) => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
+  const { toastError } = useToast()
   const { id: questId, tasks } = quest
   const { isInitialized, profile, hasActiveProfile } = useProfile()
   const hasProfile = isInitialized && !!profile && hasActiveProfile
@@ -87,7 +88,10 @@ export const Tasks: React.FC<TasksProps> = ({
           const { message } = await response.json()
           throw new Error(`Failed to start quest: ${message}`)
         }
-      } catch (error) {
+      } catch (error: any) {
+        if (error?.message) {
+          toastError(error?.message)
+        }
         console.error(`Submit link user to quest error: ${error}`)
       }
     }

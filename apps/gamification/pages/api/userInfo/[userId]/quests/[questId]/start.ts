@@ -14,6 +14,10 @@ const handler = withSiweAuth(async (req, res) => {
     return res.status(400).json({ message: 'Invalid request method' })
   }
 
+  if (!req.signature || !req.encodedMessage) {
+    return res.status(400).json({ message: 'Missing signature or encodedMessage' })
+  }
+
   const { userId, questId } = req.query
   const queryString = qs.stringify(req.query)
   const queryParsed = qs.parse(queryString)
@@ -27,6 +31,10 @@ const handler = withSiweAuth(async (req, res) => {
     headers: {
       'Content-Type': 'application/json',
     },
+    body: JSON.stringify({
+      signature: req.signature,
+      encodedMessage: req.encodedMessage,
+    }),
   })
 
   const message = await response.text()

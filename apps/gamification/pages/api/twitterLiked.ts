@@ -26,6 +26,9 @@ const handler = withSiweAuth(async (req, res) => {
       if (parsed.success === false) {
         return res.status(400).json({ message: 'Invalid query', reason: parsed.error })
       }
+      if (!req.signature || !req.encodedMessage) {
+        return res.status(400).json({ message: 'Missing signature or encodedMessage' })
+      }
 
       const { account, questId, taskId, token, tokenSecret, userId, providerId, twitterPostId } = req.query
       const isValidTwitterId = /^[0-9]{1,19}$/.test(twitterPostId as string)
@@ -69,6 +72,10 @@ const handler = withSiweAuth(async (req, res) => {
             taskName: TaskType.X_LIKE_POST,
             taskId,
             isCompleted: true,
+            verificationData: {
+              signature: req.signature,
+              encodedMessage: req.encodedMessage,
+            },
           }),
         },
       )
