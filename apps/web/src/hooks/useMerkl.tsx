@@ -84,8 +84,11 @@ export function useMerklInfo(poolAddress: string | null): {
     if (!data)
       return {
         rewardsPerToken: [],
+        rewardTokenAddresses: [],
         transactionData: null,
         refreshData: refetch,
+        hasMerkl: false,
+        isPending,
       }
 
     const { pools, transactionData } = data
