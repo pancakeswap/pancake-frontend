@@ -2,9 +2,8 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Column, Skeleton, Text } from '@pancakeswap/uikit'
 import React, { useMemo } from 'react'
 import { usePoolApr, usePoolInfo } from 'state/farmsV4/hooks'
-import { useAccountV3Position } from 'state/farmsV4/state/accountPositions/hooks/useAccountV3Position'
 import { PoolInfo } from 'state/farmsV4/state/type'
-import { PoolGlobalAprButton, V3PoolPositionAprButton } from 'views/universalFarms/components'
+import { PoolGlobalAprButton, V3PoolDerivedAprButton } from 'views/universalFarms/components'
 
 interface AprCalculatorV2Props {
   poolAddress: string | null
@@ -29,10 +28,11 @@ const WithTitle = ({ children, pool }: { children: React.ReactNode; pool: PoolIn
 }
 
 export function AprCalculatorV2({ poolAddress, chainId, tokenId, showTitle = true }: AprCalculatorV2Props) {
-  if (tokenId) {
-    return <PositionAprCalculator poolAddress={poolAddress} chainId={chainId} tokenId={tokenId} showTitle={showTitle} />
-  }
-  return <GlobalAprCalculator poolAddress={poolAddress} chainId={chainId} showTitle={showTitle} />
+  return <PositionAprCalculator poolAddress={poolAddress} chainId={chainId} showTitle={showTitle} />
+  // if (tokenId) {
+  // return <PositionAprCalculator poolAddress={poolAddress} chainId={chainId} tokenId={tokenId} showTitle={showTitle} />
+  // }
+  // return <GlobalAprCalculator poolAddress={poolAddress} chainId={chainId} showTitle={showTitle} />
 }
 
 const GlobalAprCalculator: React.FC<AprCalculatorV2Props> = ({ poolAddress, chainId, showTitle }) => {
@@ -51,24 +51,23 @@ const GlobalAprCalculator: React.FC<AprCalculatorV2Props> = ({ poolAddress, chai
   )
 }
 
-const PositionAprCalculator: React.FC<AprCalculatorV2Props & { tokenId: bigint }> = ({
+const PositionAprCalculator: React.FC<AprCalculatorV2Props & { tokenId?: bigint }> = ({
   poolAddress,
   chainId,
   tokenId,
   showTitle,
 }) => {
   const pool = usePoolInfo({ poolAddress, chainId })
-  const { data: userPosition } = useAccountV3Position(chainId, tokenId)
 
-  if (!pool || !userPosition) {
+  if (!pool) {
     return <Skeleton height="40px" />
   }
 
   return showTitle ? (
     <WithTitle pool={pool}>
-      <V3PoolPositionAprButton pool={pool} userPosition={userPosition} />
+      <V3PoolDerivedAprButton pool={pool} />
     </WithTitle>
   ) : (
-    <V3PoolPositionAprButton pool={pool} userPosition={userPosition} />
+    <V3PoolDerivedAprButton pool={pool} />
   )
 }

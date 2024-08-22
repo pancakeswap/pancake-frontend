@@ -1,12 +1,15 @@
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { FeeAmount } from '@pancakeswap/v3-sdk'
+import { BIG_ONE, BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { encodeSqrtRatioX96, FeeAmount, FeeCalculator, isPoolTickInRange } from '@pancakeswap/v3-sdk'
+import { useAmountsByUsdValue } from '@pancakeswap/widgets-internal/roi'
 import BigNumber from 'bignumber.js'
 import { useCakePrice } from 'hooks/useCakePrice'
 import { useCurrencyUsdPrice } from 'hooks/useCurrencyUsdPrice'
+import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
 import { useMemo } from 'react'
 import { useExtraV3PositionInfo, usePoolApr } from 'state/farmsV4/hooks'
 import { PositionDetail, StableLPDetail, V2LPDetail } from 'state/farmsV4/state/accountPositions/type'
 import { PoolInfo } from 'state/farmsV4/state/type'
+import { useV3FormState } from 'views/AddLiquidityV3/formViews/V3FormView/form/reducer'
 import { useLmPoolLiquidity } from 'views/Farms/hooks/useLmPoolLiquidity'
 import { useEstimateUserMultiplier } from 'views/universalFarms/hooks/useEstimateUserMultiplier'
 import { PoolAprButton } from './PoolAprButton'
@@ -39,6 +42,14 @@ export const V3PoolPositionAprButton: React.FC<PoolPositionAprButtonProps<Positi
   const { lpApr, cakeApr, merklApr } = useV3PositionApr(pool, userPosition)
 
   return <PoolAprButton pool={pool} lpApr={lpApr} cakeApr={cakeApr} merklApr={merklApr} userPosition={userPosition} />
+}
+
+export const V3PoolDerivedAprButton: React.FC<Omit<PoolPositionAprButtonProps<PositionDetail>, 'userPosition'>> = ({
+  pool,
+}) => {
+  const { lpApr, cakeApr, merklApr } = useV3FormDerivedApr(pool)
+
+  return <PoolAprButton pool={pool} lpApr={lpApr} cakeApr={cakeApr} merklApr={merklApr} />
 }
 
 export const useV2PositionApr = (pool: PoolInfo, userPosition: StableLPDetail | V2LPDetail) => {
@@ -141,5 +152,111 @@ export const useV3PositionApr = (pool: PoolInfo, userPosition: PositionDetail) =
     lpApr,
     cakeApr,
     merklApr: outOfRange ? 0 : parseFloat(merklApr ?? 0) ?? 0,
+  }
+}
+
+export const useV3FormDerivedApr = (pool: PoolInfo) => {
+  const key = useMemo(() => `${pool.chainId}:${pool.lpAddress}` as const, [pool.chainId, pool.lpAddress])
+  const formState = useV3FormState()
+  // const { data: estimateUserMultiplier } = useEstimateUserMultiplier(pool.chainId, userPosition.tokenId)
+  // const { removed, outOfRange, position } = useExtraV3PositionInfo(userPosition)
+  const { cakeApr: globalCakeApr, merklApr } = usePoolApr(key, pool)
+  const lmPoolLiquidity = useLmPoolLiquidity(pool.lpAddress, pool.chainId)
+  const { data: token0UsdPrice } = useCurrencyUsdPrice(pool.token0)
+  const { data: token1UsdPrice } = useCurrencyUsdPrice(pool.token1)
+  const {
+    pool: _pool,
+    ticks,
+    price,
+    pricesAtTicks,
+    parsedAmounts,
+    currencyBalances,
+  } = useV3DerivedInfo(pool.token0, pool.token1, pool.feeTier, pool.token0, undefined, formState)
+  const sqrtRatioX96 = useMemo(() => price && encodeSqrtRatioX96(price.numerator, price.denominator), [price])
+
+  const { amountA: aprAmountA, amountB: aprAmountB } = useAmountsByUsdValue({
+    usdValue: '1',
+    currencyA: pool.token0,
+    currencyB: pool.token1,
+    price,
+    priceLower: pricesAtTicks.LOWER,
+    priceUpper: pricesAtTicks.UPPER,
+    sqrtRatioX96,
+    currencyAUsdPrice: token0UsdPrice,
+    currencyBUsdPrice: token1UsdPrice,
+  })
+  const amountA = useMemo(() => {
+    return parsedAmounts.CURRENCY_A || aprAmountA
+  }, [aprAmountA, parsedAmounts.CURRENCY_A])
+  const amountB = useMemo(() => {
+    return parsedAmounts.CURRENCY_B || aprAmountB
+  }, [aprAmountB, parsedAmounts.CURRENCY_B])
+  const liquidity = useMemo(() => {
+    if (!amountA || !amountB || !sqrtRatioX96 || typeof ticks.LOWER !== 'number' || typeof ticks.UPPER !== 'number')
+      return 0n
+    const amount0 = amountA.toExact()
+    const amount1 = amountB.toExact()
+    if (!amount0 || !amount1) return 0n
+
+    return (
+      FeeCalculator.getLiquidityByAmountsAndPrice({
+        amountA,
+        amountB,
+        tickLower: ticks.LOWER,
+        tickUpper: ticks.UPPER,
+        sqrtRatioX96,
+      }) ?? 0n
+    )
+  }, [amountA, amountB, sqrtRatioX96, ticks.LOWER, ticks.UPPER])
+  const inRange = useMemo(() => isPoolTickInRange(_pool, ticks.LOWER, ticks.UPPER), [_pool, ticks.LOWER, ticks.UPPER])
+
+  const cakePrice = useCakePrice()
+
+  const userTVLUsd = useMemo(() => {
+    return parsedAmounts.CURRENCY_A && parsedAmounts.CURRENCY_B && token0UsdPrice && token1UsdPrice
+      ? new BigNumber(parsedAmounts.CURRENCY_A.toExact())
+          .times(token0UsdPrice)
+          .plus(new BigNumber(parsedAmounts.CURRENCY_B.toExact()).times(token1UsdPrice))
+      : BIG_ONE
+  }, [parsedAmounts.CURRENCY_A, parsedAmounts.CURRENCY_B, token0UsdPrice, token1UsdPrice])
+
+  const cakeApr = useMemo(() => {
+    if (!inRange) {
+      return {
+        ...globalCakeApr,
+        value: '0' as const,
+        boost: undefined,
+      }
+    }
+
+    const baseApr = new BigNumber(globalCakeApr.cakePerYear ?? 0)
+      .times(globalCakeApr.poolWeight ?? 0)
+      .times(cakePrice)
+      .times(new BigNumber(liquidity.toString()).dividedBy(lmPoolLiquidity?.toString() ?? 1))
+      .div(userTVLUsd)
+    // const apr = baseApr.times(estimateUserMultiplier ?? 0)
+
+    return {
+      ...globalCakeApr,
+      value: baseApr.toString() as `${number}`,
+      boost: undefined,
+    }
+  }, [inRange, globalCakeApr, cakePrice, liquidity, lmPoolLiquidity, userTVLUsd])
+
+  const lpApr = useMemo(() => {
+    if (!inRange) return 0
+    const apr = new BigNumber(pool.fee24hUsd ?? 0)
+      .times(365)
+      .times(V3_LP_FEE_RATE[pool.feeTier] ?? 1)
+      .times(new BigNumber(liquidity.toString()).dividedBy(pool.liquidity?.toString() ?? 1))
+      .div(userTVLUsd)
+      .toNumber()
+    return apr
+  }, [inRange, liquidity, pool.fee24hUsd, pool.feeTier, pool.liquidity, userTVLUsd])
+
+  return {
+    lpApr,
+    cakeApr,
+    merklApr: inRange ? parseFloat(merklApr ?? 0) ?? 0 : 0,
   }
 }
