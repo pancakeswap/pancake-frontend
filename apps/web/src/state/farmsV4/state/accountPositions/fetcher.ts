@@ -14,7 +14,7 @@ import { AppState } from 'state'
 import { safeGetAddress } from 'utils'
 import { getCrossFarmingVaultAddress, getMasterChefV2Address } from 'utils/addressHelpers'
 import { publicClient } from 'utils/viem'
-import { Address, erc20Abi, isAddressEqual } from 'viem'
+import { zeroAddress, Address, erc20Abi, isAddressEqual } from 'viem'
 import { StablePoolInfo, V2PoolInfo } from '../type'
 import { StableLPDetail, V2LPDetail } from './type'
 
@@ -65,39 +65,6 @@ export const getAccountV2FarmingStakedBalances = async (
     return new BigNumber(balance[0].toString()).toString()
   })
 }
-
-// export const getAccountV2FarmingPendingCakeReward = async (
-//   chainId: number,
-//   account: Address,
-//   pools: Array<V2PoolInfo | StablePoolInfo>,
-// ) => {
-//   const masterChefV2Address =
-//     chainId === ChainId.BSC ? getMasterChefV2Address(chainId) : getCrossFarmingVaultAddress(chainId)
-//   if (!account || !chainId || pools.length === 0 || !masterChefV2Address) return []
-
-//   const validPools = pools.filter(
-//     (pool) => ['v2', 'stable'].includes(pool.protocol) && pool.pid && pool.chainId === chainId,
-//   )
-//   const client = publicClient({ chainId })
-
-//   const earningCalls = validPools.map((pool) => {
-//     return {
-//       abi: masterChefV2ABI,
-//       address: masterChefV2Address,
-//       functionName: 'pendingCake',
-//       args: [BigInt(pool.pid!), account] as const,
-//     } as const
-//   })
-
-//   const earnings = await client.multicall({
-//     contracts: earningCalls,
-//     allowFailure: false,
-//   })
-
-//   return earnings.map((earning) => {
-//     return new BigNumber(earning.toString()).toString()
-//   })
-// }
 
 export const getAccountV2FarmingBCakeWrapperEarning = async (
   chainId: number,
@@ -215,16 +182,22 @@ export const getAccountV2LpDetails = async (
       args: [account] as const,
     } as const
   })
-  const farmingCalls = bCakeWrapperAddresses
-    .filter((addr) => addr !== '0x')
-    .map((address) => {
+  const farmingCalls = bCakeWrapperAddresses.map((address) => {
+    if (address === '0x') {
       return {
         abi: v2BCakeWrapperABI,
-        address,
+        address: zeroAddress,
         functionName: 'userInfo',
         args: [account] as const,
-      } as const
-    })
+      }
+    }
+    return {
+      abi: v2BCakeWrapperABI,
+      address,
+      functionName: 'userInfo',
+      args: [account] as const,
+    } as const
+  })
   const reserveCalls = validLpTokens.map((token) => {
     return {
       abi: pancakePairV2ABI,
@@ -239,14 +212,14 @@ export const getAccountV2LpDetails = async (
       functionName: 'totalSupply',
     } as const
   })
-  const [balances, farming, reserves, totalSupplies] = await Promise.all([
+  const [balances, farmingResp, reserves, totalSupplies] = await Promise.all([
     client.multicall({
       contracts: balanceCalls,
       allowFailure: false,
     }),
     client.multicall({
       contracts: farmingCalls,
-      allowFailure: false,
+      allowFailure: true,
     }),
     client.multicall({
       contracts: reserveCalls,
@@ -258,6 +231,7 @@ export const getAccountV2LpDetails = async (
     }),
   ])
 
+  const farming = farmingResp.map((resp) => resp.result)
   return balances.map((_balance, index) => {
     const nativeBalance = CurrencyAmount.fromRawAmount(validLpTokens[index], _balance)
     const farmingInfo = farming[index]
@@ -329,18 +303,24 @@ export const getStablePairDetails = async (
       account,
     } as const
   })
-  const farmingCalls = bCakeWrapperAddresses
-    .filter((addr) => addr !== '0x')
-    .map((address) => {
+  const farmingCalls = bCakeWrapperAddresses.map((address) => {
+    if (address === '0x') {
       return {
         abi: v2BCakeWrapperABI,
-        address,
+        address: zeroAddress,
         functionName: 'userInfo',
         args: [account] as const,
-      } as const
-    })
+      }
+    }
+    return {
+      abi: v2BCakeWrapperABI,
+      address,
+      functionName: 'userInfo',
+      args: [account] as const,
+    } as const
+  })
 
-  const [balances, totalSupplies, farming] = await Promise.all([
+  const [balances, totalSupplies, farmingResp] = await Promise.all([
     client.multicall({
       contracts: balanceCalls,
       allowFailure: false,
@@ -351,9 +331,11 @@ export const getStablePairDetails = async (
     }),
     client.multicall({
       contracts: farmingCalls,
-      allowFailure: false,
+      allowFailure: true,
     }),
   ])
+
+  const farming = farmingResp.map((res) => res.result)
   const nativeCalcCoinsAmountCalls = validStablePairs.map((pair, index) => {
     return {
       abi: infoStableSwapABI,
