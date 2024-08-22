@@ -3318,7 +3318,7 @@
   "USDV Disclaimer": "USDV डिस्क्लेमर",
   "Verified USD ($USDV), is a product offered by USDV.money and is not associated with PancakeSwap.": "सत्यापित USD ($USDV) एक उत्पाद है जिसे USDV.money द्वारा प्रस्तुत किया गया है और यह PancakeSwap से जुड़ा हुआ नहीं है।",
   "By checking this box, I understand that I am using USDV at my own risk. I accept full responsibility for any losses incurred due to my actions.": "इस बॉक्स पर सही का निशान लगाकर, मैं समझता हूं कि मैं अपने जोखिम पर USDV का इस्तेमाल कर रहा हूं। मैं अपनी कार्रवाई के कारण होने वाले किसी भी नुकसान के लिए पूरी जिम्मेदारी स्वीकार करता हूं।",
-  "Users who deposit funds into this vault will earn Pearls by Swell. To track your Pearls balance, visit": "इस वॉल्ट में फ़ंड डिपॉज़िट करने वाले यूज़र Swell की ओर से Pearls कमाएंगे। अपने Pearls बैलेंस का ट्रैक रखने के लिए, यहां जाएं:",
+  "Users who deposit funds into this farm will earn Black Pearls by Swell. To track your balance, visit": "Users who deposit funds into this farm will earn Black Pearls by Swell. To track your balance, visit",
   "Swell's website": "Swell की वेबसाइट",
   "Done": "हो गया",
   "Single-Sided Strategy": "सिंगल-साइडेड स्ट्रेटेजी",
@@ -3330,7 +3330,6 @@
   "View Migrated Position": "माइग्रेट की गई पोजीशन देखें",
   "Renew your veCAKE position to continue enjoying the benefits of weekly CAKE yield, revenue share, gauges voting, farm yield boosting, participating in IFOs, and so much more!": "साप्ताहिक CAKE यील्ड, रेवेन्यू शेयर, गेज वोटिंग, फार्म यील्ड बूस्टिंग के फायदों का लाभ जारी रखने, IFO में शामिल होने और भी कई फायदों के लिए अपनी veCAKE पोजीशन रिन्यू करें!",
   "Exact number: %numberWithFullDigits%": "सही संख्या: %numberWithFullDigits%",
-  "Please note that the Pearls earned from this vault will only appear in your balance at a later time.": "कृपया नोट करें कि इस वॉल्ट से कमाए गए Pearls आपके बैलेंस में केवल बाद में ही दिखाई देंगे।",
   "Fee saved": "फ़ीस सहेजी गई",
   "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "प्रमुख DEX चार्जिंग इंटरफ़ेस फ़ीस की तुलना में PancakeSwap पर फ़ीस सहेजी गईं",
   "Gauge Not Found": "गेज नहीं मिला",
@@ -3516,5 +3515,8 @@
   "Enable Notifications From PancakeSwap": "Enable Notifications From PancakeSwap",
   "Subscribe to stay informed on the latest news and updates that PancakeSwap has to offer.": "Subscribe to stay informed on the latest news and updates that PancakeSwap has to offer.",
   "Pancake4ever! Celebrate PancakeSwap's 4th Birthday with us!": "Pancake4ever! PancakeSwap का चौथा जन्मदिन हमारे साथ मनाएं!",
-  "Join Now": "अभी जुड़ें"
+  "Join Now": "अभी जुड़ें",
+  "Users who deposit liquidity into this pool will earn Pills by": "Users who deposit liquidity into this pool will earn Pills by",
+  "Usual": "Usual",
+  "retroactively.": "retroactively."
 }
