@@ -5,6 +5,7 @@ import { useToast } from '@pancakeswap/uikit'
 import { useQuery } from '@tanstack/react-query'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { distributorABI } from 'config/abi/AngleProtocolDistributor'
+import { FAST_INTERVAL } from 'config/constants'
 import { DISTRIBUTOR_ADDRESSES } from 'config/merkl'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
@@ -35,7 +36,7 @@ export function useMerklInfo(poolAddress: string | null): {
   const { account, chainId } = useAccountActiveChain()
 
   const { data: merklData } = useQuery({
-    queryKey: ['merklAprData', chainId, poolAddress],
+    queryKey: ['merklAprData', chainId],
     queryFn: async () => {
       const resp = await fetch(`https://api.angle.money/v2/merkl?chainIds[]=${chainId}&AMMs[]=pancakeswapv3`)
       if (resp.ok) {
@@ -44,7 +45,9 @@ export function useMerklInfo(poolAddress: string | null): {
       }
       throw resp
     },
-    enabled: Boolean(chainId) && Boolean(poolAddress),
+    enabled: Boolean(chainId && poolAddress),
+    staleTime: FAST_INTERVAL,
+    retryDelay: (attemptIndex) => Math.min(2000 * 2 ** attemptIndex, 30000),
   })
 
   const merklApr = merklData?.[chainId ?? 0]?.pools?.[poolAddress ?? '']?.aprs?.['Average APR (rewards / pool TVL)'] as
@@ -52,11 +55,15 @@ export function useMerklInfo(poolAddress: string | null): {
     | undefined
 
   const { data, isPending, refetch } = useQuery({
-    queryKey: [`fetchMerkl-${chainId}-${poolAddress}-${account || 'no-account'}`],
+    queryKey: [`fetchMerkl-${chainId}-${account || 'no-account'}`],
     queryFn: async () => {
       const responsev2 = await fetch(
         `${MERKL_API_V2}?chainIds[]=${chainId}${account ? `&user=${account}` : ''}&AMMs[]=pancakeswapv3`,
       )
+
+      if (!responsev2.ok) {
+        throw responsev2
+      }
 
       const merklDataV2 = await responsev2.json()
 
@@ -98,6 +105,9 @@ export function useMerklInfo(poolAddress: string | null): {
         isPending,
       }
     },
+    enabled: Boolean(chainId && poolAddress),
+    staleTime: FAST_INTERVAL,
+    retryDelay: (attemptIndex) => Math.min(2000 * 2 ** attemptIndex, 30000),
   })
 
   const lists = useAllLists()

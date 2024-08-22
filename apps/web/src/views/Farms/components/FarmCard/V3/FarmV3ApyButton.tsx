@@ -259,7 +259,7 @@ function FarmV3ApyButton_({
           {t('LP Fee APR')}: <b>{lpAprDisplay}%</b>
         </li>
         {additionAprInfo && (
-          <StyledLi>
+          <StyledLi style={{ paddingLeft: '16px' }}>
             <Flex style={{ flexWrap: 'nowrap', alignItems: 'center', gap: 5 }}>
               {additionAprInfo.aprTitle}: <b>{additionalAprDisplay}%</b>
               <LinkExternal display="inline-block" href={additionAprInfo.aprLink}>
