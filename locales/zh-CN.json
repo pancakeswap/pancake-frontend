@@ -3318,7 +3318,7 @@
   "USDV Disclaimer": " USDV 免责声明",
   "Verified USD ($USDV), is a product offered by USDV.money and is not associated with PancakeSwap.": "Verified USD ($USDV) 为 USDV.money 提供的产品，与 PancakeSwap 无关。",
   "By checking this box, I understand that I am using USDV at my own risk. I accept full responsibility for any losses incurred due to my actions.": "选中此复选框，即表示我了解将由我自行承担使用 USDV 的风险。我对由我的行为所造成的任何损失承担全部责任。",
-  "Users who deposit funds into this vault will earn Pearls by Swell. To track your Pearls balance, visit": "将资金存入该资金库的用户将获得由 Swell 提供的珍珠。要查询您的珍珠余额，请前往",
+  "Users who deposit funds into this farm will earn Black Pearls by Swell. To track your balance, visit": "Users who deposit funds into this farm will earn Black Pearls by Swell. To track your balance, visit",
   "Swell's website": "Swell 的网站",
   "Done": "完成",
   "Single-Sided Strategy": "单边策略",
@@ -3330,7 +3330,6 @@
   "View Migrated Position": "查看迁移持仓",
   "Renew your veCAKE position to continue enjoying the benefits of weekly CAKE yield, revenue share, gauges voting, farm yield boosting, participating in IFOs, and so much more!": "更新您的 veCAKE 持仓，继续享受每周 CAKE 收益、收入分成、Gauge Voting、农场收益助推、参与 IFO 等，还有更多好处！",
   "Exact number: %numberWithFullDigits%": "确切数字：%numberWithFullDigits%",
-  "Please note that the Pearls earned from this vault will only appear in your balance at a later time.": "请注意，从此资金库中获得的珍珠只会稍后出现在您的余额中。",
   "Fee saved": "已节省费用",
   "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "与收取接口费用的主要 DEX 相比，在 PancakeSwap 上节省的费用",
   "Gauge Not Found": "找不到 Gauge",
@@ -3516,5 +3515,8 @@
   "Enable Notifications From PancakeSwap": "Enable Notifications From PancakeSwap",
   "Subscribe to stay informed on the latest news and updates that PancakeSwap has to offer.": "Subscribe to stay informed on the latest news and updates that PancakeSwap has to offer.",
   "Pancake4ever! Celebrate PancakeSwap's 4th Birthday with us!": "Pancake4ever! Celebrate PancakeSwap's 4th Birthday with us!",
-  "Join Now": "Join Now"
+  "Join Now": "Join Now",
+  "Users who deposit liquidity into this pool will earn Pills by": "Users who deposit liquidity into this pool will earn Pills by",
+  "Usual": "Usual",
+  "retroactively.": "retroactively."
 }
