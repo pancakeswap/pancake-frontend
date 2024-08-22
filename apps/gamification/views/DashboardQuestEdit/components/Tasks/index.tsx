@@ -28,19 +28,21 @@ const Item = ({
 
   return (
     <Flex mb="4px">
-      <DragIcon
-        color="#AC9DC4"
-        width="20px"
-        height="20px"
-        className="disable-select dragHandle"
-        onTouchStart={(e) => {
-          e.preventDefault()
-          onTouchStart(e)
-        }}
-        onMouseDown={(e) => {
-          onMouseDown(e)
-        }}
-      />
+      {isDrafted && (
+        <DragIcon
+          color="#AC9DC4"
+          width="20px"
+          height="20px"
+          className="disable-select dragHandle"
+          onTouchStart={(e) => {
+            e.preventDefault()
+            onTouchStart(e)
+          }}
+          onMouseDown={(e) => {
+            onMouseDown(e)
+          }}
+        />
+      )}
       <Card style={{ width: '100%' }}>
         <Box padding="8px">
           {item.taskType === TaskType.MAKE_A_SWAP && <AddSwap task={item} isDrafted={isDrafted} />}
