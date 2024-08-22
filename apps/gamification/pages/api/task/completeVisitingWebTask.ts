@@ -1,6 +1,5 @@
 import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
 import { zAddress, zQuestId } from 'config/validations'
-import { withSiweAuth } from 'middlewares/withSiwe'
 import qs from 'qs'
 import { TaskType } from 'views/DashboardQuestEdit/type'
 import { object as zObject, string as zString } from 'zod'
@@ -12,7 +11,7 @@ const zQuery = zObject({
   taskName: zString(),
 })
 
-const handler = withSiweAuth(async (req, res) => {
+const handler = async (req, res) => {
   if (!GAMIFICATION_PUBLIC_API || !req.query || req.method !== 'POST') {
     return res.status(400).json({ message: 'API URL Empty / Method wrong' })
   }
@@ -64,6 +63,6 @@ const handler = withSiweAuth(async (req, res) => {
   }
 
   return res.status(200).json(response)
-})
+}
 
 export default handler

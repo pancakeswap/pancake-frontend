@@ -1,6 +1,5 @@
 import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
 import { zAddress, zQuestId } from 'config/validations'
-import { withSiweAuth } from 'middlewares/withSiwe'
 import qs from 'qs'
 import { getOAuthHeader } from 'utils/getOAuthHeader'
 import { TaskType } from 'views/DashboardQuestEdit/type'
@@ -19,7 +18,7 @@ const zQuery = zObject({
 })
 
 // eslint-disable-next-line consistent-return
-const handler = withSiweAuth(async (req, res) => {
+const handler = async (req, res) => {
   if (req.method === 'GET') {
     try {
       const queryString = qs.stringify(req.query)
@@ -107,6 +106,6 @@ const handler = withSiweAuth(async (req, res) => {
   } else {
     return res.status(405).json({ error: 'Method Not Allowed' })
   }
-})
+}
 
 export default handler

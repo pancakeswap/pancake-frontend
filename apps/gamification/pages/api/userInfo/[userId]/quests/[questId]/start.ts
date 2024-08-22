@@ -1,6 +1,5 @@
 import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
 import { zAddress, zQuestId } from 'config/validations'
-import { withSiweAuth } from 'middlewares/withSiwe'
 import qs from 'qs'
 import { object as zObject } from 'zod'
 
@@ -9,7 +8,7 @@ const zQuery = zObject({
   questId: zQuestId,
 })
 
-const handler = withSiweAuth(async (req, res) => {
+const handler = async (req, res) => {
   if (!GAMIFICATION_PUBLIC_API || req.method !== 'POST') {
     return res.status(400).json({ message: 'Invalid request method' })
   }
@@ -45,6 +44,6 @@ const handler = withSiweAuth(async (req, res) => {
   }
 
   return res.status(200).json({ message })
-})
+}
 
 export default handler
