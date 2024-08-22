@@ -21,9 +21,13 @@ const handler = withSiweAuth(async (req, res) => {
   if (account !== req.siwe.address) {
     return res.status(400).json({ message: 'Invalid wallet address' })
   }
-  if (!req.signature || !req.encodedMessage) {
+
+  const encodedMessage = req.headers['x-g-siwe-message']
+  const signature = req.headers['x-g-siwe-signature']
+  if (!signature || !encodedMessage) {
     return res.status(400).json({ message: 'Missing signature or encodedMessage' })
   }
+
   if (taskName !== TaskType.VISIT_BLOG_POST) {
     return res.status(400).json({ message: 'Invalid task' })
   }
@@ -48,8 +52,8 @@ const handler = withSiweAuth(async (req, res) => {
         taskId,
         isCompleted: true,
         verificationData: {
-          signature: req.signature,
-          encodedMessage: req.encodedMessage,
+          signature,
+          encodedMessage,
         },
       }),
     },

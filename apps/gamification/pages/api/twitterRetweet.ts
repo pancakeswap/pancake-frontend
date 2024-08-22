@@ -28,7 +28,10 @@ const handler = withSiweAuth(async (req, res) => {
       if (parsed.success === false) {
         return res.status(400).json({ message: 'Invalid query', reason: parsed.error })
       }
-      if (!req.signature || !req.encodedMessage) {
+
+      const encodedMessage = req.headers['x-g-siwe-message']
+      const signature = req.headers['x-g-siwe-signature']
+      if (!signature || !encodedMessage) {
         return res.status(400).json({ message: 'Missing signature or encodedMessage' })
       }
 
@@ -71,8 +74,8 @@ const handler = withSiweAuth(async (req, res) => {
               taskId,
               isCompleted: true,
               verificationData: {
-                signature: req.signature,
-                encodedMessage: req.encodedMessage,
+                signature,
+                encodedMessage,
               },
             }),
           },

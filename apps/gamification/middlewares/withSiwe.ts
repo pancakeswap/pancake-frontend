@@ -4,8 +4,6 @@ import { parseSiweMessage, validateSiweMessage, verifySiweMessage } from 'viem/s
 
 type ExtendedReq = NextApiRequest & {
   siwe: ReturnType<typeof parseSiweMessage>
-  encodedMessage: string
-  signature: string
 }
 
 export type ExtendedApiHandler = (req: ExtendedReq, res: NextApiResponse) => ReturnType<NextApiHandler>
@@ -39,8 +37,6 @@ export function withSiweAuth(handler: ExtendedApiHandler): ExtendedApiHandler {
 
     /* eslint-disable no-param-reassign */
     req.siwe = siweMessage
-    req.encodedMessage = encodedMessage
-    req.signature = signature
     return handler(req, res)
   }
 }
