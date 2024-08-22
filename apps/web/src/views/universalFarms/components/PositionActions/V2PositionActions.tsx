@@ -1,3 +1,4 @@
+import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { useLatestTxReceipt } from 'state/farmsV4/state/accountPositions/hooks/useLatestTxReceipt'
 import { AutoRow, useModal, useToast } from '@pancakeswap/uikit'
@@ -32,13 +33,23 @@ type V2PositionActionsProps = {
   tvlUsd?: `${number}` | number | undefined
   poolInfo: PoolInfo
 }
+
+const StyledAutoRow = styled(AutoRow)`
+  flex-direction: row;
+  gap: 8px;
+  height: 48px;
+
+  & button {
+    flex: 1;
+  }
+`
 export const V2PositionActions: React.FC<V2PositionActionsProps> = ({ isStaked, ...props }) => {
   if (isStaked) {
     return (
-      <AutoRow gap="sm">
+      <StyledAutoRow gap="sm">
         <V2FarmingAction {...props} />
         <V2HarvestAction {...props} />
-      </AutoRow>
+      </StyledAutoRow>
     )
   }
   return <V2NativeAction {...props} />
