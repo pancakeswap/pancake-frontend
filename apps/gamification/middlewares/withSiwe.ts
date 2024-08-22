@@ -34,7 +34,6 @@ export function withSiweAuth(handler: ExtendedApiHandler): ExtendedApiHandler {
     if (!validSignature) {
       return unauthorized()
     }
-
     // eslint-disable-next-line no-param-reassign
     req.siwe = siweMessage
     return handler(req, res)
