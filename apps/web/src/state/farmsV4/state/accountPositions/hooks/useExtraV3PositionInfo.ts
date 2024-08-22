@@ -3,6 +3,7 @@ import { Position } from '@pancakeswap/v3-sdk'
 import { useTokenByChainId } from 'hooks/Tokens'
 import useIsTickAtLimit from 'hooks/v3/useIsTickAtLimit'
 import { usePoolByChainId } from 'hooks/v3/usePools'
+import getPriceOrderingFromPositionForUI from 'hooks/v3/utils/getPriceOrderingFromPositionForUI'
 import { useMemo } from 'react'
 import { PositionDetail } from '../type'
 
@@ -49,13 +50,14 @@ export const useExtraV3PositionInfo = (positionDetail?: PositionDetail) => {
   }, [pool, token0])
 
   const { priceLower, priceUpper, quote, base } = useMemo(() => {
-    return {
-      priceLower: position ? position.token0PriceLower : undefined,
-      priceUpper: position ? position.token0PriceUpper : undefined,
-      quote: token1,
-      base: token0,
-    }
-  }, [position, token0, token1])
+    // return {
+    //   priceLower: position ? position.token0PriceLower : undefined,
+    //   priceUpper: position ? position.token0PriceUpper : undefined,
+    //   quote: token1,
+    //   base: token0,
+    // }
+    return getPriceOrderingFromPositionForUI(position)
+  }, [position])
 
   return {
     pool,
