@@ -1,7 +1,9 @@
 import 'utils/workerPolyfill'
 
+import { TradeType } from '@pancakeswap/swap-sdk-core'
+import { fetchV3Quote } from '@pancakeswap/routing-sdk-addon-quoter'
 import { findBestTrade, toSerializableTrade } from '@pancakeswap/routing-sdk'
-import { V3_POOL_TYPE, createV3Pool, toSerializableV3Pool } from '@pancakeswap/routing-sdk-addon-v3'
+import { V3_POOL_TYPE, createV3Pool, isV3Pool, toSerializableV3Pool } from '@pancakeswap/routing-sdk-addon-v3'
 import { V2_POOL_TYPE, createV2Pool, toSerializableV2Pool } from '@pancakeswap/routing-sdk-addon-v2'
 import {
   STABLE_POOL_TYPE,
@@ -12,7 +14,7 @@ import { PoolType, SmartRouter, V4Router, getRouteTypeByPools } from '@pancakesw
 import { Call } from 'state/multicall/actions'
 import { fetchChunk } from 'state/multicall/fetchChunk'
 import { getLogger } from 'utils/datadog'
-import { createViemPublicClientGetter } from 'utils/viem'
+import { createViemPublicClientGetter, getViemClients } from 'utils/viem'
 
 const { parseCurrency, parseCurrencyAmount, parsePool, serializeTrade } = SmartRouter.Transformer
 
@@ -266,6 +268,25 @@ addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
           throw new Error('No valid trade route found')
         }
         const { graph, ...trade } = t
+        if (trade.routes[0].pools.every(isV3Pool)) {
+          const { pools: _pools, path: _path, inputAmount, outputAmount } = trade.routes[0]
+          const _amount = tradeType === TradeType.EXACT_INPUT ? inputAmount : outputAmount
+          fetchV3Quote({
+            route: {
+              pools: _pools,
+              path: _path,
+              amount: _amount,
+            },
+            client: getViemClients({ chainId: amount.currency.chainId }),
+          })
+            .then((res) => {
+              console.log('[QUOTE]', res?.quotient, outputAmount.quotient)
+            })
+            .catch((err) => {
+              console.error('[QUOTE]', err)
+            })
+        }
+
         const serializableTrade = toSerializableTrade(trade, {
           toSerializablePool: (p) => {
             if (p.type === V3_POOL_TYPE) {

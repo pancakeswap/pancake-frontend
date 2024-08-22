@@ -971,6 +971,9 @@ importers:
       '@pancakeswap/routing-sdk':
         specifier: workspace:*
         version: link:../../packages/routing-sdk
+      '@pancakeswap/routing-sdk-addon-quoter':
+        specifier: workspace:*
+        version: link:../../packages/routing-sdk/addons/quoter
       '@pancakeswap/routing-sdk-addon-stable-swap':
         specifier: workspace:*
         version: link:../../packages/routing-sdk/addons/stable-swap
@@ -1936,6 +1939,43 @@ importers:
       tsup:
         specifier: ^6.7.0
         version: 6.7.0(postcss@8.4.33)(ts-node@10.9.1(@types/node@18.18.9)(typescript@5.2.2))(typescript@5.2.2)
+
+  packages/routing-sdk/addons/quoter:
+    dependencies:
+      '@pancakeswap/chains':
+        specifier: workspace:*
+        version: link:../../../chains
+      '@pancakeswap/swap-sdk-core':
+        specifier: workspace:*
+        version: link:../../../swap-sdk-core
+      '@pancakeswap/v2-sdk':
+        specifier: workspace:*
+        version: link:../../../v2-sdk
+      tiny-invariant:
+        specifier: ^1.3.0
+        version: 1.3.3
+    devDependencies:
+      '@pancakeswap/routing-sdk':
+        specifier: workspace:*
+        version: link:../..
+      '@pancakeswap/routing-sdk-addon-stable-swap':
+        specifier: workspace:*
+        version: link:../stable-swap
+      '@pancakeswap/routing-sdk-addon-v2':
+        specifier: workspace:*
+        version: link:../v2
+      '@pancakeswap/routing-sdk-addon-v3':
+        specifier: workspace:*
+        version: link:../v3
+      '@pancakeswap/tsconfig':
+        specifier: workspace:*
+        version: link:../../../tsconfig
+      tsup:
+        specifier: ^6.7.0
+        version: 6.7.0(postcss@8.4.33)(ts-node@10.9.1(@types/node@18.18.9)(typescript@5.2.2))(typescript@5.2.2)
+      viem:
+        specifier: 'catalog:'
+        version: 2.17.3(bufferutil@4.0.8)(typescript@5.2.2)(utf-8-validate@6.0.3)(zod@3.22.4)
 
   packages/routing-sdk/addons/stable-swap:
     dependencies:
