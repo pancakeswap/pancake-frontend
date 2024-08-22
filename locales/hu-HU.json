@@ -3318,7 +3318,7 @@
   "USDV Disclaimer": "USDV jogi nyilatkozat",
   "Verified USD ($USDV), is a product offered by USDV.money and is not associated with PancakeSwap.": "A hitelesített USD ($USDV) az USDV.money által kínált termék, és nem köthető a PancakeSwaphoz.",
   "By checking this box, I understand that I am using USDV at my own risk. I accept full responsibility for any losses incurred due to my actions.": "A jelölőnégyzet bejelölésével tudomásul veszem, hogy az USDV-t saját felelősségemre használom. Teljes felelősséget vállalok a tevékenységem következtében felmerülő esetleges veszteségekért.",
-  "Users who deposit funds into this vault will earn Pearls by Swell. To track your Pearls balance, visit": "Azok a felhasználók, akik letétet helyeznek el ebben az értéktárban, Pearls by Swell gyöngyöket kapnak. A Pearls gyöngyei egyenlegének nyomon követéséhez látogasson el a",
+  "Users who deposit funds into this farm will earn Black Pearls by Swell. To track your balance, visit": "Users who deposit funds into this farm will earn Black Pearls by Swell. To track your balance, visit",
   "Swell's website": "Swell weboldalára",
   "Done": "Kész",
   "Single-Sided Strategy": "Egyoldalú stratégia",
@@ -3330,7 +3330,6 @@
   "View Migrated Position": "Az áttelepített pozíció megtekintése",
   "Renew your veCAKE position to continue enjoying the benefits of weekly CAKE yield, revenue share, gauges voting, farm yield boosting, participating in IFOs, and so much more!": "Újítsa meg veCAKE pozícióját, hogy továbbra is élvezhesse a heti CAKE hozam, a bevételek megosztása, a mércék szavazása, a gazdaságok hozamának növelése, az IFO-kon való részvétel és még sok más előnyeit!",
   "Exact number: %numberWithFullDigits%": "Pontos szám: %numberWithFullDigits%",
-  "Please note that the Pearls earned from this vault will only appear in your balance at a later time.": "Kérjük, vegye figyelembe, hogy a értéktárból megszerzett gyöngyök csak később jelennek meg az egyenlegén.",
   "Fee saved": "Megtakarított díj",
   "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "A PancakeSwap-on megtakarított díjak a főbb DEX-ekhez képest, amelyek interfészdíjat számítanak fel",
   "Gauge Not Found": "A mérce nem található",
@@ -3516,5 +3515,8 @@
   "Enable Notifications From PancakeSwap": "Enable Notifications From PancakeSwap",
   "Subscribe to stay informed on the latest news and updates that PancakeSwap has to offer.": "Subscribe to stay informed on the latest news and updates that PancakeSwap has to offer.",
   "Pancake4ever! Celebrate PancakeSwap's 4th Birthday with us!": "Pancake4ever! Celebrate PancakeSwap's 4th Birthday with us!",
-  "Join Now": "Join Now"
+  "Join Now": "Join Now",
+  "Users who deposit liquidity into this pool will earn Pills by": "Users who deposit liquidity into this pool will earn Pills by",
+  "Usual": "Usual",
+  "retroactively.": "retroactively."
 }
