@@ -77,8 +77,9 @@ export const V3PositionActions = ({
     const shouldSwitch = await switchNetworkIfNecessary(currency0.chainId)
     if (!shouldSwitch) {
       await onUnstake()
+      stakeModal.onDismiss()
     }
-  }, [onUnstake, switchNetworkIfNecessary, currency0.chainId])
+  }, [onUnstake, switchNetworkIfNecessary, currency0.chainId, stakeModal])
 
   const handleHarvest = useCallback(async () => {
     const shouldSwitch = await switchNetworkIfNecessary(currency0.chainId)
@@ -89,7 +90,7 @@ export const V3PositionActions = ({
 
   const stakeButton = useMemo(
     () => (
-      <StopPropagation>
+      <>
         <Button
           scale="md"
           width={['100px']}
@@ -107,7 +108,7 @@ export const V3PositionActions = ({
         >
           {modalContent}
         </V3StakeModal>
-      </StopPropagation>
+      </>
     ),
     [
       isSwitchingNetwork,
@@ -124,7 +125,7 @@ export const V3PositionActions = ({
 
   const unstakeButton = useMemo(
     () => (
-      <StopPropagation>
+      <>
         <Button
           scale="md"
           width={['100px']}
@@ -136,6 +137,7 @@ export const V3PositionActions = ({
           {t('Unstake')}
         </Button>
         <V3StakeModal
+          disabled={attemptingTxn || isSwitchingNetwork}
           isOpen={stakeModal.isOpen}
           staking={outOfRange && !isStaked}
           onUnStake={handleUnStake}
@@ -143,7 +145,7 @@ export const V3PositionActions = ({
         >
           {modalContent}
         </V3StakeModal>
-      </StopPropagation>
+      </>
     ),
     [isSwitchingNetwork, handleUnStake, isStaked, modalContent, t, outOfRange, stakeModal, attemptingTxn],
   )
