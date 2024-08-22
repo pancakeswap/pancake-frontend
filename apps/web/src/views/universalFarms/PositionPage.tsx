@@ -237,7 +237,7 @@ const useV2Positions = ({
             selectedTokens.some(
               (token) => token === toTokenValue(pos.pair.token0) || token === toTokenValue(pos.pair.token1),
             )) &&
-          positionStatus === 0 &&
+          [V3_STATUS.ALL, V3_STATUS.ACTIVE].includes(positionStatus) &&
           (!farmsOnly || pos.isStaked),
       ),
     [farmsOnly, selectedNetwork, selectedTokens, v2Positions, positionStatus],
@@ -284,7 +284,7 @@ const useStablePositions = ({
               (token) =>
                 token === toTokenValueByCurrency(pos.pair.token0) || token === toTokenValueByCurrency(pos.pair.token1),
             )) &&
-          positionStatus === 0 &&
+          [V3_STATUS.ALL, V3_STATUS.ACTIVE].includes(positionStatus) &&
           (!farmsOnly || pos.isStaked),
       ),
     [farmsOnly, selectedNetwork, selectedTokens, stablePositions, positionStatus],
