@@ -3318,7 +3318,7 @@
   "USDV Disclaimer": "USDV மறுதலிப்பு",
   "Verified USD ($USDV), is a product offered by USDV.money and is not associated with PancakeSwap.": "வெரிஃபைட் USD ($USDV) என்பது USDV.money வழங்கும் ஒரு தயாரிப்பு, இது PancakeSwap உடன் தொடர்புடையதல்ல.",
   "By checking this box, I understand that I am using USDV at my own risk. I accept full responsibility for any losses incurred due to my actions.": "இந்தப் பெட்டியில் தேர்வுக்குறியிடுவதன் மூலம், நான் எனது சொந்த முயற்சியில் USDV-ஐப் பயன்படுத்துகிறேன் என்பதைப் புரிந்துகொள்கிறேன். எனது செயல்களால் ஏற்படும் இழப்பு எதற்குமான முழுப் பொறுப்பையும் நான் ஏற்றுக்கொள்கிறேன்.",
-  "Users who deposit funds into this vault will earn Pearls by Swell. To track your Pearls balance, visit": "இந்த வால்ட்டில் பணத்தை டெபாசிட் செய்யும் பயனர்கள் Swell மூலம் முத்துக்களை ஈட்டுவார்கள். உங்கள் முத்துக்களின் பேலன்ஸைக் கண்காணிக்க, பாருங்கள்:",
+  "Users who deposit funds into this farm will earn Black Pearls by Swell. To track your balance, visit": "Users who deposit funds into this farm will earn Black Pearls by Swell. To track your balance, visit",
   "Swell's website": "Swell-இன் இணையதளம்",
   "Done": "முடிந்தது",
   "Single-Sided Strategy": "சிங்கிள்-சைடெட் யுக்தி",
@@ -3330,7 +3330,6 @@
   "View Migrated Position": "இடம்பெயர்ந்த நிலையைக் காண்க",
   "Renew your veCAKE position to continue enjoying the benefits of weekly CAKE yield, revenue share, gauges voting, farm yield boosting, participating in IFOs, and so much more!": "வாராந்திர CAKE விளைச்சல், வருவாய் பங்கு, அளவீடுகள் வாக்களிப்பு, ஃபார்ம் மகசூல் அதிகரிப்பு, IFOகளில் பங்கேற்பது மற்றும் பலவற்றின் பலன்களைத் தொடர்ந்து அனுபவிக்க உங்கள் veCAKE நிலையைப் புதுப்பிக்கவும்!",
   "Exact number: %numberWithFullDigits%": "துல்லியமான எண்: %numberWithFullDigits%",
-  "Please note that the Pearls earned from this vault will only appear in your balance at a later time.": "இந்த வால்ட்டிலிருந்து ஈட்டிய முத்துக்கள் பின்நேரத்தில் மட்டுமே உங்கள் பேலன்ஸில் தோன்றும் என்பதை நினைவில் கொள்ளுங்கள்.",
   "Fee saved": "கட்டணம் சேமித்தது",
   "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "இடைமுகக் கட்டணம் விதிக்கும் பிரதான DEXகளுடன் ஒப்பிடும்போது PancakeSwapல் கட்டணம் சேமிக்கப்படுகிறது",
   "Gauge Not Found": "அளவீடு கிடைக்கவில்லை",
@@ -3516,5 +3515,8 @@
   "Enable Notifications From PancakeSwap": "Enable Notifications From PancakeSwap",
   "Subscribe to stay informed on the latest news and updates that PancakeSwap has to offer.": "Subscribe to stay informed on the latest news and updates that PancakeSwap has to offer.",
   "Pancake4ever! Celebrate PancakeSwap's 4th Birthday with us!": "Pancake4ever! Celebrate PancakeSwap's 4th Birthday with us!",
-  "Join Now": "Join Now"
+  "Join Now": "Join Now",
+  "Users who deposit liquidity into this pool will earn Pills by": "Users who deposit liquidity into this pool will earn Pills by",
+  "Usual": "Usual",
+  "retroactively.": "retroactively."
 }
