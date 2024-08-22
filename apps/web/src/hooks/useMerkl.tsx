@@ -34,6 +34,7 @@ export function useMerklInfo(poolAddress: string | null): {
   merklApr?: number
 } {
   const { account, chainId } = useAccountActiveChain()
+  const lists = useAllLists()
 
   const { data: merklApr } = useQuery({
     queryKey: ['merklAprData', chainId],
@@ -72,46 +73,12 @@ export function useMerklInfo(poolAddress: string | null): {
 
       const { pools, transactionData } = merklDataV2[chainId]
 
-      const hasLive = first(
-        Object.keys(pools)
-          .filter((poolId) => poolId === poolAddress && pools[poolId].meanAPR !== 0)
-          .map((poolId) => pools[poolId]),
-      )
-
-      const merklPoolData = first(
-        Object.keys(pools)
-          .filter((poolId) => poolId === poolAddress)
-          .map((poolId) => pools[poolId]),
-      )
-
-      const rewardsPerTokenObject = merklPoolData?.rewardsPerToken
-
-      const rewardsPerToken = rewardsPerTokenObject
-        ? Object.keys(rewardsPerTokenObject)
-            .map((tokenAddress) => {
-              const tokenInfo = rewardsPerTokenObject[tokenAddress]
-
-              const token = new Token(chainId as number, tokenAddress as Address, tokenInfo.decimals, tokenInfo.symbol)
-
-              return CurrencyAmount.fromRawAmount(token, tokenInfo.unclaimedUnformatted)
-            })
-            .filter(Boolean)
-        : []
-
-      return {
-        hasMerkl: Boolean(hasLive),
-        rewardsPerToken,
-        rewardTokenAddresses: uniq(merklPoolData?.distributionData?.map((d) => d.token)),
-        transactionData,
-        isPending,
-      }
+      return { pools, transactionData }
     },
     enabled: Boolean(chainId && poolAddress),
     staleTime: FAST_INTERVAL,
     retryDelay: (attemptIndex) => Math.min(2000 * 2 ** attemptIndex, 30000),
   })
-
-  const lists = useAllLists()
 
   return useMemo(() => {
     if (!data)
@@ -121,7 +88,41 @@ export function useMerklInfo(poolAddress: string | null): {
         refreshData: refetch,
       }
 
-    const { rewardsPerToken = [], rewardTokenAddresses = [], ...rest } = data
+    const { pools, transactionData } = data
+
+    const hasLive = first(
+      Object.keys(pools)
+        .filter((poolId) => poolId === poolAddress && pools[poolId].meanAPR !== 0)
+        .map((poolId) => pools[poolId]),
+    )
+
+    const merklPoolData = first(
+      Object.keys(pools)
+        .filter((poolId) => poolId === poolAddress)
+        .map((poolId) => pools[poolId]),
+    )
+
+    const rewardsPerTokenObject = merklPoolData?.rewardsPerToken
+
+    const rewardResult = {
+      hasMerkl: Boolean(hasLive),
+      rewardsPerToken: rewardsPerTokenObject
+        ? Object.keys(rewardsPerTokenObject)
+            .map((tokenAddress) => {
+              const tokenInfo = rewardsPerTokenObject[tokenAddress]
+
+              const token = new Token(chainId as number, tokenAddress as Address, tokenInfo.decimals, tokenInfo.symbol)
+
+              return CurrencyAmount.fromRawAmount(token, tokenInfo.unclaimedUnformatted)
+            })
+            .filter(Boolean)
+        : [],
+      rewardTokenAddresses: uniq(merklPoolData?.distributionData?.map((d) => d.token)),
+      transactionData,
+      isPending,
+    }
+
+    const { rewardsPerToken = [], rewardTokenAddresses = [], ...rest } = rewardResult
 
     const rewardCurrencies = (rewardTokenAddresses as string[])
       .reduce<TokenInfo[]>((result, address) => {
@@ -147,7 +148,7 @@ export function useMerklInfo(poolAddress: string | null): {
       refreshData: refetch,
       merklApr,
     }
-  }, [chainId, data, lists, refetch, merklApr])
+  }, [chainId, data, lists, refetch, merklApr, isPending, poolAddress])
 }
 
 export default function useMerkl(poolAddress: string | null) {
