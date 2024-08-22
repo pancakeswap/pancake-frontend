@@ -3318,7 +3318,7 @@
   "USDV Disclaimer": "Isenção do USDV",
   "Verified USD ($USDV), is a product offered by USDV.money and is not associated with PancakeSwap.": "USD verificado ($USDV), é um produto oferecido pela USDV.money e não está associado à PancakeSwap.",
   "By checking this box, I understand that I am using USDV at my own risk. I accept full responsibility for any losses incurred due to my actions.": "Ao marcar esta caixa, reconheço que estou utilizando o USDV por minha própria conta e risco. Assumo total responsabilidade por quaisquer perdas decorrentes das minhas ações.",
-  "Users who deposit funds into this vault will earn Pearls by Swell. To track your Pearls balance, visit": "Usuários que depositarem fundos neste cofre receberão Pearls através do Swell. Para verificar o saldo de seus Pearls, acesse",
+  "Users who deposit funds into this farm will earn Black Pearls by Swell. To track your balance, visit": "Users who deposit funds into this farm will earn Black Pearls by Swell. To track your balance, visit",
   "Swell's website": "Site do Swell",
   "Done": "Concluído",
   "Single-Sided Strategy": "Estratégia unitária",
@@ -3330,7 +3330,6 @@
   "View Migrated Position": "Visualizar posição migrada",
   "Renew your veCAKE position to continue enjoying the benefits of weekly CAKE yield, revenue share, gauges voting, farm yield boosting, participating in IFOs, and so much more!": "Renove sua posição veCAKE para continuar desfrutando dos benefícios do rendimento semanal do CAKE, participação na receita, votação de indicadores, aumento do rendimento de farm, participação em IFOs e muito mais!",
   "Exact number: %numberWithFullDigits%": "Número exato: %numberWithFullDigits%",
-  "Please note that the Pearls earned from this vault will only appear in your balance at a later time.": "Observe que as Pearls ganhas com este cofre só aparecerão posteriormente em seu saldo.",
   "Fee saved": "Taxa economizada",
   "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "Economia no PancakeSwap em comparação com os principais DEXs que cobram taxas de interface",
   "Gauge Not Found": "Indicador não encontrado",
@@ -3516,5 +3515,8 @@
   "Enable Notifications From PancakeSwap": "Enable Notifications From PancakeSwap",
   "Subscribe to stay informed on the latest news and updates that PancakeSwap has to offer.": "Subscribe to stay informed on the latest news and updates that PancakeSwap has to offer.",
   "Pancake4ever! Celebrate PancakeSwap's 4th Birthday with us!": "Pancake4ever! Celebrate PancakeSwap's 4th Birthday with us!",
-  "Join Now": "Join Now"
+  "Join Now": "Join Now",
+  "Users who deposit liquidity into this pool will earn Pills by": "Users who deposit liquidity into this pool will earn Pills by",
+  "Usual": "Usual",
+  "retroactively.": "retroactively."
 }
