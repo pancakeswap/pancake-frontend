@@ -1,14 +1,11 @@
-import { Protocol } from '@pancakeswap/farms'
 import { useLatestTxReceipt } from 'state/farmsV4/state/accountPositions/hooks/useLatestTxReceipt'
 import { useTranslation } from '@pancakeswap/localization'
-import { Currency } from '@pancakeswap/swap-sdk-core'
 import { Button, Flex, useModalV2 } from '@pancakeswap/uikit'
 import { useCallback, useMemo } from 'react'
 import styled from 'styled-components'
 import { logGTMClickStakeFarmEvent } from 'utils/customGTMEventTracking'
 import useFarmV3Actions from 'views/Farms/hooks/v3/useFarmV3Actions'
 import { useCheckShouldSwitchNetwork } from 'views/universalFarms/hooks'
-import { useIsFarmLive } from 'views/universalFarms/hooks/useIsFarmLive'
 import { V3StakeModal } from '../Modals/V3StakeModal'
 import { StopPropagation } from '../StopPropagation'
 
@@ -17,25 +14,21 @@ type ActionPanelProps = {
   outOfRange: boolean
   tokenId?: bigint
   isStaked?: boolean
+  isFarmLive?: boolean
   detailMode?: boolean
   modalContent: React.ReactNode
-  currency0: Currency
-  currency1: Currency
-  fee: number
   chainId: number
 }
 
 export const V3PositionActions = ({
+  isFarmLive,
   chainId,
-  currency0,
-  currency1,
   isStaked,
   removed,
   outOfRange,
   tokenId,
   modalContent,
   detailMode,
-  fee,
 }: ActionPanelProps) => {
   const { t } = useTranslation()
   const [, setLatestTxReceipt] = useLatestTxReceipt()
@@ -45,48 +38,41 @@ export const V3PositionActions = ({
   })
   const stakeModal = useModalV2()
   const { switchNetworkIfNecessary, isLoading: isSwitchingNetwork } = useCheckShouldSwitchNetwork()
-  const isFarmLive = useIsFarmLive({
-    protocol: Protocol.V3,
-    chainId,
-    currency0,
-    currency1,
-    fee,
-  })
 
   const handleStakeAndCheckInactive = useCallback(async () => {
     logGTMClickStakeFarmEvent()
     if (outOfRange && !isStaked) {
       stakeModal.onOpen()
     } else {
-      const shouldSwitch = await switchNetworkIfNecessary(currency0.chainId)
+      const shouldSwitch = await switchNetworkIfNecessary(chainId)
       if (!shouldSwitch) {
         await onStake()
       }
     }
-  }, [isStaked, onStake, outOfRange, stakeModal, switchNetworkIfNecessary, currency0.chainId])
+  }, [isStaked, onStake, outOfRange, stakeModal, switchNetworkIfNecessary, chainId])
 
   const handleStake = useCallback(async () => {
     logGTMClickStakeFarmEvent()
-    const shouldSwitch = await switchNetworkIfNecessary(currency0.chainId)
+    const shouldSwitch = await switchNetworkIfNecessary(chainId)
     if (!shouldSwitch) {
       await onStake()
     }
-  }, [onStake, switchNetworkIfNecessary, currency0.chainId])
+  }, [onStake, switchNetworkIfNecessary, chainId])
 
   const handleUnStake = useCallback(async () => {
-    const shouldSwitch = await switchNetworkIfNecessary(currency0.chainId)
+    const shouldSwitch = await switchNetworkIfNecessary(chainId)
     if (!shouldSwitch) {
       await onUnstake()
       stakeModal.onDismiss()
     }
-  }, [onUnstake, switchNetworkIfNecessary, currency0.chainId, stakeModal])
+  }, [onUnstake, switchNetworkIfNecessary, chainId, stakeModal])
 
   const handleHarvest = useCallback(async () => {
-    const shouldSwitch = await switchNetworkIfNecessary(currency0.chainId)
+    const shouldSwitch = await switchNetworkIfNecessary(chainId)
     if (!shouldSwitch) {
       await onHarvest()
     }
-  }, [onHarvest, switchNetworkIfNecessary, currency0.chainId])
+  }, [onHarvest, switchNetworkIfNecessary, chainId])
 
   const stakeButton = useMemo(
     () => (

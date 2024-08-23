@@ -19,7 +19,6 @@ import { getUniversalBCakeWrapperForPool } from 'state/farmsV4/state/poolApr/fet
 import { PoolInfo } from 'state/farmsV4/state/type'
 import { Address } from 'viem'
 import { useCheckShouldSwitchNetwork } from 'views/universalFarms/hooks'
-import { useIsFarmLive } from 'views/universalFarms/hooks/useIsFarmLive'
 import { useV2FarmActions } from 'views/universalFarms/hooks/useV2FarmActions'
 import { sumApr } from 'views/universalFarms/utils/sumApr'
 import { DepositStakeAction, HarvestAction, ModifyStakeActions } from './StakeActions'
@@ -32,6 +31,7 @@ type V2PositionActionsProps = {
   isStaked?: boolean
   tvlUsd?: `${number}` | number | undefined
   poolInfo: PoolInfo
+  isFarmLive?: boolean
 }
 
 const StyledAutoRow = styled(AutoRow)`
@@ -208,13 +208,7 @@ const useWithdrawModal = (
 }
 
 const V2FarmingAction: React.FC<V2PositionActionsProps> = (props) => {
-  const { data, chainId, lpAddress, pid, tvlUsd } = props
-  const isFarmLive = useIsFarmLive({
-    protocol: data.protocol,
-    chainId,
-    currency0: data.pair.token0,
-    currency1: data.pair.token1,
-  })
+  const { data, chainId, lpAddress, pid, tvlUsd, isFarmLive } = props
   const { switchNetworkIfNecessary } = useCheckShouldSwitchNetwork()
   const onPresentDeposit = useDepositModal(props)
   const onPresentWithdraw = useWithdrawModal(data, lpAddress, chainId, pid, tvlUsd)

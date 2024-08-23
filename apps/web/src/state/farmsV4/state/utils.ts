@@ -1,3 +1,5 @@
+import BN from 'bignumber.js'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { Protocol, UNIVERSAL_FARMS } from '@pancakeswap/farms'
 import { LegacyRouter } from '@pancakeswap/smart-router/legacy-router'
 import { Token } from '@pancakeswap/swap-sdk-core'
@@ -71,4 +73,11 @@ export const parseFarmPools = (
       isFarming: !!options?.isFarming,
     } satisfies PoolInfo
   })
+}
+
+export const getPoolMultiplier = (allocPoint: bigint) => {
+  if (typeof allocPoint === 'undefined') {
+    return `0X`
+  }
+  return `${+new BN(allocPoint.toString()).div(10).toString()}X`
 }
