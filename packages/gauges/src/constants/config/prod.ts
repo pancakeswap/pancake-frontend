@@ -5063,8 +5063,8 @@ export const CONFIG_PROD: GaugeConfig[] = [
     gid: 511,
     pairName: 'mBTC-WBTC',
     address: '0xaB9dEBAED21270832cCdf54a7461A8E4B133B57A',
-    chainId: ChainId.BSC,
+    chainId: ChainId.ETHEREUM,
     type: GaugeType.StableSwap,
-    tokenAddresses: [bscTokens.btcb.address, bscTokens.kbtc.address],
+    tokenAddresses: [ethereumTokens.mBtc.address, ethereumTokens.wbtc.address],
   },
 ]
