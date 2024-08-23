@@ -2980,7 +2980,6 @@
   "All Your DeFi Updates, All in One Place": "Tutti i tuoi aggiornamenti DeFi, tutto in un unico posto",
   "Your voting power is determined by the number of veCAKE you have at the block detailed above. CAKE held in other places does NOT contribute to your voting power.": "Il tuo potere di voto è determinato dal numero di veCAKE che hai tenuto nel blocco di seguito indicato. Il CAKE tenuto altrove NON contribuisce al tuo potere di voto.",
   "Once confirmed, voting action cannot be undone.": "Una volta confermata, l'azione di voto non può essere annullata.",
-  "Web3 Notifications (BETA) trial available": "Versione di prova Web3 Notifications (BETA) disponibile",
   "selected": "selezionato",
   "Collapse": "Estendi",
   "Days": "Giorni",
@@ -3318,7 +3317,7 @@
   "USDV Disclaimer": "Nota su USDV",
   "Verified USD ($USDV), is a product offered by USDV.money and is not associated with PancakeSwap.": "Verified USD ($USDV) è un prodotto offerto da USDV.money e non è associato a PancakeSwap.",
   "By checking this box, I understand that I am using USDV at my own risk. I accept full responsibility for any losses incurred due to my actions.": "Spuntando questa casella, capisco che sto utilizzando USDV a mio rischio e pericolo. Accetto la piena responsabilità per eventuali perdite subite a causa delle mie azioni.",
-  "Users who deposit funds into this farm will earn Black Pearls by Swell. To track your balance, visit": "Users who deposit funds into this farm will earn Black Pearls by Swell. To track your balance, visit",
+  "Users who deposit funds into this farm will earn Black Pearls by Swell. To track your balance, visit": "Gli utenti che depositano fondi in questa farm guadagneranno Black Pearls di Swell. Per monitorare il tuo saldo, visita",
   "Swell's website": "Sito web di Swell",
   "Done": "Fatto",
   "Single-Sided Strategy": "Strategia unilaterale",
@@ -3382,7 +3381,7 @@
   "AI %result%": "IA %result%",
   "Lost": "Perde",
   "Last price from Binance API": "Ultimo prezzo dall'API Binance",
-  "%against%AI Prediction": "%against%AI Prediction",
+  "%against%AI Prediction": "%against% previsione IA",
   "Against ": "Contro ",
   "Follow": "Segui",
   "Against": "Contro",
@@ -3516,7 +3515,8 @@
   "Subscribe to stay informed on the latest news and updates that PancakeSwap has to offer.": "Iscriviti per non perderti le ultime novità e gli aggiornamenti che PancakeSwap ha da offrire.",
   "Pancake4ever! Celebrate PancakeSwap's 4th Birthday with us!": "Pancake4ever! Festeggia con noi il 4° compleanno di PancakeSwap!",
   "Join Now": "Partecipa subito",
-  "Users who deposit liquidity into this pool will earn Pills by": "Users who deposit liquidity into this pool will earn Pills by",
-  "Usual": "Usual",
-  "retroactively.": "retroactively."
+  "Web3 Notifications Now Live!": "Web3 Notifications Now Live!",
+  "Users who deposit liquidity into this pool will earn Pills by": "Gli utenti che depositano liquidità in questo pool guadagneranno Pills di",
+  "Usual": "Solito",
+  "retroactively.": "retroattivamente."
 }
