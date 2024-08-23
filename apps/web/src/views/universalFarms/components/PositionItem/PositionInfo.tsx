@@ -51,6 +51,7 @@ export const PositionInfo = memo(
     amount1,
     pool,
     userPosition,
+    detailMode,
   }: PositionInfoProps) => {
     const { t } = useTranslation()
     const { theme } = useTheme()
@@ -126,7 +127,7 @@ export const PositionInfo = memo(
                   <V2PoolPositionAprButton pool={pool} userPosition={userPosition as V2LPDetail | StableLPDetail} />
                 )
               ) : (
-                <PoolGlobalAprButton pool={pool} />
+                <PoolGlobalAprButton pool={pool} detailMode={detailMode} />
               )
             ) : (
               <Skeleton width={60} />
