@@ -3277,4 +3277,12 @@ export const bscTokens = {
     'Kinza Babylon Staked BTC',
     'https://kinza.finance/',
   ),
+  wxusdt: new ERC20Token(
+    ChainId.BSC,
+    '0x524bC91Dc82d6b90EF29F76A3ECAaBAffFD490Bc',
+    6,
+    'kBTC',
+    'Wormhole Wrapped USDT',
+    'https://wormhole.com/',
+  ),
 }

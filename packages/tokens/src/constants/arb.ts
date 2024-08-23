@@ -431,4 +431,12 @@ export const arbitrumTokens = {
     'SEED',
     'https://garden.finance/',
   ),
+  wxusdt: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0xE4728F3E48E94C6DA2B53610E677cc241DAFB134',
+    6,
+    'wxUSDT',
+    'Wormhole Wrapped USDT',
+    'https://wormhole.com/',
+  ),
 }
