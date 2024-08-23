@@ -289,7 +289,9 @@ export const TransactionsTable: React.FC<TransactionTableProps> = ({ transaction
         {sortedTransactions.map((d) => {
           if (d) {
             return (
-              <React.Fragment key={`${d.transactionHash}/${d.timestamp}/${d.type}/${d.token0}/transactionRecord`}>
+              <React.Fragment
+                key={`${d.transactionHash}/${d.timestamp}/${d.type}/${d.token0.wrapped.address}/${d.token1.wrapped.address}/transactionRecord`}
+              >
                 <DataRow transaction={d} />
                 <Break />
               </React.Fragment>

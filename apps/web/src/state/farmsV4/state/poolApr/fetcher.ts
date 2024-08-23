@@ -335,6 +335,8 @@ const calcV2PoolApr = ({
     value: baseApr.toString() as `${number}`,
     boost: multiplier && baseApr.gt(0) ? (baseApr.times(multiplier).toString() as `${number}`) : undefined,
     cakePerYear,
+    userTvlUsd: farmingTVLUsd,
+    totalSupply,
   }
 }
 

@@ -37,6 +37,8 @@ export type CakeApr = Record<
     boost?: `${number}`
     poolWeight?: BigNumber
     cakePerYear?: BigNumber
+    userTvlUsd?: BigNumber
+    totalSupply?: bigint
   }
 >
 export const cakeAprAtom = atom<CakeApr>({})
