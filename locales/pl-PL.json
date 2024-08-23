@@ -2980,7 +2980,6 @@
   "All Your DeFi Updates, All in One Place": "Wszystkie twoje aktualizacje DeFi, wszystkie w jednym miejscu",
   "Your voting power is determined by the number of veCAKE you have at the block detailed above. CAKE held in other places does NOT contribute to your voting power.": "Twoja siła głosu zależy od liczby CAKE posiadanych przez Ciebie w bloku wyszczególnionym powyżej. CAKE posiadane w innych miejscach NIE przyczyniają się do Twojej siły głosu.",
   "Once confirmed, voting action cannot be undone.": "Po potwierdzeniu zagłosowania nie można go cofnąć.",
-  "Web3 Notifications (BETA) trial available": "Dostępna wersja próbna powiadomień Web3 (BETA)",
   "selected": "wybrano",
   "Collapse": "Zwiń",
   "Days": "Dni",
@@ -3516,6 +3515,7 @@
   "Subscribe to stay informed on the latest news and updates that PancakeSwap has to offer.": "Subskrybuj, aby być na bieżąco z najnowszymi wiadomościami i aktualizacjami, które PancakeSwap ma do zaoferowania.",
   "Pancake4ever! Celebrate PancakeSwap's 4th Birthday with us!": "Pancake4ever! Świętuj z nami 4. urodziny PancakeSwap!",
   "Join Now": "Dołącz teraz",
+  "Web3 Notifications Now Live!": "Web3 Notifications Now Live!",
   "Users who deposit liquidity into this pool will earn Pills by": "Użytkownicy, którzy wpłacą płynność do tej puli, zarobią Pills poprzez",
   "Usual": "Zwykle",
   "retroactively.": "z mocą wsteczną."
