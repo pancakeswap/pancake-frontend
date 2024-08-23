@@ -20,8 +20,6 @@ const { liquidStakingBunnyBg3, liquidStakingBunnyBg4 } = {
   liquidStakingBunnyBg4: `${ASSET_CDN}/web/banners/star-2.png`,
 }
 
-const pancakeSwapLogo = `${ASSET_CDN}/web/banners/ethXpancakeswap.png`
-
 const fading = keyframes`
   from {
     opacity: 0.9;
