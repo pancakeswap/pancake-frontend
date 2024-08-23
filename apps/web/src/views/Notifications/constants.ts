@@ -72,7 +72,7 @@ export const PancakeNotifications: {
     return {
       title: t('Welcome to PancakeSwap Notifications'),
       body: t(
-        'You are now susbscribed and will recieve alerts and updates on PCS features. If you dont want to recieve notifications you can unsubscribe at any time.',
+        'You are now susbscribed and will receive alerts and updates on PCS features. If you dont want to receive notifications you can unsubscribe at any time.',
       ),
       icon: `https://pancakeswap.finance/logo.png`,
       type: SubsctiptionType.Alerts,

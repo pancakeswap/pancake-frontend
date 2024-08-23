@@ -45,7 +45,7 @@ const EnableNotificationsTooltip = ({
         tooltipContent={
           <Text as="p">
             {t(
-              'By Subscribing to PancakeSwap Notifications you will be able to recieve updates on your buy crypto purchases',
+              'By Subscribing to PancakeSwap Notifications you will be able to receive updates on your buy crypto purchases',
             )}
           </Text>
         }
