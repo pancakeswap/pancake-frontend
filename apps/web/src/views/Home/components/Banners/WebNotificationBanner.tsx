@@ -204,7 +204,7 @@ const WebNotificationBanner = () => {
           {!isMobile && <Header>{t('All Your DeFi Updates, All in One Place')}</Header>}
           <Flex style={{ gap: isMobile ? 4 : 16 }}>
             <Link
-              href="https://blog.pancakeswap.finance/articles/pancake-swap-s-web3-notification-official-launch-is-live"
+              href="https://blog.pancakeswap.finance/articles/pancake-swap-s-web3-notifications-official-launch-is-live"
               external
               style={{ textDecoration: 'none' }}
             >
