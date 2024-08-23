@@ -21,6 +21,7 @@ import { Address } from 'viem'
 import { useCheckShouldSwitchNetwork } from 'views/universalFarms/hooks'
 import { useV2FarmActions } from 'views/universalFarms/hooks/useV2FarmActions'
 import { sumApr } from 'views/universalFarms/utils/sumApr'
+import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { DepositStakeAction, HarvestAction, ModifyStakeActions } from './StakeActions'
 
 type V2PositionActionsProps = {
@@ -123,12 +124,23 @@ const useDepositModal = (props: V2PositionActionsProps) => {
     }
   }, [setLatestTxReceipt, fetchWithCatchTxError, onApprove, t, toastSuccess])
 
+  const addLiquidityUrl = useMemo(() => {
+    const liquidityUrlPathParts = getLiquidityUrlPathParts({
+      quoteTokenAddress: poolInfo.token0.wrapped.address,
+      tokenAddress: poolInfo.token1.address,
+      chainId: poolInfo.chainId,
+    })
+    return `/add/${liquidityUrlPathParts}`
+  }, [poolInfo.chainId, poolInfo.token0.wrapped.address, poolInfo.token1.address])
+
   const [onPresentDeposit] = useModal(
     <FarmWidget.DepositModal
+      addLiquidityUrl={addLiquidityUrl}
       account={account}
       pid={pid}
       lpTotalSupply={totalSupply}
       tokenName={lpSymbol}
+      lpLabel={lpSymbol}
       hideTokenName
       max={nativeBalance}
       stakedBalance={stakedBalance}
