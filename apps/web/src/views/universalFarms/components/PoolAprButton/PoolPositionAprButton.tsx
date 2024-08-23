@@ -5,12 +5,13 @@ import BigNumber from 'bignumber.js'
 import { useCakePrice } from 'hooks/useCakePrice'
 import { useCurrencyUsdPrice } from 'hooks/useCurrencyUsdPrice'
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useExtraV3PositionInfo, usePoolApr } from 'state/farmsV4/hooks'
 import { PositionDetail, StableLPDetail, V2LPDetail } from 'state/farmsV4/state/accountPositions/type'
 import { PoolInfo } from 'state/farmsV4/state/type'
 import { useV3FormState } from 'views/AddLiquidityV3/formViews/V3FormView/form/reducer'
 import { useLmPoolLiquidity } from 'views/Farms/hooks/useLmPoolLiquidity'
+import { useMyPositions } from 'views/PoolDetail/components/MyPositionsContext'
 import { useEstimateUserMultiplier } from 'views/universalFarms/hooks/useEstimateUserMultiplier'
 import { PoolAprButton } from './PoolAprButton'
 
@@ -30,7 +31,13 @@ export const V2PoolPositionAprButton: React.FC<PoolPositionAprButtonProps<Stable
   pool,
   userPosition,
 }) => {
-  const { lpApr, cakeApr, merklApr } = useV2PositionApr(pool, userPosition)
+  const { lpApr, cakeApr, merklApr, numerator, denominator } = useV2PositionApr(pool, userPosition)
+  const { updateTotalApr } = useMyPositions()
+
+  useEffect(() => {
+    if (!numerator.isZero())
+      updateTotalApr(`${pool.chainId}:${pool.lpAddress}:${userPosition.isStaked}`, numerator, denominator)
+  }, [denominator, numerator, pool.chainId, pool.lpAddress, updateTotalApr, userPosition.isStaked])
 
   return <PoolAprButton pool={pool} lpApr={lpApr} cakeApr={cakeApr} merklApr={merklApr} />
 }
@@ -39,7 +46,13 @@ export const V3PoolPositionAprButton: React.FC<PoolPositionAprButtonProps<Positi
   pool,
   userPosition,
 }) => {
-  const { lpApr, cakeApr, merklApr } = useV3PositionApr(pool, userPosition)
+  const { lpApr, cakeApr, merklApr, numerator, denominator } = useV3PositionApr(pool, userPosition)
+  const { updateTotalApr } = useMyPositions()
+
+  useEffect(() => {
+    if (!numerator.isZero())
+      updateTotalApr(`${pool.chainId}:${pool.lpAddress}:${userPosition.tokenId}`, numerator, denominator)
+  }, [denominator, numerator, pool.chainId, pool.lpAddress, updateTotalApr, userPosition.tokenId])
 
   return <PoolAprButton pool={pool} lpApr={lpApr} cakeApr={cakeApr} merklApr={merklApr} userPosition={userPosition} />
 }
@@ -55,9 +68,29 @@ export const V3PoolDerivedAprButton: React.FC<Omit<PoolPositionAprButtonProps<Po
 export const useV2PositionApr = (pool: PoolInfo, userPosition: StableLPDetail | V2LPDetail) => {
   const key = useMemo(() => `${pool?.chainId}:${pool?.lpAddress}` as const, [pool?.chainId, pool?.lpAddress])
   const { lpApr: globalLpApr, cakeApr: globalCakeApr, merklApr } = usePoolApr(key, pool)
+  const numerator = useMemo(() => {
+    const lpAprNumerator = new BigNumber(globalLpApr).times(globalCakeApr?.userTvlUsd ?? BIG_ZERO)
+    const othersNumerator = new BigNumber(globalCakeApr?.boost ?? globalCakeApr?.value ?? 0)
+      .plus(merklApr)
+      .times(globalCakeApr?.userTvlUsd ?? BIG_ZERO)
+    return userPosition.isStaked ? lpAprNumerator.plus(othersNumerator) : lpAprNumerator
+  }, [
+    globalLpApr,
+    globalCakeApr?.userTvlUsd,
+    globalCakeApr?.boost,
+    globalCakeApr?.value,
+    merklApr,
+    userPosition.isStaked,
+  ])
+
+  const denominator = useMemo(() => {
+    return globalCakeApr?.userTvlUsd ?? BIG_ZERO
+  }, [globalCakeApr?.userTvlUsd])
 
   return {
     lpApr: parseFloat(globalLpApr) ?? 0,
+    numerator,
+    denominator,
     cakeApr: {
       ...globalCakeApr,
       value: String(parseFloat(globalCakeApr?.value) * userPosition.farmingBoosterMultiplier) as `${number}`,
@@ -71,7 +104,7 @@ export const useV3PositionApr = (pool: PoolInfo, userPosition: PositionDetail) =
   const key = useMemo(() => `${pool.chainId}:${pool.lpAddress}` as const, [pool.chainId, pool.lpAddress])
   const { data: estimateUserMultiplier } = useEstimateUserMultiplier(pool.chainId, userPosition.tokenId)
   const { removed, outOfRange, position } = useExtraV3PositionInfo(userPosition)
-  const { cakeApr: globalCakeApr, merklApr } = usePoolApr(key, pool)
+  const { cakeApr: globalCakeApr, merklApr: merklApr_ } = usePoolApr(key, pool)
   const lmPoolLiquidity = useLmPoolLiquidity(pool.lpAddress, pool.chainId)
   const { data: token0UsdPrice } = useCurrencyUsdPrice(pool.token0)
   const { data: token1UsdPrice } = useCurrencyUsdPrice(pool.token1)
@@ -147,11 +180,23 @@ export const useV3PositionApr = (pool: PoolInfo, userPosition: PositionDetail) =
       .toNumber()
     return apr
   }, [outOfRange, pool.fee24hUsd, pool.feeTier, pool.liquidity, removed, userPosition.liquidity, userTVLUsd])
+  const merklApr = outOfRange ? 0 : parseFloat(merklApr_ ?? 0) ?? 0
+
+  const numerator = useMemo(() => {
+    if (outOfRange || removed) return BIG_ZERO
+    return BigNumber(lpApr)
+      .plus(cakeApr.boost ?? cakeApr.value)
+      .plus(parseFloat(cakeApr.value) > 0 ? merklApr : 0)
+      .times(userTVLUsd)
+  }, [cakeApr.boost, cakeApr.value, lpApr, merklApr, outOfRange, removed, userTVLUsd])
+  const denominator = userTVLUsd
 
   return {
+    denominator,
+    numerator,
     lpApr,
     cakeApr,
-    merklApr: outOfRange ? 0 : parseFloat(merklApr ?? 0) ?? 0,
+    merklApr,
   }
 }
 

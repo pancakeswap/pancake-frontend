@@ -17,6 +17,7 @@ import {
   Text,
   useToast,
 } from '@pancakeswap/uikit'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { DoubleCurrencyLogo } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import Divider from 'components/Divider'
@@ -41,8 +42,10 @@ import {
 } from 'views/universalFarms/components'
 import { useCheckShouldSwitchNetwork } from 'views/universalFarms/hooks'
 import { useV2FarmActions } from 'views/universalFarms/hooks/useV2FarmActions'
+import { displayApr } from 'views/universalFarms/utils/displayApr'
 import { formatDollarAmount } from 'views/V3Info/utils/numbers'
 import { useV3Positions } from '../hooks/useV3Positions'
+import { MyPositionsProvider, useMyPositions } from './MyPositionsContext'
 import { V2PoolEarnings, V3PoolEarnings } from './PoolEarnings'
 
 export enum PositionFilter {
@@ -75,6 +78,14 @@ const StyledImage = styled(Image)`
 `
 
 export const MyPositions: React.FC<{ poolInfo: PoolInfo }> = ({ poolInfo }) => {
+  return (
+    <MyPositionsProvider>
+      <MyPositionsInner poolInfo={poolInfo} />
+    </MyPositionsProvider>
+  )
+}
+
+const MyPositionsInner: React.FC<{ poolInfo: PoolInfo }> = ({ poolInfo }) => {
   const { t } = useTranslation()
   const [count, setCount] = useState(0)
   const [totalLiquidityUSD, setTotalLiquidityUSD] = useState('0')
@@ -103,6 +114,21 @@ export const MyPositions: React.FC<{ poolInfo: PoolInfo }> = ({ poolInfo }) => {
   const [loading, setLoading] = useState(false)
   const { switchNetworkIfNecessary } = useCheckShouldSwitchNetwork()
 
+  const { totalApr } = useMyPositions()
+  const [numerator, denominator] = useMemo(
+    () =>
+      Object.values(totalApr).reduce(
+        (acc, v) => {
+          return [acc[0].plus(v.numerator), acc[1].plus(v.denominator)]
+        },
+        [BIG_ZERO, BIG_ZERO],
+      ),
+    [totalApr],
+  )
+  const totalAprValue = useMemo(() => {
+    return denominator.isZero() ? 0 : numerator.div(denominator).toNumber()
+  }, [denominator, numerator])
+
   const handleHarvestAll = useCallback(async () => {
     if (loading) return
     const shouldSwitch = await switchNetworkIfNecessary(poolInfo.chainId)
@@ -124,6 +150,7 @@ export const MyPositions: React.FC<{ poolInfo: PoolInfo }> = ({ poolInfo }) => {
       <Text as="h3" bold fontSize={24}>
         {t('My Positions')}
       </Text>
+      <Text color="textSubtle">{t('My Total APR')}</Text>
       <Grid gridGap={24} gridTemplateColumns={['1fr', '1fr', '1fr', '1fr 2fr']}>
         <OverviewCard innerCardProps={{ p: 24 }}>
           <AutoColumn gap="lg">
@@ -137,7 +164,7 @@ export const MyPositions: React.FC<{ poolInfo: PoolInfo }> = ({ poolInfo }) => {
               </Row>
               <Row justifyContent="space-between">
                 <Text color="textSubtle">{t('My Total APR')}</Text>
-                <Text>0%</Text>
+                <Text>{displayApr(totalAprValue)}</Text>
               </Row>
               <Row justifyContent="space-between">
                 <Text color="textSubtle">{t('Earning')}</Text>
