@@ -139,7 +139,7 @@ export const baseTokens = {
     '0x1fba65dE0a9cBD2D1DF82d141897042d36Bb6c86',
     18,
     'WIF',
-    'Wdogwifhat',
+    'dogwifhat',
     'https://dogwifcoin.org/',
   ),
 }
