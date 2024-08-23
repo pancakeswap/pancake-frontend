@@ -11,6 +11,15 @@ export type FetchQuoteParams<P extends Pool = Pool> = {
   route: QuoteRoute<P>
 }
 
+export type FetchQuotesParams<P extends Pool = Pool> = {
+  client: PublicClient
+  routes: QuoteRoute<P>[]
+}
+
 export type FetchQuote<P extends Pool = Pool> = (
   params: FetchQuoteParams<P>,
 ) => Promise<CurrencyAmount<Currency> | undefined>
+
+export type FetchQuotes<P extends Pool = Pool> = (
+  params: FetchQuotesParams<P>,
+) => Promise<(CurrencyAmount<Currency> | undefined)[]>

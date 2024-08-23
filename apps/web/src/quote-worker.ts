@@ -1,7 +1,7 @@
 import 'utils/workerPolyfill'
 
 import { TradeType } from '@pancakeswap/swap-sdk-core'
-import { fetchV3Quote } from '@pancakeswap/routing-sdk-addon-quoter'
+import { fetchQuotes } from '@pancakeswap/routing-sdk-addon-quoter'
 import { findBestTrade } from '@pancakeswap/routing-sdk'
 import { isV3Pool } from '@pancakeswap/routing-sdk-addon-v3'
 import { SmartRouter, V4Router } from '@pancakeswap/smart-router'
@@ -256,18 +256,15 @@ addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
         }
         const { graph, ...trade } = t
         if (trade.routes[0].pools.every(isV3Pool)) {
-          const { pools: _pools, path: _path, inputAmount, outputAmount } = trade.routes[0]
-          const _amount = tradeType === TradeType.EXACT_INPUT ? inputAmount : outputAmount
-          fetchV3Quote({
-            route: {
-              pools: _pools,
-              path: _path,
-              amount: _amount,
-            },
-            client: getViemClients({ chainId: _amount.currency.chainId }),
+          fetchQuotes({
+            routes: trade.routes.map((r) => ({
+              ...r,
+              amount: tradeType === TradeType.EXACT_INPUT ? r.inputAmount : r.outputAmount,
+            })),
+            client: getViemClients({ chainId: trade.inputAmount.currency.chainId }),
           })
             .then((res) => {
-              console.log('[QUOTE]', res?.quotient, outputAmount.quotient)
+              console.log('[QUOTE]', res)
             })
             .catch((err) => {
               console.error('[QUOTE]', err)
