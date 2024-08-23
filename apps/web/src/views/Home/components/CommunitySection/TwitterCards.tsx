@@ -13,6 +13,7 @@ import {
 import useTheme from 'hooks/useTheme'
 import { useMemo } from 'react'
 import { styled } from 'styled-components'
+import { useIntersectionObserver } from '@pancakeswap/hooks'
 import { useLatestArticle } from '../../hooks/useAllArticle'
 
 export const BlogImage = styled.div`
@@ -155,7 +156,8 @@ export const TwitterCards: React.FC = () => {
 
 export const BlogCard: React.FC = () => {
   const { t } = useTranslation()
-  const { articlesData } = useLatestArticle()
+  const { observerRef, isIntersecting } = useIntersectionObserver()
+  const { articlesData } = useLatestArticle(isIntersecting)
   const { theme } = useTheme()
   return (
     <Wrapper
@@ -167,6 +169,7 @@ export const BlogCard: React.FC = () => {
         )
       }}
       style={{ cursor: 'pointer' }}
+      ref={observerRef}
     >
       <Text bold mb="24px">
         {t('Latest Blog Post')}

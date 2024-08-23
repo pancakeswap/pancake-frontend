@@ -3,6 +3,7 @@ import { ChevronLeftIcon, ChevronRightIcon, Flex, Text } from '@pancakeswap/uiki
 import useTheme from 'hooks/useTheme'
 import { styled } from 'styled-components'
 import { useRef, useCallback } from 'react'
+import { useIntersectionObserver } from '@pancakeswap/hooks'
 import { useAllNewsArticle } from '../../hooks/useAllArticle'
 
 const NewsCard = styled.div`
@@ -90,7 +91,8 @@ export const NewsSection: React.FC = () => {
   const { theme } = useTheme()
   const { t } = useTranslation()
   const scrollWrapper = useRef<HTMLDivElement>(null)
-  const { articlesData, isFetching } = useAllNewsArticle()
+  const { observerRef, isIntersecting } = useIntersectionObserver()
+  const { articlesData, isFetching } = useAllNewsArticle(isIntersecting)
   const onButtonClick = useCallback((scrollTo: 'next' | 'pre') => {
     const scrollTarget = scrollWrapper.current
     if (!scrollTarget) return
@@ -101,7 +103,7 @@ export const NewsSection: React.FC = () => {
     scrollTarget.scrollLeft -= 280
   }, [])
   return (
-    <Flex flexDirection="column" style={{ gap: 36 }}>
+    <Flex flexDirection="column" style={{ gap: 36 }} ref={observerRef}>
       <Flex justifyContent="center" style={{ gap: 8 }}>
         <Text fontSize={40} fontWeight={600} textAlign="center">
           {t('Featured')}
