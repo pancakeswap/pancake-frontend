@@ -1,6 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Button, Flex, Link, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Button, Flex, Link, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 
+import { PancakeSwapBadge } from '@pancakeswap/widgets-internal'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import Image from 'next/legacy/image'
 import { memo } from 'react'
@@ -196,13 +197,7 @@ const WebNotificationBanner = () => {
     >
       <S.Inner>
         <S.LeftWrapper position="relative" style={{ zIndex: 2 }}>
-          <Box height={isMobile ? '20px' : '29px'} mt={isMobile ? '-10px' : '0px'}>
-            {isMobile ? (
-              <Image src={pancakeSwapLogo} alt="pancakeSwapLogo" width={124} height={16} unoptimized />
-            ) : (
-              <Image src={pancakeSwapLogo} alt="liquidStakingTitle" width={136} height={20} unoptimized />
-            )}
-          </Box>
+          <PancakeSwapBadge />
           <StyledSubheading data-text={t('Web3 Notifications Now Live!')}>
             {t('Web3 Notifications Now Live!')}
           </StyledSubheading>
