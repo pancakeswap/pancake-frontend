@@ -63,8 +63,8 @@ const AprModal: React.FC<Omit<V2PoolAprModalProps, 'modal'>> = ({ poolInfo, comb
       tokenAddress: poolInfo.token1.address,
       chainId: poolInfo.chainId,
     })
-    return `${poolInfo.protocol}/add/${liquidityUrlPathParts}`
-  }, [poolInfo.chainId, poolInfo.protocol, poolInfo.token0.wrapped.address, poolInfo.token1.address])
+    return `/add/${liquidityUrlPathParts}`
+  }, [poolInfo.chainId, poolInfo.token0.wrapped.address, poolInfo.token1.address])
 
   const stableConfig = useMemo((): LegacyStableSwapPair | undefined => {
     if (poolInfo.protocol === 'stable') {
