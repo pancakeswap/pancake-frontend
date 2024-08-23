@@ -31,7 +31,7 @@ const useAddressListener = () => {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    return watchAccount(config, {
+    return watchAccount(config as any, {
       onChange(data, prevData) {
         if (prevData.status === 'connected' && data.status === 'connected' && prevData.chainId === data.chainId) {
           clearUserStates(dispatch, { chainId })

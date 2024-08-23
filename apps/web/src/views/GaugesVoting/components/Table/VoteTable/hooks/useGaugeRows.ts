@@ -50,7 +50,7 @@ const useSelectRowsWithQuery = (gauges: Gauge[] | undefined) => {
   )
 
   useEffect(() => {
-    const unwatch = watchAccount(config, {
+    const unwatch = watchAccount(config as any, {
       onChange: onAccountChange,
     })
     return () => unwatch()

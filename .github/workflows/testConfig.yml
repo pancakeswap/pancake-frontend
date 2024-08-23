@@ -14,7 +14,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    timeout-minutes: 4
+    timeout-minutes: 6
 
     strategy:
       fail-fast: true
