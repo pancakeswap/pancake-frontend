@@ -126,4 +126,20 @@ export const baseTokens = {
     'USDz',
     'https://www.zedxion.io/',
   ),
+  wxusdt: new ERC20Token(
+    ChainId.BASE,
+    '0xFf0C62A4979400841eFaA6faADb07Ac7d5C98b27',
+    6,
+    'wxUSDT',
+    'Wormhole Wrapped USDT',
+    'https://wormhole.com/',
+  ),
+  wif: new ERC20Token(
+    ChainId.BASE,
+    '0x1fba65dE0a9cBD2D1DF82d141897042d36Bb6c86',
+    18,
+    'WIF',
+    'dogwifhat',
+    'https://dogwifcoin.org/',
+  ),
 }

@@ -545,4 +545,12 @@ export const ethereumTokens = {
     'swBTC',
     'https://www.swellnetwork.io/',
   ),
+  mBtc: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0xbDf245957992bfBC62B07e344128a1EEc7b7eE3f',
+    8,
+    'mBTC',
+    'Liquid Staked BTC',
+    'https://www.babylon.magpiexyz.io',
+  ),
 }
