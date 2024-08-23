@@ -1,7 +1,10 @@
 import { useQuery, type QueryFunction } from '@tanstack/react-query'
 import { WALLET_API } from 'config/constants/endpoints'
-import { useCallback, useMemo } from 'react'
-import { createQueryKey } from '../types'
+import { useCallback, useEffect, useMemo } from 'react'
+import { Field } from 'state/buyCrypto/actions'
+import { useBuyCryptoActionHandlers } from 'state/buyCrypto/hooks'
+import { isFiat } from '../constants'
+import { OnRampUnit, createQueryKey } from '../types'
 
 const getFiatUsdRateQueryKey = createQueryKey<'fia-usd-rate', [currencyCode: string]>('fia-usd-rate')
 type GetFiatUsdRateKey = ReturnType<typeof getFiatUsdRateQueryKey>
@@ -35,11 +38,14 @@ export function useFiatUsdRate({ currencyCode = 'USD' }: { currencyCode: string 
 
 export function useFiatCurrencyAmount({
   currencyCode = 'USD',
-  value_,
+  unit,
+  value_ = 150,
 }: {
   currencyCode: string | undefined
+  unit: OnRampUnit
   value_?: number
 }) {
+  const { onUserInput } = useBuyCryptoActionHandlers()
   const { data: fiatUsdRate } = useFiatUsdRate({ currencyCode })
   const rate = currencyCode && currencyCode !== 'USD' ? fiatUsdRate : 1
 
@@ -48,12 +54,17 @@ export function useFiatCurrencyAmount({
       if (typeof rate !== 'number' || typeof value !== 'number') {
         return undefined
       }
-      return (value * rate).toFixed(2)
+      return Math.ceil(value * rate).toString()
     },
     [rate],
   )
 
   const fiatValue = useMemo(() => convertFiatValue(value_), [convertFiatValue, value_])
+
+  useEffect(() => {
+    if (!fiatValue || !isFiat(unit)) return
+    onUserInput(Field.INPUT, fiatValue)
+  }, [fiatValue, onUserInput, unit])
 
   return {
     convertFiatValue,

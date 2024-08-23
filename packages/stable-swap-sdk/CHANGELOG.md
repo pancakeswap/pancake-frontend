@@ -1,5 +1,14 @@
 # @pancakeswap/stable-swap-sdk
 
+## 1.0.16
+
+### Patch Changes
+
+- 103dd63: List USDT-BITU stable pool
+- Updated dependencies [103dd63]
+- Updated dependencies [c6e9e02]
+  - @pancakeswap/tokens@0.6.24
+
 ## 1.0.15
 
 ### Patch Changes

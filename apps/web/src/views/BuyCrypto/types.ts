@@ -8,6 +8,7 @@ import type {
   UseQueryOptions,
 } from '@tanstack/react-query'
 import type { ONRAMP_PROVIDERS, OnRampChainId } from './constants'
+import { ProviderAvailabilities } from './hooks/useProviderAvailabilities'
 
 export type Evaluate<type> = { [key in keyof type]: type[key] } & unknown
 
@@ -121,6 +122,7 @@ export type OnRampQuotesPayload = {
   fiatAmount: string | undefined
   network: OnRampChainId | undefined
   onRampUnit: OnRampUnit
+  providerAvailabilities: ProviderAvailabilities
 }
 
 export type OnRampLimitsPayload = {

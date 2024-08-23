@@ -1,5 +1,14 @@
 # @pancakeswap/pools
 
+## 5.1.31
+
+### Patch Changes
+
+- 1c1d186: Move finished pools
+- Updated dependencies [103dd63]
+- Updated dependencies [c6e9e02]
+  - @pancakeswap/tokens@0.6.24
+
 ## 5.1.30
 
 ### Patch Changes

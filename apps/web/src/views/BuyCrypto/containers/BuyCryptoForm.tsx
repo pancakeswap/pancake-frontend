@@ -1,9 +1,22 @@
 import { useDebounce } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
-import { AutoColumn, AutoRow, Box, Flex, Link, Row, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import {
+  AutoColumn,
+  AutoRow,
+  Box,
+  CloseIcon,
+  Flex,
+  IconButton,
+  Link,
+  Row,
+  Text,
+  useMatchBreakpoints,
+} from '@pancakeswap/uikit'
 import { Swap as SwapUI } from '@pancakeswap/widgets-internal'
 import { FiatOnRampModalButton } from 'components/FiatOnRampModal/FiatOnRampModal'
 import {
+  Suspense,
+  lazy,
   useCallback,
   useEffect,
   useMemo,
@@ -18,13 +31,14 @@ import { Field } from 'state/swap/actions'
 import { useTheme } from 'styled-components'
 import { v4 } from 'uuid'
 import { OnRampUnit, type OnRampProviderQuote } from 'views/BuyCrypto/types'
+import OnBoardingView from 'views/Notifications/containers/OnBoardingView'
 import { BuyCryptoSelector } from '../components/OnRampCurrencySelect'
 import { OnRampFlipButton } from '../components/OnRampFlipButton/OnRampFlipButton'
 import { PopOverScreenContainer } from '../components/PopOverScreen/PopOverScreen'
 import { ProviderGroupItem } from '../components/ProviderSelector/ProviderGroupItem'
 import { ProviderSelector } from '../components/ProviderSelector/ProviderSelector'
 import { TransactionFeeDetails } from '../components/TransactionFeeDetails/TransactionFeeDetails'
-import { formatQuoteDecimals, isFiat, onRampCurrenciesMap } from '../constants'
+import { formatQuoteDecimals, isFiat } from '../constants'
 import { useBtcAddressValidator, type GetBtcAddrValidationReturnType } from '../hooks/useBitcoinAddressValidator'
 import { useFiatCurrencyAmount } from '../hooks/useDefaultAmount'
 import { useIsBtc } from '../hooks/useIsBtc'
@@ -36,12 +50,19 @@ import InputExtended, { StyledVerticalLine } from '../styles'
 import { FormContainer } from './FormContainer'
 import { FormHeader } from './FormHeader'
 
+const EnableNotificationsTooltip = lazy(
+  () => import('../components/EnableNotificationTooltip/EnableNotificationsTooltip'),
+)
+interface NotificationsOnboardPopOverProps {
+  setShowNotificationsPopOver: Dispatch<SetStateAction<boolean>>
+  showNotificationsPopOver: boolean
+}
+
 interface OnRampCurrencySelectPopOverProps {
   quotes: OnRampProviderQuote[] | undefined
   selectedQuote: OnRampProviderQuote | undefined
   isFetching: boolean
   isError: boolean
-  inputError: string | undefined
   setSelectedQuote: (quote: OnRampProviderQuote) => void
   setShowProvidersPopOver: Dispatch<SetStateAction<boolean>>
   showProivdersPopOver: boolean
@@ -57,6 +78,7 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
 
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [showProivdersPopOver, setShowProvidersPopOver] = useState<boolean>(false)
+  const [showNotificationsPopOver, setShowNotificationsPopOver] = useState<boolean>(false)
   const [selectedQuote, setSelectedQuote] = useState<OnRampProviderQuote | undefined>(undefined)
   const [unit, setUnit] = useState<OnRampUnit>(OnRampUnit.Fiat)
 
@@ -67,13 +89,7 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
   const { onUserInput, onCurrencySelection, onSwitchTokens } = useBuyCryptoActionHandlers()
 
   const { cryptoCurrency, fiatCurrency, currencyIn, currencyOut } = useOnRampCurrencyOrder(unit)
-  const { data: validAddress, isError: btcError } = useBtcAddressValidator({ address: searchQuery, enabled: isBtc })
-  const { fiatValue: defaultAmt } = useFiatCurrencyAmount({ currencyCode: fiatCurrency?.symbol, value_: 150 })
-
-  const isInValidBtcAddress = useMemo(
-    () => Boolean(isBtc && !btcError && !validAddress?.result),
-    [validAddress?.result, isBtc, btcError],
-  )
+  const { fiatValue: defaultAmt } = useFiatCurrencyAmount({ currencyCode: fiatCurrency?.symbol, unit })
 
   const { inputError, amountError } = useLimitsAndInputError({
     typedValue: typedValue ?? '',
@@ -82,24 +98,33 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
     unit,
   })
 
-  const { data, isLoading, isError, refetch } = useOnRampQuotes({
+  const { data: validAddress, isError: btcQueryError } = useBtcAddressValidator({
+    address: searchQuery,
+    enabled: isBtc,
+  })
+
+  const isInValidBtcAddress = useMemo(() => {
+    return Boolean(!validAddress?.result && !btcQueryError && isBtc)
+  }, [isBtc, btcQueryError, validAddress?.result])
+
+  const {
+    data: quotes,
+    isLoading,
+    isError: quotesError,
+    refetch,
+  } = useOnRampQuotes({
     cryptoCurrency: cryptoCurrency?.symbol,
     fiatCurrency: fiatCurrency?.symbol,
     network: cryptoCurrency?.chainId,
     fiatAmount: typedValue,
+    providerAvailabilities,
     onRampUnit: unit,
     enabled: Boolean(!inputError),
   })
 
-  const { quotes, quotesError } = useMemo(() => {
-    const filteredQuotes = data?.quotes.filter((q) => providerAvailabilities[q.provider])
-    return { quotes: filteredQuotes, quotesError: isError || data?.quotes.length === 0 }
-  }, [data?.quotes, providerAvailabilities, isError])
-
-  const outputValue = useMemo((): string | undefined => {
+  const outputValue = useMemo(() => {
     if (inputError || !selectedQuote) return undefined
-    const { amount, quote } = selectedQuote
-    const output = isFiat(unit) ? quote : amount
+    const output = isFiat(unit) ? selectedQuote.quote : selectedQuote.amount
     return formatQuoteDecimals(output, unit)
   }, [unit, selectedQuote, inputError])
 
@@ -121,21 +146,13 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
     if (searchQuery !== '') setSearchQuery('')
     if (unit === OnRampUnit.Crypto) onFlip()
     if (defaultAmt) handleTypeInput(defaultAmt)
-    onCurrencySelection(Field.INPUT, onRampCurrenciesMap.BNB_56)
-  }, [handleTypeInput, defaultAmt, unit, onFlip, searchQuery, onCurrencySelection])
+  }, [handleTypeInput, defaultAmt, unit, onFlip, searchQuery])
 
   useEffect(() => {
-    if (!quotes || quotesError) return
-    if (bestQuoteRef.current !== quotes[0]) {
-      bestQuoteRef.current = quotes[0]
-      setSelectedQuote(quotes[0])
-    }
-  }, [quotes, quotesError])
-
-  useEffect(() => {
-    if (!defaultAmt || !isFiat(unit)) return
-    handleTypeInput(defaultAmt)
-  }, [defaultAmt, handleTypeInput, unit])
+    if (!quotes || bestQuoteRef.current === quotes[0]) return
+    bestQuoteRef.current = quotes[0]
+    setSelectedQuote(quotes[0])
+  }, [quotes])
 
   return (
     <AutoColumn position="relative">
@@ -146,12 +163,15 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
       <OnRampCurrencySelectPopOver
         quotes={quotes}
         selectedQuote={selectedQuote}
-        isError={quotesError}
-        inputError={inputError}
+        isError={quotesError || Boolean(inputError)}
         isFetching={isLoading}
         setSelectedQuote={setSelectedQuote}
         setShowProvidersPopOver={setShowProvidersPopOver}
         showProivdersPopOver={showProivdersPopOver}
+      />
+      <NotificationsOnboradPopover
+        setShowNotificationsPopOver={setShowNotificationsPopOver}
+        showNotificationsPopOver={showNotificationsPopOver}
       />
       <FormContainer>
         <StyledVerticalLine />
@@ -163,11 +183,12 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
           currencyLoading={Boolean(!currencyOut)}
           value={typedValue || ''}
           onUserInput={handleTypeInput}
+          fiatCurrency={fiatCurrency}
           error={Boolean(inputError)}
           disableInput={false}
           unit={unit}
         />
-        <Box width="100%" position="absolute" zIndex="100" left="45%" top="11.7%">
+        <Box width="100%" position="absolute" zIndex="100" left="45%" top="53px">
           <SwapUI.SwitchButton onClick={onFlip} />
         </Box>
         <BuyCryptoSelector
@@ -176,6 +197,7 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
           onCurrencySelect={onCurrencySelection}
           selectedCurrency={currencyIn}
           currencyLoading={Boolean(!currencyIn)}
+          fiatCurrency={fiatCurrency}
           value={outputValue ?? '0.0'}
           disableInput
           unit={unit}
@@ -202,8 +224,16 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
           loading={isLoading}
           quotesError={quotesError}
         />
-
         <Box>
+          {Boolean(!inputError && !isInValidBtcAddress && !quotesError) && (
+            <Suspense fallback={null}>
+              <EnableNotificationsTooltip
+                showNotificationsPopOver={showNotificationsPopOver}
+                setShowNotificationsPopOver={setShowNotificationsPopOver}
+              />
+            </Suspense>
+          )}
+
           <FiatOnRampModalButton
             externalTxIdRef={externalTxIdRef}
             cryptoCurrency={cryptoCurrency}
@@ -217,7 +247,7 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
           />
           <Flex alignItems="center" justifyContent="center">
             <Text color="textSubtle" fontSize="14px" px="4px" textAlign="center">
-              {t('By continuing you agree to our')}{' '}
+              {t('By continuing you agree to our')}
             </Text>
             <Link
               color={theme.colors.primary}
@@ -237,12 +267,34 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
   )
 }
 
+const NotificationsOnboradPopover = ({
+  setShowNotificationsPopOver,
+  showNotificationsPopOver,
+}: NotificationsOnboardPopOverProps) => {
+  const showProvidersOnClick = useCallback(() => {
+    setShowNotificationsPopOver((p: boolean) => !p)
+  }, [setShowNotificationsPopOver])
+
+  return (
+    <PopOverScreenContainer showPopover={showNotificationsPopOver} onClick={showProvidersOnClick}>
+      <Box minHeight="552px">
+        <AutoRow borderBottom="1" paddingX="8px" justifyContent="flex-end">
+          <IconButton onClick={showProvidersOnClick} variant="text">
+            <CloseIcon color="primary" />
+          </IconButton>
+        </AutoRow>
+
+        <OnBoardingView onExternalDismiss={showProvidersOnClick} />
+      </Box>
+    </PopOverScreenContainer>
+  )
+}
+
 const OnRampCurrencySelectPopOver = ({
   quotes,
   selectedQuote,
   isFetching,
   isError,
-  inputError,
   setSelectedQuote,
   setShowProvidersPopOver,
   showProivdersPopOver,
@@ -255,10 +307,10 @@ const OnRampCurrencySelectPopOver = ({
 
   const onQuoteSelect = useCallback(
     (quote: OnRampProviderQuote) => {
-      setShowProvidersPopOver((p) => !p)
+      showProvidersOnClick()
       setSelectedQuote(quote)
     },
-    [setShowProvidersPopOver, setSelectedQuote],
+    [showProvidersOnClick, setSelectedQuote],
   )
   return (
     <PopOverScreenContainer showPopover={showProivdersPopOver} onClick={showProvidersOnClick}>
@@ -279,7 +331,7 @@ const OnRampCurrencySelectPopOver = ({
                 quotes={quotes}
                 selectedQuote={selectedQuote || quotes[0]}
                 quoteLoading={isFetching || !quotes}
-                error={isError || Boolean(inputError)}
+                error={isError}
                 currentQuote={quote}
               />
             )

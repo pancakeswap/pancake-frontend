@@ -1,6 +1,15 @@
 import { useTranslation } from '@pancakeswap/localization'
 import type { Currency } from '@pancakeswap/swap-sdk-core'
-import { ArrowDropDownIcon, ArrowDropUpIcon, Box, Flex, RowBetween, SkeletonText, Text } from '@pancakeswap/uikit'
+import {
+  ArrowDropDownIcon,
+  ArrowDropUpIcon,
+  Box,
+  Flex,
+  InfoFilledIcon,
+  RowBetween,
+  SkeletonText,
+  Text,
+} from '@pancakeswap/uikit'
 import { ChainLogo } from 'components/Logo/ChainLogo'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Field } from 'state/buyCrypto/actions'
@@ -75,7 +84,7 @@ export const TransactionFeeDetails = ({
         <StyledArrowHead />
         <Flex justifyContent="space-between" alignItems="center">
           <Flex alignItems="center">
-            {selectedQuote && (
+            {!quotesError && (
               <>
                 <Text fontWeight="600" fontSize="14px" px="2px">
                   {t('Est total fees:')}
@@ -83,9 +92,11 @@ export const TransactionFeeDetails = ({
                 <SkeletonText loading={Boolean(loading || inputError)} initialWidth={40} fontSize="14px">
                   {t('%fees%', {
                     fees: formatLocaleNumber({
-                      number: Number((selectedQuote?.providerFee + selectedQuote?.networkFee).toFixed(2)),
+                      number: selectedQuote
+                        ? Number((selectedQuote?.providerFee + selectedQuote?.networkFee).toFixed(2))
+                        : 0,
                       locale,
-                      options: { currency: selectedQuote.fiatCurrency, style: 'currency' },
+                      options: { currency: selectedQuote?.fiatCurrency ?? 'USD', style: 'currency' },
                     }),
                   })}
                 </SkeletonText>
@@ -100,14 +111,15 @@ export const TransactionFeeDetails = ({
             )}
 
             <BuyCryptoTooltip
-              opacity={0.7}
-              iconSize="17px"
-              tooltipText={
-                quotesError
-                  ? t(
-                      'Quotes may be unavailable for some assets based on market conditions and provider availability in your region.',
-                    )
-                  : t('Note that Fees are just an estimation and may vary slightly when completing a purchase')
+              tooltipBody={<InfoFilledIcon pl="4px" pt="2px" width={17} opacity={0.7} />}
+              tooltipContent={
+                <Text as="p">
+                  {quotesError
+                    ? t(
+                        'Quotes may be unavailable for some assets based on market conditions and provider availability in your region.',
+                      )
+                    : t('Note that Fees are just an estimation and may vary slightly when completing a purchase')}
+                </Text>
               }
             />
           </Flex>

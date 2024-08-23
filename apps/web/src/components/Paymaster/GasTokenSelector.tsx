@@ -160,7 +160,7 @@ export const GasTokenSelector = ({ trade }: GasTokenSelectorProps) => {
 
   // Reset fee token if account changes, connects or disconnects
   useEffect(() => {
-    return watchAccount(config, {
+    return watchAccount(config as any, {
       onChange() {
         setGasToken(DEFAULT_PAYMASTER_TOKEN)
       },

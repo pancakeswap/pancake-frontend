@@ -1,18 +1,6 @@
 import type { TranslateFunction } from '@pancakeswap/localization'
 import { SubsctiptionType } from '../types'
 
-export const getOnBoardingDescriptionMessage = (isOnBoarded: boolean, t: TranslateFunction) => {
-  let onBoardingDescription: string = t(
-    'Finally, subscribe to notifications to stay informed on the latest news and updates that PancakeSwap has to offer.',
-  )
-  if (!isOnBoarded) {
-    onBoardingDescription = t(
-      'Get started with notifications from PancakeSwap. First authorize notifications by signing in your wallet',
-    )
-  }
-  return onBoardingDescription
-}
-
 export const getOnBoardingButtonText = (
   areNotificationsEnabled: boolean,
   isRegistered: boolean,
