@@ -2,19 +2,14 @@ import 'utils/workerPolyfill'
 
 import { TradeType } from '@pancakeswap/swap-sdk-core'
 import { fetchV3Quote } from '@pancakeswap/routing-sdk-addon-quoter'
-import { findBestTrade, toSerializableTrade } from '@pancakeswap/routing-sdk'
-import { V3_POOL_TYPE, createV3Pool, isV3Pool, toSerializableV3Pool } from '@pancakeswap/routing-sdk-addon-v3'
-import { V2_POOL_TYPE, createV2Pool, toSerializableV2Pool } from '@pancakeswap/routing-sdk-addon-v2'
-import {
-  STABLE_POOL_TYPE,
-  createStablePool,
-  toSerializableStablePool,
-} from '@pancakeswap/routing-sdk-addon-stable-swap'
-import { PoolType, SmartRouter, V4Router, getRouteTypeByPools } from '@pancakeswap/smart-router'
+import { findBestTrade } from '@pancakeswap/routing-sdk'
+import { isV3Pool } from '@pancakeswap/routing-sdk-addon-v3'
+import { SmartRouter, V4Router } from '@pancakeswap/smart-router'
 import { Call } from 'state/multicall/actions'
 import { fetchChunk } from 'state/multicall/fetchChunk'
 import { getLogger } from 'utils/datadog'
 import { createViemPublicClientGetter, getViemClients } from 'utils/viem'
+import { toRoutingSDKPool, toSerializableV4Trade } from 'utils/convertTrade'
 
 const { parseCurrency, parseCurrencyAmount, parsePool, serializeTrade } = SmartRouter.Transformer
 
@@ -244,15 +239,7 @@ addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
       ? BigInt(gasPriceWei)
       : async () => BigInt((await onChainProvider({ chainId }).getGasPrice()).toString())
 
-    const initializedPools = pools.map((p) => {
-      if (SmartRouter.isV3Pool(p)) {
-        return createV3Pool(p)
-      }
-      if (SmartRouter.isV2Pool(p)) {
-        return createV2Pool(p)
-      }
-      return createStablePool(p)
-    })
+    const initializedPools = pools.map(toRoutingSDKPool)
 
     findBestTrade({
       amount: currencyAAmount,
@@ -287,36 +274,7 @@ addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
             })
         }
 
-        const serializableTrade = toSerializableTrade(trade, {
-          toSerializablePool: (p) => {
-            if (p.type === V3_POOL_TYPE) {
-              return {
-                ...toSerializableV3Pool(p),
-                type: PoolType.V3,
-              }
-            }
-            if (p.type === V2_POOL_TYPE) {
-              return {
-                ...toSerializableV2Pool(p),
-                type: PoolType.V2,
-              }
-            }
-            if (p.type === STABLE_POOL_TYPE) {
-              return {
-                ...toSerializableStablePool(p),
-                type: PoolType.STABLE,
-              }
-            }
-            throw new Error('Unknown pool type')
-          },
-        })
-        const v4Trade = {
-          ...serializableTrade,
-          routes: serializableTrade.routes.map((r) => ({
-            ...r,
-            type: getRouteTypeByPools(r.pools),
-          })),
-        }
+        const v4Trade = toSerializableV4Trade(trade)
         postMessage([
           id,
           {
