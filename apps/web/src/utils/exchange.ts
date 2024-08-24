@@ -14,12 +14,13 @@ import { StableTrade } from 'config/constants/types'
 
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useContract } from 'hooks/useContract'
+import memoize from 'lodash/memoize'
 import { Field } from '../state/swap/actions'
 
 // converts a basis points value to a sdk percent
-export function basisPointsToPercent(num: number): Percent {
+export const basisPointsToPercent = memoize((num: number): Percent => {
   return new Percent(BigInt(num), BIPS_BASE)
-}
+})
 
 export function calculateSlippageAmount(value: CurrencyAmount<Currency>, slippage: number): [bigint, bigint] {
   if (slippage < 0 || slippage > 10000) {
