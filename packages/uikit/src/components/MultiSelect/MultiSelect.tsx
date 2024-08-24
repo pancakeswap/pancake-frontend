@@ -396,7 +396,7 @@ export const MultiSelect = <T extends string | number>(props: IMultiSelectProps<
       } else {
         setSelectedItems(e.value);
       }
-      searchInputRef.current?.clear();
+      // searchInputRef.current?.clear();
       // searchInputRef.current?.focus();
     },
     [onChange]

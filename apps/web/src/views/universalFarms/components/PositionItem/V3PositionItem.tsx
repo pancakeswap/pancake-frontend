@@ -1,5 +1,6 @@
-import { memo } from 'react'
-import { getPoolAddressByToken, useExtraV3PositionInfo, usePoolInfo } from 'state/farmsV4/hooks'
+import { memo, useMemo } from 'react'
+import { getPoolMultiplier } from 'state/farmsV4/state/utils'
+import { getPoolAddressByToken, useExtraV3PositionInfo, usePoolInfo, usePoolStatus } from 'state/farmsV4/hooks'
 import { PositionDetail } from 'state/farmsV4/state/accountPositions/type'
 import { useTotalPriceUSD } from 'views/universalFarms/hooks/useTotalPriceUSD'
 import { V3PositionActions } from '../PositionActions/V3PositionActions'
@@ -10,14 +11,22 @@ import { PriceRange } from './PriceRange'
 type V3PositionItemProps = {
   data: PositionDetail
   detailMode?: boolean
+  poolLength?: number
 }
 
-export const V3PositionItem = memo(({ data, detailMode }: V3PositionItemProps) => {
+export const V3PositionItem = memo(({ data, detailMode, poolLength }: V3PositionItemProps) => {
   const { quote, base, currency0, currency1, removed, outOfRange, priceUpper, priceLower, tickAtLimit, position } =
     useExtraV3PositionInfo(data)
 
   const poolAddress = getPoolAddressByToken(data.chainId, data.token0, data.token1, data.fee)
   const pool = usePoolInfo({ poolAddress, chainId: data.chainId })
+  const [allocPoint] = usePoolStatus(pool)
+  const poolMultiplier = getPoolMultiplier(allocPoint)
+
+  const isFarmLive = useMemo(
+    () => poolMultiplier !== `0X` && (!poolLength || !pool?.pid || pool.pid <= poolLength),
+    [pool?.pid, poolLength, poolMultiplier],
+  )
 
   const totalPriceUSD = useTotalPriceUSD({
     currency0,
@@ -55,13 +64,11 @@ export const V3PositionItem = memo(({ data, detailMode }: V3PositionItemProps) =
       {currency0 && currency1 ? (
         <V3PositionActions
           chainId={data.chainId}
-          currency0={currency0}
-          currency1={currency1}
           isStaked={data.isStaked}
+          isFarmLive={isFarmLive}
           removed={removed}
           outOfRange={outOfRange}
           tokenId={data.tokenId}
-          fee={data.fee}
           detailMode={detailMode}
           modalContent={
             <V3UnstakeModalContent
