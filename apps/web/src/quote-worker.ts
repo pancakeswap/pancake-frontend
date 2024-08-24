@@ -255,21 +255,19 @@ addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
           throw new Error('No valid trade route found')
         }
         const { graph, ...trade } = t
-        if (trade.routes[0].pools.every(isV3Pool)) {
-          fetchQuotes({
-            routes: trade.routes.map((r) => ({
-              ...r,
-              amount: tradeType === TradeType.EXACT_INPUT ? r.inputAmount : r.outputAmount,
-            })),
-            client: getViemClients({ chainId: trade.inputAmount.currency.chainId }),
+        fetchQuotes({
+          routes: trade.routes.map((r) => ({
+            ...r,
+            amount: tradeType === TradeType.EXACT_INPUT ? r.inputAmount : r.outputAmount,
+          })),
+          client: getViemClients({ chainId: trade.inputAmount.currency.chainId }),
+        })
+          .then((res) => {
+            console.log('[QUOTE]', res)
           })
-            .then((res) => {
-              console.log('[QUOTE]', res)
-            })
-            .catch((err) => {
-              console.error('[QUOTE]', err)
-            })
-        }
+          .catch((err) => {
+            console.error('[QUOTE]', err)
+          })
 
         const v4Trade = toSerializableV4Trade(trade)
         postMessage([
