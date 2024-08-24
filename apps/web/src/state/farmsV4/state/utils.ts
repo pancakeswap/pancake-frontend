@@ -1,5 +1,4 @@
 import BN from 'bignumber.js'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { Protocol, UNIVERSAL_FARMS } from '@pancakeswap/farms'
 import { LegacyRouter } from '@pancakeswap/smart-router/legacy-router'
 import { Token } from '@pancakeswap/swap-sdk-core'
