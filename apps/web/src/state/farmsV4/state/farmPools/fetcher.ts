@@ -1,6 +1,14 @@
+import { publicClient } from 'utils/viem'
+import groupBy from 'lodash/groupBy'
 import { getChainNameInKebabCase } from '@pancakeswap/chains'
-import { FarmV4SupportedChainId, Protocol, supportedChainIdV4, UNIVERSAL_FARMS } from '@pancakeswap/farms'
-import { FeeAmount } from '@pancakeswap/v3-sdk'
+import {
+  FarmV4SupportedChainId,
+  masterChefV3Addresses,
+  Protocol,
+  supportedChainIdV4,
+  UNIVERSAL_FARMS,
+} from '@pancakeswap/farms'
+import { FeeAmount, masterChefV3ABI } from '@pancakeswap/v3-sdk'
 import { explorerApiClient } from 'state/info/api/client'
 import { isAddressEqual } from 'viem'
 import { PoolInfo } from '../type'
@@ -99,4 +107,32 @@ export const fetchFarmPools = async (
   // await
 
   return finalPools
+}
+
+export const fetchPoolsStatus = async (pools: PoolInfo[]) => {
+  const poolsMapByChain = groupBy(pools, 'chainId')
+  const res = await Promise.allSettled(
+    Object.keys(poolsMapByChain).map((chainId) => fetchPoolsStatusByChainId(Number(chainId), poolsMapByChain[chainId])),
+  )
+  return res.map((promise) => (promise.status === 'fulfilled' ? promise.value : []))
+}
+
+export const fetchPoolsStatusByChainId = async (chainId: number, pools: PoolInfo[]) => {
+  const masterChefAddress = masterChefV3Addresses[chainId]
+  const client = publicClient({ chainId })
+  const poolInfoCalls = pools.map(
+    (pool) =>
+      ({
+        address: masterChefAddress,
+        functionName: 'poolInfo',
+        abi: masterChefV3ABI,
+        args: [BigInt(pool.pid!)],
+      } as const),
+  )
+
+  const resp = await client.multicall({
+    contracts: poolInfoCalls,
+    allowFailure: false,
+  })
+  return resp
 }
