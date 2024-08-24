@@ -7,12 +7,12 @@ import BigNumber from 'bignumber.js'
 import { useCakePrice } from 'hooks/useCakePrice'
 import { useMemo } from 'react'
 import { useAccountPositionDetailByPool } from 'state/farmsV4/hooks'
-import { getUniversalBCakeWrapperForPool } from 'state/farmsV4/state/poolApr/fetcher'
 import { PoolInfo } from 'state/farmsV4/state/type'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { Address, isAddressEqual } from 'viem'
 import { useMasterChefV2Data } from 'views/Farms/hooks/useMasterChefV2Data'
 import { useV2LpTokenTotalSupply } from 'views/Farms/hooks/useV2LpTokenTotalSupply'
+import { useBCakeWrapperAddress } from 'views/universalFarms/hooks/useBCakeWrapperAddress'
 import { useBCakeWrapperRewardPerSecond } from 'views/universalFarms/hooks/useBCakeWrapperInfo'
 import { displayApr } from 'views/universalFarms/utils/displayApr'
 import { useAccount } from 'wagmi'
@@ -74,9 +74,12 @@ const AprModal: React.FC<Omit<V2PoolAprModalProps, 'modal'>> = ({ poolInfo, comb
     }
     return undefined
   }, [poolInfo.chainId, poolInfo?.lpAddress, poolInfo.protocol])
-  const bCakeWrapperAddress = useMemo(() => {
-    return getUniversalBCakeWrapperForPool(poolInfo)?.bCakeWrapperAddress
-  }, [poolInfo])
+
+  const bCakeWrapperAddress = useBCakeWrapperAddress({
+    chainId: poolInfo.chainId,
+    protocol: poolInfo.protocol,
+    lpAddress: poolInfo.lpAddress,
+  })
   const { data: farmCakePerSecond } = useBCakeWrapperRewardPerSecond(poolInfo.chainId, bCakeWrapperAddress)
   const { data: masterChefV2Data } = useMasterChefV2Data(poolInfo.chainId)
   const totalMultipliers = useMemo(() => {

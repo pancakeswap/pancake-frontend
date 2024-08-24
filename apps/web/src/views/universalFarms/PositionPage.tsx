@@ -36,7 +36,8 @@ import {
   useAccountStableLpDetails,
   useAccountV2LpDetails,
   useAccountV3Positions,
-  usePoolsLength,
+  useV2PoolsLength,
+  useV3PoolsLength,
 } from 'state/farmsV4/hooks'
 import styled from 'styled-components'
 import { useAccount } from 'wagmi'
@@ -148,13 +149,11 @@ const useV3Positions = ({
   selectedTokens,
   positionStatus,
   farmsOnly,
-  poolsLength,
 }: {
   selectedNetwork: INetworkProps['value']
   selectedTokens: ITokenProps['value']
   positionStatus: V3_STATUS
   farmsOnly: boolean
-  poolsLength: { [key: `${number}`]: number }
 }) => {
   const { address: account } = useAccount()
   const { data: v3Positions, pending: v3Loading } = useAccountV3Positions(allChainIds, account)
@@ -203,6 +202,8 @@ const useV3Positions = ({
     [filteredV3Positions],
   )
 
+  const { data: poolsLength } = useV3PoolsLength(allChainIds)
+
   const v3PositionList = useMemo(
     () =>
       sortedV3Positions.map((pos) => {
@@ -245,6 +246,7 @@ const useV2Positions = ({
       ),
     [farmsOnly, selectedNetwork, selectedTokens, v2Positions, positionStatus],
   )
+  const { data: poolsLength } = useV2PoolsLength(allChainIds)
   const v2PositionList = useMemo(
     () =>
       filteredV2Positions.map((pos) => {
@@ -253,9 +255,9 @@ const useV2Positions = ({
           liquidityToken: { address },
         } = pos.pair
         const key = getKeyForPools(chainId, address)
-        return <V2PositionItem key={key} data={pos} />
+        return <V2PositionItem key={key} data={pos} poolLength={poolsLength[chainId]} />
       }),
-    [filteredV2Positions],
+    [filteredV2Positions, poolsLength],
   )
   return {
     v2Loading,
@@ -352,9 +354,7 @@ export const PositionPage = () => {
     }))
   }, [])
 
-  const { data: poolsLength } = usePoolsLength(allChainIds)
   const { v3PositionList, v3Loading } = useV3Positions({
-    poolsLength,
     selectedNetwork: filters.selectedNetwork,
     selectedTokens: filters.selectedTokens,
     positionStatus,
