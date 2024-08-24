@@ -1,4 +1,5 @@
 import { getChainNameInKebabCase } from '@pancakeswap/chains'
+import { UNIVERSAL_FARMS } from '@pancakeswap/farms'
 import { chainIdToExplorerInfoChainName, explorerApiClient } from 'state/info/api/client'
 import { PoolInfo } from '../type'
 import { parseFarmPools } from '../utils'
@@ -62,6 +63,7 @@ export const fetchExplorerPoolInfo = async (
   }
   // @ts-ignore
   resp.data.chainId = chainId
+  const isFarming = UNIVERSAL_FARMS.some((farm) => farm.lpAddress === poolAddress)
 
-  return parseFarmPools([resp.data])[0]
+  return parseFarmPools([resp.data], { isFarming })[0]
 }
