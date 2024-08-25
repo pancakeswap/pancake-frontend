@@ -70,7 +70,7 @@ const config = {
     // https://github.com/TanStack/query/issues/6560#issuecomment-1975771676
     '@tanstack/query-core',
   ],
-  reactStrictMode: true,
+  reactStrictMode: false,
   swcMinify: false,
   images: {
     contentDispositionType: 'attachment',
