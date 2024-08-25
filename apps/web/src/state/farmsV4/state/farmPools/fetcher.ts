@@ -1,5 +1,4 @@
 import { publicClient } from 'utils/viem'
-import groupBy from 'lodash/groupBy'
 import { getChainNameInKebabCase } from '@pancakeswap/chains'
 import {
   FarmV4SupportedChainId,
@@ -10,7 +9,8 @@ import {
 } from '@pancakeswap/farms'
 import { FeeAmount, masterChefV3ABI } from '@pancakeswap/v3-sdk'
 import { explorerApiClient } from 'state/info/api/client'
-import { isAddressEqual } from 'viem'
+import { isAddressEqual, type Address } from 'viem'
+import { smartChefABI } from '@pancakeswap/pools'
 import { PoolInfo } from '../type'
 import { parseFarmPools } from '../utils'
 
@@ -109,22 +109,14 @@ export const fetchFarmPools = async (
   return finalPools
 }
 
-export const fetchPoolsStatus = async (pools: PoolInfo[]) => {
-  const poolsMapByChain = groupBy(pools, 'chainId')
-  const res = await Promise.allSettled(
-    Object.keys(poolsMapByChain).map((chainId) => fetchPoolsStatusByChainId(Number(chainId), poolsMapByChain[chainId])),
-  )
-  return res.map((promise) => (promise.status === 'fulfilled' ? promise.value : []))
-}
-
-export const fetchPoolsStatusByChainId = async (chainId: number, pools: PoolInfo[]) => {
+export const fetchV3PoolsStatusByChainId = async (chainId: number, pools: PoolInfo[]) => {
   const masterChefAddress = masterChefV3Addresses[chainId]
   const client = publicClient({ chainId })
   const poolInfoCalls = pools.map(
     (pool) =>
       ({
-        address: masterChefAddress,
         functionName: 'poolInfo',
+        address: masterChefAddress,
         abi: masterChefV3ABI,
         args: [BigInt(pool.pid!)],
       } as const),
@@ -135,4 +127,49 @@ export const fetchPoolsStatusByChainId = async (chainId: number, pools: PoolInfo
     allowFailure: false,
   })
   return resp
+}
+
+export const fetchPoolsLifecyle = async (bCakeAddresses: Address[], chainId: number) => {
+  if (!bCakeAddresses.length) {
+    return []
+  }
+
+  const client = publicClient({ chainId })
+  const calls = bCakeAddresses.flatMap((address) => {
+    return [
+      {
+        abi: smartChefABI,
+        address,
+        functionName: 'startTimestamp',
+      },
+      {
+        abi: smartChefABI,
+        address,
+        functionName: 'endTimestamp',
+      },
+    ] as const
+  })
+
+  const resp = await client.multicall({
+    contracts: calls,
+    allowFailure: false,
+  })
+
+  const poolLifecyle = resp.reduce<bigint[][]>((acc, item, index) => {
+    const chunkIndex = Math.floor(index / 2)
+    if (!acc[chunkIndex]) {
+      // eslint-disable-next-line no-param-reassign
+      acc[chunkIndex] = []
+    }
+    acc[chunkIndex].push(item)
+    return acc
+  }, [])
+
+  return bCakeAddresses.map((_, index) => {
+    const [startTimestamp, endTimestamp] = poolLifecyle[index]
+    return {
+      startTimestamp: Number(startTimestamp),
+      endTimestamp: Number(endTimestamp),
+    }
+  })
 }

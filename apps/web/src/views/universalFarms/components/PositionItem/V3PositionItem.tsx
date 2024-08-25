@@ -1,6 +1,6 @@
 import { memo, useMemo } from 'react'
 import { getPoolMultiplier } from 'state/farmsV4/state/utils'
-import { getPoolAddressByToken, useExtraV3PositionInfo, usePoolInfo, usePoolStatus } from 'state/farmsV4/hooks'
+import { getPoolAddressByToken, useExtraV3PositionInfo, usePoolInfo, useV3PoolStatus } from 'state/farmsV4/hooks'
 import { PositionDetail } from 'state/farmsV4/state/accountPositions/type'
 import { useTotalPriceUSD } from 'views/universalFarms/hooks/useTotalPriceUSD'
 import { V3PositionActions } from '../PositionActions/V3PositionActions'
@@ -20,7 +20,7 @@ export const V3PositionItem = memo(({ data, detailMode, poolLength }: V3Position
 
   const poolAddress = getPoolAddressByToken(data.chainId, data.token0, data.token1, data.fee)
   const pool = usePoolInfo({ poolAddress, chainId: data.chainId })
-  const [allocPoint] = usePoolStatus(pool)
+  const [allocPoint] = useV3PoolStatus(pool)
   const poolMultiplier = getPoolMultiplier(allocPoint)
 
   const isFarmLive = useMemo(

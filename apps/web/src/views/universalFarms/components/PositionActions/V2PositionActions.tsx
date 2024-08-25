@@ -15,13 +15,14 @@ import { usePoolApr } from 'state/farmsV4/hooks'
 import { getBCakeWrapperAddress } from 'state/farmsV4/state/accountPositions/fetcher'
 import { useAccountV2PendingCakeReward } from 'state/farmsV4/state/accountPositions/hooks/useAccountV2PendingCakeReward'
 import { StableLPDetail, V2LPDetail } from 'state/farmsV4/state/accountPositions/type'
-import { getUniversalBCakeWrapperForPool } from 'state/farmsV4/state/poolApr/fetcher'
 import { PoolInfo } from 'state/farmsV4/state/type'
 import { Address } from 'viem'
 import { useCheckShouldSwitchNetwork } from 'views/universalFarms/hooks'
 import { useV2FarmActions } from 'views/universalFarms/hooks/useV2FarmActions'
 import { sumApr } from 'views/universalFarms/utils/sumApr'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
+import { useBCakeWrapperAddress } from 'views/universalFarms/hooks/useBCakeWrapperAddress'
+import { Protocol } from '@pancakeswap/farms'
 import { DepositStakeAction, HarvestAction, ModifyStakeActions } from './StakeActions'
 
 type V2PositionActionsProps = {
@@ -262,13 +263,15 @@ const V2HarvestAction: React.FC<V2PositionActionsProps> = ({ chainId, lpAddress 
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { account } = useAccountActiveChain()
   const { switchNetworkIfNecessary } = useCheckShouldSwitchNetwork()
-  const bCakeConfig = useMemo(() => {
-    return getUniversalBCakeWrapperForPool({ chainId, lpAddress })
-  }, [chainId, lpAddress])
+  const bCakeWrapperAddress = useBCakeWrapperAddress({
+    chainId,
+    protocol: Protocol.V2,
+    lpAddress,
+  })
   const { data: pendingReward_ } = useAccountV2PendingCakeReward(account, {
     chainId,
     lpAddress,
-    bCakeWrapperAddress: bCakeConfig?.bCakeWrapperAddress,
+    bCakeWrapperAddress,
   })
   const pendingReward = useMemo(() => {
     return new BigNumber(pendingReward_?.toString() ?? '0')
