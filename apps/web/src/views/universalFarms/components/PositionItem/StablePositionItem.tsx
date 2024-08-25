@@ -1,98 +1,126 @@
-import { memo } from 'react'
-import { usePoolInfo } from 'state/farmsV4/hooks'
+import { memo, useMemo } from 'react'
+import { usePoolInfo, usePoolLifecyle } from 'state/farmsV4/hooks'
 import { StableLPDetail } from 'state/farmsV4/state/accountPositions/type'
 import { useTotalPriceUSD } from 'views/universalFarms/hooks'
+import { useBCakeWrapperAddress } from 'views/universalFarms/hooks/useBCakeWrapperAddress'
+import { Protocol } from '@pancakeswap/farms'
 import { V2PositionActions } from '../PositionActions/V2PositionActions'
 import { PositionItem } from './PositionItem'
 
-export const StablePositionItem = memo(({ data, detailMode }: { data: StableLPDetail; detailMode?: boolean }) => {
-  const {
-    pair,
-    nativeDeposited0,
-    nativeDeposited1,
-    nativeBalance,
-    farmingBalance,
-    farmingDeposited0,
-    farmingDeposited1,
-  } = data
+export const StablePositionItem = memo(
+  ({ data, detailMode, poolLength }: { poolLength?: number; data: StableLPDetail; detailMode?: boolean }) => {
+    const {
+      pair: {
+        liquidityToken: { chainId, address },
+        token0,
+        token1,
+        stableSwapAddress,
+        lpAddress,
+        stableLpFee,
+      },
+      nativeDeposited0,
+      nativeDeposited1,
+      nativeBalance,
+      farmingBalance,
+      farmingDeposited0,
+      farmingDeposited1,
+    } = data
 
-  const nativeTotalPriceUSD = useTotalPriceUSD({
-    currency0: pair.token0,
-    currency1: pair.token1,
-    amount0: nativeDeposited0,
-    amount1: nativeDeposited1,
-  })
-  const farmingTotalPriceUSD = useTotalPriceUSD({
-    currency0: pair.token0,
-    currency1: pair.token1,
-    amount0: farmingDeposited0,
-    amount1: farmingDeposited1,
-  })
-  const pool = usePoolInfo({ poolAddress: pair.stableSwapAddress, chainId: pair.liquidityToken.chainId })
+    const nativeTotalPriceUSD = useTotalPriceUSD({
+      currency0: token0,
+      currency1: token1,
+      amount0: nativeDeposited0,
+      amount1: nativeDeposited1,
+    })
+    const farmingTotalPriceUSD = useTotalPriceUSD({
+      currency0: token0,
+      currency1: token1,
+      amount0: farmingDeposited0,
+      amount1: farmingDeposited1,
+    })
+    const pool = usePoolInfo({ poolAddress: stableSwapAddress, chainId })
 
-  return (
-    <>
-      {nativeBalance.greaterThan('0') ? (
-        <PositionItem
-          chainId={pair.liquidityToken.chainId}
-          pool={pool}
-          link={`/stable/${pair.lpAddress}`}
-          totalPriceUSD={nativeTotalPriceUSD}
-          currency0={pair.token0}
-          currency1={pair.token1}
-          removed={false}
-          outOfRange={false}
-          protocol={data.protocol}
-          fee={Number(pair.stableLpFee) * 10000}
-          isStaked={false}
-          amount0={nativeDeposited0}
-          amount1={nativeDeposited1}
-          detailMode={detailMode}
-        >
-          {pair.liquidityToken.chainId && pair.liquidityToken.address && pool?.pid ? (
-            <V2PositionActions
-              isStaked={false}
-              poolInfo={pool}
-              data={data}
-              lpAddress={pair.liquidityToken.address}
-              chainId={pair.liquidityToken.chainId}
-              pid={pool.pid}
-              tvlUsd={pool.tvlUsd}
-            />
-          ) : null}
-        </PositionItem>
-      ) : null}
-      {farmingBalance.greaterThan('0') ? (
-        <PositionItem
-          chainId={pair.liquidityToken.chainId}
-          pool={pool}
-          link={`/stable/${pair.lpAddress}`}
-          totalPriceUSD={farmingTotalPriceUSD}
-          currency0={pair.token0}
-          currency1={pair.token1}
-          removed={false}
-          outOfRange={false}
-          protocol={data.protocol}
-          fee={Number(pair.stableLpFee) * 10000}
-          isStaked
-          amount0={farmingDeposited0}
-          amount1={farmingDeposited1}
-          detailMode={detailMode}
-          userPosition={data}
-        >
-          {pair.liquidityToken.chainId && pair.liquidityToken.address && pool?.pid ? (
-            <V2PositionActions
-              tvlUsd={pool.tvlUsd}
-              isStaked
-              data={data}
-              poolInfo={pool}
-              lpAddress={pair.liquidityToken.address}
-              chainId={pair.liquidityToken.chainId}
-              pid={pool.pid}
-            />
-          ) : null}
-        </PositionItem>
-      ) : null}
-    </>
-  )
-})
+    const bCakeWrapperAddress = useBCakeWrapperAddress({
+      lpAddress: stableSwapAddress,
+      chainId,
+      protocol: Protocol.STABLE,
+    })
+    const { startTimestamp, endTimestamp } = usePoolLifecyle(bCakeWrapperAddress, chainId)
+
+    const isFarmLive = useMemo(
+      () =>
+        bCakeWrapperAddress &&
+        (!startTimestamp || Date.now() / 1000 >= startTimestamp) &&
+        (!endTimestamp || Date.now() / 1000 < endTimestamp) &&
+        (!poolLength || !pool?.pid || pool.pid <= poolLength),
+      [pool?.pid, poolLength, bCakeWrapperAddress, startTimestamp, endTimestamp],
+    )
+    return (
+      <>
+        {nativeBalance.greaterThan('0') ? (
+          <PositionItem
+            chainId={chainId}
+            pool={pool}
+            link={`/stable/${lpAddress}`}
+            totalPriceUSD={nativeTotalPriceUSD}
+            currency0={token0}
+            currency1={token1}
+            removed={false}
+            outOfRange={false}
+            protocol={data.protocol}
+            fee={Number(stableLpFee) * 10000}
+            isStaked={false}
+            amount0={nativeDeposited0}
+            amount1={nativeDeposited1}
+            detailMode={detailMode}
+          >
+            {chainId && address && pool?.pid ? (
+              <V2PositionActions
+                isFarmLive={isFarmLive}
+                isStaked={false}
+                poolInfo={pool}
+                data={data}
+                lpAddress={address}
+                chainId={chainId}
+                pid={pool.pid}
+                tvlUsd={pool.tvlUsd}
+              />
+            ) : null}
+          </PositionItem>
+        ) : null}
+        {farmingBalance.greaterThan('0') ? (
+          <PositionItem
+            chainId={chainId}
+            pool={pool}
+            link={`/stable/${lpAddress}`}
+            totalPriceUSD={farmingTotalPriceUSD}
+            currency0={token0}
+            currency1={token1}
+            removed={false}
+            outOfRange={false}
+            protocol={data.protocol}
+            fee={Number(stableLpFee) * 10000}
+            isStaked
+            amount0={farmingDeposited0}
+            amount1={farmingDeposited1}
+            detailMode={detailMode}
+            userPosition={data}
+          >
+            {chainId && address && pool?.pid ? (
+              <V2PositionActions
+                isFarmLive={isFarmLive}
+                tvlUsd={pool.tvlUsd}
+                isStaked
+                data={data}
+                poolInfo={pool}
+                lpAddress={address}
+                chainId={chainId}
+                pid={pool.pid}
+              />
+            ) : null}
+          </PositionItem>
+        ) : null}
+      </>
+    )
+  },
+)
