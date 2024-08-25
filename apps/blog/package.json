@@ -14,7 +14,7 @@
     "@pancakeswap/localization": "workspace:*",
     "@pancakeswap/uikit": "workspace:*",
     "@pancakeswap/utils": "workspace:*",
-    "@tanstack/react-query": "^5.28.4",
+    "@tanstack/react-query": "^5.52.1",
     "@vanilla-extract/next-plugin": "^2.3.0",
     "next": "14.2.5",
     "next-seo": "^5.15.0",
