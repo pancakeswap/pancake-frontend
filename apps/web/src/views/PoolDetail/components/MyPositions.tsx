@@ -28,7 +28,7 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { useCurrencyUsdPrice } from 'hooks/useCurrencyUsdPrice'
 import { usePoolByChainId } from 'hooks/v3/usePools'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { useAccountPositionDetailByPool } from 'state/farmsV4/hooks'
+import { useAccountPositionDetailByPool, useV2PoolsLength, useV3PoolsLength } from 'state/farmsV4/hooks'
 import { PositionDetail, StableLPDetail, V2LPDetail } from 'state/farmsV4/state/accountPositions/type'
 import { PoolInfo } from 'state/farmsV4/state/type'
 import { useChainIdByQuery } from 'state/info/hooks'
@@ -333,6 +333,8 @@ const MyV3Positions: React.FC<{
     setCount(positions?.[filter].length ?? 0)
   }, [filter, positions, setCount])
 
+  const { data: poolsLength } = useV3PoolsLength([chainId])
+
   if (isLoading) {
     return (
       <>
@@ -356,7 +358,9 @@ const MyV3Positions: React.FC<{
             {t('active')}
           </Text>
           {positions?.[PositionFilter.Active]?.map((position) => {
-            return <V3PositionItem detailMode key={position.tokenId} data={position} />
+            return (
+              <V3PositionItem detailMode key={position.tokenId} data={position} poolLength={poolsLength[chainId]} />
+            )
           })}
         </AutoColumn>
       ) : null}
@@ -368,7 +372,9 @@ const MyV3Positions: React.FC<{
             {t('inactive')}
           </Text>
           {positions?.[PositionFilter.Inactive].map((position) => {
-            return <V3PositionItem detailMode key={position.tokenId} data={position} />
+            return (
+              <V3PositionItem detailMode key={position.tokenId} data={position} poolLength={poolsLength[chainId]} />
+            )
           })}
         </AutoColumn>
       ) : null}
@@ -379,7 +385,9 @@ const MyV3Positions: React.FC<{
             {t('closed')}
           </Text>
           {positions?.[PositionFilter.Closed]?.map((position) => {
-            return <V3PositionItem detailMode key={position.tokenId} data={position} />
+            return (
+              <V3PositionItem detailMode key={position.tokenId} data={position} poolLength={poolsLength[chainId]} />
+            )
           })}
         </AutoColumn>
       ) : null}
@@ -440,6 +448,8 @@ const MyV2OrStablePositions: React.FC<{
     setTotalTvlUsd(totalTVLUsd)
   }, [totalTVLUsd, setTotalTvlUsd])
 
+  const { data: v2PoolsLength } = useV2PoolsLength([chainId])
+
   if (isLoading) {
     return (
       <>
@@ -457,10 +467,20 @@ const MyV2OrStablePositions: React.FC<{
   return (
     <AutoColumn gap="lg">
       {poolInfo.protocol === 'v2' ? (
-        <V2PositionItem detailMode key={data.pair.liquidityToken.address} data={data as V2LPDetail} />
+        <V2PositionItem
+          detailMode
+          key={data.pair.liquidityToken.address}
+          data={data as V2LPDetail}
+          poolLength={v2PoolsLength[chainId]}
+        />
       ) : null}
       {poolInfo.protocol === 'stable' ? (
-        <StablePositionItem detailMode key={data.pair.liquidityToken.address} data={data as StableLPDetail} />
+        <StablePositionItem
+          detailMode
+          key={data.pair.liquidityToken.address}
+          data={data as StableLPDetail}
+          poolLength={v2PoolsLength[chainId]}
+        />
       ) : null}
     </AutoColumn>
   )
