@@ -19,7 +19,7 @@ import { useV1CoinAssetTypes } from './useV1CoinAssetType'
 
 export type UseAccountBalancesResult = { value: string; formatted: string } & FetchCoinResult
 
-type UseAccountBalancesQueryResult = [GetAccountCoinsDataResponse, GetAccountCoinsDataResponse]
+export type UseAccountBalancesQueryResult = [GetAccountCoinsDataResponse, GetAccountCoinsDataResponse]
 
 type UseAccountBalances<TData> = QueryConfig<UseAccountBalancesQueryResult, Error, TData>
 
@@ -38,7 +38,7 @@ export function useAccountBalances<TData = unknown>({
   watch,
   coinFilter,
 }: UseAccountResourcesArgs & { coinFilter?: string } & UseAccountBalancesConfig<TData> & {
-    select: (data: UseAccountBalancesResult) => UseAccountBalancesResult | null | undefined
+    select?: (data: UseAccountBalancesResult) => UseAccountBalancesResult | null | undefined
   }) {
   const { chain } = useNetwork()
   const networkName = networkName_ ?? chain?.network
