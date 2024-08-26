@@ -1,7 +1,7 @@
 import { useTheme } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Button, Column, LinkExternal, PageHeader, Row, Text } from '@pancakeswap/uikit'
-import { NextLinkFromReactRouter, VerticalDivider } from '@pancakeswap/widgets-internal'
+import { VerticalDivider } from '@pancakeswap/widgets-internal'
 import { BCakeBoosterCard } from 'views/Farms/components/YieldBooster/components/bCakeV3/BCakeBoosterCard'
 import { FarmFlexWrapper, FarmH1, FarmH2 } from 'views/Farms/styled'
 
@@ -28,14 +28,6 @@ export const PoolsBanner = ({ additionLink }: { additionLink?: React.ReactNode }
                   </Text>
                 </Button>
               </LinkExternal>
-              <VerticalDivider bg={theme.colors.inputSecondary} />
-              <NextLinkFromReactRouter to="/farms/auction" prefetch={false}>
-                <Button p="0" variant="text">
-                  <Text color="primary" bold fontSize="16px" mr="4px">
-                    {t('Community Auctions')}
-                  </Text>
-                </Button>
-              </NextLinkFromReactRouter>
               {!!additionLink && (
                 <>
                   <VerticalDivider bg={theme.colors.inputSecondary} />
