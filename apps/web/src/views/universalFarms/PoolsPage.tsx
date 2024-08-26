@@ -168,22 +168,23 @@ export const PoolsPage = () => {
     // active Farms: current chain -> other chains
     // ordered by farm config list
     const activeFarms = flatMap(orderedChainIds, (chainId) =>
-      dataByChain[chainId].filter((pool) => !!pool.isActiveFarm),
+      dataByChain[chainId]?.filter((pool) => !!pool.isActiveFarm),
     )
     // inactive Farms: current chain
     // ordered by tvlUsd
-    const inactiveFarmsOfActiveChain = dataByChain[activeChainId]
-      .filter((pool) => !pool.isActiveFarm)
-      .sort((a, b) =>
-        'tvlUsd' in a && 'tvlUsd' in b && b.tvlUsd && a.tvlUsd ? Number(b.tvlUsd) - Number(a.tvlUsd) : 1,
-      )
+    const inactiveFarmsOfActiveChain =
+      dataByChain[activeChainId]
+        ?.filter((pool) => !pool.isActiveFarm)
+        .sort((a, b) =>
+          'tvlUsd' in a && 'tvlUsd' in b && b.tvlUsd && a.tvlUsd ? Number(b.tvlUsd) - Number(a.tvlUsd) : 1,
+        ) ?? []
     // inactive Farms: other chains
     // ordered by tvlUsd
     const inactiveFarmsOfOthers = flatMap(othersChains, (chainId) =>
-      dataByChain[chainId].filter((pool) => !pool.isActiveFarm),
+      dataByChain[chainId]?.filter((pool) => !pool.isActiveFarm),
     ).sort((a, b) => ('tvlUsd' in a && 'tvlUsd' in b && b.tvlUsd && a.tvlUsd ? Number(b.tvlUsd) - Number(a.tvlUsd) : 1))
 
-    return [...activeFarms, ...inactiveFarmsOfActiveChain, ...inactiveFarmsOfOthers]
+    return [...activeFarms, ...inactiveFarmsOfActiveChain, ...inactiveFarmsOfOthers].filter(Boolean)
   }, [activeChainId, allChainIds, dataByChain])
 
   const sortedData = useMemo(() => {
