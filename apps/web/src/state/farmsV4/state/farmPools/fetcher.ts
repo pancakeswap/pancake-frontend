@@ -109,7 +109,7 @@ export const fetchFarmPools = async (
   return finalPools
 }
 
-export const fetchV3PoolsStatusByChainId = async (chainId: number, pools: PoolInfo[]) => {
+export const fetchV3PoolsStatusByChainId = async (chainId: number, pools: { pid?: number }[]) => {
   const masterChefAddress = masterChefV3Addresses[chainId]
   const client = publicClient({ chainId })
   const poolInfoCalls = pools.map(
@@ -129,7 +129,7 @@ export const fetchV3PoolsStatusByChainId = async (chainId: number, pools: PoolIn
   return resp
 }
 
-export const fetchPoolsLifecyle = async (bCakeAddresses: Address[], chainId: number) => {
+export const fetchPoolsTimeFrame = async (bCakeAddresses: Address[], chainId: number) => {
   if (!bCakeAddresses.length) {
     return []
   }
@@ -155,7 +155,7 @@ export const fetchPoolsLifecyle = async (bCakeAddresses: Address[], chainId: num
     allowFailure: false,
   })
 
-  const poolLifecyle = resp.reduce<bigint[][]>((acc, item, index) => {
+  const poolTimeFrame = resp.reduce<bigint[][]>((acc, item, index) => {
     const chunkIndex = Math.floor(index / 2)
     if (!acc[chunkIndex]) {
       // eslint-disable-next-line no-param-reassign
@@ -166,7 +166,7 @@ export const fetchPoolsLifecyle = async (bCakeAddresses: Address[], chainId: num
   }, [])
 
   return bCakeAddresses.map((_, index) => {
-    const [startTimestamp, endTimestamp] = poolLifecyle[index]
+    const [startTimestamp, endTimestamp] = poolTimeFrame[index]
     return {
       startTimestamp: Number(startTimestamp),
       endTimestamp: Number(endTimestamp),
