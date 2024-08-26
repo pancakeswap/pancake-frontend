@@ -135,7 +135,6 @@ export const useV3PositionApr = (pool: PoolInfo, userPosition: PositionDetail) =
         .times(new BigNumber(userPosition.farmingLiquidity.toString()).dividedBy(lmPoolLiquidity?.toString() ?? 1))
         .div(userTVLUsd)
         .times(userPosition.farmingMultiplier)
-        .div(1e12)
 
       return {
         ...globalCakeApr,
