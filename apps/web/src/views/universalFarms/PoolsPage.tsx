@@ -2,14 +2,16 @@ import styled from 'styled-components'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
+import groupBy from 'lodash/groupBy'
+import flatMap from 'lodash/flatMap'
 import { toTokenValueByCurrency } from '@pancakeswap/widgets-internal'
-import { UNIVERSAL_FARMS } from '@pancakeswap/farms'
 import { useIntersectionObserver, useTheme } from '@pancakeswap/hooks'
 import { Button, InfoIcon, ISortOrder, SORT_ORDER, TableView, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useAllTokensByChainIds } from 'hooks/Tokens'
 import { PoolSortBy } from 'state/farmsV4/atom'
 import { useExtendPools, useFarmPools, usePoolsApr } from 'state/farmsV4/hooks'
 import { getCombinedApr } from 'state/farmsV4/state/poolApr/utils'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import type { PoolInfo } from 'state/farmsV4/state/type'
 
 import {
@@ -42,6 +44,7 @@ export const PoolsPage = () => {
 
   const columns = useColumnConfig()
   const allChainIds = useMemo(() => MAINNET_CHAINS.map((chain) => chain.id), [])
+  const { chainId: activeChainId } = useActiveChainId()
   const [filters, setFilters] = useState<IPoolsFilterPanelProps['value']>({
     selectedTypeIndex: 0,
     selectedNetwork: allChainIds,
@@ -57,7 +60,7 @@ export const PoolsPage = () => {
   const [isPoolListExtended, setIsPoolListExtended] = useState(false)
 
   // data source
-  const { loaded: fetchFarmListLoaded, data: farmList } = useFarmPools()
+  const { data: farmList } = useFarmPools()
   const { extendPools, fetchPoolList, resetExtendPools } = useExtendPools()
   const allTokenMap = useAllTokensByChainIds(allChainIds)
   const poolsApr = usePoolsApr()
@@ -80,12 +83,7 @@ export const PoolsPage = () => {
     [disabledExtendPools, isPoolListExtended, extendPools, allTokenMap, EMPTY_POOLS],
   )
 
-  const farmListWithExtendPools = useMemo(() => farmList.concat(extendPoolList), [farmList, extendPoolList])
-
-  const poolList = useMemo(
-    () => (fetchFarmListLoaded && farmList.length ? farmListWithExtendPools : UNIVERSAL_FARMS),
-    [fetchFarmListLoaded, farmListWithExtendPools, farmList],
-  )
+  const poolList = useMemo(() => farmList.concat(extendPoolList), [farmList, extendPoolList])
 
   useEffect(() => {
     if (isIntersecting) {
@@ -157,9 +155,39 @@ export const PoolsPage = () => {
     )
   }, [poolList, filters.selectedTokens, filters.selectedNetwork, selectedPoolTypes])
 
+  const dataByChain = useMemo(() => {
+    return groupBy(filteredData, 'chainId')
+  }, [filteredData])
+
+  // default sorting logic: https://linear.app/pancakeswap/issue/PAN-3669/default-sorting-logic-update-for-pair-list
+  const defaultSortedData = useMemo(() => {
+    const othersChains = allChainIds.filter((id) => id !== activeChainId)
+    const orderedChainIds = [activeChainId, ...othersChains]
+
+    // active Farms: current chain -> other chains
+    // ordered by farm config list
+    const activeFarms = flatMap(orderedChainIds, (chainId) =>
+      dataByChain[chainId].filter((pool) => !!pool.isActiveFarm),
+    )
+    // inactive Farms: current chain
+    // ordered by tvlUsd
+    const inactiveFarmsOfActiveChain = dataByChain[activeChainId]
+      .filter((pool) => !pool.isActiveFarm)
+      .sort((a, b) =>
+        'tvlUsd' in a && 'tvlUsd' in b && b.tvlUsd && a.tvlUsd ? Number(b.tvlUsd) - Number(a.tvlUsd) : 1,
+      )
+    // inactive Farms: other chains
+    // ordered by tvlUsd
+    const inactiveFarmsOfOthers = flatMap(othersChains, (chainId) =>
+      dataByChain[chainId].filter((pool) => !pool.isActiveFarm),
+    ).sort((a, b) => ('tvlUsd' in a && 'tvlUsd' in b && b.tvlUsd && a.tvlUsd ? Number(b.tvlUsd) - Number(a.tvlUsd) : 1))
+
+    return [...activeFarms, ...inactiveFarmsOfActiveChain, ...inactiveFarmsOfOthers]
+  }, [activeChainId, allChainIds, dataByChain])
+
   const sortedData = useMemo(() => {
     if (sortField === null) {
-      return filteredData
+      return defaultSortedData
     }
     return [...filteredData].sort((a, b) => {
       if (sortField === 'lpApr') {
@@ -169,7 +197,7 @@ export const PoolsPage = () => {
       }
       return sortOrder * a[sortField] + -1 * sortOrder * b[sortField]
     })
-  }, [sortOrder, sortField, filteredData, poolsApr]) as IDataType[]
+  }, [defaultSortedData, sortOrder, sortField, filteredData, poolsApr]) as IDataType[]
 
   const renderData = useMemo(() => sortedData.slice(0, cursorVisible), [cursorVisible, sortedData])
 
