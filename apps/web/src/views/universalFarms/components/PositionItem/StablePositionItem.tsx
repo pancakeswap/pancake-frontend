@@ -1,5 +1,5 @@
 import { memo, useMemo } from 'react'
-import { usePoolInfo, usePoolLifecyle } from 'state/farmsV4/hooks'
+import { usePoolInfo, usePoolTimeFrame } from 'state/farmsV4/hooks'
 import { StableLPDetail } from 'state/farmsV4/state/accountPositions/type'
 import { useTotalPriceUSD } from 'views/universalFarms/hooks'
 import { useBCakeWrapperAddress } from 'views/universalFarms/hooks/useBCakeWrapperAddress'
@@ -45,7 +45,7 @@ export const StablePositionItem = memo(
       chainId,
       protocol: Protocol.STABLE,
     })
-    const { startTimestamp, endTimestamp } = usePoolLifecyle(bCakeWrapperAddress, chainId)
+    const { startTimestamp, endTimestamp } = usePoolTimeFrame(bCakeWrapperAddress, chainId)
 
     const isFarmLive = useMemo(
       () =>
