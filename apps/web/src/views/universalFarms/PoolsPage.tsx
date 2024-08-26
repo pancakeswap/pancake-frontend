@@ -123,12 +123,13 @@ export const PoolsPage = () => {
   }, [isPoolListExtended])
 
   const handleSort = useCallback(({ order, dataIndex }) => {
-    setSortField(dataIndex)
     // we don't need asc sort, so reset it to null
     if (order === SORT_ORDER.ASC) {
       setSortOrder(SORT_ORDER.NULL)
+      setSortField(null)
     } else {
       setSortOrder(order)
+      setSortField(dataIndex)
     }
   }, [])
 
@@ -186,7 +187,7 @@ export const PoolsPage = () => {
   }, [activeChainId, allChainIds, dataByChain])
 
   const sortedData = useMemo(() => {
-    if (sortField === null) {
+    if (sortField === null || sortOrder === SORT_ORDER.NULL) {
       return defaultSortedData
     }
     return [...filteredData].sort((a, b) => {
@@ -195,7 +196,7 @@ export const PoolsPage = () => {
         const aprOfB = getCombinedApr(poolsApr, b.chainId, b.lpAddress)
         return sortOrder * aprOfA + -1 * sortOrder * aprOfB
       }
-      return sortOrder * a[sortField] + -1 * sortOrder * b[sortField]
+      return sortOrder * Number(a[sortField]) + -1 * sortOrder * Number(b[sortField])
     })
   }, [defaultSortedData, sortOrder, sortField, filteredData, poolsApr]) as IDataType[]
 
