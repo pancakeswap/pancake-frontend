@@ -240,11 +240,11 @@ const V2FarmingAction: React.FC<V2PositionActionsProps> = (props) => {
     }
   }, [chainId, onPresentWithdraw, switchNetworkIfNecessary])
 
-  return <ModifyStakeActions increaseDisabled={!isFarmLive} onIncrease={handleIncrease} onDecrease={handleDecrease} />
+  return <ModifyStakeActions showIncreaseBtn={isFarmLive} onIncrease={handleIncrease} onDecrease={handleDecrease} />
 }
 
 const V2NativeAction: React.FC<V2PositionActionsProps> = (props) => {
-  const { chainId } = props
+  const { chainId, isFarmLive } = props
   const { switchNetworkIfNecessary } = useCheckShouldSwitchNetwork()
   const onPresentDeposit = useDepositModal(props)
   const handleDeposit = useCallback(async () => {
@@ -253,6 +253,9 @@ const V2NativeAction: React.FC<V2PositionActionsProps> = (props) => {
       onPresentDeposit()
     }
   }, [chainId, switchNetworkIfNecessary, onPresentDeposit])
+  if (!isFarmLive) {
+    return null
+  }
   return <DepositStakeAction onDeposit={handleDeposit} />
 }
 
