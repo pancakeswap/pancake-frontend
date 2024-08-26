@@ -5067,4 +5067,14 @@ export const CONFIG_PROD: GaugeConfig[] = [
     type: GaugeType.StableSwap,
     tokenAddresses: [ethereumTokens.mBtc.address, ethereumTokens.wbtc.address],
   },
+  {
+    gid: 512,
+    address: '0xB2DC4d7627501338B578985c214208eb32283086',
+    pairName: 'ORDER-ETH',
+    chainId: ChainId.ETHEREUM,
+    type: GaugeType.V3,
+    token0Address: ethereumTokens.order.address,
+    token1Address: ethereumTokens.weth.address,
+    feeTier: FeeAmount.MEDIUM,
+  },
 ]
