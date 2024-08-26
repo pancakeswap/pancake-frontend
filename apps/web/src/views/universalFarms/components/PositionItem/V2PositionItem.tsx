@@ -1,6 +1,6 @@
 import { unwrappedToken } from '@pancakeswap/tokens'
 import { memo, useMemo } from 'react'
-import { usePoolInfo, usePoolLifecyle } from 'state/farmsV4/hooks'
+import { usePoolInfo, usePoolTimeFrame } from 'state/farmsV4/hooks'
 import { V2LPDetail } from 'state/farmsV4/state/accountPositions/type'
 import currencyId from 'utils/currencyId'
 import { v2Fee } from 'views/PoolDetail/hooks/useStablePoolFee'
@@ -49,7 +49,7 @@ export const V2PositionItem = memo(
       chainId,
       protocol: Protocol.V2,
     })
-    const { startTimestamp, endTimestamp } = usePoolLifecyle(bCakeWrapperAddress, chainId)
+    const { startTimestamp, endTimestamp } = usePoolTimeFrame(bCakeWrapperAddress, chainId)
 
     const isFarmLive = useMemo(
       () =>
