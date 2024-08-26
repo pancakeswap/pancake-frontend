@@ -167,6 +167,7 @@ export const TableView = <T extends BasicDataType>({
                 : col.title}
               {col.sorter ? (
                 <SortArrowButton
+                  onlyDESC
                   width="14px"
                   onSort={(e) => handleSort(e, col.dataIndex)}
                   sortOrder={sortField === col.dataIndex ? sortOrder : SORT_ORDER.NULL}
