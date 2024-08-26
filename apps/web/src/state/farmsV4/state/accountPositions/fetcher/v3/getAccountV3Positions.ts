@@ -59,7 +59,7 @@ export const readPositions = async (chainId: number, tokenIds: bigint[]): Promis
       tokensOwed0,
       tokensOwed1,
     ] = position
-    const [farmingLiquidity, boostMultiplier] = farmingPosition[index]
+    const [farmingLiquidity, , , , , , , , boostMultiplier] = farmingPosition[index]
     return {
       tokenId: tokenIds[index],
       nonce,
@@ -76,7 +76,7 @@ export const readPositions = async (chainId: number, tokenIds: bigint[]): Promis
       tokensOwed1,
       chainId,
       protocol: Protocol.V3,
-      farmingMultiplier: new BigNumber(Number(boostMultiplier)).div(1000000000000).toNumber() ?? 0,
+      farmingMultiplier: new BigNumber(Number(boostMultiplier)).div(1e12).toNumber() ?? 0,
       farmingLiquidity,
       isStaked: farmingLiquidity > 0n,
     } satisfies PositionDetail
