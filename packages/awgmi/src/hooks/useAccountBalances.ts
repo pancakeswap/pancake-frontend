@@ -12,18 +12,20 @@ import { useCallback, useMemo } from 'react'
 import { GetAccountCoinsDataResponse, MoveStructId } from '@aptos-labs/ts-sdk'
 
 import { QueryConfig } from '../types'
-import { UseAccountResourcesArgs, UseAccountResourcesConfig } from './useAccountResources'
+import { UseAccountResourcesArgs, UseAccountResourcesConfig, queryKey } from './useAccountResources'
 import { useCoins } from './useCoins'
 import { useNetwork } from './useNetwork'
 import { useV1CoinAssetTypes } from './useV1CoinAssetType'
 
 export type UseAccountBalancesResult = { value: string; formatted: string } & FetchCoinResult
 
-type UseAccountBalances<TData> = QueryConfig<UseAccountBalancesResult, Error, TData>
+type UseAccountBalancesQueryResult = [GetAccountCoinsDataResponse, GetAccountCoinsDataResponse]
 
-type UseAccountBalancesSelect<TData> = Pick<UseAccountBalances<TData>, 'select'>
+type UseAccountBalances<TData> = QueryConfig<UseAccountBalancesQueryResult, Error, TData>
 
-export type UseAccountBalancesConfig<TData> = Omit<UseAccountResourcesConfig, 'select'> &
+type UseAccountBalancesSelect<TData> = Pick<UseAccountBalances<TData>, 'enabled' | 'staleTime'>
+
+type UseAccountBalancesConfig<TData> = Omit<UseAccountResourcesConfig, 'select' | 'enabled' | 'staleTime'> &
   UseAccountBalancesSelect<TData>
 
 export function useAccountBalances<TData = unknown>({
@@ -35,12 +37,14 @@ export function useAccountBalances<TData = unknown>({
   staleTime,
   watch,
   coinFilter,
-}: UseAccountResourcesArgs & { coinFilter?: string } & UseAccountBalancesConfig<TData>) {
+}: UseAccountResourcesArgs & { coinFilter?: string } & UseAccountBalancesConfig<TData> & {
+    select: (data: UseAccountBalancesResult) => UseAccountBalancesResult | null | undefined
+  }) {
   const { chain } = useNetwork()
   const networkName = networkName_ ?? chain?.network
 
   const { data: coinsData, isSuccess } = useQuery({
-    queryKey: ['useAccountBalances', networkName, address],
+    queryKey: queryKey({ entity: 'useAccountBalances', networkName, address }),
     queryFn: async () => {
       if (!address) throw new Error('Invalid address')
       const balances = await fetchBalances({ address })
