@@ -2,7 +2,6 @@ import { bscTokens } from '@pancakeswap/tokens'
 
 import { StableSwapPool } from '../../types'
 
-// @todo @ChefJerry why there are two stable swap config apart from packages/farms
 export const pools: StableSwapPool[] = [
   {
     lpSymbol: 'lisUSD-BUSD LP',
@@ -11,6 +10,7 @@ export const pools: StableSwapPool[] = [
     quoteToken: bscTokens.busd,
     stableSwapAddress: '0x49079D07ef47449aF808A4f36c2a8dEC975594eC',
     infoStableSwapAddress: '0xa680d27f63Fa5E213C502d1B3Ca1EB6a3C1b31D6',
+    stableTotalFee: 0.0004,
     stableLpFee: 0.0002,
     stableLpFeeRateOfTotalFee: 0.5,
   },
@@ -21,6 +21,7 @@ export const pools: StableSwapPool[] = [
     quoteToken: bscTokens.busd,
     stableSwapAddress: '0x169F653A54ACD441aB34B73dA9946e2C451787EF',
     infoStableSwapAddress: '0xa680d27f63Fa5E213C502d1B3Ca1EB6a3C1b31D6',
+    stableTotalFee: 0.0001,
     stableLpFee: 0.00005,
     stableLpFeeRateOfTotalFee: 0.5,
   },
@@ -31,6 +32,7 @@ export const pools: StableSwapPool[] = [
     quoteToken: bscTokens.busd,
     stableSwapAddress: '0xc2F5B9a3d9138ab2B74d581fC11346219eBf43Fe',
     infoStableSwapAddress: '0xa680d27f63Fa5E213C502d1B3Ca1EB6a3C1b31D6',
+    stableTotalFee: 0.0001,
     stableLpFee: 0.00005,
     stableLpFeeRateOfTotalFee: 0.5,
   },
@@ -41,6 +43,7 @@ export const pools: StableSwapPool[] = [
     quoteToken: bscTokens.usdc,
     stableSwapAddress: '0x3EFebC418efB585248A0D2140cfb87aFcc2C63DD',
     infoStableSwapAddress: '0xa680d27f63Fa5E213C502d1B3Ca1EB6a3C1b31D6',
+    stableTotalFee: 0.0001,
     stableLpFee: 0.00005,
     stableLpFeeRateOfTotalFee: 0.5,
   },
@@ -51,6 +54,7 @@ export const pools: StableSwapPool[] = [
     quoteToken: bscTokens.usdt,
     stableSwapAddress: '0x6D8fba276ec6F1EDa2344DA48565AdbCA7e4FFa5',
     infoStableSwapAddress: '0x150c8AbEB487137acCC541925408e73b92F39A50',
+    stableTotalFee: 0.0004,
     stableLpFee: 0.0002,
     stableLpFeeRateOfTotalFee: 0.5,
   },
@@ -61,6 +65,7 @@ export const pools: StableSwapPool[] = [
     quoteToken: bscTokens.stkbnb,
     stableSwapAddress: '0x0b03e3d6Ec0c5e5bBf993dED8D947C6fb6eEc18D',
     infoStableSwapAddress: '0x150c8AbEB487137acCC541925408e73b92F39A50',
+    stableTotalFee: 0.0004,
     stableLpFee: 0.0002,
     stableLpFeeRateOfTotalFee: 0.5,
   },
@@ -71,6 +76,7 @@ export const pools: StableSwapPool[] = [
     quoteToken: bscTokens.wbnb,
     stableSwapAddress: '0x9c138bE1D76ee4C5162E0fe9D4eEA5542a23D1bD',
     infoStableSwapAddress: '0x150c8AbEB487137acCC541925408e73b92F39A50',
+    stableTotalFee: 0.0004,
     stableLpFee: 0.0002,
     stableLpFeeRateOfTotalFee: 0.5,
   },
@@ -81,7 +87,8 @@ export const pools: StableSwapPool[] = [
     quoteToken: bscTokens.usdt,
     stableSwapAddress: '0xb1Da7D2C257c5700612BdE35C8d7187dc80d79f1',
     infoStableSwapAddress: '0x150c8AbEB487137acCC541925408e73b92F39A50',
-    stableLpFee: 0.0004,
+    stableTotalFee: 0.0004,
+    stableLpFee: 0.0002,
     stableLpFeeRateOfTotalFee: 0.5,
   },
   {
@@ -91,7 +98,8 @@ export const pools: StableSwapPool[] = [
     quoteToken: bscTokens.sdcake,
     stableSwapAddress: '0xb8204D31379A9B317CD61C833406C972F58ecCbC',
     infoStableSwapAddress: '0x150c8AbEB487137acCC541925408e73b92F39A50',
-    stableLpFee: 0.001,
+    stableTotalFee: 0.001,
+    stableLpFee: 0.0005,
     stableLpFeeRateOfTotalFee: 0.5,
   },
   {
@@ -101,7 +109,8 @@ export const pools: StableSwapPool[] = [
     quoteToken: bscTokens.mcake,
     stableSwapAddress: '0xc54d35a8Cfd9f6dAe50945Df27A91C9911A03ab1',
     infoStableSwapAddress: '0x150c8AbEB487137acCC541925408e73b92F39A50',
-    stableLpFee: 0.005,
+    stableTotalFee: 0.005,
+    stableLpFee: 0.0025,
     stableLpFeeRateOfTotalFee: 0.5,
   },
   {
@@ -111,7 +120,8 @@ export const pools: StableSwapPool[] = [
     quoteToken: bscTokens.pendle,
     stableSwapAddress: '0xD8CB82059da7215b1a9604E845d49D3e78d0f95A',
     infoStableSwapAddress: '0x150c8AbEB487137acCC541925408e73b92F39A50',
-    stableLpFee: 0.0025,
+    stableTotalFee: 0.0025,
+    stableLpFee: 0.00125,
     stableLpFeeRateOfTotalFee: 0.5,
   },
   {
@@ -121,7 +131,8 @@ export const pools: StableSwapPool[] = [
     quoteToken: bscTokens.dlp,
     stableSwapAddress: '0x25d0eD3b1cE5aF0F3Ac7da4b39B46FC409bF67e2',
     infoStableSwapAddress: '0x150c8AbEB487137acCC541925408e73b92F39A50',
-    stableLpFee: 0.0025,
+    stableTotalFee: 0.0025,
+    stableLpFee: 0.00125,
     stableLpFeeRateOfTotalFee: 0.5,
   },
   {
@@ -131,7 +142,8 @@ export const pools: StableSwapPool[] = [
     quoteToken: bscTokens.wbeth,
     stableSwapAddress: '0xfF5Ce4846A3708EA9befa6c3Ab145e63f65DC045',
     infoStableSwapAddress: '0x150c8AbEB487137acCC541925408e73b92F39A50',
-    stableLpFee: 0.0002,
+    stableTotalFee: 0.0002,
+    stableLpFee: 0.0001,
     stableLpFeeRateOfTotalFee: 0.5,
   },
 ]

@@ -12,6 +12,7 @@ export interface BasePool {
 export interface StableSwapPool extends BasePool {
   stableSwapAddress: Address
   infoStableSwapAddress: Address
+  stableTotalFee: number
   stableLpFee: number
   stableLpFeeRateOfTotalFee: number
 }

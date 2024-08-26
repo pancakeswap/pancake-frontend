@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, ERC20Token, Pair as V2Pair, Percent, Price, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, ERC20Token, Percent, Price, TradeType, Pair as V2Pair } from '@pancakeswap/sdk'
 import { Address } from 'viem'
 
 import { RouteType } from './bestTrade'
@@ -14,6 +14,7 @@ export interface StableSwapPair extends BasePair {
   adminFee: Percent
   liquidityToken: ERC20Token
   stableLpFee: number
+  stableTotalFee: number
   stableLpFeeRateOfTotalFee: number
 }
 
