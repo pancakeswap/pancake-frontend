@@ -553,4 +553,12 @@ export const ethereumTokens = {
     'Liquid Staked BTC',
     'https://www.babylon.magpiexyz.io',
   ),
+  order: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0xABD4C63d2616A5201454168269031355f4764337',
+    18,
+    'ORDER',
+    'Orderly Network',
+    'https://orderly.network/',
+  ),
 }
