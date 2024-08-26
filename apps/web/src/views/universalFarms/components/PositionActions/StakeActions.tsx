@@ -6,6 +6,8 @@ import { StopPropagation } from 'views/universalFarms/components/StopPropagation
 type StakeActionsProps = {
   increaseDisabled?: boolean
   decreaseDisabled?: boolean
+  showIncreaseBtn?: boolean
+  showDecreaseBtn?: boolean
   onIncrease: () => void
   onDecrease?: () => void
 }
@@ -13,18 +15,24 @@ type StakeActionsProps = {
 export const ModifyStakeActions: React.FC<StakeActionsProps> = ({
   increaseDisabled = false,
   decreaseDisabled = false,
+  showIncreaseBtn = true,
+  showDecreaseBtn = true,
   onIncrease,
   onDecrease,
 }) => {
   return (
     <StopPropagation>
       <AutoRow gap="sm">
-        <IconButton variant="secondary" disabled={decreaseDisabled} onClick={onDecrease}>
-          <MinusIcon color="primary" width="24px" />
-        </IconButton>
-        <IconButton variant="secondary" disabled={increaseDisabled} onClick={onIncrease}>
-          <AddIcon color="primary" width="24px" />
-        </IconButton>
+        {showDecreaseBtn && (
+          <IconButton variant="secondary" disabled={decreaseDisabled} onClick={onDecrease}>
+            <MinusIcon color="primary" width="24px" />
+          </IconButton>
+        )}
+        {showIncreaseBtn && (
+          <IconButton variant="secondary" disabled={increaseDisabled} onClick={onIncrease}>
+            <AddIcon color="primary" width="24px" />
+          </IconButton>
+        )}
       </AutoRow>
     </StopPropagation>
   )
