@@ -27,7 +27,7 @@ import { FeeTypes, getNetworkFullName, ONRAMP_PROVIDERS, providerFeeTypes } from
 import { BtcLogo } from '../OnRampProviderLogo/OnRampProviderLogo'
 import BuyCryptoTooltip from '../Tooltip/Tooltip'
 
-type FeeComponents = { providerFee: number; networkFee: number; price: number; provider: ONRAMP_PROVIDERS }
+type FeeComponents = { providerFee: number; networkFee: number; price: number; provider: string }
 interface TransactionFeeDetailsProps {
   selectedQuote?: OnRampProviderQuote
   currency: Currency
