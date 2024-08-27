@@ -413,7 +413,9 @@ export function AddLiquidityV3Layout({
           backTo="/liquidity/positions"
           IconSlot={
             <>
-              {selectType === SELECTOR_TYPE.V3 && <AprCalculatorV2 poolAddress={poolAddress} chainId={chainId} />}
+              {selectType === SELECTOR_TYPE.V3 && (
+                <AprCalculatorV2 derived poolAddress={poolAddress} chainId={chainId} />
+              )}
               {showRefreshButton && (
                 <IconButton variant="text" scale="sm">
                   <RefreshIcon onClick={handleRefresh || noop} color="textSubtle" height={24} width={24} />
