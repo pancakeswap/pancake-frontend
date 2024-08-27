@@ -25,19 +25,19 @@ export type BasePoolInfo = {
 }
 
 export type V3PoolInfo = BasePoolInfo & {
-  protocol: 'v3'
+  protocol: Protocol.V3
 }
 
 export type V2PoolInfo = BasePoolInfo & {
-  protocol: 'v2'
+  protocol: Protocol.V2
 }
 
 export type StablePoolInfo = BasePoolInfo & {
-  protocol: 'stable'
+  protocol: Protocol.STABLE
 }
 
 export type V4BinPoolInfo = BasePoolInfo & {
-  protocol: 'v4bin'
+  protocol: Protocol.V4BIN
 }
 
 export type ChainIdAddressKey = `${number}:${Address}`

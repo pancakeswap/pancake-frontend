@@ -1,5 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
-import { Token } from '@pancakeswap/sdk'
+import { Currency, Token } from '@pancakeswap/sdk'
 import {
   ImageProps,
   TokenImage as UIKitTokenImage,
@@ -9,7 +9,7 @@ import {
 import { ASSET_CDN } from 'config/constants/endpoints'
 
 interface TokenPairImageProps extends Omit<UIKitTokenPairImageProps, 'primarySrc' | 'secondarySrc'> {
-  primaryToken: Token
+  primaryToken: Currency
   secondaryToken: Token
 }
 
@@ -24,8 +24,8 @@ export const tokenImageChainNameMapping = {
   [ChainId.OPBNB]: 'opbnb/',
 }
 
-export const getImageUrlFromToken = (token: Token) => {
-  const address = token?.isNative ? token.wrapped.address : token?.address
+export const getImageUrlFromToken = (token: Currency) => {
+  const address = token?.isNative ? token.wrapped.address : token.address
 
   return token
     ? token?.isNative && token.chainId !== ChainId.BSC
