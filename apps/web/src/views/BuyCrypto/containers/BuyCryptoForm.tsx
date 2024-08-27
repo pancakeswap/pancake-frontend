@@ -238,7 +238,7 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
               <BuyCryptoTooltip
                 tooltipBody={
                   <Text marginLeft="14px" fontSize="15px" color="#D67E0B">
-                    {t('No Topper fees. Ends in %days% days, %hours% hours and %minutes% minutes.', {
+                    {t('No Topper fees. Ends in %days% days, %hours% hours and %minutes% minutes', {
                       days,
                       hours,
                       minutes,
