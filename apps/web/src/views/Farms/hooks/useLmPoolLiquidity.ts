@@ -33,7 +33,10 @@ export const useLmPoolLiquidity = (lpAddress?: Address, chainId?: number) => {
   const { data } = useQuery({
     queryKey: ['lmPoolLiquidity', lpAddress, chainId],
     queryFn: () => fetchLmPoolLiquidity(lpAddress!, chainId!),
-    enabled: !!lpAddress && !!chainId && safeGetAddress(lpAddress) && isAddressEqual(lpAddress, zeroAddress),
+    enabled: !!lpAddress && !!chainId && safeGetAddress(lpAddress) && !isAddressEqual(lpAddress, zeroAddress),
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
   })
   return data
 }

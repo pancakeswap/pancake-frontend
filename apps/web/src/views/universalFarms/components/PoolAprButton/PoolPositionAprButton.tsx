@@ -146,11 +146,17 @@ export const useV3PositionApr = (pool: PoolInfo, userPosition: PositionDetail) =
       }
     }
 
-    const baseApr = new BigNumber(globalCakeApr.cakePerYear ?? 0)
-      .times(globalCakeApr.poolWeight ?? 0)
-      .times(cakePrice)
-      .times(new BigNumber(userPosition.liquidity.toString()).dividedBy(lmPoolLiquidity?.toString() ?? 1))
-      .div(userTVLUsd)
+    const baseApr = lmPoolLiquidity
+      ? new BigNumber(globalCakeApr.cakePerYear ?? 0)
+          .times(globalCakeApr.poolWeight ?? 0)
+          .times(cakePrice)
+          .times(
+            new BigNumber(userPosition.liquidity.toString()).dividedBy(
+              lmPoolLiquidity?.toString() ?? pool.liquidity?.toString() ?? 0,
+            ),
+          )
+          .div(userTVLUsd)
+      : BIG_ZERO
     const apr = baseApr.times(estimateUserMultiplier ?? 0)
 
     return {
@@ -159,17 +165,18 @@ export const useV3PositionApr = (pool: PoolInfo, userPosition: PositionDetail) =
       boost: undefined,
     }
   }, [
-    cakePrice,
-    globalCakeApr,
-    lmPoolLiquidity,
     outOfRange,
     removed,
-    estimateUserMultiplier,
-    userPosition.farmingLiquidity,
-    userPosition.farmingMultiplier,
+    globalCakeApr,
     userPosition.isStaked,
     userPosition.liquidity,
+    userPosition.farmingLiquidity,
+    userPosition.farmingMultiplier,
+    lmPoolLiquidity,
+    cakePrice,
+    pool.liquidity,
     userTVLUsd,
+    estimateUserMultiplier,
   ])
 
   const lpApr = useMemo(() => {
