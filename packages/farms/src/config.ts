@@ -2648,6 +2648,44 @@ const polygonFarmConfig: UniversalFarmConfig[] = [
 ]
 const zksyncFarmConfig: UniversalFarmConfig[] = [
   {
+    pid: 29,
+    chainId: ChainId.ZKSYNC,
+    protocol: Protocol.V3,
+    token0: zksyncTokens.zk,
+    token1: zksyncTokens.weth,
+    feeAmount: FeeAmount.MEDIUM,
+    lpAddress: Pool.getAddress(zksyncTokens.zk, zksyncTokens.weth, FeeAmount.MEDIUM),
+  },
+
+  {
+    pid: 33,
+    chainId: ChainId.ZKSYNC,
+    protocol: Protocol.V3,
+    token0: zksyncTokens.usdcNative,
+    token1: zksyncTokens.zk,
+    feeAmount: FeeAmount.MEDIUM,
+    lpAddress: Pool.getAddress(zksyncTokens.usdcNative, zksyncTokens.zk, FeeAmount.MEDIUM),
+  },
+  {
+    pid: 31,
+    chainId: ChainId.ZKSYNC,
+    protocol: Protocol.V3,
+    token0: zksyncTokens.usdc,
+    token1: zksyncTokens.zk,
+    feeAmount: FeeAmount.MEDIUM,
+    lpAddress: Pool.getAddress(zksyncTokens.usdc, zksyncTokens.zk, FeeAmount.MEDIUM),
+  },
+  {
+    pid: 5,
+    chainId: ChainId.ZKSYNC,
+    protocol: Protocol.V3,
+    token0: zksyncTokens.cake,
+    token1: zksyncTokens.weth,
+    feeAmount: FeeAmount.MEDIUM,
+    lpAddress: Pool.getAddress(zksyncTokens.cake, zksyncTokens.weth, FeeAmount.MEDIUM),
+  },
+
+  {
     pid: 8,
     chainId: ChainId.ZKSYNC,
     protocol: Protocol.V3,
@@ -2710,15 +2748,7 @@ const zksyncFarmConfig: UniversalFarmConfig[] = [
     feeAmount: FeeAmount.HIGH,
     lpAddress: Pool.getAddress(zksyncTokens.weth, zksyncTokens.rf, FeeAmount.HIGH),
   },
-  {
-    pid: 33,
-    chainId: ChainId.ZKSYNC,
-    protocol: Protocol.V3,
-    token0: zksyncTokens.usdcNative,
-    token1: zksyncTokens.zk,
-    feeAmount: FeeAmount.MEDIUM,
-    lpAddress: Pool.getAddress(zksyncTokens.usdcNative, zksyncTokens.zk, FeeAmount.MEDIUM),
-  },
+
   {
     pid: 32,
     chainId: ChainId.ZKSYNC,
@@ -2728,15 +2758,7 @@ const zksyncFarmConfig: UniversalFarmConfig[] = [
     feeAmount: FeeAmount.HIGH,
     lpAddress: Pool.getAddress(zksyncTokens.usdcNative, zksyncTokens.zk, FeeAmount.HIGH),
   },
-  {
-    pid: 31,
-    chainId: ChainId.ZKSYNC,
-    protocol: Protocol.V3,
-    token0: zksyncTokens.usdc,
-    token1: zksyncTokens.zk,
-    feeAmount: FeeAmount.MEDIUM,
-    lpAddress: Pool.getAddress(zksyncTokens.usdc, zksyncTokens.zk, FeeAmount.MEDIUM),
-  },
+
   {
     pid: 30,
     chainId: ChainId.ZKSYNC,
@@ -2745,15 +2767,6 @@ const zksyncFarmConfig: UniversalFarmConfig[] = [
     token1: zksyncTokens.zk,
     feeAmount: FeeAmount.HIGH,
     lpAddress: Pool.getAddress(zksyncTokens.usdc, zksyncTokens.zk, FeeAmount.HIGH),
-  },
-  {
-    pid: 29,
-    chainId: ChainId.ZKSYNC,
-    protocol: Protocol.V3,
-    token0: zksyncTokens.zk,
-    token1: zksyncTokens.weth,
-    feeAmount: FeeAmount.MEDIUM,
-    lpAddress: Pool.getAddress(zksyncTokens.zk, zksyncTokens.weth, FeeAmount.MEDIUM),
   },
   {
     pid: 28,
@@ -2937,15 +2950,7 @@ const zksyncFarmConfig: UniversalFarmConfig[] = [
     feeAmount: FeeAmount.HIGH,
     lpAddress: Pool.getAddress(zksyncTokens.weth, zksyncTokens.tes, FeeAmount.HIGH),
   },
-  {
-    pid: 5,
-    chainId: ChainId.ZKSYNC,
-    protocol: Protocol.V3,
-    token0: zksyncTokens.cake,
-    token1: zksyncTokens.weth,
-    feeAmount: FeeAmount.MEDIUM,
-    lpAddress: Pool.getAddress(zksyncTokens.cake, zksyncTokens.weth, FeeAmount.MEDIUM),
-  },
+
   {
     pid: 7,
     chainId: ChainId.ZKSYNC,
