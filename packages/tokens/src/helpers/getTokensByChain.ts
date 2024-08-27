@@ -1,5 +1,5 @@
 import type { ChainId } from '@pancakeswap/chains'
-import type { Token, SerializedToken } from '@pancakeswap/sdk'
+import type { SerializedToken, Token } from '@pancakeswap/sdk'
 
 import { allTokens } from '../allTokens'
 

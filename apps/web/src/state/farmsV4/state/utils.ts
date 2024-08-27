@@ -40,7 +40,7 @@ export const parseFarmPools = (
     const token0Address = safeGetAddress(pool.token0.id)!
     const token0 =
       getTokenByAddress(pool.chainId, token0Address) ??
-      new Token(pool.chainId, token0Address, pool.token1.decimals, pool.token1.symbol, pool.token1.name)
+      new Token(pool.chainId, token0Address, pool.token0.decimals, pool.token0.symbol, pool.token0.name)
     const token1Address = safeGetAddress(pool.token1.id)!
     const token1 =
       getTokenByAddress(pool.chainId, token1Address) ??
