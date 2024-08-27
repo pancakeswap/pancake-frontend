@@ -50,7 +50,7 @@ export const PoolStatus: React.FC<PoolStatusProps> = ({ poolInfo }) => {
 
     if (!stablePair) return 0
 
-    return new BigNumber(stablePair.stableLpFee).times(poolInfo.vol24hUsd ?? 0).toNumber()
+    return new BigNumber(stablePair.stableTotalFee).times(poolInfo.vol24hUsd ?? 0).toNumber()
   }, [poolInfo])
 
   if (!poolInfo) {

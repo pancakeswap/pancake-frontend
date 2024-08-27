@@ -1,8 +1,8 @@
-import BN from 'bignumber.js'
 import { Protocol, UNIVERSAL_FARMS } from '@pancakeswap/farms'
 import { LegacyRouter } from '@pancakeswap/smart-router/legacy-router'
 import { Token } from '@pancakeswap/swap-sdk-core'
 import { getTokenByAddress } from '@pancakeswap/tokens'
+import BN from 'bignumber.js'
 import { paths } from 'state/info/api/schema'
 import { safeGetAddress } from 'utils'
 import { Address, isAddressEqual } from 'viem'
@@ -26,7 +26,7 @@ export const parseFarmPools = (
       if (stableConfig) {
         stableSwapAddress = safeGetAddress(stableConfig.stableSwapAddress)
         lpAddress = safeGetAddress(stableConfig.lpAddress)!
-        feeTier = stableConfig.stableLpFee * 1000000
+        feeTier = stableConfig.stableTotalFee * 1000000
       }
     }
     const localFarm = UNIVERSAL_FARMS.find(

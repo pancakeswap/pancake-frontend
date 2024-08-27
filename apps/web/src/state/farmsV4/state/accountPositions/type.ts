@@ -49,7 +49,8 @@ export type StableLPDetail = {
   farmingBalance: CurrencyAmount<ERC20Token>
   totalSupply: CurrencyAmount<ERC20Token>
   pair: LegacyStableSwapPair
-  // fee: pair.stableLpFee * 1000000
+  // fee: pair.stableTotalFee * 1000000
+  // lpFee: pair.stableLpFee * 1000000
   nativeDeposited0: CurrencyAmount<ERC20Token>
   farmingDeposited0: CurrencyAmount<ERC20Token>
   nativeDeposited1: CurrencyAmount<ERC20Token>

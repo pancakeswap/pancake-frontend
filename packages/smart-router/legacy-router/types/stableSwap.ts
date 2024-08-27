@@ -15,7 +15,6 @@ export interface StableSwapPair extends BasePair {
   liquidityToken: ERC20Token
   stableTotalFee: number
   stableLpFee: number
-  stableTotalFee: number
   stableLpFeeRateOfTotalFee: number
 }
 
