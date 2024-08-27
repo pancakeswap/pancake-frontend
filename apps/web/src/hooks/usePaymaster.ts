@@ -5,6 +5,7 @@ import { Address, Hex, hexToBigInt, isAddress, stringify } from 'viem'
 
 import { ChainId } from '@pancakeswap/chains'
 import { ZyfiResponse } from 'config/paymaster'
+import { calculateGasMargin } from 'utils'
 import { publicClient } from 'utils/viem'
 import { eip712WalletActions } from 'viem/zksync'
 import { useWalletClient } from 'wagmi'
@@ -71,7 +72,7 @@ export const usePaymaster = () => {
       to: txResponse.txData.to,
       value: txResponse.txData.value && !isZero(txResponse.txData.value) ? hexToBigInt(txResponse.txData.value) : 0n,
       chainId: ChainId.ZKSYNC,
-      gas: BigInt(txResponse.gasLimit),
+      gas: calculateGasMargin(BigInt(txResponse.gasLimit), 2000n), // allow margin to avoid gas esti. error
       maxFeePerGas: BigInt(txResponse.txData.maxFeePerGas),
       maxPriorityFeePerGas: BigInt(0),
       data: call.calldata,
