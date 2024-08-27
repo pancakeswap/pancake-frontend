@@ -1,5 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
-import { BCakeWrapperFarmConfig, UNIVERSAL_FARMS } from '@pancakeswap/farms'
+import { BCakeWrapperFarmConfig, Protocol, UNIVERSAL_FARMS } from '@pancakeswap/farms'
 import { CurrencyAmount, erc20Abi, ERC20Token, Pair, pancakePairV2ABI } from '@pancakeswap/sdk'
 import { LegacyStableSwapPair } from '@pancakeswap/smart-router/legacy-router'
 import { deserializeToken } from '@pancakeswap/token-lists'
@@ -135,6 +135,7 @@ export const getV3PositionsFromTokenId = async (chainId: number, tokenIds: bigin
       tokensOwed0,
       tokensOwed1,
       chainId,
+      protocol: Protocol.V3,
     } satisfies PositionDetail
   })
 }
@@ -399,6 +400,7 @@ export const getAccountV2LpDetails = async (
       totalSupply,
       deposited0,
       deposited1,
+      protocol: Protocol.V2,
     }
   })
 }
@@ -466,6 +468,7 @@ export const getStablePairDetails = async (
       pair,
       deposited0,
       deposited1,
+      protocol: Protocol.STABLE,
     }
   })
 }

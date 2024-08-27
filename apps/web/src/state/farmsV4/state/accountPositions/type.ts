@@ -1,14 +1,16 @@
+import { Protocol } from '@pancakeswap/farms'
 import { ERC20Token, Pair } from '@pancakeswap/sdk'
 import { LegacyStableSwapPair } from '@pancakeswap/smart-router/legacy-router'
 import { CurrencyAmount } from '@pancakeswap/swap-sdk-core'
+import { Address } from 'viem/accounts'
 
 export type PositionDetail = {
   // detail read from contract
   nonce: bigint
   tokenId: bigint
   operator: string
-  token0: string
-  token1: string
+  token0: Address
+  token1: Address
   fee: number
   tickLower: number
   tickUpper: number
@@ -21,6 +23,7 @@ export type PositionDetail = {
   // additional detail
   isStaked?: boolean
   chainId: number
+  protocol: Protocol
 }
 
 export type V2LPDetail = {
@@ -29,6 +32,7 @@ export type V2LPDetail = {
   totalSupply: CurrencyAmount<ERC20Token>
   deposited0: CurrencyAmount<ERC20Token>
   deposited1: CurrencyAmount<ERC20Token>
+  protocol: Protocol
 }
 
 export type StableLPDetail = {
@@ -37,4 +41,7 @@ export type StableLPDetail = {
   // fee: pair.stableLpFee * 1000000
   deposited0: CurrencyAmount<ERC20Token>
   deposited1: CurrencyAmount<ERC20Token>
+  protocol: Protocol
 }
+
+export type PairListType = PositionDetail | V2LPDetail | StableLPDetail

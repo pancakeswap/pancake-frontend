@@ -1,66 +1,32 @@
+import styled from 'styled-components'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useTranslation } from '@pancakeswap/localization'
+import { toTokenValueByCurrency } from '@pancakeswap/widgets-internal'
 import { UNIVERSAL_FARMS } from '@pancakeswap/farms'
 import { useIntersectionObserver, useTheme } from '@pancakeswap/hooks'
-import { useTranslation } from '@pancakeswap/localization'
-import {
-  Button,
-  Image,
-  InfoIcon,
-  ISortOrder,
-  Card as RawCard,
-  CardBody as RawCardBody,
-  CardFooter as RawCardFooter,
-  CardHeader as RawCardHeader,
-  SORT_ORDER,
-  TableView,
-  useMatchBreakpoints,
-} from '@pancakeswap/uikit'
-import { toTokenValue } from '@pancakeswap/widgets-internal'
+import { Button, Image, InfoIcon, ISortOrder, SORT_ORDER, TableView, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useAllTokensByChainIds } from 'hooks/Tokens'
-import { useCallback, useEffect, useMemo, useState } from 'react'
 import { PoolSortBy } from 'state/farmsV4/atom'
 import { useExtendPools, useFarmPools, usePoolAprUpdater } from 'state/farmsV4/hooks'
 import { PoolInfo } from 'state/farmsV4/state/type'
-import styled from 'styled-components'
 
-import { ListView } from './PoolListView'
-import { IPoolsFilterPanelProps, MAINNET_CHAINS, PoolsFilterPanel, useSelectedPoolTypes } from './PoolsFilterPanel'
-import { useColumnConfig } from './useColumnConfig'
+import {
+  IPoolsFilterPanelProps,
+  MAINNET_CHAINS,
+  PoolsFilterPanel,
+  useSelectedPoolTypes,
+  ListView,
+  useColumnConfig,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+} from './components'
 
 type IDataType = PoolInfo
 
 const PoolsContent = styled.div`
   min-height: calc(100vh - 64px - 56px);
-`
-
-const Card = styled(RawCard)`
-  overflow: initial;
-`
-
-const CardHeader = styled(RawCardHeader)`
-  background: ${({ theme }) => theme.card.background};
-`
-
-const CardBody = styled(RawCardBody)`
-  padding: 0;
-`
-
-const CardFooter = styled(RawCardFooter)`
-  position: sticky;
-  bottom: 0;
-  z-index: 50;
-  border-bottom-right-radius: ${({ theme }) => theme.radii.card};
-  border-bottom-left-radius: ${({ theme }) => theme.radii.card};
-  background: ${({ theme }) => theme.card.background};
-  text-align: center;
-  font-size: 12px;
-  font-weight: 400;
-  color: ${({ theme }) => theme.colors.textSubtle};
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 4px;
-  line-height: 18px;
-  padding: 12px 16px;
 `
 
 const StyledImage = styled(Image)`
@@ -158,17 +124,16 @@ export const PoolsPage = () => {
   }, [])
 
   const filteredData = useMemo(() => {
-    const { selectedNetwork, selectedTokens } = filters
     return poolList.filter(
       (farm) =>
-        selectedNetwork.includes(farm.chainId) &&
-        (!selectedTokens?.length ||
-          selectedTokens?.find(
-            (token) => token === toTokenValue(farm.token0) || token === toTokenValue(farm.token1),
+        filters.selectedNetwork.includes(farm.chainId) &&
+        (!filters.selectedTokens?.length ||
+          filters.selectedTokens?.find(
+            (token) => token === toTokenValueByCurrency(farm.token0) || token === toTokenValueByCurrency(farm.token1),
           )) &&
         selectedPoolTypes.includes(farm.protocol),
     )
-  }, [poolList, filters, selectedPoolTypes])
+  }, [poolList, filters.selectedTokens, filters.selectedNetwork, selectedPoolTypes])
 
   const sortedData = useMemo(() => {
     if (sortField === null) {

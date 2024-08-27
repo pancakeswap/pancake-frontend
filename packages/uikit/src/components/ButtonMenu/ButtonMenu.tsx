@@ -19,10 +19,17 @@ const getBorderColor = ({ theme, variant }: StyledButtonMenuProps) => {
 const StyledButtonMenu = styled.div.withConfig({
   shouldForwardProp: (props) => !["fullWidth"].includes(props),
 })<StyledButtonMenuProps>`
-  background-color: ${getBackgroundColor};
+  ${(props) => {
+    if (props.variant === variants.TEXT) {
+      return "";
+    }
+    return `
+    background-color: ${getBackgroundColor(props)};
+    border: 1px solid ${getBorderColor(props)};
+    `;
+  }}
   border-radius: 16px;
   display: ${({ fullWidth }) => (fullWidth ? "flex" : "inline-flex")};
-  border: 1px solid ${getBorderColor};
   width: ${({ fullWidth }) => (fullWidth ? "100%" : "auto")};
   align-items: center;
   & > button,
