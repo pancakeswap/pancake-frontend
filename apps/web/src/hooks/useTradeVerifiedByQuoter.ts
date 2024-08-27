@@ -17,7 +17,7 @@ type Params = {
 export function useTradeVerifiedByQuoter<P extends Params>(p: P): P {
   const { trade, enabled, isLoading, syncing } = p
   const serializableTrade = useMemo(() => trade && V4Router.Transformer.serializeTrade(trade), [trade])
-  const { data, fetchStatus } = useQuery({
+  const { data, fetchStatus, status } = useQuery({
     enabled: Boolean(enabled && serializableTrade && trade),
     queryKey: [serializableTrade],
     queryFn: async () => {
@@ -54,7 +54,7 @@ export function useTradeVerifiedByQuoter<P extends Params>(p: P): P {
   return {
     ...p,
     syncing: fetchStatus === 'fetching' || syncing,
-    isLoading: fetchStatus === 'pending' || isLoading,
+    isLoading: status === 'pending' || isLoading,
     trade: data,
   }
 }
