@@ -1,6 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
 import { BCakeWrapperFarmConfig, Protocol, UNIVERSAL_BCAKEWRAPPER_FARMS, UNIVERSAL_FARMS } from '@pancakeswap/farms'
-import { CurrencyAmount, ERC20Token, Pair, pancakePairV2ABI } from '@pancakeswap/sdk'
+import { CurrencyAmount, ERC20Token, Pair, Token, pancakePairV2ABI } from '@pancakeswap/sdk'
 import { LegacyStableSwapPair } from '@pancakeswap/smart-router/legacy-router'
 import { deserializeToken } from '@pancakeswap/token-lists'
 import BigNumber from 'bignumber.js'
@@ -56,10 +56,12 @@ export const getAccountV2FarmingStakedBalances = async (
     } as const
   })
 
-  const balances = await client.multicall({
-    contracts: balanceCalls,
-    allowFailure: false,
-  })
+  const balances = await client
+    .multicall({
+      contracts: balanceCalls,
+      allowFailure: true,
+    })
+    .then((res) => res.map((item) => item.result ?? [0n, 0n, 0n]))
 
   return balances.map((balance) => {
     return new BigNumber(balance[0].toString()).toString()
@@ -86,10 +88,12 @@ export const getAccountV2FarmingBCakeWrapperEarning = async (
     } as const
   })
 
-  const earnings = await client.multicall({
-    contracts: earningCalls,
-    allowFailure: false,
-  })
+  const earnings = await client
+    .multicall({
+      contracts: earningCalls,
+      allowFailure: true,
+    })
+    .then((res) => res.map((item) => item.result ?? 0n))
 
   return earnings.map((earning) => {
     return new BigNumber(earning.toString()).toString()
@@ -117,7 +121,7 @@ export const getTrackedV2LpTokens = memoize(
       })
     }
     // from preset tokens and base tokens
-    const baseTokens = BASES_TO_TRACK_LIQUIDITY_FOR[chainId]
+    const baseTokens: Token[] = BASES_TO_TRACK_LIQUIDITY_FOR[chainId]
     Object.entries(presetTokens).forEach(([address, token]) => {
       baseTokens.forEach((baseToken) => {
         const baseAddress = safeGetAddress(baseToken.address)
@@ -340,22 +344,27 @@ export const getStablePairDetails = async (
     } as const
   })
 
-  const [balances, totalSupplies, farmingResp] = await Promise.all([
-    client.multicall({
-      contracts: balanceCalls,
-      allowFailure: false,
-    }),
-    client.multicall({
-      contracts: totalSupplyCalls,
-      allowFailure: false,
-    }),
-    client.multicall({
-      contracts: farmingCalls,
-      allowFailure: true,
-    }),
+  const [balances, totalSupplies, farming] = await Promise.all([
+    client
+      .multicall({
+        contracts: balanceCalls,
+        allowFailure: true,
+      })
+      .then((res) => res.map((item) => item.result ?? 0n)),
+    client
+      .multicall({
+        contracts: totalSupplyCalls,
+        allowFailure: true,
+      })
+      .then((res) => res.map((item) => item.result ?? 0n)),
+    client
+      .multicall({
+        contracts: farmingCalls,
+        allowFailure: true,
+      })
+      .then((res) => res.map((item) => item.result ?? Array(5).fill(0n))),
   ])
 
-  const farming = farmingResp.map((res) => res.result)
   const nativeCalcCoinsAmountCalls = validStablePairs.map((pair, index) => {
     return {
       abi: infoStableSwapABI,
@@ -374,14 +383,18 @@ export const getStablePairDetails = async (
   })
 
   const [nativeReserveResults, farmingReserveResults] = await Promise.all([
-    client.multicall({
-      contracts: nativeCalcCoinsAmountCalls,
-      allowFailure: false,
-    }),
-    client.multicall({
-      contracts: farmingCalcCoinsAmountCalls,
-      allowFailure: false,
-    }),
+    client
+      .multicall({
+        contracts: nativeCalcCoinsAmountCalls,
+        allowFailure: true,
+      })
+      .then((res) => res.map((item) => item.result ?? [0n, 0n])),
+    client
+      .multicall({
+        contracts: farmingCalcCoinsAmountCalls,
+        allowFailure: true,
+      })
+      .then((res) => res.map((item) => item.result ?? [0n, 0n])),
   ])
 
   const result = validStablePairs.map((pair, index) => {
