@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { SLOW_INTERVAL } from 'config/constants'
-import { useAtomValue, useSetAtom } from 'jotai'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useCallback } from 'react'
 import { extendPoolsAtom } from '../extendPools/atom'
 import { ChainIdAddressKey, PoolInfo } from '../type'
@@ -18,16 +18,49 @@ export const usePoolApr = (
   const updatePools = useSetAtom(extendPoolsAtom)
   const updateCakeApr = useSetAtom(cakeAprSetterAtom)
   const poolApr = useAtomValue(poolAprAtom)[key ?? '']
-  const updateCallback = useCallback(async () => {
-    const [lpApr, cakeApr] = await Promise.all([getLpApr(pool), getCakeApr(pool)])
-    updatePools([{ ...pool, lpApr: `${lpApr}` }])
-    updateCakeApr(cakeApr)
-    return {
-      lpApr: `${lpApr}`,
-      cakeApr,
-      merklApr: '0',
+  const [merklAprs, updateMerklApr] = useAtom(merklAprAtom)
+  const getMerklApr = useCallback(() => {
+    if (Object.values(merklAprs).length === 0) {
+      return getAllNetworkMerklApr().then((aprs) => {
+        updateMerklApr(aprs)
+        return aprs[key!] ?? '0'
+      })
     }
-  }, [pool, updateCakeApr, updatePools])
+    return merklAprs[key!] ?? '0'
+  }, [key, merklAprs, updateMerklApr])
+  const updateCallback = useCallback(async () => {
+    try {
+      const [cakeApr, lpApr, merklApr] = await Promise.all([
+        getCakeApr(pool).then((apr) => {
+          updateCakeApr(apr)
+          return apr
+        }),
+        getLpApr(pool)
+          .then((apr) => {
+            updatePools([{ ...pool, lpApr: `${apr}` }])
+            return `${apr}`
+          })
+          .catch(() => {
+            updatePools([{ ...pool, lpApr: '0' }])
+            return '0'
+          }),
+        ,
+        getMerklApr(),
+      ])
+      return {
+        lpApr: `${lpApr}`,
+        cakeApr,
+        merklApr,
+      }
+    } catch (error) {
+      console.warn('debug usePoolApr', error)
+      return {
+        lpApr: '0',
+        cakeApr: { value: '0' },
+        merklApr: '0',
+      }
+    }
+  }, [getMerklApr, pool, updateCakeApr, updatePools])
 
   useQuery({
     queryKey: ['apr', key],
@@ -61,7 +94,6 @@ export const usePoolAprUpdater = () => {
     async (newPools: PoolInfo[]) => {
       if (newPools && newPools.length) {
         newPools.forEach((pool) => {
-          // @todo @ChefJerry ignore the ended farms
           getCakeApr(pool).then((apr) => {
             updateCakeApr(apr)
           })

@@ -14,6 +14,7 @@ import groupBy from 'lodash/groupBy'
 import set from 'lodash/set'
 import { chainIdToExplorerInfoChainName, explorerApiClient } from 'state/info/api/client'
 import { safeGetAddress } from 'utils'
+import { usdPriceBatcher } from 'utils/batcher'
 import { getMasterChefV3Contract, getV2SSBCakeWrapperContract } from 'utils/contractHelpers'
 import { publicClient } from 'utils/wagmi'
 import { Address, erc20Abi, isAddressEqual } from 'viem'
@@ -120,12 +121,16 @@ const calcV3PoolApr = ({
   totalAllocPoint,
   latestPeriodCakePerSecond,
   poolInfo,
+  token0PriceUsd,
+  token1PriceUsd,
 }: {
   pool: V3PoolInfo
   cakePrice: BigNumber
   totalAllocPoint: bigint
   latestPeriodCakePerSecond: bigint
   poolInfo: readonly [bigint, `0x${string}`, `0x${string}`, `0x${string}`, number, bigint, bigint]
+  token0PriceUsd: number
+  token1PriceUsd: number
 }) => {
   const cakePerYear = new BigNumber(SECONDS_PER_YEAR)
     .times(latestPeriodCakePerSecond.toString())
@@ -138,11 +143,14 @@ const calcV3PoolApr = ({
     Number(totalLiquidity) === 0
       ? BIG_ZERO
       : new BigNumber(totalBoostLiquidity.toString()).dividedBy(totalLiquidity.toString())
+  const poolTvlUsd = new BigNumber(pool.tvlToken0 ?? 0)
+    .times(token0PriceUsd)
+    .plus(new BigNumber(pool.tvlToken1 ?? 0).times(token1PriceUsd))
 
   const baseApr =
-    liquidityBooster.isZero() || Number(pool.tvlUsd) === 0
+    liquidityBooster.isZero() || poolTvlUsd.isZero()
       ? BIG_ZERO
-      : cakePerYearUsd.times(poolWeight).dividedBy(liquidityBooster.times(pool.tvlUsd ?? 1))
+      : cakePerYearUsd.times(poolWeight).dividedBy(liquidityBooster.times(poolTvlUsd ?? 1))
 
   const multiplier = DEFAULT_V3_CAKE_APR_BOOST_MULTIPLIER[pool.chainId]
 
@@ -267,16 +275,36 @@ const getV3PoolsCakeAprByChainId = async (pools: V3PoolInfo[], chainId: number, 
       } as const),
   )
 
-  const poolInfos = await client.multicall({
-    contracts: poolInfoCalls,
-    allowFailure: false,
+  const priceCalls = validPools.map(async (pool) => {
+    return Promise.all([usdPriceBatcher.fetch(pool.token0), usdPriceBatcher.fetch(pool.token1)])
   })
+
+  const [poolInfos, prices] = await Promise.all([
+    client.multicall({
+      contracts: poolInfoCalls,
+      allowFailure: false,
+    }),
+    Promise.all(priceCalls),
+  ])
 
   return validPools.reduce((acc, pool, index) => {
     const poolInfo = poolInfos[index]
     if (!poolInfo) return acc
     const key = `${chainId}:${safeGetAddress(pool.lpAddress)}`
-    set(acc, key, calcV3PoolApr({ pool, cakePrice, totalAllocPoint, latestPeriodCakePerSecond, poolInfo }))
+    const [token0PriceUsd, token1PriceUsd] = prices[index]
+    set(
+      acc,
+      key,
+      calcV3PoolApr({
+        pool,
+        cakePrice,
+        totalAllocPoint,
+        latestPeriodCakePerSecond,
+        poolInfo,
+        token0PriceUsd,
+        token1PriceUsd,
+      }),
+    )
     return acc
   }, {} as CakeApr)
 }
@@ -310,12 +338,16 @@ const calcV2PoolApr = ({
   cakePerSecond,
   totalBoostShare,
   totalSupply,
+  token0PriceUsd,
+  token1PriceUsd,
 }: {
   pool: V2PoolInfo | StablePoolInfo
   cakePrice: BigNumber
   cakePerSecond: bigint
   totalBoostShare: bigint
   totalSupply: bigint
+  token0PriceUsd: number
+  token1PriceUsd: number
 }) => {
   if (cakePerSecond === 0n) {
     return {
@@ -325,7 +357,11 @@ const calcV2PoolApr = ({
   }
   const cakePerYear = new BigNumber(SECONDS_PER_YEAR).times(cakePerSecond.toString()).dividedBy(1e18)
   const cakeOneYearUsd = cakePrice.times(cakePerYear.toString())
-  const usdPerShare = new BigNumber(pool.tvlUsd ?? 0).times(1e18).div(totalSupply.toString() ?? 1)
+  const poolTvlUsd = new BigNumber(pool.tvlToken0 ?? 0)
+    .times(token0PriceUsd)
+    .plus(new BigNumber(pool.tvlToken1 ?? 0).times(token1PriceUsd))
+  const usdPerShare = poolTvlUsd.times(1e18).div(totalSupply.toString() ?? 1)
+
   const farmingTVLUsd = usdPerShare.times(totalBoostShare.toString() ?? 0).dividedBy(1e18)
 
   const baseApr = cakeOneYearUsd.dividedBy((farmingTVLUsd ?? 1).toString())
@@ -398,7 +434,11 @@ const getV2PoolsCakeAprByChainId = async (
     } as const
   })
 
-  const [rewardPerSecondResults, totalBoostedShareResults, totalSupplies, endTimestamps] = await Promise.all([
+  const priceCalls = validPools.map(async (pool) => {
+    return Promise.all([usdPriceBatcher.fetch(pool.token0), usdPriceBatcher.fetch(pool.token1)])
+  })
+
+  const [rewardPerSecondResults, totalBoostedShareResults, totalSupplies, endTimestamps, prices] = await Promise.all([
     client.multicall({
       contracts: rewardPerSecondCalls,
       allowFailure: false,
@@ -415,6 +455,7 @@ const getV2PoolsCakeAprByChainId = async (
       contracts: endTimestampCalls,
       allowFailure: false,
     }),
+    Promise.all(priceCalls),
   ])
 
   return validPools.reduce((acc, pool, index) => {
@@ -422,6 +463,7 @@ const getV2PoolsCakeAprByChainId = async (
     const totalBoostShare = totalBoostedShareResults[index]
     const endTimestamp = endTimestamps[index]
     const expired = endTimestamp && Number(endTimestamp) < dayjs().unix()
+    const [token0PriceUsd, token1PriceUsd] = prices[index]
     if (!rewardPerSecond || expired) return acc
     const key = `${chainId}:${safeGetAddress(pool.lpAddress)}`
     set(
@@ -433,6 +475,8 @@ const getV2PoolsCakeAprByChainId = async (
         cakePerSecond: rewardPerSecond,
         totalBoostShare,
         totalSupply: totalSupplies[index],
+        token0PriceUsd,
+        token1PriceUsd,
       }),
     )
     return acc
