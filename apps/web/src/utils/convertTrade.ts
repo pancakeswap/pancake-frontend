@@ -1,15 +1,15 @@
+import { type Pool, type Route, type Trade, toSerializableTrade } from '@pancakeswap/routing-sdk'
+import { createStablePool, isStablePool, toSerializableStablePool } from '@pancakeswap/routing-sdk-addon-stable-swap'
+import { createV2Pool, isV2Pool, toSerializableV2Pool } from '@pancakeswap/routing-sdk-addon-v2'
+import { createV3Pool, isV3Pool, toSerializableV3Pool } from '@pancakeswap/routing-sdk-addon-v3'
 import {
   type V4Router,
-  SmartRouter,
-  PoolType,
   getRouteTypeByPools,
+  PoolType,
+  SmartRouter,
   Pool as SmartRouterPool,
 } from '@pancakeswap/smart-router'
 import type { TradeType } from '@pancakeswap/swap-sdk-core'
-import { type Trade, toSerializableTrade, type Pool, type Route } from '@pancakeswap/routing-sdk'
-import { createV3Pool, isV3Pool, toSerializableV3Pool } from '@pancakeswap/routing-sdk-addon-v3'
-import { createV2Pool, isV2Pool, toSerializableV2Pool } from '@pancakeswap/routing-sdk-addon-v2'
-import { createStablePool, isStablePool, toSerializableStablePool } from '@pancakeswap/routing-sdk-addon-stable-swap'
 
 export function toRoutingSDKPool(p: SmartRouterPool): Pool {
   if (SmartRouter.isV3Pool(p)) {
@@ -21,7 +21,7 @@ export function toRoutingSDKPool(p: SmartRouterPool): Pool {
   return createStablePool(p)
 }
 
-export function toSmartRouterPool(p: Pool): SmartRouterPool {
+export function toSmartRouterPool(p: any): SmartRouterPool {
   if (isV3Pool(p)) {
     return {
       ...p.getPoolData(),
