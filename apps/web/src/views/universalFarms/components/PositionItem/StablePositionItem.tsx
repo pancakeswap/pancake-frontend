@@ -1,9 +1,9 @@
+import { Protocol } from '@pancakeswap/farms'
 import { memo, useMemo } from 'react'
 import { usePoolInfo, usePoolTimeFrame } from 'state/farmsV4/hooks'
 import { StableLPDetail } from 'state/farmsV4/state/accountPositions/type'
 import { useTotalPriceUSD } from 'views/universalFarms/hooks'
 import { useBCakeWrapperAddress } from 'views/universalFarms/hooks/useBCakeWrapperAddress'
-import { Protocol } from '@pancakeswap/farms'
 import { V2PositionActions } from '../PositionActions/V2PositionActions'
 import { PositionItem } from './PositionItem'
 
@@ -16,7 +16,7 @@ export const StablePositionItem = memo(
         token1,
         stableSwapAddress,
         lpAddress,
-        stableLpFee,
+        stableTotalFee,
       },
       nativeDeposited0,
       nativeDeposited1,
@@ -68,7 +68,7 @@ export const StablePositionItem = memo(
             removed={false}
             outOfRange={false}
             protocol={data.protocol}
-            fee={Number(stableLpFee) * 10000}
+            fee={Number(stableTotalFee) * 10000}
             isStaked={false}
             amount0={nativeDeposited0}
             amount1={nativeDeposited1}
@@ -99,7 +99,7 @@ export const StablePositionItem = memo(
             removed={false}
             outOfRange={false}
             protocol={data.protocol}
-            fee={Number(stableLpFee) * 10000}
+            fee={Number(stableTotalFee) * 10000}
             isStaked
             amount0={farmingDeposited0}
             amount1={farmingDeposited1}
