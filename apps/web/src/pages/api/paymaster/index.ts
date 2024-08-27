@@ -6,6 +6,7 @@ import {
 } from 'config/paymaster'
 import stringify from 'fast-json-stable-stringify'
 import { NextApiHandler } from 'next'
+import { calculateGasMargin } from 'utils'
 import { decodeFunctionData, erc20Abi } from 'viem'
 
 const handler: NextApiHandler = async (req, res) => {
@@ -36,6 +37,7 @@ const handler: NextApiHandler = async (req, res) => {
     const isSponsored = gasTokenInfo?.discount === 'FREE'
 
     const PAYMASTER_URL = isSponsored ? ZYFI_SPONSORED_PAYMASTER_URL : ZYFI_PAYMASTER_URL
+    const gas = calculateGasMargin(BigInt(call.gas), 2000n)
 
     const response = await fetch(PAYMASTER_URL, {
       method: 'POST',
@@ -45,7 +47,7 @@ const handler: NextApiHandler = async (req, res) => {
       },
       body: stringify({
         feeTokenAddress: gasTokenAddress,
-        gasLimit: call.gas,
+        gasLimit: Number(gas),
         txData: {
           from: account,
           to: call.address,
