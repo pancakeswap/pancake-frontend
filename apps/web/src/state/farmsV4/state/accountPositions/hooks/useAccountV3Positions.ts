@@ -17,6 +17,8 @@ export const useAccountV3Positions = (chainIds: number[], account?: Address | nu
         refetchOnWindowFocus: false,
         refetchOnReconnect: false,
         refetchInterval: SLOW_INTERVAL,
+        // Prevents re-fetching while the data is still fresh
+        staleTime: SLOW_INTERVAL,
       } satisfies UseQueryOptions<PositionDetail[]>
     })
   }, [account, chainIds])

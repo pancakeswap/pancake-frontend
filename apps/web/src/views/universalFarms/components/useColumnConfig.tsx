@@ -10,7 +10,7 @@ import { PoolListItemAction } from './PoolListItemAction'
 import { getChainFullName } from '../utils'
 
 const FeeTierComponent = <T extends BasicDataType>({ fee, item }: { fee: number; item: T }) => {
-  const percent = useMemo(() => new Percent(fee ?? 0, item.feeTierBase ?? 1), [fee, item.feeTierBase])
+  const percent = useMemo(() => new Percent(fee ?? 0, item.feeTierBase || 1), [fee, item.feeTierBase])
   return <FeeTierTooltip type={item.protocol} percent={percent} />
 }
 
@@ -65,19 +65,8 @@ export const useColumnConfig = (): ITableViewProps<PoolInfo>['columns'] => {
         sorter: true,
         minWidth: '145px',
         display: mediaQueries.isXl || mediaQueries.isXxl,
-        render: (value, item) =>
-          value ? (
-            <FiatNumberDisplay
-              value={value}
-              tooltipText={
-                item.isFarming
-                  ? t('Total active (in-range) liquidity staked in the farm.')
-                  : t('Total Value Locked (TVL) in the pool.')
-              }
-            />
-          ) : (
-            <Skeleton width={60} />
-          ),
+        render: (value) =>
+          value ? <FiatNumberDisplay value={value} showFullDigitsTooltip={false} /> : <Skeleton width={60} />,
       },
       {
         title: t('Volume 24H'),

@@ -22,6 +22,8 @@ export const useAccountStableLpDetails = (chainIds: number[], account?: Address 
         refetchOnWindowFocus: false,
         refetchOnReconnect: false,
         refetchInterval: SLOW_INTERVAL,
+        // Prevents re-fetching while the data is still fresh
+        staleTime: SLOW_INTERVAL,
       } satisfies UseQueryOptions<StableLPDetail[]>
     })
   }, [account, chainIds])
