@@ -345,7 +345,9 @@ export function UniversalAddLiquidity({
           {selectorType === SELECTOR_TYPE.STABLE && (
             <StableConfigContext.Provider value={stableConfig}>
               <AddStableLiquidity currencyA={baseCurrency} currencyB={quoteCurrency}>
-                {(props) => <StableFormView {...props} stableLpFee={stableConfig?.stableSwapConfig?.stableLpFee} />}
+                {(props) => (
+                  <StableFormView {...props} stableTotalFee={stableConfig?.stableSwapConfig?.stableTotalFee} />
+                )}
               </AddStableLiquidity>
             </StableConfigContext.Provider>
           )}

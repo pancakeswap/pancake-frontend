@@ -49,7 +49,7 @@ export default function StableFormView({
   poolTokenPercentage,
   pair,
   reserves,
-  stableLpFee,
+  stableTotalFee,
   stableAPR,
   executionSlippage,
   loading,
@@ -57,7 +57,7 @@ export default function StableFormView({
   price,
   maxAmounts,
 }: AddStableChildrenProps & {
-  stableLpFee?: number
+  stableTotalFee?: number
 }) {
   const addIsUnsupported = useIsTransactionUnsupported(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
   const addIsWarning = useIsTransactionWarning(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
@@ -248,7 +248,7 @@ export default function StableFormView({
             <AutoRow justifyContent="space-between" mb="4px">
               <Text color="textSubtle">{t('Fee rate')}: </Text>
 
-              <Text>{stableLpFee ? BIG_ONE_HUNDRED.times(stableLpFee).toNumber() : '-'}%</Text>
+              <Text>{stableTotalFee ? BIG_ONE_HUNDRED.times(stableTotalFee).toNumber() : '-'}%</Text>
             </AutoRow>
 
             <AutoRow justifyContent="space-between" mb="4px">
