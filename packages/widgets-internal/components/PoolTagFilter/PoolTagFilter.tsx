@@ -32,11 +32,11 @@ const Container = styled(Box)<{ isShow: boolean }>`
     margin: -1px 0 0 -1px;
   }
 `;
-export interface IPoolsTypeFilterProps {
+export interface IPoolTagFilterProps {
   data?: TreeNode[];
 }
 
-export const PoolsTypeFilter: React.FC<IPoolsTypeFilterProps> = ({ data }) => {
+export const PoolTagFilter: React.FC<IPoolTagFilterProps> = ({ data }) => {
   const [isShow, setIsShow] = useState(false);
   const [selectedNodeKey, setSelectedNodeKey] = useState<TreeSelectProps["value"]>(null);
   const { theme } = useTheme();

@@ -4,7 +4,7 @@ import { ERC20Token } from "@pancakeswap/sdk";
 import { Column, IMultiSelectProps, ISelectItem, MultiSelect, MultiSelectChangeEvent } from "@pancakeswap/uikit";
 import { useCallback, useMemo } from "react";
 import styled from "styled-components";
-import { CurrencyLogo } from "../../../components/CurrencyLogo";
+import { CurrencyLogo } from "../CurrencyLogo";
 
 export interface ITokenProps {
   data?: ERC20Token[];
