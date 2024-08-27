@@ -48,10 +48,12 @@ export const useExtendPools = () => {
   )
 
   const resetExtendPools = useCallback(() => {
-    updateExtendPools([])
+    if (extendPools.length) {
+      updateExtendPools([])
+    }
     setPageEnd(false)
     _setQuery(DEFAULT_QUERIES)
-  }, [_setQuery, setPageEnd, updateExtendPools])
+  }, [_setQuery, setPageEnd, updateExtendPools, extendPools])
 
   return {
     extendPools,
