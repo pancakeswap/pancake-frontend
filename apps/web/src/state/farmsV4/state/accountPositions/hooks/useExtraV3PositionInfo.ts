@@ -4,8 +4,8 @@ import useIsTickAtLimit from 'hooks/v3/useIsTickAtLimit'
 import { usePoolWithChainId } from 'hooks/v3/usePools'
 import getPriceOrderingFromPositionForUI from 'hooks/v3/utils/getPriceOrderingFromPositionForUI'
 import { useMemo } from 'react'
+import { useTokenByChainId } from 'hooks/Tokens'
 import { PositionDetail } from '../type'
-import { useTokenByChainId } from './useTokenByChainId'
 
 // @todo @ChefJerry consider merge to useAccountV3Positions
 export const useExtraV3PositionInfo = (positionDetail?: PositionDetail) => {
