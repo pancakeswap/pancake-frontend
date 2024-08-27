@@ -15,6 +15,7 @@ import { useMemo } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import { getChainNameInKebabCase } from '@pancakeswap/chains'
 import { Protocol } from '@pancakeswap/farms'
+import { ERC20Token } from '@pancakeswap/sdk'
 
 const PoolsFilterContainer = styled(Flex)`
   flex-wrap: wrap;
@@ -116,12 +117,15 @@ export interface IPoolsFilterPanelProps {
 export const PoolsFilterPanel = ({ value, onChange }: IPoolsFilterPanelProps) => {
   const { selectedTokens, selectedNetwork, selectedTypeIndex: selectedType } = value
 
-  const allTokens = useAllTokensByChainIds(selectedNetwork)
+  const allTokenMap = useAllTokensByChainIds(selectedNetwork)
   const sortedTokens = useMemo(
+    // sort by selectedNetwork order
     () =>
-      // todo:@eric confirm the sort logic
-      Object.values(allTokens),
-    [allTokens],
+      selectedNetwork.reduce<ERC20Token[]>((res, chainId) => {
+        res.push(...Object.values(allTokenMap[chainId]))
+        return res
+      }, []),
+    [allTokenMap, selectedNetwork],
   )
 
   const handleTypeIndexChange: IPoolTypeMenuProps['onChange'] = (index) => {
