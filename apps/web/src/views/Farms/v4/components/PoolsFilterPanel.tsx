@@ -7,10 +7,9 @@ import { useAllTokensByChainIds } from 'hooks/Tokens'
 import { useMemo, useState } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 
-const PoolsHeader = styled(Flex)`
+const PoolsFilterContainer = styled(Flex)`
   flex-wrap: wrap;
   justify-content: flex-start;
-  padding: 30px;
   gap: 16px;
 `
 const chains = CHAINS.filter((chain) => {
@@ -58,10 +57,10 @@ export const PoolsFilterPanel = () => {
   )
 
   return (
-    <PoolsHeader>
+    <PoolsFilterContainer>
       <FarmWidget.NetworkFilter data={chains} value={selectedNetwork} onChange={setSelectedNetwork} />
       <FarmWidget.TokenFilter data={sortedTokens} value={selectedTokens} onChange={(e) => setSelectedTokens(e.value)} />
       <PoolTypeMenu activeIndex={selectedTypeIndex} onChange={setSelectedTypeIndex} />
-    </PoolsHeader>
+    </PoolsFilterContainer>
   )
 }

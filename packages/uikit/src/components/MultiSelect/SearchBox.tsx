@@ -153,7 +153,7 @@ const SearchBox = <T extends number | string>(
     <Container>
       <StyledBox onClick={() => inputRef.current?.focus()} isFocus={isFocus}>
         {selectedItems?.map((item) => (
-          <SelectedLabel>
+          <SelectedLabel key={item.value}>
             {item.icon ? (
               typeof item.icon === "string" ? (
                 <ItemIcon alt={item.label} src={item.icon} />
