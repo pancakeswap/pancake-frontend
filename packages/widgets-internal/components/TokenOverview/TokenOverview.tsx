@@ -12,20 +12,17 @@ export interface ITokenInfoProps {
   customContent?: React.ReactNode;
   token: Currency;
   quoteToken: Token;
+  width?: string;
 }
 
 const Container = styled.div`
   display: flex;
   align-items: center;
+  gap: 8px;
 `;
 
-const IconWrapper = styled.div`
-  padding-right: 8px;
-  width: 32px;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    width: 40px;
-  }
+const IconWrapper = styled.div<{ width?: string }>`
+  width: ${({ width }) => width ?? "40px"};
 `;
 
 const DescWrapper = styled.div`
@@ -49,6 +46,7 @@ export const TokenOverview: React.FC<ITokenInfoProps> = ({
   customContent,
   token,
   quoteToken,
+  width,
 }) => {
   if (!isReady) {
     return (
@@ -63,7 +61,7 @@ export const TokenOverview: React.FC<ITokenInfoProps> = ({
   }
   return (
     <Container>
-      <IconWrapper>{icon ?? <DoubleCurrencyLogo currency0={token} currency1={quoteToken} />}</IconWrapper>
+      <IconWrapper width={width}>{icon ?? <DoubleCurrencyLogo currency0={token} currency1={quoteToken} />}</IconWrapper>
       {customContent ?? (
         <Flex flexDirection="column">
           <Text bold>{title ?? `${token.symbol} / ${quoteToken.symbol}`}</Text>
