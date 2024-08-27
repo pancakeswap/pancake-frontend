@@ -55,3 +55,25 @@ export const StyledSecondaryImage = styled(TokenImage)<StyledImageProps>`
     },
   })}
 `;
+
+export const StyledChainImage = styled(TokenImage)<StyledImageProps>`
+  position: absolute;
+  ${StyledSystemVariant({
+    variants: {
+      [variants.DEFAULT]: {
+        bottom: 0,
+        left: "auto",
+        right: 0,
+        top: "auto",
+        zIndex: 7,
+      },
+      [variants.INVERTED]: {
+        bottom: 0,
+        left: "auto",
+        right: 0,
+        top: "auto",
+        zIndex: 7,
+      },
+    },
+  })}
+`;

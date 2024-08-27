@@ -20,7 +20,7 @@ export const CardBody = styled(RawCardBody)`
 
 export const CardFooter = styled(RawCardFooter)`
   position: sticky;
-  bottom: 0;
+  bottom: 50px;
   z-index: 50;
   border-bottom-right-radius: ${({ theme }) => theme.radii.card};
   border-bottom-left-radius: ${({ theme }) => theme.radii.card};
@@ -35,4 +35,8 @@ export const CardFooter = styled(RawCardFooter)`
   gap: 4px;
   line-height: 18px;
   padding: 12px 16px;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    bottom: 0;
+  }
 `

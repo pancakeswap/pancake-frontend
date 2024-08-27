@@ -6,6 +6,7 @@ import { useMemo } from 'react'
 import { PoolInfo } from 'state/farmsV4/state/type'
 import { PoolApyButton } from './PoolApyButton'
 import { PoolListItemAction } from './PoolListItemAction'
+import { getChainFullName } from '../utils'
 
 export const useColumnConfig = <T extends BasicDataType>(): ITableViewProps<T>['columns'] => {
   const { t } = useTranslation()
@@ -23,6 +24,7 @@ export const useColumnConfig = <T extends BasicDataType>(): ITableViewProps<T>['
             token={item.token0}
             quoteToken={item.token1}
             width="48px"
+            getChainName={getChainFullName}
             icon={
               <TokenPairImage
                 width={44}

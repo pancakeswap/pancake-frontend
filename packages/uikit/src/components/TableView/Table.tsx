@@ -23,6 +23,7 @@ export interface ITableViewProps<T extends BasicDataType> {
   onSort?: (parms: { dataIndex: IColumnsType<T>["dataIndex"]; order: ISortOrder }) => void;
   sortOrder?: ISortOrder;
   sortField?: IColumnsType<T>["dataIndex"];
+  getRowLink?: (record: T) => string;
 }
 
 const Table = styled.table`
@@ -63,8 +64,9 @@ const TableHeader = styled.thead`
 
 const TableBody = styled.tbody``;
 
-const Row = styled.tr`
+const Row = styled.tr<{ $withLink?: boolean }>`
   border-top: 1px solid ${({ theme }) => theme.colors.cardBorder};
+  cursor: ${({ $withLink }) => ($withLink ? "pointer" : "auto")};
 
   &:last-child {
     border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder};
@@ -73,6 +75,29 @@ const Row = styled.tr`
 
 const Cell = styled.td``;
 
+interface ITableCellProps<T extends BasicDataType> {
+  col: IColumnsType<T>;
+  data: T;
+  idx: number;
+}
+
+const TableCell = <T extends BasicDataType>({ col, data, idx }: ITableCellProps<T>) => {
+  return (
+    <Cell
+      key={col.key}
+      style={{
+        display: col.display === false ? "none" : "table-cell",
+      }}
+    >
+      {col.render
+        ? col.render(col.dataIndex ? data[col.dataIndex] : data, data, idx)
+        : col.dataIndex
+        ? data[col.dataIndex]
+        : null}
+    </Cell>
+  );
+};
+
 export const TableView = <T extends BasicDataType>({
   columns,
   data,
@@ -80,6 +105,7 @@ export const TableView = <T extends BasicDataType>({
   onSort,
   sortOrder,
   sortField,
+  getRowLink,
 }: ITableViewProps<T>) => {
   const getRowKey = useCallback(
     (rowData: T) => (rowKey ? rowData[rowKey] : rowData.key ?? Object.values(rowData).slice(0, 2).join("-")),
@@ -91,6 +117,17 @@ export const TableView = <T extends BasicDataType>({
       onSort?.({ order, dataIndex });
     },
     [onSort]
+  );
+
+  const handleRowClick = useCallback(
+    (item: T) => {
+      if (!getRowLink) {
+        return;
+      }
+      const link = getRowLink(item);
+      window.location.href = link;
+    },
+    [getRowLink]
   );
 
   return (
@@ -123,20 +160,9 @@ export const TableView = <T extends BasicDataType>({
       </TableHeader>
       <TableBody>
         {data.map((item) => (
-          <Row key={getRowKey(item)}>
+          <Row $withLink={!!getRowLink} key={getRowKey(item)} onClick={() => handleRowClick(item)}>
             {columns.map((col, idx) => (
-              <Cell
-                key={col.key}
-                style={{
-                  display: col.display === false ? "none" : "table-cell",
-                }}
-              >
-                {col.render
-                  ? col.render(col.dataIndex ? item[col.dataIndex] : item, item, idx)
-                  : col.dataIndex
-                  ? item[col.dataIndex]
-                  : null}
-              </Cell>
+              <TableCell col={col} data={item} idx={idx} key={col.key} />
             ))}
           </Row>
         ))}
