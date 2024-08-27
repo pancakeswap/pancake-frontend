@@ -32,7 +32,7 @@ export const UniversalFarms: React.FC<PropsWithChildren> = () => {
     <>
       <PoolsBanner />
       <Page>
-        <TabMenu activeIndex={tab} onItemClick={onTabClick} isShowBorderBottom={false}>
+        <TabMenu gap="8px" activeIndex={tab} onItemClick={onTabClick} isShowBorderBottom={false}>
           {Object.values(tabsConfig).map(({ menu }) => menu())}
         </TabMenu>
         {tabsConfig[tab].page()}

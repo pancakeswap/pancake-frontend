@@ -120,7 +120,7 @@ const ItemIcon = styled.img`
 export interface ISearchBoxProps<T extends number | string> {
   selectedItems: IOptionType<T>;
   onFilter?: (text: string) => void;
-  handleLabelDelete: (e: React.MouseEvent<HTMLOrSVGElement>, item: ISelectItem<T>) => void;
+  handleLabelDelete: (e: React.MouseEvent<HTMLOrSVGElement> | React.KeyboardEvent, item: ISelectItem<T>) => void;
 }
 
 const SearchBox = <T extends number | string>(
@@ -149,8 +149,19 @@ const SearchBox = <T extends number | string>(
     [handleLabelDelete]
   );
 
+  const handleBackspace = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key !== "Backspace" || !selectedItems.length) {
+        return;
+      }
+      e.stopPropagation();
+      handleLabelDelete(e, selectedItems[selectedItems.length - 1]);
+    },
+    [handleLabelDelete, selectedItems]
+  );
+
   return (
-    <Container>
+    <Container onKeyDown={handleBackspace}>
       <StyledBox onClick={() => inputRef.current?.focus()} isFocus={isFocus}>
         {selectedItems?.map((item) => (
           <SelectedLabel key={item.value}>
