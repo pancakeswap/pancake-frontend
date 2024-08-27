@@ -7,6 +7,7 @@ test('exports', () => {
       "getFarmApr",
       "getPositionFarmApr",
       "getPositionFarmAprFactor",
+      "Protocol",
       "UNIVERSAL_FARMS",
       "UNIVERSAL_BCAKEWRAPPER_FARMS",
       "FARM_AUCTION_HOSTING_IN_SECONDS",

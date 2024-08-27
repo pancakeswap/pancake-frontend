@@ -1,6 +1,6 @@
 import { useAtom } from 'jotai'
-import { useCallback, useEffect, useState } from 'react'
-import { extendPoolsAtom, ExtendPoolsQuery, extendPoolsQueryAtom } from './atom'
+import { useCallback, useState } from 'react'
+import { DEFAULT_QUERIES, extendPoolsAtom, ExtendPoolsQuery, extendPoolsQueryAtom } from './atom'
 import { fetchExplorerPoolsList } from './fetcher'
 
 const RESET_QUERY_KEYS = ['protocols', 'orderBy', 'chains', 'pools', 'tokens'] as Array<keyof ExtendPoolsQuery>
@@ -9,48 +9,53 @@ export const useExtendPools = () => {
   const [query, _setQuery] = useAtom(extendPoolsQueryAtom)
   const [extendPools, updateExtendPools] = useAtom(extendPoolsAtom)
   const [pageEnd, setPageEnd] = useState(false)
-  const [nextCursor, setNextCursor] = useState('')
-  const setQuery = useCallback(
+  const fetchPoolList = useCallback(
     async (newQuery: Partial<ExtendPoolsQuery>) => {
-      const shouldReset = Object.keys(newQuery).some((k) => RESET_QUERY_KEYS.includes(k as keyof ExtendPoolsQuery))
+      const mergedQueries = {
+        ...query,
+        ...newQuery,
+      } as Required<ExtendPoolsQuery>
+
+      let shouldReset = false
+      for (const key of RESET_QUERY_KEYS) {
+        if (mergedQueries[key] !== query[key]) {
+          shouldReset = true
+          break
+        }
+      }
+
       if (pageEnd) {
         if (shouldReset) {
           setPageEnd(false)
+          mergedQueries.after = ''
         } else {
           return false
         }
       }
 
-      const q = { ...query, ...newQuery } as Required<ExtendPoolsQuery>
-      const { pools, endCursor, hasNextPage } = await fetchExplorerPoolsList(q)
+      const { pools, endCursor, hasNextPage } = await fetchExplorerPoolsList(mergedQueries)
 
       setPageEnd(!hasNextPage)
       if (shouldReset) {
         updateExtendPools([])
       }
       updateExtendPools(pools)
-      _setQuery(q)
-      setNextCursor(endCursor ?? '')
+      _setQuery({ ...mergedQueries, after: endCursor ?? '' })
 
       return hasNextPage
     },
     [_setQuery, pageEnd, query, updateExtendPools],
   )
-  const getNextPage = useCallback(() => {
-    if (pageEnd) return
 
-    setQuery({ after: nextCursor })
-  }, [nextCursor, pageEnd, setQuery])
-
-  useEffect(() => {
-    setQuery({ after: '' })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  const resetExtendPools = useCallback(() => {
+    updateExtendPools([])
+    setPageEnd(false)
+    _setQuery(DEFAULT_QUERIES)
+  }, [_setQuery, setPageEnd, updateExtendPools])
 
   return {
     extendPools,
-    query,
-    setQuery,
-    getNextPage,
+    fetchPoolList,
+    resetExtendPools,
   }
 }

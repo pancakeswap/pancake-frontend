@@ -1,5 +1,5 @@
 import isEmpty from "lodash/isEmpty";
-import { MultiSelect, MultiSelectChangeEvent, IMultiSelectProps } from "@pancakeswap/uikit";
+import { MultiSelect, IMultiSelectChangeEvent, IMultiSelectProps } from "@pancakeswap/uikit";
 import { useCallback, useState } from "react";
 import styled from "styled-components";
 
@@ -10,6 +10,8 @@ export interface INetworkProps {
 }
 
 const Container = styled.div<{ isShow: boolean }>`
+  flex: 1;
+
   .p-multiselect-panel {
     /* hack:
      * the primereact not support to custom the placement of panel
@@ -46,7 +48,7 @@ export const NetworkFilter: React.FC<INetworkProps> = ({ data, value, onChange }
   const [isShow, setIsShow] = useState(false);
 
   const handleSelectChange = useCallback(
-    (e: MultiSelectChangeEvent) => {
+    (e: IMultiSelectChangeEvent<number>) => {
       if (isEmpty(e.value)) {
         e.preventDefault();
         return;
@@ -60,7 +62,6 @@ export const NetworkFilter: React.FC<INetworkProps> = ({ data, value, onChange }
     <Container isShow={isShow}>
       <MultiSelect
         style={{
-          width: "273px",
           backgroundColor: "var(--colors-input)",
         }}
         panelStyle={{
