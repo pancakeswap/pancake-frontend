@@ -2617,7 +2617,7 @@ export const bscTokens = {
     18,
     'CGPT',
     'ChainGPT',
-    'https://www.chaingpt.org/',
+    'https://www.chaingpt.org/?utm_source=pancakeswap&utm_medium=partnership&utm_campaign=august_syrup_pool',
   ),
   play: new ERC20Token(
     ChainId.BSC,
