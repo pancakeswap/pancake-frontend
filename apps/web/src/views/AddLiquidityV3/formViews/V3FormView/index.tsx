@@ -62,6 +62,7 @@ import { useSendTransaction, useWalletClient } from 'wagmi'
 
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { useDensityChartData } from 'views/AddLiquidityV3/hooks/useDensityChartData'
+import ZapLiquidityWidget from 'views/AddLiquidityV3/ZapLiquidityWidget'
 import LockedDeposit from './components/LockedDeposit'
 import { PositionPreview } from './components/PositionPreview'
 import RangeSelector from './components/RangeSelector'
@@ -153,6 +154,7 @@ export default function V3FormView({
     noLiquidity,
     currencies,
     errorMessage,
+    hasInsufficentBalance,
     invalidPool,
     invalidRange,
     outOfRange,
@@ -524,11 +526,12 @@ export default function V3FormView({
           gridAutoRows: 'max-content',
           gridAutoColumns: '100%',
         }}
+        gap="8px"
         disabled={!feeAmount || invalidPool || (noLiquidity && !startPriceTypedValue) || (!priceLower && !priceUpper)}
       >
-        <PreTitle mb="8px">{t('Deposit Amount')}</PreTitle>
+        <PreTitle>{t('Deposit Amount')}</PreTitle>
 
-        <LockedDeposit locked={depositADisabled} mb="8px">
+        <LockedDeposit locked={depositADisabled}>
           <Box mb="8px">
             <CurrencyInputPanel
               showUSDPrice
@@ -550,7 +553,7 @@ export default function V3FormView({
           </Box>
         </LockedDeposit>
 
-        <LockedDeposit locked={depositBDisabled} mb="8px">
+        <LockedDeposit locked={depositBDisabled}>
           <CurrencyInputPanel
             showUSDPrice
             maxAmount={maxAmounts[Field.CURRENCY_B]}
@@ -570,6 +573,15 @@ export default function V3FormView({
           />
         </LockedDeposit>
       </DynamicSection>
+      {hasInsufficentBalance && (
+        <ZapLiquidityWidget
+          tickLower={tickLower}
+          tickUpper={tickUpper}
+          pool={pool}
+          baseCurrency={baseCurrency}
+          quoteCurrency={quoteCurrency}
+        />
+      )}
       <HideMedium>{buttons}</HideMedium>
 
       <RightContainer>

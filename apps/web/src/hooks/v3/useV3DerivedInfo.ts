@@ -57,6 +57,7 @@ export default function useV3DerivedInfo(
   position: Position | undefined
   noLiquidity?: boolean
   errorMessage?: ReactNode
+  hasInsufficentBalance: boolean
   invalidPool: boolean
   outOfRange: boolean
   invalidRange: boolean
@@ -364,6 +365,7 @@ export default function useV3DerivedInfo(
     tickUpper,
   ])
 
+  let hasInsufficentBalance = false
   let errorMessage: ReactNode | undefined
   if (!account) {
     errorMessage = t('Connect Wallet')
@@ -390,6 +392,7 @@ export default function useV3DerivedInfo(
     currencyAAmount &&
     (currencyAAmount?.equalTo(0) || currencyBalances?.[Field.CURRENCY_A]?.lessThan(currencyAAmount))
   ) {
+    hasInsufficentBalance = true
     errorMessage = t('Insufficient %symbol% balance', { symbol: currencies[Field.CURRENCY_A]?.symbol ?? '' })
   }
 
@@ -397,6 +400,7 @@ export default function useV3DerivedInfo(
     currencyBAmount &&
     (currencyBAmount?.equalTo(0) || currencyBalances?.[Field.CURRENCY_B]?.lessThan(currencyBAmount))
   ) {
+    hasInsufficentBalance = true
     errorMessage = t('Insufficient %symbol% balance', { symbol: currencies[Field.CURRENCY_B]?.symbol ?? '' })
   }
 
@@ -415,6 +419,7 @@ export default function useV3DerivedInfo(
     position,
     noLiquidity,
     errorMessage,
+    hasInsufficentBalance,
     invalidPool,
     invalidRange,
     outOfRange,
