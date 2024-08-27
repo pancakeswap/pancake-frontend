@@ -11,10 +11,11 @@ import {
   SkeletonText,
   Text,
 } from '@pancakeswap/uikit'
+import Image from 'next/image'
 import { ReactNode, useMemo } from 'react'
 import { styled, useTheme } from 'styled-components'
 import formatLocaleNumber from 'utils/formatLocaleNumber'
-import { ABOUT_EQUAL } from 'views/BuyCrypto/constants'
+import { ABOUT_EQUAL, ONRAMP_PROVIDERS } from 'views/BuyCrypto/constants'
 import { OnRampProviderQuote } from 'views/BuyCrypto/types'
 import OnRampProviderLogo from '../OnRampProviderLogo/OnRampProviderLogo'
 
@@ -106,6 +107,8 @@ export const ProviderGroupItem = ({
     t,
     currentLanguage: { locale },
   } = useTranslation()
+  const theme = useTheme()
+
   const isBestQuote = Boolean(quotes?.[0] === currentQuote && !quoteLoading)
   const differenceFromBest = percentageDifference(quotes?.[0]?.quote, currentQuote?.quote)
 
@@ -160,7 +163,16 @@ export const ProviderGroupItem = ({
           </Flex>
 
           <Flex>
-            <QuoteBadge isBestQuote={isBestQuote} text={quoteText} loading={quoteLoading} />
+            {currentQuote.provider === ONRAMP_PROVIDERS.Topper ? (
+              <Flex alignItems="center" px={2} py={1} background={theme.colors.warning} borderRadius={9}>
+                <Text fontSize="11px" color={theme.colors.background} lineHeight="11px" fontWeight="600">
+                  {t('No Fees')}
+                </Text>
+                <Image src="/images/pocket-watch.svg" alt="pocket-watch" height={13} width={13} />
+              </Flex>
+            ) : (
+              <QuoteBadge isBestQuote={isBestQuote} text={quoteText} loading={quoteLoading} />
+            )}
           </Flex>
         </OptionSelectButton>
       </DropDownContainer>

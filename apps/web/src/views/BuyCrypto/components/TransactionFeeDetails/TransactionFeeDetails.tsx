@@ -23,11 +23,11 @@ import {
   StyledNotificationWrapper,
 } from 'views/BuyCrypto/styles'
 import type { OnRampProviderQuote } from 'views/BuyCrypto/types'
-import { FeeTypes, getNetworkFullName, providerFeeTypes } from '../../constants'
+import { FeeTypes, getNetworkFullName, ONRAMP_PROVIDERS, providerFeeTypes } from '../../constants'
 import { BtcLogo } from '../OnRampProviderLogo/OnRampProviderLogo'
 import BuyCryptoTooltip from '../Tooltip/Tooltip'
 
-type FeeComponents = { providerFee: number; networkFee: number; price: number }
+type FeeComponents = { providerFee: number; networkFee: number; price: number; provider: ONRAMP_PROVIDERS }
 interface TransactionFeeDetailsProps {
   selectedQuote?: OnRampProviderQuote
   currency: Currency
@@ -157,8 +157,8 @@ const FeeItem = ({ feeTitle, quote }: { feeTitle: FeeTypes; quote: OnRampProvide
   const FeeEstimates: {
     [feeType: string]: <T extends FeeComponents = FeeComponents>(args: T) => number
   } = {
-    [FeeTypes.NetworkingFees]: (q) => q.networkFee,
-    [FeeTypes.ProviderFees]: (q) => q.providerFee,
+    [FeeTypes.NetworkingFees]: (q) => (q.provider === ONRAMP_PROVIDERS.Topper ? 0 : q.networkFee),
+    [FeeTypes.ProviderFees]: (q) => (q.provider === ONRAMP_PROVIDERS.Topper ? 0 : q.providerFee),
     [FeeTypes.ProviderRate]: (q) => q.price,
   }
 

@@ -73,6 +73,13 @@ export const providerFeeTypes: { [provider in ONRAMP_PROVIDERS]: FeeTypes[] } = 
   [ONRAMP_PROVIDERS.Topper]: MOONPAY_FEE_TYPES,
 }
 
+export const activeCampaignProviders: { [provider in ONRAMP_PROVIDERS]: boolean } = {
+  [ONRAMP_PROVIDERS.MoonPay]: false,
+  [ONRAMP_PROVIDERS.Mercuryo]: false,
+  [ONRAMP_PROVIDERS.Transak]: false,
+  [ONRAMP_PROVIDERS.Topper]: true,
+}
+
 export const getNetworkDisplay = (chainId: number | undefined): string => {
   switch (chainId as OnRampChainId) {
     case OnRampChainId.ETHEREUM:
