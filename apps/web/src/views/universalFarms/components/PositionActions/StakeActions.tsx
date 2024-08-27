@@ -1,7 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AddIcon, AutoRow, Button, IconButton, MinusIcon } from '@pancakeswap/uikit'
+import { AddIcon, Button, IconButton, MinusIcon } from '@pancakeswap/uikit'
 import { useCallback } from 'react'
-import { StopPropagation } from 'views/universalFarms/components/StopPropagation'
 
 type StakeActionsProps = {
   increaseDisabled?: boolean
@@ -21,20 +20,18 @@ export const ModifyStakeActions: React.FC<StakeActionsProps> = ({
   onDecrease,
 }) => {
   return (
-    <StopPropagation>
-      <AutoRow gap="sm">
-        {showDecreaseBtn && (
-          <IconButton variant="secondary" disabled={decreaseDisabled} onClick={onDecrease}>
-            <MinusIcon color="primary" width="24px" />
-          </IconButton>
-        )}
-        {showIncreaseBtn && (
-          <IconButton variant="secondary" disabled={increaseDisabled} onClick={onIncrease}>
-            <AddIcon color="primary" width="24px" />
-          </IconButton>
-        )}
-      </AutoRow>
-    </StopPropagation>
+    <>
+      {showDecreaseBtn && (
+        <IconButton variant="secondary" disabled={decreaseDisabled} onClick={onDecrease}>
+          <MinusIcon color="primary" width="24px" />
+        </IconButton>
+      )}
+      {showIncreaseBtn && (
+        <IconButton variant="secondary" disabled={increaseDisabled} onClick={onIncrease}>
+          <AddIcon color="primary" width="24px" />
+        </IconButton>
+      )}
+    </>
   )
 }
 
@@ -45,11 +42,9 @@ type DepositStakeActionsProps = {
 export const DepositStakeAction: React.FC<DepositStakeActionsProps> = ({ disabled, onDeposit }) => {
   const { t } = useTranslation()
   return (
-    <StopPropagation>
-      <Button onClick={onDeposit} disabled={disabled}>
-        {t('Stake LP')}
-      </Button>
-    </StopPropagation>
+    <Button onClick={onDeposit} disabled={disabled}>
+      {t('Stake LP')}
+    </Button>
   )
 }
 
@@ -61,11 +56,9 @@ type HarvestActionsProps = {
 export const HarvestAction: React.FC<HarvestActionsProps> = ({ onHarvest, executing, disabled }) => {
   const { t } = useTranslation()
   return (
-    <StopPropagation>
-      <Button disabled={disabled} onClick={onHarvest}>
-        {executing ? t('Harvesting') : t('Harvest')}
-      </Button>
-    </StopPropagation>
+    <Button disabled={disabled} onClick={onHarvest}>
+      {executing ? t('Harvesting') : t('Harvest')}
+    </Button>
   )
 }
 

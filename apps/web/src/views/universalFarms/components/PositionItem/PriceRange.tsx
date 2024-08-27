@@ -1,9 +1,10 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, Price, Token } from '@pancakeswap/swap-sdk-core'
-import { IconButton, SwapHorizIcon } from '@pancakeswap/uikit'
+import { IconButton, Row, SwapHorizIcon } from '@pancakeswap/uikit'
 import { Bound } from '@pancakeswap/widgets-internal'
 import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
 import { memo, useCallback, useMemo, useState } from 'react'
+import { StopPropagation } from '../StopPropagation'
 
 type PriceRangeProps = {
   quote?: Currency
@@ -26,6 +27,7 @@ export const PriceRange = memo(({ base, quote, priceLower, priceUpper, tickAtLim
   const toggleSwitch: React.MouseEventHandler<HTMLOrSVGElement> = useCallback(
     (e) => {
       e.preventDefault()
+      e.stopPropagation()
       setPriceBaseInvert(!priceBaseInvert)
     },
     [priceBaseInvert],
@@ -40,7 +42,7 @@ export const PriceRange = memo(({ base, quote, priceLower, priceUpper, tickAtLim
   )
 
   return priceUpper && priceLower ? (
-    <>
+    <Row aria-hidden onClick={toggleSwitch}>
       {t('Min %minAmount%', {
         minAmount: formatTickPrice(priceMin, tickAtLimit, Bound.LOWER, locale),
       })}{' '}
@@ -52,9 +54,9 @@ export const PriceRange = memo(({ base, quote, priceLower, priceUpper, tickAtLim
         quote: quoteSymbol,
         base: baseSymbol,
       })}
-      <IconButton onClick={toggleSwitch} variant="text" scale="xs">
+      <IconButton variant="text" scale="xs">
         <SwapHorizIcon color="textSubtle" ml="2px" />
       </IconButton>
-    </>
+    </Row>
   ) : null
 })

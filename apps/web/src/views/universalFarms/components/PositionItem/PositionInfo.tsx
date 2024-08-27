@@ -106,7 +106,7 @@ export const PositionInfo = memo(
       <>
         {title}
         <DetailInfoDesc>
-          <Row>{desc}</Row>
+          {desc}
           <Row gap="sm">
             <FiatNumberDisplay
               prefix="~"

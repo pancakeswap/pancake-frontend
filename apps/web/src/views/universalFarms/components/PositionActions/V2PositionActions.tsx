@@ -25,6 +25,7 @@ import { useBCakeWrapperAddress } from 'views/universalFarms/hooks/useBCakeWrapp
 import { Protocol } from '@pancakeswap/farms'
 import { useV2CakeEarning } from 'views/universalFarms/hooks/useCakeEarning'
 import { DepositStakeAction, HarvestAction, ModifyStakeActions } from './StakeActions'
+import { StopPropagation } from '../StopPropagation'
 
 type V2PositionActionsProps = {
   data: V2LPDetail | StableLPDetail
@@ -47,15 +48,20 @@ const StyledAutoRow = styled(AutoRow)`
   }
 `
 export const V2PositionActions: React.FC<V2PositionActionsProps> = ({ isStaked, ...props }) => {
-  if (isStaked) {
-    return (
+  return (
+    <StopPropagation>
       <StyledAutoRow gap="sm">
-        <V2FarmingAction {...props} />
-        <V2HarvestAction {...props} />
+        {isStaked ? (
+          <>
+            <V2FarmingAction {...props} />
+            <V2HarvestAction {...props} />
+          </>
+        ) : (
+          <V2NativeAction {...props} />
+        )}
       </StyledAutoRow>
-    )
-  }
-  return <V2NativeAction {...props} />
+    </StopPropagation>
+  )
 }
 
 const useDepositModal = (props: V2PositionActionsProps) => {
