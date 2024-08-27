@@ -121,7 +121,7 @@ export const useV3PositionApr = (pool: PoolInfo, userPosition: PositionDetail) =
   }, [position?.amount0, position?.amount1, token0UsdPrice, token1UsdPrice])
 
   const cakeApr = useMemo(() => {
-    if (outOfRange || removed) {
+    if (outOfRange || removed || globalCakeApr.poolWeight?.isZero()) {
       return {
         ...globalCakeApr,
         value: '0' as const,
