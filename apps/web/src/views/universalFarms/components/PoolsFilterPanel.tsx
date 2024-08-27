@@ -11,7 +11,6 @@ import {
   PoolTypeMenu,
   TokenFilter,
 } from '@pancakeswap/widgets-internal'
-import { CHAINS } from 'config/chains'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import { useAllTokensByChainIds } from 'hooks/Tokens'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -20,6 +19,8 @@ import React, { useMemo } from 'react'
 import { UpdaterByChainId } from 'state/lists/updater'
 import styled from 'styled-components'
 import { getChainFullName } from '../utils'
+import { MAINNET_CHAINS } from '../hooks/useMultiChains'
+import { useMultiChainsTokens } from '../hooks/useMultiChainsTokens'
 
 const PoolsFilterContainer = styled(Flex)<{ $childrenCount: number }>`
   flex-wrap: wrap;
@@ -63,12 +64,6 @@ const PoolsFilterContainer = styled(Flex)<{ $childrenCount: number }>`
     }
   }
 `
-export const MAINNET_CHAINS = CHAINS.filter((chain) => {
-  if ('testnet' in chain && chain.testnet) {
-    return false
-  }
-  return true
-})
 
 export const useSelectedChainsName = (chainIds: number[]) => {
   return useMemo(() => chainIds.map((id) => getChainNameInKebabCase(id)), [chainIds])
@@ -131,15 +126,10 @@ export const PoolsFilterPanel: React.FC<React.PropsWithChildren<IPoolsFilterPane
   const { chainId: activeChainId } = useActiveChainId()
   const { selectedTokens, selectedNetwork, selectedTypeIndex: selectedType } = value
 
-  const allTokenMap = useAllTokensByChainIds(selectedNetwork)
-  const sortedTokens = useMemo(
-    // sort by selectedNetwork order
-    () =>
-      selectedNetwork.reduce<ERC20Token[]>((res, chainId) => {
-        res.push(...Object.values(allTokenMap[chainId]))
-        return res
-      }, []),
-    [allTokenMap, selectedNetwork],
+  const allTokens = useMultiChainsTokens()
+  const filteredTokens = useMemo(
+    () => allTokens.filter((token) => selectedNetwork.includes(token.chainId)),
+    [selectedNetwork, allTokens],
   )
 
   const handleTypeIndexChange: IPoolTypeMenuProps['onChange'] = (index) => {
@@ -169,7 +159,7 @@ export const PoolsFilterPanel: React.FC<React.PropsWithChildren<IPoolsFilterPane
       <PoolsFilterContainer $childrenCount={childrenCount}>
         <NetworkFilter data={chainsOpts} value={selectedNetwork} onChange={handleNetworkChange} />
         <TokenFilter
-          data={sortedTokens}
+          data={filteredTokens}
           value={selectedTokens}
           onChange={handleTokensChange}
           getChainName={getChainFullName}
