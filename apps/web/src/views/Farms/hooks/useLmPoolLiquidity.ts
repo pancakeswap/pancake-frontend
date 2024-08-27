@@ -1,7 +1,8 @@
 import { pancakeV3PoolABI } from '@pancakeswap/v3-sdk'
 import { useQuery } from '@tanstack/react-query'
+import { safeGetAddress } from 'utils'
 import { publicClient } from 'utils/wagmi'
-import { Address, parseAbiItem } from 'viem'
+import { Address, isAddressEqual, parseAbiItem, zeroAddress } from 'viem'
 
 const lmPoolAbi = [parseAbiItem('function lmLiquidity() view returns (uint128)')]
 const fetchLmPoolLiquidity = async (lpAddress: Address, chainId: number): Promise<bigint> => {
@@ -32,7 +33,7 @@ export const useLmPoolLiquidity = (lpAddress?: Address, chainId?: number) => {
   const { data } = useQuery({
     queryKey: ['lmPoolLiquidity', lpAddress, chainId],
     queryFn: () => fetchLmPoolLiquidity(lpAddress!, chainId!),
-    enabled: !!lpAddress && !!chainId,
+    enabled: !!lpAddress && !!chainId && safeGetAddress(lpAddress) && isAddressEqual(lpAddress, zeroAddress),
   })
   return data
 }

@@ -41,6 +41,7 @@ export const usePoolApr = (
             return `${apr}`
           })
           .catch(() => {
+            console.warn('error getLpApr', pool)
             updatePools([{ ...pool, lpApr: '0' }])
             return '0'
           }),
@@ -53,7 +54,7 @@ export const usePoolApr = (
         merklApr,
       }
     } catch (error) {
-      console.warn('debug usePoolApr', error)
+      console.warn('error usePoolApr', error)
       return {
         lpApr: '0',
         cakeApr: { value: '0' },
