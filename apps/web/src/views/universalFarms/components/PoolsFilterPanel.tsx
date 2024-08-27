@@ -41,7 +41,8 @@ const PoolsFilterContainer = styled(Flex)`
   }
 
   @media (max-width: 967px) {
-    & > div:nth-child(3) {
+    & > div:nth-child(3),
+    & > div:nth-child(4) {
       flex: 0 0 100%;
       max-width: 100%;
     }
@@ -114,7 +115,11 @@ export interface IPoolsFilterPanelProps {
   }
   onChange: (value: Partial<IPoolsFilterPanelProps['value']>) => void
 }
-export const PoolsFilterPanel = ({ value, onChange }: IPoolsFilterPanelProps) => {
+export const PoolsFilterPanel: React.FC<React.PropsWithChildren<IPoolsFilterPanelProps>> = ({
+  value,
+  children,
+  onChange,
+}) => {
   const { selectedTokens, selectedNetwork, selectedTypeIndex: selectedType } = value
 
   const allTokenMap = useAllTokensByChainIds(selectedNetwork)
@@ -145,6 +150,7 @@ export const PoolsFilterPanel = ({ value, onChange }: IPoolsFilterPanelProps) =>
       <NetworkFilter data={chainsOpts} value={selectedNetwork} onChange={handleNetworkChange} />
       <TokenFilter data={sortedTokens} value={selectedTokens} onChange={handleTokensChange} />
       <PoolTypeMenu data={usePoolTypes()} activeIndex={selectedType} onChange={handleTypeIndexChange} />
+      {children}
     </PoolsFilterContainer>
   )
 }

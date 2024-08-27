@@ -1,4 +1,4 @@
-import { PositionDetails } from '@pancakeswap/farms'
+import { PositionDetails, Protocol } from '@pancakeswap/farms'
 import { masterChefV3ABI } from '@pancakeswap/v3-sdk'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
@@ -189,6 +189,7 @@ export function useV3Positions(account: Address | null | undefined): UseV3Positi
       positions: positions?.map((position) => ({
         ...position,
         isStaked: Boolean(stakedTokenIds?.find((s) => s === position.tokenId)),
+        protocol: Protocol.V3,
       })),
     }),
     [positions, positionsLoading, stakedTokenIds, tokenIdsLoading],
