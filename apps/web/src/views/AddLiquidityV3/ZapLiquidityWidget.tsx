@@ -105,7 +105,7 @@ const ZapLiquidityWidget: React.FC<ZapLiquidityProps> = ({
             feePcm={pool?.fee}
             onDismiss={handleOnDismiss}
             onTxSubmit={handleTransaction}
-            source="zap-widget-demo"
+            source="zap-widget"
           />
         </ModalContainer>
       </ModalV2>
