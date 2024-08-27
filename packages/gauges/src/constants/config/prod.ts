@@ -5110,7 +5110,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
   {
     gid: 516,
     address: '0x247f51881d1E3aE0f759AFB801413a6C948Ef442',
-    pairName: 'ETH-USDT',
+    pairName: 'BTCB-USDT',
     chainId: ChainId.BSC,
     type: GaugeType.V3,
     token0Address: bscTokens.btcb.address,
