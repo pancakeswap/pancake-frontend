@@ -23,10 +23,10 @@ export const ChartFee: React.FC<ChartVolumeProps> = ({ address }) => {
     <>
       <Flex flexDirection="column">
         <Text bold fontSize={24}>
-          {formatDollarAmount(latestValue ?? data?.[data.length - 1].value)}
+          {formatDollarAmount(latestValue ?? data?.[data.length - 1]?.value)}
         </Text>
         <Text small color="secondary">
-          {`${dayjs(valueLabel ?? data?.[data.length - 1].time).format('MMM D, YYYY')} (UTC)`}
+          {`${dayjs(valueLabel ?? data?.[data.length - 1]?.time).format('MMM D, YYYY')} (UTC)`}
         </Text>
       </Flex>
       <StyledBarChart
