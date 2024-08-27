@@ -49,7 +49,7 @@ const StyledHiddenInput = styled.input`
   color: inherit;
   height: 100%;
   min-width: 4px;
-  max-width: calc(100% - 32px);
+  max-width: 100%;
 `;
 
 interface IAdaptiveInputProps {
