@@ -51,7 +51,6 @@ import { V3_MIGRATION_SUPPORTED_CHAINS } from 'config/constants/supportChains'
 import {
   Card,
   IPoolsFilterPanelProps,
-  MAINNET_CHAINS,
   PoolsFilterPanel,
   StablePositionItem,
   CardBody as StyledCardBody,
@@ -61,6 +60,7 @@ import {
   V3PositionItem,
   PositionItemSkeleton,
 } from './components'
+import { MAINNET_CHAINS } from './hooks/useMultiChains'
 
 const ToggleWrapper = styled.div`
   display: inline-flex;
