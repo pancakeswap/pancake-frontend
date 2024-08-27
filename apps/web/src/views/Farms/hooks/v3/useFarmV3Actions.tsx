@@ -13,6 +13,7 @@ import { useCallback } from 'react'
 import { calculateGasMargin } from 'utils'
 import { logGTMClickStakeFarmConfirmEvent, logGTMStakeFarmTxSentEvent } from 'utils/customGTMEventTracking'
 import { getViemClients, viemClients } from 'utils/viem'
+import type { TransactionReceipt } from 'viem'
 import { Address, hexToBigInt } from 'viem'
 import { useAccount, useSendTransaction, useWalletClient } from 'wagmi'
 
@@ -28,7 +29,7 @@ const useFarmV3Actions = ({
   onDone,
 }: {
   tokenId: string
-  onDone?: () => void
+  onDone?: (resp: TransactionReceipt | null) => void
 }): FarmV3ActionContainerChildrenProps => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
@@ -82,7 +83,7 @@ const useFarmV3Actions = ({
         }),
     )
     if (resp?.status) {
-      onDone?.()
+      onDone?.(resp)
       toastSuccess(
         `${t('Unstaked')}!`,
         <ToastDescriptionWithTx txHash={resp.transactionHash}>
@@ -136,7 +137,7 @@ const useFarmV3Actions = ({
 
     if (resp?.status) {
       logGTMStakeFarmTxSentEvent()
-      onDone?.()
+      onDone?.(resp)
       toastSuccess(
         `${t('Staked')}!`,
         <ToastDescriptionWithTx txHash={resp.transactionHash}>
