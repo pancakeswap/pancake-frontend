@@ -130,12 +130,14 @@ export const useV3PositionApr = (pool: PoolInfo, userPosition: PositionDetail) =
     }
 
     if (userPosition.isStaked) {
-      const apr = new BigNumber(globalCakeApr.cakePerYear ?? 0)
-        .times(globalCakeApr.poolWeight ?? 0)
-        .times(cakePrice)
-        .times(new BigNumber(userPosition.farmingLiquidity.toString()).dividedBy(lmPoolLiquidity?.toString() ?? 1))
-        .div(userTVLUsd)
-        .times(userPosition.farmingMultiplier)
+      const apr = lmPoolLiquidity
+        ? new BigNumber(globalCakeApr.cakePerYear ?? 0)
+            .times(globalCakeApr.poolWeight ?? 0)
+            .times(cakePrice)
+            .times(new BigNumber(userPosition.farmingLiquidity.toString()).dividedBy(lmPoolLiquidity?.toString() ?? 1))
+            .div(userTVLUsd)
+            .times(userPosition.farmingMultiplier)
+        : BIG_ZERO
 
       return {
         ...globalCakeApr,
@@ -185,10 +187,10 @@ export const useV3PositionApr = (pool: PoolInfo, userPosition: PositionDetail) =
   const numerator = useMemo(() => {
     if (outOfRange || removed) return BIG_ZERO
     return BigNumber(lpApr)
-      .plus(cakeApr.boost ?? cakeApr.value)
+      .plus(userPosition.isStaked ? cakeApr.boost ?? cakeApr.value : BIG_ZERO)
       .plus(parseFloat(cakeApr.value) > 0 ? merklApr : 0)
       .times(userTVLUsd)
-  }, [cakeApr.boost, cakeApr.value, lpApr, merklApr, outOfRange, removed, userTVLUsd])
+  }, [cakeApr.boost, cakeApr.value, lpApr, merklApr, outOfRange, removed, userPosition.isStaked, userTVLUsd])
   const denominator = userTVLUsd
 
   return {
