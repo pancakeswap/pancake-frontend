@@ -1,5 +1,5 @@
-import { Token } from '@pancakeswap/swap-sdk-core'
 import { ChainId } from '@pancakeswap/chains'
+import { Token } from '@pancakeswap/swap-sdk-core'
 import { bscTestnetTokens } from '@pancakeswap/tokens'
 
 import { StableSwapPool } from '../../types'
@@ -22,7 +22,8 @@ export const pools: StableSwapPool[] = [
     quoteToken: bscTestnetTokens.wbnb, // coins[1]
     stableSwapAddress: '0xBcd585Ee8B8Ac8de6b0e45dA32Aa31703036b2a1',
     infoStableSwapAddress: '0x0A548d59D04096Bc01206D58C3D63c478e1e06dB',
-    stableLpFee: 0.0004,
+    stableTotalFee: 0.0004,
+    stableLpFee: 0.0002,
     stableLpFeeRateOfTotalFee: 0.5,
   },
   {
@@ -32,7 +33,8 @@ export const pools: StableSwapPool[] = [
     quoteToken: bscTestnetTokens.busd, // coins[1]
     stableSwapAddress: '0xE25A1352477f3DB9B3008B31e9b7a07a18f8A9e6',
     infoStableSwapAddress: '0x0A548d59D04096Bc01206D58C3D63c478e1e06dB',
-    stableLpFee: 0.0004,
+    stableTotalFee: 0.0004,
+    stableLpFee: 0.0002,
     stableLpFeeRateOfTotalFee: 0.5,
   },
   {
@@ -42,7 +44,8 @@ export const pools: StableSwapPool[] = [
     quoteToken: bscTestnetTokens.usdc, // coins[1]
     stableSwapAddress: '0xd5E56CD4c8111643a94Ee084df31F44055a1EC9F',
     infoStableSwapAddress: '0xaE6C14AAA753B3FCaB96149e1E10Bc4EDF39F546',
-    stableLpFee: 0.0002,
+    stableTotalFee: 0.0015,
+    stableLpFee: 0.00075,
     stableLpFeeRateOfTotalFee: 0.5,
   },
   {
@@ -52,7 +55,8 @@ export const pools: StableSwapPool[] = [
     quoteToken: bscTestnetTokens.mockBusd, // coins[1]
     stableSwapAddress: '0xc418d68751Cbe0407C8fdd90Cde73cE95b892f39',
     infoStableSwapAddress: '0xaE6C14AAA753B3FCaB96149e1E10Bc4EDF39F546',
-    stableLpFee: 0.0002,
+    stableTotalFee: 0.0015,
+    stableLpFee: 0.00075,
     stableLpFeeRateOfTotalFee: 0.5,
   },
 ]

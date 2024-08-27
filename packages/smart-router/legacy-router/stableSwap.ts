@@ -1,8 +1,8 @@
-import { Currency, CurrencyAmount, Pair, Percent, Price, Trade, TradeType, ERC20Token } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, ERC20Token, Pair, Percent, Price, Trade, TradeType } from '@pancakeswap/sdk'
 import invariant from 'tiny-invariant'
 import { Address } from 'viem'
 
-import { RouteType, RouteWithStableSwap, StableSwapFeeRaw, StableSwapPair, StableSwapFeePercent } from './types'
+import { RouteType, RouteWithStableSwap, StableSwapFeePercent, StableSwapFeeRaw, StableSwapPair } from './types'
 import { BasePair } from './types/pair'
 import { getOutputToken } from './utils/pair'
 
@@ -12,6 +12,7 @@ export function createStableSwapPair(
   lpAddress: Address = '0x',
   infoStableSwapAddress: Address = '0x',
   stableLpFee = 0,
+  stableTotalFee = 0,
   stableLpFeeRateOfTotalFee = 0,
 ): StableSwapPair {
   return {
@@ -26,6 +27,7 @@ export function createStableSwapPair(
     adminFee: new Percent(0),
     involvesToken: (token) => token.equals(pair.token0) || token.equals(pair.token1),
     stableLpFee,
+    stableTotalFee,
     stableLpFeeRateOfTotalFee,
   }
 }

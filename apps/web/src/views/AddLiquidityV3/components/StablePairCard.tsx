@@ -24,7 +24,7 @@ export function StablePairCard({ pair, account }: { pair: LPStablePair; account:
       currency0={pair.token0}
       currency1={pair.token1}
       pairText={`${token0symbol}-${token1symbol} Stable LP`}
-      feeAmount={pair.stableLpFee * 1000000}
+      feeAmount={pair.stableTotalFee * 1000000}
       tags={
         <Tag variant="secondary" outline>
           Stable LP
