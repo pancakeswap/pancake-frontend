@@ -1,3 +1,4 @@
+import type { TransactionReceipt } from 'viem'
 import { PositionDetails } from '@pancakeswap/farms'
 import { atom } from 'jotai'
 import { ChainIdAddressKey } from '../type'
@@ -11,6 +12,8 @@ export const userPositionsAtom = atom<Record<ChainIdAddressKey, AccountPositionM
 export const cakePendingRewardsAtom = atom<Record<ChainIdAddressKey, number>>({})
 
 export const priceOfPositionsAtom = atom<Record<ChainIdAddressKey, { priceUSD: string }>>({})
+
+export const txReceiptAtom = atom<TransactionReceipt | null>(null)
 
 type PositionInfo = {
   chainId: number

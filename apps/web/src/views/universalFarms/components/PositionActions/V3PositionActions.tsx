@@ -1,4 +1,5 @@
 import { Protocol } from '@pancakeswap/farms'
+import { useLatestTxReceipt } from 'state/farmsV4/state/accountPositions/hooks/useLatestTxReceipt'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/swap-sdk-core'
 import { Button, Flex, useModalV2 } from '@pancakeswap/uikit'
@@ -37,9 +38,10 @@ export const V3PositionActions = ({
   fee,
 }: ActionPanelProps) => {
   const { t } = useTranslation()
+  const [, setLatestTxReceipt] = useLatestTxReceipt()
   const { onStake, onUnstake, onHarvest, attemptingTxn } = useFarmV3Actions({
     tokenId: tokenId?.toString() ?? '',
-    onDone: () => {},
+    onDone: (resp) => setLatestTxReceipt(resp),
   })
   const stakeModal = useModalV2()
   const { switchNetworkIfNecessary, isLoading: isSwitchingNetwork } = useCheckShouldSwitchNetwork()
