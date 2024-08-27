@@ -120,7 +120,7 @@ const ItemIcon = styled.img`
 export interface ISearchBoxProps<T extends number | string> {
   selectedItems: IOptionType<T>;
   onFilter?: (text: string) => void;
-  handleLabelDelete: (item: ISelectItem<T>) => void;
+  handleLabelDelete: (e: React.MouseEvent<HTMLOrSVGElement>, item: ISelectItem<T>) => void;
 }
 
 const SearchBox = <T extends number | string>(
@@ -144,7 +144,7 @@ const SearchBox = <T extends number | string>(
     (e: React.MouseEvent<HTMLOrSVGElement>, item: ISelectItem<T>) => {
       // prevent bubble to StyledBox
       e.stopPropagation();
-      handleLabelDelete(item);
+      handleLabelDelete(e, item);
     },
     [handleLabelDelete]
   );
