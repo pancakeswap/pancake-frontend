@@ -43,7 +43,7 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
   },
   {
     label: t('Earn'),
-    href: '/liquidity/pools',
+    href: '/farms',
     icon: EarnIcon,
     fillIcon: EarnFillIcon,
     image: '/images/decorations/pe2.png',
