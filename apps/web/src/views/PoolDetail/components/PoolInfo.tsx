@@ -3,6 +3,7 @@ import { Percent } from '@pancakeswap/swap-sdk-core'
 import { AutoColumn, AutoRow, Box, Column, Flex, FlexGap, Grid, Spinner, Text } from '@pancakeswap/uikit'
 import { ChainLogo, DoubleCurrencyLogo, FeatureStack, FeeTierTooltip } from '@pancakeswap/widgets-internal'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import { NextSeo } from 'next-seo'
 import { useMemo } from 'react'
 import { useChainIdByQuery, useChainNameByQuery } from 'state/info/hooks'
 import styled from 'styled-components'
@@ -47,6 +48,7 @@ export const PoolInfo = () => {
 
   return (
     <Column gap="24px">
+      <NextSeo title={`${currency0?.symbol} / ${currency1?.symbol}`} />
       <Header>
         <Flex alignItems="center">
           <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={48} innerMargin="-8px" />
