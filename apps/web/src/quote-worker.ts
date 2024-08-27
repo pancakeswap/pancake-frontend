@@ -1,14 +1,11 @@
 import 'utils/workerPolyfill'
 
-import { TradeType } from '@pancakeswap/swap-sdk-core'
-import { fetchQuotes } from '@pancakeswap/routing-sdk-addon-quoter'
 import { findBestTrade } from '@pancakeswap/routing-sdk'
-import { isV3Pool } from '@pancakeswap/routing-sdk-addon-v3'
 import { SmartRouter, V4Router } from '@pancakeswap/smart-router'
 import { Call } from 'state/multicall/actions'
 import { fetchChunk } from 'state/multicall/fetchChunk'
 import { getLogger } from 'utils/datadog'
-import { createViemPublicClientGetter, getViemClients } from 'utils/viem'
+import { createViemPublicClientGetter } from 'utils/viem'
 import { toRoutingSDKPool, toSerializableV4Trade } from 'utils/convertTrade'
 
 const { parseCurrency, parseCurrencyAmount, parsePool, serializeTrade } = SmartRouter.Transformer
@@ -254,20 +251,7 @@ addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
         if (!t) {
           throw new Error('No valid trade route found')
         }
-        const { graph, ...trade } = t
-        fetchQuotes({
-          routes: trade.routes.map((r) => ({
-            ...r,
-            amount: tradeType === TradeType.EXACT_INPUT ? r.inputAmount : r.outputAmount,
-          })),
-          client: getViemClients({ chainId: trade.inputAmount.currency.chainId }),
-        })
-          .then((res) => {
-            console.log('[QUOTE]', res)
-          })
-          .catch((err) => {
-            console.error('[QUOTE]', err)
-          })
+        const { graph: _, ...trade } = t
 
         const v4Trade = toSerializableV4Trade(trade)
         postMessage([

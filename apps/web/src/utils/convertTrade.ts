@@ -43,7 +43,7 @@ export function toSmartRouterPool(p: any): SmartRouterPool {
   throw new Error('Unrecognized pool type')
 }
 
-export function toRoutingSDKTrade(v4Trade: V4Router.V4Trade<TradeType>): Trade<TradeType> {
+export function toRoutingSDKTrade(v4Trade: V4Router.V4TradeWithoutGraph<TradeType>): Trade<TradeType> {
   return {
     ...v4Trade,
     routes: v4Trade.routes.map((r) => ({
