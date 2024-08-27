@@ -16,3 +16,18 @@ export default function useUserAddedTokens(): Token[] {
   const { chainId } = useActiveChainId()
   return useSelector(useMemo(() => userAddedTokenSelector(chainId), [chainId]))
 }
+
+export const userAddedTokenSelectorByChainIds = (chainIds: number[]) =>
+  createSelector(selectUserTokens, (serializedTokensMap) =>
+    chainIds.reduce<{ [address: string]: Token[] }>((tokenMap, chainId) => {
+      /* eslint-disable no-param-reassign */
+      tokenMap[chainId] = Object.values(serializedTokensMap?.[chainId] ?? {}).map(deserializeToken)
+      return tokenMap
+    }, {}),
+  )
+
+export function useUserAddedTokensByChainIds(chainIds: number[]): {
+  [chainId: number]: Token[]
+} {
+  return useSelector(useMemo(() => userAddedTokenSelectorByChainIds(chainIds), [chainIds]))
+}
