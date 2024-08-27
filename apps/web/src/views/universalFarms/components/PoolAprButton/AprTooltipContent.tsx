@@ -92,7 +92,10 @@ export const AprTooltipContent: React.FC<PropsWithChildren<AprTooltipContentProp
           <br />
           {cakeApr?.boost && (
             <Text>
-              {t('Calculated using the total active liquidity staked versus the CAKE reward emissions for the farm.')}
+              {/* {t('Calculated using the total active liquidity staked versus the CAKE reward emissions for the farm.')} */}
+              {t(
+                'Calculated using the total liquidity in the pool versus the total reward amount. Actual APR may be higher as some liquidity is not staked or not in-range.',
+              )}
             </Text>
           )}
           <Text mt="15px">{t('APRs for individual positions may vary depending on the configs.')}</Text>
