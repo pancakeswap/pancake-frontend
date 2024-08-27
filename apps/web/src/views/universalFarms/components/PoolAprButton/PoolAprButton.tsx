@@ -42,6 +42,7 @@ export const PoolAprButton: React.FC<PoolGlobalAprButtonProps> = ({ pool, lpApr,
       lpFeeApr={Number(lpApr) ?? 0}
       merklApr={Number(merklApr) ?? 0}
       merklLink={merklLink}
+      expired={cakeApr?.poolWeight?.isZero()}
       showDesc
     >
       {hasBCake ? <BCakeWrapperFarmAprTipContent /> : null}
