@@ -20,14 +20,15 @@ type PoolGlobalAprButtonProps = {
 }
 
 export const PoolAprButton: React.FC<PoolGlobalAprButtonProps> = ({ pool, lpApr, cakeApr, merklApr, userPosition }) => {
+  const expired = cakeApr?.poolWeight?.isZero()
   const baseApr = useMemo(() => {
-    return sumApr(lpApr, cakeApr?.value, merklApr)
-  }, [lpApr, cakeApr?.value, merklApr])
+    return sumApr(lpApr, cakeApr?.value, expired ? 0 : merklApr)
+  }, [lpApr, cakeApr?.value, expired, merklApr])
   const boostApr = useMemo(() => {
     return typeof cakeApr?.boost !== 'undefined' && parseFloat(cakeApr.boost) > 0
-      ? sumApr(lpApr, cakeApr?.boost, merklApr)
+      ? sumApr(lpApr, cakeApr?.boost, expired ? 0 : merklApr)
       : undefined
-  }, [cakeApr?.boost, lpApr, merklApr])
+  }, [cakeApr.boost, expired, lpApr, merklApr])
   const hasBCake = pool.protocol === 'v2' || pool.protocol === 'stable'
   const merklLink = useMemo(() => {
     return getMerklLink({ chainId: pool.chainId, lpAddress: pool.lpAddress })
