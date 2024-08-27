@@ -121,16 +121,12 @@ const calcV3PoolApr = ({
   totalAllocPoint,
   latestPeriodCakePerSecond,
   poolInfo,
-  token0PriceUsd,
-  token1PriceUsd,
 }: {
   pool: V3PoolInfo
   cakePrice: BigNumber
   totalAllocPoint: bigint
   latestPeriodCakePerSecond: bigint
   poolInfo: readonly [bigint, `0x${string}`, `0x${string}`, `0x${string}`, number, bigint, bigint]
-  token0PriceUsd: number
-  token1PriceUsd: number
 }) => {
   const cakePerYear = new BigNumber(SECONDS_PER_YEAR)
     .times(latestPeriodCakePerSecond.toString())
@@ -143,9 +139,9 @@ const calcV3PoolApr = ({
     Number(totalLiquidity) === 0
       ? BIG_ZERO
       : new BigNumber(totalBoostLiquidity.toString()).dividedBy(totalLiquidity.toString())
-  const poolTvlUsd = new BigNumber(pool.tvlToken0 ?? 0)
-    .times(token0PriceUsd)
-    .plus(new BigNumber(pool.tvlToken1 ?? 0).times(token1PriceUsd))
+  // @fixme @ChefJerry use batched https://farms-api.pancakeswap.com/v3/{chainId}/liquidity/{lp}
+  // to calculate active pool TVL
+  const poolTvlUsd = new BigNumber(pool.tvlUsd ?? 0)
 
   const baseApr =
     liquidityBooster.isZero() || poolTvlUsd.isZero()
@@ -275,23 +271,15 @@ const getV3PoolsCakeAprByChainId = async (pools: V3PoolInfo[], chainId: number, 
       } as const),
   )
 
-  const priceCalls = validPools.map(async (pool) => {
-    return Promise.all([usdPriceBatcher.fetch(pool.token0), usdPriceBatcher.fetch(pool.token1)])
+  const poolInfos = await client.multicall({
+    contracts: poolInfoCalls,
+    allowFailure: false,
   })
-
-  const [poolInfos, prices] = await Promise.all([
-    client.multicall({
-      contracts: poolInfoCalls,
-      allowFailure: false,
-    }),
-    Promise.all(priceCalls),
-  ])
 
   return validPools.reduce((acc, pool, index) => {
     const poolInfo = poolInfos[index]
     if (!poolInfo) return acc
     const key = `${chainId}:${safeGetAddress(pool.lpAddress)}`
-    const [token0PriceUsd, token1PriceUsd] = prices[index]
     set(
       acc,
       key,
@@ -301,8 +289,6 @@ const getV3PoolsCakeAprByChainId = async (pools: V3PoolInfo[], chainId: number, 
         totalAllocPoint,
         latestPeriodCakePerSecond,
         poolInfo,
-        token0PriceUsd,
-        token1PriceUsd,
       }),
     )
     return acc
@@ -340,6 +326,8 @@ const calcV2PoolApr = ({
   totalSupply,
   token0PriceUsd,
   token1PriceUsd,
+  token0Reserve,
+  token1Reserve,
 }: {
   pool: V2PoolInfo | StablePoolInfo
   cakePrice: BigNumber
@@ -348,6 +336,8 @@ const calcV2PoolApr = ({
   totalSupply: bigint
   token0PriceUsd: number
   token1PriceUsd: number
+  token0Reserve: bigint
+  token1Reserve: bigint
 }) => {
   if (cakePerSecond === 0n) {
     return {
@@ -357,12 +347,13 @@ const calcV2PoolApr = ({
   }
   const cakePerYear = new BigNumber(SECONDS_PER_YEAR).times(cakePerSecond.toString()).dividedBy(1e18)
   const cakeOneYearUsd = cakePrice.times(cakePerYear.toString())
-  const poolTvlUsd = new BigNumber(pool.tvlToken0 ?? 0)
-    .times(token0PriceUsd)
-    .plus(new BigNumber(pool.tvlToken1 ?? 0).times(token1PriceUsd))
-  const usdPerShare = poolTvlUsd.times(1e18).div(totalSupply.toString() ?? 1)
+  const poolTvlUsd = new BigNumber(
+    new BigNumber(token0Reserve.toString()).times(token0PriceUsd).div(10 ** pool.token0.decimals),
+  ).plus(new BigNumber(token1Reserve.toString()).times(token1PriceUsd).div(10 ** pool.token1.decimals))
 
-  const farmingTVLUsd = usdPerShare.times(totalBoostShare.toString() ?? 0).dividedBy(1e18)
+  const usdPerShare = poolTvlUsd.div(totalSupply.toString() ?? 1)
+
+  const farmingTVLUsd = usdPerShare.times(totalBoostShare.toString() ?? 0)
 
   const baseApr = cakeOneYearUsd.dividedBy((farmingTVLUsd ?? 1).toString())
   const multiplier = DEFAULT_V2_CAKE_APR_BOOST_MULTIPLIER[pool.chainId]
@@ -418,6 +409,23 @@ const getV2PoolsCakeAprByChainId = async (
     } as const
   })
 
+  const reserve0Calls = validPools.map((pool) => {
+    return {
+      address: pool.token0.wrapped.address,
+      functionName: 'balanceOf',
+      abi: erc20Abi,
+      args: [pool.lpAddress],
+    } as const
+  })
+  const reserve1Calls = validPools.map((pool) => {
+    return {
+      address: pool.token1.wrapped.address,
+      functionName: 'balanceOf',
+      abi: erc20Abi,
+      args: [pool.lpAddress],
+    } as const
+  })
+
   const totalBoostedShareCalls = validPools.map((pool) => {
     return {
       address: pool.bCakeWrapperAddress,
@@ -438,25 +446,34 @@ const getV2PoolsCakeAprByChainId = async (
     return Promise.all([usdPriceBatcher.fetch(pool.token0), usdPriceBatcher.fetch(pool.token1)])
   })
 
-  const [rewardPerSecondResults, totalBoostedShareResults, totalSupplies, endTimestamps, prices] = await Promise.all([
-    client.multicall({
-      contracts: rewardPerSecondCalls,
-      allowFailure: false,
-    }),
-    client.multicall({
-      contracts: totalBoostedShareCalls,
-      allowFailure: false,
-    }),
-    client.multicall({
-      contracts: totalSupplyCalls,
-      allowFailure: false,
-    }),
-    client.multicall({
-      contracts: endTimestampCalls,
-      allowFailure: false,
-    }),
-    Promise.all(priceCalls),
-  ])
+  const [rewardPerSecondResults, totalBoostedShareResults, totalSupplies, reserve0s, reserve1s, endTimestamps, prices] =
+    await Promise.all([
+      client.multicall({
+        contracts: rewardPerSecondCalls,
+        allowFailure: false,
+      }),
+      client.multicall({
+        contracts: totalBoostedShareCalls,
+        allowFailure: false,
+      }),
+      client.multicall({
+        contracts: totalSupplyCalls,
+        allowFailure: false,
+      }),
+      client.multicall({
+        contracts: reserve0Calls,
+        allowFailure: false,
+      }),
+      client.multicall({
+        contracts: reserve1Calls,
+        allowFailure: false,
+      }),
+      client.multicall({
+        contracts: endTimestampCalls,
+        allowFailure: false,
+      }),
+      Promise.all(priceCalls),
+    ])
 
   return validPools.reduce((acc, pool, index) => {
     const rewardPerSecond = rewardPerSecondResults[index]
@@ -464,6 +481,8 @@ const getV2PoolsCakeAprByChainId = async (
     const endTimestamp = endTimestamps[index]
     const expired = endTimestamp && Number(endTimestamp) < dayjs().unix()
     const [token0PriceUsd, token1PriceUsd] = prices[index]
+    const token0Reserve = reserve0s[index]
+    const token1Reserve = reserve1s[index]
     if (!rewardPerSecond || expired) return acc
     const key = `${chainId}:${safeGetAddress(pool.lpAddress)}`
     set(
@@ -477,6 +496,8 @@ const getV2PoolsCakeAprByChainId = async (
         totalSupply: totalSupplies[index],
         token0PriceUsd,
         token1PriceUsd,
+        token0Reserve,
+        token1Reserve,
       }),
     )
     return acc
