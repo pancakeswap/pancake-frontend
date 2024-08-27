@@ -1,15 +1,15 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { MultiSelect as PrimereactSelect, MultiSelectChangeEvent } from "primereact/multiselect";
-import { styled } from "styled-components";
 import { useTheme } from "@pancakeswap/hooks";
 import noop from "lodash/noop";
-import { ArrowDropDownIcon, SearchIcon } from "../Svg";
+import { MultiSelectChangeEvent, MultiSelect as PrimereactSelect } from "primereact/multiselect";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { styled } from "styled-components";
 import { Box, Flex } from "../Box";
 import { Checkbox } from "../Checkbox";
 import { Column } from "../Column";
+import { ArrowDropDownIcon, SearchIcon } from "../Svg";
+import { EmptyMessage } from "./EmptyMessage";
 import SearchBox, { BORDER_RADIUS, IAdaptiveInputForwardProps } from "./SearchBox";
 import { IMultiSelectProps, IOptionType, ISelectItem } from "./types";
-import { EmptyMessage } from "./EmptyMessage";
 
 const CHECKBOX_WIDTH = "26px";
 
