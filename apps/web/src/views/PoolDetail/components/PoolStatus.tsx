@@ -12,19 +12,19 @@ type PoolStatusProps = {
 }
 export const PoolStatus: React.FC<PoolStatusProps> = ({ poolInfo }) => {
   const { t } = useTranslation()
+
   const tvlChange = useMemo(() => {
     if (!poolInfo) return null
-    return new Percent(
-      BigInt((Number(poolInfo.tvlUsd ?? 0) - Number(poolInfo.tvlUsd24h ?? 0)).toFixed(0)),
-      BigInt(Number(poolInfo.tvlUsd24h ?? 1).toFixed(0)),
-    )
+    const tvlUsd = Number(poolInfo.tvlUsd ?? 0)
+    const tvlUsd24h = Number(poolInfo.tvlUsd24h ?? 0)
+    return new Percent(BigInt((tvlUsd - tvlUsd24h).toFixed(0)), BigInt((tvlUsd24h || 1).toFixed(0)))
   }, [poolInfo])
+
   const volChange = useMemo(() => {
     if (!poolInfo) return null
-    return new Percent(
-      BigInt((Number(poolInfo.vol24hUsd ?? 0) - Number(poolInfo.vol48hUsd ?? 0)).toFixed(0)),
-      BigInt(Number(poolInfo.vol48hUsd ?? 1).toFixed(0)) || BigInt(1),
-    )
+    const vol24hUsd = Number(poolInfo.vol24hUsd ?? 0)
+    const vol48hUsd = Number(poolInfo.vol48hUsd ?? 0)
+    return new Percent(BigInt((vol24hUsd - vol48hUsd).toFixed(0)), BigInt((vol48hUsd || 1).toFixed(0)))
   }, [poolInfo])
 
   if (!poolInfo) {

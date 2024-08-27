@@ -1,20 +1,21 @@
 import { ERC20Token } from '@pancakeswap/sdk'
 import { useQueries, UseQueryOptions, UseQueryResult } from '@tanstack/react-query'
-import { useOfficialsAndUserAddedTokens } from 'hooks/Tokens'
+import { useOfficialsAndUserAddedTokensByChainIds } from 'hooks/Tokens'
 import { useCallback, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { AppState } from 'state'
 import { Address } from 'viem'
+import { SLOW_INTERVAL } from 'config/constants'
 import { getAccountV2LpDetails, getTrackedV2LpTokens } from '../fetcher'
 import { V2LPDetail } from '../type'
 
 export const useAccountV2LpDetails = (chainIds: number[], account?: Address | null) => {
-  const tokens = useOfficialsAndUserAddedTokens()
+  const tokens = useOfficialsAndUserAddedTokensByChainIds(chainIds)
   const userSavedPairs = useSelector<AppState, AppState['user']['pairs']>(({ user: { pairs } }) => pairs)
   const lpTokensByChain = useMemo(() => {
     const result: Record<number, [ERC20Token, ERC20Token][]> = {}
     chainIds.forEach((chainId) => {
-      const lpTokens = getTrackedV2LpTokens(chainId, tokens, userSavedPairs)
+      const lpTokens = getTrackedV2LpTokens(chainId, tokens[chainId], userSavedPairs)
       if (lpTokens && lpTokens.length > 0) {
         result[chainId] = lpTokens
       }
@@ -35,6 +36,8 @@ export const useAccountV2LpDetails = (chainIds: number[], account?: Address | nu
         refetchOnWindowFocus: false,
         refetchOnReconnect: false,
         refetchInterval: false,
+        // Prevents re-fetching while the data is still fresh
+        staleTime: SLOW_INTERVAL,
       } satisfies UseQueryOptions<V2LPDetail[]>
     })
   }, [account, lpTokensByChain])
