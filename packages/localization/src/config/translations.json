@@ -3561,5 +3561,6 @@
   "Total Value Locked (TVL) in the pool.": "Total Value Locked (TVL) in the pool.",
   "%t% LP": "%t% LP",
   "Pool": "Pool",
-  "of %quote% per %base%": "of %quote% per %base%"
+  "of %quote% per %base%": "of %quote% per %base%",
+  "Calculated using the total liquidity in the pool versus the total reward amount. Actual APR may be higher as some liquidity is not staked or not in-range.": "Calculated using the total liquidity in the pool versus the total reward amount. Actual APR may be higher as some liquidity is not staked or not in-range."
 }
