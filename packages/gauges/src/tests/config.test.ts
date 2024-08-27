@@ -3,12 +3,25 @@ import { VAULTS_CONFIG_BY_CHAIN } from '@pancakeswap/position-managers'
 import { FACTORY_ADDRESS_MAP, Token, computePairAddress } from '@pancakeswap/sdk'
 import { DEPLOYER_ADDRESSES, computePoolAddress } from '@pancakeswap/v3-sdk'
 import groupBy from 'lodash/groupBy'
-import { PublicClient, createPublicClient, http, parseAbiItem } from 'viem'
+import { PublicClient, createPublicClient, fallback, http, parseAbiItem } from 'viem'
 import * as CHAINS from 'viem/chains'
 import { describe, expect, it, test } from 'vitest'
 import { GAUGES_SUPPORTED_CHAIN_IDS } from '../constants/chainId'
 import { CONFIG_PROD } from '../constants/config/prod'
 import { GaugeStableSwapConfig, GaugeType } from '../types'
+
+const PUBLIC_NODES: Record<string, string[]> = {
+  [ChainId.ARBITRUM_ONE]: [
+    CHAINS.arbitrum.rpcUrls.default.http[0],
+    'https://arbitrum-one.publicnode.com',
+    'https://arbitrum.llamarpc.com',
+  ],
+  [ChainId.ETHEREUM]: [
+    CHAINS.mainnet.rpcUrls.default.http[0],
+    'https://ethereum.publicnode.com',
+    'https://eth.llamarpc.com',
+  ],
+}
 
 describe('Gauges Config', async () => {
   const gidGroups = groupBy(CONFIG_PROD, 'gid')
@@ -23,11 +36,12 @@ describe('Gauges Config', async () => {
   })
 
   const publicClient = Object.keys(chainIdGroups).reduce((acc, chainId) => {
+    const node = PUBLIC_NODES[chainId]
     return {
       ...acc,
       [chainId]: createPublicClient({
         chain: Object.values(CHAINS).find((chain) => chain.id === Number(chainId)),
-        transport: http(),
+        transport: node ? fallback(node.map((rpc: string) => http(rpc))) : http(),
       }) as PublicClient,
     }
   }, {} as Record<string, PublicClient>)

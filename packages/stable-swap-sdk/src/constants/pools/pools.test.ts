@@ -1,12 +1,27 @@
-import { createPublicClient, http, parseAbiItem } from 'viem'
+import { ChainId } from '@pancakeswap/chains'
+import { createPublicClient, fallback, http, parseAbiItem } from 'viem'
 import * as CHAINS from 'viem/chains'
 import { describe, expect, it } from 'vitest'
 import { STABLE_POOL_MAP } from './pools'
 
+const PUBLIC_NODES: Record<string, string[]> = {
+  [ChainId.ARBITRUM_ONE]: [
+    CHAINS.arbitrum.rpcUrls.default.http[0],
+    'https://arbitrum-one.publicnode.com',
+    'https://arbitrum.llamarpc.com',
+  ],
+  [ChainId.ETHEREUM]: [
+    CHAINS.mainnet.rpcUrls.default.http[0],
+    'https://ethereum.publicnode.com',
+    'https://eth.llamarpc.com',
+  ],
+}
+
 const createViemClient = (chainId: number) => {
+  const node = PUBLIC_NODES[chainId]
   return createPublicClient({
     chain: Object.values(CHAINS).find((chain) => chain.id === chainId),
-    transport: http(),
+    transport: node ? fallback(node.map((rpc: string) => http(rpc))) : http(),
   })
 }
 
