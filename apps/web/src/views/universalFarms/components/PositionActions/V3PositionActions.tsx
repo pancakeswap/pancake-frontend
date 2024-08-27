@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import { logGTMClickStakeFarmEvent } from 'utils/customGTMEventTracking'
 import useFarmV3Actions from 'views/Farms/hooks/v3/useFarmV3Actions'
 import { useCheckShouldSwitchNetwork } from 'views/universalFarms/hooks'
+import { useV3CakeEarning } from 'views/universalFarms/hooks/useCakeEarning'
 import { V3StakeModal } from '../Modals/V3StakeModal'
 import { StopPropagation } from '../StopPropagation'
 
@@ -15,7 +16,6 @@ type ActionPanelProps = {
   tokenId?: bigint
   isStaked?: boolean
   isFarmLive?: boolean
-  detailMode?: boolean
   modalContent: React.ReactNode
   chainId: number
 }
@@ -28,7 +28,6 @@ export const V3PositionActions = ({
   outOfRange,
   tokenId,
   modalContent,
-  detailMode,
 }: ActionPanelProps) => {
   const { t } = useTranslation()
   const [, setLatestTxReceipt] = useLatestTxReceipt()
@@ -136,26 +135,19 @@ export const V3PositionActions = ({
     [isSwitchingNetwork, handleUnStake, isStaked, modalContent, t, outOfRange, stakeModal, attemptingTxn],
   )
 
-  if (detailMode) {
-    return (
-      <StopPropagation>
-        <ActionPanelContainer>
-          {isStaked ? unstakeButton : !removed && isFarmLive ? stakeButton : null}
-          {isStaked && !removed ? (
-            <Button width={['100px']} scale="md" disabled={attemptingTxn || isSwitchingNetwork} onClick={handleHarvest}>
-              {attemptingTxn ? t('Harvesting') : t('Harvest')}
-            </Button>
-          ) : null}
-        </ActionPanelContainer>
-      </StopPropagation>
-    )
-  }
+  const { earningsBusd } = useV3CakeEarning(tokenId ? [tokenId] : [], chainId)
+
   return (
     <StopPropagation>
       <ActionPanelContainer>
         {isStaked ? unstakeButton : !removed && isFarmLive ? stakeButton : null}
         {isStaked && !removed ? (
-          <Button width={['100px']} scale="md" disabled={attemptingTxn || isSwitchingNetwork} onClick={handleHarvest}>
+          <Button
+            width={['100px']}
+            scale="md"
+            disabled={attemptingTxn || isSwitchingNetwork || !earningsBusd}
+            onClick={handleHarvest}
+          >
             {attemptingTxn ? t('Harvesting') : t('Harvest')}
           </Button>
         ) : null}
