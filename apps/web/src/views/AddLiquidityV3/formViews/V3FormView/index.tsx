@@ -62,7 +62,7 @@ import { useSendTransaction, useWalletClient } from 'wagmi'
 
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { useDensityChartData } from 'views/AddLiquidityV3/hooks/useDensityChartData'
-import ZapLiquidityWidget from 'views/AddLiquidityV3/ZapLiquidityWidget'
+import { ZapLiquidityWidget } from 'views/AddLiquidityV3/ZapLiquidityWidget'
 import LockedDeposit from './components/LockedDeposit'
 import { PositionPreview } from './components/PositionPreview'
 import RangeSelector from './components/RangeSelector'

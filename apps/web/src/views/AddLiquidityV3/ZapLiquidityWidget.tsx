@@ -24,7 +24,7 @@ const LiquidityWidget = dynamic(
   { ssr: false },
 )
 
-const ZapLiquidityWidget: React.FC<ZapLiquidityProps> = ({
+export const ZapLiquidityWidget: React.FC<ZapLiquidityProps> = ({
   tickLower,
   tickUpper,
   pool,
@@ -112,5 +112,3 @@ const ZapLiquidityWidget: React.FC<ZapLiquidityProps> = ({
     </>
   )
 }
-
-export default ZapLiquidityWidget
