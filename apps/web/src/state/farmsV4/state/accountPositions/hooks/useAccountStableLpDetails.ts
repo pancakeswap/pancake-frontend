@@ -5,13 +5,15 @@ import { useCallback, useMemo } from 'react'
 import { Address } from 'viem'
 import { getStablePairDetails } from '../fetcher'
 import { StableLPDetail } from '../type'
+import { useLatestTxReceipt } from './useLatestTxReceipt'
 
 export const useAccountStableLpDetails = (chainIds: number[], account?: Address | null) => {
+  const [latestTxReceipt] = useLatestTxReceipt()
   const queries = useMemo(() => {
     return chainIds.map((chainId) => {
       const stablePairs = LegacyRouter.stableSwapPairsByChainId[chainId]
       return {
-        queryKey: ['accountStableLpBalance', account, chainId],
+        queryKey: ['accountStableLpBalance', account, chainId, latestTxReceipt?.blockHash],
         // @todo @ChefJerry add signal
         queryFn: () => getStablePairDetails(chainId, account!, stablePairs),
         enabled: !!account && stablePairs && stablePairs.length > 0,
@@ -26,7 +28,7 @@ export const useAccountStableLpDetails = (chainIds: number[], account?: Address 
         staleTime: SLOW_INTERVAL,
       } satisfies UseQueryOptions<StableLPDetail[]>
     })
-  }, [account, chainIds])
+  }, [account, chainIds, latestTxReceipt?.blockHash])
 
   const combine = useCallback((results: UseQueryResult<StableLPDetail[], Error>[]) => {
     return {
