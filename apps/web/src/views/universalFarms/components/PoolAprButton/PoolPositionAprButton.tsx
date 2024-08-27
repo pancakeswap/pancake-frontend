@@ -70,17 +70,18 @@ export const useV2PositionApr = (pool: PoolInfo, userPosition: StableLPDetail | 
   const { lpApr: globalLpApr, cakeApr: globalCakeApr, merklApr } = usePoolApr(key, pool)
   const numerator = useMemo(() => {
     const lpAprNumerator = new BigNumber(globalLpApr).times(globalCakeApr?.userTvlUsd ?? BIG_ZERO)
-    const othersNumerator = new BigNumber(globalCakeApr?.boost ?? globalCakeApr?.value ?? 0)
+    const othersNumerator = new BigNumber(globalCakeApr?.value ?? 0)
+      .times(userPosition.farmingBoosterMultiplier)
       .plus(merklApr)
       .times(globalCakeApr?.userTvlUsd ?? BIG_ZERO)
     return userPosition.isStaked ? lpAprNumerator.plus(othersNumerator) : lpAprNumerator
   }, [
-    globalLpApr,
     globalCakeApr?.userTvlUsd,
-    globalCakeApr?.boost,
     globalCakeApr?.value,
-    merklApr,
+    globalLpApr,
+    userPosition.farmingBoosterMultiplier,
     userPosition.isStaked,
+    merklApr,
   ])
 
   const denominator = useMemo(() => {
