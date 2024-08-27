@@ -150,7 +150,6 @@ const MyPositionsInner: React.FC<{ poolInfo: PoolInfo }> = ({ poolInfo }) => {
       <Text as="h3" bold fontSize={24}>
         {t('My Positions')}
       </Text>
-      <Text color="textSubtle">{t('My Total APR')}</Text>
       <Grid gridGap={24} gridTemplateColumns={['1fr', '1fr', '1fr', '1fr 2fr']}>
         <OverviewCard innerCardProps={{ p: 24 }}>
           <AutoColumn gap="lg">
