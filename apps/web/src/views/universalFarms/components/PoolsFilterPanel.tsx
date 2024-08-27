@@ -11,20 +11,25 @@ import styled from 'styled-components'
 import { CHAINS } from 'config/chains'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import { useAllTokensByChainIds } from 'hooks/Tokens'
-import { useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import { getChainNameInKebabCase } from '@pancakeswap/chains'
 import { Protocol } from '@pancakeswap/farms'
 import { ERC20Token } from '@pancakeswap/sdk'
+import { getChainFullName } from '../utils'
 
-const PoolsFilterContainer = styled(Flex)`
+const PoolsFilterContainer = styled(Flex)<{ $childrenCount: number }>`
   flex-wrap: wrap;
   justify-content: flex-start;
   gap: 16px;
 
   & > div {
     flex: 1;
-    max-width: calc(33% - 16px);
+  }
+
+  & > div:nth-child(1),
+  & > div:nth-child(2) {
+    width: calc(${({ $childrenCount: $childCount }) => `${100 / $childCount}%`} - 16px);
   }
 
   @media (min-width: 1200px) {
@@ -145,10 +150,17 @@ export const PoolsFilterPanel: React.FC<React.PropsWithChildren<IPoolsFilterPane
     onChange({ selectedTokens: e.value })
   }
 
+  const childrenCount = useMemo(() => 3 + React.Children.count(children), [children])
+
   return (
-    <PoolsFilterContainer>
+    <PoolsFilterContainer $childrenCount={childrenCount}>
       <NetworkFilter data={chainsOpts} value={selectedNetwork} onChange={handleNetworkChange} />
-      <TokenFilter data={sortedTokens} value={selectedTokens} onChange={handleTokensChange} />
+      <TokenFilter
+        data={sortedTokens}
+        value={selectedTokens}
+        onChange={handleTokensChange}
+        getChainName={getChainFullName}
+      />
       <PoolTypeMenu data={usePoolTypes()} activeIndex={selectedType} onChange={handleTypeIndexChange} />
       {children}
     </PoolsFilterContainer>

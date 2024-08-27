@@ -32,9 +32,9 @@ import { INetworkProps, ITokenProps, toTokenValue, toTokenValueByCurrency } from
 import { Protocol } from '@pancakeswap/farms'
 
 import { usePoolsWithChainId } from 'hooks/v3/usePools'
-import { getTokenByAddress } from 'state/farmsV4/state/utils'
 import { Currency } from '@pancakeswap/swap-sdk-core'
 import { Pool } from '@pancakeswap/v3-sdk'
+import { getTokenByAddress } from '@pancakeswap/tokens'
 import { PositionDetail } from 'state/farmsV4/state/accountPositions/type'
 import {
   Card,

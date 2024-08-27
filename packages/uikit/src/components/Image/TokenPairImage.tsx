@@ -1,16 +1,18 @@
 import React from "react";
 import { TokenPairImageProps, variants } from "./types";
-import { StyledPrimaryImage, StyledSecondaryImage } from "./styles";
+import { StyledChainImage, StyledPrimaryImage, StyledSecondaryImage } from "./styles";
 import Wrapper from "./Wrapper";
 
 const TokenPairImage: React.FC<React.PropsWithChildren<TokenPairImageProps>> = ({
   primarySrc,
   secondarySrc,
+  chainLogoSrc,
   width,
   height,
   variant = variants.DEFAULT,
   primaryImageProps = {},
   secondaryImageProps = {},
+  chainImageProps = {},
   ...props
 }) => {
   const secondaryImageSize = Math.floor(width / 2);
@@ -25,6 +27,15 @@ const TokenPairImage: React.FC<React.PropsWithChildren<TokenPairImageProps>> = (
         height={secondaryImageSize}
         {...secondaryImageProps}
       />
+      {chainLogoSrc ? (
+        <StyledChainImage
+          variant={variant}
+          src={chainLogoSrc}
+          width={Math.floor(width / 3)}
+          height={Math.floor(height / 3)}
+          {...chainImageProps}
+        />
+      ) : null}
     </Wrapper>
   );
 };

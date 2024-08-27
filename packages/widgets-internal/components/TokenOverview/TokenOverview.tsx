@@ -1,7 +1,7 @@
 import { Currency, Token } from "@pancakeswap/sdk";
 import { Flex, Skeleton, Text } from "@pancakeswap/uikit";
 import { styled } from "styled-components";
-import { getChainName } from "@pancakeswap/chains";
+import { getChainName as defaultGetChainName } from "@pancakeswap/chains";
 import { ChainLogo, DoubleCurrencyLogo } from "../CurrencyLogo";
 
 export interface ITokenInfoProps {
@@ -13,6 +13,7 @@ export interface ITokenInfoProps {
   token: Currency;
   quoteToken: Token;
   width?: string;
+  getChainName?: (chainId: number) => string | undefined;
 }
 
 const Container = styled.div`
@@ -47,6 +48,7 @@ export const TokenOverview: React.FC<ITokenInfoProps> = ({
   token,
   quoteToken,
   width,
+  getChainName = defaultGetChainName,
 }) => {
   if (!isReady) {
     return (
@@ -69,7 +71,7 @@ export const TokenOverview: React.FC<ITokenInfoProps> = ({
             {desc ?? (
               <>
                 <ChainLogo width={16} height={16} chainId={token.chainId} />
-                {getChainName(token.chainId).toUpperCase()}
+                {getChainName(token.chainId)?.toUpperCase()}
               </>
             )}
           </DescWrapper>

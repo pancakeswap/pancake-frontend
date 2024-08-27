@@ -164,7 +164,7 @@ const SelectInputContainer = styled(Flex)`
   border-bottom-width: 2px;
   border-radius: ${BORDER_RADIUS};
   box-shadow: 0 0 1px ${({ theme }) => theme.shadows.inset};
-  padding: 7px 8px 6px 16px;
+  padding: 5px 8px 4px 12px;
   user-select: none;
   cursor: pointer;
   gap: 8px;
@@ -179,21 +179,35 @@ const SelectedInputItemsContainer = styled.div`
 
 const SelectedInputIconsContainer = styled.div`
   display: flex;
-  height: 24px;
+  height: 28px;
+
   & > :not(:first-child) {
     margin-left: -12px;
   }
 
   & > img {
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
     border: 2px solid ${({ theme }) => theme.colors.input};
     border-radius: 50%;
+  }
+
+  & > div {
+    border: 2px solid ${({ theme }) => theme.colors.input};
+    border-radius: 50%;
+    & > img:first-child {
+      width: 24px;
+      height: 24px;
+    }
+    & > img:last-child {
+      left: 0;
+    }
   }
 `;
 
 const SelectedInputFakeIcon = styled.span`
   display: inline-block;
+  box-sizing: content-box;
   width: 24px;
   height: 24px;
   background: ${({ theme }) => theme.colors.inputSecondary};
@@ -204,6 +218,7 @@ const SelectedInputFakeIcon = styled.span`
   align-content: center;
   font-size: 14px;
   font-weight: 600;
+  z-index: 1;
 `;
 
 const SelectInputPlaceholder = styled.div`
@@ -291,7 +306,7 @@ export const MultiSelect = <T extends string | number>(props: IMultiSelectProps<
   }, []);
 
   const handleLabelDelete = useCallback(
-    (e: React.MouseEvent<HTMLOrSVGElement>, item: ISelectItem<T>) => {
+    (e: React.MouseEvent<HTMLOrSVGElement> | React.KeyboardEvent, item: ISelectItem<T>) => {
       if (!selectedItems?.length) {
         return;
       }
