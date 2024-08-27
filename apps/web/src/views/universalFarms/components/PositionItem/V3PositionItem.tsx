@@ -69,7 +69,6 @@ export const V3PositionItem = memo(({ data, detailMode, poolLength }: V3Position
           removed={removed}
           outOfRange={outOfRange}
           tokenId={data.tokenId}
-          detailMode={detailMode}
           modalContent={
             <V3UnstakeModalContent
               chainId={data.chainId}

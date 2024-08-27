@@ -1,7 +1,6 @@
 import { getChainNameInKebabCase } from '@pancakeswap/chains'
 import { Protocol } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
-import { ERC20Token } from '@pancakeswap/sdk'
 import { Flex } from '@pancakeswap/uikit'
 import {
   INetworkProps,
@@ -12,7 +11,6 @@ import {
   TokenFilter,
 } from '@pancakeswap/widgets-internal'
 import { ASSET_CDN } from 'config/constants/endpoints'
-import { useAllTokensByChainIds } from 'hooks/Tokens'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import isEmpty from 'lodash/isEmpty'
 import React, { useMemo } from 'react'

@@ -23,6 +23,7 @@ import { sumApr } from 'views/universalFarms/utils/sumApr'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { useBCakeWrapperAddress } from 'views/universalFarms/hooks/useBCakeWrapperAddress'
 import { Protocol } from '@pancakeswap/farms'
+import { useV2CakeEarning } from 'views/universalFarms/hooks/useCakeEarning'
 import { DepositStakeAction, HarvestAction, ModifyStakeActions } from './StakeActions'
 
 type V2PositionActionsProps = {
@@ -259,7 +260,7 @@ const V2NativeAction: React.FC<V2PositionActionsProps> = (props) => {
   return <DepositStakeAction onDeposit={handleDeposit} />
 }
 
-const V2HarvestAction: React.FC<V2PositionActionsProps> = ({ chainId, lpAddress }) => {
+const V2HarvestAction: React.FC<V2PositionActionsProps> = ({ chainId, lpAddress, poolInfo }) => {
   const { t } = useTranslation()
   const { onHarvest } = useV2FarmActions(lpAddress, chainId)
   const { toastSuccess } = useToast()
@@ -297,9 +298,11 @@ const V2HarvestAction: React.FC<V2PositionActionsProps> = ({ chainId, lpAddress 
     }
   }, [setLatestTxReceipt, chainId, switchNetworkIfNecessary, fetchWithCatchTxError, onHarvest, t, toastSuccess])
 
+  const { earningsBusd } = useV2CakeEarning(poolInfo)
+
   if (!pendingReward || pendingReward.isZero()) {
     return null
   }
 
-  return <HarvestAction onHarvest={handleHarvest} executing={pendingTx} disabled={pendingTx} />
+  return <HarvestAction onHarvest={handleHarvest} executing={pendingTx} disabled={pendingTx || !earningsBusd} />
 }
