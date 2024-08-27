@@ -2,7 +2,9 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Card, Tab, TabMenu } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import { PropsWithChildren, useMemo, useState } from 'react'
-import { PoolsBanner, PoolsPage } from './v4/components'
+import { PoolsBanner } from './components'
+import { PoolsPage } from './PoolsPage'
+import { PositionPage } from './PositionPage'
 
 export const UniversalFarms: React.FC<PropsWithChildren> = () => {
   const { t } = useTranslation()
@@ -17,7 +19,7 @@ export const UniversalFarms: React.FC<PropsWithChildren> = () => {
       },
       1: {
         menu: () => <Tab key="positions">{t('My Positions')}</Tab>,
-        page: () => <Card>My Positions</Card>,
+        page: () => <PositionPage />,
       },
       2: {
         menu: () => <Tab key="history">{t('History')}</Tab>,

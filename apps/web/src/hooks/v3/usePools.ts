@@ -18,7 +18,7 @@ class PoolCache {
 
   private static addresses: { key: string; address: string }[] = []
 
-  static getPoolAddress(deployerAddress: Address, tokenA: Token, tokenB: Token, fee: FeeAmount): string {
+  static getPoolAddress(deployerAddress: Address, tokenA: Token, tokenB: Token, fee: FeeAmount): Address {
     if (this.addresses.length > this.MAX_ENTRIES) {
       this.addresses = this.addresses.slice(0, this.MAX_ENTRIES / 2)
     }
@@ -28,7 +28,7 @@ class PoolCache {
     const key = `${deployerAddress}:${addressA}:${addressB}:${fee.toString()}`
 
     const found = this.addresses.find((address) => address.key === key)
-    if (found) return found.address
+    if (found) return found.address as Address
 
     const address = {
       key,
@@ -87,8 +87,6 @@ export function usePoolsWithChainId(
   chainId?: number,
 ): [PoolState, Pool | null][] {
   const poolTokens: ([Token, Token, FeeAmount] | undefined)[] = useMemo(() => {
-    if (!chainId) return new Array(poolKeys.length)
-
     return poolKeys.map(([currencyA, currencyB, feeAmount]) => {
       if (currencyA && currencyB && feeAmount) {
         const tokenA = currencyA.wrapped
@@ -99,13 +97,19 @@ export function usePoolsWithChainId(
       }
       return undefined
     })
-  }, [chainId, poolKeys])
+  }, [poolKeys])
 
   const poolAddresses: (Address | undefined)[] = useMemo(() => {
-    const v3CoreDeployerAddress = chainId && DEPLOYER_ADDRESSES[chainId]
-    if (!v3CoreDeployerAddress) return new Array(poolTokens.length)
-
-    return poolTokens.map((value) => value && PoolCache.getPoolAddress(v3CoreDeployerAddress, ...value))
+    let v3CoreDeployerAddress = chainId && DEPLOYER_ADDRESSES[chainId]
+    return poolTokens.map((value) => {
+      if (!value) {
+        return value
+      }
+      if (!v3CoreDeployerAddress) {
+        v3CoreDeployerAddress = DEPLOYER_ADDRESSES[value[0].chainId]
+      }
+      return PoolCache.getPoolAddress(v3CoreDeployerAddress, ...value)
+    })
   }, [chainId, poolTokens])
 
   const slot0s = useMultipleContractSingleData({

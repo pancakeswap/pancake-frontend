@@ -10,6 +10,8 @@ export const userPositionsAtom = atom<Record<ChainIdAddressKey, AccountPositionM
 
 export const cakePendingRewardsAtom = atom<Record<ChainIdAddressKey, number>>({})
 
+export const priceOfPositionsAtom = atom<Record<ChainIdAddressKey, { priceUSD: string }>>({})
+
 type PositionInfo = {
   chainId: number
   lpAddress: string

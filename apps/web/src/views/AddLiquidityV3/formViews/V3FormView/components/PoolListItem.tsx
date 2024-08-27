@@ -11,7 +11,7 @@ import getPriceOrderingFromPositionForUI from 'hooks/v3/utils/getPriceOrderingFr
 import { Dispatch, ReactNode, SetStateAction, useMemo, useState } from 'react'
 import { unwrappedToken } from 'utils/wrappedCurrency'
 
-interface PositionListItemDisplayProps {
+export interface PositionListItemDisplayProps {
   positionSummaryLink: string
   currencyBase?: Currency
   currencyQuote?: Currency
@@ -26,6 +26,7 @@ interface PositionListItemDisplayProps {
   feeAmount: number
   subtitle: string
   setInverted: Dispatch<SetStateAction<boolean>>
+  position: Position | undefined
 }
 
 interface PositionListItemProps {
@@ -95,6 +96,7 @@ export default function PositionListItem({ positionDetails, children }: Position
   }
 
   return children({
+    position,
     positionSummaryLink,
     currencyBase,
     currencyQuote,

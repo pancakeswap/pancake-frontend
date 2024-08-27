@@ -4,7 +4,7 @@ import { Button, MoreIcon, SubMenu } from '@pancakeswap/uikit'
 import { memo } from 'react'
 import styled from 'styled-components'
 
-export const StyledButton = styled(Button)`
+const StyledButton = styled(Button)`
   color: ${({ theme }) => theme.colors.text};
   font-weight: 400;
   padding: 8px 16px;
