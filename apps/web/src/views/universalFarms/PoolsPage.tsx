@@ -11,7 +11,6 @@ import { useAllTokensByChainIds } from 'hooks/Tokens'
 import { PoolSortBy } from 'state/farmsV4/atom'
 import { useExtendPools, useFarmPools, usePoolsApr } from 'state/farmsV4/hooks'
 import { getCombinedApr } from 'state/farmsV4/state/poolApr/utils'
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import type { PoolInfo } from 'state/farmsV4/state/type'
 
 import {
@@ -21,12 +20,12 @@ import {
   CardHeader,
   IPoolsFilterPanelProps,
   ListView,
-  MAINNET_CHAINS,
   PoolsFilterPanel,
   getPoolDetailPageLink,
   useColumnConfig,
   useSelectedPoolTypes,
 } from './components'
+import { useAllChainIds, useOrderChainIds } from './hooks/useMultiChains'
 
 type IDataType = PoolInfo
 
@@ -43,17 +42,14 @@ export const PoolsPage = () => {
   const { isMobile } = useMatchBreakpoints()
 
   const columns = useColumnConfig()
-  const allChainIds = useMemo(() => MAINNET_CHAINS.map((chain) => chain.id), [])
-  const { chainId: activeChainId } = useActiveChainId()
+  const allChainIds = useAllChainIds()
   const [filters, setFilters] = useState<IPoolsFilterPanelProps['value']>({
     selectedTypeIndex: 0,
     selectedNetwork: allChainIds,
     selectedTokens: [],
   })
   const selectedPoolTypes = useSelectedPoolTypes(filters.selectedTypeIndex)
-  const { observerRef, isIntersecting } = useIntersectionObserver({
-    rootMargin: '100px',
-  })
+  const { observerRef, isIntersecting } = useIntersectionObserver()
   const [cursorVisible, setCursorVisible] = useState(NUMBER_OF_FARMS_VISIBLE)
   const [sortOrder, setSortOrder] = useState<ISortOrder>(SORT_ORDER.NULL)
   const [sortField, setSortField] = useState<keyof IDataType | null>(null)
@@ -160,11 +156,10 @@ export const PoolsPage = () => {
     return groupBy(filteredData, 'chainId')
   }, [filteredData])
 
+  const { orderedChainIds, activeChainId, othersChains } = useOrderChainIds()
+
   // default sorting logic: https://linear.app/pancakeswap/issue/PAN-3669/default-sorting-logic-update-for-pair-list
   const defaultSortedData = useMemo(() => {
-    const othersChains = allChainIds.filter((id) => id !== activeChainId)
-    const orderedChainIds = [activeChainId, ...othersChains]
-
     // active Farms: current chain -> other chains
     // ordered by farm config list
     const activeFarms = flatMap(orderedChainIds, (chainId) =>
@@ -185,7 +180,7 @@ export const PoolsPage = () => {
     ).sort((a, b) => ('tvlUsd' in a && 'tvlUsd' in b && b.tvlUsd && a.tvlUsd ? Number(b.tvlUsd) - Number(a.tvlUsd) : 1))
 
     return [...activeFarms, ...inactiveFarmsOfActiveChain, ...inactiveFarmsOfOthers].filter(Boolean)
-  }, [activeChainId, allChainIds, dataByChain])
+  }, [orderedChainIds, activeChainId, othersChains, dataByChain])
 
   const sortedData = useMemo(() => {
     if (sortField === null || sortOrder === SORT_ORDER.NULL) {
