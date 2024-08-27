@@ -49,13 +49,21 @@ const ZapLiquidityWidget: React.FC<ZapLiquidityProps> = ({
     setIsModalOpen(false)
   }, [])
 
+  const handleOnClick = useCallback(() => {
+    setIsModalOpen(true)
+  }, [])
+
   const handleTransaction = useCallback(
     (txHash: string) => {
       addTransaction(
         { hash: txHash },
         {
           type: 'zap-liquidity-v3',
-          summary: `Zap liquidity to ${baseCurrency?.symbol} - ${quoteCurrency?.symbol}`,
+          summary: `Zap in for ${baseCurrency?.symbol} - ${quoteCurrency?.symbol}`,
+          translatableSummary: {
+            text: 'Zap in for %lpSymbol%',
+            data: { lpSymbol: `${baseCurrency?.symbol} - ${quoteCurrency?.symbol}` },
+          },
         },
       )
       setIsModalOpen(false)
@@ -71,7 +79,7 @@ const ZapLiquidityWidget: React.FC<ZapLiquidityProps> = ({
             {t('Try Zap V3 to automatically balance the deposit tokens while adding V3 liquidity.')}
           </MessageText>
           <span
-            onClick={() => setIsModalOpen(true)}
+            onClick={handleOnClick}
             role="presentation"
             style={{ whiteSpace: 'nowrap', textDecoration: 'underline', cursor: 'pointer' }}
           >
