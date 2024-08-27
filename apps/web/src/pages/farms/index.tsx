@@ -1,8 +1,8 @@
 import { SUPPORT_FARMS } from 'config/constants/supportChains'
-import { FarmsV4 } from 'views/Farms/FarmsV4'
+import { UniversalFarms } from 'views/Farms/UniversalFarms'
 
 const FarmsPage = () => {
-  return <FarmsV4 />
+  return <UniversalFarms />
 }
 
 FarmsPage.chains = SUPPORT_FARMS

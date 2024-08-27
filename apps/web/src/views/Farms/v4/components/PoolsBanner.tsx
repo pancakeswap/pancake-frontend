@@ -3,7 +3,7 @@ import { ArrowForwardIcon, Box, Button, Column, LinkExternal, PageHeader, Row, T
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 import { FarmFlexWrapper, FarmH1, FarmH2 } from '../../styled'
 
-export const Header = () => {
+export const PoolsBanner = () => {
   const { t } = useTranslation()
   return (
     <PageHeader>

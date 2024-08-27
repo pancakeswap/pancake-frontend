@@ -2,9 +2,9 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Card, Tab, TabMenu } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import { PropsWithChildren, useMemo, useState } from 'react'
-import { Header, Pools } from './v4/components'
+import { Pools, PoolsBanner } from './v4/components'
 
-export const FarmsV4: React.FC<PropsWithChildren> = () => {
+export const UniversalFarms: React.FC<PropsWithChildren> = () => {
   const { t } = useTranslation()
   const [tab, setTab] = useState(0)
   const onTabClick = (index: number) => setTab(index)
@@ -12,15 +12,15 @@ export const FarmsV4: React.FC<PropsWithChildren> = () => {
   const tabsConfig = useMemo(() => {
     return {
       0: {
-        menu: () => <Tab>{t('All Pools')}</Tab>,
+        menu: () => <Tab key="pools">{t('All Pools')}</Tab>,
         page: () => <Pools />,
       },
       1: {
-        menu: () => <Tab>{t('My Positions')}</Tab>,
+        menu: () => <Tab key="positions">{t('My Positions')}</Tab>,
         page: () => <Card>My Positions</Card>,
       },
       2: {
-        menu: () => <Tab>{t('History')}</Tab>,
+        menu: () => <Tab key="history">{t('History')}</Tab>,
         page: () => <Card>History</Card>,
       },
     }
@@ -28,7 +28,7 @@ export const FarmsV4: React.FC<PropsWithChildren> = () => {
 
   return (
     <>
-      <Header />
+      <PoolsBanner />
       <Page>
         <TabMenu activeIndex={tab} onItemClick={onTabClick} isShowBorderBottom={false}>
           {Object.values(tabsConfig).map(({ menu }) => menu())}
