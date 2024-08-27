@@ -30,6 +30,7 @@ const LabelsContainer = styled(Flex)`
   flex-wrap: wrap;
   gap: 4px;
   height: 100%;
+  max-width: calc(100% - 32px);
 `;
 const RemoveIconContainer = styled(Flex)`
   justify-content: center;
@@ -48,7 +49,7 @@ const StyledHiddenInput = styled.input`
   color: inherit;
   height: 100%;
   min-width: 4px;
-  max-width: 100%;
+  max-width: calc(100% - 32px);
 `;
 
 interface IAdaptiveInputProps {

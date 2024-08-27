@@ -1,12 +1,15 @@
+import { Protocol } from '@pancakeswap/farms'
 import { formatBigInt } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useCakePrice } from 'hooks/useCakePrice'
 import { useMemo } from 'react'
 import { useStakedPositionsByUser } from 'state/farmsV3/hooks'
+import { useAccountPositionDetailByPool } from 'state/farmsV4/hooks'
 import { useAccountV2PendingCakeReward } from 'state/farmsV4/state/accountPositions/hooks/useAccountV2PendingCakeReward'
 import { getUniversalBCakeWrapperForPool } from 'state/farmsV4/state/poolApr/fetcher'
 import { PoolInfo } from 'state/farmsV4/state/type'
+import { useChainIdByQuery } from 'state/info/hooks'
 
 export const useV2CakeEarning = (pool: PoolInfo | null | undefined) => {
   const { account } = useAccountActiveChain()
@@ -47,6 +50,26 @@ export const useV3CakeEarning = (tokenIds: bigint[] = [], chainId: number) => {
   return {
     earningsAmount: +formatBigInt(earningsAmount, 5),
     earningsBusd,
+    isLoading,
+  }
+}
+
+export const useV3CakeEarningsByPool = (pool: PoolInfo | null | undefined) => {
+  const chainId = useChainIdByQuery()
+  const { account } = useAccountActiveChain()
+  const { data, isLoading } = useAccountPositionDetailByPool<Protocol.V3>(
+    pool?.chainId ?? chainId,
+    account,
+    pool ?? undefined,
+  )
+  const tokenIds = useMemo(() => {
+    if (!data) return []
+    return data.filter((item) => item.isStaked).map((item) => item.tokenId)
+  }, [data])
+  const { earningsBusd, earningsAmount } = useV3CakeEarning(tokenIds, pool?.chainId ?? chainId)
+  return {
+    earningsBusd,
+    earningsAmount,
     isLoading,
   }
 }

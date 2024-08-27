@@ -41,6 +41,7 @@ import {
   V3PositionItem,
 } from 'views/universalFarms/components'
 import { useCheckShouldSwitchNetwork } from 'views/universalFarms/hooks'
+import { useV2CakeEarning, useV3CakeEarningsByPool } from 'views/universalFarms/hooks/useCakeEarning'
 import { useV2FarmActions } from 'views/universalFarms/hooks/useV2FarmActions'
 import { displayApr } from 'views/universalFarms/utils/displayApr'
 import { formatDollarAmount } from 'views/V3Info/utils/numbers'
@@ -145,6 +146,9 @@ const MyPositionsInner: React.FC<{ poolInfo: PoolInfo }> = ({ poolInfo }) => {
     }
   }, [_handleHarvestAll, loading, setLoading, poolInfo.chainId, switchNetworkIfNecessary])
 
+  const { earningsBusd: v2EarningsBusd } = useV2CakeEarning(poolInfo)
+  const { earningsBusd: v3EarningsBusd } = useV3CakeEarningsByPool(poolInfo)
+
   return (
     <AutoColumn gap="lg">
       <Text as="h3" bold fontSize={24}>
@@ -187,7 +191,7 @@ const MyPositionsInner: React.FC<{ poolInfo: PoolInfo }> = ({ poolInfo }) => {
                   onClick={handleHarvestAll}
                   endIcon={loading ? <AutoRenewIcon spin color="currentColor" /> : null}
                   isLoading={loading}
-                  disabled={loading}
+                  disabled={loading || (poolInfo.protocol === Protocol.V3 ? !v3EarningsBusd : !v2EarningsBusd)}
                 >
                   {loading ? t('Harvesting') : t('Harvest')}
                 </Button>

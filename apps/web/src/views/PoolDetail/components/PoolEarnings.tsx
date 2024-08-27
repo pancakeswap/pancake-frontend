@@ -1,13 +1,8 @@
-import { Protocol } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoColumn, Skeleton, Text } from '@pancakeswap/uikit'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
-import useAccountActiveChain from 'hooks/useAccountActiveChain'
-import { useMemo } from 'react'
-import { useAccountPositionDetailByPool } from 'state/farmsV4/hooks'
 import { PoolInfo } from 'state/farmsV4/state/type'
-import { useChainIdByQuery } from 'state/info/hooks'
-import { useV2CakeEarning, useV3CakeEarning } from 'views/universalFarms/hooks/useCakeEarning'
+import { useV2CakeEarning, useV3CakeEarningsByPool } from 'views/universalFarms/hooks/useCakeEarning'
 
 type PoolEarningsProps = {
   earningsBusd: number
@@ -47,18 +42,6 @@ export const V2PoolEarnings: React.FC<{ pool: PoolInfo | null | undefined }> = (
 }
 
 export const V3PoolEarnings: React.FC<{ pool: PoolInfo | null | undefined }> = ({ pool }) => {
-  const chainId = useChainIdByQuery()
-  const { account } = useAccountActiveChain()
-  const { data, isLoading } = useAccountPositionDetailByPool<Protocol.V3>(
-    pool?.chainId ?? chainId,
-    account,
-    pool ?? undefined,
-  )
-  const tokenIds = useMemo(() => {
-    if (!data) return []
-    return data.filter((item) => item.isStaked).map((item) => item.tokenId)
-  }, [data])
-  const { earningsBusd, earningsAmount } = useV3CakeEarning(tokenIds, pool?.chainId ?? chainId)
-
+  const { earningsBusd, earningsAmount, isLoading } = useV3CakeEarningsByPool(pool)
   return <PoolEarnings earningsAmount={earningsAmount} earningsBusd={earningsBusd} loading={isLoading} />
 }
