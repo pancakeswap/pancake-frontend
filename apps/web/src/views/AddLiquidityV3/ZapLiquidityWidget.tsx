@@ -1,4 +1,4 @@
-import { Flex, Message, MessageText, ModalContainer, ModalV2, InfoFilledIcon } from '@pancakeswap/uikit'
+import { Flex, Message, MessageText, ModalContainer, ModalV2, InfoFilledIcon, useToast } from '@pancakeswap/uikit'
 import { useCallback, useMemo, useState } from 'react'
 import '@kyberswap/pancake-liquidity-widgets/dist/style.css'
 import { useTheme } from 'styled-components'
@@ -10,6 +10,7 @@ import { Pool } from '@pancakeswap/v3-sdk'
 import { Currency } from '@pancakeswap/sdk'
 import dynamic from 'next/dynamic'
 import noop from 'lodash/noop'
+import { ToastDescriptionWithTx } from 'components/Toast'
 
 interface ZapLiquidityProps {
   tickLower?: number
@@ -41,6 +42,8 @@ export const ZapLiquidityWidget: React.FC<ZapLiquidityProps> = ({
 
   const addTransaction = useTransactionAdder()
 
+  const { toastSuccess } = useToast()
+
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const poolAddress = useMemo(() => pool && Pool.getAddress(pool.token0, pool.token1, pool.fee), [pool])
@@ -55,6 +58,7 @@ export const ZapLiquidityWidget: React.FC<ZapLiquidityProps> = ({
 
   const handleTransaction = useCallback(
     (txHash: string) => {
+      toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={txHash} />)
       addTransaction(
         { hash: txHash },
         {
@@ -68,7 +72,7 @@ export const ZapLiquidityWidget: React.FC<ZapLiquidityProps> = ({
       )
       setIsModalOpen(false)
     },
-    [addTransaction, baseCurrency?.symbol, quoteCurrency?.symbol],
+    [addTransaction, baseCurrency?.symbol, quoteCurrency?.symbol, t, toastSuccess],
   )
 
   return (
