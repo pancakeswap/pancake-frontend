@@ -2,7 +2,7 @@ import { ChainId } from '@pancakeswap/chains'
 import { Protocol, supportedChainIdV4, UNIVERSAL_BCAKEWRAPPER_FARMS } from '@pancakeswap/farms'
 import { LegacyRouter } from '@pancakeswap/smart-router/legacy-router'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { masterChefV3ABI } from '@pancakeswap/v3-sdk'
+import { masterChefV3ABI, pancakeV3PoolABI } from '@pancakeswap/v3-sdk'
 import { create, windowedFiniteBatchScheduler } from '@yornaath/batshit'
 import BigNumber from 'bignumber.js'
 import { SECONDS_PER_YEAR } from 'config'
@@ -121,12 +121,14 @@ const calcV3PoolApr = ({
   totalAllocPoint,
   latestPeriodCakePerSecond,
   poolInfo,
+  liquidity,
 }: {
   pool: V3PoolInfo
   cakePrice: BigNumber
   totalAllocPoint: bigint
   latestPeriodCakePerSecond: bigint
   poolInfo: readonly [bigint, `0x${string}`, `0x${string}`, `0x${string}`, number, bigint, bigint]
+  liquidity: bigint
 }) => {
   const cakePerYear = new BigNumber(SECONDS_PER_YEAR)
     .times(latestPeriodCakePerSecond.toString())
@@ -151,8 +153,8 @@ const calcV3PoolApr = ({
   const multiplier = DEFAULT_V3_CAKE_APR_BOOST_MULTIPLIER[pool.chainId]
 
   return {
-    value: baseApr.toString() as `${number}`,
-    boost: multiplier ? (baseApr.times(multiplier).toString() as `${number}`) : undefined,
+    value: liquidity > 0n ? (baseApr.toString() as `${number}`) : '0',
+    boost: multiplier && liquidity > 0n ? (baseApr.times(multiplier).toString() as `${number}`) : undefined,
     cakePerYear,
     poolWeight,
   }
@@ -271,15 +273,30 @@ const getV3PoolsCakeAprByChainId = async (pools: V3PoolInfo[], chainId: number, 
       } as const),
   )
 
-  const poolInfos = await client.multicall({
-    contracts: poolInfoCalls,
-    allowFailure: false,
+  const liquidityCalls = validPools.map((pool) => {
+    return {
+      address: pool.lpAddress,
+      functionName: 'liquidity',
+      abi: pancakeV3PoolABI,
+    } as const
   })
+
+  const [poolInfos, liquidities] = await Promise.all([
+    client.multicall({
+      contracts: poolInfoCalls,
+      allowFailure: false,
+    }),
+    client.multicall({
+      contracts: liquidityCalls,
+      allowFailure: false,
+    }),
+  ])
 
   return validPools.reduce((acc, pool, index) => {
     const poolInfo = poolInfos[index]
     if (!poolInfo) return acc
     const key = `${chainId}:${safeGetAddress(pool.lpAddress)}`
+    const liquidity = liquidities[index]
     set(
       acc,
       key,
@@ -289,6 +306,7 @@ const getV3PoolsCakeAprByChainId = async (pools: V3PoolInfo[], chainId: number, 
         totalAllocPoint,
         latestPeriodCakePerSecond,
         poolInfo,
+        liquidity,
       }),
     )
     return acc
