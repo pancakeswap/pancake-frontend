@@ -51,7 +51,6 @@ export function useTradeVerifiedByQuoter<P extends Params>(p: P): P {
       }
     },
   })
-  console.log('[QUOTER]', fetchStatus, error, trade?.outputAmount.quotient, data?.outputAmount.quotient)
   return {
     ...p,
     syncing: fetchStatus === 'fetching' || syncing,
