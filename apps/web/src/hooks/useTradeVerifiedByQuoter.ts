@@ -1,7 +1,7 @@
 import { V4Router } from '@pancakeswap/smart-router'
 import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/swap-sdk-core'
 import { useQuery } from '@tanstack/react-query'
-import { useMemo } from 'react'
+import { useDeferredValue, useMemo } from 'react'
 import { fetchQuotes } from '@pancakeswap/routing-sdk-addon-quoter'
 
 import { getViemClients } from 'utils/viem'
@@ -15,9 +15,9 @@ type Params = {
 }
 
 export function useTradeVerifiedByQuoter<P extends Params>(p: P): P {
-  const { trade, enabled, isLoading, syncing } = p
+  const { trade, enabled, syncing, isLoading } = p
   const serializableTrade = useMemo(() => trade && V4Router.Transformer.serializeTrade(trade), [trade])
-  const { data, fetchStatus, status } = useQuery({
+  const { data, fetchStatus, error } = useQuery({
     enabled: Boolean(enabled && serializableTrade && trade),
     queryKey: [serializableTrade],
     queryFn: async () => {
@@ -33,7 +33,7 @@ export function useTradeVerifiedByQuoter<P extends Params>(p: P): P {
         client: getViemClients({ chainId: trade.inputAmount.currency.chainId }),
       })
       if (quotes.some((q) => q === undefined)) {
-        return trade
+        throw new Error('Fail to validate')
       }
       const quote = quotes.reduce<CurrencyAmount<Currency>>(
         (total, q) => total.add(q!),
@@ -51,10 +51,11 @@ export function useTradeVerifiedByQuoter<P extends Params>(p: P): P {
       }
     },
   })
+  console.log('[QUOTER]', fetchStatus, error, trade?.outputAmount.quotient, data?.outputAmount.quotient)
   return {
     ...p,
     syncing: fetchStatus === 'fetching' || syncing,
-    isLoading: status === 'pending' || isLoading,
-    trade: data,
+    isLoading: fetchStatus === 'fetching' || isLoading,
+    trade: error ? trade : data,
   }
 }
