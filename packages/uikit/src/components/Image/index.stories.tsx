@@ -8,7 +8,7 @@ import Text from "../Text/Text";
 import BackgroundImage from "./BackgroundImage";
 import Img from "./Image";
 import TokenImage from "./TokenImage";
-import TokenPairImage from "./TokenPairImage";
+import TokenPairImage from "./LegacyTokenPairImage";
 import ProfileAvatarComponent from "./ProfileAvatar";
 import tokenList from "./tokens";
 

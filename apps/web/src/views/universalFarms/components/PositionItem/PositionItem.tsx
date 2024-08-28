@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import { Protocol } from '@pancakeswap/farms'
 import { Currency, CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
 import { Column, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { TokenPairImage } from 'components/TokenImage'
+import { TokenPairLogo } from 'components/TokenImage'
 import { PositionDetail, StableLPDetail, V2LPDetail } from 'state/farmsV4/state/accountPositions/type'
 import React, { PropsWithChildren, useCallback, useMemo } from 'react'
 import { PoolInfo } from 'state/farmsV4/state/type'
@@ -61,7 +61,7 @@ export const PositionItem: React.FC<PropsWithChildren<PositionItemProps>> = (pro
   const content = (
     <Container>
       {isDesktop && (
-        <TokenPairImage
+        <TokenPairLogo
           width={48}
           height={48}
           variant="inverted"

@@ -4,9 +4,12 @@ import {
   ImageProps,
   TokenImage as UIKitTokenImage,
   TokenPairImage as UIKitTokenPairImage,
+  TokenPairLogo as UIKitTokenPairLogo,
   TokenPairImageProps as UIKitTokenPairImageProps,
 } from '@pancakeswap/uikit'
+import uriToHttp from '@pancakeswap/utils/uriToHttp'
 import { ASSET_CDN } from 'config/constants/endpoints'
+import { useMemo } from 'react'
 
 interface TokenPairImageProps extends Omit<UIKitTokenPairImageProps, 'primarySrc' | 'secondarySrc'> {
   primaryToken: Currency
@@ -35,6 +38,17 @@ export const getImageUrlFromToken = (token: Currency) => {
     : ''
 }
 
+export const getImageUrlsFromToken = (token: Currency & { logoURI?: string | undefined }) => {
+  const uriLocations = token?.logoURI ? uriToHttp(token?.logoURI) : []
+  const address = token?.isNative ? token.wrapped.address : token.address
+  const imageUri = token
+    ? token?.isNative && token.chainId !== ChainId.BSC
+      ? `${ASSET_CDN}/web/native/${token.chainId}.png`
+      : `https://tokens.pancakeswap.finance/images/${tokenImageChainNameMapping[token.chainId]}${address}.png`
+    : ''
+  return [...uriLocations, imageUri]
+}
+
 export const getChainLogoUrlFromChainId = (chainId: number) =>
   `https://assets.pancakeswap.finance/web/chains/${chainId}.png`
 
@@ -50,6 +64,26 @@ export const TokenPairImage: React.FC<React.PropsWithChildren<TokenPairImageProp
       primarySrc={getImageUrlFromToken(primaryToken)}
       secondarySrc={getImageUrlFromToken(secondaryToken)}
       chainLogoSrc={chainLogo}
+      {...props}
+    />
+  )
+}
+
+export const TokenPairLogo: React.FC<React.PropsWithChildren<TokenPairImageProps>> = ({
+  primaryToken,
+  secondaryToken,
+  withChainLogo = false,
+  ...props
+}) => {
+  const chainLogo = useMemo(
+    () => (withChainLogo ? [getChainLogoUrlFromChainId(primaryToken.chainId)] : []),
+    [withChainLogo, primaryToken.chainId],
+  )
+  return (
+    <UIKitTokenPairLogo
+      primarySrcs={getImageUrlsFromToken(primaryToken)}
+      secondarySrcs={getImageUrlsFromToken(secondaryToken)}
+      chainLogoSrcs={chainLogo}
       {...props}
     />
   )

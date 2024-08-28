@@ -1,12 +1,12 @@
 import React from "react";
-import { TokenPairImageProps, variants } from "./types";
-import { StyledChainImage, StyledPrimaryImage, StyledSecondaryImage } from "./styles";
+import { TokenPairLogoProps, variants } from "./types";
+import { StyledChainLogo, StyledPrimaryLogo, StyledSecondaryLogo } from "./styles";
 import Wrapper from "./Wrapper";
 
-const TokenPairImage: React.FC<React.PropsWithChildren<TokenPairImageProps>> = ({
-  primarySrc,
-  secondarySrc,
-  chainLogoSrc,
+const TokenPairLogo: React.FC<React.PropsWithChildren<TokenPairLogoProps>> = ({
+  primarySrcs,
+  secondarySrcs,
+  chainLogoSrcs,
   width,
   height,
   variant = variants.DEFAULT,
@@ -19,18 +19,18 @@ const TokenPairImage: React.FC<React.PropsWithChildren<TokenPairImageProps>> = (
 
   return (
     <Wrapper position="relative" width={width} height={height} {...props}>
-      <StyledPrimaryImage variant={variant} src={primarySrc} width={width} height={height} {...primaryImageProps} />
-      <StyledSecondaryImage
+      <StyledPrimaryLogo variant={variant} srcs={primarySrcs} width={width} height={height} {...primaryImageProps} />
+      <StyledSecondaryLogo
         variant={variant}
-        src={secondarySrc}
+        srcs={secondarySrcs}
         width={secondaryImageSize}
         height={secondaryImageSize}
         {...secondaryImageProps}
       />
-      {chainLogoSrc ? (
-        <StyledChainImage
+      {chainLogoSrcs?.length ? (
+        <StyledChainLogo
           variant={variant}
-          src={chainLogoSrc}
+          srcs={chainLogoSrcs}
           width={Math.floor(width / 3)}
           height={Math.floor(height / 3)}
           {...chainImageProps}
@@ -40,4 +40,4 @@ const TokenPairImage: React.FC<React.PropsWithChildren<TokenPairImageProps>> = (
   );
 };
 
-export default TokenPairImage;
+export default TokenPairLogo;

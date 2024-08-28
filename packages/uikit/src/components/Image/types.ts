@@ -36,3 +36,15 @@ export interface TokenPairImageProps extends BoxProps {
   secondaryImageProps?: Omit<ImageProps, "width" | "height">;
   chainImageProps?: Omit<ImageProps, "width" | "height">;
 }
+
+export interface TokenPairLogoProps extends BoxProps {
+  primarySrcs: string[];
+  secondarySrcs: string[];
+  chainLogoSrcs?: string[];
+  variant?: Variant;
+  height: number;
+  width: number;
+  primaryImageProps?: Omit<ImageProps, "width" | "height">;
+  secondaryImageProps?: Omit<ImageProps, "width" | "height">;
+  chainImageProps?: Omit<ImageProps, "width" | "height">;
+}
