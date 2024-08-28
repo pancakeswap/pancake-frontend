@@ -4,8 +4,8 @@ import groupBy from 'lodash/groupBy'
 import { Address, createPublicClient, http, isAddressEqual, parseAbiItem } from 'viem'
 import { arbitrum, bsc } from 'viem/chains'
 import { describe, expect, test } from 'vitest'
-import { BCakeWrapperFarmConfig, UniversalFarmConfigV3 } from '../src/types'
-import { UNIVERSAL_BCAKEWRAPPER_FARMS, UNIVERSAL_FARMS } from './farms'
+import { UNIVERSAL_BCAKEWRAPPER_FARMS, UNIVERSAL_FARMS } from '.'
+import { BCakeWrapperFarmConfig, UniversalFarmConfigV3 } from '../types'
 
 const bscClient = createPublicClient({
   chain: bsc,

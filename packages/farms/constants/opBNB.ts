@@ -1,48 +1,35 @@
-import { ChainId } from '@pancakeswap/chains'
 import { opBnbTokens } from '@pancakeswap/tokens'
-import { FeeAmount, Pool } from '@pancakeswap/v3-sdk'
-import { Protocol, UniversalFarmConfig } from '../src/types'
+import { FeeAmount } from '@pancakeswap/v3-sdk'
 
-const pinnedFarmConfig: UniversalFarmConfig[] = []
+import { defineFarmV3Configs } from '../src/defineFarmV3Configs'
 
-export const opBNBFarmConfig: UniversalFarmConfig[] = [
-  ...pinnedFarmConfig,
+export const farmsV3 = defineFarmV3Configs([
   {
     pid: 4,
-    chainId: ChainId.OPBNB,
-    protocol: Protocol.V3,
+    lpAddress: '0x91C348015Eb3Bb32f5AaE59a594c727365816811',
     token0: opBnbTokens.usdt,
     token1: opBnbTokens.xcad,
     feeAmount: FeeAmount.HIGH,
-    lpAddress: Pool.getAddress(opBnbTokens.usdt, opBnbTokens.xcad, FeeAmount.HIGH),
   },
   {
     pid: 3,
-    chainId: ChainId.OPBNB,
-    protocol: Protocol.V3,
+    lpAddress: '0xFf00F4E09820dbbe8582F771800732DaE7F002bD',
     token0: opBnbTokens.wbnb,
     token1: opBnbTokens.eth,
     feeAmount: FeeAmount.MEDIUM,
-    lpAddress: Pool.getAddress(opBnbTokens.wbnb, opBnbTokens.eth, FeeAmount.MEDIUM),
   },
   {
     pid: 2,
-    chainId: ChainId.OPBNB,
-    protocol: Protocol.V3,
+    lpAddress: '0xD9004241D34392e9Ae0C84d5aCDF76941a27D8D1',
     token0: opBnbTokens.fdusd,
     token1: opBnbTokens.usdt,
     feeAmount: FeeAmount.LOWEST,
-    lpAddress: Pool.getAddress(opBnbTokens.fdusd, opBnbTokens.usdt, FeeAmount.LOWEST),
   },
   {
     pid: 1,
-    chainId: ChainId.OPBNB,
-    protocol: Protocol.V3,
+    lpAddress: '0xc4f981189558682F15F60513158B699354B30204',
     token0: opBnbTokens.wbnb,
     token1: opBnbTokens.usdt,
     feeAmount: FeeAmount.LOW,
-    lpAddress: Pool.getAddress(opBnbTokens.wbnb, opBnbTokens.usdt, FeeAmount.LOW),
   },
-]
-
-export default opBNBFarmConfig
+])

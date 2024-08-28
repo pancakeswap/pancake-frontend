@@ -153,9 +153,9 @@ export function createFarmFetcherV3(provider: ({ chainId }: { chainId: number })
   }
 }
 
-export * from '../constants/farms'
 export * from './apr'
 export { FARM_AUCTION_HOSTING_IN_SECONDS } from './const'
+export * from './farms'
 export * from './types'
 export * from './utils'
 export * from './v2/deserializeFarm'
