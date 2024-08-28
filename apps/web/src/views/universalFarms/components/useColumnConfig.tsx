@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Percent } from '@pancakeswap/swap-sdk-core'
-import { BasicDataType, ITableViewProps, Skeleton, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { BasicDataType, IColumnsType, ITableViewProps, Skeleton, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { FeatureStack, FeeTierTooltip, FiatNumberDisplay, TokenOverview } from '@pancakeswap/widgets-internal'
 import { TokenPairImage } from 'components/TokenImage'
 import { useMemo } from 'react'
@@ -14,9 +14,72 @@ const FeeTierComponent = <T extends BasicDataType>({ fee, item }: { fee: number;
   return <FeeTierTooltip type={item.protocol} percent={percent} />
 }
 
+const useAPRConfig = () => {
+  const { t } = useTranslation()
+  return useMemo(
+    () =>
+      ({
+        title: t('APR'),
+        dataIndex: 'lpApr',
+        key: 'apr',
+        render: (value, info) => (value ? <PoolGlobalAprButton pool={info} /> : <Skeleton width={60} />),
+      } as IColumnsType<PoolInfo>),
+    [t],
+  )
+}
+
+const useFeeConfig = () => {
+  const { t } = useTranslation()
+  return useMemo(
+    () =>
+      ({
+        title: t('Fee Tier'),
+        dataIndex: 'feeTier',
+        key: 'feeTier',
+        render: (fee, item) => <FeeTierComponent fee={fee} item={item} />,
+      } as IColumnsType<PoolInfo>),
+    [t],
+  )
+}
+
+const useVol24Config = () => {
+  const { t } = useTranslation()
+  return useMemo(
+    () =>
+      ({
+        title: t('Volume 24H'),
+        dataIndex: 'vol24hUsd',
+        key: 'vol',
+        render: (value) =>
+          value ? <FiatNumberDisplay value={value} showFullDigitsTooltip={false} /> : <Skeleton width={60} />,
+      } as IColumnsType<PoolInfo>),
+    [t],
+  )
+}
+
+const useTVLConfig = () => {
+  const { t } = useTranslation()
+  return useMemo(
+    () =>
+      ({
+        title: t('TVL'),
+        dataIndex: 'tvlUsd',
+        key: 'tvl',
+        render: (value) =>
+          value ? <FiatNumberDisplay value={value} showFullDigitsTooltip={false} /> : <Skeleton width={60} />,
+      } as IColumnsType<PoolInfo>),
+    [t],
+  )
+}
+
 export const useColumnConfig = (): ITableViewProps<PoolInfo>['columns'] => {
   const { t } = useTranslation()
   const mediaQueries = useMatchBreakpoints()
+  const vol24hUsdConf = useVol24Config()
+  const TVLUsdConf = useTVLConfig()
+  const feeTierConf = useFeeConfig()
+  const APRConf = useAPRConfig()
+
   return useMemo(
     () => [
       {
@@ -44,39 +107,25 @@ export const useColumnConfig = (): ITableViewProps<PoolInfo>['columns'] => {
         ),
       },
       {
-        title: t('Fee Tier'),
-        dataIndex: 'feeTier',
-        key: 'feeTier',
+        ...feeTierConf,
         display: mediaQueries.isXl || mediaQueries.isXxl,
-        render: (fee, item) => <FeeTierComponent fee={fee} item={item} />,
       },
       {
-        title: t('APR'),
-        dataIndex: 'lpApr',
-        key: 'apr',
+        ...APRConf,
         sorter: true,
         minWidth: '260px',
-        render: (value, info) => (value ? <PoolGlobalAprButton pool={info} /> : <Skeleton width={60} />),
       },
       {
-        title: t('TVL'),
-        dataIndex: 'tvlUsd',
-        key: 'tvl',
+        ...TVLUsdConf,
         sorter: true,
         minWidth: '145px',
         display: mediaQueries.isXl || mediaQueries.isXxl,
-        render: (value) =>
-          value ? <FiatNumberDisplay value={value} showFullDigitsTooltip={false} /> : <Skeleton width={60} />,
       },
       {
-        title: t('Volume 24H'),
-        dataIndex: 'vol24hUsd',
-        key: 'vol',
+        ...vol24hUsdConf,
         sorter: true,
         minWidth: '145px',
         display: mediaQueries.isXl || mediaQueries.isXxl || mediaQueries.isLg,
-        render: (value) =>
-          value ? <FiatNumberDisplay value={value} showFullDigitsTooltip={false} /> : <Skeleton width={60} />,
       },
       {
         title: t('pool type'),
@@ -95,56 +144,17 @@ export const useColumnConfig = (): ITableViewProps<PoolInfo>['columns'] => {
         clickable: false,
       },
     ],
-    [t, mediaQueries],
+    [t, mediaQueries, APRConf, feeTierConf, vol24hUsdConf, TVLUsdConf],
   )
 }
 
 export const useColumnMobileConfig = (): ITableViewProps<PoolInfo>['columns'] => {
-  const { t } = useTranslation()
-  const mediaQueries = useMatchBreakpoints()
+  const vol24hUsdConf = useVol24Config()
+  const TVLUsdConf = useTVLConfig()
+  const feeTierConf = useFeeConfig()
+  const APRConf = useAPRConfig()
   return useMemo(
-    () => [
-      {
-        title: t('APR'),
-        dataIndex: 'lpApr',
-        key: 'apr',
-        render: (value, info) => (value ? <PoolGlobalAprButton pool={info} /> : <Skeleton width={60} />),
-      },
-      {
-        title: t('Fee Tier'),
-        dataIndex: 'feeTier',
-        key: 'feeTier',
-        display: mediaQueries.isXl || mediaQueries.isXxl,
-        render: (fee, item) => <FeeTierComponent fee={fee} item={item} />,
-      },
-      {
-        title: t('TVL'),
-        dataIndex: 'tvlUsd',
-        key: 'tvl',
-        display: mediaQueries.isXl || mediaQueries.isXxl,
-        render: (value, item) =>
-          value ? (
-            <FiatNumberDisplay
-              value={value}
-              tooltipText={
-                item.isFarming
-                  ? t('Total active (in-range) liquidity staked in the farm.')
-                  : t('Total Value Locked (TVL) in the pool.')
-              }
-            />
-          ) : (
-            <Skeleton width={60} />
-          ),
-      },
-      {
-        title: t('Volume 24H'),
-        dataIndex: 'vol24hUsd',
-        key: 'vol',
-        display: mediaQueries.isXl || mediaQueries.isXxl || mediaQueries.isLg,
-        render: (value) =>
-          value ? <FiatNumberDisplay value={value} showFullDigitsTooltip={false} /> : <Skeleton width={60} />,
-      },
-    ],
-    [t, mediaQueries],
+    () => [APRConf, feeTierConf, TVLUsdConf, vol24hUsdConf],
+    [APRConf, feeTierConf, vol24hUsdConf, TVLUsdConf],
   )
 }
