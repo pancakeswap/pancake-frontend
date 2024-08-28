@@ -2,7 +2,7 @@ import { BigintIsh, Currency, Token } from '@pancakeswap/swap-sdk-core'
 import { DEPLOYER_ADDRESSES, FeeAmount, Pool, computePoolAddress } from '@pancakeswap/v3-sdk'
 import { v3PoolStateABI } from 'config/abi/v3PoolState'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useMemo } from 'react'
+import { useCallback, useMemo, useRef } from 'react'
 import { useMultipleContractSingleData } from 'state/multicall/hooks'
 import { Address } from 'viem'
 import { PoolState } from './types'
@@ -44,6 +44,14 @@ class PoolCache {
     return address.address
   }
 
+  static getCachedPool(tokenA: Token, tokenB: Token, fee: FeeAmount): Pool | undefined {
+    const found = this.pools.find((pool) => pool.token0 === tokenA && pool.token1 === tokenB && pool.fee === fee)
+    if (found) {
+      return found
+    }
+    return undefined
+  }
+
   static getPool(
     tokenA: Token,
     tokenB: Token,
@@ -80,6 +88,8 @@ export function usePools(
 ): [PoolState, Pool | null][] {
   const { chainId } = useActiveChainId()
 
+  const retryCache = useRef(new Map<string, number>())
+
   const poolTokens: ([Token, Token, FeeAmount] | undefined)[] = useMemo(() => {
     if (!chainId) return new Array(poolKeys.length)
 
@@ -113,6 +123,29 @@ export function usePools(
     functionName: 'liquidity',
   })
 
+  const cachedPoolFallback = useCallback(
+    (retryKey: string, token0: Token, token1: Token, fee: FeeAmount): [PoolState, Pool | null] => {
+      if (retryCache.current.has(retryKey)) {
+        if (retryCache.current.get(retryKey)! < 3) {
+          retryCache.current.set(retryKey, retryCache.current.get(retryKey)! + 1)
+          const cachedPool = PoolCache.getCachedPool(token0, token1, fee)
+          if (!cachedPool) {
+            return [PoolState.NOT_EXISTS, null]
+          }
+          return [PoolState.EXISTS, cachedPool]
+        }
+        return [PoolState.NOT_EXISTS, null]
+      }
+      const cachedPool = PoolCache.getCachedPool(token0, token1, fee)
+      if (!cachedPool) {
+        return [PoolState.NOT_EXISTS, null]
+      }
+      retryCache.current.set(retryKey, 0)
+      return [PoolState.EXISTS, cachedPool]
+    },
+    [retryCache],
+  )
+
   return useMemo(() => {
     return poolKeys.map((_key, index) => {
       const tokens = poolTokens[index]
@@ -127,19 +160,24 @@ export function usePools(
 
       if (!tokens || !slot0Valid || !liquidityValid) return [PoolState.INVALID, null]
       if (slot0Loading || liquidityLoading) return [PoolState.LOADING, null]
-      if (!slot0 || typeof liquidity === 'undefined') return [PoolState.NOT_EXISTS, null]
+      const retryKey = `${token0.address}#${token1.address}#${fee}#${chainId}`
+      if (!slot0 || typeof liquidity === 'undefined') {
+        return cachedPoolFallback(retryKey, token0, token1, fee)
+      }
       const [sqrtPriceX96, tick, , , , feeProtocol] = slot0
-      if (!sqrtPriceX96 || sqrtPriceX96 === 0n) return [PoolState.NOT_EXISTS, null]
-
+      if (!sqrtPriceX96 || sqrtPriceX96 === 0n) {
+        cachedPoolFallback(retryKey, token0, token1, fee)
+      }
       try {
         const pool = PoolCache.getPool(token0, token1, fee, sqrtPriceX96, liquidity, tick, feeProtocol)
+        retryCache.current.delete(retryKey)
         return [PoolState.EXISTS, pool]
       } catch (error) {
         console.error('Error when constructing the pool', error)
         return [PoolState.NOT_EXISTS, null]
       }
     })
-  }, [liquidities, poolKeys, slot0s, poolTokens])
+  }, [liquidities, poolKeys, slot0s, poolTokens, chainId, cachedPoolFallback])
 }
 
 export function usePool(
