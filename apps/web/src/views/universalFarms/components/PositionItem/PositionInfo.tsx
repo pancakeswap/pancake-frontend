@@ -13,6 +13,14 @@ import styled from 'styled-components'
 import { useV2CakeEarning, useV3CakeEarning } from 'views/universalFarms/hooks/useCakeEarning'
 import { PoolGlobalAprButton, V2PoolPositionAprButton, V3PoolPositionAprButton } from '../PoolAprButton'
 
+const displayTokenReserve = (amount?: CurrencyAmount<Token>) => {
+  const minimumFractionDigits = Math.min(amount?.currency.decimals ?? 0, 6)
+  const quantity = amount && !amount.equalTo(0) ? amount.toFixed(minimumFractionDigits) : '0'
+  const symbol = amount?.currency.symbol ?? '-'
+
+  return `${quantity} ${symbol}`
+}
+
 export type PositionInfoProps = {
   chainId: number
   currency0?: Currency
@@ -114,8 +122,7 @@ export const PositionInfo = memo(
               style={{ color: theme.colors.textSubtle, fontSize: '12px' }}
               showFullDigitsTooltip={false}
             />
-            ({amount0 ? amount0.toFixed(6) : 0} {currency0?.symbol ?? '-'} / {amount1 ? amount1.toFixed(6) : 0}{' '}
-            {currency1?.symbol ?? '-'})
+            ({displayTokenReserve(amount0)} / {displayTokenReserve(amount1)})
           </Row>
           <Row gap="8px">
             <DetailInfoLabel>APR: </DetailInfoLabel>
