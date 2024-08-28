@@ -3285,4 +3285,12 @@ export const bscTokens = {
     'Wormhole Wrapped USDT',
     'https://wormhole.com/',
   ),
+  cat: new ERC20Token(
+    ChainId.BSC,
+    '0x6894CDe390a3f51155ea41Ed24a33A4827d3063D',
+    18,
+    'CAT',
+    'Simons Cat',
+    'https://www.simons.cat/',
+  ),
 }
