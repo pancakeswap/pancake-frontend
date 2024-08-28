@@ -283,11 +283,13 @@ export const useV3FormDerivedApr = (pool: PoolInfo) => {
       }
     }
 
-    const baseApr = new BigNumber(globalCakeApr.cakePerYear ?? 0)
-      .times(globalCakeApr.poolWeight ?? 0)
-      .times(cakePrice)
-      .times(new BigNumber(liquidity.toString()).dividedBy(lmPoolLiquidity?.toString() ?? 1))
-      .div(userTVLUsd)
+    const baseApr = lmPoolLiquidity
+      ? new BigNumber(globalCakeApr.cakePerYear ?? 0)
+          .times(globalCakeApr.poolWeight ?? 0)
+          .times(cakePrice)
+          .times(new BigNumber(liquidity.toString()).dividedBy(lmPoolLiquidity?.toString() ?? 1))
+          .div(userTVLUsd)
+      : BIG_ZERO
     // const apr = baseApr.times(estimateUserMultiplier ?? 0)
 
     return {
