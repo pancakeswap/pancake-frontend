@@ -10,6 +10,7 @@ test('exports', () => {
       "toSerializableStablePool",
       "parseStablePool",
       "createStablePool",
+      "isStablePool",
     ]
   `)
 })
