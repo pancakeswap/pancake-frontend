@@ -95,7 +95,7 @@ export const ZapLiquidityWidget: React.FC<ZapLiquidityProps> = ({
       </Message>
 
       <ModalV2 closeOnOverlayClick isOpen={isModalOpen} onDismiss={handleOnDismiss}>
-        <ModalContainer>
+        <ModalContainer style={{ maxHeight: '90vh', overflow: 'auto' }}>
           <LiquidityWidget
             onConnectWallet={noop}
             walletClient={walletClient}
