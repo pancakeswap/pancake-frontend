@@ -66,7 +66,10 @@ export const usePoolApr = (
   useQuery({
     queryKey: ['apr', key],
     queryFn: updateCallback,
-    enabled: !!pool && !poolApr?.lpApr && !!key,
+    // calcV3PoolApr depend on pool's TvlUsd
+    // so if there are local pool without tvlUsd, don't to fetch queryFn
+    // issue: PAN-3698
+    enabled: typeof pool?.tvlUsd !== 'undefined' && !poolApr?.lpApr && !!key,
     refetchInterval: 0,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
