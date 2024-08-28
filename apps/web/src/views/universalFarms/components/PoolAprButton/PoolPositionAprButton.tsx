@@ -107,8 +107,17 @@ export const useV3PositionApr = (pool: PoolInfo, userPosition: PositionDetail) =
   const { removed, outOfRange, position } = useExtraV3PositionInfo(userPosition)
   const { cakeApr: globalCakeApr, merklApr: merklApr_ } = usePoolApr(key, pool)
   const lmPoolLiquidity = useLmPoolLiquidity(pool.lpAddress, pool.chainId)
-  const { data: token0UsdPrice } = useCurrencyUsdPrice(pool.token0)
-  const { data: token1UsdPrice } = useCurrencyUsdPrice(pool.token1)
+  const { data: token0UsdPrice_ } = useCurrencyUsdPrice(pool.token0)
+  const { data: token1UsdPrice_ } = useCurrencyUsdPrice(pool.token1)
+
+  const [token0UsdPrice, token1UsdPrice] = useMemo(() => {
+    if (token0UsdPrice_ && token1UsdPrice_) return [token0UsdPrice_, token1UsdPrice_]
+    if (token0UsdPrice_ && !token1UsdPrice_)
+      return [token0UsdPrice_, parseFloat(pool?.token0Price ?? '0') * token0UsdPrice_]
+    if (!token0UsdPrice_ && token1UsdPrice_)
+      return [parseFloat(pool?.token1Price ?? '0') * token1UsdPrice_, token1UsdPrice_]
+    return [token0UsdPrice_, token1UsdPrice_]
+  }, [pool?.token0Price, pool?.token1Price, token0UsdPrice_, token1UsdPrice_])
 
   const cakePrice = useCakePrice()
 
