@@ -170,7 +170,8 @@ export const useV3PositionApr = (pool: PoolInfo, userPosition: PositionDetail) =
             )
             .div(userTVLUsd)
         : BIG_ZERO
-    const apr = baseApr.times(estimateUserMultiplier ?? 0)
+
+    const apr = baseApr.times(estimateUserMultiplier || 1)
 
     return {
       ...globalCakeApr,
