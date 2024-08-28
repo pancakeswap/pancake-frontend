@@ -5113,8 +5113,8 @@ export const CONFIG_PROD: GaugeConfig[] = [
     pairName: 'BTCB-USDT',
     chainId: ChainId.BSC,
     type: GaugeType.V3,
-    token0Address: bscTokens.btcb.address,
-    token1Address: bscTokens.usdt.address,
+    token0Address: bscTokens.usdt.address,
+    token1Address: bscTokens.btcb.address,
     feeTier: FeeAmount.LOWEST,
   },
 ]
