@@ -21,6 +21,8 @@ const handler: NextApiHandler = async (req, res) => {
   }
 
   try {
+    res.setHeader('Cache-Control', 's-maxage=60, max-age=30, stale-while-revalidate=300')
+
     return res.status(200).json({
       data: JSON.parse(JSON.stringify(UNIVERSAL_FARMS.filter((farm) => farm.chainId === chainId))),
       lastUpdatedAt: new Date().toISOString(),
