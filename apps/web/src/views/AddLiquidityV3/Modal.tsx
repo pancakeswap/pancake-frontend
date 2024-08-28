@@ -4,7 +4,6 @@ import { AutoRow, Box, Modal, ModalV2, UseModalV2Props } from '@pancakeswap/uiki
 import { FeeAmount, Pool } from '@pancakeswap/v3-sdk'
 import GlobalSettings from 'components/Menu/GlobalSettings'
 import { SettingsMode } from 'components/Menu/GlobalSettings/types'
-import { useCurrency } from 'hooks/Tokens'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { usePublicNodeWaitForTransaction } from 'hooks/usePublicNodeWaitForTransaction'
 import { useRouter } from 'next/router'
@@ -37,9 +36,6 @@ export function AddLiquidityV3Modal({
     typeof router.query.currency === 'string'
       ? [router.query.currency]
       : router.query.currency || [currency0 && currencyId(currency0), currency1 && currencyId(currency1)]
-
-  const baseCurrency = useCurrency(currencyIdA)
-  const quoteCurrency = useCurrency(currencyIdB)
 
   const poolAddress = useMemo(
     () =>

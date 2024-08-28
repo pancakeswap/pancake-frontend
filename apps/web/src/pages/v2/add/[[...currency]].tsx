@@ -21,7 +21,7 @@ const AddLiquidityPage = () => {
 
   return (
     <AddLiquidityV2FormProvider>
-      <AddLiquidityV3Layout preferredSelectType={SELECTOR_TYPE.V2}>
+      <AddLiquidityV3Layout>
         <UniversalAddLiquidity
           preferredSelectType={SELECTOR_TYPE.V2}
           currencyIdA={currencyIdA}

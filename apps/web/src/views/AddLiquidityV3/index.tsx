@@ -378,12 +378,10 @@ const SELECTOR_TYPE_T = {
 
 export function AddLiquidityV3Layout({
   showRefreshButton = false,
-  preferredSelectType,
   handleRefresh,
   children,
 }: {
   showRefreshButton?: boolean
-  preferredSelectType?: SELECTOR_TYPE
   handleRefresh?: () => void
   children: React.ReactNode
 }) {
