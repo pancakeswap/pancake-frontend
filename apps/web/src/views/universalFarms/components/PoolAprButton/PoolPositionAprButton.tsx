@@ -130,14 +130,17 @@ export const useV3PositionApr = (pool: PoolInfo, userPosition: PositionDetail) =
     }
 
     if (userPosition.isStaked) {
-      const apr = lmPoolLiquidity
-        ? new BigNumber(globalCakeApr.cakePerYear ?? 0)
-            .times(globalCakeApr.poolWeight ?? 0)
-            .times(cakePrice)
-            .times(new BigNumber(userPosition.farmingLiquidity.toString()).dividedBy(lmPoolLiquidity?.toString() ?? 1))
-            .div(userTVLUsd)
-            .times(userPosition.farmingMultiplier)
-        : BIG_ZERO
+      const apr =
+        lmPoolLiquidity && !userTVLUsd.isZero()
+          ? new BigNumber(globalCakeApr.cakePerYear ?? 0)
+              .times(globalCakeApr.poolWeight ?? 0)
+              .times(cakePrice)
+              .times(
+                new BigNumber(userPosition.farmingLiquidity.toString()).dividedBy(lmPoolLiquidity?.toString() ?? 1),
+              )
+              .div(userTVLUsd)
+              .times(userPosition.farmingMultiplier)
+          : BIG_ZERO
 
       return {
         ...globalCakeApr,
@@ -146,17 +149,18 @@ export const useV3PositionApr = (pool: PoolInfo, userPosition: PositionDetail) =
       }
     }
 
-    const baseApr = lmPoolLiquidity
-      ? new BigNumber(globalCakeApr.cakePerYear ?? 0)
-          .times(globalCakeApr.poolWeight ?? 0)
-          .times(cakePrice)
-          .times(
-            new BigNumber(userPosition.liquidity.toString()).dividedBy(
-              lmPoolLiquidity?.toString() ?? pool.liquidity?.toString() ?? 0,
-            ),
-          )
-          .div(userTVLUsd)
-      : BIG_ZERO
+    const baseApr =
+      lmPoolLiquidity && !userTVLUsd.isZero()
+        ? new BigNumber(globalCakeApr.cakePerYear ?? 0)
+            .times(globalCakeApr.poolWeight ?? 0)
+            .times(cakePrice)
+            .times(
+              new BigNumber(userPosition.liquidity.toString()).dividedBy(
+                lmPoolLiquidity?.toString() ?? pool.liquidity?.toString() ?? 1,
+              ),
+            )
+            .div(userTVLUsd)
+        : BIG_ZERO
     const apr = baseApr.times(estimateUserMultiplier ?? 0)
 
     return {
@@ -180,7 +184,7 @@ export const useV3PositionApr = (pool: PoolInfo, userPosition: PositionDetail) =
   ])
 
   const lpApr = useMemo(() => {
-    if (outOfRange || removed) return 0
+    if (outOfRange || removed || userTVLUsd.isZero()) return 0
     const apr = new BigNumber(pool.fee24hUsd ?? 0)
       .times(365)
       .times(V3_LP_FEE_RATE[pool.feeTier] ?? 1)
