@@ -1,7 +1,13 @@
 import { SelectItem } from "primereact/selectitem";
-import { MultiSelectProps, MultiSelectChangeEvent } from "primereact/multiselect";
+import { MultiSelectProps } from "primereact/multiselect";
 
-export type { MultiSelectChangeEvent };
+export interface IMultiSelectChangeEvent<T extends string | number = string> {
+  value: T[];
+  target?: ISelectItem<T>;
+  stopPropagation(): void;
+  preventDefault(): void;
+  originalEvent?: React.SyntheticEvent;
+}
 
 export interface ISelectItem<T extends string | number> extends SelectItem {
   icon?: string | JSX.Element;
@@ -12,7 +18,8 @@ export interface ISelectItem<T extends string | number> extends SelectItem {
 
 export type IOptionType<T extends string | number> = ISelectItem<T>[];
 
-export interface IMultiSelectProps<T extends string | number> extends MultiSelectProps {
+export interface IMultiSelectProps<T extends string | number> extends Omit<MultiSelectProps, "onChange"> {
+  value?: T[];
   style?: React.CSSProperties;
   panelStyle?: React.CSSProperties;
   scrollHeight?: string;
@@ -20,4 +27,5 @@ export interface IMultiSelectProps<T extends string | number> extends MultiSelec
   placeholder?: string;
   isShowFilter?: boolean;
   isShowSelectAll?: boolean;
+  onChange?: (e: IMultiSelectChangeEvent<T>) => void;
 }

@@ -1,26 +1,26 @@
 import { Currency } from '@pancakeswap/sdk'
-import { AddIcon, Button, ChevronDownIcon, Text, useModal, AutoColumn, ColumnCenter } from '@pancakeswap/uikit'
+import { AddIcon, AutoColumn, Button, ChevronDownIcon, ColumnCenter, Text, useModal } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 
-import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
-import { BIG_INT_ZERO } from 'config/constants/exchange'
-import useNativeCurrency from 'hooks/useNativeCurrency'
-import { useCallback, useEffect, useState } from 'react'
-import { styled } from 'styled-components'
 import { LightCard } from 'components/Card'
 import { MinimalPositionCard } from 'components/PositionCard'
+import { CommonBasesType } from 'components/SearchModal/types'
+import { BIG_INT_ZERO } from 'config/constants/exchange'
+import useNativeCurrency from 'hooks/useNativeCurrency'
 import { PairState, useV2Pair } from 'hooks/usePairs'
+import { useCallback, useEffect, useState } from 'react'
 import { usePairAdder } from 'state/user/hooks'
 import { useTokenBalance } from 'state/wallet/hooks'
+import { styled } from 'styled-components'
 import { currencyId } from 'utils/currencyId'
-import { CommonBasesType } from 'components/SearchModal/types'
-import Page from '../Page'
-import CurrencySearchModal from '../../components/SearchModal/CurrencySearchModal'
-import { CurrencyLogo } from '../../components/Logo'
-import Dots from '../../components/Loader/Dots'
-import Row from '../../components/Layout/Row'
+import { useAccount } from 'wagmi'
 import { AppBody, AppHeader } from '../../components/App'
+import Row from '../../components/Layout/Row'
+import Dots from '../../components/Loader/Dots'
+import { CurrencyLogo } from '../../components/Logo'
+import CurrencySearchModal from '../../components/SearchModal/CurrencySearchModal'
+import Page from '../Page'
 
 enum Fields {
   TOKEN0 = 0,
@@ -97,7 +97,7 @@ export default function PoolFinder() {
   return (
     <Page>
       <AppBody>
-        <AppHeader title={t('Import Pool')} subtitle={t('Import an existing pool')} backTo="/liquidity" />
+        <AppHeader title={t('Import Pool')} subtitle={t('Import an existing pool')} backTo="/liquidity/pools" />
         <AutoColumn style={{ padding: '1rem' }} gap="md">
           <StyledButton
             endIcon={<ChevronDownIcon />}

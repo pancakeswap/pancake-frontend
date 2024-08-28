@@ -14,7 +14,7 @@ import { getPercentChange } from 'utils/infoDataHelpers'
 import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
 import { explorerApiClient } from './api/client'
 import { useExplorerChainNameByQuery } from './api/hooks'
-import { MultiChainName, MultiChainNameExtend, checkIsStableSwap, multiChainId } from './constant'
+import { checkIsStableSwap, multiChainId, MultiChainName, MultiChainNameExtend } from './constant'
 import { PoolData, PriceChartEntry, ProtocolData, TokenData } from './types'
 
 dayjs.extend(duration)
@@ -287,12 +287,15 @@ export const useAllPoolDataQuery = () => {
               address: d.token0.id,
               symbol: d.token0.symbol,
               name: d.token0.name,
+              decimals: d.token0.decimals,
             },
             token1: {
               address: d.token1.id,
               symbol: d.token1.symbol,
               name: d.token1.name,
+              decimals: d.token1.decimals,
             },
+            feeTier: d.feeTier,
             volumeUSD: +d.volumeUSD24h,
             volumeUSDChange: 0,
             volumeUSDWeek: +d.volumeUSD7d,
@@ -373,11 +376,13 @@ export function usePoolDataQuery(poolAddress: string): PoolData | undefined {
           address: data_.token0.id,
           symbol: data_.token0.symbol,
           name: data_.token0.name,
+          decimals: data_.token0.decimals,
         },
         token1: {
           address: data_.token1.id,
           symbol: data_.token1.symbol,
           name: data_.token1.name,
+          decimals: data_.token1.decimals,
         },
         volumeUSD: +data_.volumeUSD24h,
         volumeUSDChange: 0,
@@ -394,6 +399,7 @@ export function usePoolDataQuery(poolAddress: string): PoolData | undefined {
         token0Price: +data_.token0Price,
         token1Price: +data_.token1Price,
         volumeUSDChangeWeek: 0,
+        feeTier: data_.feeTier,
       }
     }, []),
     enabled: Boolean(chainName && poolAddress),

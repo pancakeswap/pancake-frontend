@@ -14,7 +14,7 @@ import {
   RefreshIcon,
 } from '@pancakeswap/uikit'
 
-import { FeeAmount } from '@pancakeswap/v3-sdk'
+import { FeeAmount, Pool } from '@pancakeswap/v3-sdk'
 import React, { ReactNode, useCallback, useEffect, useMemo } from 'react'
 
 import { Trans, useTranslation } from '@pancakeswap/localization'
@@ -36,11 +36,10 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import noop from 'lodash/noop'
 import { resetMintState } from 'state/mint/actions'
 import { useAddLiquidityV2FormDispatch } from 'state/mint/reducer'
-import { useStableSwapPairs } from 'state/swap/useStableSwapPairs'
 import { safeGetAddress } from 'utils'
 import FeeSelector from './formViews/V3FormView/components/FeeSelector'
 
-import { AprCalculator } from './components/AprCalculator'
+import { AprCalculatorV2 } from './components/AprCalculatorV2'
 import { StableV3Selector } from './components/StableV3Selector'
 import { V2Selector } from './components/V2Selector'
 import StableFormView from './formViews/StableFormView'
@@ -389,47 +388,33 @@ export function AddLiquidityV3Layout({
   children: React.ReactNode
 }) {
   const { t } = useTranslation()
+  const { chainId } = useActiveChainId()
 
   const [selectType] = useAtom(selectTypeAtom)
   const { currencyIdA, currencyIdB, feeAmount } = useCurrencyParams()
 
   const baseCurrency = useCurrency(currencyIdA)
   const quoteCurrency = useCurrency(currencyIdB)
+  const poolAddress = useMemo(
+    () =>
+      baseCurrency?.wrapped && quoteCurrency?.wrapped && feeAmount
+        ? Pool.getAddress(baseCurrency.wrapped, quoteCurrency.wrapped, feeAmount)
+        : null,
+    [baseCurrency?.wrapped, feeAmount, quoteCurrency?.wrapped],
+  )
 
   const title = SELECTOR_TYPE_T[selectType] || t('Add Liquidity')
-
-  const lpTokens = useStableSwapPairs()
-
-  const backToLink = useMemo(() => {
-    if (preferredSelectType === SELECTOR_TYPE.V2) {
-      return `/v2/pair/${currencyIdA}/${currencyIdB}`
-    }
-    if (preferredSelectType === SELECTOR_TYPE.STABLE) {
-      const selectedLp = lpTokens.find(
-        ({ token0, token1 }) =>
-          token0?.wrapped?.address?.toLowerCase() === baseCurrency?.wrapped?.address?.toLowerCase() &&
-          token1?.wrapped?.address?.toLowerCase() === quoteCurrency?.wrapped?.address?.toLowerCase(),
-      )
-      return `/stable/${selectedLp?.lpAddress}`
-    }
-    return '/liquidity'
-  }, [lpTokens, baseCurrency, quoteCurrency, currencyIdA, currencyIdB, preferredSelectType])
 
   return (
     <Page>
       <BodyWrapper>
         <AppHeader
           title={title}
-          backTo={backToLink}
+          backTo="/liquidity/positions"
           IconSlot={
             <>
               {selectType === SELECTOR_TYPE.V3 && (
-                <AprCalculator
-                  showQuestion
-                  baseCurrency={baseCurrency}
-                  quoteCurrency={quoteCurrency}
-                  feeAmount={feeAmount}
-                />
+                <AprCalculatorV2 derived poolAddress={poolAddress} chainId={chainId} />
               )}
               {showRefreshButton && (
                 <IconButton variant="text" scale="sm">

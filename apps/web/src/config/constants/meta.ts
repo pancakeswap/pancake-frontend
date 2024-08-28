@@ -27,7 +27,8 @@ const getPathList = (t: ContextApi['t']): PathList => {
       '/competition': { title: t('Trading Battle') },
       '/prediction': { title: t('Prediction'), image: `${ASSET_CDN}/web/og/prediction.jpg` },
       '/prediction/leaderboard': { title: t('Leaderboard'), image: `${ASSET_CDN}/web/og/liquidity.jpg` },
-      '/farms': { title: t('Farms'), image: `${ASSET_CDN}/web/og/farms.jpg` },
+      '/liquidity/pools': { title: t('Earn from LP'), image: `${ASSET_CDN}/web/og/farms.jpg` },
+      '/liquidity/positions': { title: t('My Positions'), image: `${ASSET_CDN}/web/og/farms.jpg` },
       '/farms/auction': { title: t('Farm Auctions'), image: `${ASSET_CDN}/web/og/liquidity.jpg` },
       '/pools': { title: t('Pools'), image: `${ASSET_CDN}/web/og/pools.jpg` },
       '/lottery': { title: t('Lottery'), image: `${ASSET_CDN}/web/og/lottery.jpg` },
@@ -44,6 +45,12 @@ const getPathList = (t: ContextApi['t']): PathList => {
       '/info/pairs': {
         title: `${t('Pairs')} - ${t('Info')}`,
         description: 'View statistics for Pancakeswap exchanges.',
+        image: `${ASSET_CDN}/web/og/info.jpg`,
+      },
+      '/liquidity/pool': {
+        basePath: true,
+        title: `${t('Pool Detail')}`,
+        description: 'View statistics for Pancakeswap pool.',
         image: `${ASSET_CDN}/web/og/info.jpg`,
       },
       '/info/tokens': {

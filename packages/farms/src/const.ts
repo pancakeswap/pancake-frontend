@@ -1,6 +1,18 @@
 import { ChainId } from '@pancakeswap/chains'
 import uniq from 'lodash/uniq'
 
+// @todo remove all other v2/v3 and type definitions
+export const supportedChainIdV4 = [
+  ChainId.BSC,
+  ChainId.ETHEREUM,
+  ChainId.BASE,
+  ChainId.OPBNB,
+  ChainId.ZKSYNC,
+  ChainId.POLYGON_ZKEVM,
+  ChainId.LINEA,
+  ChainId.ARBITRUM_ONE,
+] as const
+
 export const supportedChainIdV2 = [
   ChainId.GOERLI,
   ChainId.BSC,
@@ -33,6 +45,8 @@ export type FarmSupportedChainId = (typeof supportedChainId)[number]
 export type FarmV2SupportedChainId = (typeof supportedChainIdV2)[number]
 
 export type FarmV3SupportedChainId = (typeof supportedChainIdV3)[number]
+
+export type FarmV4SupportedChainId = (typeof supportedChainIdV4)[number]
 
 export const masterChefAddresses = {
   [ChainId.BSC_TESTNET]: '0xB4A466911556e39210a6bB2FaECBB59E4eB7E43d',

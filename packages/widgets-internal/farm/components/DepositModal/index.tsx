@@ -50,6 +50,7 @@ interface DepositModalProps {
   lpPrice?: BigNumber;
   lpLabel?: string;
   tokenName?: string;
+  hideTokenName?: boolean;
   apr?: number;
   lpRewardsApr?: number;
   displayApr?: string;
@@ -81,6 +82,7 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
   max,
   stakedBalance,
   tokenName = "",
+  hideTokenName,
   multiplier,
   displayApr,
   lpPrice = BIG_ZERO,
@@ -178,12 +180,6 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
     },
     [fullBalanceNumber, decimals, lpPrice]
   );
-
-  console.log({
-    display: isBooster ? (_toNumber(displayApr) - apr + apr * (boosterMultiplier ?? 1)).toFixed(2) : displayApr,
-    apr,
-    lpRewardsApr,
-  });
 
   if (showRoiCalculator) {
     return (
@@ -306,9 +302,11 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
             </Button>
           )}
         </ModalActions>
-        <LinkExternal href={addLiquidityUrl} style={{ alignSelf: "center" }}>
-          {t("Add %symbol%", { symbol: tokenName })}
-        </LinkExternal>
+        {hideTokenName ? null : (
+          <LinkExternal href={addLiquidityUrl} style={{ alignSelf: "center" }}>
+            {t("Add %symbol%", { symbol: tokenName })}
+          </LinkExternal>
+        )}
       </ModalBody>
     </Modal>
   );

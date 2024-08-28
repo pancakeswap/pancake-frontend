@@ -1,30 +1,30 @@
-import { styled } from 'styled-components'
+import { useTranslation } from '@pancakeswap/localization'
 import {
-  Button,
-  Heading,
-  Text,
-  Flex,
-  Link,
   Breadcrumbs,
+  Button,
+  Flex,
+  Heading,
+  Link,
+  OpenNewIcon,
   PageHeader,
   PageSection,
-  OpenNewIcon,
   StyledLink,
+  Text,
 } from '@pancakeswap/uikit'
-import { useAccount } from 'wagmi'
-import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
 import NextLink from 'next/link'
-import FAQs from './components/FAQs'
+import { styled } from 'styled-components'
+import { useAccount } from 'wagmi'
+import AuctionCakeBurn from './components/AuctionCakeBurn'
 import AuctionDetails from './components/AuctionDetailsCard'
 import AuctionLeaderboard from './components/AuctionLeaderboard'
+import AuctionTimer from './components/AuctionTimer'
+import CongratulationsCard from './components/CongratulationsCard'
+import FAQs from './components/FAQs'
+import NotWhitelistedNotice from './components/NotWhitelistedNotice'
+import ReclaimBidCard from './components/ReclaimBidCard'
 import { FORM_ADDRESS } from './helpers'
 import { useCurrentFarmAuction } from './hooks/useCurrentFarmAuction'
-import AuctionTimer from './components/AuctionTimer'
-import ReclaimBidCard from './components/ReclaimBidCard'
-import NotWhitelistedNotice from './components/NotWhitelistedNotice'
-import CongratulationsCard from './components/CongratulationsCard'
-import AuctionCakeBurn from './components/AuctionCakeBurn'
 
 const FAQS_BG_LIGHT = 'linear-gradient(180deg, #CBD7EF 0%, #9A9FD0 100%)'
 const FAQ_BG_DARK = 'linear-gradient(180deg, #434575 0%, #66578D 100%)'
@@ -92,7 +92,7 @@ const FarmAuction = () => {
               {t('Home')}
             </StyledLink>
           </NextLink>
-          <NextLink href="/farms">
+          <NextLink href="/liquidity/pools">
             <StyledLink color="primary" style={{ fontWeight: 400 }}>
               {t('Farms')}
             </StyledLink>

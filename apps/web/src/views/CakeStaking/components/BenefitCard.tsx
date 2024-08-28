@@ -51,7 +51,7 @@ export const BENEFITS: Record<BenefitCardType, BenefitItem> = {
     title: <Trans>Farm Boost</Trans>,
     subTitle: <Trans>Farming Boost Up To</Trans>,
     btnText: <Trans>Check Farms</Trans>,
-    link: '/farms',
+    link: '/liquidity/pools',
     desc: [<Trans>Boost your farm earnings</Trans>, <Trans>Supports multi-chain boosts</Trans>],
     key: 'benefit-farm-boost',
   },

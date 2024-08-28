@@ -1,12 +1,11 @@
+import { Protocol } from "@pancakeswap/farms";
 import { useTranslation } from "@pancakeswap/localization";
 import { Percent } from "@pancakeswap/swap-sdk-core";
-import { FeeTier, LinkExternal, useTooltip } from "@pancakeswap/uikit";
+import { FeeTier, LinkExternal, Text, useTooltip } from "@pancakeswap/uikit";
 import { useMemo } from "react";
 
-export type FeeTierType = "V2" | "V3" | "V4" | "Stable";
-
 export type FeeTierTooltipProps = {
-  type: FeeTierType;
+  type: Protocol;
   dynamic?: boolean;
   percent: Percent;
 };
@@ -16,24 +15,38 @@ const FeeTooltips: React.FC<FeeTierTooltipProps> = ({ type, dynamic, percent }) 
   const p = useMemo(() => percent.toSignificant(2), [percent]);
 
   switch (type) {
-    case "Stable":
-      return t("Fees are lower for Stable LP");
-    case "V4": {
-      if (dynamic) {
-        return (
-          <>
-            {t("Dynamic fee: ↕️ %p%% Fee may vary based on several conditions", { p })}
-            {/* @todo @ChefJerry */}
-            <LinkExternal href="https://pancakeswap.finance/#todo">{t("Learn more")}</LinkExternal>
-          </>
-        );
-      }
-      return t("Static Fee: %p%%", { p });
+    case "stable":
+      return (
+        <>
+          <Text bold>{t("%t% LP", { t: "StableSwap" })}</Text>
+          <div>{t("Fees are lower for Stable LP")}</div>
+        </>
+      );
+    case "v4bin": {
+      return (
+        <>
+          <Text bold>{t("%t% LP", { t: type.toUpperCase() })}</Text>
+          {dynamic ? (
+            <>
+              {t("Dynamic fee: ↕️ %p%% Fee may vary based on several conditions", { p })}
+              {/* @todo @ChefJerry */}
+              <LinkExternal href="https://pancakeswap.finance/#todo">{t("Learn more")}</LinkExternal>
+            </>
+          ) : (
+            t("Static Fee: %p%%", { p })
+          )}
+        </>
+      );
     }
-    case "V3":
-    case "V2":
+    case "v3":
+    case "v2":
     default:
-      return t("%p%% Fee Tier", { p });
+      return (
+        <>
+          <Text bold>{t("%t% LP", { t: type.toUpperCase() })}</Text>
+          {t("%p%% Fee Tier", { p })}
+        </>
+      );
   }
 };
 
@@ -42,12 +55,14 @@ export const FeeTierTooltip: React.FC<FeeTierTooltipProps> = ({ type, dynamic, p
     <FeeTooltips type={type} dynamic={dynamic} percent={percent} />
   );
 
+  const typeSymbol = useMemo(() => (type === "stable" ? "SS" : type), [type]);
+
   return (
     <>
       <FeeTier
         ref={targetRef}
         dynamic={dynamic}
-        type={type}
+        type={typeSymbol}
         fee={Number(percent.numerator)}
         denominator={Number(percent.denominator)}
       />

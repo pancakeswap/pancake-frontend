@@ -2,8 +2,10 @@
 import { ChainId } from '@pancakeswap/chains'
 import { ERC20Token } from '@pancakeswap/sdk'
 import { Currency, NativeCurrency } from '@pancakeswap/swap-sdk-core'
+import type { Address } from 'viem'
 
 import { TokenAddressMap } from '@pancakeswap/token-lists'
+import { useReadContracts } from '@pancakeswap/wagmi'
 import { GELATO_NATIVE } from 'config/constants'
 import { UnsafeCurrency } from 'config/constants/types'
 import { useAtomValue } from 'jotai'
@@ -16,9 +18,8 @@ import {
   useWarningTokenList,
 } from 'state/lists/hooks'
 import { safeGetAddress } from 'utils'
-import { useReadContracts } from '@pancakeswap/wagmi'
 import { erc20Abi } from 'viem'
-import useUserAddedTokens from '../state/user/hooks/useUserAddedTokens'
+import useUserAddedTokens, { useUserAddedTokensByChainIds } from '../state/user/hooks/useUserAddedTokens'
 import { useActiveChainId } from './useActiveChainId'
 import useNativeCurrency from './useNativeCurrency'
 
@@ -45,7 +46,7 @@ const mapWithoutUrlsBySymbol = (tokenMap?: TokenAddressMap<ChainId>, chainId?: n
 }
 
 /**
- * Returns all tokens that are from active urls and user added tokens
+ * Returns all tokens of activeChain that are from active urls and user added tokens
  */
 export function useAllTokens(): { [address: string]: ERC20Token } {
   const { chainId } = useActiveChainId()
@@ -71,6 +72,48 @@ export function useAllTokens(): { [address: string]: ERC20Token } {
         )
     )
   }, [userAddedTokens, tokenMap, chainId])
+}
+
+export type TokenChainAddressMap<TChainId extends number = number> = {
+  [chainId in TChainId]: {
+    [tokenAddress: Address]: ERC20Token
+  }
+}
+
+export function useTokensByChainIds(chainIds: number[], tokenMap: TokenAddressMap<ChainId>): TokenChainAddressMap {
+  const userAddedTokenMap = useUserAddedTokensByChainIds(chainIds)
+  return useMemo(() => {
+    return chainIds.reduce<TokenChainAddressMap>((tokenMap_, chainId) => {
+      tokenMap_[chainId] = tokenMap_[chainId] || {}
+      userAddedTokenMap[chainId].forEach((token) => {
+        const checksumAddress = safeGetAddress(token.address)
+        if (checksumAddress) {
+          tokenMap_[chainId][checksumAddress] = token
+        }
+      })
+      Object.keys(tokenMap[chainId] || {}).forEach((address) => {
+        const checksumAddress = safeGetAddress(address)
+        if (checksumAddress && !tokenMap_[chainId][checksumAddress]) {
+          tokenMap_[chainId][checksumAddress] = tokenMap[chainId][address].token
+        }
+      })
+
+      return tokenMap_
+    }, {})
+  }, [userAddedTokenMap, tokenMap, chainIds])
+}
+
+/**
+ * Returns all tokens that are from active urls and user added tokens
+ */
+export function useAllTokensByChainIds(chainIds: number[]): TokenChainAddressMap {
+  const allTokenMap = useAtomValue(combinedTokenMapFromActiveUrlsAtom)
+  return useTokensByChainIds(chainIds, allTokenMap)
+}
+
+export function useOfficialsAndUserAddedTokensByChainIds(chainIds: number[]): TokenChainAddressMap {
+  const tokenMap = useAtomValue(combinedTokenMapFromOfficialsUrlsAtom)
+  return useTokensByChainIds(chainIds, tokenMap)
 }
 
 export function useAllOnRampTokens(): { [address: string]: Currency } {
@@ -146,17 +189,20 @@ export function useIsUserAddedToken(currency: Currency | undefined | null): bool
   return !!userAddedTokens.find((token) => currency?.equals(token))
 }
 
+export function useToken(tokenAddress?: string): ERC20Token | undefined | null {
+  const { chainId } = useActiveChainId()
+  return useTokenByChainId(tokenAddress, chainId)
+}
 // undefined if invalid or does not exist
 // null if loading
 // otherwise returns the token
-export function useToken(tokenAddress?: string): ERC20Token | undefined | null {
-  const { chainId } = useActiveChainId()
+export function useTokenByChainId(tokenAddress?: string, chainId?: number): ERC20Token | undefined | null {
   const unsupportedTokens = useUnsupportedTokens()
-  const tokens = useAllTokens()
+  const tokens = useAllTokensByChainIds(chainId ? [chainId] : [])
 
   const address = safeGetAddress(tokenAddress)
 
-  const token = address ? tokens[address] : undefined
+  const token: ERC20Token | undefined = address && chainId ? tokens[chainId][address] : undefined
 
   const { data, isLoading } = useReadContracts({
     allowFailure: false,

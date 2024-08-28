@@ -8,12 +8,29 @@ import { getHashFromRouter } from 'utils/getHashFromRouter'
 import { isChainSupported } from 'utils/wagmi'
 import { useActiveChainId } from './useActiveChainId'
 import { useSwitchNetworkLoading } from './useSwitchNetworkLoading'
+import { useSessionChainId } from './useSessionChainId'
+
+export const UNIVERSAL_PAGE_PATHS = ['/liquidity/pool/[chainName]/[id]', '/liquidity/pools', 'liquidity/positions']
 
 export function useNetworkConnectorUpdater() {
   const { chainId } = useActiveChainId()
   const previousChainIdRef = useRef(chainId)
+  const previousUrlPathRef = useRef('')
   const [loading] = useSwitchNetworkLoading()
   const router = useRouter()
+  const [, setSessionChainId] = useSessionChainId()
+
+  useEffect(() => {
+    const handleRouteChange = () => {
+      previousUrlPathRef.current = router.pathname
+    }
+
+    router.events.on('routeChangeStart', handleRouteChange)
+
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChange)
+    }
+  }, [router])
 
   useEffect(() => {
     const setPrevChainId = () => {
@@ -23,6 +40,11 @@ export function useNetworkConnectorUpdater() {
     const parsedQueryChainId = getChainId(router.query.chain as string)
 
     if (!parsedQueryChainId && chainId === ChainId.BSC) return setPrevChainId()
+    // universal page contains multiple chains,
+    // so the query of chain on the url should be high priority than the activeChainId
+    if (UNIVERSAL_PAGE_PATHS.includes(previousUrlPathRef.current) || UNIVERSAL_PAGE_PATHS.includes(router.pathname)) {
+      return setPrevChainId()
+    }
     if (parsedQueryChainId !== chainId && chainId && isChainSupported(chainId)) {
       const removeQueriesFromPath =
         previousChainIdRef.current !== chainId &&
@@ -47,7 +69,7 @@ export function useNetworkConnectorUpdater() {
       )
     }
     return setPrevChainId()
-  }, [chainId, loading, router])
+  }, [chainId, loading, router, setSessionChainId])
 }
 
 /**

@@ -3,8 +3,11 @@ import { DEPLOYER_ADDRESSES, FeeAmount, Pool, computePoolAddress } from '@pancak
 import { v3PoolStateABI } from 'config/abi/v3PoolState'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useMemo } from 'react'
-import { useMultipleContractSingleData } from 'state/multicall/hooks'
 import { Address } from 'viem'
+import { publicClient } from 'utils/viem'
+import { keepPreviousData, useQueries } from '@tanstack/react-query'
+import { QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH, QUERY_SETTINGS_IMMUTABLE } from 'config/constants'
+import { useMultipleContractSingleData } from 'state/multicall/hooks'
 import { PoolState } from './types'
 
 // Classes are expensive to instantiate, so this caches the recently instantiated pools.
@@ -18,7 +21,7 @@ class PoolCache {
 
   private static addresses: { key: string; address: string }[] = []
 
-  static getPoolAddress(deployerAddress: Address, tokenA: Token, tokenB: Token, fee: FeeAmount): string {
+  static getPoolAddress(deployerAddress: Address, tokenA: Token, tokenB: Token, fee: FeeAmount): Address {
     if (this.addresses.length > this.MAX_ENTRIES) {
       this.addresses = this.addresses.slice(0, this.MAX_ENTRIES / 2)
     }
@@ -28,7 +31,7 @@ class PoolCache {
     const key = `${deployerAddress}:${addressA}:${addressB}:${fee.toString()}`
 
     const found = this.addresses.find((address) => address.key === key)
-    if (found) return found.address
+    if (found) return found.address as Address
 
     const address = {
       key,
@@ -153,4 +156,127 @@ export function usePool(
   )
 
   return usePools(poolKeys)[0]
+}
+
+export function usePoolsWithMultiChains(
+  poolKeys: [Currency | undefined | null, Currency | undefined | null, FeeAmount | undefined][],
+): [PoolState, Pool | null][] {
+  const poolTokens: ([Token, Token, FeeAmount] | undefined)[] = useMemo(() => {
+    return poolKeys.map(([currencyA, currencyB, feeAmount]) => {
+      if (currencyA && currencyB && feeAmount) {
+        const tokenA = currencyA.wrapped
+        const tokenB = currencyB.wrapped
+        if (tokenA.equals(tokenB)) return undefined
+
+        return tokenA.sortsBefore(tokenB) ? [tokenA, tokenB, feeAmount] : [tokenB, tokenA, feeAmount]
+      }
+      return undefined
+    })
+  }, [poolKeys])
+
+  const poolAddressMap: { [chainId: number]: Address[] } = useMemo(() => {
+    return poolTokens.reduce((acc, value) => {
+      if (!value) {
+        return acc
+      }
+      const { chainId } = value[0]
+      const v3CoreDeployerAddress = DEPLOYER_ADDRESSES[chainId]
+      const addr = PoolCache.getPoolAddress(v3CoreDeployerAddress, ...value)
+      // eslint-disable-next-line no-param-reassign
+      acc[chainId] = acc[chainId] ?? []
+      acc[chainId].push(addr)
+      return acc
+    }, {})
+  }, [poolTokens])
+
+  const chainIds = useMemo(() => Object.keys(poolAddressMap), [poolAddressMap])
+
+  const queries = chainIds.map((chainId) => {
+    const poolAddresses: Address[] = poolAddressMap[chainId]
+    return {
+      queryKey: ['slot0', 'liquidity', chainId, ...poolAddresses],
+      placeholderData: keepPreviousData,
+      queryFn: async () => {
+        const client = publicClient({ chainId: Number(chainId) })
+
+        const slot0Calls = poolAddresses.map((addr) => ({
+          address: addr,
+          abi: v3PoolStateABI,
+          functionName: 'slot0',
+        }))
+
+        const liquidityCalls = poolAddresses.map((addr) => ({
+          address: addr,
+          abi: v3PoolStateABI,
+          functionName: 'liquidity',
+        }))
+
+        return Promise.all([
+          client.multicall({
+            contracts: slot0Calls,
+            allowFailure: false,
+          }),
+          client.multicall({
+            contracts: liquidityCalls,
+            allowFailure: false,
+          }),
+        ])
+      },
+      enabled: !!chainId && !!poolAddresses.length,
+      ...QUERY_SETTINGS_IMMUTABLE,
+      ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
+    }
+  })
+  const poolInfoQueries = useQueries({
+    queries,
+  })
+
+  const poolInfoByChainId = useMemo(() => {
+    return poolInfoQueries.reduce((acc, query, idx) => {
+      const chainId = chainIds[idx]
+      // eslint-disable-next-line no-param-reassign
+      acc[chainId] = acc[chainId] ?? []
+      // eslint-disable-next-line no-param-reassign
+      acc[chainId] = query.data
+      return acc
+    }, {})
+  }, [chainIds, poolInfoQueries])
+
+  return useMemo(() => {
+    const indexMap = {}
+    return poolKeys.map((_key, index) => {
+      const tokens = poolTokens[index]
+      if (!tokens) return [PoolState.INVALID, null]
+      const [token0, token1, fee] = tokens
+
+      indexMap[token0.chainId] = (indexMap[token0.chainId] ?? -1) + 1
+      const [slot0s = [], liquidities = []] = poolInfoByChainId[token0.chainId] || []
+      const slot0 = slot0s[indexMap[token0.chainId]]
+      const liquidity = liquidities[indexMap[token0.chainId]]
+      if (typeof slot0 === 'undefined' || typeof liquidity === 'undefined') return [PoolState.INVALID, null]
+      const [sqrtPriceX96, tick, , , , feeProtocol] = slot0
+      if (!sqrtPriceX96 || sqrtPriceX96 === 0n) return [PoolState.NOT_EXISTS, null]
+
+      try {
+        const pool = PoolCache.getPool(token0, token1, fee, sqrtPriceX96, liquidity, tick, feeProtocol)
+        return [PoolState.EXISTS, pool]
+      } catch (error) {
+        console.error('Error when constructing the pool', error)
+        return [PoolState.NOT_EXISTS, null]
+      }
+    })
+  }, [poolKeys, poolTokens, poolInfoByChainId])
+}
+
+export function usePoolByChainId(
+  currencyA: Currency | undefined | null,
+  currencyB: Currency | undefined | null,
+  feeAmount: FeeAmount | undefined,
+): [PoolState, Pool | null] {
+  const poolKeys: [Currency | undefined | null, Currency | undefined | null, FeeAmount | undefined][] = useMemo(
+    () => [[currencyA, currencyB, feeAmount]],
+    [currencyA, currencyB, feeAmount],
+  )
+
+  return usePoolsWithMultiChains(poolKeys)[0]
 }

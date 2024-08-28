@@ -100,7 +100,7 @@ export default function PoolV2Page() {
               </Heading>
             </Flex>
           }
-          backTo="/liquidity"
+          backTo="/liquidity/pools"
           noConfig
           buttons={
             !isMobile && (

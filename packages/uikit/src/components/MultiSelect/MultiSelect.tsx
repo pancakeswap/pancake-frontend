@@ -1,15 +1,15 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { MultiSelect as PrimereactSelect, MultiSelectChangeEvent } from "primereact/multiselect";
-import { styled } from "styled-components";
 import { useTheme } from "@pancakeswap/hooks";
 import noop from "lodash/noop";
-import { ArrowDropDownIcon, SearchIcon } from "../Svg";
+import { MultiSelect as PrimereactSelect } from "primereact/multiselect";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { styled } from "styled-components";
 import { Box, Flex } from "../Box";
 import { Checkbox } from "../Checkbox";
 import { Column } from "../Column";
-import SearchBox, { BORDER_RADIUS, IAdaptiveInputForwardProps } from "./SearchBox";
-import { IMultiSelectProps, IOptionType, ISelectItem } from "./types";
+import { ArrowDropDownIcon, SearchIcon } from "../Svg";
 import { EmptyMessage } from "./EmptyMessage";
+import SearchBox, { BORDER_RADIUS, IAdaptiveInputForwardProps } from "./SearchBox";
+import { IMultiSelectChangeEvent, IMultiSelectProps, IOptionType, ISelectItem } from "./types";
 
 const CHECKBOX_WIDTH = "26px";
 
@@ -20,6 +20,7 @@ const SelectContainer = styled.div`
   .p-multiselect {
     position: relative;
     height: 0px;
+    width: 100% !important;
   }
   .p-multiselect-label-container,
   .p-multiselect-trigger {
@@ -27,6 +28,7 @@ const SelectContainer = styled.div`
   }
 
   .p-multiselect-panel {
+    width: 100% !important;
     min-width: auto;
     border: 1px solid ${({ theme }) => theme.colors.cardBorder};
     box-shadow: ${({ theme }) => theme.card.boxShadow};
@@ -133,10 +135,10 @@ const SelectContainer = styled.div`
 }
 `;
 
-const PrimereactSelectContainer = styled.div<{ scrollHeight?: string }>`
+const PrimereactSelectContainer = styled.div<{ $scrollHeight?: string }>`
   height: 0;
   .p-multiselect-items-wrapper {
-    height: ${({ scrollHeight }) => scrollHeight ?? "auto"};
+    height: ${({ $scrollHeight }) => $scrollHeight ?? "auto"};
   }
   .p-multiselect-items {
     height: 100%;
@@ -159,9 +161,10 @@ const SelectInputContainer = styled(Flex)`
   align-items: center;
   position: relative;
   border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
+  border-bottom-width: 2px;
   border-radius: ${BORDER_RADIUS};
   box-shadow: 0 0 1px ${({ theme }) => theme.shadows.inset};
-  padding: 7px 8px 7px 16px;
+  padding: 5px 8px 4px 12px;
   user-select: none;
   cursor: pointer;
   gap: 8px;
@@ -176,21 +179,35 @@ const SelectedInputItemsContainer = styled.div`
 
 const SelectedInputIconsContainer = styled.div`
   display: flex;
-  height: 24px;
+  height: 28px;
+
   & > :not(:first-child) {
     margin-left: -12px;
   }
 
   & > img {
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
     border: 2px solid ${({ theme }) => theme.colors.input};
     border-radius: 50%;
+  }
+
+  & > div {
+    border: 2px solid ${({ theme }) => theme.colors.input};
+    border-radius: 50%;
+    & > img:first-child {
+      width: 24px;
+      height: 24px;
+    }
+    & > img:last-child {
+      left: 0;
+    }
   }
 `;
 
 const SelectedInputFakeIcon = styled.span`
   display: inline-block;
+  box-sizing: content-box;
   width: 24px;
   height: 24px;
   background: ${({ theme }) => theme.colors.inputSecondary};
@@ -201,6 +218,7 @@ const SelectedInputFakeIcon = styled.span`
   align-content: center;
   font-size: 14px;
   font-weight: 600;
+  z-index: 1;
 `;
 
 const SelectInputPlaceholder = styled.div`
@@ -221,8 +239,10 @@ export const MultiSelect = <T extends string | number>(props: IMultiSelectProps<
     selectAllLabel,
     isShowSelectAll,
     isShowFilter,
+    ...restProps
   } = props;
-  const [selectedItems, setSelectedItems] = useState<T[]>();
+  const [selectedItemsInner, setSelectedItems] = useState<T[]>();
+  const selectedItems = useMemo(() => value ?? selectedItemsInner, [value, selectedItemsInner]);
   const [isShow, setIsShow] = useState(false);
   const [selectAll, setSelectAll] = useState(false);
   const [searchText, setSearchText] = useState("");
@@ -232,7 +252,7 @@ export const MultiSelect = <T extends string | number>(props: IMultiSelectProps<
 
   const theme = useTheme();
   const list = useMemo(
-    () => options?.filter((op) => op.label.toLowerCase().includes(searchText)),
+    () => options?.filter((op) => op.label.toLowerCase().includes(searchText.toLowerCase())),
     [options, searchText]
   );
 
@@ -272,14 +292,13 @@ export const MultiSelect = <T extends string | number>(props: IMultiSelectProps<
           originalEvent: e,
           stopPropagation: e.stopPropagation,
           preventDefault: e.preventDefault,
-          target: { name: selectAllLabel ?? "Select All", value: "0", id: "0" },
         });
       } else {
         setSelectAll(!selectAll);
         setSelectedItems(result);
       }
     },
-    [selectAll, options, onChange, selectAllLabel]
+    [selectAll, options, onChange]
   );
 
   const handleFilter = useCallback((text: string) => {
@@ -287,13 +306,43 @@ export const MultiSelect = <T extends string | number>(props: IMultiSelectProps<
   }, []);
 
   const handleLabelDelete = useCallback(
-    (item: ISelectItem<T>) => {
+    (e: React.MouseEvent<HTMLOrSVGElement> | React.KeyboardEvent, item: ISelectItem<T>) => {
       if (!selectedItems?.length) {
         return;
       }
-      setSelectedItems(selectedItems.filter((i) => i !== item.value));
+      const result = selectedItems.filter((i) => i !== item.value);
+      if (onChange) {
+        onChange({
+          value: result,
+          stopPropagation: e.stopPropagation,
+          preventDefault: e.preventDefault,
+          target: item,
+        });
+      } else {
+        setSelectedItems(result);
+      }
     },
-    [selectedItems]
+    [selectedItems, onChange]
+  );
+
+  const handleClearSeachBox = useCallback(
+    (e: React.MouseEvent<HTMLOrSVGElement>) => {
+      if (selectedItems?.length) {
+        if (onChange) {
+          onChange({
+            value: [],
+            stopPropagation: e.stopPropagation,
+            preventDefault: e.preventDefault,
+          });
+        } else {
+          setSelectedItems([]);
+        }
+      }
+      if (searchText.length) {
+        searchInputRef.current?.clear();
+      }
+    },
+    [searchText, selectedItems, onChange]
   );
 
   const panelHeaderTemplate = useMemo(
@@ -304,7 +353,8 @@ export const MultiSelect = <T extends string | number>(props: IMultiSelectProps<
             selectedItems={selectedOptions}
             ref={searchInputRef}
             onFilter={handleFilter}
-            handleLabelDelete={handleLabelDelete}
+            onClear={handleClearSeachBox}
+            onLabelDelete={handleLabelDelete}
           />
         )}
         {isShowSelectAll && (
@@ -327,6 +377,7 @@ export const MultiSelect = <T extends string | number>(props: IMultiSelectProps<
       </>
     ),
     [
+      handleClearSeachBox,
       handleSelectAll,
       indeterminate,
       selectAll,
@@ -340,14 +391,14 @@ export const MultiSelect = <T extends string | number>(props: IMultiSelectProps<
   );
 
   const handleChange = useCallback(
-    (e: MultiSelectChangeEvent) => {
+    (e: IMultiSelectChangeEvent<T>) => {
       if (onChange) {
         onChange?.(e);
       } else {
         setSelectedItems(e.value);
       }
-      searchInputRef.current?.clear();
-      searchInputRef.current?.focus();
+      // searchInputRef.current?.clear();
+      // searchInputRef.current?.focus();
     },
     [onChange]
   );
@@ -365,10 +416,6 @@ export const MultiSelect = <T extends string | number>(props: IMultiSelectProps<
   useEffect(() => {
     setSelectAll(selectedItems?.length === options?.length);
   }, [selectedItems, options]);
-
-  useEffect(() => {
-    setSelectedItems(value);
-  }, [value]);
 
   return (
     <SelectContainer
@@ -433,9 +480,9 @@ export const MultiSelect = <T extends string | number>(props: IMultiSelectProps<
         </Column>
       </SelectInputContainer>
 
-      <PrimereactSelectContainer scrollHeight={props.scrollHeight}>
+      <PrimereactSelectContainer $scrollHeight={props.scrollHeight}>
         <PrimereactSelect
-          {...props}
+          {...restProps}
           ref={primereactSelectRef}
           style={{
             width: style?.width ?? "auto",
@@ -452,7 +499,7 @@ export const MultiSelect = <T extends string | number>(props: IMultiSelectProps<
           itemTemplate={props.itemTemplate ?? itemTemplate}
           panelHeaderTemplate={props.panelHeaderTemplate ?? panelHeaderTemplate}
           emptyMessage={props.emptyMessage ?? ((<EmptyMessage />) as unknown as string)}
-          onChange={handleChange}
+          onChange={handleChange as any}
           onShow={handleShow}
           onHide={handleHide}
           onKeyDown={noop}
