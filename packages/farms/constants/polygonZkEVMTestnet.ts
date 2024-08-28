@@ -1,27 +1,39 @@
+import { ChainId } from '@pancakeswap/chains'
 import { polygonZkEvmTestnetTokens } from '@pancakeswap/tokens'
-import { FeeAmount } from '@pancakeswap/v3-sdk'
-import { defineFarmV3Configs } from '../src/defineFarmV3Configs'
+import { FeeAmount, Pool } from '@pancakeswap/v3-sdk'
+import { Protocol, UniversalFarmConfig } from '../src/types'
 
-export const farmsV3 = defineFarmV3Configs([
+const pinnedFarmConfig: UniversalFarmConfig[] = []
+
+export const polygonZkEVMTestnetFarmConfig: UniversalFarmConfig[] = [
+  ...pinnedFarmConfig,
   {
     pid: 1,
-    lpAddress: '0xae62072e5e25fE2D811Da7e4E33F75E0524B8FdC',
+    chainId: ChainId.POLYGON_ZKEVM_TESTNET,
+    protocol: Protocol.V3,
     token0: polygonZkEvmTestnetTokens.weth,
     token1: polygonZkEvmTestnetTokens.mockA,
     feeAmount: FeeAmount.LOW,
+    lpAddress: Pool.getAddress(polygonZkEvmTestnetTokens.weth, polygonZkEvmTestnetTokens.mockA, FeeAmount.LOW),
   },
   {
     pid: 2,
-    lpAddress: '0xfc45871d6c0Df3CDAE736dB52B2d81ac61EcF6eF',
+    chainId: ChainId.POLYGON_ZKEVM_TESTNET,
+    protocol: Protocol.V3,
     token0: polygonZkEvmTestnetTokens.weth,
     token1: polygonZkEvmTestnetTokens.mockB,
     feeAmount: FeeAmount.MEDIUM,
+    lpAddress: Pool.getAddress(polygonZkEvmTestnetTokens.weth, polygonZkEvmTestnetTokens.mockB, FeeAmount.MEDIUM),
   },
   {
     pid: 3,
-    lpAddress: '0x9c7505095aA5a1B2227822BA47D13054eC570972',
+    chainId: ChainId.POLYGON_ZKEVM_TESTNET,
+    protocol: Protocol.V3,
     token0: polygonZkEvmTestnetTokens.mockB,
     token1: polygonZkEvmTestnetTokens.mockC,
     feeAmount: FeeAmount.HIGH,
+    lpAddress: Pool.getAddress(polygonZkEvmTestnetTokens.mockB, polygonZkEvmTestnetTokens.mockC, FeeAmount.HIGH),
   },
-])
+]
+
+export default polygonZkEVMTestnetFarmConfig

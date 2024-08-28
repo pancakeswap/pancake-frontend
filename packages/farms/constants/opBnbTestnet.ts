@@ -1,28 +1,40 @@
+import { ChainId } from '@pancakeswap/chains'
 import { opBnbTestnetTokens } from '@pancakeswap/tokens'
-import { FeeAmount } from '@pancakeswap/v3-sdk'
+import { FeeAmount, Pool } from '@pancakeswap/v3-sdk'
+import { Protocol, UniversalFarmConfig } from '../src/types'
 
-import { defineFarmV3Configs } from '../src/defineFarmV3Configs'
+const pinnedFarmConfig: UniversalFarmConfig[] = []
 
-export const farmsV3 = defineFarmV3Configs([
+export const opBNBTestnetFarmConfig: UniversalFarmConfig[] = [
+  ...pinnedFarmConfig,
   {
     pid: 1,
-    lpAddress: '0x5EFf51E8718F7b36D09CBc0506f653E886eBdAdb',
+    chainId: ChainId.OPBNB_TESTNET,
+    protocol: Protocol.V3,
     token0: opBnbTestnetTokens.mockA,
     token1: opBnbTestnetTokens.wbnb,
     feeAmount: FeeAmount.LOW,
+    lpAddress: Pool.getAddress(opBnbTestnetTokens.mockA, opBnbTestnetTokens.wbnb, FeeAmount.LOW),
   },
+
   {
     pid: 2,
-    lpAddress: '0x71C5C28442353877f6a4A196f95Ee4CfB0Dcb5Aa',
+    chainId: ChainId.OPBNB_TESTNET,
+    protocol: Protocol.V3,
     token0: opBnbTestnetTokens.mockB,
     token1: opBnbTestnetTokens.wbnb,
     feeAmount: FeeAmount.MEDIUM,
+    lpAddress: Pool.getAddress(opBnbTestnetTokens.mockB, opBnbTestnetTokens.wbnb, FeeAmount.MEDIUM),
   },
   {
     pid: 3,
-    lpAddress: '0x6Cd45Ef02989A9188A9d8B170b86FAAA6d2B194C',
+    chainId: ChainId.OPBNB_TESTNET,
+    protocol: Protocol.V3,
     token0: opBnbTestnetTokens.mockB,
     token1: opBnbTestnetTokens.mockC,
-    feeAmount: FeeAmount.HIGH,
+    feeAmount: FeeAmount.OPBNB_TESTNET,
+    lpAddress: Pool.getAddress(opBnbTestnetTokens.mockB, opBnbTestnetTokens.mockC, FeeAmount.HIGH),
   },
-])
+]
+
+export default opBNBTestnetFarmConfig

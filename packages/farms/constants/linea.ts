@@ -1,113 +1,143 @@
+import { ChainId } from '@pancakeswap/chains'
 import { lineaTokens } from '@pancakeswap/tokens'
-import { FeeAmount } from '@pancakeswap/v3-sdk'
-import { FarmConfigV3 } from '../src'
-import { defineFarmV3Configs } from '../src/defineFarmV3Configs'
+import { FeeAmount, Pool } from '@pancakeswap/v3-sdk'
+import { Protocol, UniversalFarmConfig } from '../src/types'
 
-const v3TopFixedFarms: FarmConfigV3[] = [
+const pinnedFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 9,
-    lpAddress: '0x586733678b9aC9Da43dD7CB83bbB41d23677Dfc3',
+    chainId: ChainId.LINEA,
+    protocol: Protocol.V3,
     token0: lineaTokens.usdc,
     token1: lineaTokens.weth,
     feeAmount: FeeAmount.LOWEST,
+    lpAddress: Pool.getAddress(lineaTokens.usdc, lineaTokens.weth, FeeAmount.LOWEST),
   },
   {
     pid: 12,
-    lpAddress: '0x1947B87d35E9f1cd53CEDe1aD6F7be44C12212B8',
+    chainId: ChainId.LINEA,
+    protocol: Protocol.V3,
     token0: lineaTokens.usdt,
     token1: lineaTokens.weth,
     feeAmount: FeeAmount.LOWEST,
+    lpAddress: Pool.getAddress(lineaTokens.usdt, lineaTokens.weth, FeeAmount.LOWEST),
   },
   {
     pid: 1,
-    lpAddress: '0xd5539D0360438a66661148c633A9F0965E482845',
+    chainId: ChainId.LINEA,
+    protocol: Protocol.V3,
     token0: lineaTokens.usdc,
     token1: lineaTokens.weth,
     feeAmount: FeeAmount.LOW,
+    lpAddress: Pool.getAddress(lineaTokens.usdc, lineaTokens.weth, FeeAmount.LOW),
   },
   {
     pid: 8,
-    lpAddress: '0xc014414696F332C96C471634620344143325D2C0',
+    chainId: ChainId.LINEA,
+    protocol: Protocol.V3,
     token0: lineaTokens.usdt,
     token1: lineaTokens.weth,
     feeAmount: FeeAmount.LOW,
+    lpAddress: Pool.getAddress(lineaTokens.usdt, lineaTokens.weth, FeeAmount.LOW),
   },
 
   {
     pid: 2,
-    lpAddress: '0x6a72F4F191720c411Cd1fF6A5EA8DeDEC3A64771',
+    chainId: ChainId.LINEA,
+    protocol: Protocol.V3,
     token0: lineaTokens.usdc,
     token1: lineaTokens.usdt,
     feeAmount: FeeAmount.LOWEST,
+    lpAddress: Pool.getAddress(lineaTokens.usdc, lineaTokens.usdt, FeeAmount.LOWEST),
   },
   {
     pid: 10,
-    lpAddress: '0x5AFda31027C3E6A03c77a113FFC031B564AbbF05',
+    chainId: ChainId.LINEA,
+    protocol: Protocol.V3,
     token0: lineaTokens.wbtc,
     token1: lineaTokens.weth,
     feeAmount: FeeAmount.LOWEST,
+    lpAddress: Pool.getAddress(lineaTokens.wbtc, lineaTokens.weth, FeeAmount.LOWEST),
   },
   {
     pid: 3,
-    lpAddress: '0xbD3bc396C9393e63bBc935786Dd120B17F58Df4c',
+    chainId: ChainId.LINEA,
+    protocol: Protocol.V3,
     token0: lineaTokens.wbtc,
     token1: lineaTokens.weth,
     feeAmount: FeeAmount.LOW,
+    lpAddress: Pool.getAddress(lineaTokens.wbtc, lineaTokens.weth, FeeAmount.LOW),
   },
 ]
 
-export const farmsV3 = defineFarmV3Configs([
-  ...v3TopFixedFarms,
+export const lineaFarmConfig: UniversalFarmConfig[] = [
+  ...pinnedFarmConfig,
   {
     pid: 14,
-    lpAddress: '0x96F8d07B34e15c0f9338e79fD038F0f7A0C3a676',
+    chainId: ChainId.LINEA,
+    protocol: Protocol.V3,
     token0: lineaTokens.foxy,
     token1: lineaTokens.weth,
     feeAmount: FeeAmount.HIGH,
+    lpAddress: Pool.getAddress(lineaTokens.foxy, lineaTokens.weth, FeeAmount.HIGH),
   },
   {
     pid: 13,
-    lpAddress: '0xfDe733b5DE5B5a06C68353e01E4c1D3415C89560',
+    chainId: ChainId.LINEA,
+    protocol: Protocol.V3,
     token0: lineaTokens.ezETH,
     token1: lineaTokens.weth,
     feeAmount: FeeAmount.LOW,
+    lpAddress: Pool.getAddress(lineaTokens.ezETH, lineaTokens.weth, FeeAmount.LOW),
   },
 
   {
     pid: 11,
-    lpAddress: '0xE817A59F8A030544Ff65F47536abA272F6d63059',
+    chainId: ChainId.LINEA,
+    protocol: Protocol.V3,
     token0: lineaTokens.cake,
     token1: lineaTokens.weth,
     feeAmount: FeeAmount.HIGH,
+    lpAddress: Pool.getAddress(lineaTokens.cake, lineaTokens.weth, FeeAmount.HIGH),
   },
 
   {
     pid: 7,
-    lpAddress: '0x90375306810C6E8B2efa8294835C78B499D7c691',
+    chainId: ChainId.LINEA,
+    protocol: Protocol.V3,
     token0: lineaTokens.wstETH,
     token1: lineaTokens.weth,
     feeAmount: FeeAmount.LOW,
+    lpAddress: Pool.getAddress(lineaTokens.wstETH, lineaTokens.weth, FeeAmount.LOW),
   },
   {
     pid: 6,
-    lpAddress: '0x3f63a467C54c96538bD36A7DF1b9E7C4719DcaC9',
+    chainId: ChainId.LINEA,
+    protocol: Protocol.V3,
     token0: lineaTokens.wstETH,
     token1: lineaTokens.weth,
     feeAmount: FeeAmount.LOWEST,
+    lpAddress: Pool.getAddress(lineaTokens.wstETH, lineaTokens.weth, FeeAmount.LOWEST),
   },
 
   {
     pid: 4,
-    lpAddress: '0xA48E0630B7b9dCb250112143C9D0fe47d26CB1e4',
+    chainId: ChainId.LINEA,
+    protocol: Protocol.V3,
     token0: lineaTokens.usdc,
     token1: lineaTokens.dai,
     feeAmount: FeeAmount.LOWEST,
+    lpAddress: Pool.getAddress(lineaTokens.usdc, lineaTokens.dai, FeeAmount.LOWEST),
   },
   {
     pid: 5,
-    lpAddress: '0x85164B6d8a74bA481AB6D02D2C4e779ECCBAF982',
+    chainId: ChainId.LINEA,
+    protocol: Protocol.V3,
     token0: lineaTokens.usdc,
     token1: lineaTokens.axlusdc,
     feeAmount: FeeAmount.LOWEST,
+    lpAddress: Pool.getAddress(lineaTokens.usdc, lineaTokens.axlusdc, FeeAmount.LOWEST),
   },
-])
+]
+
+export default lineaFarmConfig

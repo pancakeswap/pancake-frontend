@@ -4,14 +4,15 @@ import * as namedExports from './index'
 test('exports', () => {
   expect(Object.keys(namedExports)).toMatchInlineSnapshot(`
     [
+      "UNIVERSAL_BCAKEWRAPPER_FARMS",
+      "UNIVERSAL_FARMS",
+      "UNIVERSAL_FARMS_WITH_TESTNET",
       "getFarmApr",
       "getPositionFarmApr",
       "getPositionFarmAprFactor",
-      "Protocol",
-      "UNIVERSAL_FARMS",
-      "UNIVERSAL_BCAKEWRAPPER_FARMS",
       "FARM_AUCTION_HOSTING_IN_SECONDS",
       "isStableFarm",
+      "Protocol",
       "isActiveV3Farm",
       "deserializeFarm",
       "deserializeFarmUserData",

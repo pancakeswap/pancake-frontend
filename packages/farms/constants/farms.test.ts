@@ -4,7 +4,8 @@ import groupBy from 'lodash/groupBy'
 import { Address, createPublicClient, http, isAddressEqual, parseAbiItem } from 'viem'
 import { arbitrum, bsc } from 'viem/chains'
 import { describe, expect, test } from 'vitest'
-import { BCakeWrapperFarmConfig, UNIVERSAL_BCAKEWRAPPER_FARMS, UNIVERSAL_FARMS, UniversalFarmConfigV3 } from './config'
+import { BCakeWrapperFarmConfig, UniversalFarmConfigV3 } from '../src/types'
+import { UNIVERSAL_BCAKEWRAPPER_FARMS, UNIVERSAL_FARMS } from './farms'
 
 const bscClient = createPublicClient({
   chain: bsc,
@@ -164,7 +165,10 @@ describe('Universal bCakeWrapper farms config', () => {
 
     UNIVERSAL_BCAKEWRAPPER_FARMS.forEach((bCakeFarmConfig, index) => {
       const matchedFarmConfig = getMatchedFarmConfig(bCakeFarmConfig)
-      expect(matchedFarmConfig, `No matched farm config for bCakeWrapper farm ${bCakeFarmConfig.pid}`).toBeDefined()
+      expect(
+        matchedFarmConfig,
+        `No matched farm config for bCakeWrapper farm ${bCakeFarmConfig.lpAddress}`,
+      ).toBeDefined()
       const stakingToken = tokens[index]
 
       expect(isAddressEqual(stakingToken, matchedFarmConfig!.lpAddress)).toBe(true)
