@@ -5069,16 +5069,6 @@ export const CONFIG_PROD: GaugeConfig[] = [
   },
   {
     gid: 512,
-    address: '0xB2DC4d7627501338B578985c214208eb32283086',
-    pairName: 'ORDER-ETH',
-    chainId: ChainId.ETHEREUM,
-    type: GaugeType.V3,
-    token0Address: ethereumTokens.order.address,
-    token1Address: ethereumTokens.weth.address,
-    feeTier: FeeAmount.MEDIUM,
-  },
-  {
-    gid: 513,
     address: '0x9E143b6644C752d82F63a416c1f37c908f845BB4',
     pairName: 'WIF-ETH',
     chainId: ChainId.BASE,
@@ -5088,7 +5078,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
     feeTier: FeeAmount.MEDIUM,
   },
   {
-    gid: 514,
+    gid: 513,
     address: '0x62Fcb3C1794FB95BD8B1A97f6Ad5D8a7e4943a1e',
     pairName: 'ETH-BNB',
     chainId: ChainId.BSC,
@@ -5098,7 +5088,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
     feeTier: FeeAmount.LOWEST,
   },
   {
-    gid: 515,
+    gid: 514,
     address: '0x9F599F3D64a9D99eA21e68127Bb6CE99f893DA61',
     pairName: 'ETH-USDT',
     chainId: ChainId.BSC,
@@ -5108,7 +5098,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
     feeTier: FeeAmount.LOWEST,
   },
   {
-    gid: 516,
+    gid: 515,
     address: '0x247f51881d1E3aE0f759AFB801413a6C948Ef442',
     pairName: 'BTCB-USDT',
     chainId: ChainId.BSC,
@@ -5116,5 +5106,15 @@ export const CONFIG_PROD: GaugeConfig[] = [
     token0Address: bscTokens.usdt.address,
     token1Address: bscTokens.btcb.address,
     feeTier: FeeAmount.LOWEST,
+  },
+  {
+    gid: 516,
+    address: '0xB2DC4d7627501338B578985c214208eb32283086',
+    pairName: 'ORDER-ETH',
+    chainId: ChainId.ETHEREUM,
+    type: GaugeType.V3,
+    token0Address: ethereumTokens.order.address,
+    token1Address: ethereumTokens.weth.address,
+    feeTier: FeeAmount.MEDIUM,
   },
 ]
