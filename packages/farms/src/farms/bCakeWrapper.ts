@@ -1,5 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
-import { BCakeWrapperFarmConfig } from '../src/types'
+import { BCakeWrapperFarmConfig } from '../types'
 
 export const UNIVERSAL_BCAKEWRAPPER_FARMS: BCakeWrapperFarmConfig[] = [
   {

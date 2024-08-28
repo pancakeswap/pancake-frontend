@@ -2,7 +2,7 @@ import { ChainId } from '@pancakeswap/chains'
 import { Pair } from '@pancakeswap/sdk'
 import { bscTokens } from '@pancakeswap/tokens'
 import { FeeAmount, Pool } from '@pancakeswap/v3-sdk'
-import { Protocol, UniversalFarmConfig } from '../src/types'
+import { Protocol, UniversalFarmConfig } from '../types'
 
 const pinnedFarmConfig: UniversalFarmConfig[] = [
   {

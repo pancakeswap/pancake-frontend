@@ -1,4 +1,4 @@
-import { UniversalFarmConfig } from '../src/types'
+import { UniversalFarmConfig } from '../types'
 
 import { arbFarmConfig } from './arb'
 import { baseFarmConfig } from './base'

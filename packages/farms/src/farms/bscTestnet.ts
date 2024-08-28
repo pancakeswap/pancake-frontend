@@ -1,4 +1,4 @@
-import { UniversalFarmConfig } from '../src/types'
+import { UniversalFarmConfig } from '../types'
 
 const pinnedFarmConfig: UniversalFarmConfig[] = []
 
