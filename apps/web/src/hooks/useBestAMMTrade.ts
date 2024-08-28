@@ -100,6 +100,10 @@ function useBetterQuote<A extends QuoteResult, B extends QuoteResult>(quoteA: A,
     if (!quoteA.trade && quoteB.trade) {
       return quoteB
     }
+    // prioritize quoteA. Use quoteB as fallback
+    if (quoteA.isLoading && !quoteA.error) {
+      return quoteA
+    }
     return quoteA.trade!.tradeType === TradeType.EXACT_INPUT
       ? quoteB.trade?.outputAmount.greaterThan(quoteA.trade!.outputAmount)
         ? quoteB

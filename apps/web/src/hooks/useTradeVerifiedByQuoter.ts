@@ -1,24 +1,25 @@
 import { V4Router } from '@pancakeswap/smart-router'
 import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/swap-sdk-core'
-import { useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { useDeferredValue, useMemo } from 'react'
 import { fetchQuotes } from '@pancakeswap/routing-sdk-addon-quoter'
 
 import { getViemClients } from 'utils/viem'
 import { toRoutingSDKTrade } from 'utils/convertTrade'
+import { POOLS_NORMAL_REVALIDATE } from 'config/pools'
 
 type Params = {
   isLoading?: boolean
   trade?: V4Router.V4TradeWithoutGraph<TradeType>
   enabled?: boolean
   syncing?: boolean
+  error?: Error
 }
 
 export function useTradeVerifiedByQuoter<P extends Params>(p: P): P {
   const { trade, enabled, syncing, isLoading } = p
   const serializableTrade = useMemo(() => trade && V4Router.Transformer.serializeTrade(trade), [trade])
-  const { data, fetchStatus, error } = useQuery({
-    refetchOnWindowFocus: false,
+  const { data, fetchStatus, error, isPlaceholderData } = useQuery({
     enabled: Boolean(enabled && serializableTrade && trade),
     queryKey: [serializableTrade],
     queryFn: async () => {
@@ -51,11 +52,15 @@ export function useTradeVerifiedByQuoter<P extends Params>(p: P): P {
         outputAmount: isExactIn ? quote : trade.outputAmount,
       }
     },
+    refetchOnWindowFocus: false,
+    placeholderData: keepPreviousData,
+    staleTime: trade?.inputAmount.currency.chainId ? POOLS_NORMAL_REVALIDATE[trade?.inputAmount.currency.chainId] : 0,
   })
   return {
     ...p,
     syncing: fetchStatus === 'fetching' || syncing,
-    isLoading: fetchStatus === 'fetching' || isLoading,
+    isLoading: isPlaceholderData || isLoading,
     trade: error ? trade : data,
+    error: error ?? p.error,
   }
 }
