@@ -1,4 +1,4 @@
-import { Box, Skeleton, Text } from '@pancakeswap/uikit'
+import { Box, ChartDataTimeWindowEnum, Skeleton, Text } from '@pancakeswap/uikit'
 import dayjs from 'dayjs'
 import { memo, useEffect, useMemo, useState } from 'react'
 import { ProtocolData, TvlChartEntry, VolumeChartEntry } from 'state/info/types'
@@ -44,7 +44,7 @@ const HoverableChart = ({
     if (data) {
       return data.map((day) => {
         return {
-          time: dayjs.unix(day.date).toDate(),
+          time: day.date,
           value: day[valueProperty],
         }
       })
@@ -66,7 +66,12 @@ const HoverableChart = ({
       )}
       <Text>{dateHover ?? currentDate}</Text>
       <Box height="250px">
-        <ChartComponent data={formattedData} setHoverValue={setHover} setHoverDate={setDateHover} />
+        <ChartComponent
+          timeWindow={ChartDataTimeWindowEnum.DAY}
+          data={formattedData}
+          setHoverValue={setHover}
+          setHoverDate={setDateHover}
+        />
       </Box>
     </Box>
   )

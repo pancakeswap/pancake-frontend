@@ -4,10 +4,13 @@ import {
   Box,
   Breadcrumbs,
   Button,
+  ButtonMenu,
+  ButtonMenuItem,
   Card,
   CopyButton,
   Flex,
   Heading,
+  ChartDataTimeWindowEnum,
   ScanLink,
   Spinner,
   Text,
@@ -21,7 +24,7 @@ import { TabToggle, TabToggleGroup } from 'components/TabToggle'
 import { CHAIN_QUERY_NAME } from 'config/chains'
 // import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
-import { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { ChainLinkSupportChains, multiChainId, multiChainScan } from 'state/info/constant'
 import { useChainIdByQuery, useChainNameByQuery, useMultiChainPath, useStableSwapPath } from 'state/info/hooks'
 import { styled } from 'styled-components'
@@ -41,7 +44,6 @@ import TransactionTable from '../components/TransactionsTable'
 import { v3InfoPath } from '../constants'
 import { usePoolChartData, usePoolData, usePoolTransactions } from '../hooks'
 import { feeTierPercent } from '../utils'
-import { unixToDate } from '../utils/date'
 import { formatDollarAmount } from '../utils/numbers'
 
 const ContentLayout = styled.div`
@@ -72,6 +74,8 @@ enum ChartView {
   TVL,
 }
 
+const DEFAULT_TIME_WINDOW = ChartDataTimeWindowEnum.WEEK
+
 const PoolPage: React.FC<{ address: string }> = ({ address }) => {
   // const { chainId } = useActiveChainId()
   const { isXs, isSm } = useMatchBreakpoints()
@@ -86,9 +90,11 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
   const { theme } = useTheme()
   const backgroundColor = theme.colors.primary
 
+  const [timeWindow, setTimeWindow] = useState(DEFAULT_TIME_WINDOW)
+
   // token data
   const poolData = usePoolData(address)
-  const chartData = usePoolChartData(address)
+  const chartData = usePoolChartData(address, timeWindow)
   const transactions = usePoolTransactions(address)
 
   const [view, setView] = useState(ChartView.VOL)
@@ -103,7 +109,7 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
     if (chartData) {
       return chartData.map((day) => {
         return {
-          time: unixToDate(day.date),
+          time: day.date,
           value: day.totalValueLockedUSD,
         }
       })
@@ -115,7 +121,7 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
     if (chartData) {
       return chartData.map((day) => {
         return {
-          time: unixToDate(day.date),
+          time: day.date,
           value: day.volumeUSD,
         }
       })
@@ -127,7 +133,7 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
     if (chartData) {
       return chartData.map((day) => {
         return {
-          time: unixToDate(day.date),
+          time: day.date,
           value: day.feesUSD,
         }
       })
@@ -324,19 +330,32 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
                   <Text>{t('TVL')}</Text>
                 </TabToggle>
               </TabToggleGroup>
-              <Flex flexDirection="column" px="24px" pt="24px">
-                {latestValue
-                  ? formatDollarAmount(latestValue)
-                  : view === ChartView.VOL
-                  ? formatDollarAmount(formattedVolumeData[formattedVolumeData.length - 1]?.value)
-                  : view === ChartView.DENSITY
-                  ? ''
-                  : view === ChartView.TVL
-                  ? formatDollarAmount(formattedTvlData[formattedTvlData.length - 1]?.value)
-                  : formatDollarAmount(formattedFeesUSD[formattedFeesUSD.length - 1]?.value)}
-                <Text small color="secondary">
-                  {view !== ChartView.DENSITY && `${valueLabel ?? now.format('MMM D, YYYY')} (UTC)`}
-                </Text>
+              <Flex justifyContent="space-between" px="24px" pt="24px">
+                <Flex flexDirection="column">
+                  {latestValue
+                    ? formatDollarAmount(latestValue)
+                    : view === ChartView.VOL
+                    ? formatDollarAmount(formattedVolumeData[formattedVolumeData.length - 1]?.value)
+                    : view === ChartView.DENSITY
+                    ? ''
+                    : view === ChartView.TVL
+                    ? formatDollarAmount(formattedTvlData[formattedTvlData.length - 1]?.value)
+                    : formatDollarAmount(formattedFeesUSD[formattedFeesUSD.length - 1]?.value)}
+                  <Text small color="secondary">
+                    {view !== ChartView.DENSITY && `${valueLabel ?? now.format('MMM D, YYYY')}`}
+                  </Text>
+                </Flex>
+                {view !== ChartView.DENSITY && (
+                  <Flex alignItems="center">
+                    <ButtonMenu activeIndex={timeWindow} onItemClick={setTimeWindow} scale="sm">
+                      <ButtonMenuItem>{t('1H')}</ButtonMenuItem>
+                      <ButtonMenuItem>{t('24H')}</ButtonMenuItem>
+                      <ButtonMenuItem>{t('1W')}</ButtonMenuItem>
+                      <ButtonMenuItem>{t('1M')}</ButtonMenuItem>
+                      <ButtonMenuItem>{t('1Y')}</ButtonMenuItem>
+                    </ButtonMenu>
+                  </Flex>
+                )}
               </Flex>
               <Box height="380px">
                 {view === ChartView.VOL ? (
@@ -344,6 +363,7 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
                     data={formattedVolumeData}
                     color={backgroundColor}
                     minHeight={340}
+                    timeWindow={timeWindow}
                     setValue={setLatestValue}
                     setLabel={setValueLabel}
                     value={latestValue}
@@ -352,6 +372,7 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
                 ) : view === ChartView.FEES ? (
                   <BarChart
                     data={formattedFeesUSD}
+                    timeWindow={timeWindow}
                     color={backgroundColor}
                     minHeight={340}
                     setValue={setLatestValue}
@@ -362,6 +383,7 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
                 ) : view === ChartView.TVL ? (
                   <LineChart
                     data={formattedTvlData}
+                    timeWindow={timeWindow}
                     minHeight={340}
                     setValue={setLatestValue}
                     setLabel={setValueLabel}

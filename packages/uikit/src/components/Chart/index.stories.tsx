@@ -3,7 +3,8 @@ import { Meta, Story } from "@storybook/react";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React from "react";
 import { Box } from "../Box";
-import { PairDataTimeWindowEnum, PairPriceChart, PairPriceChartNewProps } from "./PairPriceChart";
+import { PairPriceChart, PairPriceChartNewProps } from "./PairPriceChart";
+import { ChartDataTimeWindowEnum } from "./utils";
 
 export default {
   title: "Components/SwapLineChart",
@@ -16,11 +17,11 @@ export default {
       control: {
         type: "select",
         options: [
-          PairDataTimeWindowEnum.HOUR,
-          PairDataTimeWindowEnum.DAY,
-          PairDataTimeWindowEnum.WEEK,
-          PairDataTimeWindowEnum.MONTH,
-          PairDataTimeWindowEnum.YEAR,
+          ChartDataTimeWindowEnum.HOUR,
+          ChartDataTimeWindowEnum.DAY,
+          ChartDataTimeWindowEnum.WEEK,
+          ChartDataTimeWindowEnum.MONTH,
+          ChartDataTimeWindowEnum.YEAR,
         ],
       },
     },
@@ -55,7 +56,7 @@ Default.args = {
   ],
   isChangePositive: true,
   isChartExpanded: false,
-  timeWindow: PairDataTimeWindowEnum.DAY,
+  timeWindow: ChartDataTimeWindowEnum.DAY,
   priceLineData: [
     { title: "max", color: "red", price: 125 },
     { title: "min", color: "blue", price: 175 },

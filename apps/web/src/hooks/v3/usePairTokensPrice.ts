@@ -1,26 +1,26 @@
 import { ChainId } from '@pancakeswap/chains'
-import { PairDataTimeWindowEnum } from '@pancakeswap/uikit'
+import { ChartDataTimeWindowEnum } from '@pancakeswap/uikit'
 import { PriceCalculator } from '@pancakeswap/widgets-internal/roi'
 import { useMemo } from 'react'
 import { usePairPriceChartTokenData } from 'views/V3Info/hooks'
 
 export const usePairTokensPrice = (
   pairAddress?: string,
-  duration?: PairDataTimeWindowEnum,
+  duration?: ChartDataTimeWindowEnum,
   chainId?: ChainId,
   enabled = true,
 ) => {
   const priceTimeWindow = useMemo(() => {
     switch (duration) {
-      case PairDataTimeWindowEnum.HOUR:
+      case ChartDataTimeWindowEnum.HOUR:
         return 'hour'
-      case PairDataTimeWindowEnum.DAY:
+      case ChartDataTimeWindowEnum.DAY:
         return 'day'
-      case PairDataTimeWindowEnum.WEEK:
+      case ChartDataTimeWindowEnum.WEEK:
         return 'week'
-      case PairDataTimeWindowEnum.MONTH:
+      case ChartDataTimeWindowEnum.MONTH:
         return 'month'
-      case PairDataTimeWindowEnum.YEAR:
+      case ChartDataTimeWindowEnum.YEAR:
         return 'year'
       default:
         return undefined

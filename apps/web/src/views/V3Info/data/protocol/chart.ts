@@ -1,15 +1,15 @@
 import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
 import { explorerApiClient } from 'state/info/api/client'
 import type { components } from 'state/info/api/schema'
+import { ChartDataTimeWindowEnum } from '@pancakeswap/uikit'
+import { timeWindowToPeriod } from 'utils/timeWindowToPeriod'
 import { ChartDayData } from '../../types'
-
-// format dayjs with the libraries that we need
-dayjs.extend(utc)
 
 export async function fetchChartData(
   protocol: 'v2' | 'v3' | 'stable',
   chainName: components['schemas']['ChainName'],
+  timeWindow: Exclude<ChartDataTimeWindowEnum, ChartDataTimeWindowEnum.HOUR> &
+    Exclude<ChartDataTimeWindowEnum, ChartDataTimeWindowEnum.YEAR>,
   signal: AbortSignal,
 ) {
   let error = false
@@ -24,7 +24,7 @@ export async function fetchChartData(
             chainName,
           },
           query: {
-            groupBy: '1D',
+            groupBy: timeWindowToPeriod(timeWindow) as '1D' | '1W' | '1M',
           },
         },
       })
@@ -39,7 +39,7 @@ export async function fetchChartData(
             chainName,
           },
           query: {
-            groupBy: '1D',
+            groupBy: timeWindowToPeriod(timeWindow) as '1D' | '1W' | '1M',
           },
         },
       })

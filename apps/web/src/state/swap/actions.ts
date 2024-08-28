@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit'
-import { PairDataTimeWindowEnum } from '@pancakeswap/uikit'
+import { ChartDataTimeWindowEnum } from '@pancakeswap/uikit'
 import { DerivedPairDataNormalized, PairDataNormalized } from './types'
 
 export enum Field {
@@ -21,10 +21,10 @@ export const setRecipient = createAction<{ recipient: string | null }>('swap/set
 export const updatePairData = createAction<{
   pairData: PairDataNormalized
   pairId: string
-  timeWindow: PairDataTimeWindowEnum
+  timeWindow: ChartDataTimeWindowEnum
 }>('swap/updatePairData')
 export const updateDerivedPairData = createAction<{
   pairData: DerivedPairDataNormalized
   pairId: string
-  timeWindow: PairDataTimeWindowEnum
+  timeWindow: ChartDataTimeWindowEnum
 }>('swap/updateDerivedPairData')

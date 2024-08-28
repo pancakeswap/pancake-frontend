@@ -5,6 +5,7 @@ import { darken } from 'polished'
 import React, { Dispatch, ReactNode, SetStateAction } from 'react'
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis } from 'recharts'
 import { styled } from 'styled-components'
+import { dateFormattingByTimewindow, ChartDataTimeWindowEnum } from '@pancakeswap/uikit'
 import { LoadingRows } from '../Loader'
 import { RowBetween } from '../Row'
 
@@ -24,6 +25,7 @@ const Wrapper = styled(Card)`
 
 export type LineChartProps = {
   data: any[]
+  timeWindow: ChartDataTimeWindowEnum
   color?: string | undefined
   height?: number | undefined
   minHeight?: number
@@ -39,6 +41,7 @@ export type LineChartProps = {
 
 const Chart = ({
   data,
+  timeWindow,
   color = '#1FC7D4',
   value,
   label,
@@ -93,7 +96,7 @@ const Chart = ({
               dataKey="time"
               axisLine={false}
               tickLine={false}
-              tickFormatter={(time) => dayjs(time).format('DD')}
+              tickFormatter={(time) => dayjs.unix(time).format(dateFormattingByTimewindow[timeWindow])}
               minTickGap={10}
             />
             <Tooltip
@@ -103,7 +106,7 @@ const Chart = ({
                 if (setValue && parsedValue !== props.payload.value) {
                   setValue(props.payload.value)
                 }
-                const formattedTime = dayjs(props.payload.time).format('MMM D, YYYY')
+                const formattedTime = dayjs.unix(props.payload.time).format('MMM D h:mm a, YYYY')
                 if (setLabel && label !== formattedTime) setLabel(formattedTime)
                 return null as any
               }}

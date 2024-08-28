@@ -14,20 +14,13 @@ import { Dispatch, RefObject, SetStateAction, useCallback, useEffect, useMemo, u
 import { useTheme } from "styled-components";
 import LineChartLoader from "./LineChartLoaderSVG";
 import { useMatchBreakpoints } from "../../contexts";
+import { ChartDataTimeWindowEnum, dateFormattingByTimewindow } from "./utils";
 
 const formatOptions = {
   notation: "standard" as formatAmountNotation,
   displayThreshold: 0.001,
   tokenPrecision: "normal" as tokenPrecisionStyle,
 };
-
-export enum PairDataTimeWindowEnum {
-  HOUR,
-  DAY,
-  WEEK,
-  MONTH,
-  YEAR,
-}
 
 export enum PairPriceChartType {
   LINE,
@@ -44,7 +37,7 @@ export type PairPriceChartNewProps = {
   setHoverDate?: Dispatch<SetStateAction<string | undefined>>; // used for value label on hover
   isChangePositive: boolean;
   isChartExpanded: boolean;
-  timeWindow: PairDataTimeWindowEnum;
+  timeWindow: ChartDataTimeWindowEnum;
   priceLineData?: { title: string; color: string; price: number }[];
 } & React.HTMLAttributes<HTMLDivElement>;
 
@@ -52,14 +45,6 @@ const getChartColors = ({ isChangePositive }: { isChangePositive: boolean }) => 
   return isChangePositive
     ? { gradient1: "#00E7B0", gradient2: "#0C8B6C", stroke: "#31D0AA" }
     : { gradient1: "#ED4B9E", gradient2: "#ED4B9E", stroke: "#ED4B9E " };
-};
-
-const dateFormattingByTimewindow: Record<PairDataTimeWindowEnum, string> = {
-  [PairDataTimeWindowEnum.HOUR]: "h:mm a",
-  [PairDataTimeWindowEnum.DAY]: "h:mm a",
-  [PairDataTimeWindowEnum.WEEK]: "MMM dd",
-  [PairDataTimeWindowEnum.MONTH]: "MMM dd",
-  [PairDataTimeWindowEnum.YEAR]: "MMM dd",
 };
 
 const getOHLC = (candleData: BarData) => {

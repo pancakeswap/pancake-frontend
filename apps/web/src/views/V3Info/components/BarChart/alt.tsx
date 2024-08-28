@@ -1,11 +1,10 @@
 import Card from 'components/Card'
 import dayjs from 'dayjs'
-import { RowBetween } from '@pancakeswap/uikit'
+import { dateFormattingByTimewindow, ChartDataTimeWindowEnum, RowBetween } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
 import React, { Dispatch, ReactNode, SetStateAction } from 'react'
 import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis } from 'recharts'
 import { styled } from 'styled-components'
-import { VolumeWindow } from '../../types'
 import { LoadingRows } from '../Loader'
 
 const DEFAULT_HEIGHT = 300
@@ -24,6 +23,7 @@ const Wrapper = styled(Card)`
 
 export type LineChartProps = {
   data: any[]
+  timeWindow: ChartDataTimeWindowEnum
   color?: string | undefined
   height?: number | undefined
   minHeight?: number
@@ -31,7 +31,6 @@ export type LineChartProps = {
   setLabel?: Dispatch<SetStateAction<string | undefined>> // used for label of value
   value?: number
   label?: string
-  activeWindow?: VolumeWindow
   topLeft?: ReactNode | undefined
   topRight?: ReactNode | undefined
   bottomLeft?: ReactNode | undefined
@@ -60,12 +59,12 @@ const CustomBar = ({
 
 const Chart = ({
   data,
+  timeWindow,
   color = '#1FC7D4',
   setValue,
   setLabel,
   value,
   label,
-  activeWindow,
   topLeft,
   topRight,
   bottomLeft,
@@ -75,8 +74,6 @@ const Chart = ({
 }: LineChartProps) => {
   const { theme } = useTheme()
   const parsedValue = value
-
-  const now = dayjs()
 
   return (
     <Wrapper minHeight={minHeight} {...rest}>
@@ -111,7 +108,7 @@ const Chart = ({
               dataKey="time"
               axisLine={false}
               tickLine={false}
-              tickFormatter={(time) => dayjs(time).format(activeWindow === VolumeWindow.monthly ? 'MMM' : 'DD')}
+              tickFormatter={(time) => dayjs.unix(time).format(dateFormattingByTimewindow[timeWindow])}
               minTickGap={10}
             />
             <Tooltip
@@ -121,29 +118,8 @@ const Chart = ({
                 if (setValue && parsedValue !== props.payload.value) {
                   setValue(props.payload.value)
                 }
-                const formattedTime = dayjs(props.payload.time).format('MMM D')
-                const formattedTimeDaily = dayjs(props.payload.time).format('MMM D, YYYY')
-                const formattedTimePlusWeek = dayjs(props.payload.time).add(1, 'week')
-                const formattedTimePlusMonth = dayjs(props.payload.time).add(1, 'month')
-
-                if (setLabel && label !== formattedTime) {
-                  if (activeWindow === VolumeWindow.weekly) {
-                    const isCurrent = formattedTimePlusWeek.isAfter(now)
-                    setLabel(
-                      `${formattedTime}-${
-                        isCurrent ? now.format('MMM D, YYYY') : formattedTimePlusWeek.format('MMM D, YYYY')
-                      }`,
-                    )
-                  } else if (activeWindow === VolumeWindow.monthly) {
-                    const isCurrent = formattedTimePlusMonth.isAfter(now)
-                    setLabel(
-                      `${formattedTime}-${
-                        isCurrent ? now.format('MMM D, YYYY') : formattedTimePlusMonth.format('MMM D, YYYY')
-                      }`,
-                    )
-                  } else {
-                    setLabel(formattedTimeDaily)
-                  }
+                if (setLabel && parsedValue !== props.payload.value) {
+                  setLabel(dayjs.unix(props.payload.time).format('MMM D hh:mm a, YYYY'))
                 }
                 return null as any
               }}

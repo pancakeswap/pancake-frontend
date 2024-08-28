@@ -1,15 +1,16 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { darkColors, lightColors } from '@pancakeswap/uikit'
+import { darkColors, dateFormattingByTimewindow, lightColors, ChartDataTimeWindowEnum } from '@pancakeswap/uikit'
 import { LineChartLoader } from 'components/ChartLoaders'
 import dayjs from 'dayjs'
 import useTheme from 'hooks/useTheme'
 import { IChartApi, createChart } from 'lightweight-charts'
 import { darken } from 'polished'
-import { Dispatch, SetStateAction, useEffect, useMemo, useRef, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
 import { formatAmount } from 'utils/formatInfoNumbers'
 
 export type LineChartProps = {
   data: any[]
+  timeWindow: ChartDataTimeWindowEnum
   setHoverValue: Dispatch<SetStateAction<number | undefined>> // used for value on hover
   setHoverDate: Dispatch<SetStateAction<string | undefined>> // used for label of value
 } & React.HTMLAttributes<HTMLDivElement>
@@ -17,7 +18,7 @@ export type LineChartProps = {
 /**
  * Note: remember that it needs to be mounted inside the container with fixed height
  */
-const LineChart = ({ data, setHoverValue, setHoverDate }: LineChartProps) => {
+const LineChart = ({ data, timeWindow, setHoverValue, setHoverDate }: LineChartProps) => {
   const { isDark } = useTheme()
   const {
     currentLanguage: { locale },
@@ -25,20 +26,8 @@ const LineChart = ({ data, setHoverValue, setHoverDate }: LineChartProps) => {
   const chartRef = useRef<HTMLDivElement>(null)
   const [chartCreated, setChart] = useState<IChartApi | undefined>()
 
-  const transformedData = useMemo(() => {
-    if (data) {
-      return data.map(({ time, value }) => {
-        return {
-          time: time.getTime(),
-          value,
-        }
-      })
-    }
-    return []
-  }, [data])
-
   useEffect(() => {
-    if (!chartRef?.current || !transformedData || transformedData.length === 0) return
+    if (!chartRef?.current || !data || data.length === 0) return
 
     const chart = createChart(chartRef?.current, {
       layout: {
@@ -60,7 +49,7 @@ const LineChart = ({ data, setHoverValue, setHoverDate }: LineChartProps) => {
         borderVisible: false,
         secondsVisible: false,
         tickMarkFormatter: (unixTime: number) => {
-          return dayjs.unix(unixTime).format('h:mm a')
+          return dayjs.unix(unixTime).format(dateFormattingByTimewindow[timeWindow])
         },
       },
       grid: {
@@ -105,7 +94,7 @@ const LineChart = ({ data, setHoverValue, setHoverDate }: LineChartProps) => {
       },
     })
     setChart(chart)
-    newSeries.setData(transformedData)
+    newSeries.setData(data)
 
     chart.timeScale().fitContent()
 
@@ -113,15 +102,14 @@ const LineChart = ({ data, setHoverValue, setHoverDate }: LineChartProps) => {
       if (newSeries && param) {
         const timestamp = param.time as number
         if (!timestamp) return
-        const now = new Date(timestamp)
+        const now = new Date(timestamp * 1000)
         const time = `${now.toLocaleString(locale, {
           year: 'numeric',
           month: 'short',
           day: 'numeric',
           hour: 'numeric',
           minute: '2-digit',
-          timeZone: 'UTC',
-        })} (UTC)`
+        })}`
         // @ts-ignore
         const parsed = (param.seriesData.get(newSeries)?.value ?? 0) as number | undefined
         if (setHoverValue) setHoverValue(parsed)
@@ -136,7 +124,7 @@ const LineChart = ({ data, setHoverValue, setHoverDate }: LineChartProps) => {
     return () => {
       chart.remove()
     }
-  }, [isDark, locale, transformedData, setHoverValue, setHoverDate])
+  }, [isDark, locale, data, setHoverValue, setHoverDate, timeWindow])
 
   return (
     <>

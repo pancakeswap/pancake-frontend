@@ -6,7 +6,7 @@ import {
   Flex,
   IconButton,
   LinkExternal,
-  PairDataTimeWindowEnum,
+  ChartDataTimeWindowEnum,
   RocketIcon,
   Skeleton,
   Text,
@@ -98,7 +98,7 @@ function FarmV3ApyButton_({
   const { t } = useTranslation()
   const roiModal = useModalV2()
 
-  const [priceTimeWindow, setPriceTimeWindow] = useState(PairDataTimeWindowEnum.DAY)
+  const [priceTimeWindow, setPriceTimeWindow] = useState(ChartDataTimeWindowEnum.DAY)
   const prices = usePairTokensPrice(lpAddress, priceTimeWindow, baseCurrency?.chainId, roiModal.isOpen)
 
   const { ticks: data } = useAllV3Ticks(baseCurrency, quoteCurrency, feeAmount, roiModal.isOpen)

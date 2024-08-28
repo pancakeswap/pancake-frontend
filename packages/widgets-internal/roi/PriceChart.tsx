@@ -7,7 +7,7 @@ import {
   Flex,
   ButtonMenuItem,
   PairPriceChart,
-  PairDataTimeWindowEnum,
+  ChartDataTimeWindowEnum,
   Box,
   Text,
   BunnyKnownPlaceholder,
@@ -130,23 +130,23 @@ function TimeSpans({
   const SPAN = useMemo(
     () => [
       {
-        key: PairDataTimeWindowEnum.HOUR,
+        key: ChartDataTimeWindowEnum.HOUR,
         text: t("1H"),
       },
       {
-        key: PairDataTimeWindowEnum.DAY,
+        key: ChartDataTimeWindowEnum.DAY,
         text: t("24H"),
       },
       {
-        key: PairDataTimeWindowEnum.WEEK,
+        key: ChartDataTimeWindowEnum.WEEK,
         text: t("7D"),
       },
       {
-        key: PairDataTimeWindowEnum.MONTH,
+        key: ChartDataTimeWindowEnum.MONTH,
         text: t("30D"),
       },
       {
-        key: PairDataTimeWindowEnum.YEAR,
+        key: ChartDataTimeWindowEnum.YEAR,
         text: t("1Y"),
       },
     ],

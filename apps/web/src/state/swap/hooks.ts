@@ -20,7 +20,8 @@ import { safeGetAddress } from 'utils'
 import { computeSlippageAdjustedAmounts } from 'utils/exchange'
 import { getTokenAddress } from 'views/Swap/components/Chart/utils'
 import { useAccount } from 'wagmi'
-import { PairDataTimeWindowEnum } from '@pancakeswap/uikit'
+import { ChartDataTimeWindowEnum } from '@pancakeswap/uikit'
+import { timeWindowToPeriod } from 'utils/timeWindowToPeriod'
 import { useCurrencyBalances } from '../wallet/hooks'
 import { Field, replaceSwapState } from './actions'
 import { SwapState, swapReducerAtom } from './reducer'
@@ -285,26 +286,9 @@ export function useDefaultsFromURLSearch():
 type useFetchPairPricesParams = {
   token0Address: string
   token1Address: string
-  timeWindow: PairDataTimeWindowEnum
+  timeWindow: ChartDataTimeWindowEnum
   currentSwapPrice: {
     [key: string]: number
-  }
-}
-
-const timeWindowToPeriod = (timeWindow: PairDataTimeWindowEnum): ChartPeriod => {
-  switch (timeWindow) {
-    case PairDataTimeWindowEnum.HOUR:
-      return '1H'
-    case PairDataTimeWindowEnum.DAY:
-      return '1D'
-    case PairDataTimeWindowEnum.WEEK:
-      return '1W'
-    case PairDataTimeWindowEnum.MONTH:
-      return '1M'
-    case PairDataTimeWindowEnum.YEAR:
-      return '1Y'
-    default:
-      throw new Error('Invalid time window')
   }
 }
 

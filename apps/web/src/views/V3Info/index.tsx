@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AutoColumn, Box, Button, Card, Heading, Text } from '@pancakeswap/uikit'
+import { AutoColumn, Box, Button, Card, Heading, ChartDataTimeWindowEnum, Text } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import dayjs from 'dayjs'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -22,9 +22,6 @@ import {
   useTopPoolsData,
   useTopTokensData,
 } from './hooks'
-import { useTransformedVolumeData } from './hooks/chart'
-import { VolumeWindow } from './types'
-import { unixToDate } from './utils/date'
 import { formatDollarAmount } from './utils/numbers'
 
 export default function Home() {
@@ -34,11 +31,15 @@ export default function Home() {
 
   const { theme } = useTheme()
 
+  const [timeWindow, setTimeWindow] = useState<
+    ChartDataTimeWindowEnum.DAY | ChartDataTimeWindowEnum.WEEK | ChartDataTimeWindowEnum.MONTH
+  >(ChartDataTimeWindowEnum.DAY)
+
   const protocolData = useProtocolData()
   const transactionData = useProtocolTransactionData()
   const topTokensData = useTopTokensData()
   const topPoolsData = useTopPoolsData()
-  const chartData = useProtocolChartData()
+  const chartData = useProtocolChartData(timeWindow)
   const { chainId } = useActiveChainId()
   const { t } = useTranslation()
 
@@ -63,7 +64,7 @@ export default function Home() {
     if (chartData) {
       return chartData.map((day) => {
         return {
-          time: unixToDate(day.date),
+          time: day.date,
           value: day.tvlUSD,
         }
       })
@@ -75,17 +76,13 @@ export default function Home() {
     if (chartData) {
       return chartData.map((day) => {
         return {
-          time: unixToDate(day.date),
+          time: day.date,
           value: day.volumeUSD,
         }
       })
     }
     return []
   }, [chartData])
-
-  const weeklyVolumeData = useTransformedVolumeData(chartData, 'week')
-  const monthlyVolumeData = useTransformedVolumeData(chartData, 'month')
-  const [volumeWindow, setVolumeWindow] = useState(VolumeWindow.daily)
 
   const formattedTokens = useMemo(() => {
     if (topTokensData)
@@ -117,6 +114,7 @@ export default function Home() {
         <Card>
           <LineChart
             data={formattedTvlData}
+            timeWindow={timeWindow}
             height={220}
             minHeight={332}
             // color={theme.colors.primary}
@@ -131,7 +129,7 @@ export default function Home() {
                   <MonoSpace>{tvlValue}</MonoSpace>
                 </Text>
                 <Text fontSize="12px" height="14px">
-                  <MonoSpace>{leftLabel ?? now.format('MMM D, YYYY')} (UTC)</MonoSpace>
+                  <MonoSpace>{leftLabel ?? now.format('MMM D, YYYY')}</MonoSpace>
                 </Text>
               </AutoColumn>
             }
@@ -141,41 +139,35 @@ export default function Home() {
           <BarChart
             height={200}
             minHeight={332}
-            data={
-              volumeWindow === VolumeWindow.monthly
-                ? monthlyVolumeData
-                : volumeWindow === VolumeWindow.weekly
-                ? weeklyVolumeData
-                : formattedVolumeData
-            }
+            data={formattedVolumeData}
             color={theme.colors.primary}
             setValue={setVolumeHover}
             setLabel={setRightLabel}
             value={volumeHover}
             label={rightLabel}
-            activeWindow={volumeWindow}
+            timeWindow={timeWindow}
             topRight={
               <RowFixed style={{ marginLeft: '-40px', marginTop: '8px' }}>
                 <Button
                   scale="sm"
-                  variant={volumeWindow === VolumeWindow.daily ? 'primary' : 'bubblegum'}
-                  onClick={() => setVolumeWindow(VolumeWindow.daily)}
+                  variant={timeWindow === ChartDataTimeWindowEnum.DAY ? 'primary' : 'bubblegum'}
+                  onClick={() => setTimeWindow(ChartDataTimeWindowEnum.DAY)}
                 >
                   D
                 </Button>
                 <Button
                   scale="sm"
-                  variant={volumeWindow === VolumeWindow.weekly ? 'primary' : 'bubblegum'}
+                  variant={timeWindow === ChartDataTimeWindowEnum.WEEK ? 'primary' : 'bubblegum'}
                   style={{ marginLeft: '8px' }}
-                  onClick={() => setVolumeWindow(VolumeWindow.weekly)}
+                  onClick={() => setTimeWindow(ChartDataTimeWindowEnum.WEEK)}
                 >
                   W
                 </Button>
                 <Button
-                  variant={volumeWindow === VolumeWindow.monthly ? 'primary' : 'bubblegum'}
+                  variant={timeWindow === ChartDataTimeWindowEnum.MONTH ? 'primary' : 'bubblegum'}
                   scale="sm"
                   style={{ marginLeft: '8px' }}
-                  onClick={() => setVolumeWindow(VolumeWindow.monthly)}
+                  onClick={() => setTimeWindow(ChartDataTimeWindowEnum.MONTH)}
                 >
                   M
                 </Button>
@@ -192,7 +184,7 @@ export default function Home() {
                   </MonoSpace>
                 </Text>
                 <Text fontSize="12px" height="14px">
-                  <MonoSpace>{rightLabel ?? now.format('MMM D, YYYY')} (UTC)</MonoSpace>
+                  <MonoSpace>{rightLabel ?? now.format('MMM D, YYYY')}</MonoSpace>
                 </Text>
               </AutoColumn>
             }
