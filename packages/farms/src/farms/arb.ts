@@ -825,6 +825,7 @@ export const arbFarmConfig: UniversalFarmConfig[] = [
     token0: arbitrumTokens.dlp,
     token1: arbitrumTokens.mdlp,
     lpAddress: '0x0db5e247ab73FBaE16d9301f2977f974EC0AA336',
+    stableSwapAddress: '0xd0f0be815a76eFE677c92b07b39a5e972BAf22bD',
   },
   {
     pid: 178,
@@ -833,6 +834,7 @@ export const arbFarmConfig: UniversalFarmConfig[] = [
     token0: arbitrumTokens.pendle,
     token1: arbitrumTokens.mpendle,
     lpAddress: '0x1A2329546f11e4fE55b853D98Bba2c4678E3105A',
+    stableSwapAddress: '0x73ed25e04Aa673ddf7411441098fC5ae19976CE0',
   },
 ]
 

@@ -332,8 +332,13 @@ export type FarmBaseConfig = {
   token1: Token
 }
 
-export type UniversalFarmConfigV2AndStableSwap = {
-  protocol: Protocol.V2 | Protocol.STABLE
+export type UniversalFarmConfigStableSwap = {
+  protocol: Protocol.STABLE
+  stableSwapAddress: Address
+} & FarmBaseConfig
+
+export type UniversalFarmConfigV2 = {
+  protocol: Protocol.V2
 } & FarmBaseConfig
 
 export type UniversalFarmConfigV3 = {
@@ -344,7 +349,7 @@ export type UniversalFarmConfigV3 = {
 /**
  * minimal pool info for a farm
  */
-export type UniversalFarmConfig = UniversalFarmConfigV2AndStableSwap | UniversalFarmConfigV3
+export type UniversalFarmConfig = UniversalFarmConfigV2 | UniversalFarmConfigStableSwap | UniversalFarmConfigV3
 
 // only v2/ss farms have bCakeWrapperAddress
 export type BCakeWrapperFarmConfig = {
