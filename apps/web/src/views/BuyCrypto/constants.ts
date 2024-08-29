@@ -43,7 +43,7 @@ export enum ONRAMP_PROVIDERS {
 export enum FeeTypes {
   NetworkingFees = 'Networking Fees',
   ProviderFees = 'Provider Fees',
-  PancakeFees = 'PancakeFees',
+  PancakeFees = 'Pancake Fees',
 }
 
 export enum WidgetTheme {
