@@ -113,10 +113,27 @@ export function useSiwe() {
     [signIn, currentChainId, currentAddress],
   )
 
+  const fetchWithSiweAuthV2 = useCallback<typeof fetch>(
+    async (input: RequestInfo | URL, init: RequestInit | undefined) => {
+      if (!currentAddress || !siwe) throw new Error('Invalid address or siwe')
+
+      const queryString = new URLSearchParams({
+        userId: currentAddress,
+        signature: siwe?.signature,
+        encodedMessage: siwe?.message,
+      }).toString()
+
+      const newUrl = `${input}?${queryString}`
+      return fetch(newUrl, { ...init })
+    },
+    [currentAddress, siwe],
+  )
+
   return {
     siwe,
     signIn,
     signOut,
     fetchWithSiweAuth,
+    fetchWithSiweAuthV2,
   }
 }
