@@ -27,7 +27,7 @@ import { FeeTypes, getNetworkFullName, providerFeeTypes } from '../../constants'
 import { BtcLogo } from '../OnRampProviderLogo/OnRampProviderLogo'
 import BuyCryptoTooltip from '../Tooltip/Tooltip'
 
-type FeeComponents = { providerFee: number; networkFee: number; price: number }
+type FeeComponents = { providerFee: number; networkFee: number; pancakeFee: number }
 interface TransactionFeeDetailsProps {
   selectedQuote?: OnRampProviderQuote
   currency: Currency
@@ -93,7 +93,7 @@ export const TransactionFeeDetails = ({
                   {t('%fees%', {
                     fees: formatLocaleNumber({
                       number: selectedQuote
-                        ? Number((selectedQuote?.providerFee + selectedQuote?.networkFee).toFixed(2))
+                        ? selectedQuote?.providerFee + selectedQuote?.networkFee + selectedQuote.pancakeFee
                         : 0,
                       locale,
                       options: { currency: selectedQuote?.fiatCurrency ?? 'USD', style: 'currency' },
@@ -159,16 +159,15 @@ const FeeItem = ({ feeTitle, quote }: { feeTitle: FeeTypes; quote: OnRampProvide
   } = {
     [FeeTypes.NetworkingFees]: (q) => q.networkFee,
     [FeeTypes.ProviderFees]: (q) => q.providerFee,
-    [FeeTypes.ProviderRate]: (q) => q.price,
+    [FeeTypes.PancakeFees]: (q) => q.pancakeFee,
   }
 
-  const title = feeTitle === FeeTypes.ProviderRate ? `${quote.cryptoCurrency} ${feeTitle}` : feeTitle
   return (
     <RowBetween py="4px">
       <Flex justifyContent="space-evenly" width="100%">
         <Box width="max-content">
           <Text width="max-content" fontSize="14px" color="textSubtle">
-            {title}
+            {feeTitle}
           </Text>
         </Box>
 
