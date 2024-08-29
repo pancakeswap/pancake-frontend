@@ -1,3 +1,4 @@
+import { ChainId } from '@pancakeswap/chains'
 import { LegacyRouter } from '@pancakeswap/smart-router/legacy-router'
 import { isAddressEqual } from 'viem'
 import { UNIVERSAL_BCAKEWRAPPER_FARMS } from './farms'
@@ -17,7 +18,11 @@ export function isActiveV3Farm(farm: FarmV3Data, poolLength: number) {
   return farm.pid !== 0 && farm.multiplier !== '0X' && poolLength && poolLength >= farm.pid
 }
 
-export function formatUniversalFarmToSerializedFarm(farms: UniversalFarmConfig[]): SerializedFarmConfig[] {
+type LegacyFarmConfig = SerializedFarmConfig & { chainId: ChainId; version: 2 | 3 }
+type LegacyStableFarmConfig = SerializedStableFarmConfig & { chainId: ChainId; version: 2 | 3 }
+type LegacyClassicFarmConfig = SerializedClassicFarmConfig & { chainId: ChainId; version: 2 | 3 }
+type LegacyV3FarmConfig = ComputedFarmConfigV3 & { chainId: ChainId; version: 2 | 3 }
+export function formatUniversalFarmToSerializedFarm(farms: UniversalFarmConfig[]): Array<LegacyFarmConfig> {
   return farms
     .map((farm) => {
       switch (farm.protocol) {
@@ -31,12 +36,12 @@ export function formatUniversalFarmToSerializedFarm(farms: UniversalFarmConfig[]
           return undefined
       }
     })
-    .filter((farm): farm is SerializedFarmConfig => farm !== undefined)
+    .filter((farm): farm is LegacyFarmConfig => farm !== undefined)
 }
 
 const formatStableUniversalFarmToSerializedFarm = (
   farm: UniversalFarmConfigStableSwap,
-): SerializedStableFarmConfig | undefined => {
+): LegacyStableFarmConfig | undefined => {
   const { chainId, lpAddress, pid, token0, token1, stableSwapAddress } = farm
   const stablePair = LegacyRouter.stableSwapPairsByChainId[chainId].find((pair) => {
     return isAddressEqual(pair.stableSwapAddress, stableSwapAddress)
@@ -61,22 +66,26 @@ const formatStableUniversalFarmToSerializedFarm = (
     stableLpFeeRateOfTotalFee: stablePair.stableLpFeeRateOfTotalFee,
     infoStableSwapAddress: stablePair.infoStableSwapAddress,
     bCakeWrapperAddress: bCakeConfig?.bCakeWrapperAddress,
+    chainId,
+    version: 2,
   }
 }
 
-const formatV2UniversalFarmToSerializedFarm = (farm: UniversalFarmConfigV2): SerializedClassicFarmConfig => {
-  const { pid, lpAddress, token0, token1 } = farm
+const formatV2UniversalFarmToSerializedFarm = (farm: UniversalFarmConfigV2): LegacyClassicFarmConfig => {
+  const { chainId, pid, lpAddress, token0, token1 } = farm
   return {
     pid,
     lpAddress,
     lpSymbol: `${token0.symbol}-${token1.symbol} LP`,
     token: token0,
     quoteToken: token1,
+    chainId,
+    version: 2,
   }
 }
 
-const formatV3UniversalFarmToSerializedFarm = (farm: UniversalFarmConfigV3): ComputedFarmConfigV3 => {
-  const { pid, lpAddress, token0, token1, feeAmount } = farm
+const formatV3UniversalFarmToSerializedFarm = (farm: UniversalFarmConfigV3): LegacyV3FarmConfig => {
+  const { chainId, pid, lpAddress, token0, token1, feeAmount } = farm
   return {
     pid,
     lpAddress,
@@ -86,5 +95,7 @@ const formatV3UniversalFarmToSerializedFarm = (farm: UniversalFarmConfigV3): Com
     token: token0,
     quoteToken: token1,
     feeAmount,
+    chainId,
+    version: 3,
   }
 }
