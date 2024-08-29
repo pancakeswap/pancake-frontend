@@ -100,7 +100,7 @@ export async function queryParametersToBuyCryptoState(
       currencyId: DEFAULT_FIAT_CURRENCY,
     },
     [Field.OUTPUT]: {
-      currencyId: outputCurrencyId ?? 'BNB_56',
+      currencyId: outputCurrencyId ?? 'CAKE_56',
     },
     typedValue: parseTokenAmountURLParameter(parsedQs.exactAmount),
     independentField: Field.INPUT,

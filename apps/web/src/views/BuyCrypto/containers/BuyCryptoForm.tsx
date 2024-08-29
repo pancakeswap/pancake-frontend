@@ -7,16 +7,13 @@ import {
   CloseIcon,
   Flex,
   IconButton,
-  InfoFilledIcon,
   Link,
   Row,
   Text,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
-import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
 import { Swap as SwapUI } from '@pancakeswap/widgets-internal'
 import { FiatOnRampModalButton } from 'components/FiatOnRampModal/FiatOnRampModal'
-import Image from 'next/image'
 import {
   Suspense,
   lazy,
@@ -38,11 +35,11 @@ import OnBoardingView from 'views/Notifications/containers/OnBoardingView'
 import { BuyCryptoSelector } from '../components/OnRampCurrencySelect'
 import { OnRampFlipButton } from '../components/OnRampFlipButton/OnRampFlipButton'
 import { PopOverScreenContainer } from '../components/PopOverScreen/PopOverScreen'
+import ProviderCampaign from '../components/ProviderCampaign/ProviderCampaign'
 import { ProviderGroupItem } from '../components/ProviderSelector/ProviderGroupItem'
 import { ProviderSelector } from '../components/ProviderSelector/ProviderSelector'
-import BuyCryptoTooltip from '../components/Tooltip/Tooltip'
 import { TransactionFeeDetails } from '../components/TransactionFeeDetails/TransactionFeeDetails'
-import { activeCampaignProviders, formatQuoteDecimals, isFiat } from '../constants'
+import { formatQuoteDecimals, isFiat } from '../constants'
 import { useBtcAddressValidator, type GetBtcAddrValidationReturnType } from '../hooks/useBitcoinAddressValidator'
 import { useFiatCurrencyAmount } from '../hooks/useDefaultAmount'
 import { useIsBtc } from '../hooks/useIsBtc'
@@ -57,6 +54,7 @@ import { FormHeader } from './FormHeader'
 const EnableNotificationsTooltip = lazy(
   () => import('../components/EnableNotificationTooltip/EnableNotificationsTooltip'),
 )
+
 interface NotificationsOnboardPopOverProps {
   setShowNotificationsPopOver: Dispatch<SetStateAction<boolean>>
   showNotificationsPopOver: boolean
@@ -94,8 +92,6 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
 
   const { cryptoCurrency, fiatCurrency, currencyIn, currencyOut } = useOnRampCurrencyOrder(unit)
   const { fiatValue: defaultAmt } = useFiatCurrencyAmount({ currencyCode: fiatCurrency?.symbol, unit })
-
-  const { days, hours, minutes, seconds } = getTimePeriods(Math.floor(Date.now() / 1000) - 1726464760)
 
   const { inputError, amountError } = useLimitsAndInputError({
     typedValue: typedValue ?? '',
@@ -230,34 +226,8 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
           loading={isLoading}
           quotesError={quotesError}
         />
-        {selectedQuote && activeCampaignProviders[selectedQuote.provider] && seconds >= 1 ? (
-          <Box background="#F0E4E2" padding="16px" border="1px solid #D67E0A" borderRadius="16px">
-            <Flex>
-              <Image src="/images/pocket-watch.svg" alt="pocket-watch" height={30} width={30} />
 
-              <BuyCryptoTooltip
-                tooltipBody={
-                  <Text marginLeft="14px" fontSize="15px" color="#D67E0B">
-                    {t('No Topper fees. Ends in %days% days, %hours% hours and %minutes% minutes', {
-                      days,
-                      hours,
-                      minutes,
-                    })}
-
-                    <InfoFilledIcon pl="4px" width={17} height={12} opacity={0.7} color="#D67E0B" />
-                  </Text>
-                }
-                tooltipContent={
-                  <Text as="p">
-                    {t(
-                      'Note that a 1% PancakeSwap commission still applies. however the network fee and 3.5% provider fee are now removed.',
-                    )}
-                  </Text>
-                }
-              />
-            </Flex>
-          </Box>
-        ) : null}
+        <ProviderCampaign />
         <Box>
           {Boolean(!inputError && !isInValidBtcAddress && !quotesError) && (
             <Suspense fallback={null}>
