@@ -3561,5 +3561,6 @@
   "%t% LP": "%t% LP",
   "Pool Detail": "Pool Detail",
   "of %quote% per %base%": "of %quote% per %base%",
-  "Calculated using the total liquidity in the pool versus the total reward amount. Actual APR may be higher as some liquidity is not staked or not in-range.": "Calculated using the total liquidity in the pool versus the total reward amount. Actual APR may be higher as some liquidity is not staked or not in-range."
+  "Calculated using the total liquidity in the pool versus the total reward amount. Actual APR may be higher as some liquidity is not staked or not in-range.": "Calculated using the total liquidity in the pool versus the total reward amount. Actual APR may be higher as some liquidity is not staked or not in-range.",
+  "Enjoy 0% Provider Fees For 2 Weeks Only!": "Enjoy 0% Provider Fees For 2 Weeks Only!"
 }

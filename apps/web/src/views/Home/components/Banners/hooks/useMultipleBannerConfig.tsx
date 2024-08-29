@@ -11,6 +11,7 @@ import { PaymasterBanner } from '../PaymasterBanner'
 import { PerpetualSeasonalBanner } from '../PerpetualSeasonalBanner'
 import { PredictionBanner } from '../PredictionBanner'
 import { QuestBanner } from '../QuestBanner'
+import { TopperCampaignBanner } from '../TopperCampaignBanner'
 import UserBanner from '../UserBanner'
 import { V4InfoBanner } from '../V4InfoBanner'
 import { VeCakeBanner } from '../VeCakeBanner'
@@ -46,6 +47,10 @@ export const useMultipleBannerConfig = () => {
       {
         shouldRender: isRenderUserBanner.shouldRender && !isRenderUserBanner.isEarningsBusdZero,
         banner: <UserBanner />,
+      },
+      {
+        shouldRender: true,
+        banner: <TopperCampaignBanner />,
       },
       {
         shouldRender: true,
