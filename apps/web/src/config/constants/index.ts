@@ -29,3 +29,5 @@ export const QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH = {
   retry: 3,
   retryDelay: 3000,
 }
+
+export const PERSIST_QUERY_CHAIN_KEY = 'persistChain'

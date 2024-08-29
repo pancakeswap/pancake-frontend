@@ -1,4 +1,5 @@
 import { CHAIN_QUERY_NAME } from 'config/chains'
+import { PERSIST_QUERY_CHAIN_KEY } from 'config/constants'
 import { useRouter } from 'next/router'
 import { Protocol } from '@pancakeswap/farms'
 import { Currency, CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
@@ -43,6 +44,7 @@ export const PositionItem: React.FC<PropsWithChildren<PositionItemProps>> = (pro
       link
         ? addQueryToPath(link, {
             chain: CHAIN_QUERY_NAME[chainId],
+            [PERSIST_QUERY_CHAIN_KEY]: '1',
           })
         : link,
     [link, chainId],

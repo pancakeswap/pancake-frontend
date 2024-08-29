@@ -1,3 +1,4 @@
+import { useAccount } from 'wagmi'
 import { ChainId } from '@pancakeswap/chains'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { CHAIN_QUERY_NAME, getChainId } from 'config/chains'
@@ -6,14 +7,13 @@ import { useRouter } from 'next/router'
 import { useEffect, useRef } from 'react'
 import { getHashFromRouter } from 'utils/getHashFromRouter'
 import { isChainSupported } from 'utils/wagmi'
+import { PERSIST_QUERY_CHAIN_KEY } from 'config/constants'
 import { useActiveChainId } from './useActiveChainId'
 import { useSwitchNetworkLoading } from './useSwitchNetworkLoading'
 import { useSessionChainId } from './useSessionChainId'
 
-export const UNIVERSAL_PAGE_PATHS = ['/liquidity/pool/[chainName]/[id]', '/liquidity/pools', 'liquidity/positions']
-
 export function useNetworkConnectorUpdater() {
-  const { chainId } = useActiveChainId()
+  const { chainId } = useAccount()
   const previousChainIdRef = useRef(chainId)
   const previousUrlPathRef = useRef('')
   const [loading] = useSwitchNetworkLoading()
@@ -42,7 +42,7 @@ export function useNetworkConnectorUpdater() {
     if (!parsedQueryChainId && chainId === ChainId.BSC) return setPrevChainId()
     // universal page contains multiple chains,
     // so the query of chain on the url should be high priority than the activeChainId
-    if (UNIVERSAL_PAGE_PATHS.includes(previousUrlPathRef.current) || UNIVERSAL_PAGE_PATHS.includes(router.pathname)) {
+    if (router.query[PERSIST_QUERY_CHAIN_KEY]) {
       return setPrevChainId()
     }
     if (parsedQueryChainId !== chainId && chainId && isChainSupported(chainId)) {
