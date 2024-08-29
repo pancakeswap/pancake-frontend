@@ -21,6 +21,11 @@ jobs:
       HAVE_CLOUDFLARE_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN != '' }}
     name: Publish Farm Config to Cloudflare Pages
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
       - name: Install dependencies
         uses: './.github/actions/install-deps'
 

@@ -12,6 +12,11 @@ jobs:
     runs-on: ubuntu-latest
     if: github.repository == 'pancakeswap/pancake-frontend'
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
       - name: Install dependencies
         uses: './.github/actions/install-deps'
 
@@ -41,6 +46,11 @@ jobs:
     runs-on: ubuntu-latest
     if: github.repository == 'pancakeswap/pancake-frontend'
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
       - name: Install dependencies
         uses: './.github/actions/install-deps'
 
@@ -73,6 +83,11 @@ jobs:
     runs-on: ubuntu-latest
     if: github.repository == 'pancakeswap/pancake-frontend'
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
       - name: Install dependencies
         uses: './.github/actions/install-deps'
 

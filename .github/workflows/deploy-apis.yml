@@ -30,6 +30,11 @@ jobs:
       IS_DEV: ${{ github.event.inputs.environment == 'dev' }}
     name: Publish API
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
       - name: Install dependencies
         uses: './.github/actions/install-deps'
 
