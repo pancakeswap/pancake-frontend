@@ -72,26 +72,28 @@ export async function queryParametersToBuyCryptoState(
 
   const DEFAULT_FIAT_CURRENCY = [ChainId.BASE, ChainId.LINEA].find((c) => {
     if (parsedChainId) {
-      return c.valueOf() === parseInt(parsedQs.chainId as string)
+      return c.toString() === parsedChainId
     }
     return c === chainId
   })
     ? 'EUR'
     : 'USD'
 
-  let outputCurrencyId
-  if (parsedQs.outputCurrency) {
-    const parsedKey = parsedChainId ? (parsedQs.outputCurrency as string) : `${parsedQs.outputCurrency}_${chainId}`
-    if (onRampCurrenciesMap[parsedKey]) {
-      outputCurrencyId = parsedKey
-    } else {
-      const defaultChainCurrency = Object.keys(onRampCurrenciesMap).find(([key]) => {
-        const [, id] = key.split('_')
-        return parseInt(id) === (parsedChainId ?? chainId)
-      })
-      if (defaultChainCurrency) {
-        outputCurrencyId = defaultChainCurrency
-      }
+  let outputCurrencyId: string | undefined
+  const parsedKey = parsedQs.outputCurrency
+    ? parsedChainId
+      ? (parsedQs.outputCurrency as string)
+      : `${parsedQs.outputCurrency}_${chainId}`
+    : undefined
+  if (parsedKey && onRampCurrenciesMap[parsedKey]) {
+    outputCurrencyId = parsedKey
+  } else {
+    const defaultChainCurrency = Object.keys(onRampCurrenciesMap).find((key) => {
+      const [, id] = key.split('_')
+      return id === (parsedChainId ?? chainId?.toString())
+    })
+    if (defaultChainCurrency) {
+      outputCurrencyId = defaultChainCurrency
     }
   }
 

@@ -84,7 +84,11 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
 
   const bestQuoteRef = useRef<OnRampProviderQuote | undefined>(undefined)
   const debouncedQuery = useDebounce(searchQuery, 200)
-  const externalTxIdRef = useRef<string>(v4())
+  const externalTxIdRef = useRef<string>()
+
+  useEffect(() => {
+    externalTxIdRef.current = v4()
+  }, [])
 
   const { onUserInput, onCurrencySelection, onSwitchTokens } = useBuyCryptoActionHandlers()
 
@@ -169,7 +173,7 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
         setShowProvidersPopOver={setShowProvidersPopOver}
         showProivdersPopOver={showProivdersPopOver}
       />
-      <NotificationsOnboradPopover
+      <NotificationsOnboardPopover
         setShowNotificationsPopOver={setShowNotificationsPopOver}
         showNotificationsPopOver={showNotificationsPopOver}
       />
@@ -267,7 +271,7 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
   )
 }
 
-const NotificationsOnboradPopover = ({
+const NotificationsOnboardPopover = ({
   setShowNotificationsPopOver,
   showNotificationsPopOver,
 }: NotificationsOnboardPopOverProps) => {

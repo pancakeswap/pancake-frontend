@@ -29,10 +29,10 @@ export const tokenImageChainNameMapping = {
 }
 
 export const getImageUrlFromToken = (token: Currency) => {
-  const address = token?.isNative ? token.wrapped.address : token.address
+  const address = token?.isNative ? token.wrapped.address : token?.address
 
   return token
-    ? token?.isNative && token.chainId !== ChainId.BSC
+    ? token.isNative && token.chainId !== ChainId.BSC
       ? `${ASSET_CDN}/web/native/${token.chainId}.png`
       : `https://tokens.pancakeswap.finance/images/${tokenImageChainNameMapping[token.chainId]}${address}.png`
     : ''
@@ -40,12 +40,7 @@ export const getImageUrlFromToken = (token: Currency) => {
 
 export const getImageUrlsFromToken = (token: Currency & { logoURI?: string | undefined }) => {
   const uriLocations = token?.logoURI ? uriToHttp(token?.logoURI) : []
-  const address = token?.isNative ? token.wrapped.address : token.address
-  const imageUri = token
-    ? token?.isNative && token.chainId !== ChainId.BSC
-      ? `${ASSET_CDN}/web/native/${token.chainId}.png`
-      : `https://tokens.pancakeswap.finance/images/${tokenImageChainNameMapping[token.chainId]}${address}.png`
-    : ''
+  const imageUri = getImageUrlFromToken(token)
   return [...uriLocations, imageUri]
 }
 
