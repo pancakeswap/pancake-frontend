@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { styled } from "styled-components";
 import { MultiSelect } from "./index";
 import { Column } from "../Column";
@@ -45,7 +45,6 @@ export const Default: React.FC<React.PropsWithChildren> = () => {
           }}
           scrollHeight="382px"
           options={chains}
-          defaultValue={[chains[0].value, chains[2].value]}
           isShowFilter
           panelFooterTemplate={() => <span>Don’t see expected tokens?</span>}
         />
@@ -58,9 +57,39 @@ export const Default: React.FC<React.PropsWithChildren> = () => {
           }}
           scrollHeight="400px"
           options={chains}
-          defaultValue={[chains[0].value, chains[2].value]}
           isShowSelectAll
           selectAllLabel="All networks"
+        />
+      </Column>
+    </Flex>
+  );
+};
+
+export const ControlledMode: React.FC<React.PropsWithChildren> = () => {
+  const [selectedValue, setSelectedValue] = useState([chains[0].value]);
+  return (
+    <Flex
+      style={{
+        padding: "32px",
+        alignItems: "center",
+        gap: "50px",
+      }}
+    >
+      <Column>
+        <MultiSelect
+          style={{
+            width: "273px",
+            backgroundColor: "var(--colors-input)",
+          }}
+          panelStyle={{
+            backgroundColor: "var(--colors-input)",
+          }}
+          scrollHeight="380px"
+          options={chains}
+          isShowSelectAll
+          selectAllLabel="All networks"
+          value={selectedValue}
+          onChange={(e) => setSelectedValue(e.value)}
         />
       </Column>
     </Flex>

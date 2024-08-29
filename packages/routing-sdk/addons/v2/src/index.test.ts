@@ -11,6 +11,7 @@ test('exports', () => {
       "toSerializableV2Pool",
       "parseV2Pool",
       "createV2Pool",
+      "isV2Pool",
     ]
   `)
 })

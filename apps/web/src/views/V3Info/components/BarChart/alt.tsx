@@ -1,9 +1,10 @@
+import { RowBetween } from '@pancakeswap/uikit'
 import Card from 'components/Card'
 import dayjs from 'dayjs'
-import { RowBetween } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
-import React, { Dispatch, ReactNode, SetStateAction } from 'react'
+import React, { ComponentProps, Dispatch, ReactNode, SetStateAction } from 'react'
 import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis } from 'recharts'
+import { Margin } from 'recharts/types/util/types'
 import { styled } from 'styled-components'
 import { VolumeWindow } from '../../types'
 import { LoadingRows } from '../Loader'
@@ -22,8 +23,15 @@ const Wrapper = styled(Card)`
   }
 `
 
+const DEFAULT_MARGIN = {
+  top: 5,
+  right: 30,
+  left: 20,
+  bottom: 5,
+}
+
 export type LineChartProps = {
-  data: any[]
+  data: Array<{ time: string; value: number; [key: string]: any }>
   color?: string | undefined
   height?: number | undefined
   minHeight?: number
@@ -36,7 +44,11 @@ export type LineChartProps = {
   topRight?: ReactNode | undefined
   bottomLeft?: ReactNode | undefined
   bottomRight?: ReactNode | undefined
-} & React.HTMLAttributes<HTMLDivElement>
+  barSize?: number
+  barGap?: number
+  chartMargin?: Margin
+} & React.HTMLAttributes<HTMLDivElement> &
+  ComponentProps<typeof Card>
 
 const CustomBar = ({
   x,
@@ -71,6 +83,9 @@ const Chart = ({
   bottomLeft,
   bottomRight,
   minHeight = DEFAULT_HEIGHT,
+  barSize,
+  barGap,
+  chartMargin,
   ...rest
 }: LineChartProps) => {
   const { theme } = useTheme()
@@ -96,12 +111,9 @@ const Chart = ({
             width={500}
             height={300}
             data={data}
-            margin={{
-              top: 5,
-              right: 30,
-              left: 20,
-              bottom: 5,
-            }}
+            barSize={barSize}
+            barGap={barGap}
+            margin={chartMargin ?? DEFAULT_MARGIN}
             onMouseLeave={() => {
               if (setLabel) setLabel(undefined)
               if (setValue) setValue(undefined)

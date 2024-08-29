@@ -5,12 +5,14 @@ import {
   FarmSupportedChainId,
   FarmV2SupportedChainId,
   FarmV3SupportedChainId,
+  FarmV4SupportedChainId,
   bCakeSupportedChainId,
   masterChefAddresses,
   masterChefV3Addresses,
   supportedChainId,
   supportedChainIdV2,
   supportedChainIdV3,
+  supportedChainIdV4,
 } from './const'
 import {
   CommonPrice,
@@ -29,8 +31,10 @@ export {
   supportedChainId,
   supportedChainIdV2,
   supportedChainIdV3,
+  supportedChainIdV4,
   type FarmSupportedChainId,
   type FarmV3SupportedChainId,
+  type FarmV4SupportedChainId,
 }
 
 export function createFarmFetcher(provider: ({ chainId }: { chainId: FarmV2SupportedChainId }) => PublicClient) {
@@ -151,6 +155,7 @@ export function createFarmFetcherV3(provider: ({ chainId }: { chainId: number })
 
 export * from './apr'
 export { FARM_AUCTION_HOSTING_IN_SECONDS } from './const'
+export * from './farms'
 export * from './types'
 export * from './utils'
 export * from './v2/deserializeFarm'

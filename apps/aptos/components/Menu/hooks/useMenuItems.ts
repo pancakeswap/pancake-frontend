@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { ContextApi, useTranslation } from '@pancakeswap/localization'
 import {
   DropdownMenuItems,
   DropdownMenuItemType,
@@ -9,7 +9,7 @@ import {
   SwapFillIcon,
   SwapIcon,
 } from '@pancakeswap/uikit'
-import { ContextApi, useTranslation } from '@pancakeswap/localization'
+import { useMemo } from 'react'
 import { useMenuItemsStatus } from './useMenuItemsStatus'
 
 export type ConfigMenuDropDownItemsType = DropdownMenuItems & { hideSubNav?: boolean }

@@ -61,6 +61,7 @@
     "@pancakeswap/prediction": "workspace:*",
     "@pancakeswap/price-api-sdk": "workspace:*",
     "@pancakeswap/routing-sdk": "workspace:*",
+    "@pancakeswap/routing-sdk-addon-quoter": "workspace:*",
     "@pancakeswap/routing-sdk-addon-stable-swap": "workspace:*",
     "@pancakeswap/routing-sdk-addon-v2": "workspace:*",
     "@pancakeswap/routing-sdk-addon-v3": "workspace:*",

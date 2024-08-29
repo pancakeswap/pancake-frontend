@@ -1,5 +1,7 @@
 import { createReducer, type ActionReducerMapBuilder } from '@reduxjs/toolkit'
 import { atomWithReducer } from 'jotai/utils'
+import { createContext, useContext } from 'react'
+import { useAtomValue, useSetAtom } from 'jotai'
 import {
   Field,
   replaceBuyCryptoState,
@@ -79,4 +81,20 @@ export const reducer = createReducer<BuyCryptoState>(
   },
 )
 
-export const buyCryptoReducerAtom = atomWithReducer(initialState, reducer)
+export const createFormAtom = () => atomWithReducer(initialState, reducer)
+
+const BuyCryptoAtomContext = createContext({
+  formAtom: createFormAtom(),
+})
+
+export const BuyCryptoAtomProvider = BuyCryptoAtomContext.Provider
+
+export function useBuyCryptoFormState() {
+  const ctx = useContext(BuyCryptoAtomContext)
+  return useAtomValue(ctx.formAtom)
+}
+
+export function useBuyCryptoFormDispatch() {
+  const ctx = useContext(BuyCryptoAtomContext)
+  return useSetAtom(ctx.formAtom)
+}

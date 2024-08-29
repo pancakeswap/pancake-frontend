@@ -91,7 +91,9 @@ export function parseRoute(chainId: ChainId, route: SerializedV4Route): V4Route 
   }
 }
 
-export function serializeTrade(trade: V4Trade<TradeType>): SerializedV4Trade {
+type Optional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
+
+export function serializeTrade(trade: Optional<V4Trade<TradeType>, 'graph'>): SerializedV4Trade {
   const { graph: _graph, ...rest } = trade
   return {
     ...rest,

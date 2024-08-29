@@ -2617,7 +2617,7 @@ export const bscTokens = {
     18,
     'CGPT',
     'ChainGPT',
-    'https://www.chaingpt.org/',
+    'https://www.chaingpt.org/?utm_source=pancakeswap&utm_medium=partnership&utm_campaign=august_syrup_pool',
   ),
   play: new ERC20Token(
     ChainId.BSC,
@@ -3284,5 +3284,13 @@ export const bscTokens = {
     'kBTC',
     'Wormhole Wrapped USDT',
     'https://wormhole.com/',
+  ),
+  cat: new ERC20Token(
+    ChainId.BSC,
+    '0x6894CDe390a3f51155ea41Ed24a33A4827d3063D',
+    18,
+    'CAT',
+    'Simons Cat',
+    'https://www.simons.cat/',
   ),
 }

@@ -400,14 +400,14 @@ export const usePoolData = (address: string): PoolData | undefined => {
   })
   return data?.data
 }
-export const usePoolTransactions = (address: string): Transaction[] | undefined => {
+export const usePoolTransactions = (address?: string): Transaction[] | undefined => {
   const chainName = useChainNameByQuery()
   const chainId = multiChainId[chainName]
   const explorerChainName = useExplorerChainNameByQuery()
 
   const { data } = useQuery({
     queryKey: [`v3/info/pool/poolTransaction/${chainId}/${address}`, chainId],
-    queryFn: ({ signal }) => fetchPoolTransactions(address, explorerChainName!, signal),
+    queryFn: ({ signal }) => fetchPoolTransactions(address!, explorerChainName!, signal),
     enabled: Boolean(explorerChainName && address && address !== 'undefined'),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
@@ -428,14 +428,14 @@ export const usePoolChartData = (address: string): PoolChartEntry[] | undefined 
   return data?.data
 }
 
-export const usePoolTickData = (address: string): PoolTickData | undefined => {
+export const usePoolTickData = (address?: string): PoolTickData | undefined => {
   const chainName = useChainNameByQuery()
   const chainId = multiChainId[chainName]
   const explorerChainName = useExplorerChainNameByQuery()
 
   const { data } = useQuery({
     queryKey: [`v3/info/pool/poolTickData/${chainId}/${address}`, chainId],
-    queryFn: ({ signal }) => fetchTicksSurroundingPrice(address, explorerChainName!, chainId, undefined, signal),
+    queryFn: ({ signal }) => fetchTicksSurroundingPrice(address!, explorerChainName!, chainId, undefined, signal),
     enabled: Boolean(explorerChainName && address && address !== 'undefined'),
     ...QUERY_SETTINGS_IMMUTABLE,
   })

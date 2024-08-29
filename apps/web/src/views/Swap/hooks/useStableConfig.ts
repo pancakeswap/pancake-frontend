@@ -49,11 +49,9 @@ function useFindStablePair({
 
 export function useLPTokensWithBalanceByAccount(account) {
   const lpTokens = useStableSwapPairs()
+  const tokens = useMemo(() => lpTokens.map(({ liquidityToken }) => liquidityToken), [lpTokens])
 
-  const [stableBalances] = useTokenBalancesWithLoadingIndicator(
-    account ?? undefined,
-    lpTokens.map(({ liquidityToken }) => liquidityToken),
-  )
+  const [stableBalances] = useTokenBalancesWithLoadingIndicator(account ?? undefined, tokens)
 
   const lpTokensWithBalance = useMemo(
     () => lpTokens.filter(({ liquidityToken }) => stableBalances[liquidityToken.address]?.greaterThan('0')),

@@ -6,8 +6,8 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 import { CurrencySelect } from 'components/CurrencySelect'
 import { RowBetween } from 'components/Layout/Row'
 import { useV2Pair } from 'hooks/usePairs'
-import { formatAmount } from 'utils/formatInfoNumbers'
 import { useLPApr } from 'state/swap/useLPApr'
+import { formatAmount } from 'utils/formatInfoNumbers'
 import { useAccount } from 'wagmi'
 import { AppHeader } from '../../components/App'
 import { CommonBasesType } from '../../components/SearchModal/types'
@@ -45,7 +45,7 @@ export function ChoosePair({
         helper={t(
           'Liquidity providers earn a 0.17% trading fee on all trades made for that token pair, proportional to their share of the liquidity pair.',
         )}
-        backTo="/liquidity"
+        backTo="/liquidity/pools"
       />
       <CardBody>
         <Box>

@@ -12,33 +12,13 @@ jobs:
     runs-on: ubuntu-latest
     if: github.repository == 'pancakeswap/pancake-frontend'
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up pnpm
-        uses: pnpm/action-setup@v4
-      - name: Set up node@18
-        uses: actions/setup-node@v3
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
-          cache: 'pnpm'
-          node-version: 18.18.2
-
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
-
-      - uses: actions/cache@v3
-        name: Setup pnpm cache
-        with:
-          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
+          fetch-depth: 2
 
       - name: Install dependencies
-        run: pnpm i --ignore-scripts
+        uses: './.github/actions/install-deps'
 
       - name: Fetch and save Aptos LP APR data
         run: pnpm updateAptosLPsAPR
@@ -66,33 +46,13 @@ jobs:
     runs-on: ubuntu-latest
     if: github.repository == 'pancakeswap/pancake-frontend'
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up pnpm
-        uses: pnpm/action-setup@v4
-      - name: Set up node@18
-        uses: actions/setup-node@v3
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
-          cache: 'pnpm'
-          node-version: 18.18.2
-
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
-
-      - uses: actions/cache@v3
-        name: Setup pnpm cache
-        with:
-          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
+          fetch-depth: 2
 
       - name: Install dependencies
-        run: pnpm i --ignore-scripts
+        uses: './.github/actions/install-deps'
 
       - name: Fetch and save LP APR data
         run: pnpm updateLPsAPR
@@ -123,33 +83,13 @@ jobs:
     runs-on: ubuntu-latest
     if: github.repository == 'pancakeswap/pancake-frontend'
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up pnpm
-        uses: pnpm/action-setup@v4
-      - name: Set up node@18
-        uses: actions/setup-node@v3
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
-          cache: 'pnpm'
-          node-version: 18.18.2
-
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
-
-      - uses: actions/cache@v3
-        name: Setup pnpm cache
-        with:
-          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
+          fetch-depth: 2
 
       - name: Install dependencies
-        run: pnpm i --ignore-scripts
+        uses: './.github/actions/install-deps'
 
       - name: Fetch and save Merkl data
         run: pnpm updateMerkl

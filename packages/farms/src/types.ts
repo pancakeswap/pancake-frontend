@@ -314,3 +314,46 @@ export interface FarmV3DataWithPriceAndUserInfo extends FarmV3DataWithPriceTVL {
   stakedPositions: PositionDetails[]
   pendingCakeByTokenIds: IPendingCakeByTokenId
 }
+
+export enum Protocol {
+  V2 = 'v2',
+  V3 = 'v3',
+  STABLE = 'stable',
+  V4BIN = 'v4bin',
+}
+
+export type FarmBaseConfig = {
+  protocol: Protocol
+  chainId: number
+  pid: number
+  lpAddress: Address
+  // @todo change token0 type to Currency when v4 ready
+  token0: Token
+  token1: Token
+}
+
+export type UniversalFarmConfigStableSwap = {
+  protocol: Protocol.STABLE
+  stableSwapAddress: Address
+} & FarmBaseConfig
+
+export type UniversalFarmConfigV2 = {
+  protocol: Protocol.V2
+} & FarmBaseConfig
+
+export type UniversalFarmConfigV3 = {
+  protocol: Protocol.V3
+  feeAmount: FeeAmount
+} & FarmBaseConfig
+
+/**
+ * minimal pool info for a farm
+ */
+export type UniversalFarmConfig = UniversalFarmConfigV2 | UniversalFarmConfigStableSwap | UniversalFarmConfigV3
+
+// only v2/ss farms have bCakeWrapperAddress
+export type BCakeWrapperFarmConfig = {
+  chainId: number
+  lpAddress: Address
+  bCakeWrapperAddress: Address
+}

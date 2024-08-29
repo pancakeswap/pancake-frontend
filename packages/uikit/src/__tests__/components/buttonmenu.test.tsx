@@ -16,9 +16,9 @@ it("renders correctly", () => {
     <DocumentFragment>
       .c0 {
       background-color: var(--colors-tertiary);
+      border: 1px solid var(--colors-disabled);
       border-radius: 16px;
       display: inline-flex;
-      border: 1px solid var(--colors-disabled);
       width: auto;
       align-items: center;
     }

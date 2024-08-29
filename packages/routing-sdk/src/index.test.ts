@@ -12,6 +12,7 @@ test('exports', () => {
       "findBestTradeByStreams",
       "isSameRoute",
       "mergeRoute",
+      "isTradeBetter",
       "getBetterTrade",
       "groupPoolsByType",
       "logCurrency",
@@ -26,6 +27,7 @@ test('exports', () => {
       "getPriceImpact",
       "getMidPrice",
       "ADDRESS_ZERO",
+      "findKBestTrades",
     ]
   `)
 })

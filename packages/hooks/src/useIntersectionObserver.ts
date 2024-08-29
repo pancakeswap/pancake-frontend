@@ -2,7 +2,11 @@ import { useEffect, useLayoutEffect, useState, useRef } from 'react'
 
 export const useIsomorphicEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect
 
-const useIntersectionObserver = () => {
+interface IIntersectionProps {
+  rootMargin?: string
+  threshold?: number | number[]
+}
+const useIntersectionObserver = ({ rootMargin = '0px', threshold = 1 }: IIntersectionProps = {}) => {
   const [observerRefElement, setObserverRefElement] = useState<HTMLElement | null>(null)
   const intersectionObserverRef = useRef<IntersectionObserver | null>(null)
   const [isIntersecting, setIsIntersecting] = useState(false)
@@ -17,8 +21,8 @@ const useIntersectionObserver = () => {
         }
 
         intersectionObserverRef.current = new window.IntersectionObserver(checkObserverIsIntersecting, {
-          rootMargin: '0px',
-          threshold: 1,
+          rootMargin,
+          threshold,
         })
         intersectionObserverRef.current.observe(observerRefElement)
       }
