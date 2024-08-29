@@ -45,7 +45,7 @@ export const PoolStatus: React.FC<PoolStatusProps> = ({ poolInfo }) => {
     }
 
     const stablePair = LegacyRouter.stableSwapPairsByChainId[poolInfo.chainId].find((pair) => {
-      return isAddressEqual(pair.stableSwapAddress, poolInfo?.stableLpAddress as Address)
+      return isAddressEqual(pair.stableSwapAddress, poolInfo?.stableSwapAddress as Address)
     })
 
     if (!stablePair) return 0

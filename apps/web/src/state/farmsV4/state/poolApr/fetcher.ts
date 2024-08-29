@@ -432,7 +432,7 @@ const getV2PoolsCakeAprByChainId = async (
       address: pool.token0.wrapped.address,
       functionName: 'balanceOf',
       abi: erc20Abi,
-      args: [pool.stableLpAddress ?? pool.lpAddress],
+      args: [pool.stableSwapAddress ?? pool.lpAddress],
     } as const
   })
   const reserve1Calls = validPools.map((pool) => {
@@ -440,7 +440,7 @@ const getV2PoolsCakeAprByChainId = async (
       address: pool.token1.wrapped.address,
       functionName: 'balanceOf',
       abi: erc20Abi,
-      args: [pool.stableLpAddress ?? pool.lpAddress],
+      args: [pool.stableSwapAddress ?? pool.lpAddress],
     } as const
   })
 

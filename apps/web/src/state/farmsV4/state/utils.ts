@@ -49,7 +49,7 @@ export const parseFarmPools = (
       chainId: pool.chainId,
       pid,
       lpAddress,
-      stableLpAddress: stableSwapAddress,
+      stableSwapAddress,
       protocol: pool.protocol as Protocol,
       token0,
       token1,

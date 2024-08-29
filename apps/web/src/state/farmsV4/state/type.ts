@@ -12,7 +12,7 @@ export type BasePoolInfo = {
   pid?: number
   chainId: number
   lpAddress: Address
-  stableLpAddress?: Address
+  stableSwapAddress?: Address
   protocol: Protocol
   token0: Currency
   token1: Token

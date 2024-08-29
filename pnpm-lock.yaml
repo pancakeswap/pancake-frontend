@@ -1541,6 +1541,9 @@ importers:
       '@pancakeswap/sdk':
         specifier: workspace:*
         version: link:../swap-sdk
+      '@pancakeswap/stable-swap-sdk':
+        specifier: workspace:*
+        version: link:../stable-swap-sdk
       '@pancakeswap/swap-sdk-core':
         specifier: workspace:*
         version: link:../swap-sdk-core
