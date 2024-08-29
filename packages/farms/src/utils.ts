@@ -1,5 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
-import { LegacyRouter } from '@pancakeswap/smart-router/legacy-router'
+import { getStableSwapPools } from '@pancakeswap/stable-swap-sdk'
 import { isAddressEqual } from 'viem'
 import { UNIVERSAL_BCAKEWRAPPER_FARMS } from './farms'
 import {
@@ -43,7 +43,7 @@ const formatStableUniversalFarmToSerializedFarm = (
   farm: UniversalFarmConfigStableSwap,
 ): LegacyStableFarmConfig | undefined => {
   const { chainId, lpAddress, pid, token0, token1, stableSwapAddress } = farm
-  const stablePair = LegacyRouter.stableSwapPairsByChainId[chainId].find((pair) => {
+  const stablePair = getStableSwapPools(chainId).find((pair) => {
     return isAddressEqual(pair.stableSwapAddress, stableSwapAddress)
   })
   const bCakeConfig = UNIVERSAL_BCAKEWRAPPER_FARMS.find((config) => {
