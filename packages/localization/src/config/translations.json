@@ -3564,5 +3564,6 @@
   "Calculated using the total liquidity in the pool versus the total reward amount. Actual APR may be higher as some liquidity is not staked or not in-range.": "Calculated using the total liquidity in the pool versus the total reward amount. Actual APR may be higher as some liquidity is not staked or not in-range.",
   "No Topper fees. Ends in %days% days, %hours% hours and %minutes% minutes": "No Topper fees. Ends in %days% days, %hours% hours and %minutes% minute",
   "No Fees": "No Fees",
-  "Note that a 1% PancakeSwap commission still applies. however the network fee and 3.5% provider fee are now removed.": "Note that a 1% PancakeSwap commission still applies. however the network fee and 3.5% provider fee are now removed."
+  "Note that a 1% PancakeSwap commission still applies. however the network fee and 3.5% provider fee are now removed.": "Note that a 1% PancakeSwap commission still applies. however the network fee and 3.5% provider fee are now removed.",
+  "Pancake Fees": "Pancake Fees"
 }
