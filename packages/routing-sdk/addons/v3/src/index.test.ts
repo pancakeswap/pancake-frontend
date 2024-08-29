@@ -21,6 +21,7 @@ test('exports', () => {
       "parseTick",
       "parseV3Pool",
       "createV3Pool",
+      "isV3Pool",
     ]
   `)
 })
