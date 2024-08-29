@@ -10,7 +10,7 @@ import { useActiveChainId } from './useActiveChainId'
 import { useSwitchNetworkLoading } from './useSwitchNetworkLoading'
 import { useSessionChainId } from './useSessionChainId'
 
-export const UNIVERSAL_PAGE_PATHS = ['/liquidity/pool/[chainName]/[id]', '/liquidity/pools', 'liquidity/positions']
+export const UNIVERSAL_PAGE_PATHS = ['/liquidity/pool/[chainName]/[id]', '/liquidity/pools', '/liquidity/positions']
 
 export function useNetworkConnectorUpdater() {
   const { chainId } = useActiveChainId()
