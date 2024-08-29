@@ -1,6 +1,6 @@
 import { useLatestTxReceipt } from 'state/farmsV4/state/accountPositions/hooks/useLatestTxReceipt'
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, Flex, useModalV2 } from '@pancakeswap/uikit'
+import { Button, Flex, IconButton, MinusIcon, useModalV2 } from '@pancakeswap/uikit'
 import { useCallback, useMemo } from 'react'
 import styled from 'styled-components'
 import { logGTMClickStakeFarmEvent } from 'utils/customGTMEventTracking'
@@ -18,6 +18,7 @@ type ActionPanelProps = {
   isFarmLive?: boolean
   modalContent: React.ReactNode
   chainId: number
+  detailMode?: boolean
 }
 
 export const V3PositionActions = ({
@@ -28,6 +29,7 @@ export const V3PositionActions = ({
   outOfRange,
   tokenId,
   modalContent,
+  detailMode = false,
 }: ActionPanelProps) => {
   const { t } = useTranslation()
   const [, setLatestTxReceipt] = useLatestTxReceipt()
@@ -111,16 +113,22 @@ export const V3PositionActions = ({
   const unstakeButton = useMemo(
     () => (
       <>
-        <Button
-          scale="md"
-          width={['100px']}
-          style={{ alignSelf: 'center' }}
-          variant="secondary"
-          onClick={stakeModal.onOpen}
-          disabled={attemptingTxn || isSwitchingNetwork}
-        >
-          {t('Unstake')}
-        </Button>
+        {detailMode ? (
+          <IconButton variant="secondary" disabled={attemptingTxn || isSwitchingNetwork} onClick={stakeModal.onOpen}>
+            <MinusIcon color="primary" width="24px" />
+          </IconButton>
+        ) : (
+          <Button
+            scale="md"
+            width={['100px']}
+            style={{ alignSelf: 'center' }}
+            variant="secondary"
+            onClick={stakeModal.onOpen}
+            disabled={attemptingTxn || isSwitchingNetwork}
+          >
+            {t('Unstake')}
+          </Button>
+        )}
         <V3StakeModal
           disabled={attemptingTxn || isSwitchingNetwork}
           isOpen={stakeModal.isOpen}
@@ -132,7 +140,7 @@ export const V3PositionActions = ({
         </V3StakeModal>
       </>
     ),
-    [isSwitchingNetwork, handleUnStake, isStaked, modalContent, t, outOfRange, stakeModal, attemptingTxn],
+    [detailMode, isSwitchingNetwork, handleUnStake, isStaked, modalContent, t, outOfRange, stakeModal, attemptingTxn],
   )
 
   const { earningsBusd } = useV3CakeEarning(tokenId ? [tokenId] : [], chainId)
