@@ -1,10 +1,10 @@
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useAtom, useAtomValue } from 'jotai'
+import { useAtom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
 import { useRouter } from 'next/router'
 import type { ParsedUrlQuery } from 'querystring'
 import { useCallback, useEffect } from 'react'
-import { buyCryptoReducerAtom, type BuyCryptoState } from 'state/buyCrypto/reducer'
+import { type BuyCryptoState, useBuyCryptoFormDispatch } from 'state/buyCrypto/reducer'
 
 import {
   OnRampChainId as ChainId,
@@ -19,10 +19,6 @@ export function useAllowBtcPurchases() {
   return useAtom(useEnableBtcPurchases)
 }
 
-export function useBuyCryptoState() {
-  return useAtomValue(buyCryptoReducerAtom)
-}
-
 function parseTokenAmountURLParameter(urlParam: unknown): string {
   return typeof urlParam === 'string' && !Number.isNaN(Number.parseFloat(urlParam)) ? urlParam : ''
 }
@@ -32,7 +28,7 @@ export function useBuyCryptoActionHandlers(): {
   onSwitchTokens: () => void
   onUserInput: (field: Field, typedValue: string | number) => void
 } {
-  const [, dispatch] = useAtom(buyCryptoReducerAtom)
+  const dispatch = useBuyCryptoFormDispatch()
 
   const onCurrencySelection = useCallback(
     (field: Field, currency: Currency) => {
@@ -110,7 +106,7 @@ export async function queryParametersToBuyCryptoState(
 }
 
 export function useDefaultsFromURLSearch() {
-  const [, dispatch] = useAtom(buyCryptoReducerAtom)
+  const dispatch = useBuyCryptoFormDispatch()
   const { chainId } = useActiveChainId()
   const { query, isReady } = useRouter()
 

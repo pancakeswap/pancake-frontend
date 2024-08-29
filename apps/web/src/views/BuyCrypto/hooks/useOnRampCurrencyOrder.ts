@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { Field } from 'state/buyCrypto/actions'
-import { useBuyCryptoState } from 'state/buyCrypto/hooks'
+import { useBuyCryptoFormState } from 'state/buyCrypto/reducer'
 import { fiatCurrencyMap, getOnRampCryptoById, getOnRampFiatById, isFiat, onRampCurrenciesMap } from '../constants'
 import type { OnRampUnit } from '../types'
 
@@ -8,7 +8,7 @@ export const useOnRampCurrencyOrder = (unit: OnRampUnit) => {
   const {
     [Field.INPUT]: { currencyId: inputCurrencyId },
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
-  } = useBuyCryptoState()
+  } = useBuyCryptoFormState()
 
   const cryptoCurrency = useMemo(() => {
     if (!inputCurrencyId || !outputCurrencyId) return onRampCurrenciesMap.BNB_56

@@ -26,12 +26,13 @@ import {
   type Dispatch,
   type SetStateAction,
 } from 'react'
-import { useBuyCryptoActionHandlers, useBuyCryptoState } from 'state/buyCrypto/hooks'
+import { useBuyCryptoActionHandlers } from 'state/buyCrypto/hooks'
 import { Field } from 'state/swap/actions'
 import { useTheme } from 'styled-components'
 import { v4 } from 'uuid'
 import { OnRampUnit, type OnRampProviderQuote } from 'views/BuyCrypto/types'
 import OnBoardingView from 'views/Notifications/containers/OnBoardingView'
+import { useBuyCryptoFormState } from 'state/buyCrypto/reducer'
 import { BuyCryptoSelector } from '../components/OnRampCurrencySelect'
 import { OnRampFlipButton } from '../components/OnRampFlipButton/OnRampFlipButton'
 import { PopOverScreenContainer } from '../components/PopOverScreen/PopOverScreen'
@@ -70,7 +71,7 @@ interface OnRampCurrencySelectPopOverProps {
 type InputEvent = ChangeEvent<HTMLInputElement>
 
 export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabilities: ProviderAvailabilities }) {
-  const { typedValue, independentField } = useBuyCryptoState()
+  const { typedValue, independentField } = useBuyCryptoFormState()
 
   const { t } = useTranslation()
   const isBtc = useIsBtc()
