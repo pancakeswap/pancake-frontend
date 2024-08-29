@@ -17,6 +17,7 @@
     "@pancakeswap/price-api-sdk": "workspace:*",
     "@pancakeswap/chains": "workspace:*",
     "@pancakeswap/sdk": "workspace:*",
+    "@pancakeswap/smart-router": "workspace:*",
     "@pancakeswap/swap-sdk-core": "workspace:*",
     "@pancakeswap/token-lists": "workspace:*",
     "@pancakeswap/tokens": "workspace:*",

@@ -14,6 +14,7 @@ test('exports', () => {
       "isStableFarm",
       "Protocol",
       "isActiveV3Farm",
+      "formatUniversalFarmToSerializedFarm",
       "deserializeFarm",
       "deserializeFarmUserData",
       "deserializeFarmBCakeUserData",
