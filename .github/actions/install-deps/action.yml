@@ -1,7 +1,7 @@
 name: 'Install Dependencies'
 description: 'Install dependencies with pnpm'
 
-run:
+runs:
   using: 'composite'
   steps:
     - uses: pnpm/action-setup@v4
@@ -15,4 +15,5 @@ run:
         cache: 'pnpm'
 
     - name: Install Dependencies
+      shell: bash
       run: pnpm install --ignore-scripts
