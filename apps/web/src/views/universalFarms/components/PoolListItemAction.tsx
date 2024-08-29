@@ -52,8 +52,8 @@ export const PoolListItemAction = memo(({ pool }: { pool: PoolInfo }) => {
 export const getPoolDetailPageLink = (pool: PoolInfo) => {
   const linkPrefix = `/liquidity/pool${multiChainPaths[pool.chainId] || '/bsc'}`
   if (pool.protocol === Protocol.STABLE) {
-    if (pool.stableLpAddress) {
-      return `${linkPrefix}/${pool.stableLpAddress}`
+    if (pool.stableSwapAddress) {
+      return `${linkPrefix}/${pool.stableSwapAddress}`
     }
     const ssPair = LegacyRouter.stableSwapPairsByChainId[pool.chainId]?.find((pair) => {
       return isAddressEqual(pair.lpAddress, pool.lpAddress)
