@@ -43,15 +43,15 @@ export enum ONRAMP_PROVIDERS {
 export enum FeeTypes {
   NetworkingFees = 'Networking Fees',
   ProviderFees = 'Provider Fees',
-  ProviderRate = 'Rate',
+  PancakeFees = 'Pancake Fees',
 }
 
 export enum WidgetTheme {
   Dark = 'dark',
   Light = 'light',
 }
-const MOONPAY_FEE_TYPES = [FeeTypes.NetworkingFees, FeeTypes.ProviderFees, FeeTypes.ProviderRate]
-const MERCURYO_FEE_TYPES = [FeeTypes.ProviderFees, FeeTypes.ProviderRate]
+const DEFAULT_FEE_TYPES = [FeeTypes.NetworkingFees, FeeTypes.ProviderFees, FeeTypes.PancakeFees]
+const MERCURYO_FEE_TYPES = [FeeTypes.ProviderFees, FeeTypes.PancakeFees]
 
 export const getIsNetworkEnabled = (network: OnRampChainId | undefined) => {
   if (typeof network === 'undefined') return false
@@ -67,10 +67,10 @@ export const PROVIDER_ICONS = {
 } satisfies Record<keyof typeof ONRAMP_PROVIDERS, string>
 
 export const providerFeeTypes: { [provider in ONRAMP_PROVIDERS]: FeeTypes[] } = {
-  [ONRAMP_PROVIDERS.MoonPay]: MOONPAY_FEE_TYPES,
+  [ONRAMP_PROVIDERS.MoonPay]: DEFAULT_FEE_TYPES,
   [ONRAMP_PROVIDERS.Mercuryo]: MERCURYO_FEE_TYPES,
-  [ONRAMP_PROVIDERS.Transak]: MOONPAY_FEE_TYPES,
-  [ONRAMP_PROVIDERS.Topper]: MOONPAY_FEE_TYPES,
+  [ONRAMP_PROVIDERS.Transak]: DEFAULT_FEE_TYPES,
+  [ONRAMP_PROVIDERS.Topper]: DEFAULT_FEE_TYPES,
 }
 
 export const getNetworkDisplay = (chainId: number | undefined): string => {

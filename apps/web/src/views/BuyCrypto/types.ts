@@ -79,6 +79,7 @@ export type UseMutationReturnType<data = unknown, error = Error, variables = voi
 export type ProviderQuote = {
   providerFee: number
   networkFee: number
+  pancakeFee
   quote: number
   amount: number
   fiatCurrency: string
@@ -106,6 +107,7 @@ export type FiatCurrency = {
 export type OnRampProviderQuote = {
   providerFee: number
   networkFee: number
+  pancakeFee: number
   amount: number
   quote: number
   fiatCurrency: string
