@@ -1657,6 +1657,7 @@ export const bscFarmConfig: UniversalFarmConfig[] = [
     lpAddress: Pool.getAddress(bscTokens.dot, bscTokens.wbnb, FeeAmount.MEDIUM),
   },
   {
+    pid: 2,
     chainId: ChainId.BSC,
     protocol: Protocol.V2,
     token0: bscTokens.cake,
@@ -1665,6 +1666,7 @@ export const bscFarmConfig: UniversalFarmConfig[] = [
     bCakeWrapperAddress: '0x9669218e7ffACE40D78FF09C78aEA5F4DEb9aD4D',
   },
   {
+    pid: 47,
     chainId: ChainId.BSC,
     protocol: Protocol.V2,
     token0: bscTokens.cake,
@@ -1673,6 +1675,7 @@ export const bscFarmConfig: UniversalFarmConfig[] = [
     bCakeWrapperAddress: '0xf320e4E90D3914EE224777dE842f4995467CBeF6',
   },
   {
+    pid: 9,
     chainId: ChainId.BSC,
     protocol: Protocol.V2,
     token0: bscTokens.wbnb,
@@ -1681,6 +1684,7 @@ export const bscFarmConfig: UniversalFarmConfig[] = [
     bCakeWrapperAddress: '0xF919F052E4608D239E49E57957022FdcAaeeeB49',
   },
   {
+    pid: 182,
     chainId: ChainId.BSC,
     protocol: Protocol.STABLE,
     lpAddress: '0x4cBEa76B4A1c42C356B4c52B0314A98313fFE9df',
@@ -1690,6 +1694,7 @@ export const bscFarmConfig: UniversalFarmConfig[] = [
     token1: bscTokens.wbeth,
   },
   {
+    pid: 180,
     chainId: ChainId.BSC,
     protocol: Protocol.V2,
     token0: bscTokens.wbnb,
@@ -1698,6 +1703,7 @@ export const bscFarmConfig: UniversalFarmConfig[] = [
     bCakeWrapperAddress: '0x8F30711e577d8870B390B383a6d4B1c28D6DEdF8',
   },
   {
+    pid: 181,
     chainId: ChainId.BSC,
     protocol: Protocol.V2,
     token0: bscTokens.pnp,
@@ -1706,6 +1712,7 @@ export const bscFarmConfig: UniversalFarmConfig[] = [
     bCakeWrapperAddress: '0x6F2ecB6929326Fd30406dDA3E643413f2736a3f7',
   },
   {
+    pid: 179,
     chainId: ChainId.BSC,
     protocol: Protocol.STABLE,
     token0: bscTokens.mdlp,
@@ -1715,6 +1722,7 @@ export const bscFarmConfig: UniversalFarmConfig[] = [
     bCakeWrapperAddress: '0x3c5cdb87Ab4B05C6A6826A2dc69965B5d25A7419',
   },
   {
+    pid: 178,
     chainId: ChainId.BSC,
     protocol: Protocol.STABLE,
     token0: bscTokens.mpendle,
@@ -1724,6 +1732,7 @@ export const bscFarmConfig: UniversalFarmConfig[] = [
     bCakeWrapperAddress: '0xdB52402F58D15974027911D8E5C958737949DBaA',
   },
   {
+    pid: 177,
     chainId: ChainId.BSC,
     protocol: Protocol.V2,
     token0: bscTokens.ckp,
@@ -1732,6 +1741,7 @@ export const bscFarmConfig: UniversalFarmConfig[] = [
     bCakeWrapperAddress: '0xd4cE5488aEDfb0F26A2bcFa068fB57bDDEBE09Fd',
   },
   {
+    pid: 176,
     chainId: ChainId.BSC,
     protocol: Protocol.V2,
     token0: bscTokens.rdp,
@@ -1740,6 +1750,7 @@ export const bscFarmConfig: UniversalFarmConfig[] = [
     bCakeWrapperAddress: '0x66e49e2b4c5c16EbE95E1af7902DAB1211b80E07',
   },
   {
+    pid: 175,
     chainId: ChainId.BSC,
     protocol: Protocol.V2,
     token0: bscTokens.wbnb,
@@ -1748,6 +1759,7 @@ export const bscFarmConfig: UniversalFarmConfig[] = [
     bCakeWrapperAddress: '0x33770fBC3952d5C85eEDF780Ca63E15C009DefaA',
   },
   {
+    pid: 173,
     chainId: ChainId.BSC,
     protocol: Protocol.STABLE,
     token0: bscTokens.cake,
@@ -1757,6 +1769,7 @@ export const bscFarmConfig: UniversalFarmConfig[] = [
     bCakeWrapperAddress: '0x823AE568DD020894261FD587248304952b5931F1',
   },
   {
+    pid: 174,
     chainId: ChainId.BSC,
     protocol: Protocol.STABLE,
     token0: bscTokens.cake,
@@ -1766,6 +1779,7 @@ export const bscFarmConfig: UniversalFarmConfig[] = [
     bCakeWrapperAddress: '0x10Cfcd2b3e8c35B3bd36dFDBd0063829eA244e84',
   },
   {
+    pid: 163,
     chainId: ChainId.BSC,
     protocol: Protocol.STABLE,
     token0: bscTokens.hay,
@@ -1775,6 +1789,7 @@ export const bscFarmConfig: UniversalFarmConfig[] = [
     bCakeWrapperAddress: '0xd069a9E50E4ad04592cb00826d312D9f879eBb02',
   },
   {
+    pid: 42,
     chainId: ChainId.BSC,
     protocol: Protocol.V2,
     token0: bscTokens.mbox,
@@ -1783,6 +1798,7 @@ export const bscFarmConfig: UniversalFarmConfig[] = [
     bCakeWrapperAddress: '0xD4e726fEE72BE7Db298034a46430935d735aD5A8',
   },
   {
+    pid: 8,
     chainId: ChainId.BSC,
     protocol: Protocol.V2,
     token0: bscTokens.twt,

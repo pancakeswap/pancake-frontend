@@ -819,6 +819,7 @@ export const arbFarmConfig: UniversalFarmConfig[] = [
     lpAddress: Pool.getAddress(arbitrumTokens.weth, arbitrumTokens.swETH, FeeAmount.LOWEST),
   },
   {
+    pid: 2,
     chainId: ChainId.ARBITRUM_ONE,
     protocol: Protocol.STABLE,
     token0: arbitrumTokens.dlp,
@@ -828,6 +829,7 @@ export const arbFarmConfig: UniversalFarmConfig[] = [
     bCakeWrapperAddress: '0xC6B6926ef8B7218F054d64B52Ac455aEd22D690B',
   },
   {
+    pid: 178,
     chainId: ChainId.ARBITRUM_ONE,
     protocol: Protocol.STABLE,
     token0: arbitrumTokens.pendle,

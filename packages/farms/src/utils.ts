@@ -1,7 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
 import { getStableSwapPools } from '@pancakeswap/stable-swap-sdk'
 import { isAddressEqual } from 'viem'
-import { UNIVERSAL_BCAKEWRAPPER_FARMS } from './farms'
 import {
   ComputedFarmConfigV3,
   FarmV3Data,
@@ -42,12 +41,9 @@ export function formatUniversalFarmToSerializedFarm(farms: UniversalFarmConfig[]
 const formatStableUniversalFarmToSerializedFarm = (
   farm: UniversalFarmConfigStableSwap,
 ): LegacyStableFarmConfig | undefined => {
-  const { chainId, lpAddress, pid, token0, token1, stableSwapAddress } = farm
+  const { chainId, lpAddress, pid, token0, token1, stableSwapAddress, bCakeWrapperAddress } = farm
   const stablePair = getStableSwapPools(chainId).find((pair) => {
     return isAddressEqual(pair.stableSwapAddress, stableSwapAddress)
-  })
-  const bCakeConfig = UNIVERSAL_BCAKEWRAPPER_FARMS.find((config) => {
-    return chainId === config.chainId && isAddressEqual(config.lpAddress, lpAddress)
   })
 
   if (!stablePair) {
@@ -56,7 +52,7 @@ const formatStableUniversalFarmToSerializedFarm = (
   }
 
   return {
-    pid,
+    pid: pid ?? 0,
     lpAddress,
     lpSymbol: `${token0.symbol}-${token1.symbol} LP`,
     token: token0,
@@ -65,18 +61,19 @@ const formatStableUniversalFarmToSerializedFarm = (
     stableLpFee: stablePair.stableLpFee,
     stableLpFeeRateOfTotalFee: stablePair.stableLpFeeRateOfTotalFee,
     infoStableSwapAddress: stablePair.infoStableSwapAddress,
-    bCakeWrapperAddress: bCakeConfig?.bCakeWrapperAddress,
+    bCakeWrapperAddress,
     chainId,
     version: 2,
   }
 }
 
 const formatV2UniversalFarmToSerializedFarm = (farm: UniversalFarmConfigV2): LegacyClassicFarmConfig => {
-  const { chainId, pid, lpAddress, token0, token1 } = farm
+  const { chainId, pid, bCakeWrapperAddress, lpAddress, token0, token1 } = farm
   return {
-    pid,
+    pid: pid ?? 0,
     lpAddress,
     lpSymbol: `${token0.symbol}-${token1.symbol} LP`,
+    bCakeWrapperAddress,
     token: token0,
     quoteToken: token1,
     chainId,

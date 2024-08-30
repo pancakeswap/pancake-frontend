@@ -323,6 +323,8 @@ export enum Protocol {
 }
 
 export type FarmBaseConfig = {
+  // @deprecated
+  pid?: number
   chainId: number
   lpAddress: Address
   token0: Token
