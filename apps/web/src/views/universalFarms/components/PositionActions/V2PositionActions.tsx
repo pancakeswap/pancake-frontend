@@ -1,6 +1,4 @@
-import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
-import { useLatestTxReceipt } from 'state/farmsV4/state/accountPositions/hooks/useLatestTxReceipt'
 import { AutoRow, useModal, useToast } from '@pancakeswap/uikit'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
@@ -14,18 +12,18 @@ import React, { useCallback, useMemo } from 'react'
 import { usePoolApr } from 'state/farmsV4/hooks'
 import { getBCakeWrapperAddress } from 'state/farmsV4/state/accountPositions/fetcher'
 import { useAccountV2PendingCakeReward } from 'state/farmsV4/state/accountPositions/hooks/useAccountV2PendingCakeReward'
+import { useLatestTxReceipt } from 'state/farmsV4/state/accountPositions/hooks/useLatestTxReceipt'
 import { StableLPDetail, V2LPDetail } from 'state/farmsV4/state/accountPositions/type'
-import { PoolInfo } from 'state/farmsV4/state/type'
+import { StablePoolInfo, V2PoolInfo } from 'state/farmsV4/state/type'
+import styled from 'styled-components'
+import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { Address } from 'viem'
 import { useCheckShouldSwitchNetwork } from 'views/universalFarms/hooks'
+import { useV2CakeEarning } from 'views/universalFarms/hooks/useCakeEarning'
 import { useV2FarmActions } from 'views/universalFarms/hooks/useV2FarmActions'
 import { sumApr } from 'views/universalFarms/utils/sumApr'
-import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
-import { useBCakeWrapperAddress } from 'views/universalFarms/hooks/useBCakeWrapperAddress'
-import { Protocol } from '@pancakeswap/farms'
-import { useV2CakeEarning } from 'views/universalFarms/hooks/useCakeEarning'
-import { DepositStakeAction, HarvestAction, ModifyStakeActions } from './StakeActions'
 import { StopPropagation } from '../StopPropagation'
+import { DepositStakeAction, HarvestAction, ModifyStakeActions } from './StakeActions'
 
 type V2PositionActionsProps = {
   data: V2LPDetail | StableLPDetail
@@ -34,7 +32,7 @@ type V2PositionActionsProps = {
   pid: number
   isStaked?: boolean
   tvlUsd?: `${number}` | number | undefined
-  poolInfo: PoolInfo
+  poolInfo: V2PoolInfo | StablePoolInfo
   isFarmLive?: boolean
 }
 
@@ -94,7 +92,7 @@ const useDepositModal = (props: V2PositionActionsProps) => {
   const stakedBalance = useMemo(() => {
     return new BigNumber(data.farmingBalance.quotient.toString())
   }, [data.farmingBalance])
-  const { onStake, onApprove } = useV2FarmActions(lpAddress, chainId)
+  const { onStake, onApprove } = useV2FarmActions(lpAddress, poolInfo.bCakeWrapperAddress)
   const lpSymbol = useMemo(() => {
     return `${data.pair.token0.symbol}-${data.pair.token1.symbol} LP`
   }, [data.pair.token0.symbol, data.pair.token1.symbol])
@@ -181,12 +179,12 @@ const useDepositModal = (props: V2PositionActionsProps) => {
 const useWithdrawModal = (
   data: V2LPDetail | StableLPDetail,
   lpAddress: Address,
-  chainId: number,
+  bCakeWrapperAddress: Address | undefined,
   _pid: number,
   tvlUsd?: `${number}` | number | undefined,
 ) => {
   const { t } = useTranslation()
-  const { onUnStake } = useV2FarmActions(lpAddress, chainId)
+  const { onUnStake } = useV2FarmActions(lpAddress, bCakeWrapperAddress)
   const lpSymbol = useMemo(() => {
     return `${data.pair.token0.symbol}-${data.pair.token1.symbol} LP`
   }, [data.pair.token0.symbol, data.pair.token1.symbol])
@@ -228,10 +226,10 @@ const useWithdrawModal = (
 }
 
 const V2FarmingAction: React.FC<V2PositionActionsProps> = (props) => {
-  const { data, chainId, lpAddress, pid, tvlUsd, isFarmLive } = props
+  const { data, chainId, lpAddress, pid, tvlUsd, isFarmLive, poolInfo } = props
   const { switchNetworkIfNecessary } = useCheckShouldSwitchNetwork()
   const onPresentDeposit = useDepositModal(props)
-  const onPresentWithdraw = useWithdrawModal(data, lpAddress, chainId, pid, tvlUsd)
+  const onPresentWithdraw = useWithdrawModal(data, lpAddress, poolInfo.bCakeWrapperAddress, pid, tvlUsd)
 
   const handleIncrease = useCallback(async () => {
     const shouldSwitch = await switchNetworkIfNecessary(chainId)
@@ -268,20 +266,15 @@ const V2NativeAction: React.FC<V2PositionActionsProps> = (props) => {
 
 const V2HarvestAction: React.FC<V2PositionActionsProps> = ({ chainId, lpAddress, poolInfo }) => {
   const { t } = useTranslation()
-  const { onHarvest } = useV2FarmActions(lpAddress, chainId)
+  const { onHarvest } = useV2FarmActions(lpAddress, poolInfo.bCakeWrapperAddress)
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { account } = useAccountActiveChain()
   const { switchNetworkIfNecessary } = useCheckShouldSwitchNetwork()
-  const bCakeWrapperAddress = useBCakeWrapperAddress({
-    chainId,
-    protocol: Protocol.V2,
-    lpAddress,
-  })
   const { data: pendingReward_ } = useAccountV2PendingCakeReward(account, {
     chainId,
     lpAddress,
-    bCakeWrapperAddress,
+    bCakeWrapperAddress: poolInfo.bCakeWrapperAddress,
   })
   const pendingReward = useMemo(() => {
     return new BigNumber(pendingReward_?.toString() ?? '0')

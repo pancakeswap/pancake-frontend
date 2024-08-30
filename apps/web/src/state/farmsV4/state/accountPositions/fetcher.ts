@@ -1,5 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
-import { BCakeWrapperFarmConfig, Protocol, UNIVERSAL_BCAKEWRAPPER_FARMS, UNIVERSAL_FARMS } from '@pancakeswap/farms'
+import { BCakeWrapperFarmConfig, Protocol, UNIVERSAL_FARMS } from '@pancakeswap/farms'
 import { CurrencyAmount, ERC20Token, Pair, Token, pancakePairV2ABI } from '@pancakeswap/sdk'
 import { LegacyStableSwapPair } from '@pancakeswap/smart-router/legacy-router'
 import { deserializeToken } from '@pancakeswap/token-lists'
@@ -153,11 +153,15 @@ const V2_UNIVERSAL_FARMS = UNIVERSAL_FARMS.filter((farm) => farm.protocol === Pr
 const STABLE_UNIVERSAL_FARMS = UNIVERSAL_FARMS.filter((farm) => farm.protocol === Protocol.STABLE)
 
 export const getBCakeWrapperAddress = (lpAddress: Address, chainId: number) => {
-  const f = UNIVERSAL_BCAKEWRAPPER_FARMS.find((farm) => {
+  const f = UNIVERSAL_FARMS.find((farm) => {
     return isAddressEqual(farm.lpAddress, lpAddress) && farm.chainId === chainId
   })
 
-  return f?.bCakeWrapperAddress ?? '0x'
+  if (f?.protocol === Protocol.V2 || f?.protocol === Protocol.STABLE) {
+    return f?.bCakeWrapperAddress ?? '0x'
+  }
+
+  return '0x'
 }
 
 // @todo @ChefJerry add getAccountV2FarmingStakedBalances result

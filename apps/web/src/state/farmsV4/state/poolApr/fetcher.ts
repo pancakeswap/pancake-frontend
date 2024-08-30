@@ -1,6 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
-import { Protocol, supportedChainIdV4, UNIVERSAL_BCAKEWRAPPER_FARMS } from '@pancakeswap/farms'
-import { LegacyRouter } from '@pancakeswap/smart-router/legacy-router'
+import { supportedChainIdV4 } from '@pancakeswap/farms'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { masterChefV3ABI, pancakeV3PoolABI } from '@pancakeswap/v3-sdk'
 import { create, windowedFiniteBatchScheduler } from '@yornaath/batshit'
@@ -17,7 +16,7 @@ import { safeGetAddress } from 'utils'
 import { usdPriceBatcher } from 'utils/batcher'
 import { getMasterChefV3Contract, getV2SSBCakeWrapperContract } from 'utils/contractHelpers'
 import { publicClient } from 'utils/wagmi'
-import { Address, erc20Abi, isAddressEqual } from 'viem'
+import { erc20Abi } from 'viem'
 import { PoolInfo, StablePoolInfo, V2PoolInfo, V3PoolInfo } from '../type'
 import { CakeApr, MerklApr } from './atom'
 
@@ -160,23 +159,6 @@ const calcV3PoolApr = ({
   }
 }
 
-export const getUniversalBCakeWrapperForPool = (pool: { lpAddress: Address; chainId: number; protocol?: Protocol }) => {
-  let { lpAddress } = pool
-  if (pool.protocol === 'stable') {
-    const stablePair = LegacyRouter.stableSwapPairsByChainId[pool.chainId].find((pair) => {
-      return isAddressEqual(pair.stableSwapAddress, pool.lpAddress)
-    })
-    if (stablePair) {
-      lpAddress = stablePair.liquidityToken.address
-    }
-  }
-  const config = UNIVERSAL_BCAKEWRAPPER_FARMS.find(
-    (farm) => isAddressEqual(farm.lpAddress, lpAddress) && farm.chainId === pool.chainId,
-  )
-
-  return config
-}
-
 export const DEFAULT_V2_CAKE_APR_BOOST_MULTIPLIER = {
   [ChainId.ETHEREUM]: 2.5,
   [ChainId.BSC]: 2.5,
@@ -193,15 +175,14 @@ export const getV2PoolCakeApr = async (
   pool: V2PoolInfo | StablePoolInfo,
   cakePrice: BigNumber,
 ): Promise<{ value: `${number}`; boost?: `${number}` }> => {
-  const config = getUniversalBCakeWrapperForPool(pool)
+  const { bCakeWrapperAddress } = pool
   const client = publicClient({ chainId: pool.chainId })
-  if (!config || !client) {
+  if (!bCakeWrapperAddress || !client) {
     return {
       value: '0',
       boost: '0',
     }
   }
-  const { bCakeWrapperAddress } = config
 
   const bCakeWrapperContract = getV2SSBCakeWrapperContract(bCakeWrapperAddress, undefined, pool.chainId)
   const cakePerSecond = await bCakeWrapperContract.read.rewardPerSecond()
@@ -403,13 +384,7 @@ const getV2PoolsCakeAprByChainId = async (
   cakePrice: BigNumber,
 ) => {
   const client = publicClient({ chainId })
-  const validPools = pools.reduce((prev, pool) => {
-    if (pool.chainId !== chainId) return prev
-    const bCakeWrapperAddress = getUniversalBCakeWrapperForPool(pool)?.bCakeWrapperAddress
-    if (!bCakeWrapperAddress) return prev
-    prev.push({ ...pool, bCakeWrapperAddress })
-    return prev
-  }, [] as (PoolInfo & { bCakeWrapperAddress: Address })[])
+  const validPools = pools.filter((p) => p.chainId === chainId && p.bCakeWrapperAddress)
 
   const rewardPerSecondCalls = validPools.map((pool) => {
     return {

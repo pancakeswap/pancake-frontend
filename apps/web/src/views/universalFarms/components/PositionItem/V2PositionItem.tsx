@@ -2,11 +2,10 @@ import { unwrappedToken } from '@pancakeswap/tokens'
 import { memo, useMemo } from 'react'
 import { usePoolInfo, usePoolTimeFrame } from 'state/farmsV4/hooks'
 import { V2LPDetail } from 'state/farmsV4/state/accountPositions/type'
+import { V2PoolInfo } from 'state/farmsV4/state/type'
 import currencyId from 'utils/currencyId'
 import { v2Fee } from 'views/PoolDetail/hooks/useStablePoolFee'
 import { useTotalPriceUSD } from 'views/universalFarms/hooks'
-import { useBCakeWrapperAddress } from 'views/universalFarms/hooks/useBCakeWrapperAddress'
-import { Protocol } from '@pancakeswap/farms'
 import { V2PositionActions } from '../PositionActions/V2PositionActions'
 import { PositionItem } from './PositionItem'
 
@@ -43,12 +42,8 @@ export const V2PositionItem = memo(
     })
 
     const feeAmount = useMemo(() => Number(v2Fee.multiply(100).toFixed(2)), [])
-    const pool = usePoolInfo({ poolAddress: address, chainId })
-    const bCakeWrapperAddress = useBCakeWrapperAddress({
-      lpAddress: address,
-      chainId,
-      protocol: Protocol.V2,
-    })
+    const pool = usePoolInfo<V2PoolInfo>({ poolAddress: address, chainId })
+    const bCakeWrapperAddress = pool?.bCakeWrapperAddress
     const { startTimestamp, endTimestamp } = usePoolTimeFrame(bCakeWrapperAddress, chainId)
 
     const isFarmLive = useMemo(

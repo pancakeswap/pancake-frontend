@@ -8,7 +8,6 @@ test('exports', () => {
       "getPositionFarmApr",
       "getPositionFarmAprFactor",
       "FARM_AUCTION_HOSTING_IN_SECONDS",
-      "UNIVERSAL_BCAKEWRAPPER_FARMS",
       "UNIVERSAL_FARMS",
       "UNIVERSAL_FARMS_WITH_TESTNET",
       "isStableFarm",
