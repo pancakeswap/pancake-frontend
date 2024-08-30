@@ -5,6 +5,7 @@ import { useToast } from '@pancakeswap/uikit'
 import { useQuery } from '@tanstack/react-query'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { distributorABI } from 'config/abi/AngleProtocolDistributor'
+import { FAST_INTERVAL } from 'config/constants'
 import { DISTRIBUTOR_ADDRESSES } from 'config/merkl'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
@@ -33,9 +34,10 @@ export function useMerklInfo(poolAddress: string | null): {
   merklApr?: number
 } {
   const { account, chainId } = useAccountActiveChain()
+  const lists = useAllLists()
 
-  const { data: merklData } = useQuery({
-    queryKey: ['merklAprData', chainId, poolAddress],
+  const { data: merklApr } = useQuery({
+    queryKey: ['merklAprData', chainId],
     queryFn: async () => {
       const resp = await fetch(`https://api.angle.money/v2/merkl?chainIds[]=${chainId}&AMMs[]=pancakeswapv3`)
       if (resp.ok) {
@@ -44,19 +46,26 @@ export function useMerklInfo(poolAddress: string | null): {
       }
       throw resp
     },
-    enabled: Boolean(chainId) && Boolean(poolAddress),
+    enabled: Boolean(chainId && poolAddress),
+    staleTime: FAST_INTERVAL,
+    retryDelay: (attemptIndex) => Math.min(2000 * 2 ** attemptIndex, 30000),
+    select: (data) => {
+      return data?.[chainId ?? 0]?.pools?.[poolAddress ?? '']?.aprs?.['Average APR (rewards / pool TVL)'] as
+        | number
+        | undefined
+    },
   })
 
-  const merklApr = merklData?.[chainId ?? 0]?.pools?.[poolAddress ?? '']?.aprs?.['Average APR (rewards / pool TVL)'] as
-    | number
-    | undefined
-
   const { data, isPending, refetch } = useQuery({
-    queryKey: [`fetchMerkl-${chainId}-${poolAddress}-${account || 'no-account'}`],
+    queryKey: [`fetchMerkl-${chainId}-${account || 'no-account'}`],
     queryFn: async () => {
       const responsev2 = await fetch(
         `${MERKL_API_V2}?chainIds[]=${chainId}${account ? `&user=${account}` : ''}&AMMs[]=pancakeswapv3`,
       )
+
+      if (!responsev2.ok) {
+        throw responsev2
+      }
 
       const merklDataV2 = await responsev2.json()
 
@@ -64,21 +73,43 @@ export function useMerklInfo(poolAddress: string | null): {
 
       const { pools, transactionData } = merklDataV2[chainId]
 
-      const hasLive = first(
-        Object.keys(pools)
-          .filter((poolId) => poolId === poolAddress && pools[poolId].meanAPR !== 0)
-          .map((poolId) => pools[poolId]),
-      )
+      return { pools, transactionData }
+    },
+    enabled: Boolean(chainId && poolAddress),
+    staleTime: FAST_INTERVAL,
+    retryDelay: (attemptIndex) => Math.min(2000 * 2 ** attemptIndex, 30000),
+  })
 
-      const merklPoolData = first(
-        Object.keys(pools)
-          .filter((poolId) => poolId === poolAddress)
-          .map((poolId) => pools[poolId]),
-      )
+  return useMemo(() => {
+    if (!data)
+      return {
+        rewardsPerToken: [],
+        rewardTokenAddresses: [],
+        transactionData: null,
+        refreshData: refetch,
+        hasMerkl: false,
+        isPending,
+      }
 
-      const rewardsPerTokenObject = merklPoolData?.rewardsPerToken
+    const { pools, transactionData } = data
 
-      const rewardsPerToken = rewardsPerTokenObject
+    const hasLive = first(
+      Object.keys(pools)
+        .filter((poolId) => poolId === poolAddress && pools[poolId].meanAPR !== 0)
+        .map((poolId) => pools[poolId]),
+    )
+
+    const merklPoolData = first(
+      Object.keys(pools)
+        .filter((poolId) => poolId === poolAddress)
+        .map((poolId) => pools[poolId]),
+    )
+
+    const rewardsPerTokenObject = merklPoolData?.rewardsPerToken
+
+    const rewardResult = {
+      hasMerkl: Boolean(hasLive),
+      rewardsPerToken: rewardsPerTokenObject
         ? Object.keys(rewardsPerTokenObject)
             .map((tokenAddress) => {
               const tokenInfo = rewardsPerTokenObject[tokenAddress]
@@ -88,29 +119,13 @@ export function useMerklInfo(poolAddress: string | null): {
               return CurrencyAmount.fromRawAmount(token, tokenInfo.unclaimedUnformatted)
             })
             .filter(Boolean)
-        : []
+        : [],
+      rewardTokenAddresses: uniq(merklPoolData?.distributionData?.map((d) => d.token)),
+      transactionData,
+      isPending,
+    }
 
-      return {
-        hasMerkl: Boolean(hasLive),
-        rewardsPerToken,
-        rewardTokenAddresses: uniq(merklPoolData?.distributionData?.map((d) => d.token)),
-        transactionData,
-        isPending,
-      }
-    },
-  })
-
-  const lists = useAllLists()
-
-  return useMemo(() => {
-    if (!data)
-      return {
-        rewardsPerToken: [],
-        transactionData: null,
-        refreshData: refetch,
-      }
-
-    const { rewardsPerToken = [], rewardTokenAddresses = [], ...rest } = data
+    const { rewardsPerToken = [], rewardTokenAddresses = [], ...rest } = rewardResult
 
     const rewardCurrencies = (rewardTokenAddresses as string[])
       .reduce<TokenInfo[]>((result, address) => {
@@ -136,7 +151,7 @@ export function useMerklInfo(poolAddress: string | null): {
       refreshData: refetch,
       merklApr,
     }
-  }, [chainId, data, lists, refetch, merklApr])
+  }, [chainId, data, lists, refetch, merklApr, isPending, poolAddress])
 }
 
 export default function useMerkl(poolAddress: string | null) {
