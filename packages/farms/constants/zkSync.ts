@@ -76,6 +76,7 @@ const v3TopFixedLps: FarmConfigV3[] = [
   },
 ]
 
+/** @deprecated */
 export const farmsV3 = defineFarmV3Configs([
   ...v3TopFixedLps,
   {

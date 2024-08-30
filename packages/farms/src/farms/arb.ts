@@ -1,6 +1,7 @@
 import { ChainId } from '@pancakeswap/chains'
 import { arbitrumTokens } from '@pancakeswap/tokens'
 import { FeeAmount, Pool } from '@pancakeswap/v3-sdk'
+import { defineFarmV3ConfigsFromUniversalFarm } from '../defineFarmV3Configs'
 import { Protocol, SerializedFarmConfig, UniversalFarmConfig } from '../types'
 
 const pinnedFarmConfig: UniversalFarmConfig[] = [
@@ -840,6 +841,12 @@ export const arbFarmConfig: UniversalFarmConfig[] = [
   },
 ]
 
-export const legacyFarmConfig: SerializedFarmConfig[] = []
-
 export default arbFarmConfig
+
+/** @deprecated */
+export const legacyV3ArbFarmConfig = defineFarmV3ConfigsFromUniversalFarm(
+  arbFarmConfig.filter((farm) => farm.protocol === Protocol.V3),
+)
+
+/** @deprecated */
+export const legacyFarmConfig: SerializedFarmConfig[] = []

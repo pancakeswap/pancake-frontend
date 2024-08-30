@@ -55,6 +55,7 @@ const v3TopFixedFarms: FarmConfigV3[] = [
   },
 ]
 
+/** @deprecated */
 export const farmsV3 = defineFarmV3Configs([
   ...v3TopFixedFarms,
   {

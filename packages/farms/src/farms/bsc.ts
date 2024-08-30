@@ -4,6 +4,7 @@ import { bscTokens } from '@pancakeswap/tokens'
 import { FeeAmount, Pool } from '@pancakeswap/v3-sdk'
 import { getAddress } from 'viem'
 import { CAKE_BNB_LP_MAINNET } from '../../constants/common'
+import { defineFarmV3ConfigsFromUniversalFarm } from '../defineFarmV3Configs'
 import { Protocol, SerializedFarmConfig, UniversalFarmConfig } from '../types'
 
 const pinnedFarmConfig: UniversalFarmConfig[] = [
@@ -1810,6 +1811,14 @@ export const bscFarmConfig: UniversalFarmConfig[] = [
   },
 ]
 
+export default bscFarmConfig
+
+/** @deprecated */
+export const legacyV3BscFarmConfig = defineFarmV3ConfigsFromUniversalFarm(
+  bscFarmConfig.filter((farm) => farm.protocol === Protocol.V3),
+)
+
+/** @deprecated */
 export const legacyFarmConfig: SerializedFarmConfig[] = [
   /**
    * These 3 farms (PID 0, 2, 3) should always be at the top of the file.
@@ -3021,5 +3030,3 @@ export const legacyFarmConfig: SerializedFarmConfig[] = [
       lpAddress: getAddress(p.lpAddress),
     } as SerializedFarmConfig),
 )
-
-export default bscFarmConfig

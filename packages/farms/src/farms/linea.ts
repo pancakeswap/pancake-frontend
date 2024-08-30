@@ -1,6 +1,7 @@
 import { ChainId } from '@pancakeswap/chains'
 import { lineaTokens } from '@pancakeswap/tokens'
 import { FeeAmount, Pool } from '@pancakeswap/v3-sdk'
+import { defineFarmV3ConfigsFromUniversalFarm } from '../defineFarmV3Configs'
 import { Protocol, SerializedFarmConfig, UniversalFarmConfig } from '../types'
 
 const pinnedFarmConfig: UniversalFarmConfig[] = [
@@ -142,4 +143,10 @@ export const lineaFarmConfig: UniversalFarmConfig[] = [
 
 export default lineaFarmConfig
 
+/** @deprecated */
+export const legacyV3LineaFarmConfig = defineFarmV3ConfigsFromUniversalFarm(
+  lineaFarmConfig.filter((farm) => farm.protocol === Protocol.V3),
+)
+
+/** @deprecated */
 export const legacyFarmConfig: SerializedFarmConfig[] = []

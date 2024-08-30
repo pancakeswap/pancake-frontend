@@ -21,7 +21,7 @@ export const supportedChainIdV2 = [
   ChainId.ARBITRUM_ONE,
 ] as const
 export const supportedChainIdV3 = [
-  ChainId.GOERLI,
+  // ChainId.GOERLI,
   ChainId.BSC,
   ChainId.BSC_TESTNET,
   ChainId.ETHEREUM,

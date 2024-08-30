@@ -2,6 +2,7 @@ import { ChainId } from '@pancakeswap/chains'
 import { ethereumTokens } from '@pancakeswap/tokens'
 import { FeeAmount, Pool } from '@pancakeswap/v3-sdk'
 import { getAddress } from 'viem'
+import { defineFarmV3ConfigsFromUniversalFarm } from '../defineFarmV3Configs'
 import { Protocol, SerializedFarmConfig, UniversalFarmConfig } from '../types'
 
 const pinnedFarmConfig: UniversalFarmConfig[] = [
@@ -713,6 +714,14 @@ export const ethereumFarmConfig: UniversalFarmConfig[] = [
   },
 ]
 
+export default ethereumFarmConfig
+
+/** @deprecated */
+export const legacyV3EthereumFarmConfig = defineFarmV3ConfigsFromUniversalFarm(
+  ethereumFarmConfig.filter((farm) => farm.protocol === Protocol.V3),
+)
+
+/** @deprecated */
 export const legacyFarmConfig: SerializedFarmConfig[] = [
   {
     pid: 154,
@@ -776,5 +785,3 @@ export const legacyFarmConfig: SerializedFarmConfig[] = [
   quoteToken: p.quoteToken.serialize,
   lpAddress: getAddress(p.lpAddress),
 }))
-
-export default ethereumFarmConfig

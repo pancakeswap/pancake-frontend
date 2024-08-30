@@ -2,6 +2,7 @@ import difference from 'lodash/difference'
 import orderBy from 'lodash/orderBy'
 import { describe, expect, it } from 'vitest'
 import { getFarmConfig } from '../constants'
+import { farmsV3ConfigChainMap, legacyFarmsV3ConfigChainMap } from '../constants/v3'
 import { supportedChainIdV3, supportedChainIdV4 } from './const'
 import { getLegacyFarmConfig } from './getLegacyFarmConfig'
 
@@ -39,4 +40,8 @@ describe('getLegacyFarmConfig', async () => {
       })
     })
   }
+})
+
+it('legacy v3 farm config', () => {
+  expect(legacyFarmsV3ConfigChainMap).toStrictEqual(farmsV3ConfigChainMap)
 })
