@@ -3552,7 +3552,7 @@
   "time": "час",
   "CAKE earned": "Зароблено CAKE",
   "Please Connect Wallet to view positions.": "Приєднайте гаманець, щоб переглянути позиції.",
-  "You have no position in this wallet.": "У вас немає позиції в цьому гаманці.",
+  "You have no %status% position in this wallet.": "У вас немає позиції «%status%» у цьому гаманці.",
   "Legacy Liquidity Page": "Застаріла сторінка ліквідності",
   "Legacy Farm Page": "Застаріла сторінка ферми",
   "%t% LP": "%t% ПЛ",
