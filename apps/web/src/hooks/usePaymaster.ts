@@ -66,8 +66,15 @@ export const usePaymaster = () => {
 
     const txResponse: ZyfiResponse = await response.json()
 
+    const zkPublicClient = publicClient({ chainId: ChainId.ZKSYNC })
+
+    const nonce = await zkPublicClient.getTransactionCount({
+      address: account,
+    })
+
     const newTx = {
       account,
+      nonce,
       to: txResponse.txData.to,
       value: txResponse.txData.value && !isZero(txResponse.txData.value) ? hexToBigInt(txResponse.txData.value) : 0n,
       chainId: ChainId.ZKSYNC,
@@ -84,7 +91,6 @@ export const usePaymaster = () => {
       throw new Error('Failed to execute paymaster transaction')
     }
 
-    const zkPublicClient = publicClient({ chainId: ChainId.ZKSYNC })
     const client: any = walletClient.extend(eip712WalletActions() as any)
 
     const txReq = await client.prepareTransactionRequest(newTx)
