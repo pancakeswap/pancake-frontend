@@ -3552,7 +3552,7 @@
   "time": "时间",
   "CAKE earned": "已赚取的 CAKE",
   "Please Connect Wallet to view positions.": "请关联钱包以查看持仓。",
-  "You have no position in this wallet.": "您在此钱包中没有持仓。",
+  "You have no %status% position in this wallet.": "You have no %status% position in this wallet.",
   "Legacy Liquidity Page": "旧版流动性页面",
   "Legacy Farm Page": "旧版农场页面",
   "%t% LP": "%t% LP",
