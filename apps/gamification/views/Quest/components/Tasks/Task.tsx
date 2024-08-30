@@ -19,8 +19,8 @@ import {
 } from '@pancakeswap/uikit'
 import { updateQuery } from '@pancakeswap/utils/clientRouter'
 import { CHAIN_QUERY_NAME } from 'config/chains'
+import { useAuthJwtToken } from 'hooks/useAuthJwtToken'
 import { useDebounceCallback } from 'hooks/useDebouncedCallback'
-import { useSiwe } from 'hooks/useSiwe'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useMemo, useState } from 'react'
@@ -61,6 +61,7 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
   const { asPath, replace } = useRouter()
   const { t } = useTranslation()
   const { toastError } = useToast()
+  const { token: jwtToken } = useAuthJwtToken()
   const { address: account } = useAccount()
   const { data: session, status } = useSession()
   const { query } = useRouter()
@@ -75,7 +76,6 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
   const [socialName, setSocialName] = useState('')
   const [isPending, setIsPending] = useState(false)
   const [actionPanelExpanded, setActionPanelExpanded] = useState(false)
-  const { fetchWithSiweAuth } = useSiwe()
   const [isError, setIsError] = useState(false)
 
   const twitterId = userInfo?.socialHubToSocialUserIdMap?.Twitter ?? ''
@@ -86,7 +86,7 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
         return
       }
 
-      if (providerId && token && tokenSecret) {
+      if (providerId && token && tokenSecret && jwtToken) {
         try {
           setIsPending(true)
           setActionPanelExpanded(false)
@@ -100,7 +100,13 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
             targetUserId: (task as TaskSocialConfig).accountId.trim(),
             taskId: task?.id ?? '',
           }).toString()
-          const response = await fetchWithSiweAuth(`/api/twitterFollow?${queryString}`)
+          const response = await fetch(`/api/twitterFollow?${queryString}`, {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${jwtToken}`,
+              'Content-Type': 'application/json',
+            },
+          })
           if (response.ok) {
             await refresh()
           } else {
@@ -125,7 +131,7 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
         return
       }
 
-      if (providerId && token && tokenSecret) {
+      if (providerId && token && tokenSecret && jwtToken) {
         try {
           setIsPending(true)
           setActionPanelExpanded(false)
@@ -139,7 +145,13 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
             providerId: providerId as TwitterFollowersId,
             twitterPostId: (task as TaskSocialConfig).accountId.trim(),
           }).toString()
-          const response = await fetchWithSiweAuth(`/api/twitterLiked?${queryString}`)
+          const response = await fetch(`/api/twitterLiked?${queryString}`, {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${jwtToken}`,
+              'Content-Type': 'application/json',
+            },
+          })
           if (response.ok) {
             await refresh()
           } else {
@@ -164,7 +176,7 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
         return
       }
 
-      if (providerId && token && tokenSecret) {
+      if (providerId && token && tokenSecret && jwtToken) {
         try {
           setIsPending(true)
           setActionPanelExpanded(false)
@@ -178,7 +190,13 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
             providerId: providerId as TwitterFollowersId,
             twitterPostId: (task as TaskSocialConfig).accountId.trim(),
           }).toString()
-          const response = await fetchWithSiweAuth(`/api/twitterRetweet?${queryString}`)
+          const response = await fetch(`/api/twitterRetweet?${queryString}`, {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${jwtToken}`,
+              'Content-Type': 'application/json',
+            },
+          })
           if (response.ok) {
             await refresh()
           } else {
@@ -315,8 +333,12 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
       taskId: task?.id ?? '',
       taskName: TaskType.VISIT_BLOG_POST,
     }).toString()
-    const response = await fetchWithSiweAuth(`/api/task/completeVisitingWebTask?${queryString}`, {
+    const response = await fetch(`/api/task/completeVisitingWebTask?${queryString}`, {
       method: 'POST',
+      headers: {
+        Authorization: `Bearer ${jwtToken}`,
+        'Content-Type': 'application/json',
+      },
     })
 
     if (response.ok) {

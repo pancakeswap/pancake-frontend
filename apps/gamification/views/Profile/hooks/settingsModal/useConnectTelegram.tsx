@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { useToast } from '@pancakeswap/uikit'
+import { useAuthJwtToken } from 'hooks/useAuthJwtToken'
 import { useEffect } from 'react'
 import { encodePacked, keccak256 } from 'viem'
 import { SocialHubType, UserInfo } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
@@ -27,6 +28,7 @@ interface UseConnectTelegramProps {
 export const useConnectTelegram = ({ userInfo, refresh }: UseConnectTelegramProps) => {
   const { address: account, connector } = useAccount()
   const { t } = useTranslation()
+  const { token } = useAuthJwtToken()
   const { toastSuccess, toastError } = useToast()
   const { signMessageAsync } = useSignMessage()
 
@@ -50,7 +52,7 @@ export const useConnectTelegram = ({ userInfo, refresh }: UseConnectTelegramProp
         request_access: true,
       },
       async (user: TelegramResponse) => {
-        if (user && account && connector && typeof connector.getChainId === 'function') {
+        if (user && account && connector && typeof connector.getChainId === 'function' && token) {
           try {
             const walletAddress = account
             const timestamp = Math.floor(new Date().getTime() / 1000)
@@ -58,6 +60,7 @@ export const useConnectTelegram = ({ userInfo, refresh }: UseConnectTelegramProp
             const signature = await signMessageAsync({ message })
 
             await connectSocial({
+              token,
               userInfo,
               data: {
                 socialMedia: SocialHubType.Telegram,
@@ -88,13 +91,14 @@ export const useConnectTelegram = ({ userInfo, refresh }: UseConnectTelegramProp
 
   const disconnect = async () => {
     try {
-      if (account && connector && typeof connector.getChainId === 'function') {
+      if (account && connector && typeof connector.getChainId === 'function' && token) {
         const walletAddress = account
         const timestamp = Math.floor(new Date().getTime() / 1000)
         const message = keccak256(encodePacked(['address', 'uint256'], [walletAddress ?? '0x', BigInt(timestamp)]))
         const signature = await signMessageAsync({ message })
 
         await disconnectSocial({
+          token,
           data: {
             userId: walletAddress,
             socialHub: SocialHubType.Telegram,

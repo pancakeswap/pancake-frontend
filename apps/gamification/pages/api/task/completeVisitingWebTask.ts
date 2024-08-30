@@ -1,6 +1,5 @@
 import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
 import { zAddress, zQuestId } from 'config/validations'
-import { withSiweAuth } from 'middlewares/withSiwe'
 import qs from 'qs'
 import { TaskType } from 'views/DashboardQuestEdit/type'
 import { object as zObject, string as zString } from 'zod'
@@ -12,15 +11,13 @@ const zQuery = zObject({
   taskName: zString(),
 })
 
-const handler = withSiweAuth(async (req, res) => {
-  if (!GAMIFICATION_PUBLIC_API || !req.query || req.method !== 'POST') {
-    return res.status(400).json({ message: 'API URL Empty / Method wrong' })
+const handler = async (req, res) => {
+  if (!GAMIFICATION_PUBLIC_API || !req.query || req.method !== 'POST' || !!req?.headers?.authorization) {
+    return res.status(400).json({ message: 'API URL Empty / Method wrong / Header Authorization Empty' })
   }
 
   const { account, questId, taskName, taskId } = req.query
-  if (account !== req.siwe.address) {
-    return res.status(400).json({ message: 'Invalid wallet address' })
-  }
+
   if (taskName !== TaskType.VISIT_BLOG_POST) {
     return res.status(400).json({ message: 'Invalid task' })
   }
@@ -37,7 +34,7 @@ const handler = withSiweAuth(async (req, res) => {
     {
       method: 'POST',
       headers: {
-        Authorization: process.env.TASK_STATUS_TOKEN as string,
+        Authorization: req?.headers?.authorization as string,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -53,6 +50,6 @@ const handler = withSiweAuth(async (req, res) => {
   }
 
   return res.status(200).json(response)
-})
+}
 
 export default handler

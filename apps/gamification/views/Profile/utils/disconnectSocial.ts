@@ -10,12 +10,17 @@ export interface DisconnectUserSocialInfoConfig {
 
 interface DisconnectSocialProps {
   data: DisconnectUserSocialInfoConfig
+  token: string
   callback: () => void
 }
 
-export const disconnectSocial = async ({ data, callback }: DisconnectSocialProps) => {
+export const disconnectSocial = async ({ data, token, callback }: DisconnectSocialProps) => {
   const response = await fetch(`/api/userInfo/emptyUserSocialInfo`, {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
     body: JSON.stringify(data),
   })
 

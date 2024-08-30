@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import { ChainLogo } from 'components/Logo/ChainLogo'
 import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useAuthJwtToken } from 'hooks/useAuthJwtToken'
 import { useMemo } from 'react'
 import { styled } from 'styled-components'
 import { chains } from 'utils/wagmi'
@@ -46,6 +47,7 @@ export interface GetMerkleProofResponse {
 
 export const Reward: React.FC<RewardProps> = ({ quest, isTasksCompleted, isQuestFinished }) => {
   const { t } = useTranslation()
+  const { token } = useAuthJwtToken()
   const { account } = useActiveWeb3React()
   const localChainName = chains.find((c) => c.id === quest?.reward?.currency?.network)?.name ?? 'BSC'
 
@@ -54,11 +56,18 @@ export const Reward: React.FC<RewardProps> = ({ quest, isTasksCompleted, isQuest
     queryFn: async () => {
       const response = await fetch(
         `${GAMIFICATION_PUBLIC_API}/userInfo/v1/users/${account}/quests/${quest.id}/merkle-proof`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        },
       )
       const result: GetMerkleProofResponse = await response.json()
       return result
     },
-    enabled: Boolean(account && quest.id && isTasksCompleted),
+    enabled: Boolean(account && quest.id && isTasksCompleted && token),
     refetchOnMount: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,

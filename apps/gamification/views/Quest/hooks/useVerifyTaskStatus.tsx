@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { SLOW_INTERVAL } from 'config/constants'
 import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
+import { useAuthJwtToken } from 'hooks/useAuthJwtToken'
 import { TaskType } from 'views/DashboardQuestEdit/type'
 import { useAccount } from 'wagmi'
 
@@ -34,6 +35,7 @@ interface UseVerifyTaskStatus {
 
 export const useVerifyTaskStatus = ({ questId, hasIdRegister, isQuestFinished }: UseVerifyTaskStatus) => {
   const { address: account } = useAccount()
+  const { token } = useAuthJwtToken()
 
   const { data, refetch, isFetching } = useQuery({
     queryKey: ['verify-user-task-status', account, questId],
@@ -41,6 +43,13 @@ export const useVerifyTaskStatus = ({ questId, hasIdRegister, isQuestFinished }:
       try {
         const response = await fetch(
           `${GAMIFICATION_PUBLIC_API}/userInfo/v1/getVerificationStatus/${account}/${questId}`,
+          {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+          },
         )
         const result = await response.json()
         const userSocialHubData: VerifyTaskStatus = result
@@ -50,7 +59,7 @@ export const useVerifyTaskStatus = ({ questId, hasIdRegister, isQuestFinished }:
         return initialData
       }
     },
-    enabled: Boolean(account && questId && hasIdRegister),
+    enabled: Boolean(account && questId && hasIdRegister && token),
     refetchInterval: isQuestFinished ? false : SLOW_INTERVAL,
   })
 

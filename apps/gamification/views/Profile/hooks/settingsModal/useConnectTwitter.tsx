@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { useToast } from '@pancakeswap/uikit'
+import { useAuthJwtToken } from 'hooks/useAuthJwtToken'
 import { signIn } from 'next-auth/react'
 import { encodePacked, keccak256 } from 'viem'
 import { TaskType } from 'views/DashboardQuestEdit/type'
@@ -47,6 +48,7 @@ const getCallbackUrl = (callbackUrl: string, action?: ActionAfterConnect) => {
 
 export const useConnectTwitter = ({ refresh }: UseConnectTwitterProps) => {
   const { address: account, connector } = useAccount()
+  const { token } = useAuthJwtToken()
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const { signMessageAsync } = useSignMessage()
@@ -64,13 +66,14 @@ export const useConnectTwitter = ({ refresh }: UseConnectTwitterProps) => {
 
   const disconnect = async () => {
     try {
-      if (account && connector && typeof connector.getChainId === 'function') {
+      if (account && connector && typeof connector.getChainId === 'function' && token) {
         const walletAddress = account
         const timestamp = Math.floor(new Date().getTime() / 1000)
         const message = keccak256(encodePacked(['address', 'uint256'], [walletAddress ?? '0x', BigInt(timestamp)]))
         const signature = await signMessageAsync({ message })
 
         await disconnectSocial({
+          token,
           data: {
             userId: walletAddress,
             socialHub: SocialHubType.Twitter,

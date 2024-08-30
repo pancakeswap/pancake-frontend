@@ -35,15 +35,17 @@ interface SubmitSocialData {
 
 interface ConnectSocialProps {
   data: SubmitSocialData
+  token: string
   userInfo: UserInfo
   callback: () => void
 }
 
-export const connectSocial = async ({ userInfo, data, callback }: ConnectSocialProps) => {
+export const connectSocial = async ({ userInfo, token, data, callback }: ConnectSocialProps) => {
   if (userInfo.socialHubToSocialUserIdMap === null || !userInfo.socialHubToSocialUserIdMap[data.socialMedia]) {
     const response = await fetch(`${GAMIFICATION_PUBLIC_API}/userInfo/v1/addUserInfo`, {
       method: 'POST',
       headers: {
+        Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),

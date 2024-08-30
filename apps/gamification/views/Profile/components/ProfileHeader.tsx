@@ -18,6 +18,7 @@ import truncateHash from '@pancakeswap/utils/truncateHash'
 import { NextLinkFromReactRouter as ReactRouterLink } from '@pancakeswap/widgets-internal'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import { Achievement } from 'config/constants/types'
+import { useAuthJwtToken } from 'hooks/useAuthJwtToken'
 import { useDomainNameForAddress } from 'hooks/useDomain'
 import { Profile } from 'hooks/useProfile/type'
 import useGetUsernameWithVisibility from 'hooks/useUsernameWithVisibility'
@@ -62,6 +63,7 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
   onSuccess,
 }) => {
   const { t } = useTranslation()
+  const { token: jwtToken } = useAuthJwtToken()
   const { address: account, connector } = useAccount()
   const { userInfo, refresh, isFetched } = useUserSocialHub()
   const { data: session } = useSession()
@@ -100,7 +102,7 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
       token: string
       tokenSecret?: string
     }) => {
-      if (account && !isFetchingApi) {
+      if (account && !isFetchingApi && jwtToken) {
         setIsFetchingApi(true)
 
         try {
@@ -126,6 +128,7 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
           }
           if (signature) {
             await connectSocial({
+              token: jwtToken,
               userInfo,
               data: {
                 socialMedia: social,
@@ -182,6 +185,7 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
     userInfo,
     signMessageAsync,
     connector,
+    jwtToken,
   ])
 
   const { domainName, avatar: avatarFromDomain } = useDomainNameForAddress(accountPath)

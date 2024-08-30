@@ -1,8 +1,8 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Button, Flex, FlexGap, Tag, Text, useModal } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
+import { useAuthJwtToken } from 'hooks/useAuthJwtToken'
 import { useProfile } from 'hooks/useProfile'
-import { useSiwe } from 'hooks/useSiwe'
 import { styled } from 'styled-components'
 import { OptionIcon } from 'views/DashboardQuestEdit/components/Tasks/OptionIcon'
 import { SingleQuestData } from 'views/DashboardQuestEdit/hooks/useGetSingleQuestData'
@@ -63,6 +63,7 @@ export const Tasks: React.FC<TasksProps> = ({
   refreshVerifyTaskStatus,
 }) => {
   const { t } = useTranslation()
+  const { token } = useAuthJwtToken()
   const { address: account } = useAccount()
   const { id: questId, tasks } = quest
   const { isInitialized, profile, hasActiveProfile } = useProfile()
@@ -70,14 +71,14 @@ export const Tasks: React.FC<TasksProps> = ({
   const [onPressMakeProfileModal] = useModal(
     <MakeProfileModal type={t('quest')} profile={profile} hasActiveProfile={hasActiveProfile} />,
   )
-  const { fetchWithSiweAuth } = useSiwe()
 
   const handleLinkUserToQuest = async () => {
-    if (account) {
+    if (account && token) {
       try {
-        const response = await fetchWithSiweAuth(`/api/userInfo/${account}/quests/${questId}/start`, {
+        const response = await fetch(`/api/userInfo/${account}/quests/${questId}/start`, {
           method: 'POST',
           headers: {
+            Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
           },
         })

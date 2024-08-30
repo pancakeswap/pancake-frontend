@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
+import { useAuthJwtToken } from 'hooks/useAuthJwtToken'
 
 interface AllUserIdsByQuestId {
   questId: string
@@ -12,11 +13,19 @@ const initialData: AllUserIdsByQuestId = {
 }
 
 export const useGetAllUserIdsByQuestId = (questId: string) => {
+  const { token } = useAuthJwtToken()
+
   const { data, refetch, isFetching } = useQuery({
     queryKey: ['get-all-user-ids-by-quest', questId],
     queryFn: async () => {
       try {
-        const response = await fetch(`${GAMIFICATION_PUBLIC_API}/userInfo/v1/getAllUserIdsByQuestId/${questId}`)
+        const response = await fetch(`${GAMIFICATION_PUBLIC_API}/userInfo/v1/getAllUserIdsByQuestId/${questId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        })
         const result = await response.json()
         const allUserIdsByQuestId: AllUserIdsByQuestId = result
         return allUserIdsByQuestId
@@ -25,7 +34,7 @@ export const useGetAllUserIdsByQuestId = (questId: string) => {
         return initialData
       }
     },
-    enabled: Boolean(questId),
+    enabled: Boolean(questId && token),
     refetchOnMount: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
