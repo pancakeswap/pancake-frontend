@@ -3552,7 +3552,7 @@
   "time": "الوقت",
   "CAKE earned": "CAKE تم ربحها",
   "Please Connect Wallet to view positions.": "الرجاء ربط المحفظة لعرض المراكز.",
-  "You have no position in this wallet.": "ليس لديك أي مراكز في هذه المزرعة.",
+  "You have no %status% position in this wallet.": "You have no %status% position in this wallet.",
   "Legacy Liquidity Page": "صفحة السيولة القديمة",
   "Legacy Farm Page": "صفحة المزرعة القديمة",
   "%t% LP": "%t% LP",
