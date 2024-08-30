@@ -53,10 +53,6 @@ export const useMultipleBannerConfig = () => {
       },
       {
         shouldRender: true,
-        banner: <BrasilMeetupBanner />,
-      },
-      {
-        shouldRender: true,
         banner: <BirthdayBanner />,
       },
       {
