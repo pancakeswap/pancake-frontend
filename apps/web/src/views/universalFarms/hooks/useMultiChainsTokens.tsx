@@ -59,8 +59,8 @@ export const useMultiChainsTokens = () => {
   const listUrls = useMemo(
     () =>
       [
-        ...orderedChainIds.map((chainId) => MULTI_CHAIN_LIST_URLS[chainId][0]),
-        ...orderedChainIds.map((chainId) => MULTI_CHAIN_LIST_URLS[chainId][1]),
+        ...orderedChainIds.map((chainId) => MULTI_CHAIN_LIST_URLS[chainId]?.[0]),
+        ...orderedChainIds.map((chainId) => MULTI_CHAIN_LIST_URLS[chainId]?.[1]),
       ].filter(Boolean),
     [orderedChainIds],
   )
