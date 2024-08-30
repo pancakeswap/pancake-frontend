@@ -30,7 +30,7 @@ import { ASSET_CDN } from 'config/constants/endpoints'
 import assign from 'lodash/assign'
 import intersection from 'lodash/intersection'
 import NextLink from 'next/link'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   getKeyForPools,
   useAccountStableLpDetails,
@@ -48,6 +48,7 @@ import { Pool } from '@pancakeswap/v3-sdk'
 import { usePoolsWithMultiChains } from 'hooks/v3/usePools'
 import { PositionDetail } from 'state/farmsV4/state/accountPositions/type'
 import { V3_MIGRATION_SUPPORTED_CHAINS } from 'config/constants/supportChains'
+import { useIntersectionObserver } from '@pancakeswap/hooks'
 import {
   Card,
   IPoolsFilterPanelProps,
@@ -327,12 +328,15 @@ const EmptyListPlaceholder = ({ text, imageUrl }: { text: string; imageUrl?: str
 )
 
 const allChainIds = MAINNET_CHAINS.map((chain) => chain.id)
+const NUMBER_OF_FARMS_VISIBLE = 10
 
 export const PositionPage = () => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const [expertMode] = useExpertMode()
 
+  const { observerRef, isIntersecting } = useIntersectionObserver()
+  const [cursorVisible, setCursorVisible] = useState(NUMBER_OF_FARMS_VISIBLE)
   const [filters, setFilters] = useState<IPoolsFilterPanelProps['value']>({
     selectedTypeIndex: 0,
     selectedNetwork: allChainIds,
@@ -340,7 +344,7 @@ export const PositionPage = () => {
   })
   const selectedPoolTypes = useSelectedPoolTypes(filters.selectedTypeIndex)
   const [farmsOnly, setFarmsOnly] = useState(false)
-  const [positionStatus, setPositionStatus] = useState(0)
+  const [positionStatus, setPositionStatus] = useState(1)
   const [onPresentTransactionsModal] = useModal(<TransactionsModal />)
 
   const toggleFarmsOnly = useCallback(() => {
@@ -389,7 +393,20 @@ export const PositionPage = () => {
     }
 
     if (!v3PositionList.length && !v2PositionList.length && !stablePositionList.length) {
-      return <EmptyListPlaceholder text={t('You have no position in this wallet.')} />
+      return (
+        <EmptyListPlaceholder
+          text={t('You have no %status% position in this wallet.', {
+            status:
+              positionStatus === V3_STATUS.ACTIVE
+                ? 'active'
+                : positionStatus === V3_STATUS.INACTIVE
+                ? 'inactive'
+                : positionStatus === V3_STATUS.CLOSED
+                ? 'closed'
+                : '',
+          })}
+        />
+      )
     }
     // Do protocol filter here.
     // Avoid to recalculate all the positions data
@@ -398,7 +415,7 @@ export const PositionPage = () => {
       [Protocol.V2]: v2PositionList,
       [Protocol.STABLE]: stablePositionList,
     }
-    return selectedPoolTypes.map((type) => sectionMap[type])
+    return selectedPoolTypes.reduce((acc, type) => acc.concat(sectionMap[type]), []).slice(0, cursorVisible)
   }, [
     account,
     t,
@@ -409,7 +426,23 @@ export const PositionPage = () => {
     stablePositionList,
     v2PositionList,
     selectedPoolTypes,
+    cursorVisible,
+    positionStatus,
   ])
+
+  useEffect(() => {
+    if (isIntersecting) {
+      setCursorVisible((numberCurrentlyVisible) => {
+        if (Array.isArray(mainSection) && numberCurrentlyVisible <= mainSection.length) {
+          return Math.min(
+            numberCurrentlyVisible + NUMBER_OF_FARMS_VISIBLE,
+            v3PositionList.length + v2PositionList.length + stablePositionList.length,
+          )
+        }
+        return numberCurrentlyVisible
+      })
+    }
+  }, [isIntersecting, mainSection, v3PositionList.length, v2PositionList.length, stablePositionList.length])
 
   return (
     <Card>
@@ -465,6 +498,7 @@ export const PositionPage = () => {
             )}
           </Liquidity.FindOtherLP>
         ) : null}
+        {Array.isArray(mainSection) && mainSection.length > 0 && <div ref={observerRef} />}
       </CardBody>
     </Card>
   )

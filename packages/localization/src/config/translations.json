@@ -3555,7 +3555,7 @@
   "time": "time",
   "CAKE earned": "CAKE earned",
   "Please Connect Wallet to view positions.": "Please Connect Wallet to view positions.",
-  "You have no position in this wallet.": "You have no position in this wallet.",
+  "You have no %status% position in this wallet.": "You have no %status% position in this wallet.",
   "Legacy Liquidity Page": "Legacy Liquidity Page",
   "Legacy Farm Page": "Legacy Farm Page",
   "%t% LP": "%t% LP",
