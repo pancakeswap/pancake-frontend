@@ -3552,7 +3552,7 @@
   "time": "время",
   "CAKE earned": "Заработано CAKE",
   "Please Connect Wallet to view positions.": "Для просмотра позиций подключите кошелек.",
-  "You have no position in this wallet.": "В этом кошельке позиций нет.",
+  "You have no %status% position in this wallet.": "You have no %status% position in this wallet.",
   "Legacy Liquidity Page": "Старая страница ликвидности",
   "Legacy Farm Page": "Старая страница фарма",
   "%t% LP": "%t% LP",
