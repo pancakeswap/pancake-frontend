@@ -2,7 +2,6 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, InfoFilledIcon, Text } from '@pancakeswap/uikit'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
 import Image from 'next/image'
-import { useMemo } from 'react'
 import { ONRAMP_PROVIDERS } from 'views/BuyCrypto/constants'
 import pocketWatch from '../../../../../public/images/pocket-watch.svg'
 import BuyCryptoTooltip from '../Tooltip/Tooltip'
@@ -20,7 +19,7 @@ const ProviderCampaign = () => {
   const { t } = useTranslation()
 
   const currentTimestamp = Math.floor(Date.now() / 1000)
-  const activeCampaignExsits = useMemo(() => Object.values(activeCampaigns).find((c) => c === true), [])
+  const activeCampaignExsits = Object.values(activeCampaigns).find((c) => !!c)
 
   const {
     days,
