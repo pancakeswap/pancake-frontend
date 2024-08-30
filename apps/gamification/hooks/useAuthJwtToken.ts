@@ -17,7 +17,7 @@ export const useAuthJwtToken = () => {
     queryFn: async () => {
       try {
         if (!account || !chainId) {
-          throw new Error('Unable to fetch dashboard data')
+          throw new Error('Unable to fetch jwt data')
         }
 
         const { message, signature } = await signIn({ address: account, chainId })
