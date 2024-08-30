@@ -3552,7 +3552,7 @@
   "time": "waktu",
   "CAKE earned": "CAKE yang dihasilkan",
   "Please Connect Wallet to view positions.": "Silakan Hubungkan Dompet untuk melihat posisi.",
-  "You have no position in this wallet.": "Anda tidak mempunyai posisi di dompet ini.",
+  "You have no %status% position in this wallet.": "Anda tidak mempunyai posisi %status% di dompet ini.",
   "Legacy Liquidity Page": "Halaman Likuiditas Legasi",
   "Legacy Farm Page": "Halaman Farm Legasi",
   "%t% LP": "%t% LP",
