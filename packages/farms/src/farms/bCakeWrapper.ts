@@ -3,6 +3,11 @@ import { BCakeWrapperFarmConfig } from '../types'
 
 export const UNIVERSAL_BCAKEWRAPPER_FARMS: BCakeWrapperFarmConfig[] = [
   {
+    chainId: ChainId.ETHEREUM,
+    lpAddress: '0xaB9dEBAED21270832cCdf54a7461A8E4B133B57A',
+    bCakeWrapperAddress: '0xfF0A279B156C82013F15CE12B8dB7de07115B745',
+  },
+  {
     chainId: ChainId.BSC,
     lpAddress: '0x0eD7e52944161450477ee417DE9Cd3a859b14fD0',
     bCakeWrapperAddress: '0x9669218e7ffACE40D78FF09C78aEA5F4DEb9aD4D',
