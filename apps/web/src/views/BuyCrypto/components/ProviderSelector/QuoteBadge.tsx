@@ -16,7 +16,7 @@ export const QuoteBadge = ({ quotes, selectedQuote, loading }: BadgeProps) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
 
-  const isBestQuote = Boolean(selectedQuote === quotes?.[1] && !loading)
+  const isBestQuote = Boolean(selectedQuote === quotes?.[0] && !loading)
   const isCampaign = Boolean(selectedQuote && activeCampaigns[selectedQuote.provider])
 
   const text = useMemo(() => {

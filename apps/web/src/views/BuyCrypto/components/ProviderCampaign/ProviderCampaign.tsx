@@ -37,7 +37,7 @@ const ProviderCampaign = () => {
         <BuyCryptoTooltip
           tooltipBody={
             <Text marginLeft="14px" fontSize="15px" color="#D67E0B">
-              {t('No Topper fees. Ends in %days% days, %hours% hours and %minutes% minutes', {
+              {t('0 fees for Topper. Ends in %days% days, %hours% hours, %minutes% minutes', {
                 days,
                 hours,
                 minutes,
@@ -48,9 +48,7 @@ const ProviderCampaign = () => {
           }
           tooltipContent={
             <Text as="p">
-              {t(
-                'Note that a 1% PancakeSwap commission still applies. however the network fee and 3.5% provider fee are now removed.',
-              )}
+              {t('Provider fees are waived for this period. Please note that a 1% PancakeSwap fee still applies.')}
             </Text>
           }
         />
