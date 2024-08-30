@@ -3,6 +3,9 @@ import { SerializedFarmConfig, SerializedFarmPublicData, isStableFarm, supported
 
 let logged = false
 
+/**
+ * @deprecated
+ */
 export const getFarmConfig = async (chainId?: ChainId) => {
   if (chainId && supportedChainIdV2.includes(chainId as number)) {
     const chainName = getChainName(chainId)
