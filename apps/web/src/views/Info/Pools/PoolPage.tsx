@@ -20,6 +20,7 @@ import {
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 
 import { getChainName } from '@pancakeswap/chains'
+import { getLegacyFarmConfig } from '@pancakeswap/farms'
 import { useQuery } from '@tanstack/react-query'
 import BigNumber from 'bignumber.js'
 import Page from 'components/Layout/Page'
@@ -111,7 +112,7 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
   const stableAPR = useStableSwapAPR(isStableSwap ? poolData?.lpAddress : undefined)
   const { data: farmConfig } = useQuery({
     queryKey: [`info/getFarmConfig/${chainId}`],
-    queryFn: () => getFarmConfig(chainId),
+    queryFn: () => getLegacyFarmConfig(chainId),
     enabled: Boolean(isStableSwap && chainId),
     refetchOnReconnect: false,
     refetchOnMount: false,

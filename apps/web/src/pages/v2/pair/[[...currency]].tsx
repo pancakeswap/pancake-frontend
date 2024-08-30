@@ -8,7 +8,7 @@ import { styled } from 'styled-components'
 import { CHAIN_IDS } from 'utils/wagmi'
 import Page from 'views/Page'
 
-import { getFarmConfig } from '@pancakeswap/farms/constants'
+import { getLegacyFarmConfig } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
 import { useQuery } from '@tanstack/react-query'
 import { LightGreyCard } from 'components/Card'
@@ -66,7 +66,7 @@ export default function PoolV2Page() {
     queryKey: ['isFarmExistActiveForPair', chainId, pair?.liquidityToken?.address],
 
     queryFn: async () => {
-      const farmsConfig = (await getFarmConfig(chainId)) || []
+      const farmsConfig = (await getLegacyFarmConfig(chainId)) || []
       const farmPair = farmsConfig.find(
         (farm) => farm.lpAddress.toLowerCase() === pair?.liquidityToken?.address?.toLowerCase(),
       )

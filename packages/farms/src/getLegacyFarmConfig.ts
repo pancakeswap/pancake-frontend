@@ -4,6 +4,9 @@ import { isAddressEqual } from 'viem'
 import { supportedChainIdV4 } from './const'
 import { SerializedFarmConfig, SerializedFarmPublicData, UniversalFarmConfig } from './types'
 
+/**
+ * @deprecated only used for legacy farms
+ */
 export async function getLegacyFarmConfig(chainId?: ChainId): Promise<SerializedFarmPublicData[]> {
   if (chainId && supportedChainIdV4.includes(chainId as number)) {
     const chainName = getChainName(chainId)
