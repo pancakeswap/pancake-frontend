@@ -9,7 +9,8 @@ const PCS_GAMIFICATION_TOKEN = 'PCS_GAMIFICATION_TOKEN'
 export const useAuthJwtToken = () => {
   const { address: account } = useAccount()
   const { siwe, fetchWithSiweAuthV2 } = useSiwe()
-  const tokenInCookies = Cookies.get(PCS_GAMIFICATION_TOKEN)
+  const getCookieName = `${PCS_GAMIFICATION_TOKEN}-${account}`
+  const tokenInCookies = Cookies.get(getCookieName)
 
   const { data } = useQuery({
     queryKey: ['fetch-auth-jwt-token', account],
@@ -18,9 +19,15 @@ export const useAuthJwtToken = () => {
         const response = await fetchWithSiweAuthV2(`${GAMIFICATION_PUBLIC_API}/authenticate`)
         const result = await response.json()
 
-        const [_, payload] = result.data.token.split('.')
+        const [_, payload] = result.token.split('.')
         const decodedPayload = JSON.parse(atob(payload))
-        return decodedPayload
+        const expDate = decodedPayload?.exp
+
+        if (expDate && result?.token) {
+          Cookies.set(PCS_GAMIFICATION_TOKEN, result.token, { expires: new Date(expDate * 1000) })
+        }
+
+        return result?.token ?? ''
       } catch (error) {
         console.error(`Fetch useAuthJwtToken error: ${error}`)
         return ''
