@@ -7,8 +7,8 @@ import { useAccount } from 'wagmi'
 const PCS_GAMIFICATION_TOKEN = 'PCS_GAMIFICATION_TOKEN'
 
 export const useAuthJwtToken = () => {
-  const { address: account } = useAccount()
-  const { siwe, fetchWithSiweAuthV2 } = useSiwe()
+  const { address: account, chainId } = useAccount()
+  const { signIn } = useSiwe()
   const getCookieName = `${PCS_GAMIFICATION_TOKEN}-${account}`
   const tokenInCookies = Cookies.get(getCookieName)
 
@@ -16,7 +16,19 @@ export const useAuthJwtToken = () => {
     queryKey: ['fetch-auth-jwt-token', account],
     queryFn: async () => {
       try {
-        const response = await fetchWithSiweAuthV2(`${GAMIFICATION_PUBLIC_API}/authenticate`)
+        if (!account || !chainId) {
+          throw new Error('Unable to fetch dashboard data')
+        }
+
+        const { message, signature } = await signIn({ address: account, chainId })
+
+        const queryString = new URLSearchParams({
+          userId: account,
+          signature,
+          encodedMessage: encodeURIComponent(message),
+        }).toString()
+
+        const response = await fetch(`${GAMIFICATION_PUBLIC_API}/authenticate?${queryString}`)
         const result = await response.json()
 
         const [_, payload] = result.token.split('.')
@@ -24,7 +36,7 @@ export const useAuthJwtToken = () => {
         const expDate = decodedPayload?.exp
 
         if (expDate && result?.token) {
-          Cookies.set(PCS_GAMIFICATION_TOKEN, result.token, { expires: new Date(expDate * 1000) })
+          Cookies.set(getCookieName, result.token, { expires: new Date(expDate * 1000) })
         }
 
         return result?.token ?? ''
@@ -33,7 +45,7 @@ export const useAuthJwtToken = () => {
         return ''
       }
     },
-    enabled: Boolean(account && !tokenInCookies && siwe),
+    enabled: Boolean(account && !tokenInCookies),
     refetchOnMount: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
