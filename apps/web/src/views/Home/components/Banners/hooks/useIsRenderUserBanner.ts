@@ -1,5 +1,5 @@
 import { getLegacyFarmConfig } from '@pancakeswap/farms'
-import { farmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
+import { legacyFarmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
 import { useQuery } from '@tanstack/react-query'
 import BigNumber from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -18,7 +18,7 @@ const useIsRenderUserBanner = () => {
     queryKey: ['shouldRenderUserBanner', account],
     queryFn: async () => {
       const v2FarmsConfigSize = (await getLegacyFarmConfig(chainId))?.length || 0
-      const v3FarmsConfigSize = farmsV3ConfigChainMap[chainId]?.length || 0
+      const v3FarmsConfigSize = legacyFarmsV3ConfigChainMap[chainId]?.length || 0
       const totalFarmSize = v2FarmsConfigSize + v3FarmsConfigSize
       return Boolean(totalFarmSize)
     },

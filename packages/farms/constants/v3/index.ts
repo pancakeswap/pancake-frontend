@@ -27,6 +27,7 @@ import { farmsV3 as polygonZkEVMTestnetFarms } from '../polygonZkEVMTestnet'
 import { farmsV3 as zkSyncFarms } from '../zkSync'
 import { farmsV3 as zkSyncTestnetFarms } from '../zkSyncTestnet'
 
+/** @deprecated */
 export const legacyFarmsV3ConfigChainMap: Record<FarmV3SupportedChainId, ComputedFarmConfigV3[]> = {
   [ChainId.ETHEREUM]: ethFarms,
   [ChainId.BSC]: bscFarms,
@@ -42,6 +43,7 @@ export const legacyFarmsV3ConfigChainMap: Record<FarmV3SupportedChainId, Compute
   [ChainId.OPBNB]: opBNBFarms,
 }
 
+/** @deprecated */
 export const farmsV3ConfigChainMap: Record<FarmV3SupportedChainId, ComputedFarmConfigV3[]> = {
   [ChainId.ETHEREUM]: legacyV3EthereumFarmConfig,
   [ChainId.BSC]: legacyV3BscFarmConfig,

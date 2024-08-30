@@ -1,5 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
-import { farmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
+import { legacyFarmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useMemo } from 'react'
 import useAllTradingRewardPair, { RewardStatus, RewardType } from 'views/TradingReward/hooks/useAllTradingRewardPair'
@@ -42,7 +42,7 @@ const useTradingRewardTokenList = () => {
       uniqueAddressList
         // eslint-disable-next-line array-callback-return, consistent-return
         .map((list) => {
-          const farms = farmsV3ConfigChainMap[chainId as ChainId]
+          const farms = legacyFarmsV3ConfigChainMap[chainId as ChainId]
           const pair = farms.find((farm) => farm.lpAddress.toLowerCase() === (list as string).toLowerCase())
           if (pair) return pair
         })
