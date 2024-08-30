@@ -3552,7 +3552,7 @@
   "time": "tempo",
   "CAKE earned": "CAKE ganho",
   "Please Connect Wallet to view positions.": "Conecte a carteira para visualizar as posições.",
-  "You have no position in this wallet.": "Você não possui posição nesta carteira.",
+  "You have no %status% position in this wallet.": "You have no %status% position in this wallet.",
   "Legacy Liquidity Page": "Página de liquidez anterior",
   "Legacy Farm Page": "Página de farm anterior",
   "%t% LP": "%t% LP",
