@@ -1,5 +1,6 @@
 import { useQuery, type UseQueryResult } from '@tanstack/react-query'
 import { ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
+import { ONRAMP_PROVIDERS } from '../constants'
 import {
   createQueryKey,
   type Evaluate,
@@ -57,7 +58,13 @@ export const useOnRampQuotes = <selectData = GetOnRampQuoteReturnType>(
 
       if (quotes.length === 0) throw new Error('No quotes available')
 
-      return quotes.filter((q) => providerAvailabilities[q.provider])
+      return quotes
+        .filter((q) => providerAvailabilities[q.provider])
+        .sort((a, b) => {
+          if (a.provider === ONRAMP_PROVIDERS.Topper) return -1
+          if (b.provider === ONRAMP_PROVIDERS.Topper) return 1
+          return 0
+        })
     },
   })
 }

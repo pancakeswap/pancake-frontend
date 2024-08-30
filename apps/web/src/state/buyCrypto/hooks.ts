@@ -4,7 +4,7 @@ import { atomWithStorage } from 'jotai/utils'
 import { useRouter } from 'next/router'
 import type { ParsedUrlQuery } from 'querystring'
 import { useCallback, useEffect } from 'react'
-import { type BuyCryptoState, useBuyCryptoFormDispatch } from 'state/buyCrypto/reducer'
+import { useBuyCryptoFormDispatch, type BuyCryptoState } from 'state/buyCrypto/reducer'
 
 import {
   OnRampChainId as ChainId,
@@ -84,13 +84,7 @@ export async function queryParametersToBuyCryptoState(
   if (parsedKey && onRampCurrenciesMap[parsedKey]) {
     outputCurrencyId = parsedKey
   } else {
-    const defaultChainCurrency = Object.keys(onRampCurrenciesMap).find((key) => {
-      const [, id] = key.split('_')
-      return id === (parsedChainId ?? chainId?.toString())
-    })
-    if (defaultChainCurrency) {
-      outputCurrencyId = defaultChainCurrency
-    }
+    outputCurrencyId = 'CAKE_56'
   }
 
   return {
