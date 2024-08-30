@@ -151,6 +151,7 @@ const config: (
       label: t('Play'),
       icon: GameIcon,
       hideSubNav: true,
+      href: '/prediction',
       items: [
         {
           label: t('Prediction (BETA)'),
