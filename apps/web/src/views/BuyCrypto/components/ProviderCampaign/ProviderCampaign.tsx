@@ -7,7 +7,7 @@ import { ONRAMP_PROVIDERS } from 'views/BuyCrypto/constants'
 import pocketWatch from '../../../../../public/images/pocket-watch.svg'
 import BuyCryptoTooltip from '../Tooltip/Tooltip'
 
-const CURRENT_CAMPAIGN_TIMESTAMP = 1726464760
+const CURRENT_CAMPAIGN_TIMESTAMP = 1727132399 // 23rd sep 2024
 
 export const activeCampaigns: { [provider in keyof typeof ONRAMP_PROVIDERS]: boolean } = {
   [ONRAMP_PROVIDERS.Mercuryo]: false,
