@@ -17,7 +17,7 @@ import { StableLPDetail, V2LPDetail } from 'state/farmsV4/state/accountPositions
 import { StablePoolInfo, V2PoolInfo } from 'state/farmsV4/state/type'
 import styled from 'styled-components'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
-import { Address } from 'viem'
+import { Address, Hash } from 'viem'
 import { useCheckShouldSwitchNetwork } from 'views/universalFarms/hooks'
 import { useV2CakeEarning } from 'views/universalFarms/hooks/useCakeEarning'
 import { useV2FarmActions } from 'views/universalFarms/hooks/useV2FarmActions'
@@ -121,14 +121,15 @@ const useDepositModal = (props: V2PositionActionsProps) => {
   )
 
   const handleApprove = useCallback(async () => {
+    if (!poolInfo.bCakeWrapperAddress) return
     const receipt = await fetchWithCatchTxError(() => {
-      return onApprove()
+      return onApprove() as Promise<{ hash: Hash }>
     })
     if (receipt?.status) {
       setLatestTxReceipt(receipt)
       toastSuccess(t('Contract Enabled'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
     }
-  }, [setLatestTxReceipt, fetchWithCatchTxError, onApprove, t, toastSuccess])
+  }, [poolInfo.bCakeWrapperAddress, fetchWithCatchTxError, onApprove, setLatestTxReceipt, toastSuccess, t])
 
   const addLiquidityUrl = useMemo(() => {
     const liquidityUrlPathParts = getLiquidityUrlPathParts({

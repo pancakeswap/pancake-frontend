@@ -6,7 +6,6 @@ import {
   bscTestnetTokens,
   bscTokens,
   ethereumTokens,
-  goerliTestnetTokens,
   lineaTokens,
   opBnbTokens,
   polygonZkEvmTokens,
@@ -68,9 +67,6 @@ export const priceHelperTokens = {
 // for testing purposes
 export const DEFAULT_COMMON_PRICE: Record<FarmV3SupportedChainId, CommonPrice> = {
   [ChainId.ETHEREUM]: {},
-  [ChainId.GOERLI]: {
-    [goerliTestnetTokens.mockA.address]: '10',
-  },
   [ChainId.BSC]: {},
   [ChainId.BSC_TESTNET]: {
     [bscTestnetTokens.mockA.address]: '10',

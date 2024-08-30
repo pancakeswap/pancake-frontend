@@ -2,7 +2,7 @@ import { ChainId } from '@pancakeswap/chains'
 import { zkSyncTestnetTokens } from '@pancakeswap/tokens'
 import { FeeAmount, Pool } from '@pancakeswap/v3-sdk'
 import { defineFarmV3ConfigsFromUniversalFarm } from '../defineFarmV3Configs'
-import { Protocol, SerializedFarmConfig, UniversalFarmConfig } from '../types'
+import { Protocol, SerializedFarmConfig, UniversalFarmConfig, UniversalFarmConfigV3 } from '../types'
 
 const pinnedFarmConfig: UniversalFarmConfig[] = []
 
@@ -41,7 +41,7 @@ export default zkSyncTestnetFarmConfig
 
 /** @deprecated */
 export const legacyV3ZkSyncTestnetFarmConfig = defineFarmV3ConfigsFromUniversalFarm(
-  zkSyncTestnetFarmConfig.filter((farm) => farm.protocol === Protocol.V3),
+  zkSyncTestnetFarmConfig.filter((farm): farm is UniversalFarmConfigV3 => farm.protocol === Protocol.V3),
 )
 
 /** @deprecated */

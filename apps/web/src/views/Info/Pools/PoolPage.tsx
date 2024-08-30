@@ -122,8 +122,8 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
   const feeDisplay = useMemo(() => {
     if (isStableSwap && farmConfig) {
       const stableLpFee =
-        farmConfig?.default?.find((d: any) => d.stableSwapAddress?.toLowerCase() === routeAddress.toLowerCase())
-          ?.stableLpFee ?? 0
+        farmConfig?.find((d: any) => d.stableSwapAddress?.toLowerCase() === routeAddress.toLowerCase())?.stableLpFee ??
+        0
       return new BigNumber(stableLpFee)
         .times((showWeeklyData ? poolData?.volumeUSDWeek : poolData?.volumeUSD) ?? 0)
         .toNumber()

@@ -10,14 +10,14 @@ import { useAccountV2PendingCakeReward } from 'state/farmsV4/state/accountPositi
 import { PoolInfo, StablePoolInfo, V2PoolInfo } from 'state/farmsV4/state/type'
 import { useChainIdByQuery } from 'state/info/hooks'
 
-export const useV2CakeEarning = (pool: V2PoolInfo | StablePoolInfo | null | undefined) => {
+export const useV2CakeEarning = (pool: PoolInfo | null | undefined) => {
   const { account } = useAccountActiveChain()
   const cakePrice = useCakePrice()
   const { chainId, lpAddress } = pool || {}
   const { data: pendingCake, isLoading } = useAccountV2PendingCakeReward(account, {
     chainId,
     lpAddress,
-    bCakeWrapperAddress: pool?.bCakeWrapperAddress,
+    bCakeWrapperAddress: (pool as V2PoolInfo | StablePoolInfo)?.bCakeWrapperAddress,
   })
   const earningsAmount = useMemo(() => +formatBigInt(BigInt(pendingCake ?? 0), 5), [pendingCake])
   const earningsBusd = useMemo(() => {

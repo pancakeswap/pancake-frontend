@@ -388,7 +388,7 @@ const getV2PoolsCakeAprByChainId = async (
 
   const rewardPerSecondCalls = validPools.map((pool) => {
     return {
-      address: pool.bCakeWrapperAddress,
+      address: pool.bCakeWrapperAddress!,
       functionName: 'rewardPerSecond',
       abi: v2BCakeWrapperABI,
     } as const
@@ -421,7 +421,7 @@ const getV2PoolsCakeAprByChainId = async (
 
   const totalBoostedShareCalls = validPools.map((pool) => {
     return {
-      address: pool.bCakeWrapperAddress,
+      address: pool.bCakeWrapperAddress!,
       functionName: 'totalBoostedShare',
       abi: v2BCakeWrapperABI,
     } as const
@@ -429,7 +429,7 @@ const getV2PoolsCakeAprByChainId = async (
 
   const endTimestampCalls = validPools.map((pool) => {
     return {
-      address: pool.bCakeWrapperAddress,
+      address: pool.bCakeWrapperAddress!,
       functionName: 'endTimestamp',
       abi: v2BCakeWrapperABI,
     } as const

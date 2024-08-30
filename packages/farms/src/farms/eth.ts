@@ -3,7 +3,7 @@ import { ethereumTokens } from '@pancakeswap/tokens'
 import { FeeAmount, Pool } from '@pancakeswap/v3-sdk'
 import { getAddress } from 'viem'
 import { defineFarmV3ConfigsFromUniversalFarm } from '../defineFarmV3Configs'
-import { Protocol, SerializedFarmConfig, UniversalFarmConfig } from '../types'
+import { Protocol, SerializedFarmConfig, UniversalFarmConfig, UniversalFarmConfigV3 } from '../types'
 
 const pinnedFarmConfig: UniversalFarmConfig[] = [
   {
@@ -718,7 +718,7 @@ export default ethereumFarmConfig
 
 /** @deprecated */
 export const legacyV3EthereumFarmConfig = defineFarmV3ConfigsFromUniversalFarm(
-  ethereumFarmConfig.filter((farm) => farm.protocol === Protocol.V3),
+  ethereumFarmConfig.filter((farm): farm is UniversalFarmConfigV3 => farm.protocol === Protocol.V3),
 )
 
 /** @deprecated */

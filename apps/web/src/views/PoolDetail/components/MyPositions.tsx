@@ -231,7 +231,7 @@ const MyPositionsInner: React.FC<{ poolInfo: PoolInfo }> = ({ poolInfo }) => {
             ) : null}
             {['v2', 'stable'].includes(poolInfo.protocol) ? (
               <MyV2OrStablePositions
-                poolInfo={poolInfo}
+                poolInfo={poolInfo as V2PoolInfo | StablePoolInfo}
                 setCount={setCount}
                 setTotalTvlUsd={setTotalLiquidityUSD}
                 setHandleHarvestAll={setHandleHarvestAll}

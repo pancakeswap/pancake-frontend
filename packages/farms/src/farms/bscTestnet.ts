@@ -3,7 +3,7 @@ import { bscTestnetTokens } from '@pancakeswap/tokens'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { getAddress } from 'viem'
 import { defineFarmV3ConfigsFromUniversalFarm } from '../defineFarmV3Configs'
-import { Protocol, SerializedFarmConfig, UniversalFarmConfig } from '../types'
+import { Protocol, SerializedFarmConfig, UniversalFarmConfig, UniversalFarmConfigV3 } from '../types'
 
 const pinnedFarmConfig: UniversalFarmConfig[] = []
 
@@ -69,7 +69,7 @@ export default bscTestnetFarmConfig
 
 /** @deprecated */
 export const legacyV3BscTestnetFarmConfig = defineFarmV3ConfigsFromUniversalFarm(
-  bscTestnetFarmConfig.filter((farm) => farm.protocol === Protocol.V3),
+  bscTestnetFarmConfig.filter((farm): farm is UniversalFarmConfigV3 => farm.protocol === Protocol.V3),
 )
 
 /** @deprecated */

@@ -2,7 +2,7 @@ import { ChainId } from '@pancakeswap/chains'
 import { opBnbTokens } from '@pancakeswap/tokens'
 import { FeeAmount, Pool } from '@pancakeswap/v3-sdk'
 import { defineFarmV3ConfigsFromUniversalFarm } from '../defineFarmV3Configs'
-import { Protocol, SerializedFarmConfig, UniversalFarmConfig } from '../types'
+import { Protocol, SerializedFarmConfig, UniversalFarmConfig, UniversalFarmConfigV3 } from '../types'
 
 const pinnedFarmConfig: UniversalFarmConfig[] = []
 
@@ -50,7 +50,7 @@ export default opBNBFarmConfig
 
 /** @deprecated */
 export const legacyV3OpBNBFarmConfig = defineFarmV3ConfigsFromUniversalFarm(
-  opBNBFarmConfig.filter((farm) => farm.protocol === Protocol.V3),
+  opBNBFarmConfig.filter((farm): farm is UniversalFarmConfigV3 => farm.protocol === Protocol.V3),
 )
 
 /** @deprecated */
