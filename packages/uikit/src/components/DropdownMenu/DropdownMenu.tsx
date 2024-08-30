@@ -6,7 +6,7 @@ import useMatchBreakpoints from "../../contexts/MatchBreakpoints/useMatchBreakpo
 import { useOnClickOutside } from "../../hooks";
 import { MenuContext } from "../../widgets/Menu/context";
 import { Box, Flex } from "../Box";
-import { LogoutIcon } from "../Svg";
+import { OpenNewIcon } from "../Svg";
 import {
   DropdownMenuDivider,
   DropdownMenuItem,
@@ -159,7 +159,7 @@ const DropdownMenu: React.FC<React.PropsWithChildren<DropdownMenuProps>> = ({
                       >
                         <Flex alignItems="center" justifyContent="space-between" width="100%">
                           {MenuItemContent}
-                          <LogoutIcon color={disabled ? "textDisabled" : "textSubtle"} />
+                          <OpenNewIcon color={disabled ? "textDisabled" : "textSubtle"} />
                         </Flex>
                       </DropdownMenuItem>
                     )}
