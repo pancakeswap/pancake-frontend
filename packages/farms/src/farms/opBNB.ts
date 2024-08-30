@@ -1,7 +1,7 @@
 import { ChainId } from '@pancakeswap/chains'
 import { opBnbTokens } from '@pancakeswap/tokens'
 import { FeeAmount, Pool } from '@pancakeswap/v3-sdk'
-import { Protocol, UniversalFarmConfig } from '../types'
+import { Protocol, SerializedFarmConfig, UniversalFarmConfig } from '../types'
 
 const pinnedFarmConfig: UniversalFarmConfig[] = []
 
@@ -46,3 +46,5 @@ export const opBNBFarmConfig: UniversalFarmConfig[] = [
 ]
 
 export default opBNBFarmConfig
+
+export const legacyFarmConfig: SerializedFarmConfig[] = []

@@ -1,7 +1,7 @@
 import { ChainId } from '@pancakeswap/chains'
 import { arbitrumTokens } from '@pancakeswap/tokens'
 import { FeeAmount, Pool } from '@pancakeswap/v3-sdk'
-import { Protocol, UniversalFarmConfig } from '../types'
+import { Protocol, SerializedFarmConfig, UniversalFarmConfig } from '../types'
 
 const pinnedFarmConfig: UniversalFarmConfig[] = [
   {
@@ -839,5 +839,7 @@ export const arbFarmConfig: UniversalFarmConfig[] = [
     bCakeWrapperAddress: '0x7Fa4536b3E78643E027Dc34bB5A055517B4D9096',
   },
 ]
+
+export const legacyFarmConfig: SerializedFarmConfig[] = []
 
 export default arbFarmConfig

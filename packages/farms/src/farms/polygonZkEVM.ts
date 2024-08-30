@@ -1,7 +1,7 @@
 import { ChainId } from '@pancakeswap/chains'
 import { polygonZkEvmTokens } from '@pancakeswap/tokens'
 import { FeeAmount, Pool } from '@pancakeswap/v3-sdk'
-import { Protocol, UniversalFarmConfig } from '../types'
+import { Protocol, SerializedFarmConfig, UniversalFarmConfig } from '../types'
 
 const pinnedFarmConfig: UniversalFarmConfig[] = [
   {
@@ -210,3 +210,5 @@ export const polygonZkEVMFarmConfig: UniversalFarmConfig[] = [
 ]
 
 export default polygonZkEVMFarmConfig
+
+export const legacyFarmConfig: SerializedFarmConfig[] = []
