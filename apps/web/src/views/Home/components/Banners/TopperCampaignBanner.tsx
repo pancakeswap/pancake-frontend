@@ -12,7 +12,7 @@ import {
   PancakeSwapBadge,
   type GraphicDetail,
 } from '@pancakeswap/widgets-internal'
-// import { ASSET_CDN } from 'config/constants/endpoints'
+import { ASSET_CDN } from 'config/constants/endpoints'
 import styled from 'styled-components'
 
 const StyledImage = styled.img`
@@ -38,7 +38,6 @@ const StyledBackgroundGraphic = styled(BackgroundGraphic)`
 type ActionsType = { href: string; text: string; icon?: 'arrowForward' | 'openNew' }
 type IActions = ActionsType & Partial<CSSStyleDeclaration>
 
-const ASSET_CDN = 'https://chore--add-topper-banner-ass.assets-agx.pages.dev'
 const TOPPER_PATH = `${ASSET_CDN}/web/banners/topper-banner`
 const floatingAsset = `${TOPPER_PATH}/floating.png`
 
