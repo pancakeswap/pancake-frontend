@@ -16,7 +16,6 @@ import {
   PancakeSwapBadge,
 } from '@pancakeswap/widgets-internal'
 import { ASSET_CDN } from 'config/constants/endpoints'
-import { useViewport } from 'hooks/useViewport'
 
 const NumberDisplayContainer = styled(FlexGap)`
   border-radius: 1.5rem;

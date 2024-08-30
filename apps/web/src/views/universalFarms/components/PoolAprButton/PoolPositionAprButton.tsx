@@ -238,7 +238,6 @@ export const useV3FormDerivedApr = (pool: PoolInfo) => {
     price,
     pricesAtTicks,
     parsedAmounts,
-    currencyBalances,
   } = useV3DerivedInfo(pool.token0, pool.token1, pool.feeTier, pool.token0, undefined, formState)
   const sqrtRatioX96 = useMemo(() => price && encodeSqrtRatioX96(price.numerator, price.denominator), [price])
 

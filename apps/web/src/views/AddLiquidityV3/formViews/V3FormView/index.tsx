@@ -38,7 +38,7 @@ import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
-import { Field } from 'state/mint/actions'
+import { CurrencyField as Field } from 'utils/types'
 import { basisPointsToPercent } from 'utils/exchange'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 
@@ -62,7 +62,7 @@ import { useSendTransaction, useWalletClient } from 'wagmi'
 
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { useDensityChartData } from 'views/AddLiquidityV3/hooks/useDensityChartData'
-import { ZapLiquidityWidget } from 'views/AddLiquidityV3/ZapLiquidityWidget'
+import { InitDepositToken, ZapLiquidityWidget } from 'components/ZapLiquidityWidget'
 import LockedDeposit from './components/LockedDeposit'
 import { PositionPreview } from './components/PositionPreview'
 import RangeSelector from './components/RangeSelector'
@@ -580,6 +580,10 @@ export default function V3FormView({
           pool={pool}
           baseCurrency={baseCurrency}
           quoteCurrency={quoteCurrency}
+          initDepositToken={
+            independentField === Field.CURRENCY_A ? InitDepositToken.BASE_CURRENCY : InitDepositToken.QUOTE_CURRENCY
+          }
+          initAmount={typedValue}
         />
       )}
       <HideMedium>{buttons}</HideMedium>

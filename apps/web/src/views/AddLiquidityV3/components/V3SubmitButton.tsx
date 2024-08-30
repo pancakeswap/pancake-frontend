@@ -7,7 +7,7 @@ import { ApprovalState } from 'hooks/useApproveCallback'
 import { ReactNode, useMemo } from 'react'
 import { Address } from 'viem'
 import ApproveLiquidityTokens from 'views/AddLiquidityV3/components/ApproveLiquidityTokens'
-import { Field } from '../formViews/V3FormView/form/actions'
+import { CurrencyField as Field } from 'utils/types'
 
 interface V3SubmitButtonProps {
   addIsUnsupported: boolean

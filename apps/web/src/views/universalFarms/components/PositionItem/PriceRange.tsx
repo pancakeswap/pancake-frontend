@@ -4,7 +4,6 @@ import { IconButton, Row, SwapHorizIcon } from '@pancakeswap/uikit'
 import { Bound } from '@pancakeswap/widgets-internal'
 import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
 import { memo, useCallback, useMemo, useState } from 'react'
-import { StopPropagation } from '../StopPropagation'
 
 type PriceRangeProps = {
   quote?: Currency

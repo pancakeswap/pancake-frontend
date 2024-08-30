@@ -12,12 +12,19 @@ import dynamic from 'next/dynamic'
 import noop from 'lodash/noop'
 import { ToastDescriptionWithTx } from 'components/Toast'
 
+export enum InitDepositToken {
+  BASE_CURRENCY,
+  QUOTE_CURRENCY,
+}
+
 interface ZapLiquidityProps {
   tickLower?: number
   tickUpper?: number
   pool?: Pool | null
   baseCurrency?: Currency | null
   quoteCurrency?: Currency | null
+  initDepositToken?: InitDepositToken
+  initAmount?: string
 }
 
 const LiquidityWidget = dynamic(
@@ -31,6 +38,8 @@ export const ZapLiquidityWidget: React.FC<ZapLiquidityProps> = ({
   pool,
   baseCurrency,
   quoteCurrency,
+  initDepositToken,
+  initAmount,
 }) => {
   const { t } = useTranslation()
 
@@ -104,6 +113,12 @@ export const ZapLiquidityWidget: React.FC<ZapLiquidityProps> = ({
             chainId={chainId}
             initTickLower={tickLower ? +tickLower : undefined}
             initTickUpper={tickUpper ? +tickUpper : undefined}
+            initAmount={initAmount ? +initAmount : undefined}
+            initDepositToken={
+              initDepositToken === InitDepositToken.BASE_CURRENCY
+                ? baseCurrency?.wrapped?.address
+                : quoteCurrency?.wrapped?.address
+            }
             poolAddress={poolAddress ?? '0x'}
             theme={isDark ? 'dark' : 'light'}
             feePcm={pool?.fee}

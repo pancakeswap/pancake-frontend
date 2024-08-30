@@ -14,7 +14,7 @@ import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToU
 import { StableConfigContext } from 'views/Swap/hooks/useStableConfig'
 
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
-import { Field } from 'state/mint/actions'
+import { CurrencyField as Field } from 'utils/types'
 import { useMintActionHandlers } from 'state/mint/hooks'
 
 import useAccountActiveChain from 'hooks/useAccountActiveChain'

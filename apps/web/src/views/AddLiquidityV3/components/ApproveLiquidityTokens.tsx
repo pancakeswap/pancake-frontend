@@ -4,7 +4,7 @@ import { ethereumTokens } from '@pancakeswap/tokens'
 import { Button, Dots, Link, Message, MessageText, RowBetween } from '@pancakeswap/uikit'
 import { ApprovalState } from 'hooks/useApproveCallback'
 import { useMemo } from 'react'
-import { Field } from 'state/mint/actions'
+import { CurrencyField as Field } from 'utils/types'
 import { styled } from 'styled-components'
 import { Address } from 'viem'
 
