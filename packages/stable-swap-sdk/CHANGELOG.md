@@ -1,5 +1,16 @@
 # @pancakeswap/stable-swap-sdk
 
+## 1.1.0
+
+### Minor Changes
+
+- 206fc8d: Introduce stable swap on eth mainnet
+
+### Patch Changes
+
+- Updated dependencies [6d4ecf0]
+  - @pancakeswap/tokens@0.6.25
+
 ## 1.0.16
 
 ### Patch Changes
