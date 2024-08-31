@@ -1,5 +1,16 @@
 # @pancakeswap/smart-router
 
+## 6.1.1
+
+### Patch Changes
+
+- 618ad06: Introduce routing sdk quoter addon
+- Updated dependencies [206fc8d]
+- Updated dependencies [6d4ecf0]
+  - @pancakeswap/stable-swap-sdk@1.1.0
+  - @pancakeswap/gauges@1.2.15
+  - @pancakeswap/tokens@0.6.25
+
 ## 6.1.0
 
 ### Minor Changes

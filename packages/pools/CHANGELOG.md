@@ -1,5 +1,14 @@
 # @pancakeswap/pools
 
+## 5.1.32
+
+### Patch Changes
+
+- b0d3ac4: Add pepe pool
+- 6d4ecf0: List farm, pool, gauges
+- Updated dependencies [6d4ecf0]
+  - @pancakeswap/tokens@0.6.25
+
 ## 5.1.31
 
 ### Patch Changes

@@ -1,5 +1,16 @@
 # @pancakeswap/routing-sdk-addon-v3
 
+## 2.0.0
+
+### Minor Changes
+
+- 618ad06: Introduce routing sdk quoter addon
+
+### Patch Changes
+
+- Updated dependencies [618ad06]
+  - @pancakeswap/routing-sdk@0.2.0
+
 ## 1.0.0
 
 ### Minor Changes
