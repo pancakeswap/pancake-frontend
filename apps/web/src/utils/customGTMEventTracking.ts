@@ -15,6 +15,7 @@ export enum GTMEvent {
   Web3WalletView = 'Web3WalletView',
   MenuClick = 'menuClick',
   StakePool = 'stakePool',
+  PositionManagerAddLiquidity = 'positionManagerAddLiquidity',
 }
 
 export enum GTMCategory {
@@ -27,6 +28,7 @@ export enum GTMCategory {
   WalletConnect = 'WalletConnect',
   Web3WalletView = 'Web3WalletView',
   Pool = 'Pool',
+  PositionManager = 'PositionManager',
 }
 
 export enum GTMAction {
@@ -47,6 +49,7 @@ export enum GTMAction {
   ClickStakePoolButton = 'Click Stake Pool Button',
   ClickEnablePoolButton = 'Click Enable Pool Button',
   ClickUnstakePoolButton = 'Click Unstake Pool Button',
+  ClickAddLiquidityPositionManagerButton = 'Click Add Liquidity Position Manager Button',
 }
 
 interface CustomGTMDataLayer {
@@ -227,5 +230,15 @@ export const logGTMClickUnstakePoolEvent = (poolName?: string) => {
     action: GTMAction.ClickUnstakePoolButton,
     category: GTMCategory.Pool,
     label: poolName,
+  })
+}
+
+export const logGTMClickPositionManagerAddLiquidityEvent = (tokenPairAndVault?: string) => {
+  console.info('---PositionManagerAddLiquidity---')
+  window?.dataLayer?.push({
+    event: GTMEvent.PositionManagerAddLiquidity,
+    action: GTMAction.ClickAddLiquidityPositionManagerButton,
+    category: GTMCategory.PositionManager,
+    label: tokenPairAndVault,
   })
 }
