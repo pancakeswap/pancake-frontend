@@ -20,7 +20,11 @@ export function getTrustWalletProvider(): any | undefined {
     return trustWallet
   }
 
-  const injectedProviderExist = typeof window !== 'undefined' && typeof window.ethereum !== 'undefined'
+  const injectedProviderExist =
+    typeof window !== 'undefined' &&
+    window !== null &&
+    typeof window.ethereum !== 'undefined' &&
+    window.ethereum !== null
 
   // No injected providers exist.
   if (!injectedProviderExist) {
