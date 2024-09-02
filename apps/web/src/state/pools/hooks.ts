@@ -1,7 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
-import { getFarmConfig } from '@pancakeswap/farms/constants'
 import { getSourceChain, isIfoSupported } from '@pancakeswap/ifos'
-import { getLivePoolsConfig } from '@pancakeswap/pools'
 import { Token } from '@pancakeswap/sdk'
 import { Pool } from '@pancakeswap/widgets-internal'
 import { FAST_INTERVAL } from 'config/constants'
@@ -30,7 +28,6 @@ import {
   fetchUserIfoCreditDataAsync,
   setInitialPoolConfig,
 } from '.'
-import { fetchFarmsPublicDataAsync } from '../farms'
 import { VaultKey } from '../types'
 import {
   ifoCeilingSelector,
@@ -41,31 +38,6 @@ import {
   poolsWithVaultSelector,
 } from './selectors'
 
-// Only fetch farms for live pools
-const getActiveFarms = async (chainId: number) => {
-  const farmsConfig = (await getFarmConfig(chainId)) || []
-  const livePools = getLivePoolsConfig(chainId) || []
-  const lPoolAddresses = livePools
-    .filter(({ sousId }) => sousId !== 0)
-    .map(({ earningToken, stakingToken }) => {
-      if (earningToken.symbol === 'CAKE') {
-        return stakingToken.address
-      }
-      return earningToken.address
-    })
-
-  return farmsConfig
-    .filter(
-      ({ token, pid, quoteToken }) =>
-        pid !== 0 &&
-        ((token.symbol === 'CAKE' && quoteToken.symbol === 'WBNB') ||
-          (token.symbol === 'BUSD' && quoteToken.symbol === 'WBNB') ||
-          (token.symbol === 'USDT' && quoteToken.symbol === 'BUSD') ||
-          lPoolAddresses.find((poolAddress) => poolAddress === token.address)),
-    )
-    .map((farm) => farm.pid)
-}
-
 export const useFetchPublicPoolsData = () => {
   const dispatch = useAppDispatch()
   const { chainId } = useActiveChainId()
@@ -73,9 +45,6 @@ export const useFetchPublicPoolsData = () => {
   useSlowRefreshEffect(() => {
     const fetchPoolsDataWithFarms = async () => {
       if (!chainId) return
-      const activeFarms = await getActiveFarms(chainId)
-      await dispatch(fetchFarmsPublicDataAsync({ pids: activeFarms, chainId }))
-
       batch(() => {
         dispatch(fetchPoolsPublicDataAsync(chainId))
         dispatch(fetchPoolsStakingLimitsAsync(chainId))
