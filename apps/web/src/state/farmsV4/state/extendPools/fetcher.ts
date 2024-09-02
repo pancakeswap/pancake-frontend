@@ -80,7 +80,5 @@ export const fetchExplorerPoolInfo = async <TPoolType extends PoolInfo>(
   resp.data.chainId = chainId
   const isFarming = UNIVERSAL_FARMS.some((farm) => farm.lpAddress === poolAddress)
 
-  // @todo merge local farm config
-
   return composeFarmConfig(parseFarmPools([resp.data], { isFarming })[0]) as TPoolType
 }

@@ -27,7 +27,7 @@ export const UNIVERSAL_FARMS: UniversalFarmConfig[] = [
 ]
 
 export const UNIVERSAL_FARMS_MAP: Record<string, UniversalFarmConfig> = UNIVERSAL_FARMS.reduce((acc, farm) => {
-  set(acc, `${farm.chainId}:${farm.pid}`, farm)
+  set(acc, `${farm.chainId}:${farm.lpAddress}`, farm)
   return acc
 }, {} as Record<string, UniversalFarmConfig>)
 
