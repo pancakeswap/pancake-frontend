@@ -2356,7 +2356,7 @@ importers:
         version: 2.2.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       swiper:
         specifier: '*'
-        version: 11.0.5
+        version: 11.1.12
 
   packages/uikit:
     dependencies:
@@ -15482,10 +15482,6 @@ packages:
 
   swarm-js@0.1.42:
     resolution: {integrity: sha512-BV7c/dVlA3R6ya1lMlSSNPLYrntt0LUq4YMgy3iwpCIc6rZnS5W2wUoctarZ5pXlpKtxDDf9hNziEkcfrxdhqQ==}
-
-  swiper@11.0.5:
-    resolution: {integrity: sha512-rhCwupqSyRnWrtNzWzemnBLMoyYuoDgGgspAm/8iBD3jCvAWycPLH4Z3TB0O5520DHLzMx94yUMH/B9Efpa48w==}
-    engines: {node: '>= 4.7.0'}
 
   swiper@11.1.12:
     resolution: {integrity: sha512-PUkCToYAZMB4kP7z+YfPnkMHOMwMO71g8vUhz2o5INGIgIMb6Sb0XiP6cEJFsiFTd7FRDn5XCbg+KVKPDZqXLw==}
@@ -35505,8 +35501,6 @@ snapshots:
       - bufferutil
       - supports-color
       - utf-8-validate
-
-  swiper@11.0.5: {}
 
   swiper@11.1.12: {}
 
