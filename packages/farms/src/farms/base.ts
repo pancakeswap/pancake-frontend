@@ -72,6 +72,15 @@ const pinnedFarmConfig: UniversalFarmConfig[] = [
 export const baseFarmConfig: UniversalFarmConfig[] = [
   ...pinnedFarmConfig,
   {
+    pid: 39,
+    chainId: ChainId.BASE,
+    protocol: Protocol.V3,
+    lpAddress: Pool.getAddress(baseTokens.dola, baseTokens.usdc, FeeAmount.MEDIUM),
+    token0: baseTokens.dola,
+    token1: baseTokens.usdc,
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
     pid: 38,
     chainId: ChainId.BASE,
     protocol: Protocol.V3,
