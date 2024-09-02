@@ -1,9 +1,6 @@
-import { DASHBOARD_ALLOW_LIST } from 'config/constants/dashboardAllowList'
 import { zQuestId } from 'config/validations'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import qs from 'qs'
-import { getViemClients } from 'utils/viem.server'
-import { parseSiweMessage, verifySiweMessage } from 'viem/siwe'
 import { object as zObject } from 'zod'
 
 const zQuery = zObject({
@@ -15,20 +12,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(400).json({ message: 'API URL Empty / Method wrong' })
   }
 
-  const body = JSON.parse(req.body)
-  const message = body.siweMessage
-  const { signature } = body
-  const { address } = parseSiweMessage(message)
-  if (!address || !DASHBOARD_ALLOW_LIST.includes(address)) {
-    return res.status(401).json({ message: 'Unauthorized' })
-  }
-  const client = getViemClients({ chainId: req.body.chainId })
-  const validSignature = await verifySiweMessage(client, {
-    message,
-    signature,
-  })
-  if (!validSignature) {
-    return res.status(401).json({ message: 'Unauthorized' })
+  if (!req?.headers?.authorization) {
+    return res.status(400).json({ message: 'Header Authorization Empty' })
   }
 
   const queryString = qs.stringify(req.query)
@@ -41,6 +26,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const response = await fetch(`${process.env.GAMIFICATION_DASHBOARD_API}/quests/${queryParsed.id}/delete`, {
     method: 'DELETE',
     headers: {
+      Authorization: req?.headers?.authorization as string,
       Accept: 'application/json',
       'Content-Type': 'application/json',
       'x-secure-token': process.env.DASHBOARD_TOKEN as string,

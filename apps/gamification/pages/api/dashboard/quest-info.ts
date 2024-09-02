@@ -1,6 +1,4 @@
 import { zQuestId } from 'config/validations'
-import { withDashboardAllowlistAuth } from 'middlewares/withDashboardAllowlistAuth'
-import { withSiweAuth } from 'middlewares/withSiwe'
 import qs from 'qs'
 import { object as zObject } from 'zod'
 
@@ -8,36 +6,39 @@ const zQuery = zObject({
   id: zQuestId,
 })
 
-const handler = withSiweAuth(
-  withDashboardAllowlistAuth(async (req, res) => {
-    if (!process.env.GAMIFICATION_DASHBOARD_API || !req.query || req.method !== 'GET') {
-      return res.status(400).json({ message: 'API URL Empty / Method wrong' })
-    }
+const handler = async (req, res) => {
+  if (!process.env.GAMIFICATION_DASHBOARD_API || !req.query || req.method !== 'GET') {
+    return res.status(400).json({ message: 'API URL Empty / Method wrong' })
+  }
 
-    const queryString = qs.stringify(req.query)
-    const queryParsed = qs.parse(queryString)
-    const parsed = zQuery.safeParse(queryParsed)
-    if (parsed.success === false) {
-      return res.status(400).json({ message: 'Invalid query', reason: parsed.error })
-    }
+  if (!req?.headers?.authorization) {
+    return res.status(400).json({ message: 'Header Authorization Empty' })
+  }
 
-    const response = await fetch(`${process.env.GAMIFICATION_DASHBOARD_API}/quests/${queryParsed.id}`, {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'x-secure-token': process.env.DASHBOARD_TOKEN as string,
-      },
-    })
+  const queryString = qs.stringify(req.query)
+  const queryParsed = qs.parse(queryString)
+  const parsed = zQuery.safeParse(queryParsed)
+  if (parsed.success === false) {
+    return res.status(400).json({ message: 'Invalid query', reason: parsed.error })
+  }
 
-    if (!response.ok) {
-      return res.status(400).json({ message: 'An error occurred please try again' })
-    }
+  const response = await fetch(`${process.env.GAMIFICATION_DASHBOARD_API}/quests/${queryParsed.id}`, {
+    method: 'GET',
+    headers: {
+      Authorization: req?.headers?.authorization as string,
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'x-secure-token': process.env.DASHBOARD_TOKEN as string,
+    },
+  })
 
-    const data = await response.json()
+  if (!response.ok) {
+    return res.status(400).json({ message: 'An error occurred please try again' })
+  }
 
-    return res.status(200).json(data)
-  }),
-)
+  const data = await response.json()
+
+  return res.status(200).json(data)
+}
 
 export default handler

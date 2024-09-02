@@ -11,7 +11,7 @@ const Container = styled(Flex)`
 const AssetSetContainer = styled(Box)`
   position: relative;
   z-index: 1;
-  height: 26px;
+  height: 30px;
   width: 90%;
   max-width: 100%;
 `
@@ -52,7 +52,14 @@ export const Questers = ({
 
   return (
     <Container width="100%" flexWrap="nowrap" overflow="hidden">
-      <Text width="100%" maxWidth="fit-content" fontSize={fontSize} bold={bold} mr="8px">
+      <Text
+        style={{ alignSelf: 'center' }}
+        width="100%"
+        maxWidth="fit-content"
+        fontSize={fontSize}
+        bold={bold}
+        mr="8px"
+      >
         {t('%total%+ questers', { total: totalLength })}
       </Text>
 

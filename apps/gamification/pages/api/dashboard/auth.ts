@@ -5,17 +5,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(400).json({ message: 'API URL Empty / Method wrong' })
   }
 
-  if (!req?.headers?.authorization) {
-    return res.status(400).json({ message: 'Header Authorization Empty' })
-  }
-
-  const response = await fetch(`${process.env.GAMIFICATION_DASHBOARD_API}/quests/create`, {
+  const response = await fetch(`${process.env.GAMIFICATION_DASHBOARD_API}/users/authenticate`, {
     method: 'POST',
     headers: {
-      Authorization: req?.headers?.authorization as string,
-      Accept: 'application/json',
       'Content-Type': 'application/json',
-      'x-secure-token': process.env.DASHBOARD_TOKEN as string,
     },
     body: req.body,
   })

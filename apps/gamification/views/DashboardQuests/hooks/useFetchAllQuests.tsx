@@ -1,6 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
 import { useQuery } from '@tanstack/react-query'
-import { useSiwe } from 'hooks/useSiwe'
+import { useDashboardSiwe } from 'hooks/useDashboardSiwe'
 import qs from 'qs'
 import { useEffect, useRef, useState } from 'react'
 import { SingleQuestData } from 'views/DashboardQuestEdit/hooks/useGetSingleQuestData'
@@ -22,7 +22,7 @@ const initialData: AllDashboardQuestsType = {
 
 export const useFetchAllQuests = ({ chainIdList, completionStatus }) => {
   const { address: account, chainId } = useAccount()
-  const { signIn } = useSiwe()
+  const { fetchWithSiweAuth } = useDashboardSiwe()
   const [page, setPage] = useState(1)
   const [quests, setQuests] = useState<SingleQuestData[]>([])
   const [hasNextPage, setHasNextPage] = useState<boolean>(true)
@@ -54,15 +54,7 @@ export const useFetchAllQuests = ({ chainIdList, completionStatus }) => {
           pageSize: PAGE_SIZE,
         }
         const queryString = qs.stringify(urlParamsObject, { arrayFormat: 'comma' })
-        const { message, signature } = await signIn({ address: account, chainId })
-        const response = await fetch(`/api/dashboard/all-quests-info?${queryString}`, {
-          method: 'GET',
-          headers: {
-            'X-G-Siwe-Message': encodeURIComponent(message),
-            'X-G-Siwe-Signature': signature,
-            'X-G-Siwe-Chain-Id': String(chainId),
-          },
-        })
+        const response = await fetchWithSiweAuth(`/api/dashboard/all-quests-info?${queryString}`)
 
         const result = await response.json()
         const questsData: AllDashboardQuestsType = result

@@ -17,7 +17,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { ADDRESS_ZERO } from 'config/constants'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useQuestRewardContract } from 'hooks/useContract'
-import { useSiwe } from 'hooks/useSiwe'
+import { useDashboardSiwe } from 'hooks/useDashboardSiwe'
 import { useRouter } from 'next/router'
 import { useMemo, useState } from 'react'
 import { styled } from 'styled-components'
@@ -51,7 +51,7 @@ export const SubmitAction = () => {
   const [isSubmitError, setIsSubmitError] = useState(false)
   const completionStatusToString = state.completionStatus.toString()
   const queryClient = useQueryClient()
-  const { signIn } = useSiwe()
+  const { fetchWithSiweAuth } = useDashboardSiwe()
   const rewardContract = useQuestRewardContract(state.chainId)
 
   const handlePickedRewardToken = (currency: Currency, totalRewardAmount: string, amountOfWinners: number) => {
@@ -99,13 +99,9 @@ export const SubmitAction = () => {
         if (!account) {
           throw new Error('Invalid message to sign')
         }
-        const { signature, message } = await signIn({
-          address: account,
-          chainId,
-        })
-        const response = await fetch(`/api/dashboard/quest-delete?id=${query?.id}`, {
+
+        const response = await fetchWithSiweAuth(`/api/dashboard/quest-delete?id=${query?.id}`, {
           method: 'DELETE',
-          body: JSON.stringify({ siweMessage: message, signature }),
         })
 
         if (response.ok) {
@@ -129,10 +125,7 @@ export const SubmitAction = () => {
       if (!account) {
         throw new Error('Invalid message to sign')
       }
-      const { message, signature } = await signIn({
-        address: account,
-        chainId,
-      })
+
       const url = isCreate ? `/api/dashboard/quest-create` : `/api/dashboard/quest-update?id=${query?.id}`
       const method = isCreate ? 'POST' : 'PUT'
 
@@ -166,7 +159,7 @@ export const SubmitAction = () => {
         return undefined
       }
 
-      const response = await fetch(url, {
+      const response = await fetchWithSiweAuth(url, {
         method,
         body: JSON.stringify({
           ...(!isCreate && { id }),
@@ -181,8 +174,6 @@ export const SubmitAction = () => {
           endDateTime,
           numberOfParticipants,
           needAddReward,
-          siweMessage: message,
-          signature,
           ownerAddress: isCreate ? account : ownerAddress,
           ...(rewardSCAddress && {
             rewardSCAddress,

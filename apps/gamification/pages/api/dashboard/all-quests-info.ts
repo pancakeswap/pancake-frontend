@@ -1,9 +1,6 @@
 import qs from 'qs'
 import { z } from 'zod'
 
-import { withSiweAuth } from 'middlewares/withSiwe'
-import { withDashboardAllowlistAuth } from 'middlewares/withDashboardAllowlistAuth'
-
 const zAddress = z.string().regex(/^0x[a-fA-F0-9]{40}$/)
 const zChainIdOptional = z
   .string()
@@ -28,40 +25,43 @@ const zQuery = z.object({
   pageSize: z.coerce.number().max(100).nullable(),
 })
 
-const handler = withSiweAuth(
-  withDashboardAllowlistAuth(async (req, res) => {
-    if (!process.env.GAMIFICATION_DASHBOARD_API || !req.query || req.method !== 'GET') {
-      return res.status(400).json({ message: 'API URL Empty / Method wrong' })
-    }
+const handler = async (req, res) => {
+  if (!process.env.GAMIFICATION_DASHBOARD_API || !req.query || req.method !== 'GET') {
+    return res.status(400).json({ message: 'API URL Empty / Method wrong' })
+  }
 
-    const queryString = qs.stringify(req.query, { arrayFormat: 'comma' })
-    const queryParsed = qs.parse(queryString)
-    const parsed = zQuery.safeParse(queryParsed)
+  if (!req?.headers?.authorization) {
+    return res.status(400).json({ message: 'Header Authorization Empty' })
+  }
 
-    if (parsed.success === false) {
-      return res.status(400).json({ message: 'Invalid query', reason: parsed.error })
-    }
+  const queryString = qs.stringify(req.query, { arrayFormat: 'comma' })
+  const queryParsed = qs.parse(queryString)
+  const parsed = zQuery.safeParse(queryParsed)
 
-    const response = await fetch(
-      `${process.env.GAMIFICATION_DASHBOARD_API}/quests/org/${queryParsed.address}?${queryString}`,
-      {
-        method: 'GET',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          'x-secure-token': process.env.DASHBOARD_TOKEN as string,
-        },
+  if (parsed.success === false) {
+    return res.status(400).json({ message: 'Invalid query', reason: parsed.error })
+  }
+
+  const response = await fetch(
+    `${process.env.GAMIFICATION_DASHBOARD_API}/quests/org/${queryParsed.address}?${queryString}`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: req?.headers?.authorization as string,
+        Accept: 'application/json',
+        'x-secure-token': process.env.DASHBOARD_TOKEN as string,
+        'Content-Type': 'application/json',
       },
-    )
+    },
+  )
 
-    if (!response.ok) {
-      return res.status(400).json({ message: 'An error occurred please try again' })
-    }
+  if (!response.ok) {
+    return res.status(400).json({ message: 'An error occurred please try again' })
+  }
 
-    const data = await response.json()
+  const data = await response.json()
 
-    return res.status(200).json(data)
-  }),
-)
+  return res.status(200).json(data)
+}
 
 export default handler
