@@ -2,7 +2,6 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Svg, SvgProps, Tag, TagProps } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
 import { memo, useMemo } from 'react'
-import {} from 'styled-components'
 
 export const RewardPerDay: React.FC<{ rewardPerSec: number; symbol?: string } & TagProps> = memo(
   ({ rewardPerSec, symbol, ...props }) => {

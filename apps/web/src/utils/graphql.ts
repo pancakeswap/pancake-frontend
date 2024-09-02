@@ -1,7 +1,12 @@
 import { ChainId } from '@pancakeswap/chains'
-import { BIT_QUERY, STABLESWAP_SUBGRAPHS_URLS, V3_BSC_INFO_CLIENT, V3_SUBGRAPH_URLS } from 'config/constants/endpoints'
+import {
+  BIT_QUERY,
+  STABLESWAP_SUBGRAPHS_URLS,
+  V3_BSC_INFO_CLIENT,
+  V3_SUBGRAPH_URLS,
+  V2_SUBGRAPH_URLS,
+} from 'config/constants/endpoints'
 import { GraphQLClient } from 'graphql-request'
-import { V2_SUBGRAPH_URLS } from '../config/constants/endpoints'
 
 export const infoClient = new GraphQLClient(V2_SUBGRAPH_URLS[ChainId.BSC])
 

@@ -1,6 +1,6 @@
 import { SUPPORTED_CHAIN_IDS } from '@pancakeswap/ifos'
 
-import { IfoPageLayout } from '../../views/Ifos'
+import { IfoPageLayout } from 'views/Ifos'
 import PastIfo from '../../views/Ifos/PastIfo'
 
 const PastIfoPage = () => {

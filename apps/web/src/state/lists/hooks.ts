@@ -19,11 +19,11 @@ import _pickBy from 'lodash/pickBy'
 import uniqBy from 'lodash/uniqBy'
 import { useMemo } from 'react'
 import { notEmpty } from 'utils/notEmpty'
+import { safeGetAddress } from 'utils'
 import DEFAULT_TOKEN_LIST from '../../config/constants/tokenLists/pancake-default.tokenlist.json'
 import ONRAMP_TOKEN_LIST from '../../config/constants/tokenLists/pancake-supported-onramp-currency-list.json'
 import UNSUPPORTED_TOKEN_LIST from '../../config/constants/tokenLists/pancake-unsupported.tokenlist.json'
 import WARNING_TOKEN_LIST from '../../config/constants/tokenLists/pancake-warning.tokenlist.json'
-import { safeGetAddress } from '../../utils'
 import { listsAtom } from './lists'
 
 type TokenAddressMap = TTokenAddressMap<ChainId>

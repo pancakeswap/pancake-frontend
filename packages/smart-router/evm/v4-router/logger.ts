@@ -27,7 +27,7 @@ export const logger = {
   log,
   error: debug(SCOPE_PREFIX).extend(SCOPE.error),
   enable: (namespace: Namespace) => {
-    let namespaces = namespace
+    let namespaces: Namespace
     if (namespace.includes(',')) {
       namespaces = namespace
         .split(',')

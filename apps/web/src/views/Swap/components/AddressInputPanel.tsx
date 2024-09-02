@@ -6,9 +6,8 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useGetENSAddressByName } from 'hooks/useGetENSAddressByName'
 import { useCallback } from 'react'
 import { styled } from 'styled-components'
-import { safeGetAddress } from 'utils'
-import { RowBetween } from '../../../components/Layout/Row'
-import { getBlockExploreLink, getBlockExploreName } from '../../../utils'
+import { safeGetAddress, getBlockExploreLink, getBlockExploreName } from 'utils'
+import { RowBetween } from 'components/Layout/Row'
 
 const InputPanel = styled.div`
   display: flex;

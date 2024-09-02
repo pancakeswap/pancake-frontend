@@ -78,9 +78,8 @@ export const swap = (
 
   binPool.activeId = activeId
 
-  let result: [bigint, bigint] = [0n, 0n]
   const consumed = amountIn - amountLeft
-  result = swapForY ? [consumed, -amountOut] : [-amountOut, consumed]
+  const result: [bigint, bigint] = swapForY ? [consumed, -amountOut] : [-amountOut, consumed]
 
   return {
     binPool,

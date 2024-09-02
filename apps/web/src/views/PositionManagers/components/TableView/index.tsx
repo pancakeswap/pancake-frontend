@@ -15,7 +15,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useCurrencyUsdPrice } from 'hooks/useCurrencyUsdPrice'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { useIsWrapperWhiteList } from '../../hooks/useWrapperBooster'
+import { useIsWrapperWhiteList } from 'views/PositionManagers/hooks'
 import { ActionPanel } from './ActionPanel'
 
 import {

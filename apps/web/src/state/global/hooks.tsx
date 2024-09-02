@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux'
-import { AppState } from '../index'
+import { AppState } from 'state'
 
 // Get Farm Harvest
 export function useFarmHarvestTransaction() {

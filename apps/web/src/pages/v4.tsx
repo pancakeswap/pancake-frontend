@@ -1,4 +1,4 @@
-import { LandingV4 } from '../views/LandingV4'
+import { LandingV4 } from 'views/LandingV4'
 
 const LandingV4Page = () => <LandingV4 />
 

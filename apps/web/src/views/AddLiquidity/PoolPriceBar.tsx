@@ -2,8 +2,8 @@ import { Currency, Percent, Price } from '@pancakeswap/sdk'
 import { Text, AutoColumn } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { ONE_BIPS } from 'config/constants/exchange'
-import { AutoRow } from '../../components/Layout/Row'
-import { Field } from '../../state/mint/actions'
+import { AutoRow } from 'components/Layout/Row'
+import { Field } from 'state/mint/actions'
 
 function PoolPriceBar({
   currencies,

@@ -2,7 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { BlockIcon, CheckmarkCircleIcon, Flex, Text } from '@pancakeswap/uikit'
 
 import { styled } from 'styled-components'
-import { modPrizes } from '../../../../../config/constants/trading-competition/prizes'
+import { modPrizes } from 'config/constants/trading-competition/prizes'
 import { BoldTd, StyledPrizeTable, Td } from '../../../components/StyledPrizeTable'
 import AchievementPoints from '../../../components/YourScore/AchievementPoints'
 import UserPrizeGridDollar from '../../../components/YourScore/UserPrizeGridDollar'

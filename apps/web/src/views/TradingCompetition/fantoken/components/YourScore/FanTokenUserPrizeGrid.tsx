@@ -2,9 +2,9 @@ import { BlockIcon, CheckmarkCircleIcon, Flex, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 
 import { styled } from 'styled-components'
+import { fanTokenPrizes } from 'config/constants/trading-competition/prizes'
 import { getRewardGroupAchievements, useFanTokenCompetitionRewards } from '../../../helpers'
 import { BoldTd, StyledPrizeTable, Td } from '../../../components/StyledPrizeTable'
-import { fanTokenPrizes } from '../../../../../config/constants/trading-competition/prizes'
 import UserPrizeGridDollar from '../../../components/YourScore/UserPrizeGridDollar'
 import AchievementPoints from '../../../components/YourScore/AchievementPoints'
 

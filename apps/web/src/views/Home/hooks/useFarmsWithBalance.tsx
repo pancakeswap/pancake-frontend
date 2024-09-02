@@ -18,8 +18,8 @@ import { v2BCakeWrapperABI } from 'config/abi/v2BCakeWrapper'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useWalletClient } from 'wagmi'
 import { getV2SSBCakeWrapperContract } from 'utils/contractHelpers'
+import { useBCakeProxyContractAddress } from 'hooks/useBCakeProxyContractAddress'
 import splitProxyFarms from '../../Farms/components/YieldBooster/helpers/splitProxyFarms'
-import { useBCakeProxyContractAddress } from '../../../hooks/useBCakeProxyContractAddress'
 
 export type FarmWithBalance = {
   balance: BigNumber

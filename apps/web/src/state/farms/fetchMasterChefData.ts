@@ -1,13 +1,12 @@
 import { ChainId } from '@pancakeswap/chains'
-import { SerializedFarm } from '@pancakeswap/farms'
+import { SerializedFarm, SerializedFarmConfig } from '@pancakeswap/farms'
 import { masterChefV2ABI } from 'config/abi/masterchefV2'
 import chunk from 'lodash/chunk'
 import { farmFetcher } from 'state/farms'
 import { notEmpty } from 'utils/notEmpty'
 import { publicClient } from 'utils/wagmi'
 import { AbiStateMutability, ContractFunctionReturnType } from 'viem'
-import { SerializedFarmConfig } from '../../config/constants/types'
-import { getMasterChefV2Address } from '../../utils/addressHelpers'
+import { getMasterChefV2Address } from 'utils/addressHelpers'
 
 export const fetchMasterChefFarmPoolLength = async (chainId: number) => {
   try {

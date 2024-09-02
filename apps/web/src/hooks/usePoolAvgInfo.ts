@@ -10,16 +10,6 @@ export interface UsePoolAvgInfoParams {
   enabled?: boolean
 }
 
-export const averageArray = (dataToCalculate: number[]): number => {
-  let data = [...dataToCalculate]
-  // Remove the highest and lowest volume to be more accurate
-  if (data.length > 3) {
-    data = data.sort((a: number, b: number) => a - b).slice(1, data.length - 1)
-  }
-
-  return data.reduce((result, val) => result + val, 0) / data.length
-}
-
 interface Info {
   volumeUSD: number
   tvlUSD: number

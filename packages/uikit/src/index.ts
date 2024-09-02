@@ -1,4 +1,3 @@
-import type {} from "csstype";
 // ui
 export * from "./css/atoms";
 export * from "./css/breakpoints";

@@ -13,7 +13,6 @@ import {
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 
 import { useCallback, useMemo } from 'react'
-import {} from 'hooks/useSwitchNetwork'
 import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { useRouter } from 'next/router'

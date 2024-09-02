@@ -4,7 +4,7 @@ import { BunnyPlaceholderIcon, Card, CardHeader, Flex, Skeleton, Text } from '@p
 import { useEffect, useState } from 'react'
 import { useAppDispatch } from 'state'
 import { usePotteryData } from 'state/pottery/hook'
-import { fetchPotteryRoundData, setFinishedRoundInfoFetched } from 'state/pottery/index'
+import { fetchPotteryRoundData, setFinishedRoundInfoFetched } from 'state/pottery'
 import { styled } from 'styled-components'
 import RoundSwitcher from 'views/Lottery/components/AllHistoryCard/RoundSwitcher'
 import { getDrawnDate } from 'views/Lottery/helpers'

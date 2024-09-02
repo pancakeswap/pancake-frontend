@@ -17,7 +17,7 @@ import { useAllLists, useInactiveListUrls } from 'state/lists/hooks'
 import { safeGetAddress } from 'utils'
 
 import { useTokenComparator } from 'hooks/useTokenComparator'
-import { useAllTokens, useIsUserAddedToken, useToken } from '../../hooks/Tokens'
+import { useAllTokens, useIsUserAddedToken, useToken } from 'hooks/Tokens'
 import Row from '../Layout/Row'
 import CommonBases from './CommonBases'
 import CurrencyList from './CurrencyList'

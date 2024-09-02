@@ -1,6 +1,6 @@
 import { Currency, CurrencyAmount, Token } from '@pancakeswap/sdk'
 import { useMemo } from 'react'
-import { useSingleCallResult } from '../state/multicall/hooks'
+import { useSingleCallResult } from 'state/multicall/hooks'
 import { useTokenContract } from './useContract'
 
 // returns undefined if input token is undefined, or fails to get token contract,

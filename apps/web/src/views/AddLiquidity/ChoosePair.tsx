@@ -9,8 +9,8 @@ import { useV2Pair } from 'hooks/usePairs'
 import { useLPApr } from 'state/swap/useLPApr'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { useAccount } from 'wagmi'
+import { CommonBasesType } from 'components/SearchModal/types'
 import { AppHeader } from '../../components/App'
-import { CommonBasesType } from '../../components/SearchModal/types'
 import { useCurrencySelectRoute } from './useCurrencySelectRoute'
 
 export function ChoosePair({

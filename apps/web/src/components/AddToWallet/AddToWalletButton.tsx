@@ -12,7 +12,7 @@ import {
 import { Address } from 'viem'
 import { watchAsset } from 'viem/actions'
 import { useAccount, useWalletClient } from 'wagmi'
-import { canRegisterToken } from '../../utils/wallet'
+import { canRegisterToken } from 'utils/wallet'
 import { BAD_SRCS } from '../Logo/constants'
 
 export enum AddToWalletTextOptions {

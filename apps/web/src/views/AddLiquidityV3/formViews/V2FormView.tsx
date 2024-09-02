@@ -71,7 +71,7 @@ export default function V2FormView({
     [pair, chainId],
   )
 
-  let buttons: ReactNode = null
+  let buttons: ReactNode
   if (addIsUnsupported || addIsWarning) {
     buttons = (
       <Button disabled mb="4px">
