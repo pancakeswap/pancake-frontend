@@ -4,7 +4,7 @@ import groupBy from 'lodash/groupBy'
 import { isAddressEqual } from 'viem'
 import { describe, expect, it } from 'vitest'
 import { priceHelperTokens } from '../constants/common'
-import { farmsV3ConfigChainMap } from '../constants/v3'
+import { legacyFarmsV3ConfigChainMap } from '../constants/v3'
 import { supportedChainIdV3 } from '../src'
 import { CommonPrice, getFarmsPrices } from '../src/fetchFarmsV3'
 
@@ -35,7 +35,7 @@ describe('Config farms V3', async () => {
       }
     }),
   )
-  Object.entries(farmsV3ConfigChainMap).forEach(([_chainId, farms]) => {
+  Object.entries(legacyFarmsV3ConfigChainMap).forEach(([_chainId, farms]) => {
     if (!supportedChainIdV3.filter((id) => !isTestnetChainId(id)).includes(Number(_chainId))) return
     const chainId = Number(_chainId) as ChainId
     const tokenList = tokenListByChain[chainId]
