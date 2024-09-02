@@ -10,11 +10,12 @@ export interface DisconnectUserSocialInfoConfig {
 
 interface DisconnectSocialProps {
   data: DisconnectUserSocialInfoConfig
+  fetchWithSiweAuth: (input: RequestInfo | URL, init: RequestInit | undefined) => Promise<Response>
   callback: () => void
 }
 
-export const disconnectSocial = async ({ data, callback }: DisconnectSocialProps) => {
-  const response = await fetch(`/api/userInfo/emptyUserSocialInfo`, {
+export const disconnectSocial = async ({ data, fetchWithSiweAuth, callback }: DisconnectSocialProps) => {
+  const response = await fetchWithSiweAuth(`/api/userInfo/emptyUserSocialInfo`, {
     method: 'POST',
     body: JSON.stringify(data),
   })

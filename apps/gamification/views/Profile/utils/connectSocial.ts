@@ -36,12 +36,13 @@ interface SubmitSocialData {
 interface ConnectSocialProps {
   data: SubmitSocialData
   userInfo: UserInfo
+  fetchWithSiweAuth: (input: RequestInfo | URL, init: RequestInit | undefined) => Promise<Response>
   callback: () => void
 }
 
-export const connectSocial = async ({ userInfo, data, callback }: ConnectSocialProps) => {
+export const connectSocial = async ({ userInfo, data, fetchWithSiweAuth, callback }: ConnectSocialProps) => {
   if (userInfo.socialHubToSocialUserIdMap === null || !userInfo.socialHubToSocialUserIdMap[data.socialMedia]) {
-    const response = await fetch(`${GAMIFICATION_PUBLIC_API}/userInfo/v1/addUserInfo`, {
+    const response = await fetchWithSiweAuth(`${GAMIFICATION_PUBLIC_API}/userInfo/v1/addUserInfo`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

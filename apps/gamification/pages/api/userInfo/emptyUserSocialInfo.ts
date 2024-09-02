@@ -6,9 +6,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(400).json({ message: 'API URL Empty / Method wrong' })
   }
 
+  if (!req?.headers?.authorization) {
+    return res.status(400).json({ message: 'Header Authorization Empty' })
+  }
+
   const response = await fetch(`${GAMIFICATION_PUBLIC_API}/userInfo/v1/emptyUserSocialInfo`, {
     method: 'POST',
     headers: {
+      Authorization: req?.headers?.authorization as string,
       'Content-Type': 'application/json',
     },
     body: req.body,

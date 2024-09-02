@@ -16,7 +16,7 @@ export const useGetAllUserIdsByQuestId = (questId: string) => {
     queryKey: ['get-all-user-ids-by-quest', questId],
     queryFn: async () => {
       try {
-        const response = await fetch(`${GAMIFICATION_PUBLIC_API}/userInfo/v1/getAllUserIdsByQuestId/${questId}`)
+        const response = await fetch(`${GAMIFICATION_PUBLIC_API}/questInfo/v1/getAllUserIdsByQuestId/${questId}`)
         const result = await response.json()
         const allUserIdsByQuestId: AllUserIdsByQuestId = result
         return allUserIdsByQuestId
