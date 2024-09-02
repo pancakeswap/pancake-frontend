@@ -181,7 +181,6 @@ const useWithdrawModal = (
   data: V2LPDetail | StableLPDetail,
   lpAddress: Address,
   bCakeWrapperAddress: Address | undefined,
-  _pid: number,
   tvlUsd?: `${number}` | number | undefined,
 ) => {
   const { t } = useTranslation()
@@ -227,10 +226,10 @@ const useWithdrawModal = (
 }
 
 const V2FarmingAction: React.FC<V2PositionActionsProps> = (props) => {
-  const { data, chainId, lpAddress, pid, tvlUsd, isFarmLive, poolInfo } = props
+  const { data, chainId, lpAddress, tvlUsd, isFarmLive, poolInfo } = props
   const { switchNetworkIfNecessary } = useCheckShouldSwitchNetwork()
   const onPresentDeposit = useDepositModal(props)
-  const onPresentWithdraw = useWithdrawModal(data, lpAddress, poolInfo.bCakeWrapperAddress, pid, tvlUsd)
+  const onPresentWithdraw = useWithdrawModal(data, lpAddress, poolInfo.bCakeWrapperAddress, tvlUsd)
 
   const handleIncrease = useCallback(async () => {
     const shouldSwitch = await switchNetworkIfNecessary(chainId)
