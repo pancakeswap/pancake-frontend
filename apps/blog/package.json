@@ -24,7 +24,7 @@
     "react-dom": "^18.2.0",
     "react-wrap-balancer": "^0.4.0",
     "styled-components": "6.0.7",
-    "swiper": "^11.0.5",
+    "swiper": "^11.1.12",
     "zod": "^3.22.3"
   },
   "devDependencies": {
