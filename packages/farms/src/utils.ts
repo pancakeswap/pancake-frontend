@@ -51,8 +51,10 @@ const formatStableUniversalFarmToSerializedFarm = (
     return undefined
   }
 
+  if (!pid) return undefined
+
   return {
-    pid: pid ?? 0,
+    pid,
     lpAddress,
     lpSymbol: `${token0.symbol}-${token1.symbol} LP`,
     token: token0,
@@ -67,10 +69,13 @@ const formatStableUniversalFarmToSerializedFarm = (
   }
 }
 
-const formatV2UniversalFarmToSerializedFarm = (farm: UniversalFarmConfigV2): LegacyClassicFarmConfig => {
+const formatV2UniversalFarmToSerializedFarm = (farm: UniversalFarmConfigV2): LegacyClassicFarmConfig | undefined => {
   const { chainId, pid, bCakeWrapperAddress, lpAddress, token0, token1 } = farm
+
+  if (!pid) return undefined
+
   return {
-    pid: pid ?? 0,
+    pid,
     lpAddress,
     lpSymbol: `${token0.symbol}-${token1.symbol} LP`,
     bCakeWrapperAddress,
