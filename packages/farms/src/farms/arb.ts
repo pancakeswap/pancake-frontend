@@ -1,7 +1,8 @@
 import { ChainId } from '@pancakeswap/chains'
 import { arbitrumTokens } from '@pancakeswap/tokens'
 import { FeeAmount, Pool } from '@pancakeswap/v3-sdk'
-import { Protocol, UniversalFarmConfig } from '../types'
+import { defineFarmV3ConfigsFromUniversalFarm } from '../defineFarmV3Configs'
+import { Protocol, SerializedFarmConfig, UniversalFarmConfig, UniversalFarmConfigV3 } from '../types'
 
 const pinnedFarmConfig: UniversalFarmConfig[] = [
   {
@@ -826,6 +827,7 @@ export const arbFarmConfig: UniversalFarmConfig[] = [
     token1: arbitrumTokens.mdlp,
     lpAddress: '0x0db5e247ab73FBaE16d9301f2977f974EC0AA336',
     stableSwapAddress: '0xd0f0be815a76eFE677c92b07b39a5e972BAf22bD',
+    bCakeWrapperAddress: '0xC6B6926ef8B7218F054d64B52Ac455aEd22D690B',
   },
   {
     pid: 178,
@@ -835,7 +837,16 @@ export const arbFarmConfig: UniversalFarmConfig[] = [
     token1: arbitrumTokens.mpendle,
     lpAddress: '0x1A2329546f11e4fE55b853D98Bba2c4678E3105A',
     stableSwapAddress: '0x73ed25e04Aa673ddf7411441098fC5ae19976CE0',
+    bCakeWrapperAddress: '0x7Fa4536b3E78643E027Dc34bB5A055517B4D9096',
   },
 ]
 
 export default arbFarmConfig
+
+/** @deprecated */
+export const legacyV3ArbFarmConfig = defineFarmV3ConfigsFromUniversalFarm(
+  arbFarmConfig.filter((farm): farm is UniversalFarmConfigV3 => farm.protocol === Protocol.V3),
+)
+
+/** @deprecated */
+export const legacyFarmConfig: SerializedFarmConfig[] = []

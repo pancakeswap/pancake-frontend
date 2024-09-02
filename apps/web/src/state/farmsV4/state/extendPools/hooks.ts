@@ -91,18 +91,18 @@ export const getPoolAddressByToken = memoize(
     `${chainId}#${token0Address}#${token1Address}#${fee}`,
 )
 
-export const usePoolInfo = ({
+export const usePoolInfo = <TPoolType extends PoolInfo>({
   poolAddress,
   chainId,
 }: {
   poolAddress: string | null
   chainId: number
-}): PoolInfo | undefined | null => {
+}): TPoolType | undefined | null => {
   const { data: poolInfo } = useQuery({
     queryKey: ['poolInfo', chainId, poolAddress],
     queryFn: () => fetchExplorerPoolInfo(poolAddress ?? '', chainId),
     enabled: !!poolAddress && !!chainId,
   })
 
-  return poolInfo
+  return poolInfo as TPoolType | undefined | null
 }

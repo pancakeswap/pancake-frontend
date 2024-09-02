@@ -1,4 +1,4 @@
-import { getFarmConfig } from '@pancakeswap/farms/constants'
+import { getLegacyFarmConfig } from '@pancakeswap/farms'
 import { useQuery } from '@tanstack/react-query'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCakePrice } from 'hooks/useCakePrice'
@@ -31,7 +31,7 @@ const useGetTopFarmsByApr = (isIntersecting: boolean) => {
 
     queryFn: async () => {
       if (!chainId) return undefined
-      const farmsConfig = await getFarmConfig(chainId)
+      const farmsConfig = await getLegacyFarmConfig(chainId)
       const activeFarms = farmsConfig?.filter((farm) => farm.pid !== 0)
       return dispatch(fetchFarmsPublicDataAsync({ pids: activeFarms?.map((farm) => farm.pid) ?? [], chainId }))
     },

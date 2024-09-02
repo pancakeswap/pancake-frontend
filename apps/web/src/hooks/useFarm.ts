@@ -1,11 +1,11 @@
-import { createFarmFetcherV3, ComputedFarmConfigV3, fetchTokenUSDValues } from '@pancakeswap/farms'
-import { farmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
+import { ComputedFarmConfigV3, createFarmFetcherV3, fetchTokenUSDValues } from '@pancakeswap/farms'
 import { priceHelperTokens } from '@pancakeswap/farms/constants/common'
 import { Currency, ERC20Token } from '@pancakeswap/sdk'
 import { FeeAmount, Pool } from '@pancakeswap/v3-sdk'
-import { useMemo } from 'react'
 import { useQuery } from '@tanstack/react-query'
+import { useMemo } from 'react'
 
+import { legacyFarmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
 import { FAST_INTERVAL } from 'config/constants'
 import { getViemClients } from 'utils/viem'
 
@@ -23,7 +23,7 @@ export function useFarm({ currencyA, currencyB, feeAmount }: FarmParams) {
     if (!chainId || !currencyA || !currencyB || !feeAmount) {
       return null
     }
-    const farms: ComputedFarmConfigV3[] = farmsV3ConfigChainMap[chainId]
+    const farms: ComputedFarmConfigV3[] = legacyFarmsV3ConfigChainMap[chainId]
     if (!farms) {
       return null
     }

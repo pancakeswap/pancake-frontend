@@ -1,7 +1,8 @@
 import { getChainNameInKebabCase } from '@pancakeswap/chains'
-import { UNIVERSAL_FARMS } from '@pancakeswap/farms'
+import { UNIVERSAL_FARMS, UNIVERSAL_FARMS_MAP } from '@pancakeswap/farms'
+import set from 'lodash/set'
 import { chainIdToExplorerInfoChainName, explorerApiClient } from 'state/info/api/client'
-import { PoolInfo } from '../type'
+import { PoolInfo, StablePoolInfo, V2PoolInfo } from '../type'
 import { parseFarmPools } from '../utils'
 import { ExtendPoolsQuery } from './atom'
 
@@ -42,11 +43,25 @@ export const fetchExplorerPoolsList = async (query: Required<ExtendPoolsQuery>, 
   }
 }
 
-export const fetchExplorerPoolInfo = async (
+const composeFarmConfig = (farm: PoolInfo) => {
+  if (farm.protocol !== 'stable' && farm.protocol !== 'v2') return farm
+
+  const localFarm = UNIVERSAL_FARMS_MAP[`${farm.chainId}:${farm.lpAddress}`] as V2PoolInfo | StablePoolInfo | undefined
+
+  if (!localFarm) {
+    return farm
+  }
+
+  set(farm, 'bCakeWrapperAddress', localFarm.bCakeWrapperAddress)
+
+  return farm
+}
+
+export const fetchExplorerPoolInfo = async <TPoolType extends PoolInfo>(
   poolAddress: string,
   chainId: number,
   signal?: AbortSignal,
-): Promise<PoolInfo | null> => {
+): Promise<TPoolType | null> => {
   const chainName = chainIdToExplorerInfoChainName[chainId]
   const resp = await explorerApiClient.GET('/cached/pools/{chainName}/{id}', {
     signal,
@@ -65,5 +80,5 @@ export const fetchExplorerPoolInfo = async (
   resp.data.chainId = chainId
   const isFarming = UNIVERSAL_FARMS.some((farm) => farm.lpAddress === poolAddress)
 
-  return parseFarmPools([resp.data], { isFarming })[0]
+  return composeFarmConfig(parseFarmPools([resp.data], { isFarming })[0]) as TPoolType
 }
