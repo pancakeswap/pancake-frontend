@@ -1,4 +1,3 @@
-import { publicClient } from 'utils/viem'
 import { getChainNameInKebabCase } from '@pancakeswap/chains'
 import {
   FarmV4SupportedChainId,
@@ -7,10 +6,11 @@ import {
   supportedChainIdV4,
   UNIVERSAL_FARMS,
 } from '@pancakeswap/farms'
+import { smartChefABI } from '@pancakeswap/pools'
 import { FeeAmount, masterChefV3ABI } from '@pancakeswap/v3-sdk'
 import { explorerApiClient } from 'state/info/api/client'
+import { publicClient } from 'utils/viem'
 import { isAddressEqual, type Address } from 'viem'
-import { smartChefABI } from '@pancakeswap/pools'
 import { PoolInfo } from '../type'
 import { parseFarmPools } from '../utils'
 
@@ -77,7 +77,7 @@ export const fetchFarmPools = async (
         p.chainId === farm.chainId &&
         isAddressEqual(p.lpAddress, farm.lpAddress) &&
         p.protocol === farm.protocol &&
-        p.pid === farm.pid
+        (p.protocol === Protocol.V3 ? p.pid === farm.pid : true)
       )
     })
 

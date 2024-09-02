@@ -29,7 +29,7 @@ type V2PositionActionsProps = {
   data: V2LPDetail | StableLPDetail
   chainId: number
   lpAddress: Address
-  pid: number
+  pid?: number
   isStaked?: boolean
   tvlUsd?: `${number}` | number | undefined
   poolInfo: V2PoolInfo | StablePoolInfo
@@ -144,7 +144,7 @@ const useDepositModal = (props: V2PositionActionsProps) => {
     <FarmWidget.DepositModal
       addLiquidityUrl={addLiquidityUrl}
       account={account}
-      pid={pid}
+      pid={pid ?? 0}
       lpTotalSupply={totalSupply}
       tokenName={lpSymbol}
       lpLabel={lpSymbol}

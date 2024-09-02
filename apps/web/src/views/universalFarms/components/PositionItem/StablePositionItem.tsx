@@ -70,7 +70,7 @@ export const StablePositionItem = memo(
             amount1={nativeDeposited1}
             detailMode={detailMode}
           >
-            {chainId && address && pool?.pid ? (
+            {chainId && address && pool?.bCakeWrapperAddress ? (
               <V2PositionActions
                 isFarmLive={isFarmLive}
                 isStaked={false}
@@ -102,7 +102,7 @@ export const StablePositionItem = memo(
             detailMode={detailMode}
             userPosition={data}
           >
-            {chainId && address && pool?.pid ? (
+            {chainId && address && pool?.bCakeWrapperAddress ? (
               <V2PositionActions
                 isFarmLive={isFarmLive}
                 tvlUsd={pool.tvlUsd}

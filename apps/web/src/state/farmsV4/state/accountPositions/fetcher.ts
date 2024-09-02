@@ -1,21 +1,17 @@
-import { ChainId } from '@pancakeswap/chains'
 import { BCakeWrapperFarmConfig, Protocol, UNIVERSAL_FARMS } from '@pancakeswap/farms'
 import { CurrencyAmount, ERC20Token, Pair, Token, pancakePairV2ABI } from '@pancakeswap/sdk'
 import { LegacyStableSwapPair } from '@pancakeswap/smart-router/legacy-router'
 import { deserializeToken } from '@pancakeswap/token-lists'
 import BigNumber from 'bignumber.js'
 import { infoStableSwapABI } from 'config/abi/infoStableSwap'
-import { masterChefV2ABI } from 'config/abi/masterchefV2'
 import { v2BCakeWrapperABI } from 'config/abi/v2BCakeWrapper'
 import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from 'config/constants/exchange'
 import memoize from 'lodash/memoize'
 import uniqWith from 'lodash/uniqWith'
 import { AppState } from 'state'
 import { safeGetAddress } from 'utils'
-import { getCrossFarmingVaultAddress, getMasterChefV2Address } from 'utils/addressHelpers'
 import { publicClient } from 'utils/viem'
 import { Address, erc20Abi, isAddressEqual, zeroAddress } from 'viem'
-import { StablePoolInfo, V2PoolInfo } from '../type'
 import { StableLPDetail, V2LPDetail } from './type'
 
 /**
@@ -31,41 +27,6 @@ export function getV2LiquidityToken([tokenA, tokenB]: [ERC20Token, ERC20Token]):
     `${tokenA.symbol}-${tokenB.symbol} V2 LP`,
     'Pancake LPs',
   )
-}
-
-export const getAccountV2FarmingStakedBalances = async (
-  chainId: number,
-  account: Address,
-  pools: Array<V2PoolInfo | StablePoolInfo>,
-) => {
-  const masterChefV2Address =
-    chainId === ChainId.BSC ? getMasterChefV2Address(chainId) : getCrossFarmingVaultAddress(chainId)
-  if (!account || !chainId || pools.length === 0 || !masterChefV2Address) return []
-
-  const validPools = pools.filter(
-    (pool) => ['v2', 'stable'].includes(pool.protocol) && pool.pid && pool.chainId === chainId,
-  )
-  const client = publicClient({ chainId })
-
-  const balanceCalls = validPools.map((pool) => {
-    return {
-      abi: masterChefV2ABI,
-      address: masterChefV2Address,
-      functionName: 'userInfo',
-      args: [BigInt(pool.pid!), account] as const,
-    } as const
-  })
-
-  const balances = await client
-    .multicall({
-      contracts: balanceCalls,
-      allowFailure: true,
-    })
-    .then((res) => res.map((item) => item.result ?? [0n, 0n, 0n]))
-
-  return balances.map((balance) => {
-    return new BigNumber(balance[0].toString()).toString()
-  })
 }
 
 export const getAccountV2FarmingBCakeWrapperEarning = async (
@@ -111,7 +72,9 @@ export const getTrackedV2LpTokens = memoize(
   ): [ERC20Token, ERC20Token][] => {
     const pairTokens: ITokenPair[] = []
     // from farms
-    UNIVERSAL_FARMS.filter((farm) => farm.protocol === 'v2' && farm.pid && farm.chainId === chainId).forEach((farm) => {
+    UNIVERSAL_FARMS.filter(
+      (farm) => farm.protocol === 'v2' && farm.bCakeWrapperAddress && farm.chainId === chainId,
+    ).forEach((farm) => {
       pairTokens.push(farm.token0.sortsBefore(farm.token1) ? [farm.token0, farm.token1] : [farm.token1, farm.token0])
     })
     // from pinned pairs
