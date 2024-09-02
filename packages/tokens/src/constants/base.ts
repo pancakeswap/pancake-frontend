@@ -142,4 +142,12 @@ export const baseTokens = {
     'dogwifhat',
     'https://dogwifcoin.org/',
   ),
+  dola: new ERC20Token(
+    ChainId.BASE,
+    '0x4621b7A9c75199271F773Ebd9A499dbd165c3191',
+    18,
+    'DOLA',
+    'Dola USD Stablecoin',
+    'https://www.inverse.finance/',
+  ),
 }
