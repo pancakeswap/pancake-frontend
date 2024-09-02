@@ -7,6 +7,7 @@ import {
   UNIVERSAL_FARMS,
 } from '@pancakeswap/farms'
 import { smartChefABI } from '@pancakeswap/pools'
+import { getStableSwapPools } from '@pancakeswap/stable-swap-sdk'
 import { FeeAmount, masterChefV3ABI } from '@pancakeswap/v3-sdk'
 import { explorerApiClient } from 'state/info/api/client'
 import { publicClient } from 'utils/viem'
@@ -90,14 +91,23 @@ export const fetchFarmPools = async (
 
     remoteMissedPoolsIndex.push(index)
 
-    // @todo @ChefJerry fetch on-chain with default data
+    const stablePair =
+      farm.protocol === Protocol.STABLE
+        ? getStableSwapPools(farm.chainId).find((p) => {
+            return isAddressEqual(p.lpAddress, farm.lpAddress)
+          })
+        : undefined
+    let feeTier = 100
+    if (farm.protocol === Protocol.V3) feeTier = Number(farm.feeAmount)
+    if (farm.protocol === Protocol.V2) feeTier = FeeAmount.MEDIUM
+    if (stablePair) feeTier = stablePair.stableTotalFee
+
     return {
       ...farm,
       pid: farm.pid,
       tvlUsd: undefined,
       vol24hUsd: undefined,
-      feeTier:
-        farm.protocol === Protocol.V3 ? Number(farm.feeAmount) : farm.protocol === Protocol.V2 ? FeeAmount.MEDIUM : 100,
+      feeTier,
       feeTierBase: 1_000_000,
       isFarming: true,
     } satisfies PoolInfo
