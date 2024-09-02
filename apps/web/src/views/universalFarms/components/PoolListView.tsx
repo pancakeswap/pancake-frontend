@@ -37,7 +37,7 @@ export const ListView: React.FC<IPoolListViewProps> = ({ data }) => {
   return (
     <ListContainer>
       {data.map((item) => (
-        <ListItemContainer key={`${item.pid}-${item.lpAddress}`}>
+        <ListItemContainer key={`${item.chainId}-${item.lpAddress}`}>
           <Column gap="12px">
             <TokenOverview
               isReady
