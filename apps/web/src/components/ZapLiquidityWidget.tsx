@@ -11,6 +11,7 @@ import { Currency } from '@pancakeswap/sdk'
 import dynamic from 'next/dynamic'
 import noop from 'lodash/noop'
 import { ToastDescriptionWithTx } from 'components/Toast'
+import { getAddress } from 'viem'
 
 export enum InitDepositToken {
   BASE_CURRENCY,
@@ -32,6 +33,8 @@ const LiquidityWidget = dynamic(
   () => import('@kyberswap/pancake-liquidity-widgets').then((mod) => mod.LiquidityWidget),
   { ssr: false },
 )
+
+const NATIVE_CURRENCY_ADDRESS = getAddress('0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE')
 
 export const ZapLiquidityWidget: React.FC<ZapLiquidityProps> = ({
   tickLower,
@@ -119,7 +122,11 @@ export const ZapLiquidityWidget: React.FC<ZapLiquidityProps> = ({
             initAmount={initAmount ? +initAmount : undefined}
             initDepositToken={
               initDepositToken === InitDepositToken.BASE_CURRENCY
-                ? baseCurrency?.wrapped?.address
+                ? baseCurrency?.isNative
+                  ? NATIVE_CURRENCY_ADDRESS
+                  : baseCurrency?.wrapped?.address
+                : quoteCurrency?.isNative
+                ? NATIVE_CURRENCY_ADDRESS
                 : quoteCurrency?.wrapped?.address
             }
             poolAddress={poolAddress ?? '0x'}
