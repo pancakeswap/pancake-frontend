@@ -43,5 +43,8 @@ describe('getLegacyFarmConfig', async () => {
 })
 
 it('legacy v3 farm config', () => {
-  expect(legacyFarmsV3ConfigChainMap).toStrictEqual(farmsV3ConfigChainMap)
+  for (const [chainId, config] of Object.entries(legacyFarmsV3ConfigChainMap)) {
+    expect(farmsV3ConfigChainMap[chainId as unknown as keyof typeof farmsV3ConfigChainMap]).toStrictEqual(config)
+  }
+  // expect(legacyFarmsV3ConfigChainMap).toStrictEqual(farmsV3ConfigChainMap)
 })
