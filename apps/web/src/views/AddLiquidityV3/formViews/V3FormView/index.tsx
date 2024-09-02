@@ -83,6 +83,7 @@ const StyledInput = styled(NumericalInput)`
 `
 
 export const HideMedium = styled.div`
+  display: flex;
   ${({ theme }) => theme.mediaQueries.md} {
     display: none;
   }
@@ -91,7 +92,7 @@ export const HideMedium = styled.div`
 export const MediumOnly = styled.div`
   display: none;
   ${({ theme }) => theme.mediaQueries.md} {
-    display: initial;
+    display: flex;
   }
 `
 
@@ -573,20 +574,25 @@ export default function V3FormView({
           />
         </LockedDeposit>
       </DynamicSection>
-      {hasInsufficentBalance && (
-        <ZapLiquidityWidget
-          tickLower={tickLower}
-          tickUpper={tickUpper}
-          pool={pool}
-          baseCurrency={baseCurrency}
-          quoteCurrency={quoteCurrency}
-          initDepositToken={
-            independentField === Field.CURRENCY_A ? InitDepositToken.BASE_CURRENCY : InitDepositToken.QUOTE_CURRENCY
-          }
-          initAmount={typedValue}
-        />
-      )}
-      <HideMedium>{buttons}</HideMedium>
+      <HideMedium style={{ gap: 16, flexDirection: 'column' }}>
+        {buttons}
+        {hasInsufficentBalance && (
+          <ZapLiquidityWidget
+            tickLower={tickLower}
+            tickUpper={tickUpper}
+            pool={pool}
+            baseCurrency={baseCurrency}
+            quoteCurrency={quoteCurrency}
+            initDepositToken={
+              independentField === Field.CURRENCY_A ? InitDepositToken.BASE_CURRENCY : InitDepositToken.QUOTE_CURRENCY
+            }
+            initAmount={typedValue}
+            onSubmit={() => {
+              router.push('/liquidity/positions')
+            }}
+          />
+        )}
+      </HideMedium>
 
       <RightContainer>
         <AutoColumn gap="16px">
@@ -792,7 +798,27 @@ export default function V3FormView({
               </Message>
             ) : null}
           </DynamicSection>
-          <MediumOnly>{buttons}</MediumOnly>
+          <MediumOnly style={{ gap: 16, flexDirection: 'column' }}>
+            {buttons}
+            {hasInsufficentBalance && (
+              <ZapLiquidityWidget
+                tickLower={tickLower}
+                tickUpper={tickUpper}
+                pool={pool}
+                baseCurrency={baseCurrency}
+                quoteCurrency={quoteCurrency}
+                initDepositToken={
+                  independentField === Field.CURRENCY_A
+                    ? InitDepositToken.BASE_CURRENCY
+                    : InitDepositToken.QUOTE_CURRENCY
+                }
+                initAmount={typedValue}
+                onSubmit={() => {
+                  router.push('/liquidity/positions')
+                }}
+              />
+            )}
+          </MediumOnly>
         </AutoColumn>
       </RightContainer>
     </>

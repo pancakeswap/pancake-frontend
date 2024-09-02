@@ -25,6 +25,7 @@ interface ZapLiquidityProps {
   quoteCurrency?: Currency | null
   initDepositToken?: InitDepositToken
   initAmount?: string
+  onSubmit?: () => void
 }
 
 const LiquidityWidget = dynamic(
@@ -40,6 +41,7 @@ export const ZapLiquidityWidget: React.FC<ZapLiquidityProps> = ({
   quoteCurrency,
   initDepositToken,
   initAmount,
+  onSubmit,
 }) => {
   const { t } = useTranslation()
 
@@ -80,8 +82,9 @@ export const ZapLiquidityWidget: React.FC<ZapLiquidityProps> = ({
         },
       )
       setIsModalOpen(false)
+      onSubmit?.()
     },
-    [addTransaction, baseCurrency?.symbol, quoteCurrency?.symbol, t, toastSuccess],
+    [addTransaction, baseCurrency?.symbol, quoteCurrency?.symbol, t, toastSuccess, onSubmit],
   )
 
   return (
