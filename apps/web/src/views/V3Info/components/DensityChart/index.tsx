@@ -45,7 +45,7 @@ const ActionButton = styled.div<{ disabled?: boolean }>`
 
   &:hover {
     cursor: pointer;
-    opacity: 0.4;
+    filter: brightness(1.25);
   }
 `
 

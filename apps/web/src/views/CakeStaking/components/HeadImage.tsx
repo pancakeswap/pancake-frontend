@@ -32,7 +32,7 @@ const SpeechBubbleBox = styled(Box)`
     transition: background-color 0.2s, opacity 0.2s;
   }
   &:hover #${SPEECH_BUBBLE_ID} {
-    opacity: 0.65;
+    filter: brightness(1.25);
   }
 `
 

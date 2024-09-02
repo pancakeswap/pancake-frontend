@@ -29,7 +29,7 @@ const AddressRowContainer = styled.div`
   padding: 8px 24px;
   &:hover {
     cursor: pointer;
-    opacity: 0.5;
+    filter: brightness(1.25);
   }
 `
 

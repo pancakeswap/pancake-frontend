@@ -28,7 +28,7 @@ const AprLabelContainer = styled(Flex)<{ enableHover: boolean }>`
     enableHover
       ? css`
           &:hover {
-            opacity: 0.5;
+            filter: brightness(1.3);
           }
         `
       : null}

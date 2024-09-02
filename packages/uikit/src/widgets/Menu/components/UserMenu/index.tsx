@@ -20,7 +20,7 @@ export const StyledUserMenu = styled(Flex)`
   position: relative;
 
   &:hover {
-    opacity: 0.65;
+    filter: brightness(1.25);
   }
 `;
 

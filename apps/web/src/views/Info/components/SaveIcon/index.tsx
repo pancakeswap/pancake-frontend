@@ -9,7 +9,7 @@ const HoverIcon = styled.div`
   align-items: center;
   &:hover {
     cursor: pointer;
-    opacity: 0.6;
+    filter: brightness(1.25);
   }
 `
 

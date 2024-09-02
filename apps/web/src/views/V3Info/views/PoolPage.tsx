@@ -60,7 +60,7 @@ const TokenButton = styled(Flex)`
   margin-right: 16px;
   &:hover {
     cursor: pointer;
-    opacity: 0.6;
+    filter: brightness(1.25);
   }
 `
 

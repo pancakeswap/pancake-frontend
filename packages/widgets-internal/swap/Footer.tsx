@@ -25,12 +25,12 @@ const BubbleWrapper = styled(Flex)`
   }
   &:hover {
     svg {
-      opacity: 0.65;
+      filter: brightness(1.25);
     }
   }
   &:active {
     svg {
-      opacity: 0.85;
+      filter: brightness(1.3);
     }
   }
 `;

@@ -19,7 +19,7 @@ const CardWrapper = styled(NextLinkFromReactRouter)`
   margin-left: 16px;
   &:hover {
     cursor: pointer;
-    opacity: 0.6;
+    filter: brightness(1.25);
   }
 `
 

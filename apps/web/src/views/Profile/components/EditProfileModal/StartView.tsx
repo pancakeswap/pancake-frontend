@@ -29,7 +29,7 @@ const DangerOutline = styled(Button).attrs({ variant: 'secondary' })`
 
   &:hover:not(:disabled):not(.button--disabled):not(:active) {
     border-color: ${({ theme }) => theme.colors.failure};
-    opacity: 0.8;
+    filter: brightness(1.25);
   }
 `
 

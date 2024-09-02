@@ -11,7 +11,7 @@ const StyledFlex = styled(Flex)`
   transition: opacity 200ms ease-in;
 
   &:hover {
-    opacity: 0.5;
+    filter: brightness(1.25);
   }
 `
 

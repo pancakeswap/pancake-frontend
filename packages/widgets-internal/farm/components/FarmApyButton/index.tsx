@@ -5,7 +5,7 @@ import { styled } from "styled-components";
 const ApyLabelContainer = styled(Flex)`
   cursor: pointer;
   &:hover {
-    opacity: 0.5;
+    filter: brightness(1.3);
   }
 `;
 

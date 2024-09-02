@@ -35,7 +35,7 @@ it("renders correctly", () => {
     }
 
     .c0:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
-      opacity: 0.85;
+      filter: brightness(1.3);
       transform: translateY(1px);
       box-shadow: none;
     }
@@ -51,7 +51,7 @@ it("renders correctly", () => {
 
     @media (hover: hover) {
       .c0:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
-        opacity: 0.65;
+        filter: brightness(1.25);
       }
     }
 
