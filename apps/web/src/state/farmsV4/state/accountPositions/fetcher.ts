@@ -1,4 +1,4 @@
-import { BCakeWrapperFarmConfig, Protocol, UNIVERSAL_FARMS } from '@pancakeswap/farms'
+import { BCakeWrapperFarmConfig, Protocol, UNIVERSAL_FARMS, UNIVERSAL_FARMS_MAP } from '@pancakeswap/farms'
 import { CurrencyAmount, ERC20Token, Pair, Token, pancakePairV2ABI } from '@pancakeswap/sdk'
 import { LegacyStableSwapPair } from '@pancakeswap/smart-router/legacy-router'
 import { deserializeToken } from '@pancakeswap/token-lists'
@@ -11,7 +11,8 @@ import uniqWith from 'lodash/uniqWith'
 import { AppState } from 'state'
 import { safeGetAddress } from 'utils'
 import { publicClient } from 'utils/viem'
-import { Address, erc20Abi, isAddressEqual, zeroAddress } from 'viem'
+import { Address, erc20Abi, zeroAddress } from 'viem'
+import { StablePoolInfo, V2PoolInfo } from '../type'
 import { StableLPDetail, V2LPDetail } from './type'
 
 /**
@@ -116,15 +117,9 @@ const V2_UNIVERSAL_FARMS = UNIVERSAL_FARMS.filter((farm) => farm.protocol === Pr
 const STABLE_UNIVERSAL_FARMS = UNIVERSAL_FARMS.filter((farm) => farm.protocol === Protocol.STABLE)
 
 export const getBCakeWrapperAddress = (lpAddress: Address, chainId: number) => {
-  const f = UNIVERSAL_FARMS.find((farm) => {
-    return isAddressEqual(farm.lpAddress, lpAddress) && farm.chainId === chainId
-  })
+  const f = UNIVERSAL_FARMS_MAP[`${chainId}:${lpAddress}`] as V2PoolInfo | StablePoolInfo | undefined
 
-  if (f?.protocol === Protocol.V2 || f?.protocol === Protocol.STABLE) {
-    return f?.bCakeWrapperAddress ?? '0x'
-  }
-
-  return '0x'
+  return f?.bCakeWrapperAddress ?? '0x'
 }
 
 // @todo @ChefJerry add getAccountV2FarmingStakedBalances result
