@@ -1,5 +1,16 @@
 # @pancakeswap/farms
 
+## 1.0.74
+
+### Patch Changes
+
+- 6d4ecf0: List farm, pool, gauges
+- Updated dependencies [206fc8d]
+- Updated dependencies [6d4ecf0]
+  - @pancakeswap/stable-swap-sdk@1.1.0
+  - @pancakeswap/tokens@0.6.25
+  - @pancakeswap/price-api-sdk@3.0.1
+
 ## 1.0.73
 
 ### Patch Changes

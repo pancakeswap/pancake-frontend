@@ -3,13 +3,18 @@ import { SerializedFarmConfig, SerializedFarmPublicData, isStableFarm, supported
 
 let logged = false
 
+/**
+ * @deprecated
+ */
 export const getFarmConfig = async (chainId?: ChainId) => {
   if (chainId && supportedChainIdV2.includes(chainId as number)) {
     const chainName = getChainName(chainId)
     try {
-      return (await import(`/${chainName}.ts`)).default.filter(
+      const d = (await import(`./${chainName}.ts`)).default.filter(
         (f: SerializedFarmPublicData) => f.pid !== null,
       ) as SerializedFarmPublicData[]
+
+      return d
     } catch (error) {
       if (!logged) {
         console.error('Cannot get farm config', error, chainId, chainName)

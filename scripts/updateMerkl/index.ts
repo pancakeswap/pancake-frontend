@@ -32,6 +32,16 @@ type MerklConfigResponse = {
   [chainId: number]: MerklConfig
 }
 
+export const chainIdToChainName = {
+  1: 'ethereum',
+  56: 'bnb smart chain',
+  324: 'zkync',
+  1101: 'polygon zkevm',
+  8453: 'base',
+  42161: 'arbitrum',
+  59144: 'linea',
+} as const
+
 const fetchAllMerklConfig = async (): Promise<MerklConfigResponse> => {
   const response = await fetch('https://api.angle.money/v2/merkl')
 
@@ -53,7 +63,7 @@ const parseMerklConfig = (merklConfig: MerklConfig[]): MerklConfigPool[] => {
   return pools.map((pool) => ({
     chainId: pool.chainId,
     address: pool.pool,
-    link: `https://merkl.angle.money/?status=live&search=${pool.pool}&chain=${pool.chainId}%2C`,
+    link: encodeURI(`https://merkl.angle.money/${chainIdToChainName[pool.chainId]}/pool/2/${pool.pool}`),
   }))
 }
 

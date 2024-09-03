@@ -2,7 +2,7 @@ import { SerializedToken, Token } from '@pancakeswap/swap-sdk-core'
 import { SerializedWrappedToken } from '@pancakeswap/token-lists'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import BigNumber from 'bignumber.js'
-import { Address } from 'viem'
+import { Address, Prettify } from 'viem'
 
 export type FarmsDynamicDataResult = {
   tokenAmountTotal: string
@@ -323,11 +323,10 @@ export enum Protocol {
 }
 
 export type FarmBaseConfig = {
-  protocol: Protocol
+  // @deprecated
+  pid?: number
   chainId: number
-  pid: number
   lpAddress: Address
-  // @todo change token0 type to Currency when v4 ready
   token0: Token
   token1: Token
 }
@@ -335,13 +334,16 @@ export type FarmBaseConfig = {
 export type UniversalFarmConfigStableSwap = {
   protocol: Protocol.STABLE
   stableSwapAddress: Address
+  bCakeWrapperAddress: Address
 } & FarmBaseConfig
 
 export type UniversalFarmConfigV2 = {
   protocol: Protocol.V2
+  bCakeWrapperAddress: Address
 } & FarmBaseConfig
 
 export type UniversalFarmConfigV3 = {
+  pid: number
   protocol: Protocol.V3
   feeAmount: FeeAmount
 } & FarmBaseConfig
@@ -349,7 +351,9 @@ export type UniversalFarmConfigV3 = {
 /**
  * minimal pool info for a farm
  */
-export type UniversalFarmConfig = UniversalFarmConfigV2 | UniversalFarmConfigStableSwap | UniversalFarmConfigV3
+export type UniversalFarmConfig = Prettify<
+  UniversalFarmConfigV2 | UniversalFarmConfigStableSwap | UniversalFarmConfigV3
+>
 
 // only v2/ss farms have bCakeWrapperAddress
 export type BCakeWrapperFarmConfig = {

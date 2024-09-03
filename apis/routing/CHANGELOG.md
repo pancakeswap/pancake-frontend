@@ -1,5 +1,14 @@
 # routing-api
 
+## 0.3.75
+
+### Patch Changes
+
+- Updated dependencies [618ad06]
+- Updated dependencies [6d4ecf0]
+  - @pancakeswap/smart-router@6.1.1
+  - @pancakeswap/farms@1.0.74
+
 ## 0.3.74
 
 ### Patch Changes

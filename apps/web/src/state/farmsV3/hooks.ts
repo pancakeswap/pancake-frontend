@@ -12,7 +12,7 @@ import {
   supportedChainIdV3,
 } from '@pancakeswap/farms'
 import { priceHelperTokens } from '@pancakeswap/farms/constants/common'
-import { farmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
+import { legacyFarmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
 import { bCakeFarmBoosterVeCakeABI } from '@pancakeswap/farms/constants/v3/abi/bCakeFarmBoosterVeCake'
 import { TvlMap, fetchCommonTokenUSDValue } from '@pancakeswap/farms/src/fetchFarmsV3'
 import { deserializeToken } from '@pancakeswap/token-lists'
@@ -83,7 +83,7 @@ export const useFarmsV3Public = () => {
       }
 
       // direct copy from api routes, the client side fetch is preventing cache due to migration phase we want fresh data
-      const farms = farmsV3ConfigChainMap[chainId as ChainId]
+      const farms = legacyFarmsV3ConfigChainMap[chainId as ChainId]
 
       const commonPrice = await fetchCommonTokenUSDValue(priceHelperTokens[chainId ?? -1])
 

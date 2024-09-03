@@ -4,6 +4,7 @@ import { useSetAtom } from 'jotai'
 import { useCallback } from 'react'
 import { ApproveAndLockStatus, approveAndLockStatusAtom, cakeLockTxHashAtom } from 'state/vecake/atoms'
 import { useLockCakeData } from 'state/vecake/hooks'
+import { logGTMClickLockCakeEvent } from 'utils/customGTMEventTracking'
 import { isUserRejected } from 'utils/sentry'
 import { useLockApproveCallback } from '../useLockAllowance'
 import { useWriteIncreaseLockAmountCallback } from './useWriteIncreaseLockAmountCallback'
@@ -59,6 +60,9 @@ export const useWriteApproveAndLockCallback = (onDismiss?: () => void) => {
   const lockCake = useWriteLockCallback()
 
   return useCallback(async () => {
+    // Log GA event before locking CAKE
+    logGTMClickLockCakeEvent()
+
     await withApprove(lockCake)
   }, [withApprove, lockCake])
 }

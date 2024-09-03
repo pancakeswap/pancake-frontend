@@ -1,23 +1,22 @@
-import dayjs from 'dayjs'
-import groupBy from 'lodash/groupBy'
-import keyBy from 'lodash/keyBy'
-import { useAtom } from 'jotai'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { QUERY_SETTINGS_IMMUTABLE, SLOW_INTERVAL } from 'config/constants'
-import { UseQueryResult, useQueries, useQuery } from '@tanstack/react-query'
-import { publicClient } from 'utils/viem'
-import { masterChefV3ABI } from '@pancakeswap/v3-sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { Protocol, UNIVERSAL_FARMS, UniversalFarmConfig, masterChefV3Addresses } from '@pancakeswap/farms'
 import { masterChefAddresses } from '@pancakeswap/farms/src/const'
+import { masterChefV3ABI } from '@pancakeswap/v3-sdk'
+import { UseQueryResult, useQueries, useQuery } from '@tanstack/react-query'
 import { masterChefV2ABI } from 'config/abi/masterchefV2'
-import { ChainId } from '@pancakeswap/chains'
-import { Address } from 'viem/accounts'
+import { QUERY_SETTINGS_IMMUTABLE, SLOW_INTERVAL } from 'config/constants'
+import dayjs from 'dayjs'
+import { useAtom } from 'jotai'
+import groupBy from 'lodash/groupBy'
+import keyBy from 'lodash/keyBy'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { publicClient } from 'utils/viem'
 import { zeroAddress } from 'viem'
+import { Address } from 'viem/accounts'
 
+import { PoolInfo, StablePoolInfo, V2PoolInfo } from '../type'
 import { farmPoolsAtom } from './atom'
 import { fetchFarmPools, fetchPoolsTimeFrame, fetchV3PoolsStatusByChainId } from './fetcher'
-import { PoolInfo } from '../type'
-import { getUniversalBCakeWrapperForPool } from '../poolApr/fetcher'
 
 type UnwrapPromise<T> = T extends Promise<infer U> ? U : T
 type ArrayItemType<T> = T extends Array<infer U> ? U : T
@@ -156,8 +155,8 @@ type IPoolsStatusType = {
 
 export const useMultiChainV3PoolsStatus = (pools: UniversalFarmConfig[]) => {
   const v3Pools = useMemo(() => pools.filter((p) => p.protocol === Protocol.V3), [pools])
-  const poolsGourpByChains = useMemo(() => groupBy(v3Pools, 'chainId'), [v3Pools])
-  const poolsEntries = useMemo(() => Object.entries(poolsGourpByChains), [poolsGourpByChains])
+  const poolsGroupByChains = useMemo(() => groupBy(v3Pools, 'chainId'), [v3Pools])
+  const poolsEntries = useMemo(() => Object.entries(poolsGroupByChains), [poolsGroupByChains])
 
   const queries = poolsEntries.map(([chainId, poolList]) => ({
     queryKey: ['useMultiChainV3PoolsStatus', chainId, ...poolList.map((p) => p.lpAddress)],
@@ -232,21 +231,21 @@ type IPoolsTimeFrameType = {
 
 export const useMultiChainPoolsTimeFrame = (pools: UniversalFarmConfig[]) => {
   const v2Pools = useMemo(
-    () => pools.filter((p) => p.protocol === Protocol.V2 || p.protocol === Protocol.STABLE),
+    () =>
+      pools.filter((p) => p.protocol === Protocol.V2 || p.protocol === Protocol.STABLE) as Array<
+        V2PoolInfo | StablePoolInfo
+      >,
     [pools],
   )
-  const poolsGourpByChains = useMemo(() => groupBy(v2Pools, 'chainId'), [v2Pools])
-  const poolsEntries = useMemo(() => Object.entries(poolsGourpByChains), [poolsGourpByChains])
+  const poolsGroupByChains = useMemo(() => groupBy(v2Pools, 'chainId'), [v2Pools])
+  const poolsEntries = useMemo(() => Object.entries(poolsGroupByChains), [poolsGroupByChains])
 
   const queries = poolsEntries.map(([chainId_, poolList]) => {
     const chainId = Number(chainId_)
     return {
       queryKey: ['useMultiChainPoolTimeFrame', chainId, ...poolList.map((p) => p.lpAddress)],
       queryFn: () => {
-        const bCakeAddresses = poolList.map(
-          ({ lpAddress, protocol }) =>
-            getUniversalBCakeWrapperForPool({ lpAddress, chainId, protocol })?.bCakeWrapperAddress ?? zeroAddress,
-        )
+        const bCakeAddresses = poolList.map(({ bCakeWrapperAddress }) => bCakeWrapperAddress ?? zeroAddress)
         return fetchPoolsTimeFrame(bCakeAddresses, chainId)
       },
       enabled: !!chainId && !!poolList.length,

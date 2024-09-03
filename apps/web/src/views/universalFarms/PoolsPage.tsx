@@ -1,27 +1,27 @@
-import styled from 'styled-components'
+import { useIntersectionObserver, useTheme } from '@pancakeswap/hooks'
+import { useTranslation } from '@pancakeswap/localization'
+import { Button, InfoIcon, ISortOrder, SORT_ORDER, TableView, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { toTokenValueByCurrency } from '@pancakeswap/widgets-internal'
+import { useAllTokensByChainIds } from 'hooks/Tokens'
+import flatMap from 'lodash/flatMap'
+import groupBy from 'lodash/groupBy'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { useTranslation } from '@pancakeswap/localization'
-import groupBy from 'lodash/groupBy'
-import flatMap from 'lodash/flatMap'
-import { toTokenValueByCurrency } from '@pancakeswap/widgets-internal'
-import { useIntersectionObserver, useTheme } from '@pancakeswap/hooks'
-import { Button, InfoIcon, ISortOrder, SORT_ORDER, TableView, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { useAllTokensByChainIds } from 'hooks/Tokens'
 import { PoolSortBy } from 'state/farmsV4/atom'
 import { useExtendPools, useFarmPools, usePoolsApr } from 'state/farmsV4/hooks'
 import { getCombinedApr } from 'state/farmsV4/state/poolApr/utils'
 import type { PoolInfo } from 'state/farmsV4/state/type'
+import styled from 'styled-components'
 
 import {
   Card,
   CardBody,
   CardFooter,
   CardHeader,
+  getPoolDetailPageLink,
   IPoolsFilterPanelProps,
   ListView,
   PoolsFilterPanel,
-  getPoolDetailPageLink,
   useColumnConfig,
   useSelectedPoolTypes,
 } from './components'
@@ -137,7 +137,7 @@ export const PoolsPage = () => {
   )
 
   const getRowKey = useCallback((item: PoolInfo) => {
-    return [item.chainId, item.protocol, item.pid].join(':')
+    return [item.chainId, item.protocol, item.pid, item.lpAddress].join(':')
   }, [])
 
   const filteredData = useMemo(() => {

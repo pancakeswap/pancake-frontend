@@ -64,6 +64,10 @@ const StyledLi = styled.li`
     height: 6px;
     background: ${({ theme }) => theme.colors.text};
   }
+
+  @-moz-document url-prefix() {
+    padding-left: 16px; /* Apply padding-left: 16px in Firefox only */
+  }
 `
 
 type FarmV3ApyButtonProps = {

@@ -1,3 +1,5 @@
+import set from 'lodash/set'
+
 import { UniversalFarmConfig } from '../types'
 
 import { arbFarmConfig } from './arb'
@@ -13,8 +15,6 @@ import { bscTestnetFarmConfig } from './bscTestnet'
 import { polygonZkEVMTestnetFarmConfig } from './polygonZkEVMTestnet'
 import { zkSyncTestnetFarmConfig } from './zkSyncTestnet'
 
-export { UNIVERSAL_BCAKEWRAPPER_FARMS } from './bCakeWrapper'
-
 export const UNIVERSAL_FARMS: UniversalFarmConfig[] = [
   ...bscFarmConfig,
   ...ethereumFarmConfig,
@@ -25,6 +25,11 @@ export const UNIVERSAL_FARMS: UniversalFarmConfig[] = [
   ...baseFarmConfig,
   ...opBNBFarmConfig,
 ]
+
+export const UNIVERSAL_FARMS_MAP: Record<string, UniversalFarmConfig> = UNIVERSAL_FARMS.reduce((acc, farm) => {
+  set(acc, `${farm.chainId}:${farm.lpAddress}`, farm)
+  return acc
+}, {} as Record<string, UniversalFarmConfig>)
 
 export const UNIVERSAL_FARMS_WITH_TESTNET: UniversalFarmConfig[] = [
   ...UNIVERSAL_FARMS,

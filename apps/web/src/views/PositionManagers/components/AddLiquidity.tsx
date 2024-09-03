@@ -10,6 +10,7 @@ import { CurrencyInput } from 'components/CurrencyInput'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import { memo, useCallback, useMemo, useState } from 'react'
 import { styled } from 'styled-components'
+import { logGTMClickPositionManagerAddLiquidityEvent } from 'utils/customGTMEventTracking'
 import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
 import { Address } from 'viem'
 import { useBCakeBoostLimitAndLockInfo } from 'views/Farms/components/YieldBooster/hooks/bCakeV3/useBCakeV3Info'
@@ -272,8 +273,21 @@ export const AddLiquidity = memo(function AddLiquidity({
   ])
 
   const mintThenDeposit = useCallback(() => {
+    // Add GA tracking here with vaultName included
+    logGTMClickPositionManagerAddLiquidityEvent(`${currencyA.symbol}-${currencyB.symbol} ${vaultName}`)
+
     onStake?.(amountA, amountB, allowDepositToken0, allowDepositToken1, onDone)
-  }, [allowDepositToken0, allowDepositToken1, amountA, amountB, onDone, onStake])
+  }, [
+    allowDepositToken0,
+    allowDepositToken1,
+    amountA,
+    amountB,
+    onDone,
+    onStake,
+    currencyA.symbol,
+    currencyB.symbol,
+    vaultName,
+  ])
 
   const translationData = useMemo(
     () =>

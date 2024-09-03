@@ -1,29 +1,33 @@
-import { DeserializedFarmsState, DeserializedFarmUserData, supportedChainIdV2 } from '@pancakeswap/farms'
-import { getFarmConfig } from '@pancakeswap/farms/constants'
-import { fetchV3FarmsAvgInfo } from 'queries/farms'
+import {
+  DeserializedFarmsState,
+  DeserializedFarmUserData,
+  getLegacyFarmConfig,
+  supportedChainIdV2,
+} from '@pancakeswap/farms'
 import { useQuery } from '@tanstack/react-query'
 import { SLOW_INTERVAL } from 'config/constants'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useBCakeProxyContractAddress } from 'hooks/useBCakeProxyContractAddress'
+import { fetchV3FarmsAvgInfo } from 'queries/farms'
 import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { getMasterChefContract } from 'utils/contractHelpers'
-import { useBCakeProxyContractAddress } from 'hooks/useBCakeProxyContractAddress'
 
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { V2FarmWithoutStakedValue, V3FarmWithoutStakedValue } from 'state/farms/types'
-import {
-  farmSelector,
-  makeFarmFromPidSelector,
-  makeLpTokenPriceFromLpSymbolSelector,
-  makeUserFarmFromPidSelector,
-} from './selectors'
 import {
   fetchBCakeWrapperDataAsync,
   fetchBCakeWrapperUserDataAsync,
   fetchFarmsPublicDataAsync,
   fetchFarmUserDataAsync,
 } from '.'
+import {
+  farmSelector,
+  makeFarmFromPidSelector,
+  makeLpTokenPriceFromLpSymbolSelector,
+  makeUserFarmFromPidSelector,
+} from './selectors'
 
 export function useFarmsLength() {
   const { chainId } = useActiveChainId()
@@ -33,7 +37,7 @@ export function useFarmsLength() {
     queryFn: async () => {
       const mc = getMasterChefContract(undefined, chainId)
       if (!mc) {
-        const farmsConfig = await getFarmConfig(chainId)
+        const farmsConfig = await getLegacyFarmConfig(chainId)
         const maxPid = farmsConfig?.length ? Math.max(...farmsConfig?.map((farm) => farm.pid)) : undefined
         return maxPid ? maxPid + 1 : 0
       }
@@ -125,7 +129,7 @@ export const usePollFarmsWithUserData = () => {
       if (!chainId) {
         throw new Error('ChainId is not defined')
       }
-      const farmsConfig = await getFarmConfig(chainId)
+      const farmsConfig = await getLegacyFarmConfig(chainId)
 
       if (!farmsConfig) {
         throw new Error('Failed to fetch farm config')
@@ -152,7 +156,7 @@ export const usePollFarmsWithUserData = () => {
     queryKey: name,
 
     queryFn: async () => {
-      const farmsConfig = await getFarmConfig(chainId)
+      const farmsConfig = await getLegacyFarmConfig(chainId)
 
       if (!chainId || !farmsConfig || !account) return
       const pids = farmsConfig.map((farmToFetch) => farmToFetch.pid)

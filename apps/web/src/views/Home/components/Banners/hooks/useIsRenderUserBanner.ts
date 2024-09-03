@@ -1,11 +1,11 @@
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import useFarmsWithBalance from 'views/Home/hooks/useFarmsWithBalance'
+import { getLegacyFarmConfig } from '@pancakeswap/farms'
+import { legacyFarmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
+import { useQuery } from '@tanstack/react-query'
 import BigNumber from 'bignumber.js'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCakePrice } from 'hooks/useCakePrice'
 import { useMemo } from 'react'
-import { getFarmConfig } from '@pancakeswap/farms/constants'
-import { farmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
-import { useQuery } from '@tanstack/react-query'
+import useFarmsWithBalance from 'views/Home/hooks/useFarmsWithBalance'
 
 const useIsRenderUserBanner = () => {
   const { account, chainId } = useActiveWeb3React()
@@ -17,8 +17,8 @@ const useIsRenderUserBanner = () => {
   const { data: shouldRenderUserBanner } = useQuery({
     queryKey: ['shouldRenderUserBanner', account],
     queryFn: async () => {
-      const v2FarmsConfigSize = (await getFarmConfig(chainId))?.length || 0
-      const v3FarmsConfigSize = farmsV3ConfigChainMap[chainId]?.length || 0
+      const v2FarmsConfigSize = (await getLegacyFarmConfig(chainId))?.length || 0
+      const v3FarmsConfigSize = legacyFarmsV3ConfigChainMap[chainId]?.length || 0
       const totalFarmSize = v2FarmsConfigSize + v3FarmsConfigSize
       return Boolean(totalFarmSize)
     },

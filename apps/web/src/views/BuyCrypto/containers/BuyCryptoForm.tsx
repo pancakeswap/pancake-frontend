@@ -36,6 +36,7 @@ import { useBuyCryptoFormState } from 'state/buyCrypto/reducer'
 import { BuyCryptoSelector } from '../components/OnRampCurrencySelect'
 import { OnRampFlipButton } from '../components/OnRampFlipButton/OnRampFlipButton'
 import { PopOverScreenContainer } from '../components/PopOverScreen/PopOverScreen'
+import ProviderCampaign from '../components/ProviderCampaign/ProviderCampaign'
 import { ProviderGroupItem } from '../components/ProviderSelector/ProviderGroupItem'
 import { ProviderSelector } from '../components/ProviderSelector/ProviderSelector'
 import { TransactionFeeDetails } from '../components/TransactionFeeDetails/TransactionFeeDetails'
@@ -54,6 +55,7 @@ import { FormHeader } from './FormHeader'
 const EnableNotificationsTooltip = lazy(
   () => import('../components/EnableNotificationTooltip/EnableNotificationsTooltip'),
 )
+
 interface NotificationsOnboardPopOverProps {
   setShowNotificationsPopOver: Dispatch<SetStateAction<boolean>>
   showNotificationsPopOver: boolean
@@ -229,6 +231,8 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
           loading={isLoading}
           quotesError={quotesError}
         />
+
+        <ProviderCampaign />
         <Box>
           {Boolean(!inputError && !isInValidBtcAddress && !quotesError) && (
             <Suspense fallback={null}>

@@ -6,7 +6,7 @@ type Prettify<T> = {
   [K in keyof T]: T[K]
 } & object
 
-export type PoolInfo = Prettify<V2PoolInfo | V3PoolInfo | StablePoolInfo | V4BinPoolInfo>
+export type PoolInfo = Prettify<V2PoolInfo | StablePoolInfo | V3PoolInfo | V4BinPoolInfo>
 
 export type BasePoolInfo = {
   pid?: number
@@ -40,10 +40,14 @@ export type V3PoolInfo = BasePoolInfo & {
 
 export type V2PoolInfo = BasePoolInfo & {
   protocol: Protocol.V2
+  // V2 farming pools should have a bCakeWrapperAddress
+  bCakeWrapperAddress?: Address
 }
 
 export type StablePoolInfo = BasePoolInfo & {
   protocol: Protocol.STABLE
+  // Stable farming pools should have a bCakeWrapperAddress
+  bCakeWrapperAddress?: Address
 }
 
 export type V4BinPoolInfo = BasePoolInfo & {
