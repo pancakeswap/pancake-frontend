@@ -24,7 +24,7 @@ export function AffiliateExpiredModal() {
   const { t } = useTranslation()
   const { address } = useAccount()
   const expired = useAffiliateExpired(address)
-  const [ack, setACK] = useUserAcknowledgement('affiliate-referral-expired-v2')
+  const [ack, setACK] = useUserAcknowledgement('affiliate-referral-expired')
   const onConfirm = useCallback(() => setACK(true), [setACK])
 
   const [onOptionsConfirmModalPresent] = useModal(
@@ -39,17 +39,13 @@ export function AffiliateExpiredModal() {
           </Text>
           <Text mt="1.5rem">
             {t(
-              `Please be informed that the Affiliate who referred you and through whose referral link you signed up to trade is no longer part of PancakeSwap's Affiliate Program. As a result, effective immediately %time%, you will no longer receive any trading discounts from this Affiliate if they were previously enabled.`,
-              {
-                time: '5 Sep 2024',
-              },
+              `Please be informed that the Affiliate who referred you and through whose referral link you signed up to trade is no longer part of PancakeSwap's Affiliate Program. As a result, effective immediately June 12, 2024, you will no longer receive any trading discounts from this Affiliate if they were previously enabled.`,
             )}
           </Text>
           <Text mt="1.5rem">
             <Trans
               text={t(
-                `You can still access the affiliate claims dashboard until %time%. If you have any outstanding discounts unclaimed, please %claim% them before this date. After %time%, any unclaimed discounts will be forfeited, and you will no longer have access to the affiliate claims dashboard.`,
-                { time: 'Oct 31, 2024' },
+                `You can still access the affiliate claims dashboard until July 31, 2024. If you have any outstanding discounts unclaimed, please %claim% them before this date. After July 31, 2024, any unclaimed discounts will be forfeited, and you will no longer have access to the affiliate claims dashboard.`,
               )}
               data={{
                 claim: (
