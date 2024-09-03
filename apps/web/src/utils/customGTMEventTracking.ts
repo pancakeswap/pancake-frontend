@@ -14,6 +14,9 @@ export enum GTMEvent {
   WalletConnect = 'walletConnect',
   Web3WalletView = 'Web3WalletView',
   MenuClick = 'menuClick',
+  StakePool = 'stakePool',
+  PositionManagerAddLiquidity = 'positionManagerAddLiquidity',
+  LockCake = 'lockCake',
 }
 
 export enum GTMCategory {
@@ -25,6 +28,9 @@ export enum GTMCategory {
   UnStakeFarm = 'unStakeFarm',
   WalletConnect = 'WalletConnect',
   Web3WalletView = 'Web3WalletView',
+  Pool = 'Pool',
+  PositionManager = 'PositionManager',
+  CakeStaking = 'CakeStaking',
 }
 
 export enum GTMAction {
@@ -42,6 +48,11 @@ export enum GTMAction {
   ClickUnStakeFarmButton = 'Click UnStake Farm Button',
   ClickWalletConnectButton = 'Click Wallet Connect and Connected',
   Web3WalletView = 'Web3 Wallet Page View',
+  ClickStakePoolButton = 'Click Stake Pool Button',
+  ClickEnablePoolButton = 'Click Enable Pool Button',
+  ClickUnstakePoolButton = 'Click Unstake Pool Button',
+  ClickAddLiquidityPositionManagerButton = 'Click Add Liquidity Position Manager Button',
+  ClickLockCakeButton = 'Click Lock CAKE Button',
 }
 
 interface CustomGTMDataLayer {
@@ -192,5 +203,54 @@ export const logMenuClick = (path: string) => {
   window?.dataLayer?.push({
     event: GTMEvent.MenuClick,
     label: path,
+  })
+}
+
+export const logGTMClickStakePoolEvent = (poolName?: string) => {
+  console.info('---StakePool---')
+  window?.dataLayer?.push({
+    event: GTMEvent.StakePool,
+    action: GTMAction.ClickStakePoolButton,
+    category: GTMCategory.Pool,
+    label: poolName,
+  })
+}
+
+export const logGTMClickEnablePoolEvent = (poolName?: string) => {
+  console.info('---EnablePool---')
+  window?.dataLayer?.push({
+    event: GTMEvent.StakePool,
+    action: GTMAction.ClickEnablePoolButton,
+    category: GTMCategory.Pool,
+    label: poolName,
+  })
+}
+
+export const logGTMClickUnstakePoolEvent = (poolName?: string) => {
+  console.info('---UnstakePool---')
+  window?.dataLayer?.push({
+    event: GTMEvent.StakePool,
+    action: GTMAction.ClickUnstakePoolButton,
+    category: GTMCategory.Pool,
+    label: poolName,
+  })
+}
+
+export const logGTMClickPositionManagerAddLiquidityEvent = (tokenPairAndVault?: string) => {
+  console.info('---PositionManagerAddLiquidity---')
+  window?.dataLayer?.push({
+    event: GTMEvent.PositionManagerAddLiquidity,
+    action: GTMAction.ClickAddLiquidityPositionManagerButton,
+    category: GTMCategory.PositionManager,
+    label: tokenPairAndVault,
+  })
+}
+
+export const logGTMClickLockCakeEvent = () => {
+  console.info('---LockCake---')
+  window?.dataLayer?.push({
+    event: GTMEvent.LockCake,
+    action: GTMAction.ClickLockCakeButton,
+    category: GTMCategory.CakeStaking,
   })
 }

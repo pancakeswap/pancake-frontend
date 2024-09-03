@@ -34,6 +34,8 @@ import { VaultPosition, getVaultPosition } from 'utils/cakePool'
 import useUserDataInVaultPresenter from 'views/Pools/components/LockedPool/hooks/useUserDataInVaultPresenter'
 import { useProfileRequirement } from 'views/Pools/hooks/useProfileRequirement'
 
+import { useCallback } from 'react'
+import { logGTMClickEnablePoolEvent } from 'utils/customGTMEventTracking'
 import { VeCakeButton } from 'views/CakeStaking/components/SyrupPool/VeCakeButton'
 import { useIsUserDelegated } from 'views/CakeStaking/hooks/useIsUserDelegated'
 import { useApprovePool, useCheckVaultApprovalStatus, useVaultApprove } from '../../../hooks/useApprove'
@@ -86,7 +88,16 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   const { isVaultApproved, setLastUpdated } = useCheckVaultApprovalStatus(vaultKey)
   const { handleApprove: handleVaultApprove, pendingTx: pendingVaultTx } = useVaultApprove(vaultKey, setLastUpdated)
 
-  const handleApprove = vaultKey ? handleVaultApprove : handlePoolApprove
+  const handleApprove = useCallback(() => {
+    if (vaultKey) {
+      handleVaultApprove()
+    } else {
+      handlePoolApprove()
+    }
+
+    logGTMClickEnablePoolEvent(stakingToken.symbol)
+  }, [handlePoolApprove, handleVaultApprove, stakingToken.symbol, vaultKey])
+
   const pendingTx = vaultKey ? pendingVaultTx : pendingPoolTx
 
   const isBnbPool = poolCategory === PoolCategory.BINANCE

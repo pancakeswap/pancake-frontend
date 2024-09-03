@@ -1,5 +1,11 @@
 # @pancakeswap/tokens
 
+## 0.6.25
+
+### Patch Changes
+
+- 6d4ecf0: List farm, pool, gauges
+
 ## 0.6.24
 
 ### Patch Changes

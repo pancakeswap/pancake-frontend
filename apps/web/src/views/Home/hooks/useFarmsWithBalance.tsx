@@ -1,25 +1,25 @@
+import { getLegacyFarmConfig } from '@pancakeswap/farms'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import { useQuery } from '@tanstack/react-query'
 import BigNumber from 'bignumber.js'
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import { masterChefV2ABI } from 'config/abi/masterchefV2'
+import { v2BCakeWrapperABI } from 'config/abi/v2BCakeWrapper'
 import { FAST_INTERVAL } from 'config/constants'
-import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { SerializedFarmConfig, SerializedFarmPublicData } from 'config/constants/types'
-import { getFarmConfig } from '@pancakeswap/farms/constants'
-import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useBCakeProxyContract, useCake, useMasterchef, useMasterchefV3 } from 'hooks/useContract'
 import { useV3TokenIdsByAccount } from 'hooks/v3/useV3Positions'
 import { useCallback, useMemo } from 'react'
 import { useFarmsLength } from 'state/farms/hooks'
 import { useStakedPositionsByUser } from 'state/farmsV3/hooks'
+import { getV2SSBCakeWrapperContract } from 'utils/contractHelpers'
 import { verifyBscNetwork } from 'utils/verifyBscNetwork'
 import { publicClient } from 'utils/wagmi'
-import { useQuery } from '@tanstack/react-query'
-import { v2BCakeWrapperABI } from 'config/abi/v2BCakeWrapper'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useWalletClient } from 'wagmi'
-import { getV2SSBCakeWrapperContract } from 'utils/contractHelpers'
-import splitProxyFarms from '../../Farms/components/YieldBooster/helpers/splitProxyFarms'
 import { useBCakeProxyContractAddress } from '../../../hooks/useBCakeProxyContractAddress'
+import splitProxyFarms from '../../Farms/components/YieldBooster/helpers/splitProxyFarms'
 
 export type FarmWithBalance = {
   balance: BigNumber
@@ -130,7 +130,7 @@ const useFarmsWithBalance = () => {
 
     queryFn: async () => {
       if (!account || !poolLength || !chainId) return undefined
-      const farmsConfig = await getFarmConfig(chainId)
+      const farmsConfig = await getLegacyFarmConfig(chainId)
       const farmsCanFetch = farmsConfig?.filter((f) => poolLength > f.pid)
       const normalBalances = await getFarmsWithBalances(farmsCanFetch ?? [], account, masterChefContract)
       if (proxyAddress && farmsCanFetch?.length && verifyBscNetwork(chainId)) {

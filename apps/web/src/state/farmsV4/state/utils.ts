@@ -67,7 +67,6 @@ export const parseFarmPools = (
       fee24hUsd: pool.feeUSD24h as `${number}`,
       liquidity: pool.liquidity,
       feeTier,
-      // @todo @ChefJerry get by protocols
       feeTierBase: 1_000_000,
       isFarming: !!options?.isFarming,
     } satisfies PoolInfo

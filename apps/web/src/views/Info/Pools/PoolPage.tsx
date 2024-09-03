@@ -20,6 +20,7 @@ import {
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 
 import { getChainName } from '@pancakeswap/chains'
+import { getLegacyFarmConfig } from '@pancakeswap/farms'
 import { useQuery } from '@tanstack/react-query'
 import BigNumber from 'bignumber.js'
 import Page from 'components/Layout/Page'
@@ -111,7 +112,7 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
   const stableAPR = useStableSwapAPR(isStableSwap ? poolData?.lpAddress : undefined)
   const { data: farmConfig } = useQuery({
     queryKey: [`info/getFarmConfig/${chainId}`],
-    queryFn: () => getFarmConfig(chainId),
+    queryFn: () => getLegacyFarmConfig(chainId),
     enabled: Boolean(isStableSwap && chainId),
     refetchOnReconnect: false,
     refetchOnMount: false,
@@ -121,8 +122,8 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
   const feeDisplay = useMemo(() => {
     if (isStableSwap && farmConfig) {
       const stableLpFee =
-        farmConfig?.default?.find((d: any) => d.stableSwapAddress?.toLowerCase() === routeAddress.toLowerCase())
-          ?.stableLpFee ?? 0
+        farmConfig?.find((d: any) => d.stableSwapAddress?.toLowerCase() === routeAddress.toLowerCase())?.stableLpFee ??
+        0
       return new BigNumber(stableLpFee)
         .times((showWeeklyData ? poolData?.volumeUSDWeek : poolData?.volumeUSD) ?? 0)
         .toNumber()

@@ -30,7 +30,7 @@ import { usePoolByChainId } from 'hooks/v3/usePools'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useAccountPositionDetailByPool, useV2PoolsLength, useV3PoolsLength } from 'state/farmsV4/hooks'
 import { PositionDetail, StableLPDetail, V2LPDetail } from 'state/farmsV4/state/accountPositions/type'
-import { PoolInfo } from 'state/farmsV4/state/type'
+import { PoolInfo, StablePoolInfo, V2PoolInfo } from 'state/farmsV4/state/type'
 import { useChainIdByQuery } from 'state/info/hooks'
 import styled from 'styled-components'
 import { useFarmsV3BatchHarvest } from 'views/Farms/hooks/v3/useFarmV3Actions'
@@ -231,7 +231,7 @@ const MyPositionsInner: React.FC<{ poolInfo: PoolInfo }> = ({ poolInfo }) => {
             ) : null}
             {['v2', 'stable'].includes(poolInfo.protocol) ? (
               <MyV2OrStablePositions
-                poolInfo={poolInfo}
+                poolInfo={poolInfo as V2PoolInfo | StablePoolInfo}
                 setCount={setCount}
                 setTotalTvlUsd={setTotalLiquidityUSD}
                 setHandleHarvestAll={setHandleHarvestAll}
@@ -399,7 +399,7 @@ const MyV3Positions: React.FC<{
 }
 
 const MyV2OrStablePositions: React.FC<{
-  poolInfo: PoolInfo
+  poolInfo: V2PoolInfo | StablePoolInfo
   setCount: (count: number) => void
   setTotalTvlUsd: (value: string) => void
   setHandleHarvestAll: (fn: () => () => Promise<void>) => void
@@ -422,7 +422,7 @@ const MyV2OrStablePositions: React.FC<{
     if (!data) return 0
     return [data.nativeBalance.greaterThan('0'), data.farmingBalance.greaterThan('0')].filter(Boolean).length
   }, [data])
-  const { onHarvest } = useV2FarmActions(poolInfo.lpAddress, chainId, poolInfo.protocol)
+  const { onHarvest } = useV2FarmActions(poolInfo.lpAddress, poolInfo.bCakeWrapperAddress)
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError } = useCatchTxError()
   const handleHarvest = useCallback(() => {

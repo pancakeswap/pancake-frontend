@@ -1,5 +1,4 @@
 import { ChainId } from '@pancakeswap/chains'
-import { getFarmConfig } from '@pancakeswap/farms/constants'
 import { getSourceChain, isIfoSupported } from '@pancakeswap/ifos'
 import { getLivePoolsConfig } from '@pancakeswap/pools'
 import { Token } from '@pancakeswap/sdk'
@@ -11,6 +10,7 @@ import { batch, useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { useAccount } from 'wagmi'
 
+import { getLegacyFarmConfig } from '@pancakeswap/farms'
 import { useQuery } from '@tanstack/react-query'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -43,7 +43,7 @@ import {
 
 // Only fetch farms for live pools
 const getActiveFarms = async (chainId: number) => {
-  const farmsConfig = (await getFarmConfig(chainId)) || []
+  const farmsConfig = (await getLegacyFarmConfig(chainId)) || []
   const livePools = getLivePoolsConfig(chainId) || []
   const lPoolAddresses = livePools
     .filter(({ sousId }) => sousId !== 0)

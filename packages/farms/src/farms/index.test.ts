@@ -1,51 +1,115 @@
 import { ChainId, Pair } from '@pancakeswap/sdk'
 import { Pool } from '@pancakeswap/v3-sdk'
 import groupBy from 'lodash/groupBy'
-import { Address, createPublicClient, http, isAddressEqual, parseAbiItem } from 'viem'
-import { arbitrum, bsc } from 'viem/chains'
+import { createPublicClient, fallback, getAddress, http, parseAbiItem, PublicClient } from 'viem'
+import * as CHAINS from 'viem/chains'
 import { describe, expect, test } from 'vitest'
-import { UNIVERSAL_BCAKEWRAPPER_FARMS, UNIVERSAL_FARMS } from '.'
-import { BCakeWrapperFarmConfig, UniversalFarmConfigV3 } from '../types'
+import { UNIVERSAL_FARMS } from '.'
+import { supportedChainIdV4 } from '../const'
+import { UniversalFarmConfig, UniversalFarmConfigV3 } from '../types'
 
-const bscClient = createPublicClient({
-  chain: bsc,
-  transport: http(),
-})
-const arbClient = createPublicClient({
-  chain: arbitrum,
-  transport: http(),
-})
+const PUBLIC_NODES: Record<string, string[]> = {
+  [ChainId.ARBITRUM_ONE]: [
+    CHAINS.arbitrum.rpcUrls.default.http[0],
+    'https://arbitrum-one.publicnode.com',
+    'https://arbitrum.llamarpc.com',
+  ],
+  [ChainId.ETHEREUM]: [
+    CHAINS.mainnet.rpcUrls.default.http[0],
+    'https://ethereum.publicnode.com',
+    'https://eth.llamarpc.com',
+  ],
+}
+
+const getTestLpSymbol = (farm: UniversalFarmConfig) => {
+  return `${farm.chainId}:${farm.protocol}:${farm.token0.symbol}/${farm.token1.symbol}${
+    farm.protocol === 'v3' ? ` fee ${farm.feeAmount}` : ''
+  }`
+}
+
+const publicClient: Record<string, PublicClient> = supportedChainIdV4.reduce((acc, chainId) => {
+  const node = PUBLIC_NODES[chainId]
+  return {
+    ...acc,
+    [chainId]: createPublicClient({
+      chain: Object.values(CHAINS).find((chain) => chain.id === Number(chainId)),
+      transport: node ? fallback(node.map((rpc: string) => http(rpc))) : http(),
+    }) as PublicClient,
+  }
+}, {} as Record<string, PublicClient>)
 
 describe.concurrent('Universal Farms config', () => {
-  test('pid/lpAddress should be unique', () => {
+  test('lpAddress should be unique', () => {
     const configByChains = groupBy(UNIVERSAL_FARMS, 'chainId')
 
     for (const [chainId, config] of Object.entries(configByChains)) {
       config.forEach((farm, index) => {
-        const duplicatePid = config.filter((f, i) => f.pid === farm.pid && i !== index && f.protocol === farm.protocol)
-        expect(
-          duplicatePid,
-          `Duplicate pid ${farm.pid}:${farm.protocol}:${farm.lpAddress} on chain ${chainId}`,
-        ).toEqual([])
         const duplicateLp = config.filter(
           (f, i) => f.lpAddress === farm.lpAddress && i !== index && f.protocol === farm.protocol,
         )
-        expect(
-          duplicateLp,
-          `Duplicate lpAddress ${farm.pid}:${farm.protocol}:${farm.lpAddress} on chain ${chainId}`,
-        ).toEqual([])
+        expect(duplicateLp, `Duplicate lpAddress ${getTestLpSymbol(farm)} on chain ${chainId}`).toEqual([])
       })
     }
   })
 
-  test('stable lpAddress should be correct', async () => {
+  test('v3 pid should be unique', () => {
+    const configByChains = groupBy(UNIVERSAL_FARMS, 'chainId')
+
+    for (const [chainId, config] of Object.entries(configByChains)) {
+      const v3Config = config.filter((farm) => farm.protocol === 'v3')
+      v3Config.forEach((farm, index) => {
+        const duplicatePid = v3Config.filter((f, i) => f.pid === farm.pid && i !== index)
+        expect(duplicatePid, `Duplicate v3 pid ${getTestLpSymbol(farm)} on chain ${chainId}`).toEqual([])
+      })
+    }
+  })
+
+  test('v2/ss bCakeWrapperAddress should be unique', () => {
+    const configByChains = groupBy(UNIVERSAL_FARMS, 'chainId')
+
+    for (const [chainId, config] of Object.entries(configByChains)) {
+      const v2Config = config.filter((farm) => farm.protocol === 'v2' || farm.protocol === 'stable')
+      v2Config.forEach((farm, index) => {
+        const duplicateBCake = v2Config.filter(
+          (f, i) => f.bCakeWrapperAddress === farm.bCakeWrapperAddress && i !== index,
+        )
+        expect(duplicateBCake, `Duplicate bCakeWrapperAddress ${getTestLpSymbol(farm)} on chain ${chainId}`).toEqual([])
+      })
+    }
+  })
+
+  test('v2/ss bCakeWrapperAddress should be correct', async () => {
+    const configByChains = groupBy(UNIVERSAL_FARMS, 'chainId')
+
+    for await (const [chainId, configs_] of Object.entries(configByChains)) {
+      const client = publicClient[chainId]
+      const configs = configs_.filter((farm) => farm.protocol === 'v2' || farm.protocol === 'stable')
+
+      const lpAddressCalls = configs.map((farm) => ({
+        address: farm.bCakeWrapperAddress,
+        functionName: 'stakedToken',
+        abi: [parseAbiItem('function stakedToken() view returns (address)')],
+      }))
+      const lpAddresses = await client.multicall({
+        contracts: lpAddressCalls,
+        allowFailure: false,
+      })
+      configs.forEach((farm, index) => {
+        expect(getAddress(lpAddresses[index]), `wrong bCakeWrapperAddress ${getTestLpSymbol(farm)}`).toEqual(
+          farm.lpAddress,
+        )
+      })
+    }
+  })
+
+  test('stable lpAddress/stableSwapAddress should be correct', async () => {
     const ssFarms = groupBy(
       UNIVERSAL_FARMS.filter((farm) => farm.protocol === 'stable'),
       'chainId',
     )
 
     for await (const [chainId, farms] of Object.entries(ssFarms)) {
-      const client = Number(chainId) === ChainId.BSC ? bscClient : arbClient
+      const client = publicClient[chainId]
 
       const minterCalls = farms.map((farm) => ({
         address: farm.lpAddress,
@@ -57,6 +121,11 @@ describe.concurrent('Universal Farms config', () => {
         allowFailure: false,
       })
       expect(minters.length).toBe(farms.length)
+      minters.forEach((minter, index) => {
+        expect(getAddress(minter), `wrong stableSwapAddress, ${getTestLpSymbol(farms[index])}`).toEqual(
+          farms[index].stableSwapAddress,
+        )
+      })
       const coinsCall = minters.reduce((calls, minter) => {
         return [
           ...calls,
@@ -81,17 +150,13 @@ describe.concurrent('Universal Farms config', () => {
       farms.forEach((farm, index) => {
         const token0 = coins[index * 2]
         const token1 = coins[index * 2 + 1]
-        expect(token0, `wrong stable pool coin0, ${farm.chainId}:${farm.pid}:${farm.lpAddress}`).toEqual(
-          farm.token0.address,
-        )
-        expect(token1, `wrong stable pool coin1, ${farm.chainId}:${farm.pid}:${farm.lpAddress}`).toEqual(
-          farm.token1.address,
-        )
+        expect(token0, `wrong stable pool coin0, ${getTestLpSymbol(farm)}`).toEqual(farm.token0.address)
+        expect(token1, `wrong stable pool coin1, ${getTestLpSymbol(farm)}`).toEqual(farm.token1.address)
       })
     }
   })
 
-  test('v2/v3 lpAddress should be correct', async () => {
+  test('(v2 lpAddress) & (v3 lpAddress, feeAmount) should be correct', async () => {
     const othersFarms = groupBy(
       UNIVERSAL_FARMS.filter((farm) => farm.protocol !== 'stable'),
       'protocol',
@@ -102,10 +167,9 @@ describe.concurrent('Universal Farms config', () => {
           protocol === 'v2'
             ? Pair.getAddress(farm.token0, farm.token1)
             : Pool.getAddress(farm.token0, farm.token1, (farm as UniversalFarmConfigV3).feeAmount)
-        expect(
-          lpAddress,
-          `Wrong lpAddress for farm ${farm.chainId}:${farm.pid}:${farm.protocol}:${farm.lpAddress}, expected ${lpAddress}`,
-        ).toBe(farm.lpAddress)
+        expect(lpAddress, `Wrong lpAddress for farm ${getTestLpSymbol(farm)}, expected ${lpAddress}`).toBe(
+          farm.lpAddress,
+        )
       })
     }
   })
@@ -117,61 +181,11 @@ describe.concurrent('Universal Farms config', () => {
       expect(
         farm.token0.sortsBefore(farm.token1),
         `
-Wrong token order for farm ${farm.pid}:${farm.protocol}:${farm.lpAddress}:
+Wrong token order for farm ${getTestLpSymbol(farm)}:
 token0: ${farm.token0.address}
 token1: ${farm.token1.address}
         `,
       ).toBe(true)
     }
-  })
-})
-
-describe('Universal bCakeWrapper farms config', () => {
-  const getMatchedFarmConfig = (bCakeFarmConfig: BCakeWrapperFarmConfig) => {
-    return UNIVERSAL_FARMS.find((farm) => {
-      return farm.chainId === bCakeFarmConfig.chainId && farm.lpAddress === bCakeFarmConfig.lpAddress
-    })
-  }
-
-  test('bCakeWrapper farms should match with v2/ss farms', async () => {
-    const configByChainId = groupBy(UNIVERSAL_BCAKEWRAPPER_FARMS, 'chainId')
-    const tokens: Address[] = []
-    for await (const [chainId, farms] of Object.entries(configByChainId)) {
-      const client = Number(chainId) === ChainId.BSC ? bscClient : arbClient
-
-      const tokensCalls = farms.reduce((calls, farm) => {
-        return [
-          ...calls,
-          // {
-          //   address: farm.bCakeWrapperAddress,
-          //   functionName: 'rewardToken',
-          //   abi: [parseAbiItem('function rewardToken() view returns (address)')],
-          // },
-          {
-            address: farm.bCakeWrapperAddress,
-            functionName: 'stakedToken',
-            abi: [parseAbiItem('function stakedToken() view returns (address)')],
-          },
-        ]
-      }, [] as unknown[])
-
-      tokens.push(
-        ...((await client.multicall({
-          contracts: tokensCalls as any,
-          allowFailure: false,
-        })) as Address[]),
-      )
-    }
-
-    UNIVERSAL_BCAKEWRAPPER_FARMS.forEach((bCakeFarmConfig, index) => {
-      const matchedFarmConfig = getMatchedFarmConfig(bCakeFarmConfig)
-      expect(
-        matchedFarmConfig,
-        `No matched farm config for bCakeWrapper farm ${bCakeFarmConfig.lpAddress}`,
-      ).toBeDefined()
-      const stakingToken = tokens[index]
-
-      expect(isAddressEqual(stakingToken, matchedFarmConfig!.lpAddress)).toBe(true)
-    })
   })
 })

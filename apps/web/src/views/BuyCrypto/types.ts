@@ -79,7 +79,7 @@ export type UseMutationReturnType<data = unknown, error = Error, variables = voi
 export type ProviderQuote = {
   providerFee: number
   networkFee: number
-  pancakeFee: number
+  pancakeFee
   quote: number
   amount: number
   fiatCurrency: string

@@ -4,6 +4,7 @@ import { getAddress } from 'viem'
 import { SerializedFarmConfig } from '..'
 import { defineFarmV3Configs } from '../src/defineFarmV3Configs'
 
+/** @deprecated */
 export const farmsV3 = defineFarmV3Configs([
   {
     pid: 1,

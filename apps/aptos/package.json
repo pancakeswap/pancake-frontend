@@ -46,7 +46,7 @@
     "react-dom": "^18.2.0",
     "react-window": "^1.8.7",
     "styled-components": "6.0.7",
-    "swiper": "^11.0.5"
+    "swiper": "^11.1.12"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "13.0.7",

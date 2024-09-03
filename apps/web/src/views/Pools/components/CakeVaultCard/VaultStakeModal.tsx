@@ -12,10 +12,10 @@ import {
   Text,
   useToast,
 } from '@pancakeswap/uikit'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { Pool } from '@pancakeswap/widgets-internal'
 import { useCallback, useMemo, useState } from 'react'
 import { styled } from 'styled-components'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 
 import { useTranslation } from '@pancakeswap/localization'
 import { useAppDispatch } from 'state'
@@ -41,6 +41,7 @@ import { VaultKey } from 'state/types'
 import { useCheckVaultApprovalStatus, useVaultApprove } from 'views/Pools/hooks/useApprove'
 import useWithdrawalFeeTimer from 'views/Pools/hooks/useWithdrawalFeeTimer'
 
+import { logGTMClickStakePoolEvent, logGTMClickUnstakePoolEvent } from 'utils/customGTMEventTracking'
 import { MIN_LOCK_AMOUNT, convertCakeToShares } from '../../helpers'
 import { VaultRoiCalculatorModal } from '../Vault/VaultRoiCalculatorModal'
 import FeeSummary from './FeeSummary'
@@ -190,6 +191,8 @@ const VaultStakeModal: React.FC<React.PropsWithChildren<VaultStakeModalProps>> =
         dispatch(fetchCakeVaultUserData({ account, chainId }))
       }
     }
+
+    logGTMClickUnstakePoolEvent(stakingToken.symbol)
   }
 
   const handleDeposit = async (lockDuration = 0) => {
@@ -213,6 +216,8 @@ const VaultStakeModal: React.FC<React.PropsWithChildren<VaultStakeModalProps>> =
         dispatch(fetchCakeVaultUserData({ account, chainId }))
       }
     }
+
+    logGTMClickStakePoolEvent(stakingToken.symbol)
   }
 
   const handleConfirmClick = async () => {

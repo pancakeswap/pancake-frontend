@@ -1,5 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
-import { getFarmConfig } from '@pancakeswap/farms/constants'
+import { getLegacyFarmConfig } from '@pancakeswap/farms'
 import { ERC20Token, Pair } from '@pancakeswap/sdk'
 import { deserializeToken } from '@pancakeswap/token-lists'
 import { useFeeData } from '@pancakeswap/wagmi'
@@ -391,7 +391,7 @@ export function useTrackedTokenPairs(): [ERC20Token, ERC20Token][] {
     queryKey: ['track-farms-pairs', chainId],
 
     queryFn: async () => {
-      const farms = await getFarmConfig(chainId)
+      const farms = await getLegacyFarmConfig(chainId)
 
       const fPairs: [ERC20Token, ERC20Token][] | undefined = farms
         ?.filter((farm) => farm.pid !== 0)
