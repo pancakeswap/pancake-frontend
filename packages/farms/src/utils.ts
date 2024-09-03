@@ -17,9 +17,13 @@ export function isActiveV3Farm(farm: FarmV3Data, poolLength: number) {
   return farm.pid !== 0 && farm.multiplier !== '0X' && poolLength && poolLength >= farm.pid
 }
 
-type LegacyFarmConfig = SerializedFarmConfig & { chainId: ChainId; version: 2 | 3 }
-type LegacyStableFarmConfig = SerializedStableFarmConfig & { chainId: ChainId; version: 2 | 3 }
-type LegacyClassicFarmConfig = SerializedClassicFarmConfig & { chainId: ChainId; version: 2 | 3 }
+type LegacyFarmConfig = Omit<SerializedFarmConfig, 'pid'> & { chainId: ChainId; version: 2 | 3 } & { pid?: number }
+type LegacyStableFarmConfig = Omit<SerializedStableFarmConfig, 'pid'> & { chainId: ChainId; version: 2 | 3 } & {
+  pid?: number
+}
+type LegacyClassicFarmConfig = Omit<SerializedClassicFarmConfig, 'pid'> & { chainId: ChainId; version: 2 | 3 } & {
+  pid?: number
+}
 type LegacyV3FarmConfig = ComputedFarmConfigV3 & { chainId: ChainId; version: 2 | 3 }
 export function formatUniversalFarmToSerializedFarm(farms: UniversalFarmConfig[]): Array<LegacyFarmConfig> {
   return farms
@@ -51,8 +55,6 @@ const formatStableUniversalFarmToSerializedFarm = (
     return undefined
   }
 
-  if (!pid) return undefined
-
   return {
     pid,
     lpAddress,
@@ -71,8 +73,6 @@ const formatStableUniversalFarmToSerializedFarm = (
 
 const formatV2UniversalFarmToSerializedFarm = (farm: UniversalFarmConfigV2): LegacyClassicFarmConfig | undefined => {
   const { chainId, pid, bCakeWrapperAddress, lpAddress, token0, token1 } = farm
-
-  if (!pid) return undefined
 
   return {
     pid,
