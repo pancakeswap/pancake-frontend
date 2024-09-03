@@ -17,6 +17,7 @@ export enum GTMEvent {
   StakePool = 'stakePool',
   PositionManagerAddLiquidity = 'positionManagerAddLiquidity',
   LockCake = 'lockCake',
+  BuyLotteryTickets = 'buyLotteryTickets',
 }
 
 export enum GTMCategory {
@@ -31,6 +32,7 @@ export enum GTMCategory {
   Pool = 'Pool',
   PositionManager = 'PositionManager',
   CakeStaking = 'CakeStaking',
+  Lottery = 'Lottery',
 }
 
 export enum GTMAction {
@@ -53,6 +55,7 @@ export enum GTMAction {
   ClickUnstakePoolButton = 'Click Unstake Pool Button',
   ClickAddLiquidityPositionManagerButton = 'Click Add Liquidity Position Manager Button',
   ClickLockCakeButton = 'Click Lock CAKE Button',
+  ClickBuyLotteryTicketsButton = 'Click Buy Lottery Tickets Button',
 }
 
 interface CustomGTMDataLayer {
@@ -252,5 +255,15 @@ export const logGTMClickLockCakeEvent = () => {
     event: GTMEvent.LockCake,
     action: GTMAction.ClickLockCakeButton,
     category: GTMCategory.CakeStaking,
+  })
+}
+
+export const logGTMBuyLotteryTicketsEvent = (numberOfTickets: string) => {
+  console.info('---BuyLotteryTickets---')
+  window?.dataLayer?.push({
+    event: GTMEvent.BuyLotteryTickets,
+    action: GTMAction.ClickBuyLotteryTicketsButton,
+    category: GTMCategory.Lottery,
+    label: `Number of tickets: ${numberOfTickets}`,
   })
 }
