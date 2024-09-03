@@ -29,6 +29,7 @@ const handler = async (req, res) => {
     method: 'POST',
     headers: {
       Authorization: req?.headers?.authorization as string,
+      'x-secure-token': process.env.TASK_STATUS_TOKEN as string,
       'Content-Type': 'application/json',
     },
   })
