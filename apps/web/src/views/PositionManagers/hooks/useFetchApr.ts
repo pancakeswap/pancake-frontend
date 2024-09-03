@@ -103,12 +103,14 @@ export const useFetchApr = (timeWindows: number[]): AprData => {
           }),
         })
 
-        const result: AprDataInfo[] = await response.json()
-        return result
+        if (response.ok) {
+          const result = await response.json()
+          return Array.isArray(result) ? (result as AprDataInfo[]) : []
+        }
       } catch (error) {
         console.error(`Fetch fetch APR API Error: ${error}`)
-        return []
       }
+      return []
     },
 
     enabled: supportedChain,
