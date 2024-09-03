@@ -2,9 +2,9 @@
 /* eslint-disable no-restricted-syntax */
 import fs from 'fs'
 import path from 'path'
-import bscFarms from '../constants/bsc'
-import bscTestnetFarms from '../constants/bscTestnet'
-import ethFarms from '../constants/eth'
+import bscFarms from '../src/farms/bsc'
+import bscTestnetFarms from '../src/farms/bscTestnet'
+import ethFarms from '../src/farms/eth'
 
 import lpHelpers1 from '../constants/priceHelperLps/1'
 import lpHelpers56 from '../constants/priceHelperLps/56'
