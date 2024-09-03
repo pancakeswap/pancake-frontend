@@ -155,6 +155,8 @@ export const chainIdToTransakNetworkId: { [id: number]: string } = {
 export const chainIdToTopperNetworkId: { [id: number]: string } = {
   [OnRampChainId.ETHEREUM]: 'ethereum',
   [OnRampChainId.ARBITRUM_ONE]: 'arbitrum',
+  [OnRampChainId.BSC]: 'bnb-smart-chain',
+  [OnRampChainId.BASE]: 'base',
   0: 'bitcoin',
 }
 
