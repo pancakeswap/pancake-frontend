@@ -101,7 +101,7 @@ export const usePoolTypes = () => {
 export const useSelectedPoolTypes = (selectedIndex: number): Protocol[] => {
   const allTypes = usePoolTypes()
   return useMemo(() => {
-    if (selectedIndex === 0) {
+    if (selectedIndex === 0 || selectedIndex > allTypes.length - 1) {
       return allTypes.slice(1).map((t) => t.value) as unknown as Protocol[]
     }
     return [allTypes[selectedIndex].value] as unknown as Protocol[]

@@ -62,6 +62,7 @@ import {
   PositionItemSkeleton,
 } from './components'
 import { MAINNET_CHAINS } from './hooks/useMultiChains'
+import { V3_STATUS, useFilterToQueries } from './hooks/useFilterToQueries'
 
 const ToggleWrapper = styled.div`
   display: inline-flex;
@@ -129,12 +130,6 @@ const ButtonContainer = styled.div`
   }
 `
 
-enum V3_STATUS {
-  ALL,
-  ACTIVE,
-  INACTIVE,
-  CLOSED,
-}
 const getPoolStatus = (pos: PositionDetail, pool: Pool | null) => {
   if (pos.liquidity === 0n) {
     return V3_STATUS.CLOSED
@@ -337,42 +332,62 @@ export const PositionPage = () => {
 
   const { observerRef, isIntersecting } = useIntersectionObserver()
   const [cursorVisible, setCursorVisible] = useState(NUMBER_OF_FARMS_VISIBLE)
-  const [filters, setFilters] = useState<IPoolsFilterPanelProps['value']>({
-    selectedTypeIndex: 0,
-    selectedNetwork: allChainIds,
-    selectedTokens: [],
-  })
-  const selectedPoolTypes = useSelectedPoolTypes(filters.selectedTypeIndex)
-  const [farmsOnly, setFarmsOnly] = useState(false)
-  const [positionStatus, setPositionStatus] = useState(1)
+  const { replaceURLQueriesByFilter, ...filters } = useFilterToQueries()
+  const { selectedTypeIndex, selectedNetwork, selectedTokens, positionStatus, farmsOnly } = filters
+
+  const poolsFilter = useMemo(
+    () => ({
+      selectedTypeIndex,
+      selectedNetwork,
+      selectedTokens,
+    }),
+    [selectedTypeIndex, selectedNetwork, selectedTokens],
+  )
+  const selectedPoolTypes = useSelectedPoolTypes(selectedTypeIndex)
   const [onPresentTransactionsModal] = useModal(<TransactionsModal />)
 
-  const toggleFarmsOnly = useCallback(() => {
-    setFarmsOnly(!farmsOnly)
-  }, [farmsOnly])
+  const setPositionStatus = useCallback(
+    (status: V3_STATUS) => {
+      replaceURLQueriesByFilter({
+        ...filters,
+        positionStatus: status,
+      })
+    },
+    [filters, replaceURLQueriesByFilter],
+  )
 
-  const handleFilterChange: IPoolsFilterPanelProps['onChange'] = useCallback((newFilters) => {
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      ...newFilters,
-    }))
-  }, [])
+  const toggleFarmsOnly = useCallback(() => {
+    replaceURLQueriesByFilter({
+      ...filters,
+      farmsOnly: !farmsOnly,
+    })
+  }, [filters, farmsOnly, replaceURLQueriesByFilter])
+
+  const handleFilterChange: IPoolsFilterPanelProps['onChange'] = useCallback(
+    (newFilters) => {
+      replaceURLQueriesByFilter({
+        ...filters,
+        ...newFilters,
+      })
+    },
+    [filters, replaceURLQueriesByFilter],
+  )
 
   const { v3PositionList, v3Loading } = useV3Positions({
-    selectedNetwork: filters.selectedNetwork,
-    selectedTokens: filters.selectedTokens,
+    selectedNetwork,
+    selectedTokens,
     positionStatus,
     farmsOnly,
   })
   const { v2PositionList, v2Loading } = useV2Positions({
-    selectedNetwork: filters.selectedNetwork,
-    selectedTokens: filters.selectedTokens,
+    selectedNetwork,
+    selectedTokens,
     positionStatus,
     farmsOnly,
   })
   const { stablePositionList, stableLoading } = useStablePositions({
-    selectedNetwork: filters.selectedNetwork,
-    selectedTokens: filters.selectedTokens,
+    selectedNetwork,
+    selectedTokens,
     positionStatus,
     farmsOnly,
   })
@@ -447,7 +462,7 @@ export const PositionPage = () => {
   return (
     <Card>
       <CardHeader>
-        <PoolsFilterPanel onChange={handleFilterChange} value={filters}>
+        <PoolsFilterPanel onChange={handleFilterChange} value={poolsFilter}>
           <ControlWrapper>
             <ToggleWrapper>
               <Text>{t('Farms only')}</Text>
@@ -489,7 +504,7 @@ export const PositionPage = () => {
         {mainSection}
         {selectedPoolTypes.length === 1 && selectedPoolTypes.includes(Protocol.V2) ? (
           <Liquidity.FindOtherLP>
-            {!!intersection(V3_MIGRATION_SUPPORTED_CHAINS, filters.selectedNetwork).length && (
+            {!!intersection(V3_MIGRATION_SUPPORTED_CHAINS, selectedNetwork).length && (
               <NextLink style={{ marginTop: '8px' }} href="/migration">
                 <Button id="migration-link" variant="secondary" scale="sm">
                   {t('Migrate to V3')}
