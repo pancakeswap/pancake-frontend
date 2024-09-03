@@ -100,7 +100,7 @@ export const fetchFarmPools = async (
     let feeTier = 100
     if (farm.protocol === Protocol.V3) feeTier = Number(farm.feeAmount)
     if (farm.protocol === Protocol.V2) feeTier = FeeAmount.MEDIUM
-    if (stablePair) feeTier = stablePair.stableTotalFee
+    if (stablePair) feeTier = stablePair.stableTotalFee * 1_000_000
 
     return {
       ...farm,
