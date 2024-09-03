@@ -82,7 +82,7 @@ export const V4HackathonBanner = () => {
         actions={
           <BannerActionContainer>
             <Action
-              href="https://www.figma.com/exit?url=https%3A%2F%2Fdorahacks.io%2Fhackathon%2Fv4hookathon"
+              href="https://dorahacks.io/hackathon/v4hookathon/detail"
               display={isMobile ? 'none' : 'flex'}
               icon="arrowForward"
               alignItems="center"
