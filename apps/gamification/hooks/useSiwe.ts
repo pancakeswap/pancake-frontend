@@ -17,7 +17,7 @@ const siweAtom = atomWithStorage<
     }
   | undefined
 >(
-  'gamification-siwe',
+  'gamification-siwe-v2',
   undefined,
   createJSONStorage(() => localStorage),
 )
