@@ -155,6 +155,8 @@ export const chainIdToTransakNetworkId: { [id: number]: string } = {
 export const chainIdToTopperNetworkId: { [id: number]: string } = {
   [OnRampChainId.ETHEREUM]: 'ethereum',
   [OnRampChainId.ARBITRUM_ONE]: 'arbitrum',
+  [OnRampChainId.BSC]: 'bnb-smart-chain',
+  [OnRampChainId.BASE]: 'base',
   0: 'bitcoin',
 }
 
@@ -246,6 +248,7 @@ export const onRampCurrenciesMap: { [tokenSymbol: string]: Currency } = {
   ETH_59144: Native.onChain(OnRampChainId.LINEA),
   ETH_8453: Native.onChain(OnRampChainId.BASE),
   // Add more entries for other currencies as needed
+  CAKE_56: bscTokens.cake,
   USDT_1: ethereumTokens.usdt,
   USDT_56: bscTokens.usdt,
   USDC_56: bscTokens.usdc,

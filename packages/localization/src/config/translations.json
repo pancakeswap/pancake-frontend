@@ -2525,7 +2525,6 @@
   "PancakeSwap Now Live on Linea!": "PancakeSwap Now Live on Linea!",
   "Swap and Provide Liquidity on Linea now": "Swap and Provide Liquidity on Linea now",
   "day": "day",
-  "No provider fees. Ends in %days% days and %hours% hours and %minutes% minutes.": "No provider fees. Ends in %days% days and %hours% hours and %minutes% minutes.",
   "Invalid Pair": "Invalid Pair",
   "Learn more how to fix": "Learn more how to fix",
   "View pool on explorer": "View pool on explorer",
@@ -3140,7 +3139,6 @@
   "select a currency": "select a currency",
   "Best quote": "Best quote",
   "Best": "Best",
-  "quote unavailable": "quote unavailable",
   "%provider%": "%provider%",
   "1 %asset% = %amount%": "1 %asset% = %amount%",
   "paste your BTC address here": "paste your BTC address here",
@@ -3483,6 +3481,9 @@
   "Pool Detail": "Pool Detail",
   "of %quote% per %base%": "of %quote% per %base%",
   "Calculated using the total liquidity in the pool versus the total reward amount. Actual APR may be higher as some liquidity is not staked or not in-range.": "Calculated using the total liquidity in the pool versus the total reward amount. Actual APR may be higher as some liquidity is not staked or not in-range.",
+  "0 fees for Topper. Ends in %days% days, %hours% hours, %minutes% minutes": "0 fees for Topper. Ends in %days% days, %hours% hours, %minutes% minutes",
+  "No Fees": "No Fees",
+  "Provider fees are waived for this period. Please note that a 1% PancakeSwap fee still applies.": "Provider fees are waived for this period. Please note that a 1% PancakeSwap fee still applies.",
   "Build Hooks on PancakeSwap v4: $40,000 Total Prize Pool": "Build Hooks on PancakeSwap v4: $40,000 Total Prize Pool",
   "v4 Hookathon": "v4 Hookathon"
 }

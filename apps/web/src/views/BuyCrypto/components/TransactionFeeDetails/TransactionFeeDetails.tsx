@@ -93,7 +93,7 @@ export const TransactionFeeDetails = ({
                   {t('%fees%', {
                     fees: formatLocaleNumber({
                       number: selectedQuote
-                        ? selectedQuote?.providerFee + selectedQuote?.networkFee + selectedQuote.pancakeFee
+                        ? selectedQuote?.providerFee + selectedQuote?.networkFee + selectedQuote?.pancakeFee
                         : 0,
                       locale,
                       options: { currency: selectedQuote?.fiatCurrency ?? 'USD', style: 'currency' },

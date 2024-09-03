@@ -1,22 +1,12 @@
 import { useTranslation } from '@pancakeswap/localization'
-import {
-  ArrowDownIcon,
-  AutoColumn,
-  Box,
-  BoxProps,
-  Button,
-  CheckmarkIcon,
-  Flex,
-  Skeleton,
-  SkeletonText,
-  Text,
-} from '@pancakeswap/uikit'
-import { ReactNode, useMemo } from 'react'
-import { styled, useTheme } from 'styled-components'
+import { AutoColumn, Box, BoxProps, Button, Flex, SkeletonText } from '@pancakeswap/uikit'
+import { ReactNode } from 'react'
+import { styled } from 'styled-components'
 import formatLocaleNumber from 'utils/formatLocaleNumber'
 import { ABOUT_EQUAL } from 'views/BuyCrypto/constants'
 import { OnRampProviderQuote } from 'views/BuyCrypto/types'
 import OnRampProviderLogo from '../OnRampProviderLogo/OnRampProviderLogo'
+import { QuoteBadge } from './QuoteBadge'
 
 const DropDownContainer = styled.div<{ error: boolean }>`
   width: 100%;
@@ -62,35 +52,6 @@ interface ProviderGroupItemProps extends BoxProps {
   bottomElement?: ReactNode
 }
 
-type BadgeProps = { isBestQuote: boolean; text: string; loading: boolean }
-
-const QuoteBadge = ({ isBestQuote, text, loading }: BadgeProps) => {
-  const theme = useTheme()
-  const Icon = isBestQuote ? CheckmarkIcon : ArrowDownIcon
-  const bg = isBestQuote ? theme.colors.success : theme.colors.failure
-
-  return (
-    <>
-      {loading ? (
-        <Skeleton width={40} height={17} isDark />
-      ) : (
-        <Flex alignItems="center" pl={2} pr={1} py={1} background={bg} borderRadius={9} mx="4px">
-          <Text fontSize="11px" textAlign="left" color={theme.colors.background} lineHeight="11px" fontWeight="600">
-            {text}
-          </Text>
-          <Icon width={13} height={13} color={theme.colors.background} />
-        </Flex>
-      )}
-    </>
-  )
-}
-
-export const percentageDifference = (last: number, current: number) => {
-  const difference = current - last
-  const percentageIncrease = (difference / last) * 100
-  return percentageIncrease.toFixed(3)
-}
-
 export const ProviderGroupItem = ({
   onQuoteSelect,
   selectedQuote,
@@ -106,14 +67,6 @@ export const ProviderGroupItem = ({
     t,
     currentLanguage: { locale },
   } = useTranslation()
-  const isBestQuote = Boolean(quotes?.[0] === currentQuote && !quoteLoading)
-  const differenceFromBest = percentageDifference(quotes?.[0]?.quote, currentQuote?.quote)
-
-  const quoteText = useMemo(() => {
-    if (isBestQuote) return t('Best quote')
-    if (error) return t('quote unavailable')
-    return `${differenceFromBest}%`
-  }, [isBestQuote, differenceFromBest, t, error])
 
   return (
     <Box width="100%" {...props}>
@@ -160,7 +113,7 @@ export const ProviderGroupItem = ({
           </Flex>
 
           <Flex>
-            <QuoteBadge isBestQuote={isBestQuote} text={quoteText} loading={quoteLoading} />
+            <QuoteBadge quotes={quotes} selectedQuote={currentQuote} loading={quoteLoading} />
           </Flex>
         </OptionSelectButton>
       </DropDownContainer>
