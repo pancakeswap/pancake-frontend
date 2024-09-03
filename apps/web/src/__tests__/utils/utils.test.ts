@@ -17,7 +17,7 @@ describe('getActiveMenuItem', () => {
 
   it('should return an active item if pathname found in subitems', () => {
     // Given
-    const pathname = '/farms'
+    const pathname = '/liquidity/pools'
 
     // When
     const result = getActiveMenuItem({ pathname, menuConfig: menuConfig(mockT, false, undefined) })
@@ -63,7 +63,7 @@ describe('getActiveSubMenuItem', () => {
 
   it('should return an active sub item', () => {
     // Given
-    const pathname = '/farms'
+    const pathname = '/liquidity/pools'
 
     // When
     const result = getActiveSubMenuItem({ pathname, menuItem: menuConfig(mockT, false, undefined)[1] })
