@@ -4,6 +4,7 @@ import { AlloraBanner } from '../AlloraBanner'
 import { BirthdayBanner } from '../BirthdayBanner'
 import CompetitionBanner from '../CompetitionBanner'
 import { FourMemeBanner } from '../FourMemeBanner'
+import { V4HackathonBanner } from '../HackathonBanner'
 import { OptionsBanner } from '../OptionsBanner'
 import { AthleticsBanner } from '../PancakeSwapAthleticsBanner'
 import { PaymasterBanner } from '../PaymasterBanner'
@@ -45,6 +46,10 @@ export const useMultipleBannerConfig = () => {
       {
         shouldRender: isRenderUserBanner.shouldRender && !isRenderUserBanner.isEarningsBusdZero,
         banner: <UserBanner />,
+      },
+      {
+        shouldRender: true,
+        banner: <V4HackathonBanner />,
       },
       {
         shouldRender: true,
