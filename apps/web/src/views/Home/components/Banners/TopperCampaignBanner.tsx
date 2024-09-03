@@ -69,7 +69,7 @@ export const TopperCampaignBanner = () => {
   const Action = ({ href, icon, text, ...props }: IActions) => (
     <Box display={props.display}>
       <LinkExternalAction href={href} externalIcon={icon} color={props.color}>
-        {t(text)}
+        {text}
       </LinkExternalAction>
     </Box>
   )
@@ -95,7 +95,7 @@ export const TopperCampaignBanner = () => {
               display="flex"
               icon="arrowForward"
               alignItems="center"
-              text="Buy now"
+              text={t('Buy now')}
               color="rgba(255, 229, 191, 1)"
             />
             <Action
@@ -103,7 +103,7 @@ export const TopperCampaignBanner = () => {
               icon="openNew"
               display={isMobile ? 'none' : 'flex'}
               alignItems="center"
-              text="Learn More"
+              text={t('Learn More')}
               color="rgba(255, 229, 191, 1)"
             />
           </BannerActionContainer>
