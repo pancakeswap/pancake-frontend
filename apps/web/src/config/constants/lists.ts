@@ -19,10 +19,19 @@ const COINGECKO_ETH = 'https://tokens.coingecko.com/uniswap/all.json'
 
 const ETH_URLS = [PANCAKE_ETH_DEFAULT, PANCAKE_ETH_MM, COINGECKO_ETH]
 const BSC_URLS = [PANCAKE_EXTENDED, COINGECKO, PANCAKE_BSC_MM]
-const POLYGON_ZKEVM_URLS = [PANCAKE_POLYGON_ZKEVM_DEFAULT, 'https://tokens.coingecko.com/polygon-zkevm/all.json']
-const ARBITRUM_URLS = [PANCAKE_ARB_DEFAULT, 'https://tokens.coingecko.com/arbitrum-one/all.json']
+const POLYGON_ZKEVM_URLS = [
+  PANCAKE_POLYGON_ZKEVM_DEFAULT,
+  // 'https://tokens.coingecko.com/polygon-zkevm/all.json'
+]
+const ARBITRUM_URLS = [
+  PANCAKE_ARB_DEFAULT,
+  // 'https://tokens.coingecko.com/arbitrum-one/all.json'
+]
 const LINEA_URLS = [PANCAKE_LINEA_DEFAULT, 'https://tokens.coingecko.com/linea/all.json']
-const ZKSYNC_URLS = [PANCAKE_ZKSYNC_DEFAULT, 'https://tokens.coingecko.com/zksync/all.json']
+const ZKSYNC_URLS = [
+  PANCAKE_ZKSYNC_DEFAULT,
+  // 'https://tokens.coingecko.com/zksync/all.json'
+]
 const OP_SUPER_CHAIN_URL =
   'https://raw.githubusercontent.com/ethereum-optimism/ethereum-optimism.github.io/master/optimism.tokenlist.json'
 const BASE_URLS = [PANCAKE_BASE_DEFAULT, OP_SUPER_CHAIN_URL, 'https://tokens.coingecko.com/base/all.json']
