@@ -33,6 +33,7 @@ import { useLottery } from 'state/lottery/hooks'
 import { styled } from 'styled-components'
 import { parseEther } from 'viem'
 import { useAccount } from 'wagmi'
+import { logGTMBuyLotteryTicketsEvent } from 'utils/customGTMEventTracking'
 import EditNumbersModal from './EditNumbersModal'
 import NumTicketsToBuyButton from './NumTicketsToBuyButton'
 import { useTicketsReducer } from './useTicketsReducer'
@@ -246,6 +247,9 @@ const BuyTicketsModal: React.FC<React.PropsWithChildren<BuyTicketsModalProps>> =
     },
     onConfirm: () => {
       const ticketsForPurchase = getTicketsForPurchase()
+
+      logGTMBuyLotteryTicketsEvent(ticketsToBuy)
+
       return callWithGasPrice(lotteryContract, 'buyTickets', [BigInt(currentLotteryId), ticketsForPurchase])
     },
     onSuccess: async ({ receipt }) => {
