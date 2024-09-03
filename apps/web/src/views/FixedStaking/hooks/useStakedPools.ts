@@ -13,6 +13,7 @@ import { useAccount } from 'wagmi'
 
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useReadContract } from '@pancakeswap/wagmi'
+import { safeGetAddress } from 'utils'
 import { DISABLED_POOLS } from '../constant'
 import { FixedStakingPool, StakedPosition } from '../type'
 
@@ -85,12 +86,15 @@ export function useStakedPositionsByUser(poolIndexes: number[]): StakedPosition[
   const tokens = useOfficialsAndUserAddedTokens()
 
   const results = useSingleContractMultipleData({
-    contract: {
-      abi: fixedStakingContract.abi,
-      address: fixedStakingContract.address,
-    },
+    contract: useMemo(
+      () => ({
+        abi: fixedStakingContract.abi,
+        address: fixedStakingContract.address,
+      }),
+      [fixedStakingContract],
+    ),
     functionName: 'getUserInfo',
-    args: account ? poolIndexes.map((index) => [index, account]) : [],
+    args: useMemo(() => (account ? poolIndexes.map((index) => [index, account]) : []), [account, poolIndexes]),
   })
 
   const currentDay = useCurrentDay()
@@ -126,13 +130,20 @@ export function useStakedPositionsByUser(poolIndexes: number[]): StakedPosition[
           withdrawalFee = withdrawalCut2
         }
 
+        const positionPoolTokenAddress = safeGetAddress(position.pool.token)
+        const positionPoolToken = positionPoolTokenAddress && tokens[positionPoolTokenAddress]
+
+        if (!positionPoolToken) {
+          return undefined
+        }
+
         return {
           ...position,
           pool: {
             ...position.pool,
             withdrawalFee,
             poolIndex: poolIndexes[index],
-            token: tokens[getAddress(position.pool.token)],
+            token: positionPoolToken,
           },
           endLockTime,
         }
@@ -157,10 +168,13 @@ export function useStakedPools(): FixedStakingPool[] {
   const numberOfPools = poolLength ? toNumber(poolLength.toString()) : 0
 
   const fixedStakePools = useSingleContractMultipleData({
-    contract: {
-      abi: fixedStakingContract.abi,
-      address: fixedStakingContract.address,
-    },
+    contract: useMemo(
+      () => ({
+        abi: fixedStakingContract.abi,
+        address: fixedStakingContract.address,
+      }),
+      [fixedStakingContract],
+    ),
     functionName: 'pools',
     args: useMemo(
       () => Array.from(Array(numberOfPools).keys()).map((index) => [BigInt(index)] as const),
