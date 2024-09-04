@@ -1,3 +1,4 @@
+import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
 import { Address } from 'viem'
 import { SocialHubType } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
 
@@ -15,8 +16,11 @@ interface DisconnectSocialProps {
 }
 
 export const disconnectSocial = async ({ data, fetchWithSiweAuth, callback }: DisconnectSocialProps) => {
-  const response = await fetchWithSiweAuth(`/api/userInfo/emptyUserSocialInfo`, {
+  const response = await fetchWithSiweAuth(`${GAMIFICATION_PUBLIC_API}/userInfo/v1/emptyUserSocialInfo`, {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
     body: JSON.stringify(data),
   })
 
