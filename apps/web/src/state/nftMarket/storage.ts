@@ -27,6 +27,7 @@ export function useNftStorage() {
     ({ collection, field }: { collection: string; field: MarketEvent }) => {
       if (nftMarketActivityFilters[collection]) {
         nftMarketActivityFilters[collection].typeFilters.push(field)
+        nftMarketActivityFilters[collection].typeFilters = [...nftMarketActivityFilters[collection].typeFilters]
       } else {
         nftMarketActivityFilters[collection] = {
           ...cloneDeep(initialNftActivityFilterState),
@@ -42,6 +43,7 @@ export function useNftStorage() {
     ({ collection }: { collection: string }) => {
       if (nftMarketActivityFilters['']) {
         nftMarketActivityFilters[''].collectionFilters.push(collection)
+        nftMarketActivityFilters[''].collectionFilters = [...nftMarketActivityFilters[''].collectionFilters]
       } else {
         nftMarketActivityFilters[''] = {
           ...cloneDeep(initialNftActivityFilterState),
@@ -68,9 +70,9 @@ export function useNftStorage() {
   const removeActivityCollectionFilters = useCallback(
     ({ collection }: { collection: string }) => {
       if (nftMarketActivityFilters['']) {
-        nftMarketActivityFilters[collection].collectionFilters = nftMarketActivityFilters[
-          collection
-        ].collectionFilters.filter((activeFilter) => activeFilter !== collection)
+        nftMarketActivityFilters[''].collectionFilters = nftMarketActivityFilters[''].collectionFilters.filter(
+          (activeFilter) => activeFilter !== collection,
+        )
       }
       setNftMarketActivityFilters({ ...nftMarketActivityFilters })
     },

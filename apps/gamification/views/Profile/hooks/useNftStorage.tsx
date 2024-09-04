@@ -71,9 +71,9 @@ export function useNftStorage() {
   const removeActivityCollectionFilters = useCallback(
     ({ collection }: { collection: string }) => {
       if (nftMarketActivityFilters['']) {
-        nftMarketActivityFilters[collection].collectionFilters = nftMarketActivityFilters[
-          collection
-        ].collectionFilters.filter((activeFilter: any) => activeFilter !== collection)
+        nftMarketActivityFilters[''].collectionFilters = nftMarketActivityFilters[''].collectionFilters.filter(
+          (activeFilter: any) => activeFilter !== collection,
+        )
       }
       setNftMarketActivityFilters({ ...nftMarketActivityFilters })
     },
