@@ -115,13 +115,10 @@ export function useDashboardSiwe() {
   const fetchWithSiweAuth = useCallback<typeof fetch>(
     async (input: RequestInfo | URL, init: RequestInit | undefined) => {
       if (!currentAddress || !currentChainId) throw new Error('Invalid address or chain id')
-      // const { jwtToken } = await signIn({
-      //   address: currentAddress,
-      //   chainId: currentChainId,
-      // })
-
-      const jwtToken =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIweDc1NDQ1MDM4MDdiNERGNGZjM0RiNkFjRjRmMzJDZTVFN2VFOEZkRmIiLCJpYXQiOjE3MjU0Mzc5MDYsImV4cCI6MTcyNTUyNDMwNn0.IANrFnxK1d2DVof3zQtZNdcuyA8f_lzad2uIBe8mdBI'
+      const { jwtToken } = await signIn({
+        address: currentAddress,
+        chainId: currentChainId,
+      })
 
       return fetch(input, {
         ...init,
