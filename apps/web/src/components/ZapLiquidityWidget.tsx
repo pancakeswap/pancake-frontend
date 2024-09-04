@@ -101,6 +101,7 @@ export const ZapLiquidityWidget: React.FC<ZapLiquidityProps> = ({
             onClick={handleOnClick}
             role="presentation"
             style={{ whiteSpace: 'nowrap', textDecoration: 'underline', cursor: 'pointer' }}
+            data-dd-action-name="Zap V3 Liquidity"
           >
             <MessageText fontWeight={600} fontSize={16}>
               {t('Click here to start')} {'>>'}
