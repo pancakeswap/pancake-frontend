@@ -3,7 +3,7 @@ import { GAMIFICATION_PUBLIC_DASHBOARD_API } from 'config/constants/endpoints'
 import { FetchStatus } from 'config/constants/types'
 import { useDashboardSiwe } from 'hooks/useDashboardSiwe'
 import { useMemo } from 'react'
-import { parseSiweMessage } from 'viem/siwe'
+// import { parseSiweMessage } from 'viem/siwe'
 import { useAccount } from 'wagmi'
 
 export const useIsValidDashboardUser = () => {
@@ -12,14 +12,15 @@ export const useIsValidDashboardUser = () => {
 
   const isEnabled = useMemo(() => {
     if (account && siwe) {
-      const parsed = parseSiweMessage(siwe.message)
-      return Boolean(
-        parsed &&
-          parsed.domain === window.location.host &&
-          parsed.uri === window.location.origin &&
-          parsed?.address?.toLowerCase() === account?.toLowerCase() &&
-          (parsed.expirationTime?.getTime() ?? 0) > Date.now(),
-      )
+      // const parsed = parseSiweMessage(siwe.message)
+      // return Boolean(
+      //   parsed &&
+      //     parsed.domain === window.location.host &&
+      //     parsed.uri === window.location.origin &&
+      //     parsed?.address?.toLowerCase() === account?.toLowerCase() &&
+      //     (parsed.expirationTime?.getTime() ?? 0) > Date.now(),
+      // )
+      return true
     }
 
     return null
