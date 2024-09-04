@@ -26,6 +26,7 @@ import { IFrameWrapper, StyledBackArrowContainer } from 'views/BuyCrypto/styles'
 import type { OnRampProviderQuote, OnRampUnit } from 'views/BuyCrypto/types'
 import { ErrorText } from 'views/Swap/components/styleds'
 import { useAccount } from 'wagmi'
+import { logGTMFiatOnRampModalEvent } from 'utils/customGTMEventTracking'
 import { ProviderIFrame } from './ProviderIframe'
 
 interface FiatOnRampProps {
@@ -81,12 +82,15 @@ export const FiatOnRampModalButton = ({
   const toggleFiatOnRampModal = useCallback(
     (e: React.MouseEvent) => {
       e.stopPropagation()
+
+      logGTMFiatOnRampModalEvent(selectedQuote?.provider)
+
       onPresentConfirmModal()
       // eslint-disable-next-line no-param-reassign
       externalTxIdRef.current = v4()
       refetch()
     },
-    [onPresentConfirmModal, externalTxIdRef, refetch],
+    [selectedQuote?.provider, onPresentConfirmModal, externalTxIdRef, refetch],
   )
 
   const buttonText = useMemo(() => {
