@@ -49,7 +49,6 @@ const handler = async (req, res) => {
       headers: {
         Authorization: req?.headers?.authorization as string,
         Accept: 'application/json',
-        'x-secure-token': process.env.DASHBOARD_TOKEN as string,
         'Content-Type': 'application/json',
       },
     },

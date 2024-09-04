@@ -29,7 +29,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       Authorization: req?.headers?.authorization as string,
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      'x-secure-token': process.env.DASHBOARD_TOKEN as string,
     },
     body: req.body,
   })
