@@ -17,6 +17,8 @@ export enum GTMEvent {
   StakePool = 'stakePool',
   PositionManagerAddLiquidity = 'positionManagerAddLiquidity',
   LockCake = 'lockCake',
+  BuyLotteryTickets = 'buyLotteryTickets',
+  FiatOnRampModalOpened = 'fiatOnRampModalOpened',
 }
 
 export enum GTMCategory {
@@ -31,6 +33,8 @@ export enum GTMCategory {
   Pool = 'Pool',
   PositionManager = 'PositionManager',
   CakeStaking = 'CakeStaking',
+  Lottery = 'Lottery',
+  FiatOnRamp = 'FiatOnRamp',
 }
 
 export enum GTMAction {
@@ -53,6 +57,8 @@ export enum GTMAction {
   ClickUnstakePoolButton = 'Click Unstake Pool Button',
   ClickAddLiquidityPositionManagerButton = 'Click Add Liquidity Position Manager Button',
   ClickLockCakeButton = 'Click Lock CAKE Button',
+  ClickBuyLotteryTicketsButton = 'Click Buy Lottery Tickets Button',
+  ClickFiatOnRampModalButton = 'Click Fiat On-Ramp Modal Button',
 }
 
 interface CustomGTMDataLayer {
@@ -252,5 +258,25 @@ export const logGTMClickLockCakeEvent = () => {
     event: GTMEvent.LockCake,
     action: GTMAction.ClickLockCakeButton,
     category: GTMCategory.CakeStaking,
+  })
+}
+
+export const logGTMBuyLotteryTicketsEvent = (numberOfTickets: string) => {
+  console.info('---BuyLotteryTickets---')
+  window?.dataLayer?.push({
+    event: GTMEvent.BuyLotteryTickets,
+    action: GTMAction.ClickBuyLotteryTicketsButton,
+    category: GTMCategory.Lottery,
+    label: `Number of tickets: ${numberOfTickets}`,
+  })
+}
+
+export const logGTMFiatOnRampModalEvent = (provider: string | undefined) => {
+  console.info('---FiatOnRampModalOpened---')
+  window?.dataLayer?.push({
+    event: GTMEvent.FiatOnRampModalOpened,
+    action: GTMAction.ClickFiatOnRampModalButton,
+    category: GTMCategory.FiatOnRamp,
+    label: `Provider: ${provider || 'Unknown'}`,
   })
 }
