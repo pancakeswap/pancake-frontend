@@ -1,12 +1,12 @@
-import { useIntersectionObserver, useTheme } from '@pancakeswap/hooks'
-import { useTranslation } from '@pancakeswap/localization'
-import { Button, InfoIcon, ISortOrder, SORT_ORDER, TableView, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { toTokenValueByCurrency } from '@pancakeswap/widgets-internal'
-import { useAllTokensByChainIds } from 'hooks/Tokens'
 import flatMap from 'lodash/flatMap'
 import groupBy from 'lodash/groupBy'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useTranslation } from '@pancakeswap/localization'
+import { toTokenValueByCurrency } from '@pancakeswap/widgets-internal'
+import { useIntersectionObserver, useTheme } from '@pancakeswap/hooks'
+import { Button, InfoIcon, SORT_ORDER, TableView, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { useAllTokensByChainIds } from 'hooks/Tokens'
 import { PoolSortBy } from 'state/farmsV4/atom'
 import { useExtendPools, useFarmPools, usePoolsApr } from 'state/farmsV4/hooks'
 import { getCombinedApr } from 'state/farmsV4/state/poolApr/utils'
@@ -26,6 +26,7 @@ import {
   useSelectedPoolTypes,
 } from './components'
 import { useAllChainIds, useOrderChainIds } from './hooks/useMultiChains'
+import { useFilterToQueries } from './hooks/useFilterToQueries'
 
 type IDataType = PoolInfo
 
@@ -43,16 +44,21 @@ export const PoolsPage = () => {
 
   const columns = useColumnConfig()
   const allChainIds = useAllChainIds()
-  const [filters, setFilters] = useState<IPoolsFilterPanelProps['value']>({
-    selectedTypeIndex: 0,
-    selectedNetwork: allChainIds,
-    selectedTokens: [],
-  })
-  const selectedPoolTypes = useSelectedPoolTypes(filters.selectedTypeIndex)
+  const { selectedTypeIndex, selectedNetwork, selectedTokens, sortOrder, sortField, replaceURLQueriesByFilter } =
+    useFilterToQueries()
+
+  const poolsFilter = useMemo(
+    () => ({
+      selectedTypeIndex,
+      selectedNetwork,
+      selectedTokens,
+    }),
+    [selectedTypeIndex, selectedNetwork, selectedTokens],
+  )
+
+  const selectedPoolTypes = useSelectedPoolTypes(selectedTypeIndex)
   const { observerRef, isIntersecting } = useIntersectionObserver()
   const [cursorVisible, setCursorVisible] = useState(NUMBER_OF_FARMS_VISIBLE)
-  const [sortOrder, setSortOrder] = useState<ISortOrder>(SORT_ORDER.NULL)
-  const [sortField, setSortField] = useState<keyof IDataType | null>(null)
   const [isPoolListExtended, setIsPoolListExtended] = useState(false)
 
   // data source
@@ -96,38 +102,41 @@ export const PoolsPage = () => {
     // if consumed, fetch from pool/list
     if (cursorVisible >= poolList.length && !disabledExtendPools) {
       fetchPoolList({
-        chains: filters.selectedNetwork,
+        chains: selectedNetwork,
         protocols: selectedPoolTypes,
         orderBy: PoolSortBy.VOL,
       })
     }
-  }, [cursorVisible, poolList, fetchPoolList, filters, selectedPoolTypes, disabledExtendPools])
+  }, [cursorVisible, poolList, fetchPoolList, selectedPoolTypes, disabledExtendPools, selectedNetwork])
 
   const handleFilterChange: IPoolsFilterPanelProps['onChange'] = useCallback(
     (newFilters) => {
-      setFilters((prevFilters) => ({
-        ...prevFilters,
-        ...newFilters,
-      }))
       resetExtendPools()
+      replaceURLQueriesByFilter({
+        ...poolsFilter,
+        sortOrder,
+        sortField,
+        ...newFilters,
+      })
     },
-    [resetExtendPools],
+    [resetExtendPools, replaceURLQueriesByFilter, poolsFilter, sortOrder, sortField],
   )
 
   const handleToggleListExpand = useCallback(() => {
     setIsPoolListExtended(!isPoolListExtended)
   }, [isPoolListExtended])
 
-  const handleSort = useCallback(({ order, dataIndex }) => {
-    // we don't need asc sort, so reset it to null
-    if (order === SORT_ORDER.ASC) {
-      setSortOrder(SORT_ORDER.NULL)
-      setSortField(null)
-    } else {
-      setSortOrder(order)
-      setSortField(dataIndex)
-    }
-  }, [])
+  const handleSort = useCallback(
+    ({ order, dataIndex }) => {
+      replaceURLQueriesByFilter({
+        ...poolsFilter,
+        // we don't need asc sort, so reset it to null
+        sortField: order === SORT_ORDER.ASC ? null : dataIndex,
+        sortOrder: order === SORT_ORDER.ASC ? SORT_ORDER.NULL : order,
+      })
+    },
+    [replaceURLQueriesByFilter, poolsFilter],
+  )
 
   const handleRowClick = useCallback(
     (pool: PoolInfo) => {
@@ -143,14 +152,14 @@ export const PoolsPage = () => {
   const filteredData = useMemo(() => {
     return poolList.filter(
       (farm) =>
-        filters.selectedNetwork.includes(farm.chainId) &&
-        (!filters.selectedTokens?.length ||
-          filters.selectedTokens?.find(
+        selectedNetwork.includes(farm.chainId) &&
+        (!selectedTokens?.length ||
+          selectedTokens?.find(
             (token) => token === toTokenValueByCurrency(farm.token0) || token === toTokenValueByCurrency(farm.token1),
           )) &&
         selectedPoolTypes.includes(farm.protocol),
     )
-  }, [poolList, filters.selectedTokens, filters.selectedNetwork, selectedPoolTypes])
+  }, [poolList, selectedTokens, selectedNetwork, selectedPoolTypes])
 
   const dataByChain = useMemo(() => {
     return groupBy(filteredData, 'chainId')
@@ -201,7 +210,7 @@ export const PoolsPage = () => {
   return (
     <Card>
       <CardHeader>
-        <PoolsFilterPanel onChange={handleFilterChange} value={filters} />
+        <PoolsFilterPanel onChange={handleFilterChange} value={poolsFilter} />
       </CardHeader>
       <CardBody>
         <PoolsContent>
