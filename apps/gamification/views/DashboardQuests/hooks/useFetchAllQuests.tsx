@@ -1,5 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
 import { useQuery } from '@tanstack/react-query'
+import { GAMIFICATION_PUBLIC_DASHBOARD_API } from 'config/constants/endpoints'
 import { useDashboardSiwe } from 'hooks/useDashboardSiwe'
 import qs from 'qs'
 import { useEffect, useRef, useState } from 'react'
@@ -47,14 +48,15 @@ export const useFetchAllQuests = ({ chainIdList, completionStatus }) => {
         }
 
         const urlParamsObject = {
-          address: account?.toLowerCase(),
           chainId: chainIdList.join(','),
           completionStatus,
           page,
           pageSize: PAGE_SIZE,
         }
         const queryString = qs.stringify(urlParamsObject, { arrayFormat: 'comma' })
-        const response = await fetchWithSiweAuth(`/api/dashboard/all-quests-info?${queryString}`)
+        const response = await fetchWithSiweAuth(
+          `${GAMIFICATION_PUBLIC_DASHBOARD_API}/quests/org/${account?.toLowerCase()}?${queryString}`,
+        )
 
         const result = await response.json()
         const questsData: AllDashboardQuestsType = result

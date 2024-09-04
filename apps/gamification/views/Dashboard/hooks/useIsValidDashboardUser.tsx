@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
+import { GAMIFICATION_PUBLIC_DASHBOARD_API } from 'config/constants/endpoints'
 import { FetchStatus } from 'config/constants/types'
 import { useDashboardSiwe } from 'hooks/useDashboardSiwe'
 import { useMemo } from 'react'
@@ -27,9 +28,10 @@ export const useIsValidDashboardUser = () => {
   const { data, status } = useQuery({
     queryKey: ['validDashboardUser', account],
     queryFn: async () => {
-      const response = await fetchWithSiweAuth('/api/dashboard/isUserAllowLogin', {
+      const response = await fetchWithSiweAuth(`${GAMIFICATION_PUBLIC_DASHBOARD_API}/users/check-dashboard-access`, {
         method: 'POST',
         headers: {
+          Accept: 'application/json',
           'Content-Type': 'application/json',
         },
       })

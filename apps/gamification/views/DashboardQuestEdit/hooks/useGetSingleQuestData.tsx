@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
+import { GAMIFICATION_PUBLIC_DASHBOARD_API } from 'config/constants/endpoints'
 import { FetchStatus } from 'config/constants/types'
 import { useDashboardSiwe } from 'hooks/useDashboardSiwe'
 import { StateType, TaskConfigType } from 'views/DashboardQuestEdit/context/types'
@@ -23,7 +24,7 @@ export const useGetSingleQuestData = (id: string) => {
         throw new Error('Unable to fetch dashboard data')
       }
 
-      const response = await fetchWithSiweAuth(`/api/dashboard/quest-info?id=${id}`)
+      const response = await fetchWithSiweAuth(`${GAMIFICATION_PUBLIC_DASHBOARD_API}/quests/${id}`)
 
       if (!response.ok) {
         const errorData: SingleQuestDataError = await response.json()

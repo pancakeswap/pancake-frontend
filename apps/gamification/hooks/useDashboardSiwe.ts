@@ -1,4 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
+import { GAMIFICATION_PUBLIC_DASHBOARD_API } from 'config/constants/endpoints'
 import { useAtom } from 'jotai'
 import { atomWithStorage, createJSONStorage, RESET } from 'jotai/utils'
 import { useCallback } from 'react'
@@ -84,8 +85,12 @@ export function useDashboardSiwe() {
         message,
       })
 
-      const response = await fetch(`/api/dashboard/auth`, {
+      const response = await fetch(`${GAMIFICATION_PUBLIC_DASHBOARD_API}/users/authenticate`, {
         method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({
           signature,
           encodedMessage: encodeURIComponent(message),
