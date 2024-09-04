@@ -82,12 +82,16 @@ export const fetchFarmPools = async (
       )
     })
 
-    if (pool)
+    if (pool) {
       return {
         ...pool,
         pid: farm.pid,
         feeTierBase: 1_000_000,
+        ...(farm.protocol === 'v2' || farm.protocol === 'stable'
+          ? { bCakeWrapperAddress: farm.bCakeWrapperAddress }
+          : {}),
       } satisfies PoolInfo
+    }
 
     remoteMissedPoolsIndex.push(index)
 
