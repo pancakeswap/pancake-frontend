@@ -32,7 +32,7 @@ const CakeInput: React.FC<{
   const onInput = useCallback(
     (input: string) => {
       setPercent(null)
-      onUserInput(input)
+      onUserInput(input === '.' ? '0.' : input)
     },
     [onUserInput],
   )
