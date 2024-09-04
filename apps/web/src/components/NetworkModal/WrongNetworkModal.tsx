@@ -3,13 +3,16 @@ import { useTranslation } from '@pancakeswap/localization'
 import { ArrowForwardIcon, Button, FlexGap, Grid, Message, MessageText, Modal, Text } from '@pancakeswap/uikit'
 import { ChainLogo } from 'components/Logo/ChainLogo'
 import useAuth from 'hooks/useAuth'
-import { useSessionChainId } from 'hooks/useSessionChainId'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import Image from 'next/image'
 import { Chain } from 'viem'
 import { useAccount } from 'wagmi'
 import * as allChains from 'viem/chains'
 import { useCallback } from 'react'
+import { queryChainIdAtom } from 'hooks/useActiveChainId'
+import { useAtom } from 'jotai'
+import { CHAIN_QUERY_NAME } from 'config/chains'
+import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import Dots from '../Loader/Dots'
 
 const getChain = (chainId: number | undefined) => {
@@ -23,7 +26,7 @@ export function WrongNetworkModal({ currentChain, onDismiss }: { currentChain: C
   const { switchNetworkAsync, isLoading, canSwitch } = useSwitchNetwork()
   const { logout } = useAuth()
   const { isConnected, chain, chainId: walletChainId } = useAccount()
-  const [, setSessionChainId] = useSessionChainId()
+  const [, setQueryChainId] = useAtom(queryChainIdAtom)
   const chainId = currentChain.id || ChainId.BSC
   const { t } = useTranslation()
 
@@ -37,9 +40,10 @@ export function WrongNetworkModal({ currentChain, onDismiss }: { currentChain: C
 
   const handleLogout = useCallback(() => {
     logout().then(() => {
-      setSessionChainId(chainId)
+      replaceBrowserHistory('chain', chainId === ChainId.BSC ? null : CHAIN_QUERY_NAME[chainId])
+      setQueryChainId(chainId)
     })
-  }, [chainId, logout, setSessionChainId])
+  }, [chainId, logout, setQueryChainId])
 
   return (
     <Modal title={t('You are in wrong network')} headerBackground="gradientCardHeader" onDismiss={onDismiss}>

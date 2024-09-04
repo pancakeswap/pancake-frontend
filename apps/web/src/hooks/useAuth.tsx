@@ -6,9 +6,9 @@ import { ConnectorNames } from 'config/wallet'
 import { useCallback } from 'react'
 import { useAppDispatch } from 'state'
 import { ConnectorNotFoundError, SwitchChainNotSupportedError, useAccount, useConnect, useDisconnect } from 'wagmi'
+import { useAtom } from 'jotai/index'
 import { clearUserStates } from '../utils/clearUserStates'
-import { useActiveChainId } from './useActiveChainId'
-import { useSessionChainId } from './useSessionChainId'
+import { queryChainIdAtom, useActiveChainId } from './useActiveChainId'
 
 const useAuth = () => {
   const dispatch = useAppDispatch()
@@ -16,7 +16,7 @@ const useAuth = () => {
   const { chain } = useAccount()
   const { disconnectAsync } = useDisconnect()
   const { chainId } = useActiveChainId()
-  const [, setSessionChainId] = useSessionChainId()
+  const [, setQueryChainId] = useAtom(queryChainIdAtom)
   const { t } = useTranslation()
 
   const login = useCallback(
@@ -28,7 +28,7 @@ const useAuth = () => {
         const connected = await connectAsync({ connector: findConnector, chainId })
         if (connected.chainId !== chainId) {
           replaceBrowserHistory('chain', CHAIN_QUERY_NAME[connected.chainId])
-          setSessionChainId(connected.chainId)
+          setQueryChainId(connected.chainId)
         }
         return connected
       } catch (error) {
@@ -45,7 +45,7 @@ const useAuth = () => {
       }
       return undefined
     },
-    [connectors, connectAsync, chainId, setSessionChainId, t],
+    [connectors, connectAsync, chainId, setQueryChainId, t],
   )
 
   const logout = useCallback(async () => {
