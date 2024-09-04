@@ -20,6 +20,7 @@ import { NodeLedger, NodeRound } from 'state/types'
 import { getNowInSeconds } from 'utils/getNowInSeconds'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
 import { useAccount } from 'wagmi'
+import { logGTMPredictionBetEvent, logGTMPredictionBetPlacedEvent } from 'utils/customGTMEventTracking'
 import { AVERAGE_CHAIN_BLOCK_TIMES } from '@pancakeswap/chains'
 import { formatTokenv2 } from '../../helpers'
 import CardFlip from '../CardFlip'
@@ -124,6 +125,8 @@ const OpenRoundCard: React.FC<React.PropsWithChildren<OpenRoundCardProps>> = ({
   }, [])
 
   const handleSetPosition = useCallback((newPosition: BetPosition) => {
+    logGTMPredictionBetEvent(newPosition)
+
     setState((prevState) => ({
       ...prevState,
       isSettingPosition: true,
@@ -142,6 +145,8 @@ const OpenRoundCard: React.FC<React.PropsWithChildren<OpenRoundCardProps>> = ({
     async (hash: string) => {
       if (account && chainId) {
         await dispatch(fetchLedgerData({ account, chainId, epochs: [round.epoch] }))
+
+        logGTMPredictionBetPlacedEvent(positionDisplay)
 
         handleBack()
 

@@ -1,3 +1,5 @@
+import { BetPosition } from '@pancakeswap/prediction'
+
 export enum GTMEvent {
   EventTracking = 'eventTracking',
   Swap = 'swap',
@@ -19,6 +21,8 @@ export enum GTMEvent {
   LockCake = 'lockCake',
   BuyLotteryTickets = 'buyLotteryTickets',
   FiatOnRampModalOpened = 'fiatOnRampModalOpened',
+  PredictionBet = 'predictionBet',
+  PredictionBetPlaced = 'predictionBetPlaced',
 }
 
 export enum GTMCategory {
@@ -35,6 +39,7 @@ export enum GTMCategory {
   CakeStaking = 'CakeStaking',
   Lottery = 'Lottery',
   FiatOnRamp = 'FiatOnRamp',
+  Prediction = 'Prediction',
 }
 
 export enum GTMAction {
@@ -59,6 +64,9 @@ export enum GTMAction {
   ClickLockCakeButton = 'Click Lock CAKE Button',
   ClickBuyLotteryTicketsButton = 'Click Buy Lottery Tickets Button',
   ClickFiatOnRampModalButton = 'Click Fiat On-Ramp Modal Button',
+  ClickBetUpButton = 'Click Bet Up Button',
+  ClickBetDownButton = 'Click Bet Down Button',
+  PredictionBetPlaced = 'Prediction Bet Placed',
 }
 
 interface CustomGTMDataLayer {
@@ -278,5 +286,24 @@ export const logGTMFiatOnRampModalEvent = (provider: string | undefined) => {
     action: GTMAction.ClickFiatOnRampModalButton,
     category: GTMCategory.FiatOnRamp,
     label: `Provider: ${provider || 'Unknown'}`,
+  })
+}
+
+export const logGTMPredictionBetEvent = (position: BetPosition) => {
+  console.info(`---PredictionBet${position}---`)
+  window?.dataLayer?.push({
+    event: GTMEvent.PredictionBet,
+    action: position === BetPosition.BULL ? GTMAction.ClickBetUpButton : GTMAction.ClickBetDownButton,
+    category: GTMCategory.Prediction,
+  })
+}
+
+export const logGTMPredictionBetPlacedEvent = (position: string) => {
+  console.info('---PredictionBetPlaced---')
+  window?.dataLayer?.push({
+    event: GTMEvent.PredictionBetPlaced,
+    action: GTMAction.PredictionBetPlaced,
+    category: GTMCategory.Prediction,
+    label: `Position: ${position}`,
   })
 }
