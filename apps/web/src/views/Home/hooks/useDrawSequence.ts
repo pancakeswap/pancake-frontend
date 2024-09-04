@@ -24,7 +24,7 @@ export const useDrawSequenceImages = (
         clearInterval(intervalRef.current)
         onplayEnd()
       } else {
-        if (images.current[ImageDrawProgress.current]) {
+        if (images.current[ImageDrawProgress.current]?.complete) {
           context?.clearRect(0, 0, width, height)
           context?.drawImage(images.current[ImageDrawProgress.current], 0, 0, width, height)
         }
