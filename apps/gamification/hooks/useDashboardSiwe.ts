@@ -1,10 +1,8 @@
 import { ChainId } from '@pancakeswap/chains'
-import { GAMIFICATION_PUBLIC_DASHBOARD_API } from 'config/constants/endpoints'
 import { useAtom } from 'jotai'
 import { atomWithStorage, createJSONStorage, RESET } from 'jotai/utils'
 import { useCallback } from 'react'
 import { Address } from 'viem'
-import { createSiweMessage, generateSiweNonce } from 'viem/siwe'
 import { useAccount, useAccountEffect, useSignMessage } from 'wagmi'
 
 const ONE_DAY_IN_MS = 60 * 60 * 24 * 1000
@@ -79,41 +77,41 @@ export function useDashboardSiwe() {
       //   }
       // }
 
-      const message = createSiweMessage({
-        address,
-        chainId,
-        domain: window.location.host,
-        uri: window.location.origin,
-        nonce: generateSiweNonce(),
-        version: '1',
-        expirationTime: new Date(Date.now() + ONE_DAY_IN_MS),
-      })
-      const signature = await signMessageAsync({
-        account: address,
-        message,
-      })
+      // const message = createSiweMessage({
+      //   address,
+      //   chainId,
+      //   domain: window.location.host,
+      //   uri: window.location.origin,
+      //   nonce: generateSiweNonce(),
+      //   version: '1',
+      //   expirationTime: new Date(Date.now() + ONE_DAY_IN_MS),
+      // })
+      // const signature = await signMessageAsync({
+      //   account: address,
+      //   message,
+      // })
 
-      const response = await fetch(`${GAMIFICATION_PUBLIC_DASHBOARD_API}/users/authenticate`, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          signature,
-          encodedMessage: encodeURIComponent(message),
-        }),
-      })
+      // const response = await fetch(`${GAMIFICATION_PUBLIC_DASHBOARD_API}/users/authenticate`, {
+      //   method: 'POST',
+      //   headers: {
+      //     Accept: 'application/json',
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify({
+      //     signature,
+      //     encodedMessage: encodeURIComponent(message),
+      //   }),
+      // })
 
-      const result = await response.json()
+      // const result = await response.json()
 
-      const siweMessage = {
-        message,
-        signature,
-        jwtToken: result.token,
-      }
-      setSiwe(siweMessage)
-      return siweMessage
+      // const siweMessage = {
+      //   message,
+      //   signature,
+      //   jwtToken: result.token,
+      // }
+      // setSiwe(siweMessage)
+      // return siweMessage
     },
     [currentAddress, currentChainId, siwe, setSiwe, signMessageAsync],
   )
