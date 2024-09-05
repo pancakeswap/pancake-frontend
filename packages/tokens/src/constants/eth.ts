@@ -550,7 +550,7 @@ export const ethereumTokens = {
     '0xbDf245957992bfBC62B07e344128a1EEc7b7eE3f',
     8,
     'mBTC',
-    'Liquid Staked BTC',
+    'Babypie BTC',
     'https://www.babylon.magpiexyz.io',
   ),
   order: new ERC20Token(
