@@ -12,8 +12,8 @@ import { multiChainPaths } from 'state/info/constant'
 import styled, { css } from 'styled-components'
 import { isAddressEqual } from 'viem'
 import { useAccount } from 'wagmi'
-import { addQueryToPath } from 'views/universalFarms/utils'
 import { PERSIST_CHAIN_KEY } from 'config/constants'
+import { addQueryToPath } from 'utils/addQueryToPath'
 
 const BaseButtonStyle = css`
   color: ${({ theme }) => theme.colors.text};

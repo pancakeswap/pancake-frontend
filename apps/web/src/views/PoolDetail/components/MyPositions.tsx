@@ -45,6 +45,8 @@ import { useV2CakeEarning, useV3CakeEarningsByPool } from 'views/universalFarms/
 import { useV2FarmActions } from 'views/universalFarms/hooks/useV2FarmActions'
 import { displayApr } from 'views/universalFarms/utils/displayApr'
 import { formatDollarAmount } from 'views/V3Info/utils/numbers'
+import { PERSIST_CHAIN_KEY } from 'config/constants'
+import { addQueryToPath } from 'utils/addQueryToPath'
 import { useV3Positions } from '../hooks/useV3Positions'
 import { MyPositionsProvider, useMyPositions } from './MyPositionsContext'
 import { V2PoolEarnings, V3PoolEarnings } from './PoolEarnings'
@@ -103,7 +105,10 @@ const MyPositionsInner: React.FC<{ poolInfo: PoolInfo }> = ({ poolInfo }) => {
     if (poolInfo.protocol === 'stable') {
       link = `/stable/add/${token0Token1}`
     }
-    return `${link}?chain=${CHAIN_QUERY_NAME[poolInfo.chainId]}`
+    return addQueryToPath(link, {
+      chain: CHAIN_QUERY_NAME[poolInfo.chainId],
+      [PERSIST_CHAIN_KEY]: '1',
+    })
   }, [
     poolInfo.feeTier,
     poolInfo.protocol,
