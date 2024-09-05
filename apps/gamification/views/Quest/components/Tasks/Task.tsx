@@ -100,7 +100,7 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
             targetUserId: (task as TaskSocialConfig).accountId.trim(),
             taskId: task?.id ?? '',
           }).toString()
-          const response = await fetchWithSiweAuth(`/api/twitterFollow?${queryString}`)
+          const response = await fetchWithSiweAuth(`/api/task/twitterFollow?${queryString}`)
           if (response.ok) {
             await refresh()
           } else {
@@ -139,7 +139,7 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
             providerId: providerId as TwitterFollowersId,
             twitterPostId: (task as TaskSocialConfig).accountId.trim(),
           }).toString()
-          const response = await fetchWithSiweAuth(`/api/twitterLiked?${queryString}`)
+          const response = await fetchWithSiweAuth(`/api/task/twitterLiked?${queryString}`)
           if (response.ok) {
             await refresh()
           } else {
@@ -178,7 +178,7 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
             providerId: providerId as TwitterFollowersId,
             twitterPostId: (task as TaskSocialConfig).accountId.trim(),
           }).toString()
-          const response = await fetchWithSiweAuth(`/api/twitterRetweet?${queryString}`)
+          const response = await fetchWithSiweAuth(`/api/task/twitterRetweet?${queryString}`)
           if (response.ok) {
             await refresh()
           } else {
