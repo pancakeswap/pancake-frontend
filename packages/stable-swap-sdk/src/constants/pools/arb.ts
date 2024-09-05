@@ -25,4 +25,15 @@ export const pools: StableSwapPool[] = [
     stableLpFee: 0.00125,
     stableLpFeeRateOfTotalFee: 0.5,
   },
+  {
+    lpSymbol: 'mBTC-WBTC LP',
+    lpAddress: '0x0FAd022b08FBdBd81A45013131B94Aa223E868eE',
+    token: arbitrumTokens.mBtc,
+    quoteToken: arbitrumTokens.wbtc,
+    stableSwapAddress: '0x5025Ee0cBceD7f44dbA9d30DCba10De49aa56D11',
+    infoStableSwapAddress: '0x58B2F00f74a1877510Ec37b22f116Bf5D63Ab1b0',
+    stableTotalFee: 0.00025,
+    stableLpFee: 0.000125,
+    stableLpFeeRateOfTotalFee: 0.5,
+  },
 ]

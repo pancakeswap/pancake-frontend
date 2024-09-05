@@ -3293,4 +3293,12 @@ export const bscTokens = {
     'Simons Cat',
     'https://www.simons.cat/',
   ),
+  mBtc: new ERC20Token(
+    ChainId.BSC,
+    '0x7c1cCA5b25Fa0bC9AF9275Fb53cBA89DC172b878',
+    8,
+    'mBTC',
+    'Liquid Staked BTC',
+    'https://www.babylon.magpiexyz.io',
+  ),
 }
