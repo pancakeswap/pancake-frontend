@@ -194,9 +194,9 @@ export default function PoolV2Page() {
               )}
             </>
           )}
-          <AutoRow>
+          <AutoRow style={{ gap: 4 }}>
             <Flex alignItems="center" justifyContent="space-between" width="100%" mb="8px">
-              <Box width="100%" mr="4px">
+              <Box width="100%">
                 <Text fontSize="12px" color="secondary" bold textTransform="uppercase">
                   {t('Liquidity')}
                 </Text>

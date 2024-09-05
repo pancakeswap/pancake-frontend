@@ -189,9 +189,15 @@ export default function StablePoolPage() {
               </NextLinkFromReactRouter>
             </>
           )}
-          <AutoRow>
-            <Flex alignItems="center" justifyContent="space-between" width="100%" flexWrap={['wrap', 'wrap', 'nowrap']}>
-              <Box width="100%" mr="4px" mb="16px">
+          <AutoRow style={{ gap: 4 }}>
+            <Flex
+              alignItems="center"
+              justifyContent="space-between"
+              style={{ gap: 4 }}
+              width="100%"
+              flexWrap={['wrap', 'wrap', 'nowrap']}
+            >
+              <Box width="100%">
                 <Text fontSize="12px" color="secondary" bold textTransform="uppercase">
                   {t('Liquidity')}
                 </Text>
@@ -229,7 +235,7 @@ export default function StablePoolPage() {
                   </AutoRow>
                 </LightGreyCard>
               </Box>
-              <Box width="100%" mr="4px" mb="16px">
+              <Box width="100%">
                 <Text fontSize="12px" color="secondary" bold textTransform="uppercase">
                   {t('Pool reserves')}
                 </Text>
