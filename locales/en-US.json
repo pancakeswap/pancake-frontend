@@ -3484,5 +3484,11 @@
   "Provider fees are waived for this period. Please note that a 1% PancakeSwap fee still applies.": "Provider fees are waived for this period. Please note that a 1% PancakeSwap fee still applies.",
   "Build Hooks on PancakeSwap v4: $40,000 Total Prize Pool": "Build Hooks on PancakeSwap v4: $40,000 Total Prize Pool",
   "v4 Hookathon": "v4 Hookathon",
-  "Buy now": "Buy now"
+  "Buy now": "Buy now",
+  "Caution - mPENDLE Token": "Caution - mPENDLE Token",
+  "security compromise": "security compromise",
+  "For more information, please refer to Penpie’s": "For more information, please refer to Penpie’s",
+  "Please exercise due caution when trading / providing liquidity for the mPENDLE token. The protocol recently encountered a": "Please exercise due caution when trading / providing liquidity for the mPENDLE token. The protocol recently encountered a",
+  "Caution - PNP Token": "Caution - PNP Token",
+  "Please exercise due caution when trading / providing liquidity for the PNP token. The protocol recently encountered a": "Please exercise due caution when trading / providing liquidity for the PNP token. The protocol recently encountered a"
 }
