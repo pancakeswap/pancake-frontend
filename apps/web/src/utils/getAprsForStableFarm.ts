@@ -1,15 +1,19 @@
+import { STABLE_SUPPORTED_CHAIN_IDS } from '@pancakeswap/stable-swap-sdk'
 import BigNumber from 'bignumber.js'
-import { explorerApiClient } from 'state/info/api/client'
+import { chainIdToExplorerInfoChainName, explorerApiClient } from 'state/info/api/client'
+import { operations } from 'state/info/api/schema'
 
-export const getAprsForStableFarm = async (stableSwapAddress?: string): Promise<BigNumber> => {
+export const getAprsForStableFarm = async (stableSwapAddress?: string, chainId?: number): Promise<BigNumber> => {
   try {
-    if (stableSwapAddress) {
+    if (stableSwapAddress && chainId && STABLE_SUPPORTED_CHAIN_IDS.includes(chainId)) {
       const data = await explorerApiClient
         .GET('/cached/pools/apr/stable/{chainName}/{address}', {
           signal: null,
           params: {
             path: {
-              chainName: 'bsc',
+              chainName: chainIdToExplorerInfoChainName[
+                chainId
+              ] as operations['getCachedPoolsAprStableByChainNameByAddress']['parameters']['path']['chainName'],
               address: stableSwapAddress,
             },
           },

@@ -2,6 +2,7 @@ import dayjs from 'dayjs'
 import { useMemo } from 'react'
 import { checkIsStableSwap } from 'state/info/constant'
 import { useAllPoolDataQuery, useStableSwapTopPoolsAPR } from 'state/info/hooks'
+import { Address } from 'viem'
 
 export const usePoolsData = () => {
   const isStableSwap = checkIsStableSwap()
@@ -10,7 +11,9 @@ export const usePoolsData = () => {
   const allPoolData = useAllPoolDataQuery()
 
   const poolAddresses = useMemo(() => {
-    return Object.keys(allPoolData)
+    return Object.values(allPoolData)
+      .map(({ data }) => data?.lpAddress)
+      .filter((address): address is Address => !!address)
   }, [allPoolData])
 
   const stableSwapsAprs = useStableSwapTopPoolsAPR(poolAddresses)
@@ -20,7 +23,9 @@ export const usePoolsData = () => {
       .map((pool) => {
         return {
           ...pool.data,
-          ...(isStableSwap && stableSwapsAprs && { lpApr7d: stableSwapsAprs[pool.data.address] }),
+          ...(isStableSwap &&
+            stableSwapsAprs &&
+            pool.data.lpAddress && { lpApr7d: stableSwapsAprs[pool.data.lpAddress] }),
         }
       })
       .filter((pool) => pool.token1.name !== 'unknown' && pool.token0.name !== 'unknown')

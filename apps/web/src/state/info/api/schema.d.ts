@@ -937,7 +937,7 @@ export interface components {
      * @description Protocol version
      * @enum {string}
      */
-    Protocol: 'v2' | 'v3' | 'v4bin' | 'stable'
+    Protocol: 'v2' | 'v3' | 'v4bin' | 'v4cl' | 'stable'
     transactions: {
       id: string
       transactionHash: string
@@ -1053,7 +1053,7 @@ export interface components {
        * @description Protocol version
        * @enum {string}
        */
-      protocol: 'v2' | 'v3' | 'v4bin' | 'stable'
+      protocol: 'v2' | 'v3' | 'v4bin' | 'v4cl' | 'stable'
       tvlUSD: string
       timestamp: Record<string, never> | string
     }
@@ -1424,7 +1424,7 @@ export interface operations {
       }
       header?: never
       path: {
-        chainName: 'bsc' | 'arbitrum'
+        chainName: 'bsc' | 'ethereum' | 'arbitrum'
       }
       cookie?: never
     }
@@ -1504,7 +1504,7 @@ export interface operations {
           | 'linea'
           | 'arbitrum'
         /** @description Protocol version */
-        protocol: 'v2' | 'v3' | 'v4bin' | 'stable'
+        protocol: 'v2' | 'v3' | 'v4bin' | 'v4cl' | 'stable'
         /** @description Ethereum address */
         address: string
       }
@@ -1590,7 +1590,7 @@ export interface operations {
           | 'linea'
           | 'arbitrum'
         /** @description Protocol version */
-        protocol: 'v2' | 'v3' | 'v4bin' | 'stable'
+        protocol: 'v2' | 'v3' | 'v4bin' | 'v4cl' | 'stable'
         /** @description Ethereum address */
         address: string
       }
@@ -1631,7 +1631,7 @@ export interface operations {
           | 'linea'
           | 'arbitrum'
         /** @description Protocol version */
-        protocol: 'v2' | 'v3' | 'v4bin' | 'stable'
+        protocol: 'v2' | 'v3' | 'v4bin' | 'v4cl' | 'stable'
         /** @description Ethereum address */
         address: string
       }
@@ -1718,7 +1718,7 @@ export interface operations {
       query?: {
         timestamp?: string | number
         /** @description Array of protocol versions */
-        protocols?: ('v2' | 'v3' | 'v4bin' | 'stable') | ('v2' | 'v3' | 'v4bin' | 'stable')[]
+        protocols?: ('v2' | 'v3' | 'v4bin' | 'v4cl' | 'stable') | ('v2' | 'v3' | 'v4bin' | 'v4cl' | 'stable')[]
       }
       header?: never
       path: {
@@ -1829,7 +1829,7 @@ export interface operations {
       query?: never
       header?: never
       path: {
-        chainName: 'bsc' | 'arbitrum'
+        chainName: 'bsc' | 'ethereum' | 'arbitrum'
         /** @description Ethereum address */
         address: string
       }
@@ -1972,7 +1972,7 @@ export interface operations {
       query?: never
       header?: never
       path: {
-        chainName: 'bsc' | 'arbitrum'
+        chainName: 'bsc' | 'ethereum' | 'arbitrum'
       }
       cookie?: never
     }
@@ -2192,7 +2192,7 @@ export interface operations {
           | 'linea'
           | 'arbitrum'
         /** @description Protocol version */
-        protocol: 'v2' | 'v3' | 'v4bin' | 'stable'
+        protocol: 'v2' | 'v3' | 'v4bin' | 'v4cl' | 'stable'
         /** @description Ethereum address */
         address: string
       }
@@ -2233,7 +2233,7 @@ export interface operations {
           | 'linea'
           | 'arbitrum'
         /** @description Protocol version */
-        protocol: 'v2' | 'v3' | 'v4bin' | 'stable'
+        protocol: 'v2' | 'v3' | 'v4bin' | 'v4cl' | 'stable'
         /** @description Ethereum address */
         address: string
       }
@@ -2350,7 +2350,7 @@ export interface operations {
       query?: never
       header?: never
       path: {
-        chainName: 'bsc' | 'arbitrum'
+        chainName: 'bsc' | 'ethereum' | 'arbitrum'
         /** @description Ethereum address */
         address: string
       }
@@ -2627,6 +2627,72 @@ export interface operations {
               }
             | {
                 /** @constant */
+                protocol: 'v4cl'
+                /** @description Pool id */
+                id: string
+                token0: {
+                  id: string
+                  symbol: string
+                  name: string
+                  decimals: number
+                }
+                token1: {
+                  id: string
+                  symbol: string
+                  name: string
+                  decimals: number
+                }
+                /** @description Total volume in USD */
+                totalVolumeUSD: string
+                /** @description Token0 price to token1 */
+                token0Price: string
+                /** @description Token1 price to token0 */
+                token1Price: string
+                /** @description Total value locked in token0 */
+                tvlToken0: string
+                /** @description Total value locked in token1 */
+                tvlToken1: string
+                /** @description Volume in USD in 24h */
+                volumeUSD24h: string
+                /** @description Volume in USD in 24h */
+                volumeUSD48h: string
+                /** @description Volume in USD in 7d */
+                volumeUSD7d: string
+                /** @description Total value locked in USD */
+                tvlUSD: string
+                /** @description Total value locked in USD 24h ago */
+                tvlUSD24h: string
+                /** @description Total value locked in USD 24h ago */
+                tvlUSD48h: string
+                /** @description Total value locked in USD 7d ago */
+                tvlUSD7d: string
+                /** @description Pool created at timestamp */
+                createdAtTimestamp: Record<string, never> | string
+                hookId: null | string
+                feeTier: number
+                isDynamicFee: boolean
+                liquidity: string
+                sqrtPrice: string
+                tick: null | number
+                /** @description Total fee in USD */
+                totalFeeUSD: string
+                /** @description Fee in USD in 24h */
+                feeUSD24h: string
+                /** @description Fee in USD in 24h */
+                feeUSD48h: string
+                /** @description Fee in USD in 7d */
+                feeUSD7d: string
+                /** @description Total protocol fee in USD */
+                totalProtocolFeeUSD: string
+                /** @description Protocol fee in USD in 24h */
+                protocolFeeUSD24h: string
+                /** @description Protocol fee in USD in 24h */
+                protocolFeeUSD48h: string
+                /** @description Protocol fee in USD in 7d */
+                protocolFeeUSD7d: string
+              }
+            | {
+                /** @constant */
                 protocol: 'v2'
                 /** @description Pool id */
                 id: string
@@ -2831,6 +2897,72 @@ export interface operations {
                 activeId: number
                 isDynamicFee: boolean
                 hookId: null | string
+                /** @description Total fee in USD */
+                totalFeeUSD: string
+                /** @description Fee in USD in 24h */
+                feeUSD24h: string
+                /** @description Fee in USD in 24h */
+                feeUSD48h: string
+                /** @description Fee in USD in 7d */
+                feeUSD7d: string
+                /** @description Total protocol fee in USD */
+                totalProtocolFeeUSD: string
+                /** @description Protocol fee in USD in 24h */
+                protocolFeeUSD24h: string
+                /** @description Protocol fee in USD in 24h */
+                protocolFeeUSD48h: string
+                /** @description Protocol fee in USD in 7d */
+                protocolFeeUSD7d: string
+              }
+            | {
+                /** @constant */
+                protocol: 'v4cl'
+                /** @description Pool id */
+                id: string
+                token0: {
+                  id: string
+                  symbol: string
+                  name: string
+                  decimals: number
+                }
+                token1: {
+                  id: string
+                  symbol: string
+                  name: string
+                  decimals: number
+                }
+                /** @description Total volume in USD */
+                totalVolumeUSD: string
+                /** @description Token0 price to token1 */
+                token0Price: string
+                /** @description Token1 price to token0 */
+                token1Price: string
+                /** @description Total value locked in token0 */
+                tvlToken0: string
+                /** @description Total value locked in token1 */
+                tvlToken1: string
+                /** @description Volume in USD in 24h */
+                volumeUSD24h: string
+                /** @description Volume in USD in 24h */
+                volumeUSD48h: string
+                /** @description Volume in USD in 7d */
+                volumeUSD7d: string
+                /** @description Total value locked in USD */
+                tvlUSD: string
+                /** @description Total value locked in USD 24h ago */
+                tvlUSD24h: string
+                /** @description Total value locked in USD 24h ago */
+                tvlUSD48h: string
+                /** @description Total value locked in USD 7d ago */
+                tvlUSD7d: string
+                /** @description Pool created at timestamp */
+                createdAtTimestamp: Record<string, never> | string
+                hookId: null | string
+                feeTier: number
+                isDynamicFee: boolean
+                liquidity: string
+                sqrtPrice: string
+                tick: null | number
                 /** @description Total fee in USD */
                 totalFeeUSD: string
                 /** @description Fee in USD in 24h */
@@ -3073,6 +3205,72 @@ export interface operations {
               }
             | {
                 /** @constant */
+                protocol: 'v4cl'
+                /** @description Pool id */
+                id: string
+                token0: {
+                  id: string
+                  symbol: string
+                  name: string
+                  decimals: number
+                }
+                token1: {
+                  id: string
+                  symbol: string
+                  name: string
+                  decimals: number
+                }
+                /** @description Total volume in USD */
+                totalVolumeUSD: string
+                /** @description Token0 price to token1 */
+                token0Price: string
+                /** @description Token1 price to token0 */
+                token1Price: string
+                /** @description Total value locked in token0 */
+                tvlToken0: string
+                /** @description Total value locked in token1 */
+                tvlToken1: string
+                /** @description Volume in USD in 24h */
+                volumeUSD24h: string
+                /** @description Volume in USD in 24h */
+                volumeUSD48h: string
+                /** @description Volume in USD in 7d */
+                volumeUSD7d: string
+                /** @description Total value locked in USD */
+                tvlUSD: string
+                /** @description Total value locked in USD 24h ago */
+                tvlUSD24h: string
+                /** @description Total value locked in USD 24h ago */
+                tvlUSD48h: string
+                /** @description Total value locked in USD 7d ago */
+                tvlUSD7d: string
+                /** @description Pool created at timestamp */
+                createdAtTimestamp: Record<string, never> | string
+                hookId: null | string
+                feeTier: number
+                isDynamicFee: boolean
+                liquidity: string
+                sqrtPrice: string
+                tick: null | number
+                /** @description Total fee in USD */
+                totalFeeUSD: string
+                /** @description Fee in USD in 24h */
+                feeUSD24h: string
+                /** @description Fee in USD in 24h */
+                feeUSD48h: string
+                /** @description Fee in USD in 7d */
+                feeUSD7d: string
+                /** @description Total protocol fee in USD */
+                totalProtocolFeeUSD: string
+                /** @description Protocol fee in USD in 24h */
+                protocolFeeUSD24h: string
+                /** @description Protocol fee in USD in 24h */
+                protocolFeeUSD48h: string
+                /** @description Protocol fee in USD in 7d */
+                protocolFeeUSD7d: string
+              }
+            | {
+                /** @constant */
                 protocol: 'v2'
                 /** @description Pool id */
                 id: string
@@ -3173,7 +3371,7 @@ export interface operations {
       query: {
         orderBy: 'tvlUSD' | 'volumeUSD24h' | 'apr24h'
         /** @description Array of protocol versions */
-        protocols: ('v2' | 'v3' | 'v4bin' | 'stable') | ('v2' | 'v3' | 'v4bin' | 'stable')[]
+        protocols: ('v2' | 'v3' | 'v4bin' | 'v4cl' | 'stable') | ('v2' | 'v3' | 'v4bin' | 'v4cl' | 'stable')[]
         /** @description Array of chain names */
         chains:
           | ('bsc' | 'bsc-testnet' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum')
@@ -3232,7 +3430,7 @@ export interface operations {
                * @description Protocol version
                * @enum {string}
                */
-              protocol: 'v2' | 'v3' | 'v4bin' | 'stable'
+              protocol: 'v2' | 'v3' | 'v4bin' | 'v4cl' | 'stable'
               feeTier: number
               token0: {
                 id: string
@@ -3256,7 +3454,7 @@ export interface operations {
     parameters: {
       query: {
         /** @description Array of protocol versions */
-        protocols: ('v2' | 'v3' | 'v4bin' | 'stable') | ('v2' | 'v3' | 'v4bin' | 'stable')[]
+        protocols: ('v2' | 'v3' | 'v4bin' | 'v4cl' | 'stable') | ('v2' | 'v3' | 'v4bin' | 'v4cl' | 'stable')[]
         /** @description Array of chain names */
         chains:
           | ('bsc' | 'bsc-testnet' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum')
@@ -3298,7 +3496,7 @@ export interface operations {
              * @description Protocol version
              * @enum {string}
              */
-            protocol: 'v2' | 'v3' | 'v4bin' | 'stable'
+            protocol: 'v2' | 'v3' | 'v4bin' | 'v4cl' | 'stable'
             feeTier: number
             token0: {
               id: string
@@ -3490,7 +3688,7 @@ export interface operations {
       query?: never
       header?: never
       path: {
-        chainName: 'bsc' | 'arbitrum'
+        chainName: 'bsc' | 'ethereum' | 'arbitrum'
         /** @description Ethereum address */
         address: string
       }
@@ -3801,7 +3999,7 @@ export interface operations {
       }
       header?: never
       path: {
-        chainName: 'bsc' | 'arbitrum'
+        chainName: 'bsc' | 'ethereum' | 'arbitrum'
       }
       cookie?: never
     }
@@ -3938,7 +4136,7 @@ export interface operations {
           | 'linea'
           | 'arbitrum'
         /** @description Protocol version */
-        protocol: 'v2' | 'v3' | 'v4bin' | 'stable'
+        protocol: 'v2' | 'v3' | 'v4bin' | 'v4cl' | 'stable'
       }
       cookie?: never
     }
@@ -3977,7 +4175,7 @@ export interface operations {
           | 'linea'
           | 'arbitrum'
         /** @description Protocol version */
-        protocol: 'v2' | 'v3' | 'v4bin' | 'stable'
+        protocol: 'v2' | 'v3' | 'v4bin' | 'v4cl' | 'stable'
       }
       cookie?: never
     }
@@ -4015,7 +4213,7 @@ export interface operations {
           | 'linea'
           | 'arbitrum'
         /** @description Protocol version */
-        protocol: 'v2' | 'v3' | 'v4bin' | 'stable'
+        protocol: 'v2' | 'v3' | 'v4bin' | 'v4cl' | 'stable'
       }
       cookie?: never
     }
@@ -4080,7 +4278,7 @@ export interface operations {
           | 'linea'
           | 'arbitrum'
         /** @description Protocol version */
-        protocol: 'v2' | 'v3' | 'v4bin' | 'stable'
+        protocol: 'v2' | 'v3' | 'v4bin' | 'v4cl' | 'stable'
       }
       cookie?: never
     }
@@ -4151,7 +4349,7 @@ export interface operations {
           | 'linea'
           | 'arbitrum'
         /** @description Protocol version */
-        protocol: 'v2' | 'v3' | 'v4bin' | 'stable'
+        protocol: 'v2' | 'v3' | 'v4bin' | 'v4cl' | 'stable'
       }
       cookie?: never
     }
@@ -4195,7 +4393,7 @@ export interface operations {
           | 'linea'
           | 'arbitrum'
         /** @description Protocol version */
-        protocol: 'v2' | 'v3' | 'v4bin' | 'stable'
+        protocol: 'v2' | 'v3' | 'v4bin' | 'v4cl' | 'stable'
       }
       cookie?: never
     }
