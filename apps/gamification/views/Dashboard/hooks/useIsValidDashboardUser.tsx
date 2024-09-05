@@ -43,12 +43,12 @@ export const useIsValidDashboardUser = () => {
     refetchOnWindowFocus: false,
   })
 
-  // if (isEnabled === false) {
-  //   return {
-  //     isValidLoginToDashboard: false,
-  //     isFetched: true,
-  //   }
-  // }
+  if (isEnabled === false) {
+    return {
+      isValidLoginToDashboard: false,
+      isFetched: true,
+    }
+  }
 
   return {
     isValidLoginToDashboard: data,
