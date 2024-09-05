@@ -9,11 +9,11 @@ import { ALLOWED_PRICE_IMPACT_HIGH, PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN } from 
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useNativeWrap } from 'hooks/useNativeWrap'
+import useNativeCurrency from 'hooks/useNativeCurrency'
 import { usePermit2 } from 'hooks/usePermit2'
 import { usePermit2Requires } from 'hooks/usePermit2Requires'
 import { useSafeTxHashTransformer } from 'hooks/useSafeTxHashTransformer'
 import { useTransactionDeadline } from 'hooks/useTransactionDeadline'
-import useWrapCallback from 'hooks/useWrapCallback'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { RetryableError, retry } from 'state/multicall/retry'
 import { logGTMSwapTxSentEvent } from 'utils/customGTMEventTracking'
@@ -30,6 +30,7 @@ import {
 import { isClassicOrder, isXOrder } from 'views/Swap/utils'
 import { waitForXOrderReceipt } from 'views/Swap/x/api'
 import { useSendXOrder } from 'views/Swap/x/useSendXOrder'
+import { useCurrencyBalance } from 'state/wallet/hooks'
 import { computeTradePriceBreakdown } from '../utils/exchange'
 import { userRejectedError } from './useSendSwapTransaction'
 import { useSwapCallback } from './useSwapCallback'
@@ -65,10 +66,17 @@ const useCreateConfirmSteps = (
   spender: Address | undefined,
 ) => {
   const { requireApprove, requirePermit, requireRevoke } = usePermit2Requires(amountToApprove, spender)
+  const nativeCurrency = useNativeCurrency(order?.trade.inputAmount.currency.chainId)
+  const { account } = useAccountActiveChain()
+  const balance = useCurrencyBalance(account ?? undefined, nativeCurrency.wrapped)
 
   return useCallback(() => {
     const steps: ConfirmModalState[] = []
-    if (isXOrder(order) && order.trade.inputAmount.currency.isNative) {
+    if (
+      isXOrder(order) &&
+      order.trade.inputAmount.currency.isNative &&
+      (!balance || balance.lessThan(order.trade.inputAmount.wrapped))
+    ) {
       steps.push(ConfirmModalState.WRAPPING)
     }
     if (requireRevoke) {
@@ -82,7 +90,7 @@ const useCreateConfirmSteps = (
     }
     steps.push(ConfirmModalState.PENDING_CONFIRMATION)
     return steps
-  }, [requireRevoke, requireApprove, requirePermit, order])
+  }, [requireRevoke, requireApprove, requirePermit, order, balance])
 }
 
 // define the actions of each step
@@ -115,6 +123,9 @@ const useConfirmActions = (
     deadline,
     permitSignature: permit2Signature,
   })
+
+  const nativeCurrency = useNativeCurrency(order?.trade.inputAmount.currency.chainId)
+  const wrappedBalance = useCurrencyBalance(account ?? undefined, nativeCurrency.wrapped)
 
   const { mutateAsync: sendXOrder } = useSendXOrder()
 
@@ -254,12 +265,6 @@ const useConfirmActions = (
     }
   }, [permit, retryWaitForTransaction, safeTxHashTransformer, showError])
 
-  const { execute } = useWrapCallback(
-    isXOrder(order) ? order.trade.inputAmount.currency : undefined,
-    order?.trade.inputAmount.currency.wrapped,
-    isXOrder(order) ? order?.trade.maximumAmountIn.toExact() : undefined,
-  )
-
   const wrapStep = useMemo(() => {
     return {
       step: ConfirmModalState.WRAPPING,
@@ -268,7 +273,7 @@ const useConfirmActions = (
           setConfirmState(ConfirmModalState.WRAPPING)
           // const result = await execute?.()
           const wrapAmount = BigInt(order?.trade.inputAmount.quotient ?? 0)
-          const result = await nativeWrap(wrapAmount)
+          const result = await nativeWrap(wrapAmount - (wrappedBalance?.quotient ?? 0n))
           if (result && result.hash) {
             await retryWaitForTransaction({ hash: txHash })
           }
@@ -283,19 +288,6 @@ const useConfirmActions = (
             showError(typeof error === 'string' ? error : (error as any)?.message)
           }
         }
-        // TODO: x wrap flow
-        // setConfirmState(ConfirmModalState.PERMITTING)
-        // try {
-        //   const result = await permit()
-        //   setPermit2Signature(result)
-        //   setConfirmState(nextState ?? ConfirmModalState.PENDING_CONFIRMATION)
-        // } catch (error) {
-        //   if (userRejectedError(error)) {
-        //     showError('Transaction rejected')
-        //   } else {
-        //     showError(typeof error === 'string' ? error : (error as any)?.message)
-        //   }
-        // }
       },
       showIndicator: true,
     }
@@ -423,7 +415,16 @@ const useConfirmActions = (
         try {
           const xOrder = await sendXOrder({
             chainId: order.trade.inputAmount.currency.chainId,
-            orderInfo: order.trade.orderInfo,
+            orderInfo: {
+              ...order.trade.orderInfo,
+              input: {
+                ...order.trade.orderInfo.input,
+                token:
+                  order.trade.inputAmount.currency.isNative && nativeCurrency
+                    ? nativeCurrency.wrapped.address
+                    : order.trade.orderInfo.input.token,
+              },
+            },
           })
           if (xOrder?.hash) {
             setOrderHash(xOrder.hash)
@@ -445,7 +446,7 @@ const useConfirmActions = (
       },
       showIndicator: false,
     }
-  }, [order, resetState, sendXOrder, showError])
+  }, [order, resetState, sendXOrder, showError, nativeCurrency])
 
   const actions = useMemo(() => {
     return {

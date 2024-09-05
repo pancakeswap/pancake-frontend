@@ -15,14 +15,13 @@ export const useNativeWrap = () => {
   const { account } = useAccountActiveChain()
   const { callWithGasPrice } = useCallWithGasPrice()
   const addTransaction = useTransactionAdder()
-  const balance = useCurrencyBalance(account ?? undefined, nativeCurrency.wrapped)
-
+  const balance = useCurrencyBalance(account ?? undefined, nativeCurrency)
   return useCallback(
     async (amount: bigint): Promise<{ hash: Hash } | null> => {
       if (!wnative || amount <= 0n) return null
 
       if (!balance || balance.lessThan(amount)) {
-        throw new Error(t('Insufficient %symbol% balance', { symbol: nativeCurrency.wrapped.symbol }))
+        throw new Error(t('Insufficient %symbol% balance', { symbol: nativeCurrency.symbol }))
       }
 
       const amtIn = formatUnits(amount, nativeCurrency.decimals)
