@@ -268,7 +268,7 @@ export default function StablePoolPage() {
                 </LightGreyCard>
               </Box>
             </Flex>
-            <Flex flexDirection="column" mr="4px" style={{ gap: 4 }}>
+            <Flex flexDirection="column" style={{ gap: 4 }}>
               {isPoolStaked && (
                 <Message variant="primary">
                   <MessageText>
