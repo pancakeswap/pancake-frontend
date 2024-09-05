@@ -65,7 +65,7 @@ export function useSwapInputError(order: PriceOrder | undefined, currencyBalance
     inputError = inputError ?? t('Enter a recipient')
   } else if (
     BAD_RECIPIENT_ADDRESSES.indexOf(formattedTo) !== -1 ||
-    (isClassicOrder(order) && involvesAddress(order.trade, formattedTo))
+    (isClassicOrder(order) && order.trade && involvesAddress(order.trade, formattedTo))
   ) {
     inputError = inputError ?? t('Invalid recipient')
   }
