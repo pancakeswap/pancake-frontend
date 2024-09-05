@@ -15,6 +15,7 @@ import { getPercentChange } from 'utils/infoDataHelpers'
 import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
 import { explorerApiClient } from './api/client'
 import { useExplorerChainNameByQuery } from './api/hooks'
+import { operations } from './api/schema'
 import { checkIsStableSwap, multiChainId, MultiChainName, MultiChainNameExtend } from './constant'
 import { PoolData, PriceChartEntry, ProtocolData, TokenData } from './types'
 
@@ -185,7 +186,8 @@ export const useProtocolTransactionsQuery = (): Transaction[] | undefined => {
             signal,
             params: {
               path: {
-                chainName,
+                chainName:
+                  chainName as operations['getCachedTxStableByChainNameRecent']['parameters']['path']['chainName'],
               },
             },
           })
@@ -246,7 +248,8 @@ export const useAllPoolDataQuery = () => {
           .GET('/cached/pools/stable/{chainName}/list/top', {
             params: {
               path: {
-                chainName,
+                chainName:
+                  chainName as operations['getCachedPoolsStableByChainNameListTop']['parameters']['path']['chainName'],
               },
             },
           })
@@ -342,7 +345,8 @@ export function usePoolDataQuery(poolAddress: string): PoolData | undefined {
             signal,
             params: {
               path: {
-                chainName,
+                chainName:
+                  chainName as operations['getCachedPoolsStableByChainNameByAddress']['parameters']['path']['chainName'],
                 address: poolAddress,
               },
             },
@@ -502,7 +506,8 @@ export const usePoolTransactionsQuery = (address: string): Transaction[] | undef
             signal,
             params: {
               path: {
-                chainName,
+                chainName:
+                  chainName as operations['getCachedTxStableByChainNameRecent']['parameters']['path']['chainName'],
               },
               query: {
                 pool: address,
@@ -611,7 +616,8 @@ export const useAllTokenDataQuery = (): {
             signal,
             params: {
               path: {
-                chainName,
+                chainName:
+                  chainName as operations['getCachedTokensStableByChainNameListTop']['parameters']['path']['chainName'],
               },
             },
           })
@@ -725,7 +731,8 @@ export const useTokenDataQuery = (address: string | undefined): TokenData | unde
             signal,
             params: {
               path: {
-                chainName,
+                chainName:
+                  chainName as operations['getCachedTokensStableByChainNameByAddress']['parameters']['path']['chainName'],
                 address,
               },
             },
@@ -794,7 +801,8 @@ export function usePoolsForTokenDataQuery(address: string): (PoolData | undefine
                 token: address,
               },
               path: {
-                chainName,
+                chainName:
+                  chainName as operations['getCachedPoolsStableByChainNameListTop']['parameters']['path']['chainName'],
               },
             },
           })
@@ -998,7 +1006,8 @@ export const useTokenTransactionsQuery = (address: string): Transaction[] | unde
             signal,
             params: {
               path: {
-                chainName,
+                chainName:
+                  chainName as operations['getCachedTxStableByChainNameRecent']['parameters']['path']['chainName'],
               },
               query: {
                 token: address,
