@@ -114,22 +114,42 @@ export const VeCakeChainBox = styled.div`
   }
 `
 
+const OtherChainsConfig = [
+  {
+    chainName: 'Arbitrum',
+    chainId: ChainId.ARBITRUM_ONE,
+    Icon: <ArbitrumIcon width={20} height={20} />,
+  },
+  {
+    chainName: 'Ethereum',
+    chainId: ChainId.ETHEREUM,
+    Icon: <EthereumIcon width={16} />,
+  },
+  {
+    chainName: 'ZKsync',
+    chainId: ChainId.ZKSYNC,
+    Icon: <ZKsyncIcon width={16} />,
+  },
+] as const
+
 export const CrossChainVeCakeModal: React.FC<{
   modalTitle?: string
   onDismiss?: () => void
   isOpen?: boolean
   setIsOpen?: (isOpen: boolean) => void
-}> = ({ onDismiss, modalTitle, isOpen }) => {
+  targetChainId?: (typeof OtherChainsConfig)[number]['chainId']
+}> = ({ onDismiss, modalTitle, isOpen, targetChainId }) => {
   const { isDesktop } = useMatchBreakpoints()
   const { address: account, chain } = useAccount()
   const { t } = useTranslation()
   const veCakeSenderV2Contract = usePancakeVeSenderV2Contract(ChainId.BSC)
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { toastSuccess } = useToast()
-  const [selectChainId, setSelectChainId] = useState<ChainId | undefined>(undefined)
+  const [selectChainId, setSelectChainId] = useState<ChainId | undefined>(targetChainId || undefined)
   const [txByChain, setTxByChain] = useState<Record<number, string>>({
     [ChainId.ARBITRUM_ONE]: '',
     [ChainId.ETHEREUM]: '',
+    [ChainId.ZKSYNC]: '',
   })
   const [modalState, setModalState] = useState<'list' | 'ready' | 'submitted' | 'done'>('list')
   const { balance: veCakeOnBsc } = useVeCakeBalance(ChainId.BSC)
@@ -240,7 +260,7 @@ export const CrossChainVeCakeModal: React.FC<{
               </ModalTitle>
               <ModalCloseButton onDismiss={onDismiss} />
             </StyledModalHeader>
-            <ModalBody minHeight={450}>
+            <ModalBody>
               <Text fontSize={12} color="textSubtle" textTransform="uppercase" fontWeight={600} mb="8px">
                 {t('My veCAKE')}
               </Text>
@@ -249,36 +269,22 @@ export const CrossChainVeCakeModal: React.FC<{
                 {t('Network to Sync')}
               </Text>
               <Flex flexDirection="column" style={{ gap: 12 }}>
-                <OtherChainsCard
-                  chainName="Arbitrum"
-                  chainId={ChainId.ARBITRUM_ONE}
-                  onSelected={setSelectChainId}
-                  Icon={<ArbitrumIcon width={20} height={20} />}
-                  isSelected={selectChainId === ChainId.ARBITRUM_ONE}
-                  veCakeOnBsc={veCakeOnBsc}
-                  hash={txByChain[ChainId.ARBITRUM_ONE]}
-                />
-                <OtherChainsCard
-                  chainName="Ethereum"
-                  chainId={ChainId.ETHEREUM}
-                  onSelected={setSelectChainId}
-                  Icon={<EthereumIcon width={16} />}
-                  isSelected={selectChainId === ChainId.ETHEREUM}
-                  veCakeOnBsc={veCakeOnBsc}
-                  hash={txByChain[ChainId.ETHEREUM]}
-                />
-                <OtherChainsCard
-                  chainName="ZKsync"
-                  chainId={ChainId.ZKSYNC}
-                  onSelected={setSelectChainId}
-                  Icon={<ZKsyncIcon width={16} />}
-                  isSelected={selectChainId === ChainId.ZKSYNC}
-                  veCakeOnBsc={veCakeOnBsc}
-                  hash={txByChain[ChainId.ZKSYNC]}
-                />
+                {OtherChainsConfig.filter((config) => (targetChainId ? config.chainId === targetChainId : true)).map(
+                  (config) => (
+                    <OtherChainsCard
+                      key={config.chainId}
+                      chainName={config.chainName}
+                      chainId={config.chainId}
+                      onSelected={setSelectChainId}
+                      Icon={config.Icon}
+                      isSelected={selectChainId === config.chainId}
+                      veCakeOnBsc={veCakeOnBsc}
+                      hash={txByChain[config.chainId]}
+                    />
+                  ),
+                )}
               </Flex>
               <InfoBox />
-
               {shouldNotSyncAgain && (
                 <Box mt="20px">
                   <NetWorkUpdateToDateDisplay />
