@@ -1,8 +1,8 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { WalletConnectorNotFoundError, WalletSwitchChainError } from '@pancakeswap/ui-wallets'
-import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { CHAIN_QUERY_NAME } from 'config/chains'
 import { ConnectorNames } from 'config/wallet'
+import { useRouter } from 'next/router'
 import { useCallback } from 'react'
 import { useAppDispatch } from 'state'
 import { ConnectorNotFoundError, SwitchChainNotSupportedError, useAccount, useConnect, useDisconnect } from 'wagmi'
@@ -18,6 +18,7 @@ const useAuth = () => {
   const { chainId } = useActiveChainId()
   const [, setQueryChainId] = useAtom(queryChainIdAtom)
   const { t } = useTranslation()
+  const router = useRouter()
 
   const login = useCallback(
     async (connectorID: ConnectorNames) => {
@@ -27,7 +28,20 @@ const useAuth = () => {
 
         const connected = await connectAsync({ connector: findConnector, chainId })
         if (connected.chainId !== chainId) {
-          replaceBrowserHistory('chain', CHAIN_QUERY_NAME[connected.chainId])
+          router.replace(
+            {
+              pathname: router.pathname,
+              query: {
+                ...router.query,
+                chain: CHAIN_QUERY_NAME[connected.chainId],
+              },
+            },
+            undefined,
+            {
+              shallow: true,
+            },
+          )
+
           setQueryChainId(connected.chainId)
         }
         return connected
@@ -45,7 +59,7 @@ const useAuth = () => {
       }
       return undefined
     },
-    [connectors, connectAsync, chainId, setQueryChainId, t],
+    [connectors, connectAsync, chainId, setQueryChainId, t, router],
   )
 
   const logout = useCallback(async () => {

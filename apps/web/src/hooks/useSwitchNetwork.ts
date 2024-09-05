@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { useToast } from '@pancakeswap/uikit'
@@ -15,6 +16,7 @@ import { useSwitchNetworkLoading } from './useSwitchNetworkLoading'
 export function useSwitchNetworkLocal() {
   const [, setQueryChainId] = useAtom(queryChainIdAtom)
   const dispatch = useAppDispatch()
+  const router = useRouter()
 
   const isBloctoMobileApp = useMemo(() => {
     return typeof window !== 'undefined' && Boolean((window.ethereum as ExtendEthereum)?.isBlocto)
@@ -22,7 +24,19 @@ export function useSwitchNetworkLocal() {
 
   return useCallback(
     (chainId: number) => {
-      replaceBrowserHistory('chain', chainId === ChainId.BSC ? null : CHAIN_QUERY_NAME[chainId])
+      router.replace(
+        {
+          pathname: router.pathname,
+          query: {
+            ...router.query,
+            chain: chainId === ChainId.BSC ? null : CHAIN_QUERY_NAME[chainId],
+          },
+        },
+        undefined,
+        {
+          shallow: true,
+        },
+      )
       setQueryChainId(chainId)
       // Blocto in-app browser throws change event when no account change which causes user state reset therefore
       // this event should not be handled to avoid unexpected behaviour.
@@ -30,7 +44,7 @@ export function useSwitchNetworkLocal() {
         clearUserStates(dispatch, { chainId, newChainId: chainId })
       }
     },
-    [dispatch, isBloctoMobileApp, setQueryChainId],
+    [dispatch, isBloctoMobileApp, setQueryChainId, router],
   )
 }
 

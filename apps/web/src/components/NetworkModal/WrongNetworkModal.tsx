@@ -5,6 +5,7 @@ import { ChainLogo } from 'components/Logo/ChainLogo'
 import useAuth from 'hooks/useAuth'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 import { Chain } from 'viem'
 import { useAccount } from 'wagmi'
 import * as allChains from 'viem/chains'
@@ -12,7 +13,6 @@ import { useCallback } from 'react'
 import { queryChainIdAtom } from 'hooks/useActiveChainId'
 import { useAtom } from 'jotai'
 import { CHAIN_QUERY_NAME } from 'config/chains'
-import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import Dots from '../Loader/Dots'
 
 const getChain = (chainId: number | undefined) => {
@@ -29,6 +29,7 @@ export function WrongNetworkModal({ currentChain, onDismiss }: { currentChain: C
   const [, setQueryChainId] = useAtom(queryChainIdAtom)
   const chainId = currentChain.id || ChainId.BSC
   const { t } = useTranslation()
+  const router = useRouter()
 
   const switchText = t('Switch to %network%', { network: currentChain.name })
 
@@ -40,10 +41,22 @@ export function WrongNetworkModal({ currentChain, onDismiss }: { currentChain: C
 
   const handleLogout = useCallback(() => {
     logout().then(() => {
-      replaceBrowserHistory('chain', chainId === ChainId.BSC ? null : CHAIN_QUERY_NAME[chainId])
+      router.replace(
+        {
+          pathname: router.pathname,
+          query: {
+            ...router.query,
+            chain: chainId === ChainId.BSC ? null : CHAIN_QUERY_NAME[chainId],
+          },
+        },
+        undefined,
+        {
+          shallow: true,
+        },
+      )
       setQueryChainId(chainId)
     })
-  }, [chainId, logout, setQueryChainId])
+  }, [chainId, logout, setQueryChainId, router])
 
   return (
     <Modal title={t('You are in wrong network')} headerBackground="gradientCardHeader" onDismiss={onDismiss}>
