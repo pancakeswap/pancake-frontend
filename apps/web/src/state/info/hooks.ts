@@ -288,6 +288,7 @@ export const useAllPoolDataQuery = () => {
         final[d.id] = {
           data: {
             address: d.id,
+            lpAddress: d.lpAddress,
             timestamp: dayjs(d.createdAtTimestamp as string).unix(),
             token0: {
               address: d.token0.id,
@@ -1107,8 +1108,8 @@ export const useChainIdByQuery = () => {
   return chainId
 }
 
-const stableSwapAPRWithAddressesFetcher = async (addresses: string[]) => {
-  return Promise.all(addresses.map((d) => getAprsForStableFarm(d)))
+const stableSwapAPRWithAddressesFetcher = async (addresses: string[], chainId?: number) => {
+  return Promise.all(addresses.map((d) => getAprsForStableFarm(d, chainId)))
 }
 
 export const useStableSwapTopPoolsAPR = (addresses: string[]): Record<string, number> => {
@@ -1116,8 +1117,8 @@ export const useStableSwapTopPoolsAPR = (addresses: string[]): Record<string, nu
   const chainName = useChainNameByQuery()
   const { data } = useQuery<BigNumber[]>({
     queryKey: [`info/pool/stableAPRs/Addresses/`, chainName],
-    queryFn: () => stableSwapAPRWithAddressesFetcher(addresses),
-    enabled: Boolean(isStableSwap && addresses?.length > 0),
+    queryFn: () => stableSwapAPRWithAddressesFetcher(addresses, multiChainId[chainName]),
+    enabled: Boolean(isStableSwap && addresses?.length > 0) && Boolean(chainName),
     ...QUERY_SETTINGS_IMMUTABLE,
     ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
   })
