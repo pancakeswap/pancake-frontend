@@ -1,5 +1,11 @@
 # @pancakeswap/wagmi
 
+## 3.0.3
+
+### Patch Changes
+
+- a93e89a: fix: Injected provider check when window is null
+
 ## 3.0.2
 
 ### Patch Changes
