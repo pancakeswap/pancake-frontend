@@ -9,7 +9,7 @@ import { PositionDetail, StableLPDetail, V2LPDetail } from 'state/farmsV4/state/
 import React, { PropsWithChildren, useCallback, useMemo } from 'react'
 import { PoolInfo } from 'state/farmsV4/state/type'
 import styled from 'styled-components'
-import { addQueryToPath } from 'views/universalFarms/utils'
+import { addQueryToPath } from 'utils/addQueryToPath'
 import { PositionInfo } from './PositionInfo'
 import { PositionItemSkeleton } from './PositionItemSkeleton'
 import { Container } from './styled'

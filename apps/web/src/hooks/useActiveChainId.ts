@@ -7,7 +7,7 @@ import { isChainSupported } from 'utils/wagmi'
 import { useAccount } from 'wagmi'
 // import { useSessionChainId } from './useSessionChainId'
 
-const queryChainIdAtom = atom(-1) // -1 unload, 0 no chainId on query
+export const queryChainIdAtom = atom(-1) // -1 unload, 0 no chainId on query
 
 queryChainIdAtom.onMount = (set) => {
   const params = new URL(window.location.href).searchParams

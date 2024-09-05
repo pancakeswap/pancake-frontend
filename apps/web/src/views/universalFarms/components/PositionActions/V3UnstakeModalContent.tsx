@@ -3,7 +3,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Box, Button } from '@pancakeswap/uikit'
 import NextLink from 'next/link'
 import { useMemo } from 'react'
-import { addQueryToPath } from 'views/universalFarms/utils'
+import { addQueryToPath } from 'utils/addQueryToPath'
 import { PositionInfo, PositionInfoProps } from '../PositionItem/PositionInfo'
 
 export const V3UnstakeModalContent: React.FC<PositionInfoProps> = (props) => {

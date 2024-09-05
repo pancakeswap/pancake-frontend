@@ -18,7 +18,6 @@ import { ASSET_CDN } from 'config/constants/endpoints'
 import { useActiveChainId, useLocalNetworkChain } from 'hooks/useActiveChainId'
 import { useNetworkConnectorUpdater } from 'hooks/useActiveWeb3React'
 import { useHover } from 'hooks/useHover'
-import { useSessionChainId } from 'hooks/useSessionChainId'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
@@ -107,7 +106,6 @@ const WrongNetworkSelect = ({ switchNetwork, chainId }) => {
   )
   const { chain } = useAccount()
   const localChainId = useLocalNetworkChain() || ChainId.BSC
-  const [, setSessionChainId] = useSessionChainId()
 
   const localChainName = chains.find((c) => c.id === localChainId)?.name ?? 'BSC'
 
@@ -124,7 +122,7 @@ const WrongNetworkSelect = ({ switchNetwork, chainId }) => {
       {tooltipVisible && tooltip}
       <UserMenuDivider />
       {chain && (
-        <UserMenuItem ref={ref1} onClick={() => setSessionChainId(chain.id)} style={{ justifyContent: 'flex-start' }}>
+        <UserMenuItem ref={ref1} style={{ justifyContent: 'flex-start' }}>
           <ChainLogo chainId={chain.id} />
           <Text color="secondary" bold pl="12px">
             {chainNameConverter(chain.name)}
