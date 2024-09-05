@@ -31,7 +31,7 @@ import {
 } from 'utils/customGTMEventTracking'
 
 import { useIsExpertMode, useUserSlippage } from '@pancakeswap/utils/user'
-import { FeeAmount, NonfungiblePositionManager } from '@pancakeswap/v3-sdk'
+import { FeeAmount, NonfungiblePositionManager, Pool } from '@pancakeswap/v3-sdk'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import { useTransactionDeadline } from 'hooks/useTransactionDeadline'
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
@@ -63,6 +63,7 @@ import { useSendTransaction, useWalletClient } from 'wagmi'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { useDensityChartData } from 'views/AddLiquidityV3/hooks/useDensityChartData'
 import { InitDepositToken, ZapLiquidityWidget } from 'components/ZapLiquidityWidget'
+import { ZAP_V3_POOL_ADDRESSES } from 'config/constants/zapV3'
 import LockedDeposit from './components/LockedDeposit'
 import { PositionPreview } from './components/PositionPreview'
 import RangeSelector from './components/RangeSelector'
@@ -172,6 +173,10 @@ export default function V3FormView({
     undefined,
     formState,
   )
+  const hasZapV3Pool = useMemo(() => {
+    const poolAddress = pool && Pool.getAddress(pool.token0, pool.token1, pool.fee)
+    return poolAddress ? ZAP_V3_POOL_ADDRESSES.includes(poolAddress) : false
+  }, [pool])
   const { onFieldAInput, onFieldBInput, onLeftRangeInput, onRightRangeInput, onStartPriceInput, onBothRangeInput } =
     useV3MintActionHandlers(noLiquidity)
 
@@ -576,7 +581,7 @@ export default function V3FormView({
       </DynamicSection>
       <HideMedium style={{ gap: 16, flexDirection: 'column' }}>
         {buttons}
-        {hasInsufficentBalance && (
+        {hasZapV3Pool && hasInsufficentBalance && (
           <ZapLiquidityWidget
             tickLower={tickLower}
             tickUpper={tickUpper}
@@ -800,7 +805,7 @@ export default function V3FormView({
           </DynamicSection>
           <MediumOnly style={{ gap: 16, flexDirection: 'column' }}>
             {buttons}
-            {hasInsufficentBalance && (
+            {hasZapV3Pool && hasInsufficentBalance && (
               <ZapLiquidityWidget
                 tickLower={tickLower}
                 tickUpper={tickUpper}
