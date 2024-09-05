@@ -12,6 +12,8 @@ import { multiChainPaths } from 'state/info/constant'
 import styled, { css } from 'styled-components'
 import { isAddressEqual } from 'viem'
 import { useAccount } from 'wagmi'
+import { addQueryToPath } from 'views/universalFarms/utils'
+import { PERSIST_CHAIN_KEY } from 'config/constants'
 
 const BaseButtonStyle = css`
   color: ${({ theme }) => theme.colors.text};
@@ -67,16 +69,14 @@ export const getPoolDetailPageLink = (pool: PoolInfo) => {
 
 const getPoolInfoPageLink = (pool: PoolInfo) => {
   const toLink = (lpAddress: string, protocol: string, query: string = '') => {
-    return `/info/${protocol}${multiChainPaths[pool.chainId]}/pairs/${lpAddress}?chain=${
-      CHAIN_QUERY_NAME[pool.chainId]
-    }${query}`
+    return `/info/${protocol}${multiChainPaths[pool.chainId]}/pairs/${lpAddress}?${query}`
   }
   if (pool.protocol === Protocol.STABLE) {
     const ssPair = LegacyRouter.stableSwapPairsByChainId[pool.chainId]?.find((pair) => {
       return isAddressEqual(pair.lpAddress, pool.lpAddress)
     })
     if (ssPair) {
-      return toLink(ssPair.stableSwapAddress, '', '&type=stableSwap')
+      return toLink(ssPair.stableSwapAddress, '', 'type=stableSwap')
     }
   }
   return toLink(pool.lpAddress, pool.protocol)
@@ -87,9 +87,10 @@ export const ActionItems = ({ pool, icon }: { pool: PoolInfo; icon?: React.React
   const { address: account } = useAccount()
 
   const { infoLink, detailLink, addLiquidityLink } = useMemo(() => {
-    const addLiqLink = `/add/${pool.token0.wrapped.address}/${pool.token1.address}?chain=${
-      CHAIN_QUERY_NAME[pool.chainId]
-    }`
+    const addLiqLink = addQueryToPath(`/add/${pool.token0.wrapped.address}/${pool.token1.address}`, {
+      chain: CHAIN_QUERY_NAME[pool.chainId],
+      [PERSIST_CHAIN_KEY]: '1',
+    })
     return {
       infoLink: getPoolInfoPageLink(pool),
       detailLink: getPoolDetailPageLink(pool),
