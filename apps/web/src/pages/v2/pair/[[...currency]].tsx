@@ -1,4 +1,16 @@
-import { AutoRow, Box, Button, Card, CardBody, Flex, Heading, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import {
+  AutoRow,
+  Box,
+  Button,
+  Card,
+  CardBody,
+  Flex,
+  Heading,
+  Message,
+  MessageText,
+  Text,
+  useMatchBreakpoints,
+} from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 
 import { AppHeader } from 'components/App'
@@ -8,11 +20,11 @@ import { styled } from 'styled-components'
 import { CHAIN_IDS } from 'utils/wagmi'
 import Page from 'views/Page'
 
-import { getLegacyFarmConfig } from '@pancakeswap/farms'
+import { getLegacyFarmConfig, Protocol } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
 import { useQuery } from '@tanstack/react-query'
 import { LightGreyCard } from 'components/Card'
-import { usePoolTokenPercentage, useTokensDeposited, useTotalUSDValue } from 'components/PositionCard'
+import { usePoolTokenPercentage, useTotalUSDValue } from 'components/PositionCard'
 import { useCurrency } from 'hooks/Tokens'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useMasterchef } from 'hooks/useContract'
@@ -23,6 +35,9 @@ import { useLPApr } from 'state/swap/useLPApr'
 import { useTokenBalance } from 'state/wallet/hooks'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { useAccount } from 'wagmi'
+import { useAccountPositionDetailByPool } from 'state/farmsV4/state/accountPositions/hooks'
+import { usePoolInfo } from 'state/farmsV4/state/extendPools/hooks'
+import { useMemo } from 'react'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -51,7 +66,35 @@ export default function PoolV2Page() {
 
   const poolTokenPercentage = usePoolTokenPercentage({ totalPoolTokens, userPoolBalance })
 
-  const [token0Deposited, token1Deposited] = useTokensDeposited({ pair, userPoolBalance, totalPoolTokens })
+  const poolInfo = usePoolInfo({ poolAddress: pair ? pair.liquidityToken.address : null, chainId })
+
+  const { data: positionDetails } = useAccountPositionDetailByPool<Protocol.V2>(
+    poolInfo?.chainId ?? chainId,
+    account,
+    poolInfo ?? undefined,
+  )
+
+  const isPoolStaked = useMemo(() => {
+    return positionDetails?.farmingDeposited0.greaterThan(0) || positionDetails?.farmingDeposited1.greaterThan(0)
+  }, [positionDetails])
+
+  const [token0Deposited, token1Deposited] = useMemo(() => {
+    return [
+      isPoolStaked
+        ? positionDetails?.nativeDeposited0.add(positionDetails?.farmingDeposited0)
+        : positionDetails?.nativeDeposited0,
+      isPoolStaked
+        ? positionDetails?.nativeDeposited1.add(positionDetails?.farmingDeposited1)
+        : positionDetails?.nativeDeposited1,
+    ]
+  }, [positionDetails, isPoolStaked])
+
+  const totalStakedUSDValue = useTotalUSDValue({
+    currency0: pair?.token0,
+    currency1: pair?.token1,
+    token0Deposited: isPoolStaked ? positionDetails?.farmingDeposited0 : undefined,
+    token1Deposited: isPoolStaked ? positionDetails?.farmingDeposited1 : undefined,
+  })
 
   const totalUSDValue = useTotalUSDValue({
     currency0: pair?.token0,
@@ -71,8 +114,8 @@ export default function PoolV2Page() {
         (farm) => farm.lpAddress.toLowerCase() === pair?.liquidityToken?.address?.toLowerCase(),
       )
       if (farmPair) {
-        const poolInfo = await masterchefV2Contract?.read.poolInfo([BigInt(farmPair.pid)])
-        const allocPoint = poolInfo ? (poolInfo[2] as bigint) : 0
+        const contractPoolInfo = await masterchefV2Contract?.read.poolInfo([BigInt(farmPair.pid)])
+        const allocPoint = contractPoolInfo ? (contractPoolInfo[2] as bigint) : 0
         return allocPoint > 0 ? 'exist' : 'notexist'
       }
       return 'exist'
@@ -192,15 +235,31 @@ export default function PoolV2Page() {
                 </LightGreyCard>
               </Box>
             </Flex>
+            <Flex flexDirection="column" mr="4px" style={{ gap: 4 }}>
+              {isPoolStaked && (
+                <Message variant="primary">
+                  <MessageText>
+                    {t('$%amount% of your liquidity is currently staking in farm.', {
+                      amount: totalStakedUSDValue
+                        ? totalStakedUSDValue.toLocaleString(undefined, {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })
+                        : '-',
+                    })}
+                  </MessageText>
+                </Message>
+              )}
+              {poolData && (
+                <Text ml="4px">
+                  {t('LP reward APR')}: {formatAmount(poolData.lpApr7d)}%
+                </Text>
+              )}
+              <Text color="textSubtle" ml="4px">
+                {t('Your share in pool')}: {poolTokenPercentage ? `${poolTokenPercentage.toFixed(8)}%` : '-'}
+              </Text>
+            </Flex>
           </AutoRow>
-          {poolData && (
-            <Text>
-              {t('LP reward APR')}: {formatAmount(poolData.lpApr7d)}%
-            </Text>
-          )}
-          <Text>
-            {t('Your share in pool')}: {poolTokenPercentage ? `${poolTokenPercentage.toFixed(8)}%` : '-'}
-          </Text>
         </CardBody>
       </BodyWrapper>
     </Page>

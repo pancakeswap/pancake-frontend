@@ -76,6 +76,10 @@ export default function StablePoolPage() {
     poolInfo ?? undefined,
   )
 
+  const isPoolStaked = useMemo(() => {
+    return positionDetails?.farmingDeposited0.greaterThan(0) || positionDetails?.farmingDeposited1.greaterThan(0)
+  }, [positionDetails])
+
   const { result } = useSingleCallResult({
     contract: stableSwapInfoContract,
     functionName: 'balances',
@@ -105,27 +109,27 @@ export default function StablePoolPage() {
   })
 
   const userPoolBalance = useMemo(() => {
-    return positionDetails?.isStaked
+    return isPoolStaked
       ? positionDetails?.nativeBalance.add(positionDetails?.farmingBalance)
       : positionDetails?.nativeBalance
-  }, [positionDetails])
+  }, [positionDetails, isPoolStaked])
 
   const [token0Deposited, token1Deposited] = useMemo(() => {
     return [
-      positionDetails?.isStaked
+      isPoolStaked
         ? positionDetails?.nativeDeposited0.add(positionDetails?.farmingDeposited0)
         : positionDetails?.nativeDeposited0,
-      positionDetails?.isStaked
+      isPoolStaked
         ? positionDetails?.nativeDeposited1.add(positionDetails?.farmingDeposited1)
         : positionDetails?.nativeDeposited1,
     ]
-  }, [positionDetails])
+  }, [positionDetails, isPoolStaked])
 
   const totalStakedUSDValue = useTotalUSDValue({
     currency0: selectedLp?.token0,
     currency1: selectedLp?.token1,
-    token0Deposited: positionDetails?.isStaked ? positionDetails?.farmingDeposited0 : undefined,
-    token1Deposited: positionDetails?.isStaked ? positionDetails?.farmingDeposited1 : undefined,
+    token0Deposited: isPoolStaked ? positionDetails?.farmingDeposited0 : undefined,
+    token1Deposited: isPoolStaked ? positionDetails?.farmingDeposited1 : undefined,
   })
 
   const totalUSDValue = useTotalUSDValue({
@@ -265,7 +269,7 @@ export default function StablePoolPage() {
               </Box>
             </Flex>
             <Flex flexDirection="column" mr="4px" style={{ gap: 4 }}>
-              {positionDetails?.isStaked && (
+              {isPoolStaked && (
                 <Message variant="primary">
                   <MessageText>
                     {t('$%amount% of your liquidity is currently staking in farm.', {
