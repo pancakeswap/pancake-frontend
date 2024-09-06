@@ -53,13 +53,12 @@ export function useSwapCallback({
   const { t } = useTranslation()
   const { account, chainId } = useAccountActiveChain()
   const [allowedSlippageRaw] = useUserSlippage() || [INITIAL_ALLOWED_SLIPPAGE]
-  const allowedSlippage = useMemo(() => basisPointsToPercent(allowedSlippageRaw), [allowedSlippageRaw])
   const { recipient: recipientAddress } = useSwapState()
   const recipient = recipientAddress === null ? account : recipientAddress
 
   const swapCalls = useSwapCallArguments(
     trade,
-    allowedSlippage,
+    basisPointsToPercent(allowedSlippageRaw),
     recipientAddress,
     permitSignature,
     deadline,

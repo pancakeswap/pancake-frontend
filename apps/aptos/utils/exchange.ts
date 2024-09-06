@@ -16,6 +16,7 @@ import {
   INPUT_FRACTION_AFTER_FEE,
 } from 'config/constants/exchange'
 import { Field } from 'state/swap'
+import memoize from 'lodash/memoize'
 
 // TODO: aptos merge with exchange
 export function warningSeverity(priceImpact: Percent | undefined): 0 | 1 | 2 | 3 | 4 {
@@ -63,9 +64,9 @@ export function computeTradePriceBreakdown(trade?: Trade<Currency, Currency, Tra
 }
 
 // converts a basis points value to a sdk percent
-export function basisPointsToPercent(num: number): Percent {
+export const basisPointsToPercent = memoize((num: number): Percent => {
   return new Percent(BigInt(num), BIPS_BASE)
-}
+})
 
 export function computeSlippageAdjustedAmounts(
   trade: Trade<Currency, Currency, TradeType> | undefined,
