@@ -78,7 +78,7 @@ export function useSiwe() {
         throw new Error(`Invalid chain ${chainId}`)
       }
 
-      if (isSiweValid) {
+      if (isSiweValid && siwe) {
         return siwe
       }
 
@@ -118,7 +118,7 @@ export function useSiwe() {
       setSiwe(siweMessage)
       return siweMessage
     },
-    [currentAddress, currentChainId, siwe, setSiwe, signMessageAsync],
+    [currentAddress, isSiweValid, currentChainId, siwe, setSiwe, signMessageAsync],
   )
 
   const signOut = useCallback(() => setSiwe(RESET), [setSiwe])

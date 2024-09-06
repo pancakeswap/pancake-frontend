@@ -73,8 +73,6 @@ export const Tasks: React.FC<TasksProps> = ({
   )
   const { fetchWithSiweAuth, isSiweValid } = useSiwe()
 
-  console.log('isSiweValid', isSiweValid)
-
   const handleLinkUserToQuest = async () => {
     if (account) {
       try {
