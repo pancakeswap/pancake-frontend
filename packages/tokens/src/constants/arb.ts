@@ -447,4 +447,12 @@ export const arbitrumTokens = {
     'Liquid Staked BTC',
     'https://www.babylon.magpiexyz.io',
   ),
+  gusdc: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0xd3443ee1e91aF28e5FB858Fbd0D72A63bA8046E0',
+    6,
+    'Gains Network USDC',
+    'GUSD',
+    'https://gains.trade/',
+  ),
 }
