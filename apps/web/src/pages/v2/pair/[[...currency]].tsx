@@ -29,9 +29,7 @@ import { useCurrency } from 'hooks/Tokens'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useMasterchef } from 'hooks/useContract'
 import { useV2Pair } from 'hooks/usePairs'
-import useTotalSupply from 'hooks/useTotalSupply'
 import { useRouter } from 'next/router'
-import { useTokenBalance } from 'state/wallet/hooks'
 import { useAccount } from 'wagmi'
 import { useAccountPositionDetailByPool } from 'state/farmsV4/state/accountPositions/hooks'
 import { usePoolInfo } from 'state/farmsV4/state/extendPools/hooks'
@@ -61,12 +59,6 @@ export default function PoolV2Page() {
 
   const [, pair] = useV2Pair(baseCurrency ?? undefined, currencyB ?? undefined)
 
-  const userPoolBalance = useTokenBalance(account ?? undefined, pair?.liquidityToken)
-
-  const totalPoolTokens = useTotalSupply(pair?.liquidityToken)
-
-  const poolTokenPercentage = usePoolTokenPercentage({ totalPoolTokens, userPoolBalance })
-
   const poolInfo = usePoolInfo({ poolAddress: pair ? pair.liquidityToken.address : null, chainId })
 
   const { data: positionDetails } = useAccountPositionDetailByPool<Protocol.V2>(
@@ -81,6 +73,14 @@ export default function PoolV2Page() {
     () => (isPoolStaked ? Boolean(positionDetails?.nativeBalance.equalTo(0)) : false),
     [isPoolStaked, positionDetails],
   )
+
+  const userPoolBalance = useMemo(() => {
+    return isPoolStaked
+      ? positionDetails?.nativeBalance.add(positionDetails?.farmingBalance)
+      : positionDetails?.nativeBalance
+  }, [positionDetails, isPoolStaked])
+
+  const poolTokenPercentage = usePoolTokenPercentage({ totalPoolTokens: positionDetails?.totalSupply, userPoolBalance })
 
   const [token0Deposited, token1Deposited] = useMemo(() => {
     return [
