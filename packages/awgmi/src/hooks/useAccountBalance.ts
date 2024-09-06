@@ -1,15 +1,17 @@
 import { APTOS_COIN, FetchBalanceArgs } from '@pancakeswap/awgmi/core'
 import { QueryConfig } from '../types'
 
-import { useAccountBalances, UseAccountBalancesResult } from './useAccountBalances'
+import { useAccountBalances, UseAccountBalancesQueryResult, UseAccountBalancesResult } from './useAccountBalances'
 import { useNetwork } from './useNetwork'
+import { UseAccountResourcesConfig } from './useAccountResources'
 
 export type UseAccountBalanceArgs = Partial<FetchBalanceArgs> & {
   /** Subscribe to changes */
   watch?: boolean
+  select?: (data: UseAccountBalancesResult) => UseAccountBalancesResult | null | undefined
 }
 
-type UseAccountBalances<TData> = QueryConfig<UseAccountBalancesResult, Error, TData>
+type UseAccountBalances<TData> = Omit<QueryConfig<UseAccountBalancesQueryResult, Error, TData>, 'select'>
 
 export function useAccountBalance<TData = unknown>({
   address,

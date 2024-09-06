@@ -16,8 +16,15 @@ export type UseAccountResourcesConfig<TData = unknown> = QueryConfig<
   QueryKey
 >
 
-export const queryKey = ({ networkName, address }: { networkName?: string; address?: string }) =>
-  [{ entity: 'accountResources', networkName, address }] as const
+export const queryKey = ({
+  entity,
+  networkName,
+  address,
+}: {
+  entity?: string
+  networkName?: string
+  address?: string
+}) => [{ entity, networkName, address }] as const
 
 type QueryKey = ReturnType<typeof queryKey>
 
@@ -43,7 +50,7 @@ export function useAccountResources<TData = unknown>({
 
   return useQuery({
     ...query,
-    queryKey: queryKey({ networkName, address }),
+    queryKey: queryKey({ entity: 'accountResources', networkName, address }),
     queryFn,
     initialData,
     gcTime,
