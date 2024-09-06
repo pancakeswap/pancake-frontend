@@ -40,13 +40,14 @@ import {
   V2PositionItem,
   V3PositionItem,
 } from 'views/universalFarms/components'
-import { useCheckShouldSwitchNetwork } from 'views/universalFarms/hooks'
+import { useCheckShouldSwitchNetwork, useTotalPriceUSD } from 'views/universalFarms/hooks'
 import { useV2CakeEarning, useV3CakeEarningsByPool } from 'views/universalFarms/hooks/useCakeEarning'
 import { useV2FarmActions } from 'views/universalFarms/hooks/useV2FarmActions'
 import { displayApr } from 'views/universalFarms/utils/displayApr'
 import { formatDollarAmount } from 'views/V3Info/utils/numbers'
 import { PERSIST_CHAIN_KEY } from 'config/constants'
 import { addQueryToPath } from 'utils/addQueryToPath'
+import { formatFiatNumber } from '@pancakeswap/utils/formatFiatNumber'
 import { useV3Positions } from '../hooks/useV3Positions'
 import { MyPositionsProvider, useMyPositions } from './MyPositionsContext'
 import { V2PoolEarnings, V3PoolEarnings } from './PoolEarnings'
@@ -413,16 +414,12 @@ const MyV2OrStablePositions: React.FC<{
   const chainId = useChainIdByQuery()
   const { account } = useAccountActiveChain()
   const { data, isLoading } = useAccountPositionDetailByPool<Protocol.STABLE | Protocol.V2>(chainId, account, poolInfo)
-  const totalTVLUsd = useMemo(() => {
-    if (!data) {
-      return '0'
-    }
-
-    return new BigNumber(data.nativeBalance.add(data.farmingBalance).toExact())
-      .div(data.totalSupply.toExact())
-      .times(Number(poolInfo.tvlUsd ?? 0))
-      .toString()
-  }, [data, poolInfo.tvlUsd])
+  const totalTVLUsd = useTotalPriceUSD({
+    currency0: data?.pair.token0,
+    currency1: data?.pair.token1,
+    amount0: data?.nativeDeposited0.add(data?.farmingDeposited0),
+    amount1: data?.nativeDeposited1.add(data?.farmingDeposited1),
+  })
   const count = useMemo(() => {
     if (!data) return 0
     return [data.nativeBalance.greaterThan('0'), data.farmingBalance.greaterThan('0')].filter(Boolean).length
@@ -453,7 +450,7 @@ const MyV2OrStablePositions: React.FC<{
   }, [count, setCount])
 
   useEffect(() => {
-    setTotalTvlUsd(totalTVLUsd)
+    setTotalTvlUsd(formatFiatNumber(totalTVLUsd, ''))
   }, [totalTVLUsd, setTotalTvlUsd])
 
   const { data: v2PoolsLength } = useV2PoolsLength([chainId])

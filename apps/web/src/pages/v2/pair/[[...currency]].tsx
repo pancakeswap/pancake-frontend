@@ -38,6 +38,7 @@ import { useAccount } from 'wagmi'
 import { useAccountPositionDetailByPool } from 'state/farmsV4/state/accountPositions/hooks'
 import { usePoolInfo } from 'state/farmsV4/state/extendPools/hooks'
 import { useMemo } from 'react'
+import { formatFiatNumber } from '@pancakeswap/utils/formatFiatNumber'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -74,9 +75,12 @@ export default function PoolV2Page() {
     poolInfo ?? undefined,
   )
 
-  const isPoolStaked = useMemo(() => {
-    return positionDetails?.farmingDeposited0.greaterThan(0) || positionDetails?.farmingDeposited1.greaterThan(0)
-  }, [positionDetails])
+  const isPoolStaked = useMemo(() => Boolean(positionDetails?.farmingBalance.greaterThan(0)), [positionDetails])
+
+  const isFullyStaked = useMemo(
+    () => (isPoolStaked ? Boolean(positionDetails?.nativeBalance.equalTo(0)) : false),
+    [isPoolStaked, positionDetails],
+  )
 
   const [token0Deposited, token1Deposited] = useMemo(() => {
     return [
@@ -157,13 +161,13 @@ export default function PoolV2Page() {
                   to={`/v2/remove/${pair?.token0.address}/${pair?.token1.address}`}
                   style={{ margin: '0px 8px' }}
                 >
-                  <Button variant="secondary" width="100%" disabled={!pair}>
+                  <Button variant="secondary" width="100%" disabled={!pair || isFullyStaked}>
                     {t('Remove')}
                   </Button>
                 </NextLinkFromReactRouter>
                 {isFarmExistActiveForPair === 'notexist' && (
                   <NextLinkFromReactRouter to={`/v2/migrate/${pair?.liquidityToken?.address}`}>
-                    <Button variant="secondary" width="100%" disabled={!pair}>
+                    <Button variant="secondary" width="100%" disabled={!pair || isFullyStaked}>
                       {t('Migrate')}
                     </Button>
                   </NextLinkFromReactRouter>
@@ -201,13 +205,7 @@ export default function PoolV2Page() {
                   {t('Liquidity')}
                 </Text>
                 <Text fontSize="24px" fontWeight={600}>
-                  $
-                  {totalUSDValue
-                    ? totalUSDValue.toLocaleString(undefined, {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      })
-                    : '-'}
+                  {totalUSDValue ? formatFiatNumber(totalUSDValue) : '-'}
                 </Text>
                 <LightGreyCard mr="4px">
                   <AutoRow justifyContent="space-between" mb="8px">
@@ -235,29 +233,39 @@ export default function PoolV2Page() {
                 </LightGreyCard>
               </Box>
             </Flex>
-            <Flex flexDirection="column" style={{ gap: 4 }}>
+            <Flex
+              flexDirection={isMobile ? 'column' : 'row'}
+              justifyContent={isPoolStaked ? 'space-between' : 'flex-end'}
+              width="100%"
+              style={{ gap: 4 }}
+            >
               {isPoolStaked && (
-                <Message variant="primary">
-                  <MessageText>
-                    {t('$%amount% of your liquidity is currently staking in farm.', {
-                      amount: totalStakedUSDValue
-                        ? totalStakedUSDValue.toLocaleString(undefined, {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                          })
-                        : '-',
-                    })}
-                  </MessageText>
-                </Message>
+                <Box width={isMobile ? '100%' : '50%'}>
+                  <Message variant="primary">
+                    <MessageText>
+                      {t('%amount% of your liquidity is currently staking in farm.', {
+                        amount: totalStakedUSDValue ? formatFiatNumber(totalStakedUSDValue) : '-',
+                      })}
+                    </MessageText>
+                  </Message>
+                </Box>
               )}
-              {poolData && (
-                <Text ml="4px">
-                  {t('LP reward APR')}: {formatAmount(poolData.lpApr7d)}%
+              <Flex
+                flexDirection="column"
+                alignItems={isMobile ? 'flex-start' : 'flex-end'}
+                justifyContent="center"
+                mr="4px"
+                style={{ gap: 4 }}
+              >
+                {poolData && (
+                  <Text ml="4px">
+                    {t('LP reward APR')}: {formatAmount(poolData.lpApr7d)}%
+                  </Text>
+                )}
+                <Text color="textSubtle" ml="4px">
+                  {t('Your share in pool')}: {poolTokenPercentage ? `${poolTokenPercentage.toFixed(8)}%` : '-'}
                 </Text>
-              )}
-              <Text color="textSubtle" ml="4px">
-                {t('Your share in pool')}: {poolTokenPercentage ? `${poolTokenPercentage.toFixed(8)}%` : '-'}
-              </Text>
+              </Flex>
             </Flex>
           </AutoRow>
         </CardBody>
