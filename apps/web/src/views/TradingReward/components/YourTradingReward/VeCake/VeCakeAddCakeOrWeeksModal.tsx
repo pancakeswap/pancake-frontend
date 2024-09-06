@@ -66,7 +66,7 @@ export const VeCakeAddCakeOrWeeksModal: React.FC<React.PropsWithChildren<VeCakeA
 
   return (
     <Modal
-      title="Increase your veCAKE"
+      title={t('Increase your veCAKE')}
       headerBorderColor="transparent"
       maxWidth={['100%', '100%', '100%', '500px']}
       onDismiss={onDismiss}
