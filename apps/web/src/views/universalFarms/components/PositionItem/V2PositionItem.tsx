@@ -5,7 +5,7 @@ import { V2LPDetail } from 'state/farmsV4/state/accountPositions/type'
 import { V2PoolInfo } from 'state/farmsV4/state/type'
 import currencyId from 'utils/currencyId'
 import { v2Fee } from 'views/PoolDetail/hooks/useStablePoolFee'
-import { useTotalPriceUSD } from 'views/universalFarms/hooks'
+import { useTotalPriceUSD } from 'hooks/useTotalPriceUSD'
 import { V2PositionActions } from '../PositionActions/V2PositionActions'
 import { PositionItem } from './PositionItem'
 

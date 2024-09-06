@@ -28,7 +28,6 @@ import { usePoolTokenPercentage, useTotalUSDValue } from 'components/PositionCar
 import { useInfoStableSwapContract } from 'hooks/useContract'
 import useTotalSupply from 'hooks/useTotalSupply'
 import { useSingleCallResult } from 'state/multicall/hooks'
-import { useLPApr } from 'state/swap/useLPApr'
 import currencyId from 'utils/currencyId'
 import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
 import { formatAmount } from 'utils/formatInfoNumbers'
@@ -39,6 +38,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { usePoolInfo } from 'state/farmsV4/state/extendPools/hooks'
 import { formatFiatNumber } from '@pancakeswap/utils/formatFiatNumber'
 import { useTotalPriceUSD } from 'hooks/useTotalPriceUSD'
+import { usePoolApr } from 'state/farmsV4/state/poolApr/hooks'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -150,7 +150,9 @@ export default function StablePoolPage() {
 
   const { isMobile } = useMatchBreakpoints()
 
-  const poolData = useLPApr('stable', selectedLp)
+  const key = useMemo(() => (poolInfo ? (`${poolInfo?.chainId}:${poolInfo?.lpAddress}` as const) : null), [poolInfo])
+
+  const { lpApr } = usePoolApr(key, poolInfo ?? null)
 
   if (!selectedLp) return null
 
@@ -291,9 +293,9 @@ export default function StablePoolPage() {
                 mr="4px"
                 style={{ gap: 4 }}
               >
-                {poolData && (
+                {lpApr !== '0' && (
                   <Text ml="4px">
-                    {t('LP reward APR')}: {formatAmount(poolData.lpApr7d)}%
+                    {t('LP reward APR')}: {formatAmount((parseFloat(lpApr) ?? 0) * 100)}%
                   </Text>
                 )}
                 <Text color="textSubtle" ml="4px">

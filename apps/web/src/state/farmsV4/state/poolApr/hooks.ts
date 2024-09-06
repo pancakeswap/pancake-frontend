@@ -9,7 +9,7 @@ import { getAllNetworkMerklApr, getCakeApr, getLpApr } from './fetcher'
 
 export const usePoolApr = (
   key: ChainIdAddressKey | null,
-  pool: PoolInfo,
+  pool: PoolInfo | null,
 ): {
   lpApr: `${number}`
   cakeApr: CakeApr[keyof CakeApr]
@@ -30,6 +30,9 @@ export const usePoolApr = (
   }, [key, merklAprs, updateMerklApr])
   const updateCallback = useCallback(async () => {
     try {
+      if (!pool) {
+        throw new Error('Pool not found')
+      }
       const [cakeApr, lpApr, merklApr] = await Promise.all([
         getCakeApr(pool).then((apr) => {
           updateCakeApr(apr)
