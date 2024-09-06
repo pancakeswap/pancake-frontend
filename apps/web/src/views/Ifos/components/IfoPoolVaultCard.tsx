@@ -7,6 +7,7 @@ import { Address } from 'viem'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 
 import { isCrossChainIfoSupportedOnly } from '@pancakeswap/ifos'
+import { useActiveIfoConfig } from 'hooks/useIfoConfig'
 import { CrossChainVeCakeCard } from './CrossChainVeCakeCard'
 import IfoVesting from './IfoVesting/index'
 import { VeCakeCard } from './VeCakeCard'
@@ -19,16 +20,19 @@ type Props = {
 
 const IfoPoolVaultCard = ({ ifoBasicSaleType, ifoAddress }: Props) => {
   const { chainId } = useActiveChainId()
-  const cakeVaultSupported = useMemo(() => isCakeVaultSupported(chainId), [chainId])
+  const { activeIfo } = useActiveIfoConfig()
+
+  const targetChainId = useMemo(() => activeIfo?.chainId || chainId, [activeIfo, chainId])
+  const cakeVaultSupported = useMemo(() => isCakeVaultSupported(targetChainId), [targetChainId])
 
   const vault = useMemo(
     () =>
       cakeVaultSupported ? (
         <VeCakeCard ifoAddress={ifoAddress} />
-      ) : isCrossChainIfoSupportedOnly(chainId) ? (
+      ) : isCrossChainIfoSupportedOnly(targetChainId) ? (
         <CrossChainVeCakeCard ifoAddress={ifoAddress} />
       ) : null,
-    [chainId, cakeVaultSupported, ifoAddress],
+    [targetChainId, cakeVaultSupported, ifoAddress],
   )
 
   return (

@@ -1,13 +1,10 @@
 import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { CAKE } from '@pancakeswap/tokens'
-import { Button } from '@pancakeswap/uikit'
-import { formatBigInt } from '@pancakeswap/utils/formatBalance'
+import { Box } from '@pancakeswap/uikit'
+import { formatBigInt, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { Ifo } from '@pancakeswap/widgets-internal'
-import BigNumber from 'bignumber.js'
-import Link from 'next/link'
-import { useMemo } from 'react'
-import { SpaceProps } from 'styled-system'
+import { useMemo, useState } from 'react'
 import { Address } from 'viem'
 import { useAccount } from 'wagmi'
 
@@ -20,17 +17,53 @@ import { useIsMigratedToVeCake } from 'views/CakeStaking/hooks/useIsMigratedToVe
 import { useIsUserDelegated } from 'views/CakeStaking/hooks/useIsUserDelegated'
 import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 
+import { BigNumber as BN } from 'bignumber.js'
+import { CrossChainVeCakeModal } from 'components/CrossChainVeCakeModal'
+import { ArbitrumIcon, BinanceIcon, EthereumIcon, ZKsyncIcon } from 'components/CrossChainVeCakeModal/ChainLogos'
+import { useMultichainVeCakeWellSynced } from 'components/CrossChainVeCakeModal/hooks/useMultichainVeCakeWellSynced'
+import { useActiveIfoConfig } from 'hooks/useIfoConfig'
 import { useVeCakeBalance } from 'hooks/useTokenBalance'
+import styled from 'styled-components'
 import { useUserIfoInfo } from '../hooks/useUserIfoInfo'
 
-function NavigateButton(props: SpaceProps) {
-  const { t } = useTranslation()
+const TwoColumns = styled(Box)`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+`
 
-  return (
-    <Button width="100%" as={Link} href="/cake-staking" {...props}>
-      {t('Go to CAKE Staking')}
-    </Button>
-  )
+const GradientCard = styled(Box)`
+  background: ${({ theme }) => theme.colors.gradientCardHeader};
+  border-radius: ${({ theme }) => theme.radii.default};
+`
+
+const GreyCard = styled(Box)`
+  background: ${({ theme }) => theme.colors.background};
+  border: 1px solid ${({ theme }) => theme.colors.tertiary};
+  border-radius: ${({ theme }) => theme.radii.default};
+`
+
+const LogoWrapper = styled(Box)`
+  display: flex;
+  width: 32px;
+  height: 32px;
+  justify-content: center;
+  align-items: center;
+  background: #280d5f;
+  border-radius: 8px;
+`
+
+const ChainLogoMap = {
+  [ChainId.BSC]: <BinanceIcon />,
+  [ChainId.ETHEREUM]: <EthereumIcon width={16} />,
+  [ChainId.ARBITRUM_ONE]: <ArbitrumIcon width={24} height={24} />,
+  [ChainId.ZKSYNC]: <ZKsyncIcon width={16} />,
+}
+
+const ChainNameMap = {
+  [ChainId.BSC]: 'BSC',
+  [ChainId.ETHEREUM]: 'ETH',
+  [ChainId.ARBITRUM_ONE]: 'Arbitrum',
+  [ChainId.ZKSYNC]: 'ZKSync',
 }
 
 type Props = {
@@ -38,10 +71,18 @@ type Props = {
 }
 
 export function CrossChainVeCakeCard({ ifoAddress }: Props) {
+  const { t } = useTranslation()
   const { chainId } = useActiveChainId()
+  const { activeIfo } = useActiveIfoConfig()
+
+  const targetChainId = useMemo(() => activeIfo?.chainId || chainId, [activeIfo, chainId])
+
   const { isConnected } = useAccount()
   const cakePrice = useCakePrice()
   const isUserDelegated = useIsUserDelegated()
+
+  const [isOpen, setIsOpen] = useState(false)
+
   const {
     cakeUnlockTime: nativeUnlockTime,
     nativeCakeLockedAmount,
@@ -50,29 +91,35 @@ export function CrossChainVeCakeCard({ ifoAddress }: Props) {
     cakePoolUnlockTime: proxyUnlockTime,
     cakeLocked: nativeLocked,
     shouldMigrate,
-  } = useCakeLockStatus()
+  } = useCakeLockStatus(ChainId.BSC)
+
   const { balance: veCakeOnBSC } = useVeCakeBalance(ChainId.BSC)
-  console.log('CAKE LOCK STATUS', {
-    veCakeOnBSC: veCakeOnBSC.toNumber() / 1e18,
-    nativeUnlockTime,
-    nativeCakeLockedAmount,
-    proxyCakeLockedAmount,
-    proxyLocked,
-    proxyUnlockTime,
-    nativeLocked,
-    shouldMigrate,
-  })
-  const isMigrated = useIsMigratedToVeCake()
+  const { balance: veCakeOnTargetChain } = useVeCakeBalance(ChainId.ARBITRUM_ONE)
+
+  const veCakeOnBSCFormatted = useMemo(() => getBalanceNumber(veCakeOnBSC, CAKE[ChainId.BSC].decimals), [veCakeOnBSC])
+  const veCakeOnTargetChainFormatted = useMemo(
+    () => getBalanceNumber(veCakeOnTargetChain, CAKE[targetChainId].decimals),
+    [veCakeOnTargetChain, targetChainId],
+  )
+
+  const { isVeCakeWillSync } = useMultichainVeCakeWellSynced(targetChainId)
+
+  const hasVeCakeOnBSC = useMemo(() => veCakeOnBSC.gt(0), [veCakeOnBSC])
+
+  // Re-think logic for this and if this is needed or something already exists for it (isVeCakeWillSync?)
+  const needToSyncVeCake = useMemo(() => veCakeOnBSC.gt(veCakeOnTargetChain), [veCakeOnBSC, veCakeOnTargetChain])
+
+  const isMigrated = useIsMigratedToVeCake(targetChainId)
   const needMigrate = useMemo(() => shouldMigrate && !isMigrated, [shouldMigrate, isMigrated])
   const totalLockCake = useMemo(
     () =>
       Number(
         formatBigInt(
           isUserDelegated ? nativeCakeLockedAmount : nativeCakeLockedAmount + proxyCakeLockedAmount,
-          CAKE[chainId || ChainId.BSC].decimals,
+          CAKE[ChainId.BSC].decimals,
         ),
       ),
-    [nativeCakeLockedAmount, proxyCakeLockedAmount, chainId, isUserDelegated],
+    [nativeCakeLockedAmount, proxyCakeLockedAmount, isUserDelegated],
   )
   const hasProxyCakeButNoNativeVeCake = useMemo(() => !nativeLocked && proxyLocked, [nativeLocked, proxyLocked])
   const unlockAt = useMemo(() => {
@@ -82,9 +129,9 @@ export function CrossChainVeCakeCard({ ifoAddress }: Props) {
     return nativeUnlockTime
   }, [hasProxyCakeButNoNativeVeCake, nativeUnlockTime, proxyUnlockTime])
 
-  const { snapshotTime, credit, veCake } = useUserIfoInfo({ ifoAddress, chainId })
+  const { snapshotTime, credit, veCake } = useUserIfoInfo({ ifoAddress, chainId: targetChainId })
   const creditBN = useMemo(
-    () => credit && new BigNumber(credit.numerator.toString()).div(credit.decimalScale.toString()),
+    () => credit && new BN(credit.numerator.toString()).div(credit.decimalScale.toString()),
     [credit],
   )
   const hasICake = useMemo(() => creditBN && creditBN.toNumber() > 0, [creditBN])
@@ -99,20 +146,46 @@ export function CrossChainVeCakeCard({ ifoAddress }: Props) {
 
   return (
     <Ifo.VeCakeCard header={header}>
-      <Ifo.MyVeCake amount={veCake} />
-      <Ifo.ICakeInfo mt="1.5rem" snapshot={snapshotTime} />
-      {isConnected && hasICake && totalLockCake ? (
-        <Ifo.LockInfoCard mt="1.5rem" amount={totalLockCake} unlockAt={unlockAt} usdPrice={cakePrice} />
-      ) : null}
-      {isConnected && !hasVeCake ? (
+      {/* {isConnected && !hasVeCake ? (
         !needMigrate && hasProxyCakeButNoNativeVeCake && !isUserDelegated ? (
           <Ifo.InsufficientNativeVeCakeTips mt="1.5rem" />
         ) : (
           <Ifo.ZeroVeCakeTips mt="1.5rem" />
         )
       ) : null}
-      {needMigrate ? <Ifo.MigrateVeCakeTips mt="1.5rem" /> : null}
-      {isConnected ? <NavigateButton mt="1.5rem" /> : <ConnectWalletButton width="100%" mt="1.5rem" />}
+      {needMigrate ? <Ifo.MigrateVeCakeTips mt="1.5rem" /> : null} */}
+
+      {isConnected && hasVeCakeOnBSC ? (
+        <Ifo.CrossChainLockInfoCard
+          veCakeAmount={veCakeOnBSCFormatted}
+          cakeLocked={totalLockCake}
+          usdPrice={cakePrice}
+          unlockAt={unlockAt}
+        />
+      ) : (
+        <Ifo.NoVeCakeCard />
+      )}
+
+      {isConnected && hasVeCakeOnBSC && (
+        <>
+          <Ifo.CrossChainMyVeCake
+            mt="16px"
+            chainId={targetChainId}
+            veCakeAmount={veCakeOnTargetChainFormatted}
+            needToSyncVeCake={needToSyncVeCake}
+            onClick={() => setIsOpen(true)}
+          />
+          <CrossChainVeCakeModal
+            targetChainId={targetChainId}
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+            onDismiss={() => setIsOpen(false)}
+          />
+        </>
+      )}
+      <Ifo.ICakeInfo mt="1.5rem" snapshot={snapshotTime} />
+      {/* {isConnected ? <NavigateButton mt="1.5rem" /> : <ConnectWalletButton width="100%" mt="1.5rem" />} */}
+      {!isConnected && <ConnectWalletButton width="100%" mt="1.5rem" />}
     </Ifo.VeCakeCard>
   )
 }
