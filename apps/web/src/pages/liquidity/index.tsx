@@ -13,7 +13,6 @@ import {
   Flex,
   HistoryIcon,
   IconButton,
-  Link,
   Tag,
   Text,
   useModal,

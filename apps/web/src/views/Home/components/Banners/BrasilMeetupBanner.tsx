@@ -107,8 +107,6 @@ export const BrasilMeetupBanner = memo(function BrasilMeetupBanner() {
     </Box>
   )
 
-  const { width } = useViewport()
-
   return (
     <BannerContainer background="linear-gradient(180deg, #DDCC26 0%, #389C1F 100%)">
       <BannerMain
