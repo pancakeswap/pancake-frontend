@@ -4,8 +4,6 @@ import { HydrationBoundary, QueryClient, QueryClientProvider } from '@tanstack/r
 import BigNumber from 'bignumber.js'
 import { NetworkModal } from 'components/NetworkModal'
 import { useAccountEventListener } from 'hooks/useAccountEventListener'
-import { useAutoSiwe as useAutoDashboardSiwe } from 'hooks/useDashboardSiwe'
-import { useAutoSiwe } from 'hooks/useSiwe'
 import { NextPage } from 'next'
 import { SessionProvider } from 'next-auth/react'
 import { DefaultSeo } from 'next-seo'
@@ -21,13 +19,13 @@ import { Provider as WrapBalancerProvider } from 'react-wrap-balancer'
 import { useStore } from 'state'
 import { createGlobalStyle } from 'styled-components'
 import { createWagmiConfig } from 'utils/wagmi'
+import { useAutoSiwe } from 'hooks/useSiwe'
 import { WagmiProvider } from 'wagmi'
 import Menu from '../components/Menu/index'
 
 function GlobalHooks() {
   useAccountEventListener()
   useAutoSiwe()
-  useAutoDashboardSiwe()
   return null
 }
 

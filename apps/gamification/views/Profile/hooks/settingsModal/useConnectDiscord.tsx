@@ -1,6 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { useToast } from '@pancakeswap/uikit'
-import { useSiwe } from 'hooks/useSiwe'
 import { signIn } from 'next-auth/react'
 import { encodePacked, keccak256 } from 'viem'
 import { SocialHubType } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
@@ -15,7 +14,6 @@ export const useConnectDiscord = ({ refresh }: UseConnectDiscordProps) => {
   const { address: account, connector } = useAccount()
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
-  const { fetchWithSiweAuth } = useSiwe()
   const { signMessageAsync } = useSignMessage()
 
   const connect = () => {
@@ -37,7 +35,6 @@ export const useConnectDiscord = ({ refresh }: UseConnectDiscordProps) => {
             signedData: { walletAddress, timestamp },
             signature,
           } as DisconnectUserSocialInfoConfig,
-          fetchWithSiweAuth,
           callback: () => {
             toastSuccess(t('%social% Disconnected', { social: SocialHubType.Discord }))
             refresh?.()

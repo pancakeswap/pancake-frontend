@@ -1,6 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { useToast } from '@pancakeswap/uikit'
-import { useSiwe } from 'hooks/useSiwe'
 import { signIn } from 'next-auth/react'
 import { encodePacked, keccak256 } from 'viem'
 import { TaskType } from 'views/DashboardQuestEdit/type'
@@ -51,7 +50,6 @@ export const useConnectTwitter = ({ refresh }: UseConnectTwitterProps) => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const { signMessageAsync } = useSignMessage()
-  const { fetchWithSiweAuth } = useSiwe()
 
   const connect = async () => {
     signIn('twitter')
@@ -79,7 +77,6 @@ export const useConnectTwitter = ({ refresh }: UseConnectTwitterProps) => {
             signedData: { walletAddress, timestamp },
             signature,
           } as DisconnectUserSocialInfoConfig,
-          fetchWithSiweAuth,
           callback: () => {
             toastSuccess(t('%social% Disconnected', { social: SocialHubType.Twitter }))
             refresh?.()

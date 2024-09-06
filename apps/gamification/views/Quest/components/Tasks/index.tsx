@@ -1,7 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Button, Flex, FlexGap, Tag, Text, useModal } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
 import { useProfile } from 'hooks/useProfile'
 import { useSiwe } from 'hooks/useSiwe'
 import { styled } from 'styled-components'
@@ -71,20 +70,17 @@ export const Tasks: React.FC<TasksProps> = ({
   const [onPressMakeProfileModal] = useModal(
     <MakeProfileModal type={t('quest')} profile={profile} hasActiveProfile={hasActiveProfile} />,
   )
-  const { fetchWithSiweAuth, isSiweValid } = useSiwe()
+  const { fetchWithSiweAuth } = useSiwe()
 
   const handleLinkUserToQuest = async () => {
     if (account) {
       try {
-        const response = await fetchWithSiweAuth(
-          `${GAMIFICATION_PUBLIC_API}/userInfo/v1/linkUserToQuest/${account}/${questId}`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
+        const response = await fetchWithSiweAuth(`/api/userInfo/${account}/quests/${questId}/start`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
           },
-        )
+        })
         if (response.ok) {
           refreshSocialHub()
         } else {
@@ -177,7 +173,7 @@ export const Tasks: React.FC<TasksProps> = ({
               )}
             </Box>
           )}
-          {(!account || !isSiweValid || (isSocialHubFetched && !hasIdRegister)) && !isQuestFinished && (
+          {(!account || (isSocialHubFetched && !hasIdRegister)) && !isQuestFinished && (
             <OverlapContainer>
               {account ? (
                 <>

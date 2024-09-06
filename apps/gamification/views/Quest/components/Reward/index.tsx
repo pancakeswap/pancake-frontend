@@ -3,7 +3,7 @@ import { Box, Card, Flex, Text } from '@pancakeswap/uikit'
 import { useQuery } from '@tanstack/react-query'
 import { ChainLogo } from 'components/Logo/ChainLogo'
 import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
-import { useSiwe } from 'hooks/useSiwe'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
 import { styled } from 'styled-components'
 import { chains } from 'utils/wagmi'
@@ -14,7 +14,6 @@ import { Countdown } from 'views/Quest/components/Reward/Countdown'
 import { Questers } from 'views/Quest/components/Reward/Questers'
 import { RewardAmount } from 'views/Quest/components/Reward/RewardAmount'
 import { Winners } from 'views/Quest/components/Reward/Winners'
-import { useAccount } from 'wagmi'
 
 const RewardContainer = styled(Box)`
   width: 100%;
@@ -47,14 +46,13 @@ export interface GetMerkleProofResponse {
 
 export const Reward: React.FC<RewardProps> = ({ quest, isTasksCompleted, isQuestFinished }) => {
   const { t } = useTranslation()
-  const { address: account } = useAccount()
-  const { fetchWithSiweAuth } = useSiwe()
+  const { account } = useActiveWeb3React()
   const localChainName = chains.find((c) => c.id === quest?.reward?.currency?.network)?.name ?? 'BSC'
 
   const { data: proofData, refetch: refreshProofData } = useQuery({
     queryKey: ['/get-user-merkle-proof', account, quest.id],
     queryFn: async () => {
-      const response = await fetchWithSiweAuth(
+      const response = await fetch(
         `${GAMIFICATION_PUBLIC_API}/userInfo/v1/users/${account}/quests/${quest.id}/merkle-proof`,
       )
       const result: GetMerkleProofResponse = await response.json()

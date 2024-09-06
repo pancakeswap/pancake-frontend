@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { SLOW_INTERVAL } from 'config/constants'
 import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
-import { useSiwe } from 'hooks/useSiwe'
 import { TaskType } from 'views/DashboardQuestEdit/type'
 import { useAccount } from 'wagmi'
 
@@ -35,13 +34,12 @@ interface UseVerifyTaskStatus {
 
 export const useVerifyTaskStatus = ({ questId, hasIdRegister, isQuestFinished }: UseVerifyTaskStatus) => {
   const { address: account } = useAccount()
-  const { fetchWithSiweAuth } = useSiwe()
 
   const { data, refetch, isFetching } = useQuery({
     queryKey: ['verify-user-task-status', account, questId],
     queryFn: async () => {
       try {
-        const response = await fetchWithSiweAuth(
+        const response = await fetch(
           `${GAMIFICATION_PUBLIC_API}/userInfo/v1/getVerificationStatus/${account}/${questId}`,
         )
         const result = await response.json()

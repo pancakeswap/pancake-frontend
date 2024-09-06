@@ -1,6 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { useToast } from '@pancakeswap/uikit'
-import { useSiwe } from 'hooks/useSiwe'
 import { useEffect } from 'react'
 import { encodePacked, keccak256 } from 'viem'
 import { SocialHubType, UserInfo } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
@@ -30,7 +29,6 @@ export const useConnectTelegram = ({ userInfo, refresh }: UseConnectTelegramProp
   const { t } = useTranslation()
   const { toastSuccess, toastError } = useToast()
   const { signMessageAsync } = useSignMessage()
-  const { fetchWithSiweAuth } = useSiwe()
 
   useEffect(() => {
     // Load the Telegram Login Widget script
@@ -70,7 +68,6 @@ export const useConnectTelegram = ({ userInfo, refresh }: UseConnectTelegramProp
                 } as unknown as VerificationTelegramConfig,
                 signature,
               },
-              fetchWithSiweAuth,
               callback: () => {
                 toastSuccess(t('%social% Connected', { social: SocialHubType.Telegram }))
                 refresh?.()
@@ -104,7 +101,6 @@ export const useConnectTelegram = ({ userInfo, refresh }: UseConnectTelegramProp
             signedData: { walletAddress, timestamp },
             signature,
           } as DisconnectUserSocialInfoConfig,
-          fetchWithSiweAuth,
           callback: () => {
             toastSuccess(t('%social% Disconnected', { social: SocialHubType.Telegram }))
             refresh?.()
