@@ -1,6 +1,6 @@
 import { CHAIN_IDS } from 'utils/wagmi'
 import SwapLayout from 'views/Swap/SwapLayout'
-import Swap from 'views/Swap'
+import Swap from 'views/SwapSimplify'
 
 const SwapPage = () => (
   <SwapLayout>
