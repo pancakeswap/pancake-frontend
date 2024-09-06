@@ -40,7 +40,7 @@ import {
   V2PositionItem,
   V3PositionItem,
 } from 'views/universalFarms/components'
-import { useCheckShouldSwitchNetwork, useTotalPriceUSD } from 'views/universalFarms/hooks'
+import { useCheckShouldSwitchNetwork } from 'views/universalFarms/hooks'
 import { useV2CakeEarning, useV3CakeEarningsByPool } from 'views/universalFarms/hooks/useCakeEarning'
 import { useV2FarmActions } from 'views/universalFarms/hooks/useV2FarmActions'
 import { displayApr } from 'views/universalFarms/utils/displayApr'
@@ -48,6 +48,7 @@ import { formatDollarAmount } from 'views/V3Info/utils/numbers'
 import { PERSIST_CHAIN_KEY } from 'config/constants'
 import { addQueryToPath } from 'utils/addQueryToPath'
 import { formatFiatNumber } from '@pancakeswap/utils/formatFiatNumber'
+import { useTotalPriceUSD } from 'hooks/useTotalPriceUSD'
 import { useV3Positions } from '../hooks/useV3Positions'
 import { MyPositionsProvider, useMyPositions } from './MyPositionsContext'
 import { V2PoolEarnings, V3PoolEarnings } from './PoolEarnings'
