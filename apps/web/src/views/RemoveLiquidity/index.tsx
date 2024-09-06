@@ -683,7 +683,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
           </TooltipText>
           {tooltipVisible && tooltip}
           <Text bold color="primary">
-            {formatAmount(poolData.lpApr7d)}%
+            {formatAmount(poolData.lpApr)}%
           </Text>
         </RowBetween>
       )}

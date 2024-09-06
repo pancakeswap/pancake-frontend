@@ -181,7 +181,7 @@ function MinimalPositionCardView({
                       {t('LP reward APR')}:
                     </TooltipText>
                     {tooltipVisible && tooltip}
-                    <Text>{formatAmount(poolData.lpApr7d)}%</Text>
+                    <Text>{formatAmount(poolData.lpApr)}%</Text>
                   </FixedHeightRow>
                 )}
                 <FixedHeightRow>

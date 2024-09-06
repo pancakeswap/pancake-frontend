@@ -76,7 +76,7 @@ export function ChoosePair({
               </TooltipText>
               {tooltipVisible && tooltip}
               <Text bold color="primary">
-                {formatAmount(poolData.lpApr7d)}%
+                {formatAmount(poolData.lpApr)}%
               </Text>
             </RowBetween>
           )}

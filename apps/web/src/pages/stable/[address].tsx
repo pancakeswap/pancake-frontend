@@ -36,7 +36,8 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { usePoolInfo } from 'state/farmsV4/state/extendPools/hooks'
 import { formatFiatNumber } from '@pancakeswap/utils/formatFiatNumber'
 import { useTotalPriceUSD } from 'hooks/useTotalPriceUSD'
-import { usePoolApr } from 'state/farmsV4/state/poolApr/hooks'
+import { useLPApr } from 'state/swap/useLPApr'
+import { formatAmount } from 'utils/formatInfoNumbers'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -146,14 +147,7 @@ export default function StablePoolPage() {
 
   const { isMobile } = useMatchBreakpoints()
 
-  const key = useMemo(() => (poolInfo ? (`${poolInfo?.chainId}:${poolInfo?.lpAddress}` as const) : null), [poolInfo])
-
-  const { lpApr } = usePoolApr(key, poolInfo ?? null)
-
-  const lpRewardApr = useMemo(() => {
-    if (lpApr === '0') return undefined
-    return `${((parseFloat(lpApr) ?? 0) * 100).toLocaleString('en-US', { maximumFractionDigits: 2 })}`
-  }, [lpApr])
+  const poolData = useLPApr('stable', selectedLp)
 
   if (!selectedLp) return null
 
@@ -294,9 +288,9 @@ export default function StablePoolPage() {
                 mr="4px"
                 style={{ gap: 4 }}
               >
-                {lpRewardApr && (
+                {poolData && (
                   <Text ml="4px">
-                    {t('LP reward APR')}: {lpRewardApr}%
+                    {t('LP reward APR')}: {formatAmount(poolData.lpApr)}%
                   </Text>
                 )}
                 <Text color="textSubtle" ml="4px">
