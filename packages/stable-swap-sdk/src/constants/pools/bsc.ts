@@ -157,4 +157,15 @@ export const pools: StableSwapPool[] = [
     stableLpFee: 0.0002,
     stableLpFeeRateOfTotalFee: 0.5,
   },
+  {
+    lpSymbol: 'mBTC-BTCB LP',
+    lpAddress: '0xaA4DABbF68AC17eF6dABFd11a7035b913C5F2de3',
+    token: bscTokens.mBtc,
+    quoteToken: bscTokens.btcb,
+    stableSwapAddress: '0xDb8CfACE4588E246642329a8D8Bd4a10A459c3f7',
+    infoStableSwapAddress: '0x150c8AbEB487137acCC541925408e73b92F39A50',
+    stableTotalFee: 0.0002,
+    stableLpFee: 0.0001,
+    stableLpFeeRateOfTotalFee: 0.5,
+  },
 ]

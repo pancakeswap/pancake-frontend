@@ -439,4 +439,12 @@ export const arbitrumTokens = {
     'Wormhole Wrapped USDT',
     'https://wormhole.com/',
   ),
+  mBtc: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0x2172fAD929E857dDfD7dDC31E24904438434cB0B',
+    8,
+    'mBTC',
+    'Liquid Staked BTC',
+    'https://www.babylon.magpiexyz.io',
+  ),
 }
