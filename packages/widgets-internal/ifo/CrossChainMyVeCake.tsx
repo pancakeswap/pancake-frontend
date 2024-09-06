@@ -11,7 +11,7 @@ import { GreyCard } from "./styles";
 const SyncedBadge = () => {
   const { t } = useTranslation();
   return (
-    <Tag variant="success" scale="sm">
+    <Tag variant="success" scale="sm" style={{ cursor: "default" }}>
       <LinkIcon color="positive10" width="24px" mt="2px" />
       <Text ml="2px" pr="4px" color="invertedContrast" small bold>
         {t("Synced")}
@@ -51,7 +51,11 @@ export const CrossChainMyVeCake = ({
             })}
           </Text>
           <Text mt="-6px" fontSize="24px" color={BN(veCakeAmount).eq(BN("0")) ? "textDisabled" : "text"} bold>
-            {BN(veCakeAmount).eq(BN("0")) ? "0.00" : <BalanceDisplay value={veCakeAmountNumber} decimals={2} />}
+            {BN(veCakeAmount).eq(BN("0")) ? (
+              "0.00"
+            ) : (
+              <BalanceDisplay fontSize="20px" value={veCakeAmountNumber} decimals={2} bold />
+            )}
           </Text>
         </Box>
       </FlexGap>

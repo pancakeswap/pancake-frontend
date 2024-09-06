@@ -4,7 +4,7 @@ import { CAKE } from '@pancakeswap/tokens'
 import { Box } from '@pancakeswap/uikit'
 import { formatBigInt, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { Ifo } from '@pancakeswap/widgets-internal'
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { Address } from 'viem'
 import { useAccount } from 'wagmi'
 
@@ -17,14 +17,18 @@ import { useIsMigratedToVeCake } from 'views/CakeStaking/hooks/useIsMigratedToVe
 import { useIsUserDelegated } from 'views/CakeStaking/hooks/useIsUserDelegated'
 import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 
+import { CAKE_VAULT_SUPPORTED_CHAINS } from '@pancakeswap/pools'
 import { BigNumber as BN } from 'bignumber.js'
 import { CrossChainVeCakeModal } from 'components/CrossChainVeCakeModal'
 import { ArbitrumIcon, BinanceIcon, EthereumIcon, ZKsyncIcon } from 'components/CrossChainVeCakeModal/ChainLogos'
 import { useMultichainVeCakeWellSynced } from 'components/CrossChainVeCakeModal/hooks/useMultichainVeCakeWellSynced'
 import { useActiveIfoConfig } from 'hooks/useIfoConfig'
 import { useVeCakeBalance } from 'hooks/useTokenBalance'
+import { useRouter } from 'next/router'
 import styled from 'styled-components'
+import { useChainNames } from '../hooks/useChainNames'
 import { useUserIfoInfo } from '../hooks/useUserIfoInfo'
+import { NetworkSwitcherModal } from './IfoFoldableCard/IfoPoolCard/NetworkSwitcherModal'
 
 const TwoColumns = styled(Box)`
   display: grid;
@@ -72,6 +76,7 @@ type Props = {
 
 export function CrossChainVeCakeCard({ ifoAddress }: Props) {
   const { t } = useTranslation()
+  const router = useRouter()
   const { chainId } = useActiveChainId()
   const { activeIfo } = useActiveIfoConfig()
 
@@ -82,6 +87,9 @@ export function CrossChainVeCakeCard({ ifoAddress }: Props) {
   const isUserDelegated = useIsUserDelegated()
 
   const [isOpen, setIsOpen] = useState(false)
+  const [isNetworkModalOpen, setIsNetworkModalOpen] = useState(false)
+
+  const cakeVaultChainNames = useChainNames([ChainId.BSC])
 
   const {
     cakeUnlockTime: nativeUnlockTime,
@@ -137,6 +145,12 @@ export function CrossChainVeCakeCard({ ifoAddress }: Props) {
   const hasICake = useMemo(() => creditBN && creditBN.toNumber() > 0, [creditBN])
   const hasVeCake = useMemo(() => veCake && veCake.toNumber() > 0, [veCake])
 
+  const handleSwitchNetworkSuccess = useCallback(() => {
+    setIsNetworkModalOpen(false)
+
+    router.push('/cake-staking') // TODO: See why this is not working
+  }, [router, setIsNetworkModalOpen])
+
   const header = (
     <>
       <Ifo.MyICake amount={creditBN} />
@@ -163,7 +177,25 @@ export function CrossChainVeCakeCard({ ifoAddress }: Props) {
           unlockAt={unlockAt}
         />
       ) : (
-        <Ifo.NoVeCakeCard />
+        <>
+          <Ifo.NoVeCakeCard
+            isConnected={isConnected}
+            userChainId={chainId}
+            nativeChainId={ChainId.BSC}
+            onClick={() => setIsNetworkModalOpen(true)}
+          />
+          <NetworkSwitcherModal
+            isOpen={isNetworkModalOpen}
+            supportedChains={CAKE_VAULT_SUPPORTED_CHAINS}
+            title={t('Stake CAKE')}
+            description={t('Lock CAKE on %chain% to obtain iCAKE', {
+              chain: cakeVaultChainNames,
+            })}
+            buttonText={t('Switch chain to stake CAKE')}
+            onDismiss={() => setIsNetworkModalOpen(false)}
+            onSwitchNetworkSuccess={handleSwitchNetworkSuccess}
+          />
+        </>
       )}
 
       {isConnected && hasVeCakeOnBSC && (
