@@ -71,7 +71,9 @@ export const Tasks: React.FC<TasksProps> = ({
   const [onPressMakeProfileModal] = useModal(
     <MakeProfileModal type={t('quest')} profile={profile} hasActiveProfile={hasActiveProfile} />,
   )
-  const { fetchWithSiweAuth } = useSiwe()
+  const { fetchWithSiweAuth, isSiweValid } = useSiwe()
+
+  console.log('isSiweValid', isSiweValid)
 
   const handleLinkUserToQuest = async () => {
     if (account) {
@@ -177,7 +179,7 @@ export const Tasks: React.FC<TasksProps> = ({
               )}
             </Box>
           )}
-          {(!account || (isSocialHubFetched && !hasIdRegister)) && !isQuestFinished && (
+          {(!account || !isSiweValid || (isSocialHubFetched && !hasIdRegister)) && !isQuestFinished && (
             <OverlapContainer>
               {account ? (
                 <>

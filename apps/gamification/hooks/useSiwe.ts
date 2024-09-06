@@ -2,7 +2,7 @@ import { ChainId } from '@pancakeswap/chains'
 import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
 import { useAtom } from 'jotai'
 import { atomWithStorage, createJSONStorage, RESET } from 'jotai/utils'
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import { Address } from 'viem'
 import { createSiweMessage, generateSiweNonce, parseSiweMessage } from 'viem/siwe'
 import { useAccount, useAccountEffect, useSignMessage } from 'wagmi'
@@ -51,6 +51,24 @@ export function useSiwe() {
   const { signMessageAsync } = useSignMessage()
   const [siwe, setSiwe] = useAtom(siweAtom)
 
+  const isSiweValid = useMemo(() => {
+    if (siwe) {
+      const parsed = parseSiweMessage(siwe.message)
+      if (
+        parsed.address === currentAddress &&
+        parsed.domain === window.location.host &&
+        parsed.uri === window.location.origin &&
+        (parsed.expirationTime?.getTime() ?? 0) > Date.now()
+      ) {
+        return true
+      }
+
+      return false
+    }
+
+    return false
+  }, [currentAddress, siwe])
+
   const signIn = useCallback(
     async ({ address, chainId = currentChainId }: { address: Address; chainId?: ChainId }) => {
       if (typeof window === 'undefined') {
@@ -59,16 +77,9 @@ export function useSiwe() {
       if (!chainId) {
         throw new Error(`Invalid chain ${chainId}`)
       }
-      if (siwe) {
-        const parsed = parseSiweMessage(siwe.message)
-        if (
-          parsed.address === currentAddress &&
-          parsed.domain === window.location.host &&
-          parsed.uri === window.location.origin &&
-          (parsed.expirationTime?.getTime() ?? 0) > Date.now()
-        ) {
-          return siwe
-        }
+
+      if (isSiweValid) {
+        return siwe
       }
 
       const message = createSiweMessage({
@@ -133,6 +144,7 @@ export function useSiwe() {
 
   return {
     siwe,
+    isSiweValid,
     signIn,
     signOut,
     fetchWithSiweAuth,
