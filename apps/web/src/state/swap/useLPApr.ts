@@ -2,6 +2,9 @@ import { ERC20Token } from '@pancakeswap/sdk'
 import { useQuery } from '@tanstack/react-query'
 import { SLOW_INTERVAL } from 'config/constants'
 import { chainIdToExplorerInfoChainName, explorerApiClient } from 'state/info/api/client'
+import { useAtomValue } from 'jotai/index'
+import { poolAprAtom } from 'state/farmsV4/state/poolApr/atom'
+import { useMemo } from 'react'
 
 export const useLPApr = (
   protocol: 'v2' | 'v3' | 'stable',
@@ -9,6 +12,13 @@ export const useLPApr = (
     liquidityToken: ERC20Token | undefined
   } | null,
 ) => {
+  const key = useMemo(
+    () => (pair ? (`${pair?.liquidityToken?.chainId}:${pair?.liquidityToken?.address}` as const) : null),
+    [pair],
+  )
+
+  const poolApr = useAtomValue(poolAprAtom)[key ?? '']
+
   const { data: poolData } = useQuery({
     queryKey: ['LP7dApr', pair?.liquidityToken?.address],
 
@@ -27,15 +37,17 @@ export const useLPApr = (
         })
         .then((res) => res.data)
 
-      return data?.apr7d ? { lpApr7d: parseFloat(data.apr7d) * 100 } : undefined
+      return data?.apr7d ? { lpApr: parseFloat(data.apr7d) * 100 } : undefined
     },
 
-    enabled: Boolean(pair && pair.liquidityToken && chainIdToExplorerInfoChainName[pair.liquidityToken?.chainId]),
+    enabled: Boolean(
+      !poolApr?.lpApr && pair && pair.liquidityToken && chainIdToExplorerInfoChainName[pair.liquidityToken?.chainId],
+    ),
     refetchInterval: SLOW_INTERVAL,
     refetchOnWindowFocus: false,
     refetchOnMount: false,
     refetchOnReconnect: false,
   })
 
-  return poolData
+  return poolData ?? (poolApr ? { lpApr: parseFloat(poolApr.lpApr) * 100 } : undefined)
 }
