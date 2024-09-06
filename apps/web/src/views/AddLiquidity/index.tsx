@@ -56,7 +56,7 @@ export interface LP2ChildrenProps {
   allowedSlippage: number
   pair?: Pair | null
   poolData?: {
-    lpApr7d: number
+    lpApr: number
   } | null
   shouldShowApprovalGroup: boolean
   showFieldAApproval: boolean
