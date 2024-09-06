@@ -150,4 +150,28 @@ export const baseTokens = {
     'Dola USD Stablecoin',
     'https://www.inverse.finance/',
   ),
+  ezEth: new ERC20Token(
+    ChainId.BASE,
+    '0x2416092f143378750bb29b79eD961ab195CcEea5',
+    18,
+    'Renzo Restaked ETH',
+    'ezETH',
+    'https://www.renzoprotocol.com/',
+  ),
+  mog: new ERC20Token(
+    ChainId.BASE,
+    '0x2Da56AcB9Ea78330f947bD57C54119Debda7AF71',
+    18,
+    'Mog Coin',
+    'MOG',
+    'https://mogcoin.xyz/',
+  ),
+  eUsd: new ERC20Token(
+    ChainId.BASE,
+    '0xCfA3Ef56d303AE4fAabA0592388F19d7C3399FB4',
+    18,
+    'Electronic Dollar',
+    'eUSD',
+    'https://reserve.org',
+  ),
 }
