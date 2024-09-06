@@ -353,6 +353,10 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
         url.searchParams.set('chain', CHAIN_QUERY_NAME[network])
       }
 
+      if (!url.searchParams.has('persistChain')) {
+        url.searchParams.set('persistChain', network?.toString())
+      }
+
       window.open(url.href, '_blank', 'noopener noreferrer')
     }
   }
