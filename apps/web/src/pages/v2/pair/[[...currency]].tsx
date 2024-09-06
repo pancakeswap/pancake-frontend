@@ -39,6 +39,7 @@ import { useAccountPositionDetailByPool } from 'state/farmsV4/state/accountPosit
 import { usePoolInfo } from 'state/farmsV4/state/extendPools/hooks'
 import { useMemo } from 'react'
 import { formatFiatNumber } from '@pancakeswap/utils/formatFiatNumber'
+import { useTotalPriceUSD } from 'hooks/useTotalPriceUSD'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -93,18 +94,18 @@ export default function PoolV2Page() {
     ]
   }, [positionDetails, isPoolStaked])
 
-  const totalStakedUSDValue = useTotalUSDValue({
+  const totalStakedUSDValue = useTotalPriceUSD({
     currency0: pair?.token0,
     currency1: pair?.token1,
-    token0Deposited: isPoolStaked ? positionDetails?.farmingDeposited0 : undefined,
-    token1Deposited: isPoolStaked ? positionDetails?.farmingDeposited1 : undefined,
+    amount0: isPoolStaked ? positionDetails?.farmingDeposited0 : undefined,
+    amount1: isPoolStaked ? positionDetails?.farmingDeposited1 : undefined,
   })
 
-  const totalUSDValue = useTotalUSDValue({
+  const totalUSDValue = useTotalPriceUSD({
     currency0: pair?.token0,
     currency1: pair?.token1,
-    token0Deposited,
-    token1Deposited,
+    amount0: token0Deposited,
+    amount1: token1Deposited,
   })
 
   const masterchefV2Contract = useMasterchef()
