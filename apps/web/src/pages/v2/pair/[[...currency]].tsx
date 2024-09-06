@@ -138,6 +138,11 @@ export default function PoolV2Page() {
 
   const { lpApr } = usePoolApr(key, poolInfo ?? null)
 
+  const lpRewardApr = useMemo(() => {
+    if (lpApr === '0') return undefined
+    return `${((parseFloat(lpApr) ?? 0) * 100).toLocaleString('en-US', { maximumFractionDigits: 2 })}`
+  }, [lpApr])
+
   return (
     <Page>
       <BodyWrapper>
@@ -260,9 +265,9 @@ export default function PoolV2Page() {
                 mr="4px"
                 style={{ gap: 4 }}
               >
-                {lpApr !== '0' && (
+                {lpRewardApr && (
                   <Text ml="4px">
-                    {t('LP reward APR')}: {formatAmount((parseFloat(lpApr) ?? 0) * 100)}%
+                    {t('LP reward APR')}: {lpRewardApr}%
                   </Text>
                 )}
                 <Text color="textSubtle" ml="4px">
