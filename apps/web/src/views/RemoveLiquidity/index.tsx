@@ -158,7 +158,6 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
     return approveCallback()
   }
 
-  // wrapped onUserInput to clear signatures
   const onUserInput = useCallback(
     (field: Field, value: string) => {
       return _onUserInput(field, value)
@@ -236,8 +235,8 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
         ]
       }
     } else {
-      toastError(t('Error'), t('Attempting to confirm without approval or a signature'))
-      throw new Error('Attempting to confirm without approval or a signature')
+      toastError(t('Error'), t('Attempting to confirm without approval'))
+      throw new Error('Attempting to confirm without approval')
     }
 
     let methodSafeGasEstimate: { methodName: string; safeGasEstimate: bigint } | undefined

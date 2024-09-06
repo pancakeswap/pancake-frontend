@@ -136,7 +136,6 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
     needUnwrapped ? nativeHelperContract?.address : stableSwapConfig?.stableSwapAddress,
   )
 
-  // wrapped onUserInput to clear signatures
   const onUserInput = useCallback(
     (field: Field, value: string) => {
       return _onUserInput(field, value)
@@ -198,11 +197,9 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
           [amountsMin[Field.CURRENCY_A].toString(), amountsMin[Field.CURRENCY_B].toString()],
         ]
       }
-    }
-    // we have a signature, use permit versions of remove liquidity
-    else {
-      toastError(t('Error'), t('Attempting to confirm without approval or a signature'))
-      throw new Error('Attempting to confirm without approval or a signature')
+    } else {
+      toastError(t('Error'), t('Attempting to confirm without approval'))
+      throw new Error('Attempting to confirm without approval')
     }
 
     let methodSafeGasEstimate: { methodName: string; safeGasEstimate: bigint } | undefined
