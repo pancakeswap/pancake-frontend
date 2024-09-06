@@ -31,7 +31,6 @@ import { useMasterchef } from 'hooks/useContract'
 import { useV2Pair } from 'hooks/usePairs'
 import useTotalSupply from 'hooks/useTotalSupply'
 import { useRouter } from 'next/router'
-import { useLPApr } from 'state/swap/useLPApr'
 import { useTokenBalance } from 'state/wallet/hooks'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { useAccount } from 'wagmi'
@@ -40,6 +39,7 @@ import { usePoolInfo } from 'state/farmsV4/state/extendPools/hooks'
 import { useMemo } from 'react'
 import { formatFiatNumber } from '@pancakeswap/utils/formatFiatNumber'
 import { useTotalPriceUSD } from 'hooks/useTotalPriceUSD'
+import { usePoolApr } from 'state/farmsV4/state/poolApr/hooks'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -134,7 +134,9 @@ export default function PoolV2Page() {
 
   const { isMobile } = useMatchBreakpoints()
 
-  const poolData = useLPApr('v2', pair)
+  const key = useMemo(() => (poolInfo ? (`${poolInfo?.chainId}:${poolInfo?.lpAddress}` as const) : null), [poolInfo])
+
+  const { lpApr } = usePoolApr(key, poolInfo ?? null)
 
   return (
     <Page>
@@ -258,9 +260,9 @@ export default function PoolV2Page() {
                 mr="4px"
                 style={{ gap: 4 }}
               >
-                {poolData && (
+                {lpApr !== '0' && (
                   <Text ml="4px">
-                    {t('LP reward APR')}: {formatAmount(poolData.lpApr7d)}%
+                    {t('LP reward APR')}: {formatAmount((parseFloat(lpApr) ?? 0) * 100)}%
                   </Text>
                 )}
                 <Text color="textSubtle" ml="4px">
