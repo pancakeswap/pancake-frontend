@@ -6,6 +6,7 @@ export enum GTMEvent {
   Farm = 'stakeFarm',
   UnStakeFarm = 'unStakeFarm',
   WalletConnect = 'walletConnect',
+  PoolStake = 'poolStake',
 }
 
 export enum GTMCategory {
@@ -15,6 +16,7 @@ export enum GTMCategory {
   Farm = 'Farm',
   UnStakeFarm = 'UnStakeFarm',
   WalletConnect = 'WalletConnect',
+  Pool = 'Pool',
 }
 
 export enum GTMAction {
@@ -25,6 +27,8 @@ export enum GTMAction {
   ClickStakeButton = 'Click Stake Button',
   ClickUnStakeButton = 'Click UnStake Button',
   ClickWalletConnectButton = 'Click Wallet Connect and Connected',
+  StakePoolCompleted = 'Stake Pool Completed',
+  UnstakePoolCompleted = 'Unstake Pool Completed',
 }
 
 interface CustomGTMDataLayer {
@@ -93,5 +97,15 @@ export const logGTMWalletConnectEvent = (walletTitle?: string) => {
   window?.dataLayer?.push({
     event: GTMEvent.WalletConnect,
     label: walletTitle,
+  })
+}
+
+export const logGTMPoolStakeEvent = (action: 'stake' | 'unstake', tokenSymbol: string, amount: string) => {
+  console.info(`---Pool${action.charAt(0).toUpperCase() + action.slice(1)}---`)
+  window?.dataLayer?.push({
+    event: GTMEvent.PoolStake,
+    action: action === 'stake' ? GTMAction.StakePoolCompleted : GTMAction.UnstakePoolCompleted,
+    category: GTMCategory.Pool,
+    label: `${action} ${amount} ${tokenSymbol}`,
   })
 }

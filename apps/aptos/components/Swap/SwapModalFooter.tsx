@@ -1,7 +1,7 @@
-import { Trade, Currency, CurrencyAmount, TradeType } from '@pancakeswap/aptos-swap-sdk'
+import { Currency, CurrencyAmount, Trade, TradeType } from '@pancakeswap/aptos-swap-sdk'
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoColumn, AutoRow, Button, QuestionHelper, RowBetween, RowFixed, Text } from '@pancakeswap/uikit'
-import { Swap as SwapUI, SwapCallbackError } from '@pancakeswap/widgets-internal'
+import { SwapCallbackError, Swap as SwapUI } from '@pancakeswap/widgets-internal'
 
 import { useMemo } from 'react'
 import { Field } from 'state/swap'
