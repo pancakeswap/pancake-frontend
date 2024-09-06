@@ -22,13 +22,13 @@ const SyncedBadge = () => {
 
 interface CrossChainMyVeCakeProps extends BoxProps {
   veCakeAmount: string | number | BigNumber;
-  needToSyncVeCake: boolean;
+  isVeCakeSynced: boolean;
   chainId?: IfoChainId;
   onClick?: () => void;
 }
 export const CrossChainMyVeCake = ({
   veCakeAmount,
-  needToSyncVeCake,
+  isVeCakeSynced,
   chainId = ChainId.ARBITRUM_ONE,
   onClick,
   ...props
@@ -60,7 +60,7 @@ export const CrossChainMyVeCake = ({
         </Box>
       </FlexGap>
 
-      {!needToSyncVeCake && (
+      {isVeCakeSynced && (
         <>
           <Flex my="8px" justifyContent="space-between">
             <Text color="textSubtle">{t("Profile & veCake")}</Text>
@@ -70,7 +70,7 @@ export const CrossChainMyVeCake = ({
       )}
 
       <Button mt="8px" width="100%" onClick={() => onClick?.()}>
-        {needToSyncVeCake ? t("Sync veCake") : t("Sync again")}
+        {!isVeCakeSynced ? t("Sync veCake") : t("Sync again")}
       </Button>
     </GreyCard>
   );

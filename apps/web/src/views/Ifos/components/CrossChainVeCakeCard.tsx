@@ -1,7 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { CAKE } from '@pancakeswap/tokens'
-import { Box } from '@pancakeswap/uikit'
 import { formatBigInt, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { Ifo } from '@pancakeswap/widgets-internal'
 import { useCallback, useMemo, useState } from 'react'
@@ -20,55 +19,13 @@ import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { CAKE_VAULT_SUPPORTED_CHAINS } from '@pancakeswap/pools'
 import { BigNumber as BN } from 'bignumber.js'
 import { CrossChainVeCakeModal } from 'components/CrossChainVeCakeModal'
-import { ArbitrumIcon, BinanceIcon, EthereumIcon, ZKsyncIcon } from 'components/CrossChainVeCakeModal/ChainLogos'
 import { useMultichainVeCakeWellSynced } from 'components/CrossChainVeCakeModal/hooks/useMultichainVeCakeWellSynced'
 import { useActiveIfoConfig } from 'hooks/useIfoConfig'
 import { useVeCakeBalance } from 'hooks/useTokenBalance'
 import { useRouter } from 'next/router'
-import styled from 'styled-components'
 import { useChainNames } from '../hooks/useChainNames'
 import { useUserIfoInfo } from '../hooks/useUserIfoInfo'
 import { NetworkSwitcherModal } from './IfoFoldableCard/IfoPoolCard/NetworkSwitcherModal'
-
-const TwoColumns = styled(Box)`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-`
-
-const GradientCard = styled(Box)`
-  background: ${({ theme }) => theme.colors.gradientCardHeader};
-  border-radius: ${({ theme }) => theme.radii.default};
-`
-
-const GreyCard = styled(Box)`
-  background: ${({ theme }) => theme.colors.background};
-  border: 1px solid ${({ theme }) => theme.colors.tertiary};
-  border-radius: ${({ theme }) => theme.radii.default};
-`
-
-const LogoWrapper = styled(Box)`
-  display: flex;
-  width: 32px;
-  height: 32px;
-  justify-content: center;
-  align-items: center;
-  background: #280d5f;
-  border-radius: 8px;
-`
-
-const ChainLogoMap = {
-  [ChainId.BSC]: <BinanceIcon />,
-  [ChainId.ETHEREUM]: <EthereumIcon width={16} />,
-  [ChainId.ARBITRUM_ONE]: <ArbitrumIcon width={24} height={24} />,
-  [ChainId.ZKSYNC]: <ZKsyncIcon width={16} />,
-}
-
-const ChainNameMap = {
-  [ChainId.BSC]: 'BSC',
-  [ChainId.ETHEREUM]: 'ETH',
-  [ChainId.ARBITRUM_ONE]: 'Arbitrum',
-  [ChainId.ZKSYNC]: 'ZKSync',
-}
 
 type Props = {
   ifoAddress?: Address
@@ -113,9 +70,6 @@ export function CrossChainVeCakeCard({ ifoAddress }: Props) {
   const { isVeCakeWillSync } = useMultichainVeCakeWellSynced(targetChainId)
 
   const hasVeCakeOnBSC = useMemo(() => veCakeOnBSC.gt(0), [veCakeOnBSC])
-
-  // Re-think logic for this and if this is needed or something already exists for it (isVeCakeWillSync?)
-  const needToSyncVeCake = useMemo(() => veCakeOnBSC.gt(veCakeOnTargetChain), [veCakeOnBSC, veCakeOnTargetChain])
 
   const isMigrated = useIsMigratedToVeCake(targetChainId)
   const needMigrate = useMemo(() => shouldMigrate && !isMigrated, [shouldMigrate, isMigrated])
@@ -204,7 +158,7 @@ export function CrossChainVeCakeCard({ ifoAddress }: Props) {
             mt="16px"
             chainId={targetChainId}
             veCakeAmount={veCakeOnTargetChainFormatted}
-            needToSyncVeCake={needToSyncVeCake}
+            isVeCakeSynced={isVeCakeWillSync}
             onClick={() => setIsOpen(true)}
           />
           <CrossChainVeCakeModal
@@ -216,7 +170,6 @@ export function CrossChainVeCakeCard({ ifoAddress }: Props) {
         </>
       )}
       <Ifo.ICakeInfo mt="1.5rem" snapshot={snapshotTime} />
-      {/* {isConnected ? <NavigateButton mt="1.5rem" /> : <ConnectWalletButton width="100%" mt="1.5rem" />} */}
       {!isConnected && <ConnectWalletButton width="100%" mt="1.5rem" />}
     </Ifo.VeCakeCard>
   )
