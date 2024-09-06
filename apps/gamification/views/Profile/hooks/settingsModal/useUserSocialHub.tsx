@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
 import { FetchStatus } from 'config/constants/types'
+import { useSiwe } from 'hooks/useSiwe'
 import { useAccount } from 'wagmi'
 
 export enum SocialHubType {
@@ -24,13 +25,14 @@ const initialData: UserInfo = {
 }
 
 export const useUserSocialHub = () => {
-  const { address: account } = useAccount()
+  const { address: account, connector } = useAccount()
+  const { fetchWithSiweAuth } = useSiwe()
 
   const { data, refetch, isFetching, status } = useQuery({
     queryKey: ['userSocial', account],
     queryFn: async () => {
       try {
-        const response = await fetch(`${GAMIFICATION_PUBLIC_API}/userInfo/v1/getUserInfo/${account}`)
+        const response = await fetchWithSiweAuth(`${GAMIFICATION_PUBLIC_API}/userInfo/v1/getUserInfo/${account}`)
         const result = await response.json()
         const userSocialHubData: UserInfo = result
         return userSocialHubData
@@ -39,7 +41,7 @@ export const useUserSocialHub = () => {
         return initialData
       }
     },
-    enabled: Boolean(account),
+    enabled: Boolean(account && connector && typeof connector.getChainId === 'function'),
     refetchOnMount: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,

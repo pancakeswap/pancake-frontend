@@ -15,9 +15,10 @@ import {
 } from '@pancakeswap/uikit'
 import { useQueryClient } from '@tanstack/react-query'
 import { ADDRESS_ZERO } from 'config/constants'
+import { GAMIFICATION_PUBLIC_DASHBOARD_API } from 'config/constants/endpoints'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useQuestRewardContract } from 'hooks/useContract'
-import { useSiwe } from 'hooks/useSiwe'
+import { useDashboardSiwe } from 'hooks/useDashboardSiwe'
 import { useRouter } from 'next/router'
 import { useMemo, useState } from 'react'
 import { styled } from 'styled-components'
@@ -49,9 +50,9 @@ export const SubmitAction = () => {
   const { state, tasks, isChanged, updateValue } = useQuestEdit()
   const [openModal, setOpenModal] = useState(false)
   const [isSubmitError, setIsSubmitError] = useState(false)
-  const completionStatusToString = state.completionStatus.toString()
+  const completionStatusToString = state?.completionStatus?.toString()
   const queryClient = useQueryClient()
-  const { signIn } = useSiwe()
+  const { fetchWithSiweAuth } = useDashboardSiwe()
   const rewardContract = useQuestRewardContract(state.chainId)
 
   const handlePickedRewardToken = (currency: Currency, totalRewardAmount: string, amountOfWinners: number) => {
@@ -99,13 +100,13 @@ export const SubmitAction = () => {
         if (!account) {
           throw new Error('Invalid message to sign')
         }
-        const { signature, message } = await signIn({
-          address: account,
-          chainId,
-        })
-        const response = await fetch(`/api/dashboard/quest-delete?id=${query?.id}`, {
+
+        const response = await fetchWithSiweAuth(`${GAMIFICATION_PUBLIC_DASHBOARD_API}/quests/${query?.id}/delete`, {
           method: 'DELETE',
-          body: JSON.stringify({ siweMessage: message, signature }),
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
         })
 
         if (response.ok) {
@@ -129,11 +130,10 @@ export const SubmitAction = () => {
       if (!account) {
         throw new Error('Invalid message to sign')
       }
-      const { message, signature } = await signIn({
-        address: account,
-        chainId,
-      })
-      const url = isCreate ? `/api/dashboard/quest-create` : `/api/dashboard/quest-update?id=${query?.id}`
+
+      const url = isCreate
+        ? `${GAMIFICATION_PUBLIC_DASHBOARD_API}/quests/create`
+        : `${GAMIFICATION_PUBLIC_DASHBOARD_API}/quests/${query?.id}/update`
       const method = isCreate ? 'POST' : 'PUT'
 
       const apiChainId = isCreate ? chainId : state.chainId
@@ -166,8 +166,12 @@ export const SubmitAction = () => {
         return undefined
       }
 
-      const response = await fetch(url, {
+      const response = await fetchWithSiweAuth(url, {
         method,
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({
           ...(!isCreate && { id }),
           title,
@@ -181,8 +185,6 @@ export const SubmitAction = () => {
           endDateTime,
           numberOfParticipants,
           needAddReward,
-          siweMessage: message,
-          signature,
           ownerAddress: isCreate ? account : ownerAddress,
           ...(rewardSCAddress && {
             rewardSCAddress,

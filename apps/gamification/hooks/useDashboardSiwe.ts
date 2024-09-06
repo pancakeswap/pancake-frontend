@@ -1,8 +1,8 @@
 import { ChainId } from '@pancakeswap/chains'
-import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
+import { GAMIFICATION_PUBLIC_DASHBOARD_API } from 'config/constants/endpoints'
 import { useAtom } from 'jotai'
 import { atomWithStorage, createJSONStorage, RESET } from 'jotai/utils'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect } from 'react'
 import { Address } from 'viem'
 import { createSiweMessage, generateSiweNonce, parseSiweMessage } from 'viem/siwe'
 import { useAccount, useAccountEffect, useSignMessage } from 'wagmi'
@@ -17,13 +17,14 @@ const siweAtom = atomWithStorage<
     }
   | undefined
 >(
-  'gamification-siwe-v2',
+  'gamification-dashboard-siwe',
   undefined,
   createJSONStorage(() => localStorage),
 )
 
 export function useAutoSiwe() {
-  const { signIn, signOut } = useSiwe()
+  const { signIn, signOut } = useDashboardSiwe()
+  const { address: currentAddress } = useAccount()
 
   const trySignIn = useCallback(
     async ({ address: addr }: { address: Address }) => {
@@ -36,6 +37,12 @@ export function useAutoSiwe() {
     [signIn],
   )
 
+  useEffect(() => {
+    if (currentAddress) {
+      trySignIn({ address: currentAddress })
+    }
+  }, [currentAddress, trySignIn])
+
   useAccountEffect({
     onConnect({ address: addr }) {
       trySignIn({ address: addr })
@@ -46,28 +53,10 @@ export function useAutoSiwe() {
   })
 }
 
-export function useSiwe() {
+export function useDashboardSiwe() {
   const { chainId: currentChainId, address: currentAddress } = useAccount()
   const { signMessageAsync } = useSignMessage()
   const [siwe, setSiwe] = useAtom(siweAtom)
-
-  const isSiweValid = useMemo(() => {
-    if (siwe) {
-      const parsed = parseSiweMessage(siwe.message)
-      if (
-        parsed.address === currentAddress &&
-        parsed.domain === window.location.host &&
-        parsed.uri === window.location.origin &&
-        (parsed.expirationTime?.getTime() ?? 0) > Date.now()
-      ) {
-        return true
-      }
-
-      return false
-    }
-
-    return false
-  }, [currentAddress, siwe])
 
   const signIn = useCallback(
     async ({ address, chainId = currentChainId }: { address: Address; chainId?: ChainId }) => {
@@ -77,9 +66,16 @@ export function useSiwe() {
       if (!chainId) {
         throw new Error(`Invalid chain ${chainId}`)
       }
-
-      if (isSiweValid && siwe) {
-        return siwe
+      if (siwe) {
+        const parsed = parseSiweMessage(siwe.message)
+        if (
+          parsed.address === currentAddress &&
+          parsed.domain === window.location.host &&
+          parsed.uri === window.location.origin &&
+          (parsed.expirationTime?.getTime() ?? 0) > Date.now()
+        ) {
+          return siwe
+        }
       }
 
       const message = createSiweMessage({
@@ -96,13 +92,13 @@ export function useSiwe() {
         message,
       })
 
-      const response = await fetch(`${GAMIFICATION_PUBLIC_API}/authenticate`, {
+      const response = await fetch(`${GAMIFICATION_PUBLIC_DASHBOARD_API}/users/authenticate`, {
         method: 'POST',
         headers: {
+          Accept: 'application/json',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          userId: currentAddress,
           signature,
           encodedMessage: encodeURIComponent(message),
         }),
@@ -118,7 +114,7 @@ export function useSiwe() {
       setSiwe(siweMessage)
       return siweMessage
     },
-    [currentAddress, isSiweValid, currentChainId, siwe, setSiwe, signMessageAsync],
+    [currentAddress, currentChainId, siwe, setSiwe, signMessageAsync],
   )
 
   const signOut = useCallback(() => setSiwe(RESET), [setSiwe])
@@ -144,7 +140,6 @@ export function useSiwe() {
 
   return {
     siwe,
-    isSiweValid,
     signIn,
     signOut,
     fetchWithSiweAuth,

@@ -20,6 +20,7 @@ import { ASSET_CDN } from 'config/constants/endpoints'
 import { Achievement } from 'config/constants/types'
 import { useDomainNameForAddress } from 'hooks/useDomain'
 import { Profile } from 'hooks/useProfile/type'
+import { useSiwe } from 'hooks/useSiwe'
 import useGetUsernameWithVisibility from 'hooks/useUsernameWithVisibility'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
@@ -70,6 +71,7 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
   const { query } = useRouter()
   const { signMessageAsync } = useSignMessage()
   const isFetchingRef = useRef(false)
+  const { fetchWithSiweAuth } = useSiwe()
 
   useEffect(() => {
     if (query.openSettingModal && query.openSettingModal === 'true') {
@@ -134,6 +136,7 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
                 verificationData,
                 signature,
               },
+              fetchWithSiweAuth,
               callback: () => {
                 toastSuccess(t('%social% Connected', { social }))
                 refresh?.()
@@ -182,6 +185,7 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
     userInfo,
     signMessageAsync,
     connector,
+    fetchWithSiweAuth,
   ])
 
   const { domainName, avatar: avatarFromDomain } = useDomainNameForAddress(accountPath)
