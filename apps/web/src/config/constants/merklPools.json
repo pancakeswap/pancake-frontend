@@ -1,7 +1,27 @@
 [
   {
     "chainId": 42161,
+    "address": "0x7fCDC35463E3770c2fB992716Cd070B63540b947",
+    "link": "https://merkl.angle.money/arbitrum/pool/2/0x7fCDC35463E3770c2fB992716Cd070B63540b947"
+  },
+  {
+    "chainId": 42161,
+    "address": "0x389938CF14Be379217570D8e4619E51fBDafaa21",
+    "link": "https://merkl.angle.money/arbitrum/pool/2/0x389938CF14Be379217570D8e4619E51fBDafaa21"
+  },
+  {
+    "chainId": 42161,
     "address": "0x4B89179dAfe5c36AE611208B5590FEf9153b7daa",
     "link": "https://merkl.angle.money/arbitrum/pool/2/0x4B89179dAfe5c36AE611208B5590FEf9153b7daa"
+  },
+  {
+    "chainId": 42161,
+    "address": "0x4bfc22A4dA7f31F8a912a79A7e44a822398b4390",
+    "link": "https://merkl.angle.money/arbitrum/pool/2/0x4bfc22A4dA7f31F8a912a79A7e44a822398b4390"
+  },
+  {
+    "chainId": 42161,
+    "address": "0x9fFCA51D23Ac7F7df82da414865Ef1055E5aFCc3",
+    "link": "https://merkl.angle.money/arbitrum/pool/2/0x9fFCA51D23Ac7F7df82da414865Ef1055E5aFCc3"
   }
 ]
