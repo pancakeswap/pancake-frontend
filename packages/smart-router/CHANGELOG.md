@@ -1,5 +1,12 @@
 # @pancakeswap/smart-router
 
+## 6.1.2
+
+### Patch Changes
+
+- Updated dependencies [75c16bc]
+  - @pancakeswap/stable-swap-sdk@1.1.1
+
 ## 6.1.1
 
 ### Patch Changes

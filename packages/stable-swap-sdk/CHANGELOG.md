@@ -1,5 +1,11 @@
 # @pancakeswap/stable-swap-sdk
 
+## 1.1.1
+
+### Patch Changes
+
+- 75c16bc: Added new ss pair
+
 ## 1.1.0
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # @pancakeswap/price-api-sdk
 
+## 3.0.2
+
+### Patch Changes
+
+- @pancakeswap/smart-router@6.1.2
+
 ## 3.0.1
 
 ### Patch Changes
