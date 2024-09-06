@@ -187,7 +187,7 @@ export default function StablePoolPage() {
                 </Button>
               </NextLinkFromReactRouter>
               <NextLinkFromReactRouter to={`/stable/remove/${currencyIdA}/${currencyIdB}`}>
-                <Button mb="8px" variant="secondary" width="100%">
+                <Button mb="8px" variant="secondary" width="100%" disabled={isFullyStaked}>
                   {t('Remove')}
                 </Button>
               </NextLinkFromReactRouter>
