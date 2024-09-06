@@ -338,8 +338,8 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
       const isNativeToken = ADDRESS_ZERO.toLowerCase() === tokenAddress.toLowerCase()
 
       const url = isNativeToken
-        ? `https://pancakeswap.finance/swap?chain=${CHAIN_QUERY_NAME[network]}&outputCurrency=${nativeToken.symbol}`
-        : `https://pancakeswap.finance/swap?chain=${CHAIN_QUERY_NAME[network]}&outputCurrency=${tokenAddress}`
+        ? `https://pancakeswap.finance/swap?chain=${CHAIN_QUERY_NAME[network]}&persistChain=${network}&outputCurrency=${nativeToken.symbol}`
+        : `https://pancakeswap.finance/swap?chain=${CHAIN_QUERY_NAME[network]}&persistChain=${network}&outputCurrency=${tokenAddress}`
       window.open(url, '_blank', 'noopener noreferrer')
     }
   }
