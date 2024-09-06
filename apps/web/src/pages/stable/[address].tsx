@@ -26,7 +26,6 @@ import { LightGreyCard } from 'components/Card'
 import { CurrencyLogo } from 'components/Logo'
 import { usePoolTokenPercentage, useTotalUSDValue } from 'components/PositionCard'
 import { useInfoStableSwapContract } from 'hooks/useContract'
-import useTotalSupply from 'hooks/useTotalSupply'
 import { useSingleCallResult } from 'state/multicall/hooks'
 import currencyId from 'utils/currencyId'
 import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
@@ -143,9 +142,7 @@ export default function StablePoolPage() {
     amount1: token1Deposited,
   })
 
-  const totalPoolTokens = useTotalSupply(selectedLp?.liquidityToken)
-
-  const poolTokenPercentage = usePoolTokenPercentage({ totalPoolTokens, userPoolBalance })
+  const poolTokenPercentage = usePoolTokenPercentage({ totalPoolTokens: positionDetails?.totalSupply, userPoolBalance })
 
   const { isMobile } = useMatchBreakpoints()
 
