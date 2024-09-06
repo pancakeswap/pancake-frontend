@@ -2,7 +2,7 @@ import { ChainId } from '@pancakeswap/chains'
 import { GAMIFICATION_PUBLIC_DASHBOARD_API } from 'config/constants/endpoints'
 import { useAtom } from 'jotai'
 import { atomWithStorage, createJSONStorage, RESET } from 'jotai/utils'
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 import { Address } from 'viem'
 import { createSiweMessage, generateSiweNonce, parseSiweMessage } from 'viem/siwe'
 import { useAccount, useAccountEffect, useSignMessage } from 'wagmi'
@@ -24,6 +24,7 @@ const siweAtom = atomWithStorage<
 
 export function useAutoSiwe() {
   const { signIn, signOut } = useDashboardSiwe()
+  const { address: currentAddress } = useAccount()
 
   const trySignIn = useCallback(
     async ({ address: addr }: { address: Address }) => {
@@ -35,6 +36,12 @@ export function useAutoSiwe() {
     },
     [signIn],
   )
+
+  useEffect(() => {
+    if (currentAddress) {
+      trySignIn({ address: currentAddress })
+    }
+  }, [currentAddress, trySignIn])
 
   useAccountEffect({
     onConnect({ address: addr }) {
