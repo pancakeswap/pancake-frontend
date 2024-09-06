@@ -158,7 +158,7 @@ export function CrossChainVeCakeCard({ ifoAddress }: Props) {
             mt="16px"
             chainId={targetChainId}
             veCakeAmount={veCakeOnTargetChainFormatted}
-            isVeCakeSynced={isVeCakeWillSync}
+            isVeCakeSynced={Boolean(isVeCakeWillSync)}
             onClick={() => setIsOpen(true)}
           />
           <CrossChainVeCakeModal
