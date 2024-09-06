@@ -55,6 +55,7 @@ import { useRemoveLiquidityV2FormState } from 'state/burn/reducer'
 import { useGasPrice } from 'state/user/hooks'
 import { logGTMClickRemoveLiquidityEvent } from 'utils/customGTMEventTracking'
 import { isUserRejected, logError } from 'utils/sentry'
+import { checkSlippageError } from 'views/RemoveLiquidity/utils'
 import { AppBody, AppHeader } from '../../components/App'
 import ConnectWalletButton from '../../components/ConnectWalletButton'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
@@ -140,7 +141,6 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
   const pairContractRead = usePairContract(pair?.liquidityToken?.address)
 
   // allowance handling
-  const [signatureData, setSignatureData] = useState<{ v: number; r: string; s: string; deadline: number } | null>(null)
   const { approvalState, approveCallback } = useApproveCallback(
     parsedAmounts[Field.LIQUIDITY],
     chainId ? V2_ROUTER_ADDRESS[chainId] : undefined,
@@ -156,68 +156,11 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
     }
 
     return approveCallback()
-
-    // // try to gather a signature for permission
-    // const nonce = await pairContractRead.read.nonces([account])
-
-    // const EIP712Domain = [
-    //   { name: 'name', type: 'string' },
-    //   { name: 'version', type: 'string' },
-    //   { name: 'chainId', type: 'uint256' },
-    //   { name: 'verifyingContract', type: 'address' },
-    // ]
-    // const domain = {
-    //   name: 'Pancake LPs',
-    //   version: '1',
-    //   chainId,
-    //   verifyingContract: pair.liquidityToken.address as `0x${string}`,
-    // }
-    // const Permit = [
-    //   { name: 'owner', type: 'address' },
-    //   { name: 'spender', type: 'address' },
-    //   { name: 'value', type: 'uint256' },
-    //   { name: 'nonce', type: 'uint256' },
-    //   { name: 'deadline', type: 'uint256' },
-    // ]
-    // const message = {
-    //   owner: account,
-    //   spender: chainId ? V2_ROUTER_ADDRESS[chainId] : undefined,
-    //   value: liquidityAmount.quotient.toString(),
-    //   nonce,
-    //   deadline: Number(deadline),
-    // }
-
-    // signTypedDataAsync({
-    //   // @ts-ignore
-    //   domain,
-    //   primaryType: 'Permit',
-    //   types: {
-    //     EIP712Domain,
-    //     Permit,
-    //   },
-    //   message,
-    // })
-    //   .then(splitSignature)
-    //   .then((signature) => {
-    //     setSignatureData({
-    //       v: signature.v,
-    //       r: signature.r,
-    //       s: signature.s,
-    //       deadline: Number(deadline),
-    //     })
-    //   })
-    //   .catch((err) => {
-    //     // for all errors other than 4001 (EIP-1193 user rejected request), fall back to manual approve
-    //     if (!isUserRejected(err)) {
-    //       approveCallback()
-    //     }
-    //   })
   }
 
   // wrapped onUserInput to clear signatures
   const onUserInput = useCallback(
     (field: Field, value: string) => {
-      setSignatureData(null)
       return _onUserInput(field, value)
     },
     [_onUserInput],
@@ -292,54 +235,22 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
           deadline,
         ]
       }
-    }
-    // we have a signature, use permit versions of remove liquidity
-    else if (signatureData !== null) {
-      // removeLiquidityETHWithPermit
-      if (oneCurrencyIsNative) {
-        methodNames = ['removeLiquidityETHWithPermit', 'removeLiquidityETHWithPermitSupportingFeeOnTransferTokens']
-        args = [
-          currencyBIsNative ? tokenA.address : tokenB.address,
-          liquidityAmount.quotient.toString(),
-          amountsMin[currencyBIsNative ? Field.CURRENCY_A : Field.CURRENCY_B].toString(),
-          amountsMin[currencyBIsNative ? Field.CURRENCY_B : Field.CURRENCY_A].toString(),
-          account,
-          signatureData.deadline,
-          false,
-          signatureData.v,
-          signatureData.r,
-          signatureData.s,
-        ]
-      }
-      // removeLiquidityETHWithPermit
-      else {
-        methodNames = ['removeLiquidityWithPermit']
-        args = [
-          tokenA.address,
-          tokenB.address,
-          liquidityAmount.quotient.toString(),
-          amountsMin[Field.CURRENCY_A].toString(),
-          amountsMin[Field.CURRENCY_B].toString(),
-          account,
-          signatureData.deadline,
-          false,
-          signatureData.v,
-          signatureData.r,
-          signatureData.s,
-        ]
-      }
     } else {
       toastError(t('Error'), t('Attempting to confirm without approval or a signature'))
       throw new Error('Attempting to confirm without approval or a signature')
     }
 
     let methodSafeGasEstimate: { methodName: string; safeGasEstimate: bigint } | undefined
+    let hasSlippageError = false
     for (let i = 0; i < methodNames.length; i++) {
       let safeGasEstimate: any
       try {
         // eslint-disable-next-line no-await-in-loop
         safeGasEstimate = calculateGasMargin(await routerContract.estimateGas[methodNames[i]](args, { account }))
       } catch (e) {
+        if (checkSlippageError(e)) {
+          hasSlippageError = true
+        }
         console.error(`estimateGas failed`, methodNames[i], args, e)
       }
 
@@ -351,7 +262,15 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
 
     // all estimations failed...
     if (!methodSafeGasEstimate) {
-      toastError(t('Error'), t('This transaction would fail'))
+      setLiquidityState({
+        attemptingTxn: false,
+        liquidityErrorMessage: !hasSlippageError
+          ? t('This transaction would fail')
+          : t(
+              'This transaction will not succeed either due to price movement or fee on transfer. Try increasing your slippage tolerance.',
+            ),
+        txHash: undefined,
+      })
     } else {
       const { methodName, safeGasEstimate } = methodSafeGasEstimate
 
@@ -435,7 +354,6 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
   )
 
   const handleDismissConfirmation = useCallback(() => {
-    setSignatureData(null) // important that we clear signature data to avoid bad sigs
     // if there was a tx hash, we want to clear the input
     if (txHash) {
       onUserInput(Field.LIQUIDITY_PERCENT, '0')
@@ -462,7 +380,6 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
       onRemove={onRemove}
       pendingText={pendingText}
       approval={approvalState}
-      signatureData={signatureData}
       tokenA={tokenA}
       tokenB={tokenB}
       liquidityErrorMessage={liquidityErrorMessage}
@@ -695,15 +612,15 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
         ) : (
           <RowBetween>
             <Button
-              variant={approvalState === ApprovalState.APPROVED || signatureData !== null ? 'success' : 'primary'}
+              variant={approvalState === ApprovalState.APPROVED ? 'success' : 'primary'}
               onClick={onAttemptToApprove}
-              disabled={approvalState !== ApprovalState.NOT_APPROVED || signatureData !== null}
+              disabled={approvalState !== ApprovalState.NOT_APPROVED}
               width="100%"
               mr="0.5rem"
             >
               {approvalState === ApprovalState.PENDING ? (
                 <Dots>{t('Enabling')}</Dots>
-              ) : approvalState === ApprovalState.APPROVED || signatureData !== null ? (
+              ) : approvalState === ApprovalState.APPROVED ? (
                 t('Enabled')
               ) : (
                 t('Enable')
@@ -725,7 +642,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
                 logGTMClickRemoveLiquidityEvent()
               }}
               width="100%"
-              disabled={!isValid || (signatureData === null && approvalState !== ApprovalState.APPROVED)}
+              disabled={!isValid || approvalState !== ApprovalState.APPROVED}
             >
               {error || t('Remove')}
             </Button>
