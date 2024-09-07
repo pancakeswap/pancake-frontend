@@ -126,7 +126,7 @@ export default function PoolV2Page() {
       return 'exist'
     },
 
-    enabled: Boolean(chainId && pair && masterchefV2Contract),
+    enabled: Boolean(chainId && pair && masterchefV2Contract && !isFullyStaked),
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     refetchOnMount: false,
