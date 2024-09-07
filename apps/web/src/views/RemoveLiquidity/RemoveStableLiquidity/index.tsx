@@ -90,7 +90,7 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
 
   const poolData = useLPApr('stable', pair)
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    t(`Based on last 7 days' performance. Does not account for impermanent loss`),
+    t(`Based on last 24 hours' performance. Does not account for impermanent loss`),
     {
       placement: 'bottom',
     },
