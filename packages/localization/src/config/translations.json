@@ -3548,5 +3548,6 @@
   "0 Trading Fees, Gasless Swaps, MEV Protection, and a Wide Range of Tokens — ALL on PancakeSwapX": "0 Trading Fees, Gasless Swaps, MEV Protection, and a Wide Range of Tokens — ALL on PancakeSwapX",
   "ZERO": "ZERO",
   "Fee Swaps on Ethereum and Arbitrum": "Fee Swaps on Ethereum and Arbitrum",
-  "%amount% of your liquidity is currently staking in farm.": "%amount% of your liquidity is currently staking in farm."
+  "%amount% of your liquidity is currently staking in farm.": "%amount% of your liquidity is currently staking in farm.",
+  "Based on last 24 hours' performance. Does not account for impermanent loss": "Based on last 24 hours' performance. Does not account for impermanent loss"
 }
