@@ -196,28 +196,6 @@ const CurrencyInputPanelSimplify = memo(function CurrencyInputPanel({
                 {!currencyLoading && !disableCurrencySelect && <ChevronDownIcon />}
               </Flex>
             </CurrencySelectButton>
-            {token && tokenAddress ? (
-              <Flex style={{ gap: '4px' }} ml="4px" alignItems="center">
-                {/* <CopyButton
-                  data-dd-action-name="Copy token address"
-                  width="16px"
-                  buttonColor="textSubtle"
-                  text={tokenAddress}
-                  tooltipMessage={t('Token address copied')}
-                />
-                <AddToWalletButton
-                  data-dd-action-name="Add to wallet"
-                  variant="text"
-                  p="0"
-                  height="auto"
-                  width="fit-content"
-                  tokenAddress={tokenAddress}
-                  tokenSymbol={token.symbol}
-                  tokenDecimals={token.decimals}
-                  tokenLogo={token instanceof WrappedTokenInfo ? token.logoURI : undefined}
-                /> */}
-              </Flex>
-            ) : null}
           </Flex>
 
           {account && !hideBalanceComp && (

@@ -1,9 +1,10 @@
 import { styled } from "styled-components";
 
 import { ArrowDownIcon, ArrowUpDownIcon, ButtonProps, IconButton } from "@pancakeswap/uikit";
+import { CurrencyInputPanelSimplify } from "../swap-v2/CurrencyInputPanelSimplify";
+import { SwitchButtonV2 } from "../swap-v2/SwitchButtinV2";
 import { CurrencyInputHeader, CurrencyInputHeaderSubTitle, CurrencyInputHeaderTitle } from "./CurrencyInputHeader";
 import { CurrencyInputPanel } from "./CurrencyInputPanel";
-import { CurrencyInputPanelSimplify } from "./CurrencyInputPanelSimplify";
 import { SwapFooter as Footer } from "./Footer";
 import { SwapPage as Page } from "./Page";
 import { SwapInfo as Info, SwapInfoLabel as InfoLabel } from "./SwapInfo";
@@ -43,12 +44,6 @@ const SwitchButton = (props: ButtonProps) => (
     <ArrowDownIcon className="icon-down" color="primary" />
     <ArrowUpDownIcon className="icon-up-down" color="primary" />
   </SwitchIconButton>
-);
-
-const SwitchButtonV2 = (props: ButtonProps) => (
-  <SwitchIconButtonV2 variant="light" scale="sm" {...props}>
-    <ArrowUpDownIcon className="icon-up-down" color="primary" />
-  </SwitchIconButtonV2>
 );
 
 export {
