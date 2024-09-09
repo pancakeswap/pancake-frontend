@@ -1,29 +1,29 @@
+import { Ifo, PoolIds } from '@pancakeswap/ifos'
 import { ContextApi, useTranslation } from '@pancakeswap/localization'
 import {
   Box,
   Card,
   CardBody,
+  CardFooter,
   CardHeader,
+  ExpandableLabel,
   Flex,
   HelpIcon,
   Text,
   useTooltip,
-  ExpandableLabel,
-  CardFooter,
 } from '@pancakeswap/uikit'
-import { useAccount } from 'wagmi'
-import { Ifo, PoolIds } from '@pancakeswap/ifos'
 import { useMemo, useState } from 'react'
 import { useProfile } from 'state/profile/hooks'
 import { styled } from 'styled-components'
 import useCriterias from 'views/Ifos/hooks/v3/useCriterias'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
+import { useAccount } from 'wagmi'
+import { isBasicSale } from '../../../hooks/v7/helpers'
 import { CardConfigReturn, EnableStatus } from '../types'
 import IfoCardActions from './IfoCardActions'
 import IfoCardDetails from './IfoCardDetails'
 import IfoCardTokens from './IfoCardTokens'
 import IfoVestingCard from './IfoVestingCard'
-import { isBasicSale } from '../../../hooks/v7/helpers'
 
 const StyledCard = styled(Card)`
   width: 100%;

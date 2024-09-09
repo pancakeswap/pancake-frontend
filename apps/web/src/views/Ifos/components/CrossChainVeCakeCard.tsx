@@ -96,7 +96,7 @@ export function CrossChainVeCakeCard({ ifoAddress }: Props) {
     () => credit && new BN(credit.numerator.toString()).div(credit.decimalScale.toString()),
     [credit],
   )
-  console.log('iCAKE', { creditBN: creditBN?.toString() })
+
   const hasICake = useMemo(() => creditBN && creditBN.toNumber() > 0, [creditBN])
   const hasVeCake = useMemo(() => veCake && veCake.toNumber() > 0, [veCake])
 
@@ -118,9 +118,7 @@ export function CrossChainVeCakeCard({ ifoAddress }: Props) {
       {isConnected && !hasVeCake ? (
         !needMigrate && hasProxyCakeButNoNativeVeCake && !isUserDelegated ? (
           <Ifo.InsufficientNativeVeCakeTips mt="1.5rem" />
-        ) : (
-          <Ifo.ZeroVeCakeTips mt="1.5rem" />
-        )
+        ) : null
       ) : null}
       {needMigrate ? <Ifo.MigrateVeCakeTips mt="1.5rem" /> : null}
 

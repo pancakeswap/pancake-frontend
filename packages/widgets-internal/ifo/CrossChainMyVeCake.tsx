@@ -46,7 +46,7 @@ export const CrossChainMyVeCake = ({
         </Flex>
         <Box>
           <Text color="textSubtle" fontSize="15px" bold>
-            {t("My veCake on %chainName%", {
+            {t("My veCAKE on %chainName%", {
               chainName: ChainNameMap[chainId],
             })}
           </Text>

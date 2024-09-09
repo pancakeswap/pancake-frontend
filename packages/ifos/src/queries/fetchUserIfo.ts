@@ -5,10 +5,10 @@ import { Address, WalletClient, getContract } from 'viem'
 
 import { iCakeABI } from '../abis/ICake'
 import { ifoV7ABI } from '../abis/IfoV7'
+import { ifoV8ABI } from '../abis/IfoV8'
 import { ICAKE } from '../constants/contracts'
 import { OnChainProvider, PoolIds, UserVestingData } from '../types'
 import { getContractAddress } from '../utils'
-import { ifoV8ABI } from '../abis/IfoV8'
 
 export const getIfoCreditAddressContract = (
   chainId: ChainId,
@@ -62,6 +62,7 @@ type GetIfoInfoParams = Params & {
 
 export async function getUserIfoInfo({ account, ifo, chainId, provider }: GetIfoInfoParams) {
   const client = provider({ chainId })
+
   if (!chainId || !account || !client) {
     return {
       credit: 0n,
@@ -70,6 +71,7 @@ export async function getUserIfoInfo({ account, ifo, chainId, provider }: GetIfo
   }
 
   const ifoCreditContract = getIfoCreditAddressContract(chainId, provider)
+  // if (!ifo || ifo !== ifoCreditContract.address) { // if need to fetch iCAKE bridging for source chain (BSC)
   if (!ifo) {
     // @ts-ignore
     const credit = await ifoCreditContract.read.getUserCreditForNextIfo([account])
@@ -95,6 +97,7 @@ export async function getUserIfoInfo({ account, ifo, chainId, provider }: GetIfo
     ],
     allowFailure: false,
   })
+
   return {
     credit: BigInt(credit.toString()),
     endTimestamp: Number(endTimestamp.toString()),
