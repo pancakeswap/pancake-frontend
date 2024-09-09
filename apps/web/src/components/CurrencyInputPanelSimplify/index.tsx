@@ -1,7 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Pair, Percent, Token } from '@pancakeswap/sdk'
-import { WrappedTokenInfo } from '@pancakeswap/token-lists'
-import { ArrowDropDownIcon, Box, Button, CopyButton, Flex, Loading, Skeleton, Text, useModal } from '@pancakeswap/uikit'
+import { Box, Button, ChevronDownIcon, Flex, Loading, Skeleton, Text, useModal } from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { CurrencyLogo, DoubleCurrencyLogo, Swap as SwapUI } from '@pancakeswap/widgets-internal'
 import { memo, useCallback, useMemo } from 'react'
@@ -17,7 +16,7 @@ import { useCurrencyBalance } from 'state/wallet/hooks'
 import { useAccount } from 'wagmi'
 import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
 
-import AddToWalletButton from '../AddToWallet/AddToWalletButton'
+// import AddToWalletButton from '../AddToWallet/AddToWalletButton'
 
 const InputRow = styled.div<{ selected: boolean }>`
   display: flex;
@@ -194,12 +193,12 @@ const CurrencyInputPanelSimplify = memo(function CurrencyInputPanel({
                       : currency?.symbol) || t('Select a currency')}
                   </Text>
                 )}
-                {!currencyLoading && !disableCurrencySelect && <ArrowDropDownIcon />}
+                {!currencyLoading && !disableCurrencySelect && <ChevronDownIcon />}
               </Flex>
             </CurrencySelectButton>
             {token && tokenAddress ? (
               <Flex style={{ gap: '4px' }} ml="4px" alignItems="center">
-                <CopyButton
+                {/* <CopyButton
                   data-dd-action-name="Copy token address"
                   width="16px"
                   buttonColor="textSubtle"
@@ -216,7 +215,7 @@ const CurrencyInputPanelSimplify = memo(function CurrencyInputPanel({
                   tokenSymbol={token.symbol}
                   tokenDecimals={token.decimals}
                   tokenLogo={token instanceof WrappedTokenInfo ? token.logoURI : undefined}
-                />
+                /> */}
               </Flex>
             ) : null}
           </Flex>
