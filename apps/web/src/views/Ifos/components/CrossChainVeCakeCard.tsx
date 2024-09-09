@@ -103,7 +103,7 @@ export function CrossChainVeCakeCard({ ifoAddress }: Props) {
   const handleSwitchNetworkSuccess = useCallback(() => {
     setIsNetworkModalOpen(false)
 
-    router.push('/cake-staking') // TODO: See why this is not working
+    router.push('/cake-staking') // See why this is not working in dev but works in preview links
   }, [router, setIsNetworkModalOpen])
 
   const header = (

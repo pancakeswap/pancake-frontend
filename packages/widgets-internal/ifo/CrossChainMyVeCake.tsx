@@ -26,7 +26,7 @@ const OutdatedSyncBadge = () => {
   return (
     <Tag variant="textDisabled" scale="sm" style={{ cursor: "default" }}>
       <OutdatedIcon color="lime" width="16px" mt="2px" mr="4px" />
-      <Text ml="2px" pr="4px" color="invertedContrast" small bold>
+      <Text ml="2px" pr="4px" color="white" small bold>
         {t("Outdated")}
       </Text>
     </Tag>

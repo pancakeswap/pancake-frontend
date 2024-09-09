@@ -22,8 +22,10 @@ export const LogoWrapper = styled(Box)`
   height: 32px;
   justify-content: center;
   align-items: center;
-  background: #280d5f;
   border-radius: 8px;
+  background: #280d5f;
+
+  border: ${({ theme }) => (theme.isDark ? "1px solid #3a216e" : "")};
 `;
 
 export const GreyCard = styled(Box)`
