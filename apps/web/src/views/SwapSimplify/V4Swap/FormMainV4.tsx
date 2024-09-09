@@ -4,7 +4,7 @@ import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { ReactNode, useCallback, useMemo } from 'react'
 
-import CurrencyInputPanel from 'components/CurrencyInputPanel'
+import CurrencyInputPanelSimplify from 'components/CurrencyInputPanelSimplify'
 import { CommonBasesType } from 'components/SearchModal/types'
 import { useCurrency } from 'hooks/Tokens'
 import { Field } from 'state/swap/actions'
@@ -15,12 +15,12 @@ import { currencyId } from 'utils/currencyId'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 
 import { useAccount } from 'wagmi'
-import useWarningImport from '../../hooks/useWarningImport'
-import { FormContainer } from '../components'
-import { useIsWrapping } from '../hooks'
-import { FlipButton } from './FlipButton'
-import { Recipient } from './Recipient'
-import { RiskCheck } from './RiskCheck'
+import useWarningImport from '../../Swap/hooks/useWarningImport'
+import { FormContainer } from '../../Swap/V3Swap/components'
+import { FlipButton } from '../../Swap/V3Swap/containers/FlipButton'
+import { Recipient } from '../../Swap/V3Swap/containers/Recipient'
+import { RiskCheck } from '../../Swap/V3Swap/containers/RiskCheck'
+import { useIsWrapping } from '../../Swap/V3Swap/hooks'
 
 interface Props {
   inputAmount?: CurrencyAmount<Currency>
@@ -112,7 +112,7 @@ export function FormMain({ pricingAndSlippage, inputAmount, outputAmount, tradeL
 
   return (
     <FormContainer>
-      <CurrencyInputPanel
+      <CurrencyInputPanelSimplify
         id="swap-currency-input"
         showUSDPrice
         showMaxButton
@@ -133,7 +133,7 @@ export function FormMain({ pricingAndSlippage, inputAmount, outputAmount, tradeL
       />
       <RiskCheck currency={inputCurrency ?? undefined} />
       <FlipButton />
-      <CurrencyInputPanel
+      <CurrencyInputPanelSimplify
         id="swap-currency-output"
         showUSDPrice
         showCommonBases
