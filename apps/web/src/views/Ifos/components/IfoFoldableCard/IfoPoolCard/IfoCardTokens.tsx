@@ -1,4 +1,3 @@
-import { ChainId } from '@pancakeswap/chains'
 import { Ifo, PoolIds, cakeBnbLpToken } from '@pancakeswap/ifos'
 import { useTranslation } from '@pancakeswap/localization'
 import { Token } from '@pancakeswap/sdk'
@@ -36,7 +35,6 @@ import { TextLink } from '../../IfoCardStyles'
 import StakeVaultButton from '../StakeVaultButton'
 import { EnableStatus } from '../types'
 import { CrossChainVeCakeTips } from './CrossChainVeCakeTips'
-import { ICakeTips } from './ICakeTips'
 import IFORequirements from './IFORequirements'
 
 interface TokenSectionProps extends FlexProps {
@@ -231,11 +229,11 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
       hasProfile
     ) {
       // If Cross-Chain IFO
-      if (ifo.chainId !== ChainId.BSC) {
-        message = <CrossChainVeCakeTips ifoId={ifo.id} ifoChainId={ifo.chainId} ifoAddress={ifo.address} />
-      }
-      // Phase this out later, as it applies at the same time
-      else message = <ICakeTips ifoId={ifo.id} ifoChainId={ifo.chainId} ifoAddress={ifo.address} />
+      // if (ifo.chainId !== ChainId.BSC) {
+      message = <CrossChainVeCakeTips ifoChainId={ifo.chainId} />
+      // }
+      // TODO: Phase this out later, as it applies at the same time
+      // else message = <ICakeTips ifoId={ifo.id} ifoChainId={ifo.chainId} ifoAddress={ifo.address} />
     }
 
     if (account && !hasProfile && !isPublicPoolBasicSale && publicIfoData.status !== 'finished') {

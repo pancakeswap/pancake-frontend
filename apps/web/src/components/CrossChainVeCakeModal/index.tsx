@@ -141,22 +141,26 @@ export const CrossChainVeCakeModal: React.FC<{
   targetChainId?: (typeof OtherChainsConfig)[number]['chainId']
 }> = ({ onDismiss, modalTitle, isOpen, targetChainId }) => {
   const { t } = useTranslation()
+  const { toastSuccess } = useToast()
   const { isDesktop } = useMatchBreakpoints()
   const { address: account, chain } = useAccount()
-  const { switchNetwork } = useSwitchNetwork()
+  const { switchNetworkAsync } = useSwitchNetwork()
   const veCakeSenderV2Contract = usePancakeVeSenderV2Contract(ChainId.BSC)
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
-  const { toastSuccess } = useToast()
+  const { balance: veCakeOnBsc } = useVeCakeBalance(ChainId.BSC)
+  const { balance: bnbBalance } = useGetBnbBalance()
+
   const [selectChainId, setSelectChainId] = useState<ChainId | undefined>(targetChainId || undefined)
   const [txByChain, setTxByChain] = useState<Record<number, string>>({
     [ChainId.ARBITRUM_ONE]: '',
     [ChainId.ETHEREUM]: '',
     [ChainId.ZKSYNC]: '',
   })
+
   const [modalState, setModalState] = useState<'list' | 'ready' | 'submitted' | 'done'>('list')
-  const { balance: veCakeOnBsc } = useVeCakeBalance(ChainId.BSC)
-  const { balance: bnbBalance } = useGetBnbBalance()
   const [nativeFee, setNativeFee] = useState<bigint>(0n)
+  const [isSwitching, setIsSwitching] = useState(false)
+
   const { hasProfile, isInitialized } = useProfile()
   const { isVeCakeWillSync, isLoading: isVeCakeSyncedLoading } = useMultichainVeCakeWellSynced(selectChainId)
   const { isSynced, isLoading: isProfileSyncedLoading } = useProfileProxyWellSynced(selectChainId)
@@ -174,6 +178,17 @@ export const CrossChainVeCakeModal: React.FC<{
     }
     return false
   }, [isCrossChainLoading, crossChainMessage])
+
+  const handleSwitchNetwork = useCallback(async () => {
+    try {
+      setIsSwitching(true)
+      await switchNetworkAsync(ChainId.BSC)
+    } catch (e) {
+      console.error(e)
+    } finally {
+      setIsSwitching(false)
+    }
+  }, [switchNetworkAsync, setIsSwitching])
 
   const syncVeCake = useCallback(
     async (chainId: ChainId) => {
@@ -295,13 +310,9 @@ export const CrossChainVeCakeModal: React.FC<{
               <Flex style={{ gap: 10 }} mt="20px">
                 {account ? (
                   chain?.id !== ChainId.BSC ? (
-                    <Button
-                      width="50%"
-                      onClick={() => {
-                        switchNetwork(ChainId.BSC)
-                      }}
-                    >
+                    <Button width="50%" onClick={handleSwitchNetwork} disabled={isSwitching}>
                       {t('Switch Chain')}
+                      {isSwitching && <Loading width="14px" height="14px" ml="7px" />}
                     </Button>
                   ) : (
                     <Button

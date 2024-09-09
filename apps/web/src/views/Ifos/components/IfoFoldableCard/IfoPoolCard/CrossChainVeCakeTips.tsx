@@ -1,61 +1,61 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/sdk'
-import { Address } from 'viem'
 
+import { useMultichainVeCakeWellSynced } from 'components/CrossChainVeCakeModal/hooks/useMultichainVeCakeWellSynced'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useVeCakeBalance } from 'hooks/useTokenBalance'
+import { useMemo } from 'react'
+import { useIfoSourceChain } from 'views/Ifos/hooks/useIfoSourceChain'
 import { useChainNames } from '../../../hooks/useChainNames'
-import { useICakeBridgeStatus } from '../../../hooks/useIfoCredit'
 import { ContentText, LinkTitle, WarningTips } from '../../WarningTips'
-import { BridgeButton } from './BridgeButton'
 import { StakeButton } from './StakeButton'
+import { SyncVeCakeButton } from './SyncVeCakeButton'
 
 type Props = {
-  ifoId: string
-
   ifoChainId: ChainId
-
-  ifoAddress?: Address
 }
 
-export function CrossChainVeCakeTips({ ifoChainId, ifoId, ifoAddress }: Props) {
+export function CrossChainVeCakeTips({ ifoChainId }: Props) {
   const { t } = useTranslation()
-  const { noICake, hasBridged, shouldBridgeAgain, sourceChainCredit, destChainCredit } = useICakeBridgeStatus({
-    ifoChainId,
-    ifoAddress,
-  })
+  const { chainId } = useActiveChainId()
+  const { balance: veCakeOnBSC } = useVeCakeBalance(ChainId.BSC)
+  const { balance: veCakeOnTargetChain } = useVeCakeBalance(ifoChainId)
+  const { isVeCakeWillSync } = useMultichainVeCakeWellSynced(ifoChainId)
+  const sourceChain = useIfoSourceChain(ifoChainId)
+
+  const isCurrentChainSourceChain = useMemo(() => chainId === sourceChain, [chainId, sourceChain])
+
+  const noVeCAKE = useMemo(() => veCakeOnBSC.isZero(), [veCakeOnBSC])
+  const shouldSyncAgain = useMemo(
+    () => !isVeCakeWillSync && !veCakeOnTargetChain.isEqualTo(veCakeOnBSC),
+    [veCakeOnTargetChain, veCakeOnBSC, isVeCakeWillSync],
+  )
+
   const chainName = useChainNames([ifoChainId])
 
-  if (hasBridged) {
-    return (
-      <BridgeButton
-        mt="0.625rem"
-        ifoChainId={ifoChainId}
-        icake={sourceChainCredit}
-        dstIcake={destChainCredit}
-        buttonVisible={false}
-        ifoId={ifoId}
-      />
-    )
+  if (isVeCakeWillSync) {
+    return null
   }
 
-  const tips = noICake
-    ? t('You don’t have any iCAKE available for IFO public sale.')
-    : shouldBridgeAgain
-    ? t('Bridge iCAKE again if you have extended your CAKE staking or added more CAKE')
-    : t('Bridge your iCAKE to participate this sale on %chain%', {
+  const tips = noVeCAKE
+    ? t('You don’t have any veCAKE available for IFO public sale.')
+    : shouldSyncAgain
+    ? isCurrentChainSourceChain
+      ? t('You must sync your veCAKE again (for an updated iCAKE) if you have updated your veCAKE staking.')
+      : t(
+          'Switch chain to BNB and sync your veCAKE again (for an updated iCAKE) if you have updated your veCAKE staking.',
+        )
+    : t('Sync your veCAKE to participate in this sale on %chain%', {
         chain: chainName,
       })
 
-  const action = noICake ? (
-    <StakeButton />
-  ) : (
-    <BridgeButton ifoChainId={ifoChainId} icake={sourceChainCredit} dstIcake={destChainCredit} ifoId={ifoId} />
-  )
+  const action = noVeCAKE ? <StakeButton /> : <SyncVeCakeButton ifoChainId={ifoChainId} buttonVisible />
 
   return (
     <WarningTips
       mt="1.5rem"
       action={action}
-      title={!shouldBridgeAgain && <LinkTitle href="/ifo#ifo-how-to">{t('How to Take Part')} »</LinkTitle>}
+      title={!shouldSyncAgain && <LinkTitle href="/ifo#ifo-how-to">{t('How to Take Part')} »</LinkTitle>}
       content={<ContentText>{tips}</ContentText>}
     />
   )

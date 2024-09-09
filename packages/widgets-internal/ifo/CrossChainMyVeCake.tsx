@@ -70,6 +70,7 @@ export const CrossChainMyVeCake = ({
             ) : (
               <BalanceDisplay
                 fontSize="20px"
+                color={!isVeCakeSynced ? "textDisabled" : "text"}
                 value={veCakeAmountNumber}
                 decimals={veCakeAmountNumber < 1 ? 4 : 2}
                 bold
@@ -89,7 +90,7 @@ export const CrossChainMyVeCake = ({
       )}
 
       <Button mt="8px" width="100%" onClick={() => onClick?.()}>
-        {!isVeCakeSynced ? t("Sync veCake") : t("Sync again")}
+        {!isVeCakeSynced && !hasPreviouslySynced ? t("Sync veCake") : t("Sync again")}
       </Button>
     </GreyCard>
   );
