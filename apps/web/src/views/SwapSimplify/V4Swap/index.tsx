@@ -6,7 +6,6 @@ import { shouldShowMMLiquidityError } from 'views/Swap/MMLinkPools/utils/exchang
 import {
   BuyCryptoLink,
   FormHeader,
-  FormMain,
   MMTradeDetail,
   PricingAndSlippage,
   TradeDetails,
@@ -14,8 +13,9 @@ import {
 import { CommitButton } from '../../Swap/V3Swap/containers/CommitButton'
 import { useAllTypeBestTrade } from '../../Swap/V3Swap/hooks/useAllTypeBestTrade'
 import { useCheckInsufficientError } from '../../Swap/V3Swap/hooks/useCheckSufficient'
+import { FormMain } from './FormMainV4'
 
-export function V3SwapForm() {
+export function V4SwapForm() {
   const {
     bestTrade,
     ammTrade,

@@ -157,9 +157,9 @@ const CurrencyInputPanelSimplify = memo(function CurrencyInputPanel({
       onInputBlur={onInputBlur}
       onUserInput={handleUserInput}
       loading={inputLoading}
-      top={
+      top={title}
+      inputLeft={
         <>
-          {title}
           <Flex alignItems="center">
             {beforeButton}
             <CurrencySelectButton
