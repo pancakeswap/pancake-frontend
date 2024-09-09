@@ -9,7 +9,7 @@ interface CurrencyInputPanelProps extends Omit<NumericalInputProps, "onBlur"> {
   bottom?: React.ReactNode;
   showBridgeWarning?: boolean;
 }
-export function CurrencyInputPanelV2({
+export function CurrencyInputPanelSimplify({
   value,
   onUserInput,
   onInputBlur,

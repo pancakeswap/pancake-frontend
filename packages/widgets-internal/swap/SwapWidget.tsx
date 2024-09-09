@@ -3,7 +3,7 @@ import { styled } from "styled-components";
 import { ArrowDownIcon, ArrowUpDownIcon, ButtonProps, IconButton } from "@pancakeswap/uikit";
 import { CurrencyInputHeader, CurrencyInputHeaderSubTitle, CurrencyInputHeaderTitle } from "./CurrencyInputHeader";
 import { CurrencyInputPanel } from "./CurrencyInputPanel";
-import { CurrencyInputPanelV2 } from "./CurrencyInputPanelV2";
+import { CurrencyInputPanelSimplify } from "./CurrencyInputPanelSimplify";
 import { SwapFooter as Footer } from "./Footer";
 import { SwapPage as Page } from "./Page";
 import { SwapInfo as Info, SwapInfoLabel as InfoLabel } from "./SwapInfo";
@@ -39,7 +39,7 @@ export {
   CurrencyInputHeaderSubTitle,
   CurrencyInputHeaderTitle,
   CurrencyInputPanel,
-  CurrencyInputPanelV2,
+  CurrencyInputPanelSimplify,
   Footer,
   Info,
   InfoLabel,
