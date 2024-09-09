@@ -7,7 +7,6 @@ import { useCallback, useMemo, useState } from 'react'
 import { Address } from 'viem'
 import { useAccount } from 'wagmi'
 
-import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCakePrice } from 'hooks/useCakePrice'
 
@@ -18,6 +17,7 @@ import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 
 import { CAKE_VAULT_SUPPORTED_CHAINS } from '@pancakeswap/pools'
 import { BigNumber as BN } from 'bignumber.js'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 import { CrossChainVeCakeModal } from 'components/CrossChainVeCakeModal'
 import { useMultichainVeCakeWellSynced } from 'components/CrossChainVeCakeModal/hooks/useMultichainVeCakeWellSynced'
 import { useActiveIfoConfig } from 'hooks/useIfoConfig'
@@ -96,6 +96,7 @@ export function CrossChainVeCakeCard({ ifoAddress }: Props) {
     () => credit && new BN(credit.numerator.toString()).div(credit.decimalScale.toString()),
     [credit],
   )
+  console.log('iCAKE', { creditBN: creditBN?.toString() })
   const hasICake = useMemo(() => creditBN && creditBN.toNumber() > 0, [creditBN])
   const hasVeCake = useMemo(() => veCake && veCake.toNumber() > 0, [veCake])
 
@@ -114,14 +115,14 @@ export function CrossChainVeCakeCard({ ifoAddress }: Props) {
 
   return (
     <Ifo.VeCakeCard header={header}>
-      {/* {isConnected && !hasVeCake ? (
+      {isConnected && !hasVeCake ? (
         !needMigrate && hasProxyCakeButNoNativeVeCake && !isUserDelegated ? (
           <Ifo.InsufficientNativeVeCakeTips mt="1.5rem" />
         ) : (
           <Ifo.ZeroVeCakeTips mt="1.5rem" />
         )
       ) : null}
-      {needMigrate ? <Ifo.MigrateVeCakeTips mt="1.5rem" /> : null} */}
+      {needMigrate ? <Ifo.MigrateVeCakeTips mt="1.5rem" /> : null}
 
       {isConnected && hasVeCakeOnBSC ? (
         <Ifo.CrossChainLockInfoCard
@@ -137,7 +138,9 @@ export function CrossChainVeCakeCard({ ifoAddress }: Props) {
             userChainId={chainId}
             nativeChainId={ChainId.BSC}
             onClick={() => setIsNetworkModalOpen(true)}
+            ConnectWalletButton={<ConnectWalletButton width="100%" mt="8px" />}
           />
+
           <NetworkSwitcherModal
             isOpen={isNetworkModalOpen}
             supportedChains={CAKE_VAULT_SUPPORTED_CHAINS}
@@ -170,7 +173,6 @@ export function CrossChainVeCakeCard({ ifoAddress }: Props) {
         </>
       )}
       <Ifo.ICakeInfo mt="1.5rem" snapshot={snapshotTime} />
-      {!isConnected && <ConnectWalletButton width="100%" mt="1.5rem" />}
     </Ifo.VeCakeCard>
   )
 }

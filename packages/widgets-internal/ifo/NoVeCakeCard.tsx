@@ -10,6 +10,7 @@ interface NoVeCakeCardProps {
   userChainId?: ChainId;
   nativeChainId?: IfoChainId;
   isConnected?: boolean;
+  ConnectWalletButton?: React.ReactNode;
 
   /**
    * onClick to open network switch modal
@@ -18,7 +19,13 @@ interface NoVeCakeCardProps {
   onClick?: () => void;
 }
 
-export const NoVeCakeCard = ({ nativeChainId = ChainId.BSC, userChainId, isConnected, onClick }: NoVeCakeCardProps) => {
+export const NoVeCakeCard = ({
+  nativeChainId = ChainId.BSC,
+  userChainId,
+  isConnected,
+  ConnectWalletButton,
+  onClick,
+}: NoVeCakeCardProps) => {
   const { t } = useTranslation();
 
   return (
@@ -46,10 +53,12 @@ export const NoVeCakeCard = ({ nativeChainId = ChainId.BSC, userChainId, isConne
           </Text>
           <br />
           <Text color="textSubtle" small>
-            {t("To participate, get veCAKE. or extend your veCAKE position beyond the snapshot time.")}
+            {t("To participate, get veCAKE or extend your veCAKE position beyond the snapshot time.")}
           </Text>
 
-          {!isConnected || (userChainId && userChainId === nativeChainId) ? (
+          {!isConnected && ConnectWalletButton ? (
+            <>{ConnectWalletButton}</>
+          ) : userChainId && userChainId === nativeChainId ? (
             <Button mt="16px" width="100%" as={Link} href="/cake-staking">
               {t("Go to CAKE Staking")}
             </Button>

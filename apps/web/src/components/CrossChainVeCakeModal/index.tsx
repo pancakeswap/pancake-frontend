@@ -30,6 +30,7 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { usePancakeVeSenderV2Contract } from 'hooks/useContract'
+import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import { useGetBnbBalance, useVeCakeBalance } from 'hooks/useTokenBalance'
 import { useCallback, useMemo, useState } from 'react'
 import { useProfile } from 'state/profile/hooks'
@@ -139,9 +140,10 @@ export const CrossChainVeCakeModal: React.FC<{
   setIsOpen?: (isOpen: boolean) => void
   targetChainId?: (typeof OtherChainsConfig)[number]['chainId']
 }> = ({ onDismiss, modalTitle, isOpen, targetChainId }) => {
+  const { t } = useTranslation()
   const { isDesktop } = useMatchBreakpoints()
   const { address: account, chain } = useAccount()
-  const { t } = useTranslation()
+  const { switchNetwork } = useSwitchNetwork()
   const veCakeSenderV2Contract = usePancakeVeSenderV2Contract(ChainId.BSC)
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { toastSuccess } = useToast()
@@ -292,16 +294,27 @@ export const CrossChainVeCakeModal: React.FC<{
               )}
               <Flex style={{ gap: 10 }} mt="20px">
                 {account ? (
-                  <Button
-                    width="50%"
-                    disabled={!selectChainId || isLayerZeroHashProcessing}
-                    isLoading={pendingTx || isVeCakeSyncedLoading || isProfileSyncedLoading}
-                    onClick={() => {
-                      if (selectChainId) syncVeCake(selectChainId)
-                    }}
-                  >
-                    {t('Sync')}
-                  </Button>
+                  chain?.id !== ChainId.BSC ? (
+                    <Button
+                      width="50%"
+                      onClick={() => {
+                        switchNetwork(ChainId.BSC)
+                      }}
+                    >
+                      {t('Switch Chain')}
+                    </Button>
+                  ) : (
+                    <Button
+                      width="50%"
+                      disabled={!selectChainId || isLayerZeroHashProcessing}
+                      isLoading={pendingTx || isVeCakeSyncedLoading || isProfileSyncedLoading}
+                      onClick={() => {
+                        if (selectChainId) syncVeCake(selectChainId)
+                      }}
+                    >
+                      {t('Sync')}
+                    </Button>
+                  )
                 ) : (
                   <ConnectWalletButton />
                 )}
