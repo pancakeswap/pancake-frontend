@@ -4,7 +4,7 @@ import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { ReactNode, useCallback, useMemo } from 'react'
 
-import CurrencyInputPanelV2 from 'components/CurrencyInputPanelV2'
+import CurrencyInputPanelSimplify from 'components/CurrencyInputPanelSimplify'
 import { CommonBasesType } from 'components/SearchModal/types'
 import { useCurrency } from 'hooks/Tokens'
 import { Field } from 'state/swap/actions'
@@ -112,7 +112,7 @@ export function FormMain({ pricingAndSlippage, inputAmount, outputAmount, tradeL
 
   return (
     <FormContainer>
-      <CurrencyInputPanelV2
+      <CurrencyInputPanelSimplify
         id="swap-currency-input"
         showUSDPrice
         showMaxButton
@@ -133,7 +133,7 @@ export function FormMain({ pricingAndSlippage, inputAmount, outputAmount, tradeL
       />
       <RiskCheck currency={inputCurrency ?? undefined} />
       <FlipButton />
-      <CurrencyInputPanelV2
+      <CurrencyInputPanelSimplify
         id="swap-currency-output"
         showUSDPrice
         showCommonBases

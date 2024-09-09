@@ -61,7 +61,7 @@ interface CurrencyInputPanelProps {
   title?: React.ReactNode
   hideBalanceComp?: boolean
 }
-const CurrencyInputPanelV2 = memo(function CurrencyInputPanel({
+const CurrencyInputPanelSimplify = memo(function CurrencyInputPanel({
   value,
   onUserInput,
   onInputBlur,
@@ -149,7 +149,7 @@ const CurrencyInputPanelV2 = memo(function CurrencyInputPanel({
 
   const balance = !hideBalance && !!currency ? formatAmount(selectedCurrencyBalance, 6) : undefined
   return (
-    <SwapUI.CurrencyInputPanelV2
+    <SwapUI.CurrencyInputPanelSimplify
       id={id}
       disabled={disabled}
       error={error as boolean}
@@ -308,4 +308,4 @@ const CurrencyInputPanelV2 = memo(function CurrencyInputPanel({
   )
 })
 
-export default CurrencyInputPanelV2
+export default CurrencyInputPanelSimplify
