@@ -21,6 +21,7 @@ export function CurrencyInputPanelSimplify({
   error,
   loading,
   showBridgeWarning,
+  inputLeft,
 }: CurrencyInputPanelProps) {
   return (
     <AtomBox position="relative" id={id} display="grid" gap="4px">
@@ -52,6 +53,7 @@ export function CurrencyInputPanelSimplify({
             px="16px"
             pt="12px"
           >
+            {inputLeft}
             <NumericalInput
               error={Boolean(error)}
               disabled={disabled}
