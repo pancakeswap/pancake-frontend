@@ -89,7 +89,7 @@ const TradingView = ({ id, symbol }: TradingViewProps) => {
     <Box overflow="hidden" className="tradingview_container">
       <Script
         src="https://s3.tradingview.com/tv.js"
-        integrity="sha256-zV9ME0tqpjvI1MNbGxqfJ9LbarbmZrr+RLnhsTJR7wk="
+        integrity="sha256-kYIDvJ8KAurvEZgYL7xBP19dqfZsI978rTedCEmYTk4="
         crossOrigin="anonymous"
         strategy="lazyOnload"
         id="tv.js"
