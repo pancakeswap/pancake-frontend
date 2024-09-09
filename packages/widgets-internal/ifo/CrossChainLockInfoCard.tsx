@@ -62,7 +62,7 @@ export const CrossChainLockInfoCard = ({
             })}
           </Text>
           <Text mt="-5.5px" bold>
-            <BalanceDisplay value={veCakeAmountNum} decimals={2} fontSize="21px" bold />
+            <BalanceDisplay value={veCakeAmountNum} decimals={veCakeAmountNum < 1 ? 4 : 2} fontSize="21px" bold />
           </Text>
         </Box>
       </FlexGap>

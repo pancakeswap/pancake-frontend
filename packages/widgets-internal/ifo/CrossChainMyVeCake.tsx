@@ -6,6 +6,7 @@ import { useMemo } from "react";
 import { BalanceDisplay } from "./BalanceDisplay";
 import { ChainLogo } from "./ChainLogo";
 import { ChainNameMap, IfoChainId } from "./constants";
+import { OutdatedIcon } from "./icons";
 import { GreyCard } from "./styles";
 
 const SyncedBadge = () => {
@@ -15,6 +16,18 @@ const SyncedBadge = () => {
       <LinkIcon color="positive10" width="24px" mt="2px" />
       <Text ml="2px" pr="4px" color="invertedContrast" small bold>
         {t("Synced")}
+      </Text>
+    </Tag>
+  );
+};
+
+const OutdatedSyncBadge = () => {
+  const { t } = useTranslation();
+  return (
+    <Tag variant="textDisabled" scale="sm" style={{ cursor: "default" }}>
+      <OutdatedIcon color="lime" width="16px" mt="2px" mr="4px" />
+      <Text ml="2px" pr="4px" color="invertedContrast" small bold>
+        {t("Outdated")}
       </Text>
     </Tag>
   );
@@ -36,6 +49,7 @@ export const CrossChainMyVeCake = ({
   const { t } = useTranslation();
 
   const veCakeAmountNumber = useMemo(() => new BigNumber(veCakeAmount).toNumber(), [veCakeAmount]);
+  const hasPreviouslySynced = useMemo(() => BN(veCakeAmount).gt(BN("0")), [veCakeAmount]);
 
   return (
     <GreyCard p="16px" {...props}>
@@ -54,17 +68,22 @@ export const CrossChainMyVeCake = ({
             {BN(veCakeAmount).eq(BN("0")) ? (
               "0.00"
             ) : (
-              <BalanceDisplay fontSize="20px" value={veCakeAmountNumber} decimals={2} bold />
+              <BalanceDisplay
+                fontSize="20px"
+                value={veCakeAmountNumber}
+                decimals={veCakeAmountNumber < 1 ? 4 : 2}
+                bold
+              />
             )}
           </Text>
         </Box>
       </FlexGap>
 
-      {isVeCakeSynced && (
+      {(isVeCakeSynced || hasPreviouslySynced) && (
         <>
           <Flex my="8px" justifyContent="space-between">
             <Text color="textSubtle">{t("Profile & veCake")}</Text>
-            <SyncedBadge />
+            {isVeCakeSynced ? <SyncedBadge /> : <OutdatedSyncBadge />}
           </Flex>
         </>
       )}
