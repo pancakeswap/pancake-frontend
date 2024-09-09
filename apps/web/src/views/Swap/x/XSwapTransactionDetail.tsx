@@ -80,12 +80,12 @@ export function XSwapTransactionDetailModal({ order }: { order: GetXOrderReceipt
               <Text fontSize="14px">{t('Output')}</Text>
               <Text fontSize="14px">{outputToken?.symbol}</Text>
             </RowBetween>
-            <RowBetween alignItems="center" mb="8px">
+            <RowBetween alignItems="center" mb="8px" gap="8px">
               <Text fontSize="14px">{!isExactOut ? t('Minimum received') : t('Maximum sold')}</Text>
               <Text fontSize="14px">
                 {!isExactOut
                   ? formatUnits(BigInt(order.outputs[0].endAmount), outputToken?.decimals)
-                  : formatUnits(BigInt(order.input.endAmount), inputToken?.decimals)}
+                  : formatUnits(BigInt(order.input.endAmount), inputToken?.decimals)}{' '}
                 {isExactOut ? inputToken?.symbol : outputToken?.symbol}
               </Text>
             </RowBetween>

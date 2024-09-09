@@ -1,4 +1,11 @@
-import { CheckmarkCircleIcon, ErrorIcon, ScanLink, Text } from '@pancakeswap/uikit'
+import { useMemo } from 'react'
+import { CheckmarkCircleIcon, ErrorIcon, ScanLink } from '@pancakeswap/uikit'
+import {
+  TransactionListItem,
+  TransactionListItemDesc,
+  TransactionListItemTitle,
+  TransactionStatus,
+} from '@pancakeswap/widgets-internal'
 import { ChainLinkSupportChains } from 'state/info/constant'
 import { TransactionDetails } from 'state/transactions/reducer'
 import { styled } from 'styled-components'
@@ -27,28 +34,27 @@ export default function Transaction({ tx, chainId }: { tx: TransactionDetails; c
   const summary = tx?.summary
   const pending = !tx?.receipt
   const success = !pending && tx && (tx.receipt?.status === 1 || typeof tx.receipt?.status === 'undefined')
+  const status = useMemo(() => {
+    if (pending) {
+      return TransactionStatus.Pending
+    }
+    if (success) {
+      return TransactionStatus.Success
+    }
+    return TransactionStatus.Failed
+  }, [pending, success])
+  const link = useMemo(() => getBlockExploreLink(tx.hash, 'transaction', chainId), [tx.hash, chainId])
 
   if (!chainId) return null
 
   return (
-    <TransactionWrapper pending={pending} success={success}>
-      {summary ? (
-        <>
-          <Text>{summary}</Text>
-          <ScanLink
-            useBscCoinFallback={ChainLinkSupportChains.includes(chainId)}
-            href={getBlockExploreLink(tx.hash, 'transaction', chainId)}
-          />
-        </>
-      ) : (
-        <ScanLink
-          useBscCoinFallback={ChainLinkSupportChains.includes(chainId)}
-          href={getBlockExploreLink(tx.hash, 'transaction', chainId)}
-        >
-          {tx.hash}
-        </ScanLink>
-      )}
-    </TransactionWrapper>
+    <TransactionListItem
+      status={status}
+      title={<TransactionListItemTitle>PancakeSwap AMM</TransactionListItemTitle>}
+      action={<ScanLink useBscCoinFallback={ChainLinkSupportChains.includes(chainId)} href={link} />}
+    >
+      <TransactionListItemDesc>{summary ?? tx.hash}</TransactionListItemDesc>
+    </TransactionListItem>
   )
 }
 

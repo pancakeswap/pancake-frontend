@@ -4,6 +4,7 @@ import isEmpty from 'lodash/isEmpty'
 import { useCallback, useMemo } from 'react'
 import { useAppDispatch } from 'state'
 import { clearAllTransactions } from 'state/transactions/actions'
+import { TransactionList } from '@pancakeswap/widgets-internal'
 import { useAllSortedRecentTransactions } from 'state/transactions/hooks'
 import { TransactionDetails } from 'state/transactions/reducer'
 import { chains } from 'utils/wagmi'
@@ -75,14 +76,6 @@ const TransactionsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> =
         <ModalBody>
           {xOrders.length > 0 || hasTransactions ? (
             <>
-              <AutoRow mb="1rem" style={{ justifyContent: 'space-between' }}>
-                <Text>{t('Recent Transactions')}</Text>
-                {hasTransactions && (
-                  <Button variant="tertiary" scale="xs" onClick={clearAllTransactionsCallback}>
-                    {t('clear all')}
-                  </Button>
-                )}
-              </AutoRow>
               {hasTransactions
                 ? Object.entries(sortedRecentTransactions).map(([chainId_, transactions]) => {
                     let content = <></>
@@ -109,9 +102,16 @@ const TransactionsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> =
 
                     return (
                       <div key={`transactions#${chainIdNumber}`}>
-                        <Text fontSize="12px" color="textSubtle" mb="4px">
-                          {chains.find((c) => c.id === chainIdNumber)?.name ?? 'Unknown network'}
-                        </Text>
+                        <AutoRow mb="1rem" style={{ justifyContent: 'space-between' }}>
+                          <Text fontSize="12px" color="textSubtle" mb="4px">
+                            {chains.find((c) => c.id === chainIdNumber)?.name ?? 'Unknown network'}
+                          </Text>
+                          {hasTransactions && (
+                            <Button variant="tertiary" scale="xs" onClick={clearAllTransactionsCallback}>
+                              {t('clear all')}
+                            </Button>
+                          )}
+                        </AutoRow>
                         {content}
                       </div>
                     )
@@ -154,14 +154,14 @@ function TransactionWithX({
   )
 
   return (
-    <Flex flexDirection="column">
+    <TransactionList>
       {allTransactionItems.map((tx) => {
         if (tx.type === 'tx') {
           return <Transaction key={tx.item.hash + tx.item.addedTime} tx={tx.item} chainId={chainId} />
         }
         return <XTransaction key={tx.item.hash} order={tx.item} />
       })}
-    </Flex>
+    </TransactionList>
   )
 }
 
