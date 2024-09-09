@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Percent } from '@pancakeswap/sdk'
+import { Text } from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { ReactNode, useCallback, useMemo } from 'react'
@@ -130,6 +131,7 @@ export function FormMain({ pricingAndSlippage, inputAmount, outputAmount, tradeL
         onCurrencySelect={handleInputSelect}
         otherCurrency={outputCurrency}
         commonBasesType={CommonBasesType.SWAP_LIMITORDER}
+        title={<Text fontSize={12}>{t('From')}</Text>}
       />
       <RiskCheck currency={inputCurrency ?? undefined} />
       <FlipButton />
@@ -147,6 +149,7 @@ export function FormMain({ pricingAndSlippage, inputAmount, outputAmount, tradeL
         onCurrencySelect={handleOutputSelect}
         otherCurrency={outputCurrency}
         commonBasesType={CommonBasesType.SWAP_LIMITORDER}
+        title={<Text fontSize={12}>{t('To')}</Text>}
       />
       <RiskCheck currency={outputCurrency ?? undefined} />
       <Recipient />
