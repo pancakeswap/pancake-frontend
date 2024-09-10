@@ -24,7 +24,7 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { useMemo, useState } from 'react'
-import { parseEther, parseUnits } from 'viem'
+import { parseUnits } from 'viem'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 
 interface Props {
@@ -39,9 +39,6 @@ interface Props {
 }
 
 const multiplierValues = [0.1, 0.25, 0.5, 0.75, 1]
-
-// Default value for transaction setting, tweak based on BSC network congestion.
-const gasPrice = parseEther('10', 'gwei')
 
 const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
   poolId,
@@ -84,14 +81,10 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
         )
       },
       onConfirm: () => {
-        return callWithGasPrice(
-          contract as any,
-          'depositPool',
-          [valueWithTokenDecimals.integerValue(), poolId === PoolIds.poolBasic ? 0 : 1],
-          {
-            gasPrice,
-          },
-        )
+        return callWithGasPrice(contract as any, 'depositPool', [
+          valueWithTokenDecimals.integerValue(),
+          poolId === PoolIds.poolBasic ? 0 : 1,
+        ])
       },
       onSuccess: async ({ receipt }) => {
         await onSuccess(valueWithTokenDecimals, receipt.transactionHash)
