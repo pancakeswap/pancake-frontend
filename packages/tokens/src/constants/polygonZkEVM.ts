@@ -71,4 +71,12 @@ export const polygonZkEvmTokens = {
     'Dai Stablecoin',
     'https://makerdao.com/',
   ),
+  pol: new ERC20Token(
+    ChainId.POLYGON_ZKEVM,
+    '0x22B21BedDef74FE62F031D2c5c8F7a9F8a4b304D',
+    18,
+    'POL',
+    'Polygon Ecosystem Token',
+    'https://polygon.technology/pol-token',
+  ),
 }
