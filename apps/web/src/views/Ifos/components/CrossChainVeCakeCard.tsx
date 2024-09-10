@@ -70,6 +70,7 @@ export function CrossChainVeCakeCard({ ifoAddress }: Props) {
   const { isVeCakeWillSync } = useMultichainVeCakeWellSynced(targetChainId)
 
   const hasVeCakeOnBSC = useMemo(() => veCakeOnBSC.gt(0), [veCakeOnBSC])
+  const toBeSynced = useMemo(() => veCakeOnBSC.gt(0) && veCakeOnTargetChain.eq(0), [veCakeOnBSC, veCakeOnTargetChain])
 
   const isMigrated = useIsMigratedToVeCake(targetChainId)
   const needMigrate = useMemo(() => shouldMigrate && !isMigrated, [shouldMigrate, isMigrated])
@@ -160,6 +161,7 @@ export function CrossChainVeCakeCard({ ifoAddress }: Props) {
             chainId={targetChainId}
             veCakeAmount={veCakeOnTargetChainFormatted}
             isVeCakeSynced={Boolean(isVeCakeWillSync)}
+            toBeSynced={toBeSynced}
             onClick={() => setIsOpen(true)}
           />
           <CrossChainVeCakeModal

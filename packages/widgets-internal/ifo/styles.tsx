@@ -1,4 +1,4 @@
-import { Box } from "@pancakeswap/uikit";
+import { Box, Tag } from "@pancakeswap/uikit";
 import styled from "styled-components";
 
 export const GradientCard = styled(Box)`
@@ -32,4 +32,9 @@ export const GreyCard = styled(Box)`
   background: ${({ theme }) => theme.colors.background};
   border: 1px solid ${({ theme }) => theme.colors.tertiary};
   border-radius: ${({ theme }) => theme.radii.default};
+`;
+
+export const OutlineTag = styled(Tag)`
+  background: transparent;
+  border: 2px solid ${({ theme }) => theme.colors.primary};
 `;

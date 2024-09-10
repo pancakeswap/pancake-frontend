@@ -6,8 +6,8 @@ import { useMemo } from "react";
 import { BalanceDisplay } from "./BalanceDisplay";
 import { ChainLogo } from "./ChainLogo";
 import { ChainNameMap, IfoChainId } from "./constants";
-import { OutdatedIcon } from "./icons";
-import { GreyCard } from "./styles";
+import { LinkPlusIcon, OutdatedIcon } from "./icons";
+import { GreyCard, OutlineTag } from "./styles";
 
 const SyncedBadge = () => {
   const { t } = useTranslation();
@@ -18,6 +18,18 @@ const SyncedBadge = () => {
         {t("Synced")}
       </Text>
     </Tag>
+  );
+};
+
+const ToBeSyncedBadge = () => {
+  const { t } = useTranslation();
+  return (
+    <OutlineTag scale="sm" style={{ cursor: "default" }}>
+      <LinkPlusIcon color="primary" width="22px" mt="2px" />
+      <Text ml="2px" pr="4px" color="primary" fontSize="13px" bold>
+        {t("To be Synced")}
+      </Text>
+    </OutlineTag>
   );
 };
 
@@ -36,12 +48,14 @@ const OutdatedSyncBadge = () => {
 interface CrossChainMyVeCakeProps extends BoxProps {
   veCakeAmount: string | number | BigNumber;
   isVeCakeSynced: boolean;
+  toBeSynced?: boolean;
   chainId?: IfoChainId;
   onClick?: () => void;
 }
 export const CrossChainMyVeCake = ({
   veCakeAmount,
   isVeCakeSynced,
+  toBeSynced,
   chainId = ChainId.ARBITRUM_ONE,
   onClick,
   ...props
@@ -80,13 +94,11 @@ export const CrossChainMyVeCake = ({
         </Box>
       </FlexGap>
 
-      {(isVeCakeSynced || hasPreviouslySynced) && (
-        <>
-          <Flex my="8px" justifyContent="space-between">
-            <Text color="textSubtle">{t("Profile & veCake")}</Text>
-            {isVeCakeSynced ? <SyncedBadge /> : <OutdatedSyncBadge />}
-          </Flex>
-        </>
+      {(isVeCakeSynced || hasPreviouslySynced || toBeSynced) && (
+        <Flex my="8px" justifyContent="space-between">
+          <Text color="textSubtle">{t("Profile & veCake")}</Text>
+          {isVeCakeSynced ? <SyncedBadge /> : toBeSynced ? <ToBeSyncedBadge /> : <OutdatedSyncBadge />}
+        </Flex>
       )}
 
       <Button mt="8px" width="100%" onClick={() => onClick?.()}>
