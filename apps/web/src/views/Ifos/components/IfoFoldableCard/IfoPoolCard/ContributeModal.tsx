@@ -1,12 +1,12 @@
-import { parseEther, parseUnits } from 'viem'
+import { Ifo, PoolIds } from '@pancakeswap/ifos'
 import { useTranslation } from '@pancakeswap/localization'
 import { CAKE } from '@pancakeswap/tokens'
-import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
 import {
   BalanceInput,
   Box,
   Button,
   Flex,
+  IfoHasVestingNotice,
   Image,
   Link,
   Modal,
@@ -15,16 +15,16 @@ import {
   TooltipText,
   useToast,
   useTooltip,
-  IfoHasVestingNotice,
 } from '@pancakeswap/uikit'
+import { formatNumber, getBalanceAmount } from '@pancakeswap/utils/formatBalance'
+import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
 import BigNumber from 'bignumber.js'
 import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { Ifo, PoolIds } from '@pancakeswap/ifos'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { useMemo, useState } from 'react'
-import { formatNumber, getBalanceAmount } from '@pancakeswap/utils/formatBalance'
+import { parseEther, parseUnits } from 'viem'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 
 interface Props {
@@ -117,9 +117,14 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
     return maximumTokenEntry?.isLessThanOrEqualTo(userCurrencyBalance) ? maximumTokenEntry : userCurrencyBalance
   }, [maximumTokenEntry, userCurrencyBalance])
 
-  const basicTooltipContent = t(
-    'For the private sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.',
-  )
+  const basicTooltipContent =
+    ifo.version >= 3.1
+      ? t(
+          'For the basic sale, Max CAKE entry is capped by minimum between your average CAKE balance in the iCAKE, or the pool’s hard cap. To increase the max entry, Stake more CAKE into the iCAKE',
+        )
+      : t(
+          'For the private sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.',
+        )
 
   const unlimitedToolipContent = (
     <Box>

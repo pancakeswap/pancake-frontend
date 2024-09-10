@@ -282,7 +282,7 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
     if (publicIfoData.status === 'live') {
       return (
         <>
-          <CommitTokenSection commitToken={ifo.currency} mb="24px">
+          <CommitTokenSection commitToken={ifo.currency} mb="12px">
             <Label>{t('Your %symbol% committed', { symbol: currency.symbol })}</Label>
             {amountTokenCommittedInLP ? (
               <Value value={getBalanceAmount(amountTokenCommittedInLP, currency.decimals)} />
@@ -291,7 +291,7 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
               userAmount={amountTokenCommittedInLP || BIG_ZERO}
               totalAmount={publicPoolCharacteristics?.totalAmountPool || BIG_ZERO}
             />
-            <Flex>
+            <Flex mt="8px">
               <Box>
                 <Flex>
                   <Label>{t('Your %symbol% spent', { symbol: currency.symbol })}</Label>
