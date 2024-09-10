@@ -39,7 +39,6 @@ interface SwapCommitButtonPropsType {
   order?: PriceOrder
   tradeError?: Error | null
   tradeLoading?: boolean
-  // setLock: (lock: boolean) => void
 }
 
 const useSettingModal = (onDismiss) => {
@@ -163,7 +162,7 @@ const SwapCommitButtonInner = memo(function SwapCommitButtonInner({
   }
   const parsedAmounts = useParsedAmounts(order?.trade, currencyBalances, false)
   const parsedIndependentFieldAmount = parsedAmounts[independentField]
-  const swapInputError = useSwapInputError(isClassicOrder(order) ? order : undefined, currencyBalances)
+  const swapInputError = useSwapInputError(order, currencyBalances)
   const [tradeToConfirm, setTradeToConfirm] = useState<PriceOrder | undefined>(undefined)
   const [indirectlyOpenConfirmModalState, setIndirectlyOpenConfirmModalState] = useState(false)
 

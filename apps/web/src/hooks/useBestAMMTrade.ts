@@ -589,10 +589,11 @@ export function useBestTradeFromApi({
       })
       const serializedRes = await serverRes.json()
 
+      const isExactIn = tradeType === TradeType.EXACT_INPUT
       const result = parseQuoteResponse(serializedRes, {
         chainId: currency.chainId,
-        currencyIn: amount.currency,
-        currencyOut: currency,
+        currencyIn: isExactIn ? amount.currency : currency,
+        currencyOut: isExactIn ? currency : amount.currency,
         tradeType,
       })
 

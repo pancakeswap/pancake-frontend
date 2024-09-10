@@ -46,7 +46,7 @@ export function useSwapBestOrder({ maxHops }: Options = {}) {
 
   const [xEnabled] = useUserXEnable()
 
-  const { isLoading, data, isStale, error, refetch } = useBestTradeFromApi({
+  const { fetchStatus, data, isStale, error, refetch } = useBestTradeFromApi({
     enabled: xEnabled,
     amount,
     currency: dependentCurrency,
@@ -65,7 +65,7 @@ export function useSwapBestOrder({ maxHops }: Options = {}) {
     refresh: refetch,
     isStale,
     error,
-    isLoading: useDeferredValue(Boolean(isLoading || (typedValue && !data && !error))),
+    isLoading: useDeferredValue(Boolean(fetchStatus === 'fetching' || (typedValue && !data && !error))),
     order: typedValue ? data : undefined,
   }
 }
