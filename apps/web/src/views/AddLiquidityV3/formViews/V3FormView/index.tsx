@@ -31,14 +31,14 @@ import {
 } from 'utils/customGTMEventTracking'
 
 import { useIsExpertMode, useUserSlippage } from '@pancakeswap/utils/user'
-import { FeeAmount, NonfungiblePositionManager } from '@pancakeswap/v3-sdk'
+import { FeeAmount, NonfungiblePositionManager, Pool } from '@pancakeswap/v3-sdk'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import { useTransactionDeadline } from 'hooks/useTransactionDeadline'
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
-import { Field } from 'state/mint/actions'
+import { CurrencyField as Field } from 'utils/types'
 import { basisPointsToPercent } from 'utils/exchange'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 
@@ -62,6 +62,8 @@ import { useSendTransaction, useWalletClient } from 'wagmi'
 
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { useDensityChartData } from 'views/AddLiquidityV3/hooks/useDensityChartData'
+import { InitDepositToken, ZapLiquidityWidget } from 'components/ZapLiquidityWidget'
+import { ZAP_V3_POOL_ADDRESSES } from 'config/constants/zapV3'
 import LockedDeposit from './components/LockedDeposit'
 import { PositionPreview } from './components/PositionPreview'
 import RangeSelector from './components/RangeSelector'
@@ -82,6 +84,7 @@ const StyledInput = styled(NumericalInput)`
 `
 
 export const HideMedium = styled.div`
+  display: flex;
   ${({ theme }) => theme.mediaQueries.md} {
     display: none;
   }
@@ -90,7 +93,7 @@ export const HideMedium = styled.div`
 export const MediumOnly = styled.div`
   display: none;
   ${({ theme }) => theme.mediaQueries.md} {
-    display: initial;
+    display: flex;
   }
 `
 
@@ -153,6 +156,7 @@ export default function V3FormView({
     noLiquidity,
     currencies,
     errorMessage,
+    hasInsufficentBalance,
     invalidPool,
     invalidRange,
     outOfRange,
@@ -169,6 +173,10 @@ export default function V3FormView({
     undefined,
     formState,
   )
+  const hasZapV3Pool = useMemo(() => {
+    const poolAddress = pool && Pool.getAddress(pool.token0, pool.token1, pool.fee)
+    return poolAddress ? ZAP_V3_POOL_ADDRESSES.includes(poolAddress) : false
+  }, [pool])
   const { onFieldAInput, onFieldBInput, onLeftRangeInput, onRightRangeInput, onStartPriceInput, onBothRangeInput } =
     useV3MintActionHandlers(noLiquidity)
 
@@ -524,11 +532,12 @@ export default function V3FormView({
           gridAutoRows: 'max-content',
           gridAutoColumns: '100%',
         }}
+        gap="8px"
         disabled={!feeAmount || invalidPool || (noLiquidity && !startPriceTypedValue) || (!priceLower && !priceUpper)}
       >
-        <PreTitle mb="8px">{t('Deposit Amount')}</PreTitle>
+        <PreTitle>{t('Deposit Amount')}</PreTitle>
 
-        <LockedDeposit locked={depositADisabled} mb="8px">
+        <LockedDeposit locked={depositADisabled}>
           <Box mb="8px">
             <CurrencyInputPanel
               showUSDPrice
@@ -550,7 +559,7 @@ export default function V3FormView({
           </Box>
         </LockedDeposit>
 
-        <LockedDeposit locked={depositBDisabled} mb="8px">
+        <LockedDeposit locked={depositBDisabled}>
           <CurrencyInputPanel
             showUSDPrice
             maxAmount={maxAmounts[Field.CURRENCY_B]}
@@ -570,7 +579,25 @@ export default function V3FormView({
           />
         </LockedDeposit>
       </DynamicSection>
-      <HideMedium>{buttons}</HideMedium>
+      <HideMedium style={{ gap: 16, flexDirection: 'column' }}>
+        {buttons}
+        {hasZapV3Pool && hasInsufficentBalance && (
+          <ZapLiquidityWidget
+            tickLower={tickLower}
+            tickUpper={tickUpper}
+            pool={pool}
+            baseCurrency={baseCurrency}
+            quoteCurrency={quoteCurrency}
+            initDepositToken={
+              independentField === Field.CURRENCY_A ? InitDepositToken.BASE_CURRENCY : InitDepositToken.QUOTE_CURRENCY
+            }
+            initAmount={typedValue}
+            onSubmit={() => {
+              router.push('/liquidity/positions')
+            }}
+          />
+        )}
+      </HideMedium>
 
       <RightContainer>
         <AutoColumn gap="16px">
@@ -776,7 +803,27 @@ export default function V3FormView({
               </Message>
             ) : null}
           </DynamicSection>
-          <MediumOnly>{buttons}</MediumOnly>
+          <MediumOnly style={{ gap: 16, flexDirection: 'column' }}>
+            {buttons}
+            {hasZapV3Pool && hasInsufficentBalance && (
+              <ZapLiquidityWidget
+                tickLower={tickLower}
+                tickUpper={tickUpper}
+                pool={pool}
+                baseCurrency={baseCurrency}
+                quoteCurrency={quoteCurrency}
+                initDepositToken={
+                  independentField === Field.CURRENCY_A
+                    ? InitDepositToken.BASE_CURRENCY
+                    : InitDepositToken.QUOTE_CURRENCY
+                }
+                initAmount={typedValue}
+                onSubmit={() => {
+                  router.push('/liquidity/positions')
+                }}
+              />
+            )}
+          </MediumOnly>
         </AutoColumn>
       </RightContainer>
     </>

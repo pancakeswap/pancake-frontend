@@ -17,7 +17,7 @@ import { useWalletClient } from 'wagmi'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import { PairState } from 'hooks/usePairs'
-import { Field } from 'state/mint/actions'
+import { CurrencyField as Field } from 'utils/types'
 import { useDerivedMintInfo, useMintActionHandlers } from 'state/mint/hooks'
 
 import { SettingsMode } from 'components/Menu/GlobalSettings/types'

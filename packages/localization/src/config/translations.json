@@ -3493,5 +3493,8 @@
   "For more information, please refer to Penpie’s": "For more information, please refer to Penpie’s",
   "Please exercise due caution when trading / providing liquidity for the mPENDLE token. The protocol recently encountered a": "Please exercise due caution when trading / providing liquidity for the mPENDLE token. The protocol recently encountered a",
   "Caution - PNP Token": "Caution - PNP Token",
-  "Please exercise due caution when trading / providing liquidity for the PNP token. The protocol recently encountered a": "Please exercise due caution when trading / providing liquidity for the PNP token. The protocol recently encountered a"
+  "Please exercise due caution when trading / providing liquidity for the PNP token. The protocol recently encountered a": "Please exercise due caution when trading / providing liquidity for the PNP token. The protocol recently encountered a",
+  "Try Zap V3 to automatically balance the deposit tokens while adding V3 liquidity.": "Try Zap V3 to automatically balance the deposit tokens while adding V3 liquidity.",
+  "Click here to start": "Click here to start",
+  "Zap in for %lpSymbol%": "Zap in for %lpSymbol%"
 }

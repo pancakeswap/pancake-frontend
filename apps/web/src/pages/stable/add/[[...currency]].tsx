@@ -31,7 +31,7 @@ const AddStableLiquidityPage = () => {
   return (
     stableConfig.stableSwapConfig && (
       <AddLiquidityV2FormProvider>
-        <AddLiquidityV3Layout preferredSelectType={SELECTOR_TYPE.STABLE}>
+        <AddLiquidityV3Layout>
           <UniversalAddLiquidity
             preferredSelectType={SELECTOR_TYPE.STABLE}
             currencyIdA={currencyIdA}

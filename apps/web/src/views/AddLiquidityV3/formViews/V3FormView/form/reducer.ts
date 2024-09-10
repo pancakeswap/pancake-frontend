@@ -4,8 +4,8 @@ import { atomWithReducer } from 'jotai/utils'
 import { createContext, useContext } from 'react'
 import { Price, Token } from '@pancakeswap/swap-sdk-core'
 
+import { CurrencyField as Field } from 'utils/types'
 import {
-  Field,
   resetMintState,
   setFullRange,
   typeInput,

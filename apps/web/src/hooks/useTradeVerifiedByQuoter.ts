@@ -1,7 +1,7 @@
 import { V4Router } from '@pancakeswap/smart-router'
 import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/swap-sdk-core'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
-import { useDeferredValue, useMemo } from 'react'
+import { useMemo } from 'react'
 import { fetchQuotes } from '@pancakeswap/routing-sdk-addon-quoter'
 
 import { getViemClients } from 'utils/viem'

@@ -7,8 +7,9 @@ import useTotalSupply from 'hooks/useTotalSupply'
 import { useCallback, useMemo } from 'react'
 import { useAddLiquidityV2FormDispatch, useAddLiquidityV2FormState } from 'state/mint/reducer'
 import { useAccount } from 'wagmi'
+import { CurrencyField as Field } from 'utils/types'
 import { useCurrencyBalances } from '../wallet/hooks'
-import { Field, typeInput } from './actions'
+import { typeInput } from './actions'
 
 export function useMintActionHandlers(noLiquidity: boolean | undefined): {
   onFieldAInput: (typedValue: string) => void

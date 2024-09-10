@@ -9,6 +9,7 @@ export type TransactionType =
   | 'add-liquidity'
   | 'increase-liquidity-v3'
   | 'add-liquidity-v3'
+  | 'zap-liquidity-v3'
   | 'remove-liquidity-v3'
   | 'collect-fee'
   | 'remove-liquidity'

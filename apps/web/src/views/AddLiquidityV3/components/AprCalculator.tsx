@@ -34,7 +34,7 @@ import { usePairTokensPrice } from 'hooks/v3/usePairTokensPrice'
 import { useAllV3Ticks } from 'hooks/v3/usePoolTickData'
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
 import { batch } from 'react-redux'
-import { Field } from 'state/mint/actions'
+import { CurrencyField as Field } from 'utils/types'
 import currencyId from 'utils/currencyId'
 
 import { useUserPositionInfo } from 'views/Farms/components/YieldBooster/hooks/bCakeV3/useBCakeV3Info'
