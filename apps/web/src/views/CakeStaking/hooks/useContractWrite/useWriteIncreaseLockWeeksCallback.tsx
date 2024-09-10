@@ -15,6 +15,7 @@ import { logTx } from 'utils/log'
 import { isUserRejected } from 'utils/sentry'
 import { TransactionExecutionError } from 'viem'
 import { useAccount, useWalletClient } from 'wagmi'
+import { useGasPrice } from 'state/user/hooks'
 import { useRoundedUnlockTimestamp } from '../useRoundedUnlockTimestamp'
 import { useCakeLockStatus } from '../useVeCakeUserInfo'
 
@@ -28,6 +29,7 @@ export const useWriteIncreaseLockWeeksCallback = (onDismiss?: () => void) => {
   const setTxHash = useSetAtom(cakeLockTxHashAtom)
   const setCakeLockWeeks = useSetAtom(cakeLockWeeksAtom)
   const { data: walletClient } = useWalletClient()
+  const gasPrice = useGasPrice()
   const { waitForTransaction } = usePublicNodeWaitForTransaction()
   const roundedUnlockTimestamp = useRoundedUnlockTimestamp(cakeLockExpired ? undefined : Number(cakeUnlockTime))
 
@@ -39,6 +41,7 @@ export const useWriteIncreaseLockWeeksCallback = (onDismiss?: () => void) => {
       const { request } = await veCakeContract.simulate.increaseUnlockTime([roundedUnlockTimestamp], {
         account: account!,
         chain: veCakeContract.chain,
+        gasPrice,
       })
 
       setStatus(ApproveAndLockStatus.INCREASE_WEEKS)
@@ -92,6 +95,7 @@ export const useWriteIncreaseLockWeeksCallback = (onDismiss?: () => void) => {
     chainId,
     setCakeLockWeeks,
     onDismiss,
+    gasPrice,
   ])
 
   return increaseLockWeeks

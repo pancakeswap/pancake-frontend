@@ -62,6 +62,7 @@ import { useSendTransaction, useWalletClient } from 'wagmi'
 
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { useDensityChartData } from 'views/AddLiquidityV3/hooks/useDensityChartData'
+import { useGasPrice } from 'state/user/hooks'
 import LockedDeposit from './components/LockedDeposit'
 import { PositionPreview } from './components/PositionPreview'
 import RangeSelector from './components/RangeSelector'
@@ -123,6 +124,7 @@ export default function V3FormView({
 }: V3FormViewPropsType) {
   const router = useRouter()
   const { data: signer } = useWalletClient()
+  const gasPrice = useGasPrice()
   const { sendTransactionAsync } = useSendTransaction()
   const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false) // clicked confirm
   const [txnErrorMessage, setTxnErrorMessage] = useState<string | undefined>()
@@ -295,6 +297,7 @@ export default function V3FormView({
           sendTransactionAsync({
             ...txn,
             gas: calculateGasMargin(gas),
+            gasPrice,
           })
             .then((hash) => {
               logGTMAddLiquidityTxSentEvent()
@@ -347,6 +350,7 @@ export default function V3FormView({
     sendTransactionAsync,
     signer,
     t,
+    gasPrice,
   ])
 
   const handleDismissConfirmation = useCallback(() => {

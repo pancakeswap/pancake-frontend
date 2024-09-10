@@ -12,6 +12,7 @@ import { logTx } from 'utils/log'
 import { isUserRejected } from 'utils/sentry'
 import { TransactionExecutionError } from 'viem'
 import { useAccount, useWalletClient } from 'wagmi'
+import { useGasPrice } from 'state/user/hooks'
 
 export const useWriteIncreaseLockAmountCallback = () => {
   const { chainId } = useActiveChainId()
@@ -22,6 +23,7 @@ export const useWriteIncreaseLockAmountCallback = () => {
   const setStatus = useSetAtom(approveAndLockStatusAtom)
   const { data: walletClient } = useWalletClient()
   const { waitForTransaction } = usePublicNodeWaitForTransaction()
+  const gasPrice = useGasPrice()
 
   const increaseLockAmount = useCallback(async () => {
     if (!account || !cakeLockAmount) return
@@ -31,6 +33,7 @@ export const useWriteIncreaseLockAmountCallback = () => {
       {
         account: account!,
         chain: veCakeContract.chain,
+        gasPrice,
       },
     )
 
@@ -76,6 +79,7 @@ export const useWriteIncreaseLockAmountCallback = () => {
     setTxHash,
     waitForTransaction,
     chainId,
+    gasPrice,
   ])
 
   return increaseLockAmount

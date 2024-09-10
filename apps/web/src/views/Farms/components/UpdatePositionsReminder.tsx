@@ -11,6 +11,7 @@ import { useMemo, useState } from 'react'
 import { useFarmsV3Public } from 'state/farmsV3/hooks'
 import { Hex, encodeFunctionData } from 'viem'
 import { useAccount, useReadContracts, useSendTransaction } from 'wagmi'
+import { useGasPrice } from 'state/user/hooks'
 
 const lmPoolABI = [
   {
@@ -65,6 +66,7 @@ export function UpdatePositionsReminder_() {
   const { data: farmsV3 } = useFarmsV3Public()
   const { address: account } = useAccount()
   const { chainId } = useActiveChainId()
+  const gasPrice = useGasPrice()
 
   const masterchefV3 = useMasterchefV3()
   const { tokenIds: stakedTokenIds, loading } = useV3TokenIdsByAccount(masterchefV3?.address, account)
@@ -187,6 +189,7 @@ export function UpdatePositionsReminder_() {
         data: Multicall.encodeMulticall(calldata.flat()),
         value: 0n,
         account,
+        gasPrice,
       }),
     )
 

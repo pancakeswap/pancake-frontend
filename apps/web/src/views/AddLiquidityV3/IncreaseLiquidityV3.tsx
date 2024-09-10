@@ -36,6 +36,7 @@ import { getViemClients } from 'utils/viem'
 import { hexToBigInt } from 'viem'
 
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
+import { useGasPrice } from 'state/user/hooks'
 import { V3SubmitButton } from './components/V3SubmitButton'
 import LockedDeposit from './formViews/V3FormView/components/LockedDeposit'
 import { PositionPreview } from './formViews/V3FormView/components/PositionPreview'
@@ -49,6 +50,7 @@ interface AddLiquidityV3PropsType {
 
 export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB }: AddLiquidityV3PropsType) {
   const router = useRouter()
+  const gasPrice = useGasPrice()
   const { sendTransactionAsync } = useSendTransaction()
   const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false) // clicked confirm
   const [txnErrorMessage, setTxnErrorMessage] = useState<string | undefined>()
@@ -213,6 +215,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
             data: calldata,
             value: hexToBigInt(value),
             gas: calculateGasMargin(gasLimit),
+            gasPrice,
             chainId,
           })
         })
@@ -266,6 +269,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
     tokenId,
     tokenIdsInMCv3Loading,
     t,
+    gasPrice,
   ])
 
   const addIsUnsupported = useIsTransactionUnsupported(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
