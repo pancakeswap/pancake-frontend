@@ -1,8 +1,8 @@
+import { PoolIds } from '@pancakeswap/ifos'
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoRenewIcon, Button, useToast } from '@pancakeswap/uikit'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { PoolIds } from '@pancakeswap/ifos'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { WalletIfoData } from 'views/Ifos/types'
 
@@ -33,7 +33,10 @@ const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, ifoVers
       if (walletIfoData.version === 3) {
         return walletIfoData.contract.write.harvestPool([poolId === PoolIds.poolBasic ? 0 : 1], { account, chain })
       }
-      if (walletIfoData.version === 7 || walletIfoData.version === 8) {
+      if (walletIfoData.version === 7) {
+        return walletIfoData.contract.write.harvestPool([poolId === PoolIds.poolBasic ? 0 : 1], { account, chain })
+      }
+      if (walletIfoData.version === 8) {
         return walletIfoData.contract.write.harvestPool([poolId === PoolIds.poolBasic ? 0 : 1], { account, chain })
       }
       throw new Error('Invalid wallet ifo data version')
