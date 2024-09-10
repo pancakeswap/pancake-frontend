@@ -96,7 +96,7 @@ function MyApp(props: AppProps<{ initialReduxState: any; dehydratedState: any }>
           // eslint-disable-next-line @next/next/no-sync-scripts
           <script
             src="https://public.bnbstatic.com/static/js/mp-webview-sdk/webview-v1.0.0.min.js"
-            integrity="sha256-Wqm2Zt2K4YzcLvvyBlJ3HMEQteIpnbt5dJgNDdahXBY="
+            integrity="sha384-PV6Pqh2oiQNNl9jwtcTIue3fwDnP5k80+DaPY8/AS4qxGA91MsE3G91BQ2jQ81oT"
             crossOrigin="anonymous"
             id="mp-webview"
           />
