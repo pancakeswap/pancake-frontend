@@ -95,7 +95,7 @@ export const ZapLiquidityWidget: React.FC<ZapLiquidityProps> = ({
       <Message variant="primary" padding="8px" icon={<InfoFilledIcon color="secondary" />}>
         <Flex flexDirection="column" style={{ gap: 8 }}>
           <MessageText lineHeight="120%" fontSize={16}>
-            {t('Try Zap V3 to automatically balance the deposit tokens while adding V3 liquidity.')}
+            {t('Only have one token? Try Zap to automatically balance and provide V3 liquidity in one click.')}
           </MessageText>
           <span
             onClick={handleOnClick}
