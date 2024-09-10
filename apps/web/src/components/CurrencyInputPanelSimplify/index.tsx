@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Pair, Percent, Token } from '@pancakeswap/sdk'
-import { Box, Button, ChevronDownIcon, Flex, Loading, Skeleton, Text, useModal } from '@pancakeswap/uikit'
+import { Button, ChevronDownIcon, Flex, Loading, Skeleton, Text, useModal } from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { CurrencyLogo, DoubleCurrencyLogo, Swap as SwapUI } from '@pancakeswap/widgets-internal'
 import { memo, useCallback, useMemo } from 'react'
@@ -228,57 +228,10 @@ const CurrencyInputPanelSimplify = memo(function CurrencyInputPanel({
                   <Text fontSize="12px" color="textSubtle" ellipsis>
                     {`~${amountInDollar ? formatNumber(amountInDollar) : 0} USD`}
                   </Text>
-                ) : (
-                  <Box height="18px" />
-                )}
+                ) : null}
               </Flex>
             </Flex>
           )}
-          <InputRow selected={disableCurrencySelect}>
-            {account && currency && selectedCurrencyBalance?.greaterThan(0) && !disabled && label !== 'To' && (
-              <Flex alignItems="right" justifyContent="right">
-                {maxAmount?.greaterThan(0) &&
-                  showQuickInputButton &&
-                  onPercentInput &&
-                  [25, 50, 75].map((percent) => {
-                    const isAtCurrentPercent =
-                      (maxAmount && value !== '0' && value === percentAmount[percent]) ||
-                      (lpPercent && lpPercent === percent.toString())
-
-                    return (
-                      <Button
-                        key={`btn_quickCurrency${percent}`}
-                        data-dd-action-name={`Balance percent ${percent}`}
-                        onClick={() => {
-                          onPercentInput(percent)
-                        }}
-                        scale="xs"
-                        mr="5px"
-                        variant={isAtCurrentPercent ? 'primary' : 'secondary'}
-                        style={{ textTransform: 'uppercase' }}
-                      >
-                        {percent}%
-                      </Button>
-                    )
-                  })}
-                {maxAmount?.greaterThan(0) && showMaxButton && (
-                  <Button
-                    data-dd-action-name="Balance percent max"
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      e.preventDefault()
-                      onMax?.()
-                    }}
-                    scale="xs"
-                    variant={isAtPercentMax ? 'primary' : 'secondary'}
-                    style={{ textTransform: 'uppercase' }}
-                  >
-                    {t('Max')}
-                  </Button>
-                )}
-              </Flex>
-            )}
-          </InputRow>
         </>
       }
     />

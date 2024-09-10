@@ -1,4 +1,4 @@
-import { AtomBox, SwapCSS, Text } from "@pancakeswap/uikit";
+import { AtomBox, SwapCSS } from "@pancakeswap/uikit";
 
 import { NumericalInput, NumericalInputProps } from "../swap/NumericalInput";
 
@@ -52,6 +52,7 @@ export function CurrencyInputPanelSimplify({
             lineHeight="16px"
             px="16px"
             pt="12px"
+            className="targetInput"
           >
             {inputLeft}
             <NumericalInput
@@ -69,7 +70,7 @@ export function CurrencyInputPanelSimplify({
           {bottom}
         </AtomBox>
 
-        {error ? (
+        {/* {error ? (
           <Text pb="8px" fontSize="12px" color="red">
             {error}
           </Text>
@@ -77,7 +78,7 @@ export function CurrencyInputPanelSimplify({
 
         {disabled && (
           <AtomBox role="presentation" position="absolute" inset="0px" backgroundColor="backgroundAlt" opacity="0.6" />
-        )}
+        )} */}
       </AtomBox>
     </AtomBox>
   );
