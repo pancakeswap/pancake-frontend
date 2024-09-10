@@ -53,6 +53,7 @@ export function RecentTransactions() {
   const { data: recentXOrders } = useRecentXOrders({
     chainId,
     address: account,
+    refetchInterval: 10_000,
   })
 
   const sortedRecentTransactions = useAllSortedRecentTransactions()
