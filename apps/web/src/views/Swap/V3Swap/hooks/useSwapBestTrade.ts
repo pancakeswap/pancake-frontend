@@ -4,7 +4,7 @@ import { useUserSingleHopOnly } from '@pancakeswap/utils/user'
 
 import { useCurrency } from 'hooks/Tokens'
 import { useBestAMMTrade, useBestTradeFromApi } from 'hooks/useBestAMMTrade'
-import { useDeferredValue, useMemo } from 'react'
+import { useCallback, useDeferredValue, useMemo, useState } from 'react'
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
 import {
@@ -59,13 +59,39 @@ export function useSwapBestOrder({ maxHops }: Options = {}) {
     stableSwap: stableSwapEnable,
     trackPerf: true,
   })
+  const [loading, setLoading] = useState(false)
+  const refresh = useCallback(async () => {
+    try {
+      setLoading(true)
+      const res = await refetch()
+      return res
+    } finally {
+      setLoading(false)
+    }
+  }, [refetch])
+
+  const isAutoRefetch = useMemo(
+    () =>
+      !loading &&
+      fetchStatus === 'fetching' &&
+      amount &&
+      inputCurrency &&
+      outputCurrency &&
+      data?.trade &&
+      amount.toExact() === (isExactIn ? data.trade.inputAmount.toExact() : data.trade.outputAmount.toExact()) &&
+      data.trade.inputAmount.currency.equals(inputCurrency) &&
+      data.trade.outputAmount.currency.equals(outputCurrency),
+    [loading, fetchStatus, amount, data?.trade, isExactIn, inputCurrency, outputCurrency],
+  )
 
   return {
     enabled: xEnabled,
-    refresh: refetch,
+    refresh,
     isStale,
     error,
-    isLoading: useDeferredValue(Boolean(fetchStatus === 'fetching' || (typedValue && !data && !error))),
+    isLoading: useDeferredValue(
+      Boolean((fetchStatus === 'fetching' && !isAutoRefetch) || (typedValue && !data && !error)),
+    ),
     order: typedValue ? data : undefined,
   }
 }
