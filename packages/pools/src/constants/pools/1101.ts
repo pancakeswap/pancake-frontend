@@ -14,7 +14,7 @@ export const livePools: SerializedPool[] = [
   },
 ].map((p) => ({
   ...p,
-  isFinished: true,
+  isFinished: false,
   contractAddress: getAddress(p.contractAddress),
   stakingToken: p.stakingToken.serialize,
   earningToken: p.earningToken.serialize,
