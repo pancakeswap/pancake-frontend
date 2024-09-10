@@ -1,17 +1,17 @@
-import { Flex, Message, MessageText, ModalContainer, ModalV2, InfoFilledIcon, useToast } from '@pancakeswap/uikit'
-import { useCallback, useMemo, useState } from 'react'
 import '@kyberswap/pancake-liquidity-widgets/dist/style.css'
-import { useTheme } from 'styled-components'
-import { useWalletClient } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useTransactionAdder } from 'state/transactions/hooks'
-import { Pool } from '@pancakeswap/v3-sdk'
 import { Currency } from '@pancakeswap/sdk'
-import dynamic from 'next/dynamic'
-import noop from 'lodash/noop'
+import { Flex, InfoFilledIcon, Message, MessageText, ModalContainer, ModalV2, useToast } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/v3-sdk'
 import { ToastDescriptionWithTx } from 'components/Toast'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import noop from 'lodash/noop'
+import dynamic from 'next/dynamic'
+import { useCallback, useMemo, useState } from 'react'
+import { useTransactionAdder } from 'state/transactions/hooks'
+import { useTheme } from 'styled-components'
 import { getAddress } from 'viem'
+import { useWalletClient } from 'wagmi'
 
 export enum InitDepositToken {
   BASE_CURRENCY,
@@ -113,6 +113,8 @@ export const ZapLiquidityWidget: React.FC<ZapLiquidityProps> = ({
       <ModalV2 closeOnOverlayClick isOpen={isModalOpen} onDismiss={handleOnDismiss}>
         <ModalContainer style={{ maxHeight: '90vh', overflow: 'auto' }}>
           <LiquidityWidget
+            feeAddress="0xB82bb6Ce9A249076Ca7135470e7CA634806De168"
+            feePcm={0}
             onConnectWallet={noop}
             walletClient={walletClient}
             account={account ?? undefined}
@@ -132,7 +134,6 @@ export const ZapLiquidityWidget: React.FC<ZapLiquidityProps> = ({
             }
             poolAddress={poolAddress ?? '0x'}
             theme={isDark ? 'dark' : 'light'}
-            feePcm={pool?.fee}
             onDismiss={handleOnDismiss}
             onTxSubmit={handleTransaction}
             source="zap-widget"
