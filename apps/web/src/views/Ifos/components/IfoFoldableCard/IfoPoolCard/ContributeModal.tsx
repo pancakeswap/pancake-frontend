@@ -63,7 +63,8 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
   const { callWithGasPrice } = useCallWithGasPrice()
   const { t } = useTranslation()
   const multiplier = useMemo(() => getFullDecimalMultiplier(currency.decimals), [currency])
-  const valueWithTokenDecimals = new BigNumber(value).times(multiplier)
+  const valueWithTokenDecimals = useMemo(() => new BigNumber(value).times(multiplier), [value, multiplier])
+
   const cake = CAKE[ifo.chainId]
   const label = cake ? t('Max. CAKE entry') : t('Max. token entry')
 

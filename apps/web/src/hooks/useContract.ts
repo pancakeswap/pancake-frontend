@@ -67,7 +67,7 @@ import {
 } from 'utils/contractHelpers'
 
 import { ChainId } from '@pancakeswap/chains'
-import { ifoV7ABI } from '@pancakeswap/ifos'
+import { ifoV7ABI, ifoV8ABI } from '@pancakeswap/ifos'
 import { WNATIVE, pancakePairV2ABI } from '@pancakeswap/sdk'
 import { CAKE } from '@pancakeswap/tokens'
 import { nonfungiblePositionManagerABI } from '@pancakeswap/v3-sdk'
@@ -103,6 +103,10 @@ export const useIfoV3Contract = (address: Address) => {
 
 export const useIfoV7Contract = (address: Address, options?: UseContractOptions) => {
   return useContract(address, ifoV7ABI, options)
+}
+
+export const useIfoV8Contract = (address: Address, options?: UseContractOptions) => {
+  return useContract(address, ifoV8ABI, options)
 }
 
 export const useERC20 = (address?: Address, options?: UseContractOptions) => {

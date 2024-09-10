@@ -1,7 +1,13 @@
-import BigNumber from 'bignumber.js'
 import { IfoStatus, PoolIds } from '@pancakeswap/ifos'
+import BigNumber from 'bignumber.js'
 
-import { useIfoV1Contract, useIfoV2Contract, useIfoV3Contract, useIfoV7Contract } from 'hooks/useContract'
+import {
+  useIfoV1Contract,
+  useIfoV2Contract,
+  useIfoV3Contract,
+  useIfoV7Contract,
+  useIfoV8Contract,
+} from 'hooks/useContract'
 
 // PoolCharacteristics retrieved from the contract
 export interface PoolCharacteristics {
@@ -117,7 +123,7 @@ type WalletIfoDataV7Contract = {
 }
 type WalletIfoDataV8Contract = {
   version: 8
-  contract: ReturnType<typeof useIfoV7Contract>
+  contract: ReturnType<typeof useIfoV8Contract>
 }
 type WalletIfoContract =
   | WalletIfoDataV1Contract
