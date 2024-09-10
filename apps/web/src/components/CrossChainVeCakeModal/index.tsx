@@ -286,7 +286,7 @@ export const CrossChainVeCakeModal: React.FC<{
                 {t('Network to Sync')}
               </Text>
               <Flex flexDirection="column" style={{ gap: 12 }}>
-                {OtherChainsConfig.filter((config) => (targetChainId ? config.chainId === targetChainId : true)).map(
+                {OtherChainsConfig.filter((config) => !targetChainId || config.chainId === targetChainId).map(
                   (config) => (
                     <OtherChainsCard
                       key={config.chainId}
