@@ -46,7 +46,7 @@ function sortByTransactionTime(a: TransactionItem, b: TransactionItem) {
   return 0
 }
 
-const TransactionsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ onDismiss }) => {
+export function RecentTransactions() {
   const { address: account, chainId } = useAccount()
   const dispatch = useAppDispatch()
 
@@ -71,11 +71,21 @@ const TransactionsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> =
   }, [dispatch])
 
   return (
-    <Modal title={t('Recent Transactions')} headerBackground="gradientCardHeader" onDismiss={onDismiss}>
+    <>
       {account ? (
         <ModalBody>
           {xOrders.length > 0 || hasTransactions ? (
             <>
+              <AutoRow mb="1rem" style={{ justifyContent: 'space-between' }}>
+                <Text color="secondary" fontSize="12px" textTransform="uppercase" fontWeight="bold">
+                  {t('Recent Transactions')}
+                </Text>
+                {hasTransactions && (
+                  <Button variant="tertiary" scale="xs" onClick={clearAllTransactionsCallback}>
+                    {t('clear all')}
+                  </Button>
+                )}
+              </AutoRow>
               {hasTransactions
                 ? Object.entries(sortedRecentTransactions).map(([chainId_, transactions]) => {
                     let content = <></>
@@ -106,11 +116,6 @@ const TransactionsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> =
                           <Text fontSize="12px" color="textSubtle" mb="4px">
                             {chains.find((c) => c.id === chainIdNumber)?.name ?? 'Unknown network'}
                           </Text>
-                          {hasTransactions && (
-                            <Button variant="tertiary" scale="xs" onClick={clearAllTransactionsCallback}>
-                              {t('clear all')}
-                            </Button>
-                          )}
                         </AutoRow>
                         {content}
                       </div>
@@ -125,6 +130,16 @@ const TransactionsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> =
       ) : (
         <ConnectWalletButton />
       )}
+    </>
+  )
+}
+
+const TransactionsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ onDismiss }) => {
+  const { t } = useTranslation()
+
+  return (
+    <Modal title={t('Recent Transactions')} headerBackground="gradientCardHeader" onDismiss={onDismiss}>
+      <RecentTransactions />
     </Modal>
   )
 }
