@@ -47,37 +47,44 @@ export default function RangeSelector({
   const leftValue = useMemo(() => {
     if (ticksAtLimit[isSorted ? Bound.LOWER : Bound.UPPER]) return '0'
 
-    if (
-      tickSpaceLimits?.[Bound.LOWER] !== undefined &&
-      leftPrice &&
-      priceToClosestTick(leftPrice) <= tickSpaceLimits[Bound.LOWER]
-    ) {
-      return '0'
+    try {
+      if (
+        tickSpaceLimits?.[Bound.LOWER] !== undefined &&
+        leftPrice &&
+        priceToClosestTick(leftPrice) <= tickSpaceLimits[Bound.LOWER]
+      ) {
+        return '0'
+      }
+      return leftPrice?.toSignificant(5) ?? ''
+    } catch (error) {
+      return ''
     }
-
-    return leftPrice?.toSignificant(5) ?? ''
   }, [isSorted, leftPrice, tickSpaceLimits, ticksAtLimit])
 
   const rightValue = useMemo(() => {
     if (ticksAtLimit[isSorted ? Bound.UPPER : Bound.LOWER]) return '∞'
 
-    if (
-      tickSpaceLimits?.[Bound.LOWER] !== undefined &&
-      rightPrice &&
-      priceToClosestTick(rightPrice) <= tickSpaceLimits[Bound.LOWER]
-    ) {
-      return '0'
-    }
+    try {
+      if (
+        tickSpaceLimits?.[Bound.LOWER] !== undefined &&
+        rightPrice &&
+        priceToClosestTick(rightPrice) <= tickSpaceLimits[Bound.LOWER]
+      ) {
+        return '0'
+      }
 
-    if (
-      tickSpaceLimits?.[Bound.UPPER] !== undefined &&
-      rightPrice &&
-      priceToClosestTick(rightPrice) >= tickSpaceLimits[Bound.UPPER]
-    ) {
-      return '∞'
-    }
+      if (
+        tickSpaceLimits?.[Bound.UPPER] !== undefined &&
+        rightPrice &&
+        priceToClosestTick(rightPrice) >= tickSpaceLimits[Bound.UPPER]
+      ) {
+        return '∞'
+      }
 
-    return rightPrice?.toSignificant(5) ?? ''
+      return rightPrice?.toSignificant(5) ?? ''
+    } catch (error) {
+      return ''
+    }
   }, [isSorted, rightPrice, tickSpaceLimits, ticksAtLimit])
 
   return (
