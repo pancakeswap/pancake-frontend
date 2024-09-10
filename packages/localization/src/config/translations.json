@@ -3503,5 +3503,20 @@
   "Service Unavailable in Your Region": "Service Unavailable in Your Region",
   "Due to regional regulatory requirements. We are unable to provide service for your region.": "Due to regional regulatory requirements. We are unable to provide service for your region.",
   "Please access from another location or check your settings.": "Please access from another location or check your settings.",
-  "Introducing PancakeSwap Prediction Telegram Bot": "Introducing PancakeSwap Prediction Telegram Bot"
+  "Introducing PancakeSwap Prediction Telegram Bot": "Introducing PancakeSwap Prediction Telegram Bot",
+  "Switch Chain": "Switch Chain",
+  "You don’t have any veCAKE available for IFO public sale.": "You don’t have any veCAKE available for IFO public sale.",
+  "You must sync your veCAKE again (for an updated iCAKE) if you have updated your veCAKE staking.": "You must sync your veCAKE again (for an updated iCAKE) if you have updated your veCAKE staking.",
+  "Sync your veCAKE to participate in this sale on %chain%": "Sync your veCAKE to participate in this sale on %chain%",
+  "Switch chain to BNB and sync your veCAKE again (for an updated iCAKE) if you have updated your veCAKE staking.": "Switch chain to BNB and sync your veCAKE again (for an updated iCAKE) if you have updated your veCAKE staking.",
+  "Switch chain to Sync": "Switch chain to Sync",
+  "My veCAKE on %chainName%": "My veCAKE on %chainName%",
+  "CAKE Locked": "CAKE Locked",
+  "Outdated": "Outdated",
+  "Profile & veCake": "Profile & veCake",
+  "Sync veCake": "Sync veCake",
+  "Sync again": "Sync again",
+  "veCAKE on %chainName%": "veCAKE on %chainName%",
+  "You have no veCAKE at Snapshot time": "You have no veCAKE at Snapshot time",
+  "To participate, get veCAKE or extend your veCAKE position beyond the snapshot time.": "To participate, get veCAKE or extend your veCAKE position beyond the snapshot time."
 }
