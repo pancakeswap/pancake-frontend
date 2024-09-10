@@ -9,7 +9,7 @@
     "apis/*",
     "scripts"
   ],
-  "packageManager": "pnpm@9.9.0",
+  "packageManager": "pnpm@9.10.0",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "dev": "turbo run dev --filter=web... --concurrency=50",
@@ -75,7 +75,7 @@
   },
   "volta": {
     "node": "20.17.0",
-    "pnpm": "9.9.0"
+    "pnpm": "9.10.0"
   },
   "dependencies": {
     "ws": "^8.17.1",
