@@ -3490,5 +3490,8 @@
   "For more information, please refer to Penpie’s": "有关详情，请参阅 Penpie 的",
   "Please exercise due caution when trading / providing liquidity for the mPENDLE token. The protocol recently encountered a": "在进行 mPENDLE 代币交易或为其提供流动性时请保持谨慎。该协议最近遇到了",
   "Caution - PNP Token": "小心 - PNP 代币",
-  "Please exercise due caution when trading / providing liquidity for the PNP token. The protocol recently encountered a": "在进行 PNP 代币交易或为其提供流动性时请保持谨慎。该协议最近遇到了"
+  "Please exercise due caution when trading / providing liquidity for the PNP token. The protocol recently encountered a": "在进行 PNP 代币交易或为其提供流动性时请保持谨慎。该协议最近遇到了",
+  "Only have one token? Try Zap to automatically balance and provide V3 liquidity in one click.": "Only have one token? Try Zap to automatically balance and provide V3 liquidity in one click.",
+  "Click here to start": "Click here to start",
+  "Zap in for %lpSymbol%": "Zap in for %lpSymbol%"
 }
