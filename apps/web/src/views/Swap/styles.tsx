@@ -5,7 +5,6 @@ export const StyledSwapContainer = styled(Flex)<{ $isChartExpanded: boolean }>`
   flex-shrink: 0;
   height: fit-content;
   padding: 0 16px;
-
   ${({ theme }) => theme.mediaQueries.lg} {
     padding: 0 40px;
   }
