@@ -1,6 +1,6 @@
 import { Svg, SvgProps } from "@pancakeswap/uikit";
 
-export const OutdatedIcon: React.FC<SvgProps> = (props) => {
+export const LinkSlashedIcon: React.FC<SvgProps> = (props) => {
   return (
     <Svg viewBox="0 0 17 16" {...props}>
       <g>

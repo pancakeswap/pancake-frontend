@@ -72,6 +72,8 @@ export function CrossChainVeCakeCard({ ifoAddress }: Props) {
   const hasVeCakeOnBSC = useMemo(() => veCakeOnBSC.gt(0), [veCakeOnBSC])
 
   const { isSynced } = useUserVeCakeStatus(account, targetChainId)
+
+  // To be synced for the first time
   const toBeSynced = useMemo(() => veCakeOnBSC.gt(0) && veCakeOnTargetChain.eq(0), [veCakeOnBSC, veCakeOnTargetChain])
 
   const isMigrated = useIsMigratedToVeCake(targetChainId)

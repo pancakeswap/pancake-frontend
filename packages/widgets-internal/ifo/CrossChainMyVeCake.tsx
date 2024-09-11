@@ -6,7 +6,7 @@ import { useMemo } from "react";
 import { BalanceDisplay } from "./BalanceDisplay";
 import { ChainLogo } from "./ChainLogo";
 import { ChainNameMap, IfoChainId } from "./constants";
-import { LinkPlusIcon, OutdatedIcon } from "./icons";
+import { LinkPlusIcon, LinkSlashedIcon } from "./icons";
 import { Divider, GreyCard, OutlineTag } from "./styles";
 
 const SyncedBadge = () => {
@@ -37,7 +37,7 @@ const OutdatedSyncBadge = () => {
   const { t } = useTranslation();
   return (
     <Tag variant="textDisabled" scale="sm" style={{ cursor: "default" }}>
-      <OutdatedIcon color="lime" width="16px" mt="2px" mr="4px" />
+      <LinkSlashedIcon color="lime" width="16px" mt="2px" mr="4px" />
       <Text ml="2px" pr="4px" color="white" small bold>
         {t("Outdated")}
       </Text>
@@ -67,7 +67,7 @@ export const CrossChainMyVeCake = ({
 
   return (
     <GreyCard {...props}>
-      <FlexGap p="16px 16px 2px" gap="8px">
+      <FlexGap p="16px 16px 3px" gap="8px">
         <Flex alignItems="center">
           <img srcSet="/images/cake-staking/token-vecake.png 2x" alt="cross-chain-vecake" width={38} />
           <ChainLogo ml="-8px" chainId={chainId} />
@@ -99,13 +99,13 @@ export const CrossChainMyVeCake = ({
       <Box mt="14px" p="0 16px 16px">
         {(isSynced || hasPreviouslySynced || toBeSynced) && (
           <Flex my="8px" justifyContent="space-between">
-            <Text color="textSubtle">{t("Profile & veCake")}</Text>
+            <Text color="textSubtle">{t("Profile & veCAKE")}</Text>
             {isSynced ? <SyncedBadge /> : toBeSynced ? <ToBeSyncedBadge /> : <OutdatedSyncBadge />}
           </Flex>
         )}
 
         <Button mt="8px" width="100%" onClick={() => onClick?.()}>
-          {!isSynced && !hasPreviouslySynced ? t("Sync veCake") : t("Sync again")}
+          {!isSynced && !hasPreviouslySynced ? t("Sync veCAKE") : t("Sync again")}
         </Button>
       </Box>
     </GreyCard>
