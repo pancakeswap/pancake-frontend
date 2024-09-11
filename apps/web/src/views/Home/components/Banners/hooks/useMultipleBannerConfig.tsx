@@ -8,6 +8,7 @@ import { OptionsBanner } from '../OptionsBanner'
 import { PaymasterBanner } from '../PaymasterBanner'
 import { PerpetualSeasonalBanner } from '../PerpetualSeasonalBanner'
 import { QuestBanner } from '../QuestBanner'
+import { TgPredictionBotBanner } from '../TgPredictionBotBanner'
 import { TopperCampaignBanner } from '../TopperCampaignBanner'
 import UserBanner from '../UserBanner'
 import { V4InfoBanner } from '../V4InfoBanner'
@@ -15,6 +16,7 @@ import { VeCakeBanner } from '../VeCakeBanner'
 import WebNotificationBanner from '../WebNotificationBanner'
 import { ZksyncAirDropBanner } from '../ZksyncAirdropBanner'
 import useIsRenderCompetitionBanner from './useIsRenderCompetitionBanner'
+import { useIsRenderTgPredictionBotBanner } from './useIsRenderTgPredictionBotBanner'
 import useIsRenderUserBanner from './useIsRenderUserBanner'
 
 interface IBannerConfig {
@@ -38,12 +40,17 @@ interface IBannerConfig {
 export const useMultipleBannerConfig = () => {
   const isRenderCompetitionBanner = useIsRenderCompetitionBanner()
   const isRenderUserBanner = useIsRenderUserBanner()
+  const isRenderTgPredictionBotBanner = useIsRenderTgPredictionBotBanner()
 
   return useMemo(() => {
     const NO_SHUFFLE_BANNERS: IBannerConfig[] = [
       {
         shouldRender: isRenderUserBanner.shouldRender && !isRenderUserBanner.isEarningsBusdZero,
         banner: <UserBanner />,
+      },
+      {
+        shouldRender: isRenderTgPredictionBotBanner,
+        banner: <TgPredictionBotBanner />,
       },
       {
         shouldRender: true,
