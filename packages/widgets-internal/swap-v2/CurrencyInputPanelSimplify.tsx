@@ -27,7 +27,7 @@ export function CurrencyInputPanelSimplify({
 }: CurrencyInputPanelProps) {
   return (
     <AtomBox position="relative" id={id} display="grid" gap="4px">
-      <AtomBox display="flex" alignItems="center" justifyContent="space-between">
+      <AtomBox display="flex" alignItems="center" justifyContent="space-between" mb="8px">
         {top}
       </AtomBox>
       <AtomBox
