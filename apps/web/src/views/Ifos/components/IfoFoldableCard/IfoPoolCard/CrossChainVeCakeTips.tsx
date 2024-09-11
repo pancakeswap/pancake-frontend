@@ -1,11 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/sdk'
 
-import { useMultichainVeCakeWellSynced } from 'components/CrossChainVeCakeModal/hooks/useMultichainVeCakeWellSynced'
-import { useActiveChainId } from 'hooks/useActiveChainId'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useVeCakeBalance } from 'hooks/useTokenBalance'
 import { useMemo } from 'react'
 import { useIfoSourceChain } from 'views/Ifos/hooks/useIfoSourceChain'
+import { useUserVeCakeStatus } from 'views/Ifos/hooks/useUserVeCakeStatus'
 import { useChainNames } from '../../../hooks/useChainNames'
 import { ContentText, LinkTitle, WarningTips } from '../../WarningTips'
 import { StakeButton } from './StakeButton'
@@ -17,23 +17,24 @@ type Props = {
 
 export function CrossChainVeCakeTips({ ifoChainId }: Props) {
   const { t } = useTranslation()
-  const { chainId } = useActiveChainId()
+  const { account, chainId } = useAccountActiveChain()
+  const sourceChain = useIfoSourceChain(ifoChainId)
+
   const { balance: veCakeOnBSC } = useVeCakeBalance(ChainId.BSC)
   const { balance: veCakeOnTargetChain } = useVeCakeBalance(ifoChainId)
-  const { isVeCakeWillSync } = useMultichainVeCakeWellSynced(ifoChainId)
-  const sourceChain = useIfoSourceChain(ifoChainId)
+  const { isSynced } = useUserVeCakeStatus(account, ifoChainId)
 
   const isCurrentChainSourceChain = useMemo(() => chainId === sourceChain, [chainId, sourceChain])
 
   const noVeCAKE = useMemo(() => veCakeOnBSC.isZero(), [veCakeOnBSC])
   const shouldSyncAgain = useMemo(
-    () => !isVeCakeWillSync && !veCakeOnTargetChain.isEqualTo(veCakeOnBSC),
-    [veCakeOnTargetChain, veCakeOnBSC, isVeCakeWillSync],
+    () => !isSynced && !veCakeOnTargetChain.isEqualTo(veCakeOnBSC),
+    [veCakeOnTargetChain, veCakeOnBSC, isSynced],
   )
 
   const chainName = useChainNames([ifoChainId])
 
-  if (isVeCakeWillSync) {
+  if (isSynced) {
     return null
   }
 

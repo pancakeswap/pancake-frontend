@@ -7,7 +7,7 @@ import { BalanceDisplay } from "./BalanceDisplay";
 import { ChainLogo } from "./ChainLogo";
 import { ChainNameMap, IfoChainId } from "./constants";
 import { LinkPlusIcon, OutdatedIcon } from "./icons";
-import { GreyCard, OutlineTag } from "./styles";
+import { Divider, GreyCard, OutlineTag } from "./styles";
 
 const SyncedBadge = () => {
   const { t } = useTranslation();
@@ -47,14 +47,14 @@ const OutdatedSyncBadge = () => {
 
 interface CrossChainMyVeCakeProps extends BoxProps {
   veCakeAmount: string | number | BigNumber;
-  isVeCakeSynced: boolean;
+  isSynced: boolean;
   toBeSynced?: boolean;
   chainId?: IfoChainId;
   onClick?: () => void;
 }
 export const CrossChainMyVeCake = ({
   veCakeAmount,
-  isVeCakeSynced,
+  isSynced,
   toBeSynced,
   chainId = ChainId.ARBITRUM_ONE,
   onClick,
@@ -66,8 +66,8 @@ export const CrossChainMyVeCake = ({
   const hasPreviouslySynced = useMemo(() => BN(veCakeAmount).gt(BN("0")), [veCakeAmount]);
 
   return (
-    <GreyCard p="16px" {...props}>
-      <FlexGap gap="8px">
+    <GreyCard {...props}>
+      <FlexGap p="16px 16px 2px" gap="8px">
         <Flex alignItems="center">
           <img srcSet="/images/cake-staking/token-vecake.png 2x" alt="cross-chain-vecake" width={38} />
           <ChainLogo ml="-8px" chainId={chainId} />
@@ -84,7 +84,7 @@ export const CrossChainMyVeCake = ({
             ) : (
               <BalanceDisplay
                 fontSize="20px"
-                color={!isVeCakeSynced ? "textDisabled" : "text"}
+                color={!isSynced ? "textDisabled" : "text"}
                 value={veCakeAmountNumber}
                 decimals={veCakeAmountNumber < 1 ? 4 : 2}
                 bold
@@ -94,16 +94,20 @@ export const CrossChainMyVeCake = ({
         </Box>
       </FlexGap>
 
-      {(isVeCakeSynced || hasPreviouslySynced || toBeSynced) && (
-        <Flex my="8px" justifyContent="space-between">
-          <Text color="textSubtle">{t("Profile & veCake")}</Text>
-          {isVeCakeSynced ? <SyncedBadge /> : toBeSynced ? <ToBeSyncedBadge /> : <OutdatedSyncBadge />}
-        </Flex>
-      )}
+      <Divider />
 
-      <Button mt="8px" width="100%" onClick={() => onClick?.()}>
-        {!isVeCakeSynced && !hasPreviouslySynced ? t("Sync veCake") : t("Sync again")}
-      </Button>
+      <Box mt="14px" p="0 16px 16px">
+        {(isSynced || hasPreviouslySynced || toBeSynced) && (
+          <Flex my="8px" justifyContent="space-between">
+            <Text color="textSubtle">{t("Profile & veCake")}</Text>
+            {isSynced ? <SyncedBadge /> : toBeSynced ? <ToBeSyncedBadge /> : <OutdatedSyncBadge />}
+          </Flex>
+        )}
+
+        <Button mt="8px" width="100%" onClick={() => onClick?.()}>
+          {!isSynced && !hasPreviouslySynced ? t("Sync veCake") : t("Sync again")}
+        </Button>
+      </Box>
     </GreyCard>
   );
 };

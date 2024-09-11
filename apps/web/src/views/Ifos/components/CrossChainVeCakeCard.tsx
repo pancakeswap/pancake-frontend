@@ -19,12 +19,12 @@ import { CAKE_VAULT_SUPPORTED_CHAINS } from '@pancakeswap/pools'
 import { BigNumber as BN } from 'bignumber.js'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { CrossChainVeCakeModal } from 'components/CrossChainVeCakeModal'
-import { useMultichainVeCakeWellSynced } from 'components/CrossChainVeCakeModal/hooks/useMultichainVeCakeWellSynced'
 import { useActiveIfoConfig } from 'hooks/useIfoConfig'
 import { useVeCakeBalance } from 'hooks/useTokenBalance'
 import { useRouter } from 'next/router'
 import { useChainNames } from '../hooks/useChainNames'
 import { useUserIfoInfo } from '../hooks/useUserIfoInfo'
+import { useUserVeCakeStatus } from '../hooks/useUserVeCakeStatus'
 import { NetworkSwitcherModal } from './IfoFoldableCard/IfoPoolCard/NetworkSwitcherModal'
 
 type Props = {
@@ -34,12 +34,14 @@ type Props = {
 export function CrossChainVeCakeCard({ ifoAddress }: Props) {
   const { t } = useTranslation()
   const router = useRouter()
+
   const { chainId } = useActiveChainId()
+  const { address: account, isConnected } = useAccount()
+
   const { activeIfo } = useActiveIfoConfig()
 
   const targetChainId = useMemo(() => activeIfo?.chainId || chainId, [activeIfo, chainId])
 
-  const { isConnected } = useAccount()
   const cakePrice = useCakePrice()
   const isUserDelegated = useIsUserDelegated()
 
@@ -67,9 +69,9 @@ export function CrossChainVeCakeCard({ ifoAddress }: Props) {
     [veCakeOnTargetChain, targetChainId],
   )
 
-  const { isVeCakeWillSync } = useMultichainVeCakeWellSynced(targetChainId)
-
   const hasVeCakeOnBSC = useMemo(() => veCakeOnBSC.gt(0), [veCakeOnBSC])
+
+  const { isSynced } = useUserVeCakeStatus(account, targetChainId)
   const toBeSynced = useMemo(() => veCakeOnBSC.gt(0) && veCakeOnTargetChain.eq(0), [veCakeOnBSC, veCakeOnTargetChain])
 
   const isMigrated = useIsMigratedToVeCake(targetChainId)
@@ -160,7 +162,7 @@ export function CrossChainVeCakeCard({ ifoAddress }: Props) {
             mt="16px"
             chainId={targetChainId}
             veCakeAmount={veCakeOnTargetChainFormatted}
-            isVeCakeSynced={Boolean(isVeCakeWillSync)}
+            isSynced={Boolean(isSynced)}
             toBeSynced={toBeSynced}
             onClick={() => setIsOpen(true)}
           />
