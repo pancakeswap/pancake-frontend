@@ -3301,6 +3301,14 @@ export const bscTokens = {
     'Liquid Staked BTC',
     'https://www.babylon.magpiexyz.io',
   ),
+  poolx: new ERC20Token(
+    ChainId.BSC,
+    '0xbAeA9aBA1454DF334943951d51116aE342eAB255',
+    18,
+    'POOLX',
+    'Poolz Finance',
+    'https://www.poolz.finance',
+  ),
   uniBtc: new ERC20Token(
     ChainId.BSC,
     '0x6B2a01A5f79dEb4c2f3c0eDa7b01DF456FbD726a',
