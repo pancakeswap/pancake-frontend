@@ -55,6 +55,7 @@ export function CurrencyInputPanelSimplify({
             px="16px"
             py="12px"
             className="targetInput"
+            position="relative"
           >
             {inputLeft}
             <NumericalInput

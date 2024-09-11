@@ -1,6 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Pair, Percent, Token } from '@pancakeswap/sdk'
 import {
+  Box,
   Button,
   ChevronDownIcon,
   domAnimation,
@@ -225,7 +226,7 @@ const CurrencyInputPanelSimplify = memo(function CurrencyInputPanel({
         </>
       }
       bottom={
-        <>
+        <Box position="absolute" bottom="0px" right="0px">
           {!!showUSDPrice && (
             <Flex justifyContent="flex-end" mr="1rem">
               <Flex maxWidth="200px">
@@ -239,7 +240,7 @@ const CurrencyInputPanelSimplify = memo(function CurrencyInputPanel({
               </Flex>
             </Flex>
           )}
-        </>
+        </Box>
       }
     />
   )
