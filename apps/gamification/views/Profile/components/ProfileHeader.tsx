@@ -73,14 +73,6 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
   const isFetchingRef = useRef(false)
   const { fetchWithSiweAuth } = useSiwe()
 
-  useEffect(() => {
-    if (query.openSettingModal && query.openSettingModal === 'true') {
-      const newURL = `${window.location.origin}${window.location.pathname}`
-      window.history.pushState({}, '', newURL)
-      onPressSettingsModal()
-    }
-  }, [onPressSettingsModal, query])
-
   // Handle when Oauth callback fail
   useEffect(() => {
     if (query.error) {
