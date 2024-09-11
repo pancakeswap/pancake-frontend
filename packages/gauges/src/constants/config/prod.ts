@@ -5257,4 +5257,14 @@ export const CONFIG_PROD: GaugeConfig[] = [
     token1Address: polygonZkEvmTokens.matic.address,
     feeTier: FeeAmount.LOWEST,
   },
+  {
+    gid: 531,
+    address: '0x24853895C8864135E77f3b13CF735966f7636f39',
+    pairName: 'uniBTC-BTCB',
+    chainId: ChainId.BSC,
+    type: GaugeType.V3,
+    token0Address: bscTokens.uniBtc.address,
+    token1Address: bscTokens.btcb.address,
+    feeTier: FeeAmount.LOW,
+  },
 ]

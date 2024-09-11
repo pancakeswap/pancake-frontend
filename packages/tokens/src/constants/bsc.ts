@@ -3309,4 +3309,12 @@ export const bscTokens = {
     'Poolz Finance',
     'https://www.poolz.finance',
   ),
+  uniBtc: new ERC20Token(
+    ChainId.BSC,
+    '0x6B2a01A5f79dEb4c2f3c0eDa7b01DF456FbD726a',
+    8,
+    'uniBTC',
+    'uniBTC',
+    'https://www.bedrock.technology/',
+  ),
 }
