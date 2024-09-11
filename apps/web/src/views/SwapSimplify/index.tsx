@@ -16,7 +16,10 @@ import { SwapFeaturesContext } from '../Swap/SwapFeaturesContext'
 import { V4SwapForm } from './V4Swap'
 
 const Wrapper = styled(Box)`
-  width: 480px;
+  width: 100%;
+  ${({ theme }) => theme.mediaQueries.md} {
+    width: 480px;
+  }
 `
 
 export default function V4Swap() {
