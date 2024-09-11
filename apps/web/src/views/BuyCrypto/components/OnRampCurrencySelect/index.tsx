@@ -112,7 +112,7 @@ export const BuyCryptoSelector = ({
         onUserInput?.(Number(pastedValue).toFixed(0))
       }
     },
-    [value, fiatCurrency, onUserInput],
+    [fiatCurrency, onUserInput],
   )
 
   return (

@@ -19,7 +19,6 @@ import {
 } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 
-import { getChainName } from '@pancakeswap/chains'
 import { getLegacyFarmConfig } from '@pancakeswap/farms'
 import { useQuery } from '@tanstack/react-query'
 import BigNumber from 'bignumber.js'
@@ -78,11 +77,6 @@ const LockedTokensContainer = styled(Flex)`
   border-radius: 16px;
   max-width: 280px;
 `
-
-const getFarmConfig = async (chainId: number) => {
-  const config = await import(`@pancakeswap/farms/constants/${getChainName(chainId)}`)
-  return config
-}
 
 const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ address: routeAddress }) => {
   const { isXs, isSm } = useMatchBreakpoints()

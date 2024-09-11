@@ -9,9 +9,7 @@ import {
 import { useIntersectionObserver } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import {
-  ArrowForwardIcon,
   Box,
-  Button,
   Flex,
   FlexLayout,
   Image,

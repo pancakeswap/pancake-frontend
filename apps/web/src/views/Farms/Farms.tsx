@@ -3,9 +3,7 @@ import { DeserializedFarm, FarmWithStakedValue, filterFarmsByQuery } from '@panc
 import { useIntersectionObserver } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import {
-  ArrowForwardIcon,
   Box,
-  Button,
   Flex,
   FlexLayout,
   Heading,
@@ -21,7 +19,7 @@ import {
   ToggleView,
 } from '@pancakeswap/uikit'
 
-import { FarmWidget, NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+import { FarmWidget } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import Page from 'components/Layout/Page'
 import { useActiveChainId } from 'hooks/useActiveChainId'

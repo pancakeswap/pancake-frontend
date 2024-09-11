@@ -44,28 +44,6 @@ export const ActionModal: React.FC<ActionModalProps> = ({
   const isFirstTimeRef = useRef(true)
   const [modalView, setModalView] = useState<QuestEditModalState>(QuestEditModalState.LOADING)
 
-  useEffect(() => {
-    const fetchSubmit = async () => {
-      isFirstTimeRef.current = false
-      await handleSubmit()
-    }
-
-    if (isFirstTimeRef.current) {
-      fetchSubmit()
-    }
-  }, [])
-
-  const finishedQuest: SingleQuestData = {
-    ...quest,
-    completionStatus: CompletionStatus.SCHEDULED,
-  }
-  const questComponent = <Quest mb="24px" width="100%" quest={quest} showStatus hideClick />
-  const finishedComponent = <Quest mb="24px" width="100%" quest={finishedQuest} showStatus hideClick />
-
-  const closeModal = () => {
-    setOpenModal(false)
-  }
-
   const handleSubmit = useCallback(async () => {
     setModalView(QuestEditModalState.LOADING)
     try {
@@ -79,6 +57,28 @@ export const ActionModal: React.FC<ActionModalProps> = ({
       setModalView(QuestEditModalState.FAILED)
     }
   }, [handleSave, isSubmitError])
+
+  useEffect(() => {
+    const fetchSubmit = async () => {
+      isFirstTimeRef.current = false
+      await handleSubmit()
+    }
+
+    if (isFirstTimeRef.current) {
+      fetchSubmit()
+    }
+  }, [handleSubmit])
+
+  const finishedQuest: SingleQuestData = {
+    ...quest,
+    completionStatus: CompletionStatus.SCHEDULED,
+  }
+  const questComponent = <Quest mb="24px" width="100%" quest={quest} showStatus hideClick />
+  const finishedComponent = <Quest mb="24px" width="100%" quest={finishedQuest} showStatus hideClick />
+
+  const closeModal = () => {
+    setOpenModal(false)
+  }
 
   const handleFinished = () => {
     closeModal()
