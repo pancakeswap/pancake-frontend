@@ -103,9 +103,9 @@ export const polygonZkEVMFarmConfig: UniversalFarmConfig[] = [
     pid: 23,
     chainId: ChainId.POLYGON_ZKEVM,
     protocol: Protocol.V3,
-    lpAddress: Pool.getAddress(polygonZkEvmTokens.pol, polygonZkEvmTokens.usdc, FeeAmount.LOW),
+    lpAddress: Pool.getAddress(polygonZkEvmTokens.pol, polygonZkEvmTokens.usdce, FeeAmount.LOW),
     token0: polygonZkEvmTokens.pol,
-    token1: polygonZkEvmTokens.usdc,
+    token1: polygonZkEvmTokens.usdce,
     feeAmount: FeeAmount.LOW,
   },
   {
