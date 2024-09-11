@@ -1,4 +1,4 @@
-import { AnimatePresence, AnimatePresenceProps, LazyMotion, LazyProps } from "framer-motion";
+import { AnimatePresence, AnimatePresenceProps, LazyMotion, LazyProps, domAnimation } from "framer-motion";
 import { FC } from "react";
 
 // optimized export for building animated framer components
@@ -9,5 +9,7 @@ const LazyAnimatePresence: FC<React.PropsWithChildren<LazyProps & AnimatePresenc
     </LazyMotion>
   );
 };
+
+export { domAnimation };
 
 export default LazyAnimatePresence;
