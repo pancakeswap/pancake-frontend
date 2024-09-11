@@ -5,7 +5,7 @@ import { createPublicClient, fallback, getAddress, http, parseAbiItem, PublicCli
 import * as CHAINS from 'viem/chains'
 import { describe, expect, test } from 'vitest'
 import { UNIVERSAL_FARMS } from '.'
-import { supportedChainIdV4 } from '../const'
+import { masterChefV3Addresses, supportedChainIdV4 } from '../const'
 import { UniversalFarmConfig, UniversalFarmConfigV3 } from '../types'
 
 const PUBLIC_NODES: Record<string, string[]> = {
@@ -62,6 +62,31 @@ describe.concurrent(
         v3Config.forEach((farm, index) => {
           const duplicatePid = v3Config.filter((f, i) => f.pid === farm.pid && i !== index)
           expect(duplicatePid, `Duplicate v3 pid ${getTestLpSymbol(farm)} on chain ${chainId}`).toEqual([])
+        })
+      }
+    })
+
+    test('v3 pid should be correct', async () => {
+      const configByChains = groupBy(UNIVERSAL_FARMS, 'chainId')
+
+      for await (const [chainId, configs_] of Object.entries(configByChains)) {
+        const client = publicClient[chainId]
+        const masterChefAddress = masterChefV3Addresses[Number(chainId) as keyof typeof masterChefV3Addresses]
+        if (!masterChefAddress) throw new Error(`No masterChefAddress for chain ${chainId}`)
+        const configs = configs_.filter((farm) => farm.protocol === 'v3')
+
+        const pidCalls = configs.map((farm) => ({
+          address: masterChefAddress,
+          functionName: 'v3PoolAddressPid',
+          abi: [parseAbiItem('function v3PoolAddressPid(address) view returns (uint256)')],
+          args: [farm.lpAddress],
+        }))
+        const pids = await client.multicall({
+          contracts: pidCalls,
+          allowFailure: false,
+        })
+        configs.forEach((farm, index) => {
+          expect(pids[index], `wrong pid ${getTestLpSymbol(farm)}`).toEqual(BigInt(farm.pid))
         })
       }
     })
