@@ -21,7 +21,7 @@ const SwitchIconButtonV2 = styled(IconButton)`
 const ButtonWrapper = styled.div`
   will-change: transform;
   &.switch-animation {
-    animation: ${switchAnimation} 0.25s forwards;
+    animation: ${switchAnimation} 0.25s forwards ease-in-out;
   }
 `;
 

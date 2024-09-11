@@ -1,6 +1,16 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Pair, Percent, Token } from '@pancakeswap/sdk'
-import { Button, ChevronDownIcon, Flex, Loading, Skeleton, Text, useModal } from '@pancakeswap/uikit'
+import {
+  Button,
+  ChevronDownIcon,
+  Flex,
+  FlexGap,
+  Loading,
+  Skeleton,
+  Text,
+  useModal,
+  WalletFilledV2Icon,
+} from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { CurrencyLogo, DoubleCurrencyLogo, Swap as SwapUI } from '@pancakeswap/widgets-internal'
 import { memo, useCallback, useMemo } from 'react'
@@ -16,15 +26,6 @@ import { useCurrencyBalance } from 'state/wallet/hooks'
 import { useAccount } from 'wagmi'
 import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
 
-// import AddToWalletButton from '../AddToWallet/AddToWalletButton'
-
-const InputRow = styled.div<{ selected: boolean }>`
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: center;
-  justify-content: flex-end;
-  padding: ${({ selected }) => (selected ? '0.75rem 0.5rem 0.75rem 1rem' : '0.75rem 0.75rem 0.75rem 1rem')};
-`
 const CurrencySelectButton = styled(Button).attrs({ variant: 'text', scale: 'sm' })`
   padding: 0px;
 `
@@ -156,7 +157,17 @@ const CurrencyInputPanelSimplify = memo(function CurrencyInputPanel({
       onInputBlur={onInputBlur}
       onUserInput={handleUserInput}
       loading={inputLoading}
-      top={title}
+      top={
+        <Flex justifyContent="space-between" alignItems="center" width="100%">
+          {title}
+          <FlexGap gap="2px" style={{ cursor: 'pointer' }} onClick={onMax}>
+            <WalletFilledV2Icon color="textSubtle" width="16px" />
+            <Text color="textSubtle" fontSize={12} fontWeight={600}>
+              {balance}
+            </Text>
+          </FlexGap>
+        </Flex>
+      }
       inputLeft={
         <>
           <Flex alignItems="center">
