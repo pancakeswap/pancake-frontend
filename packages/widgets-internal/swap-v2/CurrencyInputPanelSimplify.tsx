@@ -1,6 +1,6 @@
 import { AtomBox, SwapCSS } from "@pancakeswap/uikit";
 
-import { NumericalInput, NumericalInputProps } from "../swap/NumericalInput";
+import { NumericalInput, NumericalInputProps } from "./NumericalInput";
 
 interface CurrencyInputPanelProps extends Omit<NumericalInputProps, "onBlur"> {
   onInputBlur?: () => void;
@@ -69,16 +69,6 @@ export function CurrencyInputPanelSimplify({
           </AtomBox>
           {bottom}
         </AtomBox>
-
-        {/* {error ? (
-          <Text pb="8px" fontSize="12px" color="red">
-            {error}
-          </Text>
-        ) : null}
-
-        {disabled && (
-          <AtomBox role="presentation" position="absolute" inset="0px" backgroundColor="backgroundAlt" opacity="0.6" />
-        )} */}
       </AtomBox>
     </AtomBox>
   );

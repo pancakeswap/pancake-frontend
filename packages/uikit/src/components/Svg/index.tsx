@@ -216,6 +216,7 @@ export { default as WaitIcon } from "./Icons/Wait";
 export { default as WalletIcon } from "./Icons/Wallet";
 export { default as WalletConnectIcon } from "./Icons/WalletConnect";
 export { default as WalletFilledIcon } from "./Icons/WalletFilled";
+export { WalletFilledV2Icon } from "./Icons/WalletFilledV2";
 export { default as WalletRegisterIcon } from "./Icons/WalletRegister";
 export { default as WarningIcon } from "./Icons/Warning";
 export { default as YoutubeIcon } from "./Icons/YoutubeIcon";
