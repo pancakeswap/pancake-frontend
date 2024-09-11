@@ -3490,5 +3490,8 @@
   "For more information, please refer to Penpie’s": "আরো তথ্যের জন্য অনুগ্রহ করে দেখুন Penpie-এর",
   "Please exercise due caution when trading / providing liquidity for the mPENDLE token. The protocol recently encountered a": "mPENDLE টোকেনের জন্য ট্রেডিং / তারল্য প্রদান করার সময় অনুগ্রহ করে যথাযথ সতর্কতা অবলম্বন করুন। প্রোটোকল সম্প্রতি সম্মুখীন হয়েছে একটি ",
   "Caution - PNP Token": "সতর্কতা - PNP টোকেন",
-  "Please exercise due caution when trading / providing liquidity for the PNP token. The protocol recently encountered a": "PNP টোকেনের জন্য ট্রেডিং / তারল্য প্রদান করার সময় অনুগ্রহ করে যথাযথ সতর্কতা অবলম্বন করুন। প্রোটোকল সম্প্রতি সম্মুখীন হয়েছে একটি "
+  "Please exercise due caution when trading / providing liquidity for the PNP token. The protocol recently encountered a": "PNP টোকেনের জন্য ট্রেডিং / তারল্য প্রদান করার সময় অনুগ্রহ করে যথাযথ সতর্কতা অবলম্বন করুন। প্রোটোকল সম্প্রতি সম্মুখীন হয়েছে একটি ",
+  "Only have one token? Try Zap to automatically balance and provide V3 liquidity in one click.": "Only have one token? Try Zap to automatically balance and provide V3 liquidity in one click.",
+  "Click here to start": "Click here to start",
+  "Zap in for %lpSymbol%": "Zap in for %lpSymbol%"
 }
