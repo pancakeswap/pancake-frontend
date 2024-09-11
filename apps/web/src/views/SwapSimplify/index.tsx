@@ -62,7 +62,7 @@ export default function V4Swap() {
   )
 
   return (
-    <Page removePadding={isChartExpanded} hideFooterOnDesktop={isChartExpanded}>
+    <Page removePadding={isChartExpanded} hideFooterOnDesktop={isChartExpanded || true}>
       <Flex width={['328px', '100%']} height="100%" justifyContent="center" position="relative" alignItems="flex-start">
         {isDesktop && isChartSupported && (
           <PriceChartContainer
