@@ -44,7 +44,7 @@ export const useFarmPools = () => {
       if (f.protocol === Protocol.V3) {
         return {
           ...f,
-          isActiveFarm: isPoolStatusPending ? true : poolsStatus[f.chainId][f.lpAddress][0] > 0,
+          isActiveFarm: isPoolStatusPending ? true : poolsStatus[f.chainId]?.[f.lpAddress]?.[0] > 0,
         }
       }
       if (f.protocol === Protocol.V2 || f.protocol === Protocol.STABLE) {
@@ -52,8 +52,8 @@ export const useFarmPools = () => {
           ...f,
           isActiveFarm: isPoolsTimeFramePending
             ? true
-            : poolsTimeFrame[f.chainId][f.lpAddress].startTimestamp <= dayjs().unix() &&
-              poolsTimeFrame[f.chainId][f.lpAddress].endTimestamp > dayjs().unix(),
+            : poolsTimeFrame[f.chainId]?.[f.lpAddress]?.startTimestamp <= dayjs().unix() &&
+              poolsTimeFrame[f.chainId]?.[f.lpAddress]?.endTimestamp > dayjs().unix(),
         }
       }
       return f
