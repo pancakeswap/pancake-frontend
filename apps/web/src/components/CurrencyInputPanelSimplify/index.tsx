@@ -198,19 +198,19 @@ const CurrencyInputPanelSimplify = memo(function CurrencyInputPanel({
                   <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={16} margin />
                 ) : currency ? (
                   id === 'onramp-input' ? (
-                    <FiatLogo currency={currency} size="24px" style={{ marginRight: '8px' }} />
+                    <FiatLogo currency={currency} size="40px" style={{ marginRight: '8px' }} />
                   ) : (
-                    <CurrencyLogo currency={currency} size="24px" style={{ marginRight: '8px' }} />
+                    <CurrencyLogo currency={currency} size="40px" style={{ marginRight: '8px' }} />
                   )
                 ) : currencyLoading ? (
-                  <Skeleton width="24px" height="24px" variant="circle" />
+                  <Skeleton width="40px" height="40px" variant="circle" />
                 ) : null}
                 {currencyLoading ? null : pair ? (
-                  <Text id="pair" bold>
+                  <Text id="pair" bold fontSize="24px">
                     {pair?.token0.symbol}:{pair?.token1.symbol}
                   </Text>
                 ) : (
-                  <Text id="pair" bold>
+                  <Text id="pair" bold fontSize="24px">
                     {(currency && currency.symbol && currency.symbol.length > 10
                       ? `${currency.symbol.slice(0, 4)}...${currency.symbol.slice(
                           currency.symbol.length - 5,
@@ -226,14 +226,14 @@ const CurrencyInputPanelSimplify = memo(function CurrencyInputPanel({
         </>
       }
       bottom={
-        <Box position="absolute" bottom="0px" right="0px">
+        <Box position="absolute" bottom="5px" right="0px">
           {!!showUSDPrice && (
             <Flex justifyContent="flex-end" mr="1rem">
               <Flex maxWidth="200px">
                 {inputLoading ? (
                   <Loading width="14px" height="14px" />
                 ) : showUSDPrice && Number.isFinite(amountInDollar) ? (
-                  <Text fontSize="12px" color="textSubtle" ellipsis>
+                  <Text fontSize="14px" color="textSubtle" ellipsis>
                     {`~${amountInDollar ? formatNumber(amountInDollar) : 0} USD`}
                   </Text>
                 ) : null}
