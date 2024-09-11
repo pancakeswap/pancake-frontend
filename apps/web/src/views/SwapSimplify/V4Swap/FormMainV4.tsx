@@ -17,10 +17,10 @@ import { maxAmountSpend } from 'utils/maxAmountSpend'
 
 import { useAccount } from 'wagmi'
 import useWarningImport from '../../Swap/hooks/useWarningImport'
-import { FormContainer } from '../../Swap/V3Swap/components'
 import { RiskCheck } from '../../Swap/V3Swap/containers/RiskCheck'
 import { useIsWrapping } from '../../Swap/V3Swap/hooks'
 import { FlipButton } from './FlipButton'
+import { FormContainer } from './FormContainer'
 
 interface Props {
   inputAmount?: CurrencyAmount<Currency>
