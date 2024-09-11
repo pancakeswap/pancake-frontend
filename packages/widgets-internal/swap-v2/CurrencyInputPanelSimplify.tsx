@@ -44,6 +44,7 @@ export function CurrencyInputPanelSimplify({
             showBridgeWarning: !!showBridgeWarning,
             error: Boolean(error),
           })}
+          style={{ borderRadius: "24px" }}
         >
           <AtomBox
             display="flex"
