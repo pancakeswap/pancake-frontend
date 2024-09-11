@@ -18,7 +18,6 @@ import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { useAccount } from 'wagmi'
 import useWarningImport from '../../Swap/hooks/useWarningImport'
 import { FormContainer } from '../../Swap/V3Swap/components'
-import { Recipient } from '../../Swap/V3Swap/containers/Recipient'
 import { RiskCheck } from '../../Swap/V3Swap/containers/RiskCheck'
 import { useIsWrapping } from '../../Swap/V3Swap/hooks'
 import { FlipButton } from './FlipButton'
@@ -152,9 +151,9 @@ export function FormMain({ pricingAndSlippage, inputAmount, outputAmount, tradeL
         title={<Text fontSize={12}>{t('To')}</Text>}
       />
       <RiskCheck currency={outputCurrency ?? undefined} />
-      <Recipient />
-      {pricingAndSlippage}
-      {swapCommitButton}
+      {/* <Recipient /> */}
+      {/* {pricingAndSlippage}
+      {swapCommitButton} */}
     </FormContainer>
   )
 }

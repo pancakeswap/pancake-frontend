@@ -197,24 +197,6 @@ const CurrencyInputPanelSimplify = memo(function CurrencyInputPanel({
               </Flex>
             </CurrencySelectButton>
           </Flex>
-
-          {account && !hideBalanceComp && (
-            <Text
-              data-dd-action-name="Token balance"
-              onClick={!disabled ? onMax : undefined}
-              color="textSubtle"
-              fontSize="12px"
-              ellipsis
-              title={!hideBalance && !!currency ? t('Balance: %balance%', { balance: balance ?? t('Loading') }) : ' -'}
-              style={{ display: 'inline', cursor: 'pointer' }}
-            >
-              {!hideBalance && !!currency
-                ? (balance?.replace('.', '')?.length || 0) > 12
-                  ? balance
-                  : t('Balance: %balance%', { balance: balance ?? t('Loading') })
-                : ' -'}
-            </Text>
-          )}
         </>
       }
       bottom={

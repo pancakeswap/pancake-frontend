@@ -51,7 +51,7 @@ export function CurrencyInputPanelSimplify({
             fontSize="12px"
             lineHeight="16px"
             px="16px"
-            pt="12px"
+            py="12px"
             className="targetInput"
           >
             {inputLeft}

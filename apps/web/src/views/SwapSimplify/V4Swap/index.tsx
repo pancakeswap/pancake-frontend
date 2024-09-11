@@ -3,13 +3,7 @@ import { Box } from '@pancakeswap/uikit'
 import { useMemo } from 'react'
 import { MMLiquidityWarning } from 'views/Swap/MMLinkPools/components/MMLiquidityWarning'
 import { shouldShowMMLiquidityError } from 'views/Swap/MMLinkPools/utils/exchange'
-import {
-  BuyCryptoLink,
-  FormHeader,
-  MMTradeDetail,
-  PricingAndSlippage,
-  TradeDetails,
-} from '../../Swap/V3Swap/containers'
+import { BuyCryptoLink, MMTradeDetail, PricingAndSlippage, TradeDetails } from '../../Swap/V3Swap/containers'
 import { CommitButton } from '../../Swap/V3Swap/containers/CommitButton'
 import { useAllTypeBestTrade } from '../../Swap/V3Swap/hooks/useAllTypeBestTrade'
 import { useCheckInsufficientError } from '../../Swap/V3Swap/hooks/useCheckSufficient'
@@ -40,7 +34,7 @@ export function V4SwapForm() {
 
   return (
     <>
-      <FormHeader onRefresh={refreshTrade} refreshDisabled={refreshDisabled} />
+      {/* <FormHeader onRefresh={refreshTrade} refreshDisabled={refreshDisabled} /> */}
       <FormMain
         tradeLoading={isMMBetter ? false : !tradeLoaded}
         pricingAndSlippage={
