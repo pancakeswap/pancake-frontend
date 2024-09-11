@@ -16,6 +16,7 @@ import { VeCakeBanner } from '../VeCakeBanner'
 import WebNotificationBanner from '../WebNotificationBanner'
 import { ZksyncAirDropBanner } from '../ZksyncAirdropBanner'
 import useIsRenderCompetitionBanner from './useIsRenderCompetitionBanner'
+import { useIsRenderTgPredictionBotBanner } from './useIsRenderTgPredictionBotBanner'
 import useIsRenderUserBanner from './useIsRenderUserBanner'
 
 interface IBannerConfig {
@@ -39,6 +40,7 @@ interface IBannerConfig {
 export const useMultipleBannerConfig = () => {
   const isRenderCompetitionBanner = useIsRenderCompetitionBanner()
   const isRenderUserBanner = useIsRenderUserBanner()
+  const isRenderTgPredictionBotBanner = useIsRenderTgPredictionBotBanner()
 
   return useMemo(() => {
     const NO_SHUFFLE_BANNERS: IBannerConfig[] = [
@@ -47,7 +49,7 @@ export const useMultipleBannerConfig = () => {
         banner: <UserBanner />,
       },
       {
-        shouldRender: true,
+        shouldRender: isRenderTgPredictionBotBanner,
         banner: <TgPredictionBotBanner />,
       },
       {
