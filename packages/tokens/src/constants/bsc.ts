@@ -3301,4 +3301,12 @@ export const bscTokens = {
     'Liquid Staked BTC',
     'https://www.babylon.magpiexyz.io',
   ),
+  poolx: new ERC20Token(
+    ChainId.BSC,
+    '0xbAeA9aBA1454DF334943951d51116aE342eAB255',
+    18,
+    'POOLX',
+    'Poolz Finance',
+    'https://www.poolz.finance',
+  ),
 }
