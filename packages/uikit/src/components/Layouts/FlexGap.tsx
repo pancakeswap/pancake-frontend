@@ -1,5 +1,5 @@
 import { styled } from "styled-components";
-import { Flex, FlexProps } from "../Box";
+import { Flex, FlexProps, MotionFlex } from "../Box";
 
 export interface FlexGapProps extends FlexProps {
   gap?: string;
@@ -8,6 +8,12 @@ export interface FlexGapProps extends FlexProps {
 }
 
 const FlexGap = styled(Flex)<FlexGapProps>`
+  gap: ${({ gap }) => gap};
+  row-gap: ${({ rowGap }) => rowGap};
+  column-gap: ${({ columnGap }) => columnGap};
+`;
+
+export const MotionFlexGap = styled(MotionFlex)<FlexGapProps>`
   gap: ${({ gap }) => gap};
   row-gap: ${({ rowGap }) => rowGap};
   column-gap: ${({ columnGap }) => columnGap};

@@ -2,8 +2,9 @@ import { AtomBox, SwapCSS } from "@pancakeswap/uikit";
 
 import { NumericalInput, NumericalInputProps } from "./NumericalInput";
 
-interface CurrencyInputPanelProps extends Omit<NumericalInputProps, "onBlur"> {
+interface CurrencyInputPanelProps extends Omit<NumericalInputProps, "onBlur" | "OnFocus"> {
   onInputBlur?: () => void;
+  onInputFocus?: () => void;
   id: string;
   top?: React.ReactNode;
   bottom?: React.ReactNode;
@@ -14,6 +15,7 @@ export function CurrencyInputPanelSimplify({
   value,
   onUserInput,
   onInputBlur,
+  onInputFocus,
   top,
   bottom,
   id,
@@ -62,6 +64,7 @@ export function CurrencyInputPanelSimplify({
               className="token-amount-input"
               value={value}
               onBlur={onInputBlur}
+              onFocus={onInputFocus}
               onUserInput={(val) => {
                 onUserInput(val);
               }}

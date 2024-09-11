@@ -3,17 +3,17 @@ import { Currency, CurrencyAmount, Pair, Percent, Token } from '@pancakeswap/sdk
 import {
   Button,
   ChevronDownIcon,
+  domAnimation,
   Flex,
-  FlexGap,
+  LazyAnimatePresence,
   Loading,
   Skeleton,
   Text,
   useModal,
-  WalletFilledV2Icon,
 } from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { CurrencyLogo, DoubleCurrencyLogo, Swap as SwapUI } from '@pancakeswap/widgets-internal'
-import { memo, useCallback, useMemo } from 'react'
+import { memo, useCallback, useMemo, useState } from 'react'
 import { styled } from 'styled-components'
 import { safeGetAddress } from 'utils'
 
@@ -25,6 +25,8 @@ import { FiatLogo } from 'components/Logo/CurrencyLogo'
 import { useCurrencyBalance } from 'state/wallet/hooks'
 import { useAccount } from 'wagmi'
 import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
+import { AssetSettingButtonList } from './AssetSettingButtonList'
+import { WalletAssetDisplay } from './WalletAssetDisplay'
 
 const CurrencySelectButton = styled(Button).attrs({ variant: 'text', scale: 'sm' })`
   padding: 0px;
@@ -93,13 +95,14 @@ const CurrencyInputPanelSimplify = memo(function CurrencyInputPanel({
   hideBalanceComp,
 }: CurrencyInputPanelProps) {
   const { address: account } = useAccount()
-
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
   const { t } = useTranslation()
 
   const mode = id
   const token = pair ? pair.liquidityToken : currency?.isToken ? currency : null
   const tokenAddress = token ? safeGetAddress(token.address) : null
+
+  const [isInputFocus, setIsInputFocus] = useState(false)
 
   const amountInDollar = useStablecoinPriceAmount(
     showUSDPrice ? currency ?? undefined : undefined,
@@ -138,6 +141,14 @@ const CurrencyInputPanelSimplify = memo(function CurrencyInputPanel({
     },
     [onUserInput],
   )
+  const handleUserInputBlur = useCallback(() => {
+    onInputBlur?.()
+    setTimeout(() => setIsInputFocus(false), 300)
+  }, [onInputBlur])
+
+  const handleUserInputFocus = useCallback(() => {
+    setIsInputFocus(true)
+  }, [])
 
   const onCurrencySelectClick = useCallback(() => {
     if (!disableCurrencySelect) {
@@ -154,18 +165,21 @@ const CurrencyInputPanelSimplify = memo(function CurrencyInputPanel({
       disabled={disabled}
       error={error as boolean}
       value={value}
-      onInputBlur={onInputBlur}
+      onInputBlur={handleUserInputBlur}
+      onInputFocus={handleUserInputFocus}
       onUserInput={handleUserInput}
       loading={inputLoading}
       top={
-        <Flex justifyContent="space-between" alignItems="center" width="100%">
+        <Flex justifyContent="space-between" alignItems="center" width="100%" position="relative">
           {title}
-          <FlexGap gap="2px" style={{ cursor: 'pointer' }} onClick={onMax}>
-            <WalletFilledV2Icon color="textSubtle" width="16px" />
-            <Text color="textSubtle" fontSize={12} fontWeight={600}>
-              {balance}
-            </Text>
-          </FlexGap>
+
+          <LazyAnimatePresence features={domAnimation}>
+            {!isInputFocus || !onMax ? (
+              <WalletAssetDisplay balance={balance} onMax={onMax} />
+            ) : (
+              <AssetSettingButtonList onPercentInput={onPercentInput} onFocusChange={setIsInputFocus} />
+            )}
+          </LazyAnimatePresence>
         </Flex>
       }
       inputLeft={
