@@ -10,10 +10,8 @@ import { Field } from 'state/swap/actions'
 import { useSingleTokenSwapInfo, useSwapState } from 'state/swap/hooks'
 import Page from '../Page'
 import PriceChartContainer from '../Swap/components/Chart/PriceChartContainer'
-import { SwapSelection } from '../Swap/components/SwapSelection'
 import { StyledInputCurrencyWrapper, StyledSwapContainer } from '../Swap/styles'
 import { SwapFeaturesContext } from '../Swap/SwapFeaturesContext'
-import { SwapType } from '../Swap/types'
 import { V4SwapForm } from './V4Swap'
 
 export default function V4Swap() {
@@ -122,7 +120,7 @@ export default function V4Swap() {
         <Flex flexDirection="column">
           <StyledSwapContainer $isChartExpanded={isChartExpanded}>
             <StyledInputCurrencyWrapper mt={isChartExpanded ? '24px' : '0'}>
-              <SwapSelection swapType={SwapType.MARKET} />
+              {/* <SwapSelection swapType={SwapType.MARKET} /> */}
               <AppBody>
                 <V4SwapForm />
               </AppBody>
