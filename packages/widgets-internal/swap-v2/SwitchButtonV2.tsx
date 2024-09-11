@@ -9,13 +9,14 @@ const switchAnimation = keyframes`
   `;
 
 const SwitchIconButtonV2 = styled(IconButton)`
-  box-shadow: inset 0px -2px 0px rgba(0, 0, 0, 0.1);
+  background-color: ${({ theme }) => theme.colors.card};
+  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
+  width: 32px;
+  will-change: transform;
+  transition: transform 0.25s ease-in-out;
   &:hover {
-    background-color: ${({ theme }) => theme.colors.primary};
-    .icon-up-down {
-      display: block;
-      fill: white;
-    }
+    opacity: 1 !important;
+    transform: scale(1.1);
   }
 `;
 const ButtonWrapper = styled.div`
