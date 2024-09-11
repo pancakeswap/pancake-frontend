@@ -59,7 +59,7 @@ export const NumericalInput = memo(function InnerInput({
       minLength={1}
       maxLength={79}
       spellCheck="false"
-      style={{ fontWeight: 600 }}
+      style={{ fontWeight: 600, fontSize: "24px" }}
     />
   );
 });

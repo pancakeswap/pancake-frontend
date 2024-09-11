@@ -1,5 +1,5 @@
 import { Currency } from '@pancakeswap/sdk'
-import { BottomDrawer, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { BottomDrawer, Box, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { AppBody } from 'components/App'
 import { useRouter } from 'next/router'
 import { useContext, useEffect, useState } from 'react'
@@ -8,11 +8,16 @@ import { useCurrency } from 'hooks/Tokens'
 import { useSwapHotTokenDisplay } from 'hooks/useSwapHotTokenDisplay'
 import { Field } from 'state/swap/actions'
 import { useSingleTokenSwapInfo, useSwapState } from 'state/swap/hooks'
+import { styled } from 'styled-components'
 import Page from '../Page'
 import PriceChartContainer from '../Swap/components/Chart/PriceChartContainer'
-import { StyledInputCurrencyWrapper, StyledSwapContainer } from '../Swap/styles'
+import { StyledSwapContainer } from '../Swap/styles'
 import { SwapFeaturesContext } from '../Swap/SwapFeaturesContext'
 import { V4SwapForm } from './V4Swap'
+
+const Wrapper = styled(Box)`
+  width: 480px;
+`
 
 export default function V4Swap() {
   const { query } = useRouter()
@@ -96,35 +101,14 @@ export default function V4Swap() {
             setIsOpen={(isOpen) => setIsChartDisplayed?.(isOpen)}
           />
         )}
-        {/* {isDesktop && isSwapHotTokenDisplay && isHotTokenSupported && (
-          <HotTokenList handleOutputSelect={handleOutputSelect} />
-        )} */}
-        {/* <ModalV2
-          isOpen={!isDesktop && isSwapHotTokenDisplay && isHotTokenSupported}
-          onDismiss={() => setIsSwapHotTokenDisplay(false)}
-        >
-          <Modal
-            style={{ padding: 0 }}
-            title={t('Top Token')}
-            onDismiss={() => setIsSwapHotTokenDisplay(false)}
-            bodyPadding="0px"
-          >
-            <HotTokenList
-              handleOutputSelect={(newCurrencyOutput: Currency) => {
-                handleOutputSelect(newCurrencyOutput)
-                setIsSwapHotTokenDisplay(false)
-              }}
-            />
-          </Modal>
-        </ModalV2> */}
         <Flex flexDirection="column">
           <StyledSwapContainer $isChartExpanded={isChartExpanded}>
-            <StyledInputCurrencyWrapper mt={isChartExpanded ? '24px' : '0'}>
+            <Wrapper mt={isChartExpanded ? '24px' : '0'}>
               {/* <SwapSelection swapType={SwapType.MARKET} /> */}
               <AppBody>
                 <V4SwapForm />
               </AppBody>
-            </StyledInputCurrencyWrapper>
+            </Wrapper>
           </StyledSwapContainer>
         </Flex>
       </Flex>

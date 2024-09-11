@@ -11,7 +11,9 @@ const switchAnimation = keyframes`
 const SwitchIconButtonV2 = styled(IconButton)`
   background-color: ${({ theme }) => theme.colors.card};
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
-  width: 32px;
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
   will-change: transform;
   transition: transform 0.25s ease-in-out;
   &:hover {
@@ -41,7 +43,7 @@ export const SwitchButtonV2 = (props: ButtonProps) => {
       }}
     >
       <SwitchIconButtonV2 variant="light" scale="sm" {...props}>
-        <ArrowUpDownIcon className="icon-up-down" color="primary" />
+        <ArrowUpDownIcon className="icon-up-down" width={24} color="primary" />
       </SwitchIconButtonV2>
     </ButtonWrapper>
   );
