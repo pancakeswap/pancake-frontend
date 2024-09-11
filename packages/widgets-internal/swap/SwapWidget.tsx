@@ -2,7 +2,7 @@ import { styled } from "styled-components";
 
 import { ArrowDownIcon, ArrowUpDownIcon, ButtonProps, IconButton } from "@pancakeswap/uikit";
 import { CurrencyInputPanelSimplify } from "../swap-v2/CurrencyInputPanelSimplify";
-import { SwitchButtonV2 } from "../swap-v2/SwitchButtinV2";
+import { SwitchButtonV2 } from "../swap-v2/SwitchButtonV2";
 import { CurrencyInputHeader, CurrencyInputHeaderSubTitle, CurrencyInputHeaderTitle } from "./CurrencyInputHeader";
 import { CurrencyInputPanel } from "./CurrencyInputPanel";
 import { SwapFooter as Footer } from "./Footer";
@@ -21,17 +21,6 @@ const SwitchIconButton = styled(IconButton)`
       display: none;
       fill: white;
     }
-    .icon-up-down {
-      display: block;
-      fill: white;
-    }
-  }
-`;
-
-const SwitchIconButtonV2 = styled(IconButton)`
-  box-shadow: inset 0px -2px 0px rgba(0, 0, 0, 0.1);
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.primary};
     .icon-up-down {
       display: block;
       fill: white;
