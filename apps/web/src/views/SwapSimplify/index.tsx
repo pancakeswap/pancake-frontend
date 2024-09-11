@@ -71,7 +71,7 @@ export default function V4Swap() {
 
   return (
     <Page removePadding={isChartExpanded} hideFooterOnDesktop={isChartExpanded || true}>
-      <Flex width={['328px', '100%']} height="100%" justifyContent="center" position="relative" alignItems="flex-start">
+      <Flex width="100%" height="100%" justifyContent="center" position="relative" alignItems="flex-start">
         {isDesktop && isChartSupported && (
           <PriceChartContainer
             inputCurrencyId={inputCurrencyId}
@@ -104,8 +104,8 @@ export default function V4Swap() {
             setIsOpen={(isOpen) => setIsChartDisplayed?.(isOpen)}
           />
         )}
-        <Flex flexDirection="column">
-          <StyledSwapContainer $isChartExpanded={isChartExpanded}>
+        <Flex flexDirection="column" width="100%">
+          <StyledSwapContainer justifyContent="center" width="100%" $isChartExpanded={isChartExpanded}>
             <Wrapper mt={isChartExpanded ? '24px' : '0'}>
               {/* <SwapSelection swapType={SwapType.MARKET} /> */}
               <AppBody>
