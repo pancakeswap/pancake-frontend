@@ -36,7 +36,7 @@ export const isUserRejected = (err) => {
   if (err && typeof err === 'object') {
     if (
       ('code' in err && (err.code === 4001 || err.code === 'ACTION_REJECTED')) ||
-      ('cause' in err && 'code' in err.cause && err.cause.code === 4001)
+      ('cause' in err && err.cause && 'code' in err.cause && err.cause.code === 4001)
     ) {
       return true
     }
