@@ -23,9 +23,9 @@ export const AssetSettingButtonList: React.FC<{
   return (
     <Wrapper
       key="AssetSettingButtonList"
-      initial={{ opacity: 0, y: 0.8 }}
-      animate={{ opacity: 1, y: 0, transition: { opacity: { delay: 0.2 } } }}
-      exit={{ opacity: 0.8, y: 1 }}
+      initial={{ x: 30, opacity: 0 }}
+      animate={{ x: 0, opacity: 1 }}
+      exit={{ x: -30, opacity: 0 }}
       gap="8px"
       justifyContent="center"
       alignItems="center"
