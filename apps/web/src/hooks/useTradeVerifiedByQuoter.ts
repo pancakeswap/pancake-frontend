@@ -38,7 +38,7 @@ export function useTradeVerifiedByQuoter<P extends Params>(p: P): P {
         throw new Error('Fail to validate')
       }
       const quote = quotes.reduce<CurrencyAmount<Currency>>(
-        (total, q) => total.add(q!),
+        (total, q) => total.add(CurrencyAmount.fromRawAmount(quoteCurrency, q!.quotient)),
         CurrencyAmount.fromRawAmount(quoteCurrency, 0n),
       )
       return {
