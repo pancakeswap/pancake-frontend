@@ -21,6 +21,11 @@
   },
   {
     "chainId": 42161,
+    "address": "0x843aC8dc6D34AEB07a56812b8b36429eE46BDd07",
+    "link": "https://merkl.angle.money/arbitrum/pool/2/0x843aC8dc6D34AEB07a56812b8b36429eE46BDd07"
+  },
+  {
+    "chainId": 42161,
     "address": "0x4B89179dAfe5c36AE611208B5590FEf9153b7daa",
     "link": "https://merkl.angle.money/arbitrum/pool/2/0x4B89179dAfe5c36AE611208B5590FEf9153b7daa"
   }
