@@ -8,4 +8,4 @@ packages:
 
 catalog:
   viem: ^2.20.0
-  wagmi: ^2.12.7
+  wagmi: ^2.12.10
