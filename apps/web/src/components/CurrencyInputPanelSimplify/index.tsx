@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Currency, CurrencyAmount, Pair, Percent, Token } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Pair, Token } from '@pancakeswap/sdk'
 import {
   Box,
   Button,
@@ -14,7 +14,7 @@ import {
 } from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { CurrencyLogo, DoubleCurrencyLogo, Swap as SwapUI } from '@pancakeswap/widgets-internal'
-import { memo, useCallback, useMemo, useState } from 'react'
+import { memo, useCallback, useState } from 'react'
 import { styled } from 'styled-components'
 import { safeGetAddress } from 'utils'
 
@@ -70,11 +70,6 @@ const CurrencyInputPanelSimplify = memo(function CurrencyInputPanel({
   onInputBlur,
   onPercentInput,
   onMax,
-  showQuickInputButton = false,
-  showMaxButton,
-  maxAmount,
-  lpPercent,
-  label,
   onCurrencySelect,
   currency,
   disableCurrencySelect = false,
@@ -93,7 +88,6 @@ const CurrencyInputPanelSimplify = memo(function CurrencyInputPanel({
   currencyLoading,
   inputLoading,
   title,
-  hideBalanceComp,
 }: CurrencyInputPanelProps) {
   const { address: account } = useAccount()
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
@@ -127,15 +121,6 @@ const CurrencyInputPanelSimplify = memo(function CurrencyInputPanel({
     />,
   )
 
-  const percentAmount = useMemo(
-    () => ({
-      25: maxAmount ? maxAmount.multiply(new Percent(25, 100)).toExact() : undefined,
-      50: maxAmount ? maxAmount.multiply(new Percent(50, 100)).toExact() : undefined,
-      75: maxAmount ? maxAmount.multiply(new Percent(75, 100)).toExact() : undefined,
-    }),
-    [maxAmount],
-  )
-
   const handleUserInput = useCallback(
     (val: string) => {
       onUserInput(val)
@@ -144,7 +129,7 @@ const CurrencyInputPanelSimplify = memo(function CurrencyInputPanel({
   )
   const handleUserInputBlur = useCallback(() => {
     onInputBlur?.()
-    setTimeout(() => setIsInputFocus(false), 300)
+    setTimeout(() => setIsInputFocus(false), 100)
   }, [onInputBlur])
 
   const handleUserInputFocus = useCallback(() => {
@@ -156,8 +141,6 @@ const CurrencyInputPanelSimplify = memo(function CurrencyInputPanel({
       onPresentCurrencyModal()
     }
   }, [onPresentCurrencyModal, disableCurrencySelect])
-
-  const isAtPercentMax = (maxAmount && value === maxAmount.toExact()) || (lpPercent && lpPercent === '100')
 
   const balance = !hideBalance && !!currency ? formatAmount(selectedCurrencyBalance, 6) : undefined
   return (
