@@ -565,8 +565,8 @@ export const ethereumTokens = {
     ChainId.ETHEREUM,
     '0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf',
     8,
-    'Coinbase Wrapped BTC',
     'cbBTC',
+    'Coinbase Wrapped BTC',
     'https://www.coinbase.com/',
   ),
 }
