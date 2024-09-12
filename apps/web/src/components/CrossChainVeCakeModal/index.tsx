@@ -42,7 +42,8 @@ import { useProfileProxyWellSynced } from './hooks/useProfileProxyWellSynced'
 import { ArbitrumIcon, BinanceIcon, EthereumIcon, ZKsyncIcon } from './ChainLogos'
 import { NetWorkUpdateToDateDisplay } from './components/NetworkUpdateToDate'
 import { CROSS_CHAIN_CONFIG } from './constants'
-import { useCrossChianMessage } from './hooks/useCrossChainMessage'
+import { useCrossChainMessage } from './hooks/useCrossChainMessage'
+import { useTxnByChain } from './hooks/useTxnByChain'
 
 const StyledModalHeader = styled(ModalHeader)`
   padding: 0;
@@ -151,11 +152,8 @@ export const CrossChainVeCakeModal: React.FC<{
   const { balance: bnbBalance } = useGetBnbBalance()
 
   const [selectChainId, setSelectChainId] = useState<ChainId | undefined>(targetChainId || undefined)
-  const [txByChain, setTxByChain] = useState<Record<number, string>>({
-    [ChainId.ARBITRUM_ONE]: '',
-    [ChainId.ETHEREUM]: '',
-    [ChainId.ZKSYNC]: '',
-  })
+
+  const [txByChain, setTxByChain] = useTxnByChain()
 
   const [modalState, setModalState] = useState<'list' | 'ready' | 'submitted' | 'done'>('list')
   const [nativeFee, setNativeFee] = useState<bigint>(0n)
@@ -167,7 +165,7 @@ export const CrossChainVeCakeModal: React.FC<{
   const shouldNotSyncAgain = useMemo(() => {
     return (isVeCakeWillSync && isSynced) || Boolean(txByChain[selectChainId ?? -1])
   }, [isVeCakeWillSync, isSynced, txByChain, selectChainId])
-  const { data: crossChainMessage, isLoading: isCrossChainLoading } = useCrossChianMessage(
+  const { data: crossChainMessage, isLoading: isCrossChainLoading } = useCrossChainMessage(
     selectChainId,
     txByChain[selectChainId ?? -1],
   )
@@ -244,14 +242,15 @@ export const CrossChainVeCakeModal: React.FC<{
     },
     [
       account,
-      veCakeSenderV2Contract,
-      fetchWithCatchTxError,
       chain,
-      toastSuccess,
-      t,
       bnbBalance,
       hasProfile,
       isInitialized,
+      veCakeSenderV2Contract,
+      t,
+      setTxByChain,
+      toastSuccess,
+      fetchWithCatchTxError,
     ],
   )
   return (
@@ -394,7 +393,7 @@ const OtherChainsCard: React.FC<{
   const { t } = useTranslation()
   const { isSynced, isLoading } = useProfileProxyWellSynced(chainId)
   const { isVeCakeWillSync } = useMultichainVeCakeWellSynced(chainId)
-  const { data: crossChainMessage, isLoading: isCrossChainLoading } = useCrossChianMessage(chainId, hash)
+  const { data: crossChainMessage, isLoading: isCrossChainLoading } = useCrossChainMessage(chainId, hash)
   const { address: account } = useAccount()
   const isLayerZeroHashProcessing = useMemo(() => {
     if (isCrossChainLoading || crossChainMessage?.status === 'INFLIGHT') {
