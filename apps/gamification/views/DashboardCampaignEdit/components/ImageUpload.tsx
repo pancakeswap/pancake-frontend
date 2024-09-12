@@ -32,7 +32,7 @@ const MAX_FILE_SIZE = 2000000 // 2000000 Bytes = 2 MB
 
 export const ImageUpload = () => {
   const { t } = useTranslation()
-  const { state, updateValue } = useCampaignEdit()
+  const { state } = useCampaignEdit()
   const [images, setImages] = useState<ImageListType>([])
   const base64Image = state.thumbnail.url
   const imageUrlDisplay = useMemo(() => images?.[0]?.data_url ?? base64Image ?? '', [base64Image, images])

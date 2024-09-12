@@ -527,41 +527,6 @@ export const getNftsMarketData = async (
   }
 }
 
-const fetchWalletMarketData = async (walletNftsByCollection: {
-  [collectionAddress: string]: TokenIdWithCollectionAddress[]
-}): Promise<TokenMarketData[]> => {
-  const walletMarketDataRequests = Object.entries(walletNftsByCollection).map(
-    async ([collectionAddress, tokenIdsWithCollectionAddress]) => {
-      const tokenIdIn = tokenIdsWithCollectionAddress
-        .map((walletNft) => walletNft.tokenId)
-        .filter((x): x is string => x !== undefined)
-      const [nftsOnChainMarketData, nftsMarketData] = await Promise.all([
-        getNftsOnChainMarketData(collectionAddress as Address, tokenIdIn),
-        getNftsMarketData({
-          tokenId_in: tokenIdIn,
-          collection: collectionAddress.toLowerCase(),
-        }),
-      ])
-
-      return tokenIdIn
-        .map((tokenId) => {
-          const nftMarketData = nftsMarketData.find((tokenMarketData) => tokenMarketData.tokenId === tokenId)
-          const onChainMarketData = nftsOnChainMarketData.find(
-            (onChainTokenMarketData) => onChainTokenMarketData.tokenId === tokenId,
-          )
-
-          if (!nftMarketData && !onChainMarketData) return null
-
-          return { ...nftMarketData, ...onChainMarketData }
-        })
-        .filter(Boolean)
-    },
-  )
-
-  const walletMarketDataResponses = (await Promise.all(walletMarketDataRequests)) as TokenMarketData[][]
-  return walletMarketDataResponses.flat()
-}
-
 /**
  * Construct complete TokenMarketData entities with a users' wallet NFT ids and market data for their wallet NFTs
  * @param walletNfts TokenIdWithCollectionAddress

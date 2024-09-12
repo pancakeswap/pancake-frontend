@@ -45,12 +45,6 @@ export const AddHoldToken: React.FC<AddHoldTokenProps> = ({ task, isDrafted }) =
   const [minAmount, setMinAmount] = useState('')
   const { tasks, onTasksChange, deleteTask } = useQuestEdit()
 
-  useEffect(() => {
-    if (task.minAmount) {
-      setMinAmount(getFullDisplayBalance(new BigNumber(task.minAmount), selectedCurrency.decimals).toString())
-    }
-  }, [])
-
   const [onPresentDeleteModal] = useModal(<ConfirmDeleteModal handleDelete={() => deleteTask(task.sid)} />)
 
   const handleCurrencySelect = useCallback(
@@ -120,6 +114,12 @@ export const AddHoldToken: React.FC<AddHoldTokenProps> = ({ task, isDrafted }) =
     () => !isFirst && validateNumber(task.minHoldDays.toString()),
     [isFirst, task?.minHoldDays],
   )
+
+  useEffect(() => {
+    if (task.minAmount) {
+      setMinAmount(getFullDisplayBalance(new BigNumber(task.minAmount), selectedCurrency.decimals).toString())
+    }
+  }, [task?.minAmount, selectedCurrency?.decimals])
 
   return (
     <Flex flexDirection={['column']}>

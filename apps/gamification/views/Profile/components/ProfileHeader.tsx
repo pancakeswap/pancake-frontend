@@ -73,14 +73,6 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
   const isFetchingRef = useRef(false)
   const { fetchWithSiweAuth } = useSiwe()
 
-  useEffect(() => {
-    if (query.openSettingModal && query.openSettingModal === 'true') {
-      const newURL = `${window.location.origin}${window.location.pathname}`
-      window.history.pushState({}, '', newURL)
-      onPressSettingsModal()
-    }
-  }, [])
-
   // Handle when Oauth callback fail
   useEffect(() => {
     if (query.error) {
@@ -208,6 +200,14 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
     true,
     'socialHubModal',
   )
+
+  useEffect(() => {
+    if (query.openSettingModal && query.openSettingModal === 'true') {
+      const newURL = `${window.location.origin}${window.location.pathname}`
+      window.history.pushState({}, '', newURL)
+      onPressSettingsModal()
+    }
+  }, [onPressSettingsModal, query?.openSettingModal])
 
   const isConnectedAccount = safeGetAddress(account) === safeGetAddress(accountPath)
   const numNftCollected = !isNftLoading ? (nftCollected ? formatNumber(nftCollected, 0, 0) : '-') : null
