@@ -10,6 +10,8 @@ import { useRouter } from 'next/router'
 import { useCallback, useMemo } from 'react'
 import currencyId from 'utils/currencyId'
 import AddLiquidityV2FormProvider from 'views/AddLiquidity/AddLiquidityV2FormProvider'
+import { useCurrency } from 'hooks/Tokens'
+import { usePoolInfo } from 'state/farmsV4/state/extendPools/hooks'
 import { UniversalAddLiquidity } from '.'
 import { AprCalculatorV2 } from './components/AprCalculatorV2'
 import LiquidityFormProvider from './formViews/V3FormView/form/LiquidityFormProvider'
@@ -82,6 +84,8 @@ export function AddLiquidityV3Modal({
     [currency0, dismiss, waitForTransaction],
   )
 
+  const pool = usePoolInfo({ poolAddress, chainId })
+
   return (
     <ModalV2 isOpen={isOpen} onDismiss={dismiss} closeOnOverlayClick>
       <AddLiquidityV2FormProvider>
@@ -91,7 +95,7 @@ export function AddLiquidityV3Modal({
             title={t('Add Liquidity')}
             headerRightSlot={
               <AutoRow width="auto" gap="8px">
-                <AprCalculatorV2 poolAddress={poolAddress} chainId={chainId} showTitle={false} />
+                <AprCalculatorV2 pool={pool} showTitle={false} />
                 <GlobalSettings mode={SettingsMode.SWAP_LIQUIDITY} />
               </AutoRow>
             }

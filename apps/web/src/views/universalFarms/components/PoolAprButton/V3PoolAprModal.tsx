@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { PairDataTimeWindowEnum, UseModalV2Props } from '@pancakeswap/uikit'
-import { encodeSqrtRatioX96 } from '@pancakeswap/v3-sdk'
+import { encodeSqrtRatioX96, parseProtocolFees } from '@pancakeswap/v3-sdk'
 import { RoiCalculatorModalV2 } from '@pancakeswap/widgets-internal/roi'
 import BigNumber from 'bignumber.js'
 import { useCakePrice } from 'hooks/useCakePrice'
@@ -71,6 +71,11 @@ const AprModal: React.FC<V3PoolAprModalProps> = ({ modal, poolInfo, userPosition
       .times(100)
   }, [cakeApr?.cakePerYear, cakeApr?.poolWeight, cakePrice, lmPoolLiquidity, position?.liquidity])
 
+  const [protocolFee] = useMemo(
+    () => (pool?.feeProtocol && parseProtocolFees(pool.feeProtocol)) || [],
+    [pool?.feeProtocol],
+  )
+
   return (
     <RoiCalculatorModalV2
       {...modal}
@@ -98,6 +103,7 @@ const AprModal: React.FC<V3PoolAprModalProps> = ({ modal, poolInfo, userPosition
       cakeAprFactor={cakeAprFactor}
       prices={prices}
       priceSpan={priceTimeWindow}
+      protocolFee={protocolFee}
       onPriceSpanChange={setPriceTimeWindow}
     />
   )
