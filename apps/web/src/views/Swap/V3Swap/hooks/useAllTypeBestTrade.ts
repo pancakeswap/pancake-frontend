@@ -67,9 +67,11 @@ export const useAllTypeBestTrade = () => {
     }
   }, [ammCurrentTrade, isLoading, error])
 
+  // TODO: switch to use classic amm by default before launch
+  const hasAvailableDutchOrder = bestOrder.enabled && bestOrder.order?.type === OrderType.DUTCH_LIMIT
   const finalOrder = useBetterQuote(
-    classicAmmOrder,
-    bestOrder.enabled && bestOrder.order?.type === OrderType.DUTCH_LIMIT ? currentOrder : undefined,
+    hasAvailableDutchOrder ? undefined : classicAmmOrder,
+    hasAvailableDutchOrder ? currentOrder : undefined,
   )
 
   return {
