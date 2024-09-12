@@ -173,13 +173,14 @@ const CurrencyInputPanelSimplify = memo(function CurrencyInputPanel({
       top={
         <Flex justifyContent="space-between" alignItems="center" width="100%" position="relative">
           {title}
-
           <LazyAnimatePresence features={domAnimation}>
-            {!isInputFocus || !onMax ? (
-              <WalletAssetDisplay balance={balance} onMax={onMax} />
-            ) : (
-              <AssetSettingButtonList onPercentInput={onPercentInput} onFocusChange={setIsInputFocus} />
-            )}
+            {account ? (
+              !isInputFocus || !onMax ? (
+                <WalletAssetDisplay balance={balance} onMax={onMax} />
+              ) : (
+                <AssetSettingButtonList onPercentInput={onPercentInput} />
+              )
+            ) : null}
           </LazyAnimatePresence>
         </Flex>
       }
