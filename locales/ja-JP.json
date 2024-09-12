@@ -3493,5 +3493,9 @@
   "Please exercise due caution when trading / providing liquidity for the PNP token. The protocol recently encountered a": "PNPトークンのトレードまたは流動性の指定の際には、細心の注意を払ってください。このプロトコルは先日次の影響を受けています：",
   "Only have one token? Try Zap to automatically balance and provide V3 liquidity in one click.": "1つのトークンしか持っていないですか？ Zapを試して、ワンクリックで自動的にバランスを取り、V3 流動性を実現しましょう",
   "Click here to start": "こちらをクリックして開始",
-  "Zap in for %lpSymbol%": "%lpSymbol%でZapする"
+  "Zap in for %lpSymbol%": "%lpSymbol%でZapする",
+  "Predict BNB price every 5 minutes to win a share of the round’s prize pool": "Predict BNB price every 5 minutes to win a share of the round’s prize pool",
+  "Predict BNB Price and Celebrate Our 4th Birthday with $4,444 rewards": "Predict BNB Price and Celebrate Our 4th Birthday with $4,444 rewards",
+  "Play Now on Telegram": "Play Now on Telegram",
+  "Introducing PancakeSwap Prediction Telegram Bot": "Introducing PancakeSwap Prediction Telegram Bot"
 }
