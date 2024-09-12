@@ -31,7 +31,7 @@ export const WalletAssetDisplay: React.FC<{ onMax?: () => void; balance?: string
     <Wrapper
       key="WalletAssetDisplay"
       initial={{ x: -2, opacity: 0 }}
-      animate={{ x: 0, opacity: 1, transition: { duration: 0.2 } }}
+      animate={{ x: 0, opacity: 1, transition: { duration: 0.05, delay: 0.2 } }}
       exit={{ x: 2, opacity: 0 }}
       className={onMax ? 'clickable' : undefined}
       onClick={onMax}
