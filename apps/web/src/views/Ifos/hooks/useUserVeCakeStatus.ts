@@ -33,7 +33,7 @@ export const useUserVeCakeStatus = (account?: Address, targetChainId?: ChainId) 
   // Important:
   // From the perspective of the IFO, the profile needs to be synced AND be active.
   // because if its inactive, then the user needs to re-sync to participate in the public sale
-  // This is NOT a requirement for Claiming after the IFO expires. For that case, only check isVeCakeSynced if needed.
+  // This is NOT a requirement for Claiming after the IFO expires.
   // (When IFO expires, the profile is made inactive automatically)
   const { data: isProfileActive } = useQuery({
     queryKey: [account, 'profile-proxy-user-status'],
