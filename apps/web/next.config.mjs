@@ -101,6 +101,10 @@ const config = {
         source: '/.well-known/vercel/flags',
         destination: '/api/vercel/flags',
       },
+      ...process.env.VERCEL_ENV === 'production' ? [{
+        source: 'revamp-swap',
+        destination: 'swap',
+      },] : []
     ]
   },
   async headers() {
