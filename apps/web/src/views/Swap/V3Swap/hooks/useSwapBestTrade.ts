@@ -121,7 +121,14 @@ export function useSwapBestTrade({ maxHops }: Options = {}) {
     return stableSwap && isExactIn
   }, [stableSwap, isExactIn])
 
-  const { isLoading, trade, refresh, syncing, isStale, error } = useBestAMMTrade({
+  const {
+    isLoading,
+    trade,
+    refresh: refreshQuote,
+    syncing,
+    isStale,
+    error,
+  } = useBestAMMTrade({
     amount,
     currency: dependentCurrency,
     baseCurrency: independentCurrency,
@@ -134,13 +141,39 @@ export function useSwapBestTrade({ maxHops }: Options = {}) {
     type: 'auto',
     trackPerf: true,
   })
+  const [loading, setLoading] = useState(false)
+  const refresh = useCallback(async () => {
+    try {
+      setLoading(true)
+      const res = await refreshQuote()
+      return res
+    } finally {
+      setLoading(false)
+    }
+  }, [refreshQuote])
+
+  const isAutoRefetch = useMemo(
+    () =>
+      !loading &&
+      (isLoading || syncing) &&
+      amount &&
+      inputCurrency &&
+      outputCurrency &&
+      trade &&
+      amount.toExact() === (isExactIn ? trade.inputAmount.toExact() : trade.outputAmount.toExact()) &&
+      trade.inputAmount.currency.equals(inputCurrency) &&
+      trade.outputAmount.currency.equals(outputCurrency),
+    [loading, isLoading, syncing, amount, trade, isExactIn, inputCurrency, outputCurrency],
+  )
 
   return {
     refresh,
     syncing,
     isStale,
     error,
-    isLoading: useDeferredValue(Boolean(isLoading || (typedValue && !trade && !error))),
+    isLoading: useDeferredValue(
+      Boolean(((isLoading || syncing) && !isAutoRefetch) || (typedValue && !trade && !error)),
+    ),
     trade: typedValue ? trade : undefined,
   }
 }

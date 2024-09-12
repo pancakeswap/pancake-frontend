@@ -68,7 +68,7 @@ export const TradeDetails = memo(function TradeDetails({ loaded, order }: Props)
 
   const { isPaymasterAvailable } = usePaymaster()
 
-  if (isWrapping || !loaded || !order || !slippageAdjustedAmounts) {
+  if (isWrapping || !loaded || !order || !slippageAdjustedAmounts || !order.trade) {
     return null
   }
 

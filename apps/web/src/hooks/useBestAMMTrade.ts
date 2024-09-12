@@ -43,8 +43,8 @@ import { useExperimentalFeatureEnabled } from './useExperimentalFeatureEnabled'
 import { useMulticallGasLimit } from './useMulticallGasLimit'
 import { useSpeedQuote } from './useSpeedQuote'
 import { useTokenFee } from './useTokenFee'
-import { useGlobalWorker } from './useWorker'
 import { useTradeVerifiedByQuoter } from './useTradeVerifiedByQuoter'
+import { useGlobalWorker } from './useWorker'
 
 export class NoValidRouteError extends Error {
   constructor(message?: string) {
@@ -91,25 +91,35 @@ interface useBestAMMTradeOptions extends Options {
   type?: 'offchain' | 'quoter' | 'auto' | 'api'
 }
 
-type QuoteResult = ReturnType<ReturnType<typeof bestTradeHookFactory>>
+type QuoteTrade = Pick<
+  NonNullable<ReturnType<ReturnType<typeof bestTradeHookFactory>>['trade']>,
+  'inputAmount' | 'outputAmount' | 'tradeType'
+>
 
-function useBetterQuote<A extends QuoteResult, B extends QuoteResult>(quoteA: A, quoteB: B) {
+type QuoteResult = Pick<ReturnType<ReturnType<typeof bestTradeHookFactory>>, 'isLoading' | 'error'> & {
+  trade?: QuoteTrade
+}
+
+export function useBetterQuote<A extends QuoteResult, B extends QuoteResult>(quoteA: A, quoteB: B): A | B
+export function useBetterQuote<A extends QuoteResult, B extends QuoteResult>(quoteA: A | undefined, quoteB: B): A | B
+export function useBetterQuote<A extends QuoteResult, B extends QuoteResult>(quoteA: A, quoteB?: B): A | B
+export function useBetterQuote<A extends QuoteResult, B extends QuoteResult>(quoteA?: A, quoteB?: B) {
   return useMemo(() => {
-    if (!quoteB.trade) {
+    if (!quoteB?.trade || (!quoteA?.trade && !quoteB?.trade)) {
       return quoteA
     }
-    if (!quoteA.trade && quoteB.trade) {
+    if (!quoteA?.trade) {
       return quoteB
     }
     // prioritize quoteA. Use quoteB as fallback
     if (quoteA.isLoading && !quoteA.error) {
       return quoteA
     }
-    return quoteA.trade!.tradeType === TradeType.EXACT_INPUT
-      ? quoteB.trade?.outputAmount.greaterThan(quoteA.trade!.outputAmount)
+    return quoteA.trade.tradeType === TradeType.EXACT_INPUT
+      ? quoteB.trade.outputAmount.greaterThan(quoteA.trade!.outputAmount)
         ? quoteB
         : quoteA
-      : quoteB.trade?.inputAmount.lessThan(quoteA.trade!.inputAmount)
+      : quoteB.trade.inputAmount.lessThan(quoteA.trade!.inputAmount)
       ? quoteB
       : quoteA
   }, [quoteA, quoteB])
@@ -540,8 +550,6 @@ export function useBestTradeFromApi({
   const deferQuotient = useDebounce(deferQuotientRaw, 500)
   const { address } = useAccount()
   const { gasPrice } = useFeeDataWithGasPrice()
-
-  const [isXEnabled] = useUserXEnable()
 
   const previousEnabled = usePreviousValue(enabled)
 

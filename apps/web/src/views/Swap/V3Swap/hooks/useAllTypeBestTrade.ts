@@ -1,10 +1,12 @@
-import { ClassicOrder, OrderType } from '@pancakeswap/price-api-sdk'
+import { OrderType } from '@pancakeswap/price-api-sdk'
 import { SmartRouterTrade, V4Router } from '@pancakeswap/smart-router'
 import { Currency, TradeType } from '@pancakeswap/swap-sdk-core'
-import { useThrottleFn } from 'hooks/useThrottleFn'
 import { useCallback, useMemo, useRef, useState } from 'react'
-import { useDerivedBestTradeWithMM } from 'views/Swap/MMLinkPools/hooks/useDerivedSwapInfoWithMM'
-import { InterfaceOrder, MMOrder } from 'views/Swap/utils'
+
+import { useThrottleFn } from 'hooks/useThrottleFn'
+import { InterfaceOrder } from 'views/Swap/utils'
+import { useBetterQuote } from 'hooks/useBestAMMTrade'
+
 import { useSwapBestOrder, useSwapBestTrade } from './useSwapBestTrade'
 
 type Trade = SmartRouterTrade<TradeType> | V4Router.V4TradeWithoutGraph<TradeType>
@@ -13,18 +15,29 @@ export const useAllTypeBestTrade = () => {
   const [isQuotingPaused, setIsQuotingPaused] = useState(false)
   const bestOrder = useSwapBestOrder()
   const { isLoading, trade, refresh, syncing, isStale, error } = useSwapBestTrade()
-  const mm = useDerivedBestTradeWithMM<Trade>(trade)
   const lockedAMMTrade = useRef<Trade | undefined>()
-  const lockedMMTrade = useRef<ReturnType<typeof useDerivedBestTradeWithMM<Trade>>>()
-  const lockedOrder = useRef<InterfaceOrder<Currency, Currency> | undefined>()
+  const lockedOrder = useRef<
+    | (InterfaceOrder<Currency, Currency> & {
+        isLoading: typeof isLoading
+        error: typeof error
+      })
+    | undefined
+  >()
 
   const currentOrder = useMemo(() => {
+    const best = bestOrder.order
+      ? {
+          ...bestOrder.order,
+          isLoading: bestOrder.isLoading,
+          error: bestOrder.error ?? undefined,
+        }
+      : undefined
     if (!lockedOrder.current) {
-      lockedOrder.current = bestOrder.order
+      lockedOrder.current = best
     }
-    lockedOrder.current = isQuotingPaused ? lockedOrder.current : bestOrder.order
+    lockedOrder.current = isQuotingPaused ? lockedOrder.current : best
     return lockedOrder.current
-  }, [isQuotingPaused, bestOrder.order])
+  }, [isQuotingPaused, bestOrder.order, bestOrder.isLoading, bestOrder.error])
 
   const ammCurrentTrade = useMemo(() => {
     if (!lockedAMMTrade.current) {
@@ -33,13 +46,6 @@ export const useAllTypeBestTrade = () => {
     lockedAMMTrade.current = isQuotingPaused ? lockedAMMTrade.current : trade
     return lockedAMMTrade.current
   }, [isQuotingPaused, trade])
-  const mmCurrentTrade = useMemo(() => {
-    if (!lockedMMTrade.current) {
-      lockedMMTrade.current = mm
-    }
-    lockedMMTrade.current = isQuotingPaused ? lockedMMTrade.current : mm
-    return lockedMMTrade.current
-  }, [isQuotingPaused, mm])
 
   const pauseQuoting = useCallback(() => {
     setIsQuotingPaused(true)
@@ -56,33 +62,27 @@ export const useAllTypeBestTrade = () => {
     return {
       trade: ammCurrentTrade,
       type: OrderType.PCS_CLASSIC,
-    } as ClassicOrder
-  }, [ammCurrentTrade])
-
-  const classicMMOrder: MMOrder | undefined = useMemo(() => {
-    if (!mmCurrentTrade?.mmTradeInfo) {
-      return undefined
+      isLoading,
+      error: error ?? undefined,
     }
+  }, [ammCurrentTrade, isLoading, error])
 
-    return {
-      trade: mmCurrentTrade?.mmTradeInfo?.trade,
-      type: 'MM',
-      ...mmCurrentTrade,
-    }
-  }, [mmCurrentTrade])
+  const finalOrder = useBetterQuote(
+    classicAmmOrder,
+    bestOrder.enabled && bestOrder.order?.type === OrderType.DUTCH_LIMIT ? currentOrder : undefined,
+  )
 
   return {
-    bestOrder: (bestOrder.enabled
-      ? currentOrder
-      : mmCurrentTrade?.isMMBetter
-      ? classicMMOrder
-      : classicAmmOrder) as InterfaceOrder,
-    isMMBetter: !bestOrder.order && mmCurrentTrade?.isMMBetter,
-    mmTrade: mmCurrentTrade,
-    tradeLoaded: bestOrder.enabled ? !bestOrder.isLoading : !isLoading,
-    tradeError: bestOrder.enabled ? bestOrder.error : error,
-    refreshDisabled: bestOrder.enabled ? bestOrder.isLoading || !bestOrder.isStale : isLoading || syncing || !isStale,
-    refreshOrder: bestOrder.enabled ? refreshOrder : refreshTrade,
+    bestOrder: finalOrder as InterfaceOrder,
+    isMMBetter: false,
+    mmTrade: undefined,
+    tradeLoaded: !finalOrder?.isLoading,
+    tradeError: finalOrder?.error,
+    refreshDisabled:
+      finalOrder?.type === OrderType.DUTCH_LIMIT
+        ? bestOrder.isLoading || !bestOrder.isStale
+        : isLoading || syncing || !isStale,
+    refreshOrder: finalOrder?.type === OrderType.DUTCH_LIMIT ? refreshOrder : refreshTrade,
     refreshTrade,
     pauseQuoting,
     resumeQuoting,
