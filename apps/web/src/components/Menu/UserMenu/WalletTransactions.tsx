@@ -15,7 +15,7 @@ const WalletTransactions: React.FC<React.PropsWithChildren<WalletTransactionsPro
   const hasTransactions = !isEmpty(sortedTransactions)
 
   return (
-    <Box minHeight="120px">
+    <Box minHeight="120px" pb="1.5rem">
       {hasTransactions ? <RecentTransactions /> : <Text textAlign="center">{t('No recent transactions')}</Text>}
     </Box>
   )

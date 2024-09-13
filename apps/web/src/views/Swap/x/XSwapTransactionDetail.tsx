@@ -1,10 +1,24 @@
 import { useCountdown } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
-import { CheckmarkCircleIcon, CircleLoader, Column, ErrorIcon, Flex, Modal, RowBetween, Text } from '@pancakeswap/uikit'
+import truncateHash from '@pancakeswap/utils/truncateHash'
+import {
+  CheckmarkCircleIcon,
+  CircleLoader,
+  Column,
+  ErrorIcon,
+  Flex,
+  Modal,
+  RowBetween,
+  Text,
+  ScanLink,
+} from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
 import dayjs from 'dayjs'
 import { useToken } from 'hooks/Tokens'
 import { formatUnits } from 'viem'
+import { useMemo } from 'react'
+import { getBlockExploreLink } from 'utils'
+
 import { GetXOrderReceiptResponseOrder } from './api'
 
 export function XSwapTransactionDetailModal({ order }: { order: GetXOrderReceiptResponseOrder }) {
@@ -13,10 +27,17 @@ export function XSwapTransactionDetailModal({ order }: { order: GetXOrderReceipt
   const inputToken = useToken(order.input.token)
   const outputToken = useToken(order.outputs[0].token)
 
-  const pending = order.status === 'OPEN' || order.status === 'PENDING'
-  const filled = order.status === 'FILLED'
+  const pending = order.status === 'OPEN'
+  const filled = (order.status === 'PENDING' && Boolean(order.transactionHash)) || order.status === 'FILLED'
   const expired = order.status === 'EXPIRED'
   const isExactOut = order.input.endAmount !== order.input.startAmount
+  const { link, hash } = useMemo(
+    () => ({
+      link: getBlockExploreLink(order.transactionHash, 'transaction', order.chainId),
+      hash: order.transactionHash && truncateHash(order.transactionHash, 32, 0),
+    }),
+    [order.transactionHash, order.chainId],
+  )
 
   return (
     <Modal title={t('PancakeSwap X Order')}>
@@ -60,14 +81,20 @@ export function XSwapTransactionDetailModal({ order }: { order: GetXOrderReceipt
               <Text color="textSubtle" fontSize="12px">
                 {t('Output tokens have been sent to your wallet.')}
               </Text>
+              <ScanLink color="textSubtle" fontSize="12px" href={link} style={{ alignSelf: 'center' }}>
+                {hash}
+              </ScanLink>
             </Column>
           )}
           {expired && (
-            <Text color="textSubtle" fontSize="12px">
-              {t(
-                'We are having some trouble filling your order. Please retry.No gas cost or fee will be charged on failed orders.',
-              )}
-            </Text>
+            <Column>
+              <Text color="textSubtle" fontSize="12px">
+                {t('We are having some trouble filling your order. Please retry.')}
+              </Text>
+              <Text color="textSubtle" fontSize="12px">
+                {t('No gas cost or fee will be charged on failed orders.')}
+              </Text>
+            </Column>
           )}
         </Column>
         {inputToken && outputToken && (
@@ -104,5 +131,7 @@ function RemainingTime({ deadline }: { deadline: string }) {
     return null
   }
 
-  return t('%time% remaining', { time: `${countdown.minutes}:${countdown.seconds}` })
+  return t('%time% remaining', {
+    time: `${String(countdown.minutes).padStart(2, '0')}:${String(countdown.seconds).padStart(2, '0')}`,
+  })
 }

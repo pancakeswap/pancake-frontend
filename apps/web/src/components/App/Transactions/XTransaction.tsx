@@ -1,5 +1,4 @@
-import { ModalV2, useModalV2, ChevronRightIcon } from '@pancakeswap/uikit'
-
+import { ModalV2, useModalV2, ChevronRightIcon, Text, FlexGap } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { useToken } from 'hooks/Tokens'
 import { useMemo } from 'react'
@@ -12,19 +11,21 @@ import {
   TransactionListItemTitle,
   TransactionStatus,
 } from '@pancakeswap/widgets-internal'
+import { useCountdown } from '@pancakeswap/hooks'
+import dayjs from 'dayjs'
 
 export function XTransaction({ order }: { order: GetXOrderReceiptResponseOrder }) {
   const { t } = useTranslation()
   const modal = useModalV2()
   const status = useMemo(() => {
-    if (order.status === 'OPEN' || order.status === 'PENDING') {
+    if (order.status === 'OPEN') {
       return TransactionStatus.Pending
     }
-    if (order.status === 'FILLED') {
+    if ((order.status === 'PENDING' && order.transactionHash) || order.status === 'FILLED') {
       return TransactionStatus.Success
     }
     return TransactionStatus.Failed
-  }, [order.status])
+  }, [order.status, order.transactionHash])
 
   const inputToken = useToken(order.input.token)
   const outputToken = useToken(order.outputs[0].token)
@@ -48,7 +49,12 @@ export function XTransaction({ order }: { order: GetXOrderReceiptResponseOrder }
         onClick={modal.onOpen}
         status={status}
         title={<TransactionListItemTitle>PancakeSwap X</TransactionListItemTitle>}
-        action={<ChevronRightIcon style={{ cursor: 'pointer' }} fontSize="1.25rem" onClick={modal.onOpen} />}
+        action={
+          <FlexGap gap="0.25rem" justifyContent="flex-end">
+            <Countdown to={order.deadline} />
+            <ChevronRightIcon style={{ cursor: 'pointer' }} fontSize="1.25rem" onClick={modal.onOpen} />
+          </FlexGap>
+        }
       >
         <TransactionListItemDesc>
           {t(text, {
@@ -63,5 +69,18 @@ export function XTransaction({ order }: { order: GetXOrderReceiptResponseOrder }
         <XSwapTransactionDetailModal order={order} />
       </ModalV2>
     </>
+  )
+}
+
+function Countdown({ to }: { to?: number | string }) {
+  const countdown = useCountdown(dayjs(to).unix())
+
+  if (!countdown) {
+    return null
+  }
+  return (
+    <Text mr="0.25rem">
+      {String(countdown.minutes).padStart(2, '0')}:{String(countdown.seconds).padStart(2, '0')}
+    </Text>
   )
 }

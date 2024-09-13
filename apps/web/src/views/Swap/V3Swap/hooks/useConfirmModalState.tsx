@@ -27,6 +27,8 @@ import {
   TransactionReceiptNotFoundError,
   erc20Abi,
 } from 'viem'
+import { useToast } from '@pancakeswap/uikit'
+import { ToastDescriptionWithTx } from 'components/Toast'
 import { isClassicOrder, isXOrder } from 'views/Swap/utils'
 import { waitForXOrderReceipt } from 'views/Swap/x/api'
 import { useSendXOrder } from 'views/Swap/x/useSendXOrder'
@@ -133,6 +135,7 @@ const useConfirmActions = (
   const [txHash, setTxHash] = useState<Hex | undefined>(undefined)
   const [orderHash, setOrderHash] = useState<Hex | undefined>(undefined)
   const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined)
+  const { toastSuccess, toastError } = useToast()
 
   const resetState = useCallback(() => {
     setConfirmState(ConfirmModalState.REVIEWING)
@@ -291,7 +294,14 @@ const useConfirmActions = (
       },
       showIndicator: true,
     }
-  }, [nativeWrap, order?.trade.inputAmount.quotient, retryWaitForTransaction, showError, txHash])
+  }, [
+    nativeWrap,
+    order?.trade.inputAmount.quotient,
+    retryWaitForTransaction,
+    showError,
+    txHash,
+    wrappedBalance?.quotient,
+  ])
 
   const approveStep = useMemo(() => {
     return {
@@ -433,6 +443,12 @@ const useConfirmActions = (
             if (receipt.transactionHash) {
               setTxHash(receipt.transactionHash)
               setConfirmState(ConfirmModalState.COMPLETED)
+              toastSuccess(
+                t('Success!'),
+                <ToastDescriptionWithTx txHash={receipt.transactionHash} txChainId={xOrder.chainId}>
+                  {t('Swap order filled')}
+                </ToastDescriptionWithTx>,
+              )
             }
           }
         } catch (error: any) {
@@ -440,13 +456,15 @@ const useConfirmActions = (
           if (userRejectedError(error)) {
             showError('Transaction rejected')
           } else {
-            showError(typeof error === 'string' ? error : (error as any)?.message)
+            const errorMsg = typeof error === 'string' ? error : (error as any)?.message
+            showError(errorMsg)
+            toastError(t('Failed'), errorMsg)
           }
         }
       },
       showIndicator: false,
     }
-  }, [order, resetState, sendXOrder, showError, nativeCurrency])
+  }, [t, order, resetState, sendXOrder, showError, nativeCurrency, toastSuccess, toastError])
 
   const actions = useMemo(() => {
     return {

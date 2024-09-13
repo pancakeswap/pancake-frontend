@@ -74,60 +74,58 @@ export function RecentTransactions() {
   return (
     <>
       {account ? (
-        <ModalBody>
-          {xOrders.length > 0 || hasTransactions ? (
-            <>
-              <AutoRow mb="1rem" style={{ justifyContent: 'space-between' }}>
-                <Text color="secondary" fontSize="12px" textTransform="uppercase" fontWeight="bold">
-                  {t('Recent Transactions')}
-                </Text>
-                {hasTransactions && (
-                  <Button variant="tertiary" scale="xs" onClick={clearAllTransactionsCallback}>
-                    {t('clear all')}
-                  </Button>
-                )}
-              </AutoRow>
-              {hasTransactions
-                ? Object.entries(sortedRecentTransactions).map(([chainId_, transactions]) => {
-                    let content = <></>
+        xOrders.length > 0 || hasTransactions ? (
+          <>
+            <AutoRow mb="1rem" style={{ justifyContent: 'space-between' }}>
+              <Text color="secondary" fontSize="12px" textTransform="uppercase" fontWeight="bold">
+                {t('Recent Transactions')}
+              </Text>
+              {hasTransactions && (
+                <Button variant="tertiary" scale="xs" onClick={clearAllTransactionsCallback}>
+                  {t('clear all')}
+                </Button>
+              )}
+            </AutoRow>
+            {hasTransactions
+              ? Object.entries(sortedRecentTransactions).map(([chainId_, transactions]) => {
+                  let content = <></>
 
-                    const chainIdNumber = Number(chainId_)
+                  const chainIdNumber = Number(chainId_)
 
-                    if (chainIdNumber === chainId) {
-                      content = (
-                        <TransactionWithX
-                          transactions={Object.values(transactions)}
-                          xOrders={xOrders}
-                          chainId={chainIdNumber}
-                        />
-                      )
-                    } else {
-                      content = (
-                        <Flex flexDirection="column">
-                          {Object.values(transactions).map((tx) => {
-                            return <Transaction key={tx.hash + tx.addedTime} tx={tx} chainId={chainIdNumber} />
-                          })}
-                        </Flex>
-                      )
-                    }
-
-                    return (
-                      <div key={`transactions#${chainIdNumber}`}>
-                        <AutoRow mb="1rem" style={{ justifyContent: 'space-between' }}>
-                          <Text fontSize="12px" color="textSubtle" mb="4px">
-                            {chains.find((c) => c.id === chainIdNumber)?.name ?? 'Unknown network'}
-                          </Text>
-                        </AutoRow>
-                        {content}
-                      </div>
+                  if (chainIdNumber === chainId) {
+                    content = (
+                      <TransactionWithX
+                        transactions={Object.values(transactions)}
+                        xOrders={xOrders}
+                        chainId={chainIdNumber}
+                      />
                     )
-                  })
-                : xOrders.map((order) => <XTransaction key={order.item.hash} order={order.item} />)}
-            </>
-          ) : (
-            <Text>{t('No recent transactions')}</Text>
-          )}
-        </ModalBody>
+                  } else {
+                    content = (
+                      <Flex flexDirection="column">
+                        {Object.values(transactions).map((tx) => {
+                          return <Transaction key={tx.hash + tx.addedTime} tx={tx} chainId={chainIdNumber} />
+                        })}
+                      </Flex>
+                    )
+                  }
+
+                  return (
+                    <div key={`transactions#${chainIdNumber}`}>
+                      <AutoRow mb="1rem" style={{ justifyContent: 'space-between' }}>
+                        <Text fontSize="12px" color="textSubtle" mb="4px">
+                          {chains.find((c) => c.id === chainIdNumber)?.name ?? 'Unknown network'}
+                        </Text>
+                      </AutoRow>
+                      {content}
+                    </div>
+                  )
+                })
+              : xOrders.map((order) => <XTransaction key={order.item.hash} order={order.item} />)}
+          </>
+        ) : (
+          <Text>{t('No recent transactions')}</Text>
+        )
       ) : (
         <ConnectWalletButton />
       )}
@@ -140,7 +138,9 @@ const TransactionsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> =
 
   return (
     <Modal title={t('Recent Transactions')} headerBackground="gradientCardHeader" onDismiss={onDismiss}>
-      <RecentTransactions />
+      <ModalBody>
+        <RecentTransactions />
+      </ModalBody>
     </Modal>
   )
 }
