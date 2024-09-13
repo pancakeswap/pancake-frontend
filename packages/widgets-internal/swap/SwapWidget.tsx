@@ -1,8 +1,6 @@
 import { styled } from "styled-components";
 
 import { ArrowDownIcon, ArrowUpDownIcon, ButtonProps, IconButton } from "@pancakeswap/uikit";
-import { CurrencyInputPanelSimplify } from "../swap-v2/CurrencyInputPanelSimplify";
-import { SwitchButtonV2 } from "../swap-v2/SwitchButtonV2";
 import { CurrencyInputHeader, CurrencyInputHeaderSubTitle, CurrencyInputHeaderTitle } from "./CurrencyInputHeader";
 import { CurrencyInputPanel } from "./CurrencyInputPanel";
 import { SwapFooter as Footer } from "./Footer";
@@ -40,12 +38,10 @@ export {
   CurrencyInputHeaderSubTitle,
   CurrencyInputHeaderTitle,
   CurrencyInputPanel,
-  CurrencyInputPanelSimplify,
   Footer,
   Info,
   InfoLabel,
   Page,
   SwitchButton,
-  SwitchButtonV2,
   TradePrice,
 };

@@ -1,5 +1,5 @@
 import { AutoColumn, Button } from '@pancakeswap/uikit'
-import { Swap as SwapUI } from '@pancakeswap/widgets-internal'
+import { SwapUIV2 } from '@pancakeswap/widgets-internal'
 
 import { useTranslation } from '@pancakeswap/localization'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
@@ -44,7 +44,7 @@ export const FlipButton = memo(function FlipButton() {
     <AutoColumn justify="space-between" position="relative">
       <Line />
       <AutoRow justify={isExpertMode ? 'space-between' : 'center'} style={{ padding: '0 1rem', marginTop: '1em' }}>
-        <SwapUI.SwitchButtonV2 onClick={onFlip} />
+        <SwapUIV2.SwitchButtonV2 onClick={onFlip} />
         {allowRecipient && recipient === null ? (
           <Button
             variant="text"
