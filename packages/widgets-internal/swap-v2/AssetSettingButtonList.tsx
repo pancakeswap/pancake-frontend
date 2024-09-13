@@ -1,24 +1,24 @@
-import { MotionFlexGap, Text } from '@pancakeswap/uikit'
-import { memo } from 'react'
-import { styled } from 'styled-components'
+import { MotionFlexGap, Text } from "@pancakeswap/uikit";
+import { memo } from "react";
+import { styled } from "styled-components";
 
 const Divider = styled.div`
   width: 1px;
   background-color: ${({ theme }) => theme.colors.cardBorder};
   height: 16px;
-`
+`;
 
 const Wrapper = styled(MotionFlexGap)`
   position: absolute;
   top: 0;
   right: 0px;
-`
+`;
 
-const config = [25, 50, 100]
+const config = [25, 50, 100];
 
 export const AssetSettingButtonList: React.FC<{
-  onPercentInput?: (percent: number) => void
-  onFocusChange?: (focus: boolean) => void
+  onPercentInput?: (percent: number) => void;
+  onFocusChange?: (focus: boolean) => void;
 }> = memo(({ onPercentInput, onFocusChange }) => {
   return (
     <Wrapper
@@ -38,20 +38,20 @@ export const AssetSettingButtonList: React.FC<{
               fontSize={12}
               key={`AssetSettingButtonList${percent}`}
               onClick={(e) => {
-                e.preventDefault()
-                e.stopPropagation()
-                onFocusChange?.(false)
-                onPercentInput?.(percent)
+                e.preventDefault();
+                e.stopPropagation();
+                onFocusChange?.(false);
+                onPercentInput?.(percent);
               }}
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: "pointer" }}
               fontWeight={600}
             >
-              {percent === 100 ? 'MAX' : `${percent}%`}
+              {percent === 100 ? "MAX" : `${percent}%`}
             </Text>
             {index !== config.length - 1 && <Divider />}
           </>
-        )
+        );
       })}
     </Wrapper>
-  )
-})
+  );
+});

@@ -13,7 +13,7 @@ import {
   useModal,
 } from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
-import { CurrencyLogo, DoubleCurrencyLogo, Swap as SwapUI } from '@pancakeswap/widgets-internal'
+import { CurrencyLogo, DoubleCurrencyLogo, SwapUIV2 } from '@pancakeswap/widgets-internal'
 import { memo, useCallback, useState } from 'react'
 import { styled } from 'styled-components'
 import { safeGetAddress } from 'utils'
@@ -26,8 +26,6 @@ import { FiatLogo } from 'components/Logo/CurrencyLogo'
 import { useCurrencyBalance } from 'state/wallet/hooks'
 import { useAccount } from 'wagmi'
 import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
-import { AssetSettingButtonList } from './AssetSettingButtonList'
-import { WalletAssetDisplay } from './WalletAssetDisplay'
 
 const CurrencySelectButton = styled(Button).attrs({ variant: 'text', scale: 'sm' })`
   padding: 0px;
@@ -144,7 +142,7 @@ const CurrencyInputPanelSimplify = memo(function CurrencyInputPanel({
 
   const balance = !hideBalance && !!currency ? formatAmount(selectedCurrencyBalance, 6) : undefined
   return (
-    <SwapUI.CurrencyInputPanelSimplify
+    <SwapUIV2.CurrencyInputPanelSimplify
       id={id}
       disabled={disabled}
       error={error as boolean}
@@ -159,9 +157,9 @@ const CurrencyInputPanelSimplify = memo(function CurrencyInputPanel({
           <LazyAnimatePresence mode="wait" features={domAnimation}>
             {account ? (
               !isInputFocus || !onMax ? (
-                <WalletAssetDisplay balance={balance} onMax={onMax} />
+                <SwapUIV2.WalletAssetDisplay balance={balance} onMax={onMax} />
               ) : (
-                <AssetSettingButtonList onPercentInput={onPercentInput} />
+                <SwapUIV2.AssetSettingButtonList onPercentInput={onPercentInput} />
               )
             ) : null}
           </LazyAnimatePresence>
