@@ -5,6 +5,7 @@ import { formatBigInt, getBalanceNumber } from '@pancakeswap/utils/formatBalance
 import { Ifo } from '@pancakeswap/widgets-internal'
 import { useCallback, useMemo, useState } from 'react'
 import { Address } from 'viem'
+import useGetPublicIfoV8Data from 'views/Ifos/hooks/v8/useGetPublicIfoData'
 import { useAccount } from 'wagmi'
 
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -40,6 +41,9 @@ export function CrossChainVeCakeCard({ ifoAddress }: Props) {
 
   const { activeIfo } = useActiveIfoConfig()
 
+  // TODO: Consider using tanstack query inside the hook
+  const publicIfoData = useGetPublicIfoV8Data(activeIfo!)
+
   const targetChainId = useMemo(() => activeIfo?.chainId || chainId, [activeIfo, chainId])
 
   const cakePrice = useCakePrice()
@@ -71,7 +75,7 @@ export function CrossChainVeCakeCard({ ifoAddress }: Props) {
 
   const hasVeCakeOnBSC = useMemo(() => veCakeOnBSC.gt(0), [veCakeOnBSC])
 
-  const { isSynced } = useUserVeCakeStatus(account, targetChainId)
+  const { isSynced } = useUserVeCakeStatus(account, targetChainId, publicIfoData && publicIfoData.endTimestamp)
 
   // To be synced for the first time
   const toBeSynced = useMemo(() => veCakeOnBSC.gt(0) && veCakeOnTargetChain.eq(0), [veCakeOnBSC, veCakeOnTargetChain])
@@ -104,6 +108,8 @@ export function CrossChainVeCakeCard({ ifoAddress }: Props) {
 
   const hasICake = useMemo(() => creditBN && creditBN.toNumber() > 0, [creditBN])
   const hasVeCake = useMemo(() => veCake && veCake.toNumber() > 0, [veCake])
+
+  console.log('useUserIfoInfo', { creditBN: creditBN?.toString(), veCake: veCake?.toString() })
 
   const handleSwitchNetworkSuccess = useCallback(() => {
     setIsNetworkModalOpen(false)

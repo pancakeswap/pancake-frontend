@@ -27,8 +27,14 @@ export const getProfileProxyUserStatus = async (account?: Address, targetChainId
   }
 }
 
-export const useUserVeCakeStatus = (account?: Address, targetChainId?: ChainId) => {
-  const { isVeCakeWillSync: isVeCakeSynced } = useMultichainVeCakeWellSynced(targetChainId)
+export const useUserVeCakeStatus = (account?: Address, targetChainId?: ChainId, targetTime?: number) => {
+  const {
+    isVeCakeWillSync: isVeCakeSynced,
+    bscBalance,
+    bscProxyBalance,
+    targetChainBalance,
+    targetChainProxyBalance,
+  } = useMultichainVeCakeWellSynced(targetChainId, targetTime)
 
   // Important:
   // From the perspective of the IFO, the profile needs to be synced AND be active.
@@ -48,5 +54,9 @@ export const useUserVeCakeStatus = (account?: Address, targetChainId?: ChainId) 
     isSynced,
     isVeCakeSynced: Boolean(isVeCakeSynced),
     isProfileActive: Boolean(isProfileActive),
+    bscBalance,
+    bscProxyBalance,
+    targetChainBalance,
+    targetChainProxyBalance,
   }
 }
