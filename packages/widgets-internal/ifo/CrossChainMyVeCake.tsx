@@ -1,12 +1,22 @@
 import { ChainId } from "@pancakeswap/chains";
 import { useTranslation } from "@pancakeswap/localization";
-import { Box, BoxProps, Button, Flex, FlexGap, LinkIcon, Tag, Text } from "@pancakeswap/uikit";
+import {
+  Box,
+  BoxProps,
+  Button,
+  Flex,
+  FlexGap,
+  LinkIcon,
+  LinkPlusIcon,
+  LinkSlashedIcon,
+  Tag,
+  Text,
+} from "@pancakeswap/uikit";
 import BigNumber, { BigNumber as BN } from "bignumber.js";
 import { useMemo } from "react";
 import { BalanceDisplay } from "./BalanceDisplay";
 import { ChainLogo } from "./ChainLogo";
 import { ChainNameMap, IfoChainId } from "./constants";
-import { LinkPlusIcon, LinkSlashedIcon } from "./icons";
 import { Divider, GreyCard, OutlineTag } from "./styles";
 
 const SyncedBadge = () => {
@@ -37,7 +47,7 @@ const OutdatedSyncBadge = () => {
   const { t } = useTranslation();
   return (
     <Tag variant="textDisabled" scale="sm" style={{ cursor: "default" }}>
-      <LinkSlashedIcon color="lime" width="16px" mt="2px" mr="4px" />
+      <LinkSlashedIcon width="16px" mt="2px" mr="4px" />
       <Text ml="2px" pr="4px" color="white" small bold>
         {t("Outdated")}
       </Text>
