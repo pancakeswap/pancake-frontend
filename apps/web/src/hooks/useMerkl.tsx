@@ -17,6 +17,7 @@ import { useAllLists } from 'state/lists/hooks'
 import { getContract } from 'utils/contractHelpers'
 import { Address } from 'viem'
 import { useWalletClient } from 'wagmi'
+import { useMasterchefV3 } from 'hooks/useContract'
 
 export const MERKL_API_V2 = 'https://api.angle.money/v2/merkl'
 
@@ -34,6 +35,7 @@ export function useMerklInfo(poolAddress: string | null): {
   merklApr?: number
 } {
   const { account, chainId } = useAccountActiveChain()
+  const masterChefV3Address = useMasterchefV3()?.address as Address
   const lists = useAllLists()
 
   const { data: merklApr } = useQuery({
@@ -93,11 +95,24 @@ export function useMerklInfo(poolAddress: string | null): {
 
     const { pools, transactionData } = data
 
-    const hasLive = first(
-      Object.keys(pools)
-        .filter((poolId) => poolId === poolAddress && pools[poolId].meanAPR !== 0)
-        .map((poolId) => pools[poolId]),
-    )
+    const hasLive = Object.keys(pools)
+      .filter((poolId) => poolId === poolAddress)
+      .some((poolId) => {
+        const pool = pools[poolId]
+        const hasMeanAPR = pool.meanAPR !== 0
+
+        if (!hasMeanAPR) return false
+
+        const hasLiveDistribution = pool.distributionData.some((distribution) => {
+          const { isLive, whitelist } = distribution
+          const whitelistValid =
+            whitelist.length === 0 || whitelist.includes(account) || whitelist.includes(masterChefV3Address)
+
+          return isLive && whitelistValid
+        })
+
+        return hasLiveDistribution
+      })
 
     const merklPoolData = first(
       Object.keys(pools)
@@ -151,7 +166,7 @@ export function useMerklInfo(poolAddress: string | null): {
       refreshData: refetch,
       merklApr,
     }
-  }, [chainId, data, lists, refetch, merklApr, isPending, poolAddress])
+  }, [chainId, data, lists, refetch, merklApr, isPending, poolAddress, account, masterChefV3Address])
 }
 
 export default function useMerkl(poolAddress: string | null) {
