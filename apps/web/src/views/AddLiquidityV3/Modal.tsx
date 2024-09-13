@@ -39,10 +39,25 @@ export function AddLiquidityV3Modal({
       ? [router.query.currency]
       : router.query.currency || [currency0 && currencyId(currency0), currency1 && currencyId(currency1)]
 
+  const baseCurrency = useCurrency(currencyIdA)
+
   const poolAddress = useMemo(
     () =>
       currency0 && currency1 && feeAmount ? Pool.getAddress(currency0.wrapped, currency1.wrapped, feeAmount) : null,
     [currency0, currency1, feeAmount],
+  )
+
+  const pool = usePoolInfo({ poolAddress, chainId })
+
+  const inverted = useMemo(
+    () =>
+      Boolean(
+        pool?.token0 &&
+          pool?.token1 &&
+          pool?.token0?.wrapped.address !== pool?.token1?.wrapped.address &&
+          pool?.token0?.wrapped.address !== baseCurrency?.wrapped.address,
+      ),
+    [pool, baseCurrency],
   )
 
   const { waitForTransaction } = usePublicNodeWaitForTransaction()
@@ -84,8 +99,6 @@ export function AddLiquidityV3Modal({
     [currency0, dismiss, waitForTransaction],
   )
 
-  const pool = usePoolInfo({ poolAddress, chainId })
-
   return (
     <ModalV2 isOpen={isOpen} onDismiss={dismiss} closeOnOverlayClick>
       <AddLiquidityV2FormProvider>
@@ -95,7 +108,7 @@ export function AddLiquidityV3Modal({
             title={t('Add Liquidity')}
             headerRightSlot={
               <AutoRow width="auto" gap="8px">
-                <AprCalculatorV2 pool={pool} showTitle={false} />
+                <AprCalculatorV2 pool={pool} derived showTitle={false} inverted={inverted} />
                 <GlobalSettings mode={SettingsMode.SWAP_LIQUIDITY} />
               </AutoRow>
             }
