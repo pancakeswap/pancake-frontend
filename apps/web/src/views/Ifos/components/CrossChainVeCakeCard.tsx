@@ -20,12 +20,12 @@ import { CAKE_VAULT_SUPPORTED_CHAINS } from '@pancakeswap/pools'
 import { BigNumber as BN } from 'bignumber.js'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { CrossChainVeCakeModal } from 'components/CrossChainVeCakeModal'
+import { useUserVeCakeStatus } from 'components/CrossChainVeCakeModal/hooks/useUserVeCakeStatus'
 import { useActiveIfoConfig } from 'hooks/useIfoConfig'
 import { useVeCakeBalance } from 'hooks/useTokenBalance'
 import { useRouter } from 'next/router'
 import { useChainNames } from '../hooks/useChainNames'
 import { useUserIfoInfo } from '../hooks/useUserIfoInfo'
-import { useUserVeCakeStatus } from '../hooks/useUserVeCakeStatus'
 import { NetworkSwitcherModal } from './IfoFoldableCard/IfoPoolCard/NetworkSwitcherModal'
 
 type Props = {
@@ -108,8 +108,6 @@ export function CrossChainVeCakeCard({ ifoAddress }: Props) {
 
   const hasICake = useMemo(() => creditBN && creditBN.toNumber() > 0, [creditBN])
   const hasVeCake = useMemo(() => veCake && veCake.toNumber() > 0, [veCake])
-
-  console.log('useUserIfoInfo', { creditBN: creditBN?.toString(), veCake: veCake?.toString() })
 
   const handleSwitchNetworkSuccess = useCallback(() => {
     setIsNetworkModalOpen(false)

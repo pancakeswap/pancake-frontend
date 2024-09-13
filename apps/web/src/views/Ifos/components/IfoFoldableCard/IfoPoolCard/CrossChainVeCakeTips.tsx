@@ -1,11 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/sdk'
 
+import { useUserVeCakeStatus } from 'components/CrossChainVeCakeModal/hooks/useUserVeCakeStatus'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useVeCakeBalance } from 'hooks/useTokenBalance'
 import { useMemo } from 'react'
 import { useIfoSourceChain } from 'views/Ifos/hooks/useIfoSourceChain'
-import { useUserVeCakeStatus } from 'views/Ifos/hooks/useUserVeCakeStatus'
 import { useChainNames } from '../../../hooks/useChainNames'
 import { ContentText, LinkTitle, WarningTips } from '../../WarningTips'
 import { StakeButton } from './StakeButton'
