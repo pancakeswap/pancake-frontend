@@ -561,4 +561,12 @@ export const ethereumTokens = {
     'Orderly Network',
     'https://orderly.network/',
   ),
+  cbBTC: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf',
+    8,
+    'cbBTC',
+    'Coinbase Wrapped BTC',
+    'https://www.coinbase.com/',
+  ),
 }

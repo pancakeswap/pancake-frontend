@@ -174,4 +174,12 @@ export const baseTokens = {
     'eUSD',
     'https://reserve.org',
   ),
+  cbBTC: new ERC20Token(
+    ChainId.BASE,
+    '0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf',
+    8,
+    'Coinbase Wrapped BTC',
+    'cbBTC',
+    'https://www.coinbase.com/',
+  ),
 }
