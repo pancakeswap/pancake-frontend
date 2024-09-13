@@ -100,10 +100,6 @@ const config = {
       {
         source: '/.well-known/vercel/flags',
         destination: '/api/vercel/flags',
-      },
-      {
-        source: '/revamp-swap',
-        destination: '/swap',
       }
     ]
   },
@@ -202,6 +198,15 @@ const config = {
       {
         source: '/images/tokens/:address',
         destination: 'https://tokens.pancakeswap.finance/images/:address',
+        permanent: false,
+      },
+     process.env.VERCEL_ENV === 'production' ? { // TODO: remove after revamp is live
+        source: '/revamp-swap',
+        destination:  '/swap' ,
+        permanent: false,
+      }:{
+        source: '/swap-revamp',
+        destination:  '/revamp-swap' ,
         permanent: false,
       },
     ]
