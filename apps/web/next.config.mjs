@@ -102,8 +102,8 @@ const config = {
         destination: '/api/vercel/flags',
       },
       ...process.env.VERCEL_ENV === 'preview' ? [{
-        source: 'revamp-swap',
-        destination: 'swap',
+        source: '/revamp-swap',
+        destination: '/swap',
       },] : []
     ]
   },
