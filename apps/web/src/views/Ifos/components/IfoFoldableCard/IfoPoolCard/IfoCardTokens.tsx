@@ -232,7 +232,7 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
       // if (ifo.chainId !== ChainId.BSC) {
       message = <CrossChainVeCakeTips ifoChainId={ifo.chainId} />
       // }
-      // TODO: Phase this out later, as it applies at the same time
+      // Phase this out later, as it applies at the same time
       // else message = <ICakeTips ifoId={ifo.id} ifoChainId={ifo.chainId} ifoAddress={ifo.address} />
     }
 

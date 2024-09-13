@@ -1,16 +1,18 @@
 import { IfoSkeletonCardActions } from '@pancakeswap/uikit'
 
-import { useAccount } from 'wagmi'
-import { Ifo, PoolIds } from '@pancakeswap/ifos'
-import { WalletIfoData, PublicIfoData } from 'views/Ifos/types'
-import { isBasicSale } from 'views/Ifos/hooks/v7/helpers'
+import { Ifo, isCrossChainIfoSupportedOnly, PoolIds } from '@pancakeswap/ifos'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { isBasicSale } from 'views/Ifos/hooks/v7/helpers'
+import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
+import { useAccount } from 'wagmi'
 
-import ContributeButton from './ContributeButton'
-import ClaimButton from './ClaimButton'
+import { useUserVeCakeStatus } from 'components/CrossChainVeCakeModal/hooks/useUserVeCakeStatus'
+import { useMemo } from 'react'
 import { EnableStatus } from '../types'
 import { ActivateProfileButton } from './ActivateProfileButton'
+import ClaimButton from './ClaimButton'
+import ContributeButton from './ContributeButton'
 import { SwitchNetworkTips } from './SwitchNetworkTips'
 
 interface Props {
@@ -37,6 +39,9 @@ const IfoCardActions: React.FC<React.PropsWithChildren<Props>> = ({
   const { address: account } = useAccount()
   const { chainId } = useActiveChainId()
   const userPoolCharacteristics = walletIfoData[poolId]
+
+  const { isSynced } = useUserVeCakeStatus(account, ifo.chainId)
+  const isCrossChainIfo = useMemo(() => isCrossChainIfoSupportedOnly(ifo.chainId), [ifo.chainId])
 
   if (isLoading) {
     return <IfoSkeletonCardActions />
@@ -65,6 +70,8 @@ const IfoCardActions: React.FC<React.PropsWithChildren<Props>> = ({
   }
 
   if (
+    // In a Cross-Chain Public Sale (poolUnlimited), the user needs to be synced to participate
+    (isCrossChainIfo && poolId === PoolIds.poolUnlimited && !isSynced) ||
     (enableStatus !== EnableStatus.ENABLED && publicIfoData.status === 'coming_soon') ||
     (ifo.version >= 3.1 && poolId === PoolIds.poolBasic && !isEligible)
   ) {
