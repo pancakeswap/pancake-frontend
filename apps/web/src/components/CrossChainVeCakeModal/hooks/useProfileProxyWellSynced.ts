@@ -93,7 +93,5 @@ export const useProfileProxyWellSynced = (targetChainId?: ChainId) => {
     )
   }, [profile, profileProxy, isLoading, isProfileProxyLoading])
 
-  // TODO: Add check for getUserStatus as well
-
   return { isLoading: isLoading || isProfileProxyLoading, isSynced }
 }
