@@ -100,10 +100,12 @@ type QuoteResult = Pick<ReturnType<ReturnType<typeof bestTradeHookFactory>>, 'is
   trade?: QuoteTrade
 }
 
+export function useBetterQuote<A extends QuoteResult, B extends QuoteResult>(quoteA?: A, quoteB?: B): A | B | undefined
 export function useBetterQuote<A extends QuoteResult, B extends QuoteResult>(quoteA: A, quoteB: B): A | B
-export function useBetterQuote<A extends QuoteResult, B extends QuoteResult>(quoteA: A | undefined, quoteB: B): A | B
-export function useBetterQuote<A extends QuoteResult, B extends QuoteResult>(quoteA: A, quoteB?: B): A | B
-export function useBetterQuote<A extends QuoteResult, B extends QuoteResult>(quoteA?: A, quoteB?: B) {
+export function useBetterQuote<A extends QuoteResult, B extends QuoteResult>(
+  quoteA?: A,
+  quoteB?: B,
+): A | B | undefined {
   return useMemo(() => {
     if (!quoteB?.trade || (!quoteA?.trade && !quoteB?.trade)) {
       return quoteA
@@ -192,7 +194,7 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
 
   const bestTradeFromQuoterWorker = shouldFallbackQuoterOnChain
     ? bestTradeFromOnChainQuoter
-    : bestOffchainWithQuickOnChainQuote
+    : bestOffchainWithQuickOnChainQuote!
 
   return useMemo(
     () => (isQuoterAPIEnabled ? bestTradeFromQuoterApi : bestTradeFromQuoterWorker),
