@@ -49,6 +49,9 @@ interface CrossChainMyVeCakeProps extends BoxProps {
   veCakeAmount: string | number | BigNumber;
   isSynced: boolean;
   toBeSynced?: boolean;
+
+  isVeCakeSynced?: boolean;
+
   chainId?: IfoChainId;
   onClick?: () => void;
 }
@@ -56,6 +59,7 @@ export const CrossChainMyVeCake = ({
   veCakeAmount,
   isSynced,
   toBeSynced,
+  isVeCakeSynced,
   chainId = ChainId.ARBITRUM_ONE,
   onClick,
   ...props
@@ -84,7 +88,8 @@ export const CrossChainMyVeCake = ({
             ) : (
               <BalanceDisplay
                 fontSize="20px"
-                color={!isSynced ? "textDisabled" : "text"}
+                // Should gray out only if veCake is not synced, not dependent on profile not being synced/inactive or not
+                color={!isVeCakeSynced ? "textDisabled" : "text"}
                 value={veCakeAmountNumber}
                 decimals={veCakeAmountNumber < 1 ? 4 : 2}
                 bold

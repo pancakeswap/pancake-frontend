@@ -2,6 +2,7 @@ import { ChainId } from '@pancakeswap/chains'
 import { useQuery } from '@tanstack/react-query'
 import { pancakeProfileProxyABI } from 'config/abi/pancakeProfileProxy'
 import { FAST_INTERVAL } from 'config/constants'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useMemo } from 'react'
 import { useProfile } from 'state/profile/hooks'
 import { getPancakeProfileProxyAddress } from 'utils/addressHelpers'
@@ -78,20 +79,56 @@ export const useProfileProxy = (
   return { profileProxy: data, isLoading: isPending }
 }
 
+export const getProfileProxyUserStatus = async (account?: Address, targetChainId?: ChainId) => {
+  if (!account || !targetChainId) return false
+
+  try {
+    const client = publicClient({ chainId: targetChainId })
+
+    // Returns a boolean indicating if profile is active or not
+    return client.readContract({
+      abi: pancakeProfileProxyABI,
+      address: getPancakeProfileProxyAddress(targetChainId),
+      functionName: 'getUserStatus',
+      args: [account],
+    })
+  } catch (e) {
+    console.error(e)
+    return false
+  }
+}
+
+export const useProfileProxyUserStatus = (account?: Address, targetChainId?: ChainId, enabled?: boolean) => {
+  const { account: localAccount, chainId: localChainId } = useAccountActiveChain()
+  const { data: isProfileActive } = useQuery({
+    queryKey: [account, 'profile-proxy-user-status'],
+    queryFn: () => getProfileProxyUserStatus(account ?? localAccount, targetChainId ?? localChainId),
+    enabled: enabled && Boolean((account || localAccount) && (targetChainId || localChainId)),
+    refetchInterval: FAST_INTERVAL,
+  })
+
+  return {
+    isProfileActive: Boolean(isProfileActive),
+  }
+}
+
 export const useProfileProxyWellSynced = (targetChainId?: ChainId) => {
   const { profile, isLoading } = useProfile()
   const { profileProxy, isLoading: isProfileProxyLoading } = useProfileProxy(targetChainId)
+  const { isProfileActive } = useProfileProxyUserStatus(undefined, targetChainId)
+
   const isSynced = useMemo(() => {
     return (
       !isLoading &&
       !isProfileProxyLoading &&
+      isProfileActive &&
       profile?.tokenId === profileProxy?.tokenId &&
       profile?.nft?.collectionAddress === profileProxy?.nftAddress &&
       profile?.isActive === profileProxy?.isActive &&
       profile?.points === profileProxy?.points &&
       profile?.userId === profileProxy?.userId
     )
-  }, [profile, profileProxy, isLoading, isProfileProxyLoading])
+  }, [profile, profileProxy, isLoading, isProfileProxyLoading, isProfileActive])
 
   return { isLoading: isLoading || isProfileProxyLoading, isSynced }
 }
