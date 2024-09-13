@@ -225,6 +225,15 @@ const config = {
         destination: 'https://tokens.pancakeswap.finance/images/:address',
         permanent: false,
       },
+     process.env.VERCEL_ENV === 'production' ? { // TODO: remove after revamp is live
+        source: '/revamp-swap',
+        destination:  '/swap' ,
+        permanent: false,
+      }:{
+        source: '/swap-revamp',
+        destination:  '/revamp-swap' ,
+        permanent: false,
+      },
     ]
   },
   webpack: (webpackConfig, { webpack, isServer }) => {
