@@ -107,7 +107,10 @@ export function useMerklInfo(poolAddress: string | null): {
           const { isLive, whitelist } = distribution
           if (!isLive) return false
           const whitelistValid =
-            whitelist.length === 0 || whitelist.includes(account) || whitelist.includes(masterChefV3Address)
+            !whitelist ||
+            whitelist.length === 0 ||
+            whitelist.includes(account) ||
+            whitelist.includes(masterChefV3Address)
 
           return whitelistValid
         })
