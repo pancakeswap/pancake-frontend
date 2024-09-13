@@ -6,8 +6,8 @@ export const ifos: BaseIfoConfig[] = [
     id: 'testCrossChainIfo',
     version: 8,
 
-    address: '0x6164B999597a6F30DA9aEF8A7F31D6dD7AE57e04', // Test IFO
-    plannedStartTime: 1726207200,
+    address: '0x7022f1335664D54C7D1bC22CFDa02f2C16CeEB7f', // Test IFO
+    plannedStartTime: 1726236000,
 
     isActive: true,
     name: 'Test Arbitrum IFO',
