@@ -1,11 +1,11 @@
-import { MotionBox, Text, WalletFilledV2Icon } from '@pancakeswap/uikit'
-import { memo } from 'react'
-import { styled } from 'styled-components'
+import { MotionBox, Text, WalletFilledV2Icon } from "@pancakeswap/uikit";
+import { memo } from "react";
+import { styled } from "styled-components";
 
 const StyledText = styled(Text)`
   font-size: 12px;
   font-weight: 600;
-`
+`;
 
 const Wrapper = styled(MotionBox)`
   position: absolute;
@@ -24,7 +24,7 @@ const Wrapper = styled(MotionBox)`
       transform: scale(1);
     }
   }
-`
+`;
 
 export const WalletAssetDisplay: React.FC<{ onMax?: () => void; balance?: string }> = memo(({ balance, onMax }) => {
   return (
@@ -33,11 +33,11 @@ export const WalletAssetDisplay: React.FC<{ onMax?: () => void; balance?: string
       initial={{ x: -2, opacity: 0 }}
       animate={{ x: 0, opacity: 1, transition: { duration: 0.05, delay: 0.2 } }}
       exit={{ x: 2, opacity: 0 }}
-      className={onMax ? 'clickable' : undefined}
+      className={onMax ? "clickable" : undefined}
       onClick={onMax}
     >
       <WalletFilledV2Icon color="textSubtle" width="16px" />
       <StyledText color="textSubtle">{balance}</StyledText>
     </Wrapper>
-  )
-})
+  );
+});
