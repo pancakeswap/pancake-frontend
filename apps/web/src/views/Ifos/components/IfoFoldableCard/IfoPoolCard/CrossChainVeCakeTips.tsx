@@ -21,16 +21,12 @@ export function CrossChainVeCakeTips({ ifoChainId }: Props) {
   const sourceChain = useIfoSourceChain(ifoChainId)
 
   const { balance: veCakeOnBSC } = useVeCakeBalance(ChainId.BSC)
-  const { balance: veCakeOnTargetChain } = useVeCakeBalance(ifoChainId)
+
   const { isSynced } = useUserVeCakeStatus(account, ifoChainId)
 
   const isCurrentChainSourceChain = useMemo(() => chainId === sourceChain, [chainId, sourceChain])
 
   const noVeCAKE = useMemo(() => veCakeOnBSC.isZero(), [veCakeOnBSC])
-  const shouldSyncAgain = useMemo(
-    () => !isSynced && !veCakeOnTargetChain.isEqualTo(veCakeOnBSC),
-    [veCakeOnTargetChain, veCakeOnBSC, isSynced],
-  )
 
   const chainName = useChainNames([ifoChainId])
 
@@ -40,7 +36,7 @@ export function CrossChainVeCakeTips({ ifoChainId }: Props) {
 
   const tips = noVeCAKE
     ? t('You don’t have any veCAKE available for IFO public sale.')
-    : shouldSyncAgain
+    : !isSynced
     ? isCurrentChainSourceChain
       ? t('You must sync your veCAKE again (for an updated iCAKE) if you have updated your veCAKE staking.')
       : t(
@@ -56,7 +52,7 @@ export function CrossChainVeCakeTips({ ifoChainId }: Props) {
     <WarningTips
       mt="1.5rem"
       action={action}
-      title={!shouldSyncAgain && <LinkTitle href="/ifo#ifo-how-to">{t('How to Take Part')} »</LinkTitle>}
+      title={<LinkTitle href="/ifo#ifo-how-to">{t('How to Take Part')} »</LinkTitle>}
       content={<ContentText>{tips}</ContentText>}
     />
   )
