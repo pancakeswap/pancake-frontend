@@ -120,6 +120,7 @@ export function CrossChainVeCakeCard({ ifoAddress }: Props) {
 
   return (
     <Ifo.VeCakeCard header={header}>
+      <span id="sync-vecake" />
       {isConnected && !hasVeCake ? (
         !needMigrate && hasProxyCakeButNoNativeVeCake && !isUserDelegated ? (
           <Ifo.InsufficientNativeVeCakeTips mt="1.5rem" />

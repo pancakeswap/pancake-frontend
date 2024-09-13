@@ -313,7 +313,7 @@ const IfoSteps: React.FC<React.PropsWithChildren<TypeProps>> = ({
             title={t('Your iCAKE on %chainName%', { chainName: ifoChainName })}
             action={
               !isStepValid && !isFinished ? (
-                <Button as="a" href="#bridge-icake">
+                <Button as="a" href="#sync-vecake">
                   {t('Bridge iCAKE')}
                 </Button>
               ) : null
