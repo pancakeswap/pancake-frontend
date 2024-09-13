@@ -7,8 +7,8 @@ import { isBasicSale } from 'views/Ifos/hooks/v7/helpers'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import { useAccount } from 'wagmi'
 
-import { useUserVeCakeStatus } from 'components/CrossChainVeCakeModal/hooks/useUserVeCakeStatus'
 import { useMemo } from 'react'
+import { useUserIfoInfo } from 'views/Ifos/hooks/useUserIfoInfo'
 import { EnableStatus } from '../types'
 import { ActivateProfileButton } from './ActivateProfileButton'
 import ClaimButton from './ClaimButton'
@@ -40,7 +40,7 @@ const IfoCardActions: React.FC<React.PropsWithChildren<Props>> = ({
   const { chainId } = useActiveChainId()
   const userPoolCharacteristics = walletIfoData[poolId]
 
-  const { isSynced } = useUserVeCakeStatus(account, ifo.chainId)
+  const { credit } = useUserIfoInfo({ ifoAddress: ifo.address, chainId: ifo.chainId })
   const isCrossChainIfo = useMemo(() => isCrossChainIfoSupportedOnly(ifo.chainId), [ifo.chainId])
 
   if (isLoading) {
@@ -70,8 +70,9 @@ const IfoCardActions: React.FC<React.PropsWithChildren<Props>> = ({
   }
 
   if (
-    // In a Cross-Chain Public Sale (poolUnlimited), the user needs to be synced to participate
-    (isCrossChainIfo && poolId === PoolIds.poolUnlimited && !isSynced) ||
+    // In a Cross-Chain Public Sale (poolUnlimited),
+    // the user needs to have credit (iCAKE) available to participate
+    (isCrossChainIfo && poolId === PoolIds.poolUnlimited && credit?.equalTo(0)) ||
     (enableStatus !== EnableStatus.ENABLED && publicIfoData.status === 'coming_soon') ||
     (ifo.version >= 3.1 && poolId === PoolIds.poolBasic && !isEligible)
   ) {
