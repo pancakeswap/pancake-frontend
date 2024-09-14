@@ -73,7 +73,7 @@ export const useGaugeRows = () => {
   const rows = useMemo(() => {
     const gaugesMap = new Map(gauges?.map((gauge) => [gauge.hash, gauge]))
 
-    return selectRowsHash.map((hash) => gaugesMap.get(hash)) as Gauge[]
+    return selectRowsHash.map((hash) => gaugesMap.get(hash)).filter(Boolean) as Gauge[]
   }, [gauges, selectRowsHash])
   const isLoading = useMemo(() => gaugeIsLoading && voteIsLoading, [gaugeIsLoading, voteIsLoading])
 
