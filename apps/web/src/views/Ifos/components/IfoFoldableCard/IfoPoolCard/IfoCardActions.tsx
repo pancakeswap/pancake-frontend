@@ -8,7 +8,7 @@ import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import { useAccount } from 'wagmi'
 
 import { useMemo } from 'react'
-import { useUserIfoInfo } from 'views/Ifos/hooks/useUserIfoInfo'
+import { useVeCakeUserCreditWithTime } from 'views/Ifos/hooks/useIfoCredit'
 import { EnableStatus } from '../types'
 import { ActivateProfileButton } from './ActivateProfileButton'
 import ClaimButton from './ClaimButton'
@@ -40,7 +40,11 @@ const IfoCardActions: React.FC<React.PropsWithChildren<Props>> = ({
   const { chainId } = useActiveChainId()
   const userPoolCharacteristics = walletIfoData[poolId]
 
-  const { credit } = useUserIfoInfo({ ifoAddress: ifo.address, chainId: ifo.chainId })
+  const { userCreditWithTime: credit } = useVeCakeUserCreditWithTime(
+    publicIfoData.endTimestamp ?? Date.now() / 1000 + 60,
+    ifo.chainId,
+  )
+
   const isCrossChainIfo = useMemo(() => isCrossChainIfoSupportedOnly(ifo.chainId), [ifo.chainId])
 
   if (isLoading) {
