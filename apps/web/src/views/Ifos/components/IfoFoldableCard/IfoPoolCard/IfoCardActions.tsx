@@ -7,6 +7,7 @@ import { isBasicSale } from 'views/Ifos/hooks/v7/helpers'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import { useAccount } from 'wagmi'
 
+import { useUserVeCakeStatus } from 'components/CrossChainVeCakeModal/hooks/useUserVeCakeStatus'
 import { useMemo } from 'react'
 import { useVeCakeUserCreditWithTime } from 'views/Ifos/hooks/useIfoCredit'
 import { EnableStatus } from '../types'
@@ -40,6 +41,7 @@ const IfoCardActions: React.FC<React.PropsWithChildren<Props>> = ({
   const { chainId } = useActiveChainId()
   const userPoolCharacteristics = walletIfoData[poolId]
 
+  const { isProfileSynced } = useUserVeCakeStatus(ifo.chainId)
   const { userCreditWithTime: credit } = useVeCakeUserCreditWithTime(
     publicIfoData.endTimestamp ?? Date.now() / 1000 + 60,
     ifo.chainId,
@@ -74,9 +76,6 @@ const IfoCardActions: React.FC<React.PropsWithChildren<Props>> = ({
   }
 
   if (
-    // In a Cross-Chain Public Sale (poolUnlimited),
-    // the user needs to have credit (iCAKE) available to participate
-    (isCrossChainIfo && poolId === PoolIds.poolUnlimited && credit?.equalTo(0)) ||
     (enableStatus !== EnableStatus.ENABLED && publicIfoData.status === 'coming_soon') ||
     (ifo.version >= 3.1 && poolId === PoolIds.poolBasic && !isEligible)
   ) {
@@ -86,7 +85,15 @@ const IfoCardActions: React.FC<React.PropsWithChildren<Props>> = ({
   return (
     <>
       {(publicIfoData.status === 'live' || publicIfoData.status === 'coming_soon') && (
-        <ContributeButton poolId={poolId} ifo={ifo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />
+        <ContributeButton
+          poolId={poolId}
+          ifo={ifo}
+          publicIfoData={publicIfoData}
+          walletIfoData={walletIfoData}
+          // In a Cross-Chain Public Sale (poolUnlimited),
+          // the user needs to have credit (iCAKE) available to participate and an active profile
+          disabled={isCrossChainIfo && poolId === PoolIds.poolUnlimited && credit?.equalTo(0) && !isProfileSynced}
+        />
       )}
     </>
   )

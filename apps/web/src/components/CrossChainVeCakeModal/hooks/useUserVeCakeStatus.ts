@@ -1,10 +1,9 @@
 import { ChainId } from '@pancakeswap/chains'
 import { useMultichainVeCakeWellSynced } from 'components/CrossChainVeCakeModal/hooks/useMultichainVeCakeWellSynced'
 import { useMemo } from 'react'
-import { Address } from 'viem/accounts'
 import { useProfileProxyWellSynced } from './useProfileProxyWellSynced'
 
-export const useUserVeCakeStatus = (account?: Address, targetChainId?: ChainId, targetTime?: number) => {
+export const useUserVeCakeStatus = (targetChainId?: ChainId, targetTime?: number) => {
   const {
     isVeCakeWillSync: isVeCakeSynced,
     bscBalance,

@@ -2,7 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/sdk'
 
 import { useUserVeCakeStatus } from 'components/CrossChainVeCakeModal/hooks/useUserVeCakeStatus'
-import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useVeCakeBalance } from 'hooks/useTokenBalance'
 import { useMemo } from 'react'
 import { useIfoSourceChain } from 'views/Ifos/hooks/useIfoSourceChain'
@@ -17,12 +17,12 @@ type Props = {
 
 export function CrossChainVeCakeTips({ ifoChainId }: Props) {
   const { t } = useTranslation()
-  const { account, chainId } = useAccountActiveChain()
+  const { chainId } = useActiveChainId()
   const sourceChain = useIfoSourceChain(ifoChainId)
 
   const { balance: veCakeOnBSC } = useVeCakeBalance(ChainId.BSC)
 
-  const { isSynced } = useUserVeCakeStatus(account, ifoChainId)
+  const { isSynced } = useUserVeCakeStatus(ifoChainId)
 
   const isCurrentChainSourceChain = useMemo(() => chainId === sourceChain, [chainId, sourceChain])
 

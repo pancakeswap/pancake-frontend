@@ -1,13 +1,13 @@
+import { Ifo, PoolIds } from '@pancakeswap/ifos'
 import { useTranslation } from '@pancakeswap/localization'
-import { useMemo } from 'react'
 import { Button, IfoGetTokenModal, useModal, useToast } from '@pancakeswap/uikit'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { getTokenListTokenUrl, getTokenLogoURLByAddress } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { Ifo, PoolIds } from '@pancakeswap/ifos'
 import { useTokenBalanceByChain } from 'hooks/useTokenBalance'
+import { useMemo } from 'react'
 import { useCurrentBlock } from 'state/block/hooks'
-import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 
 import ContributeModal from './ContributeModal'
@@ -17,8 +17,15 @@ interface Props {
   ifo: Ifo
   publicIfoData: PublicIfoData
   walletIfoData: WalletIfoData
+  disabled?: boolean
 }
-const ContributeButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, ifo, publicIfoData, walletIfoData }) => {
+const ContributeButton: React.FC<React.PropsWithChildren<Props>> = ({
+  poolId,
+  ifo,
+  publicIfoData,
+  walletIfoData,
+  disabled,
+}) => {
   const publicPoolCharacteristics = publicIfoData[poolId]
   const userPoolCharacteristics = walletIfoData[poolId]
   const isPendingTx = userPoolCharacteristics?.isPendingTx
@@ -64,15 +71,21 @@ const ContributeButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, if
     false,
   )
 
-  const noNeedCredit = ifo.version >= 3.1 && poolId === PoolIds.poolBasic
+  const noNeedCredit = useMemo(() => ifo.version >= 3.1 && poolId === PoolIds.poolBasic, [ifo.version, poolId])
 
-  const isMaxCommitted =
-    (!noNeedCredit &&
-      walletIfoData.ifoCredit?.creditLeft &&
-      walletIfoData.ifoCredit?.creditLeft.isLessThanOrEqualTo(0)) ||
-    (limitPerUserInLP?.isGreaterThan(0) && amountTokenCommittedInLP?.isGreaterThanOrEqualTo(limitPerUserInLP))
+  const isMaxCommitted = useMemo(
+    () =>
+      (!noNeedCredit &&
+        walletIfoData.ifoCredit?.creditLeft &&
+        walletIfoData.ifoCredit?.creditLeft.isLessThanOrEqualTo(0)) ||
+      (limitPerUserInLP?.isGreaterThan(0) && amountTokenCommittedInLP?.isGreaterThanOrEqualTo(limitPerUserInLP)),
+    [amountTokenCommittedInLP, limitPerUserInLP, noNeedCredit, walletIfoData.ifoCredit?.creditLeft],
+  )
 
-  const isDisabled = isPendingTx || isMaxCommitted || publicIfoData.status !== 'live'
+  const isDisabled = useMemo(
+    () => disabled || isPendingTx || isMaxCommitted || publicIfoData.status !== 'live',
+    [disabled, isPendingTx, isMaxCommitted, publicIfoData.status],
+  )
 
   return (
     <Button
