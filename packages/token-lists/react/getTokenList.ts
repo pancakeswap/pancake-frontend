@@ -33,18 +33,20 @@ export default async function getTokenList(listUrl: string): Promise<TokenList> 
     }
 
     const json = await response.json()
-    if (json.tokens) {
-      remove<TokenInfo>(json.tokens, (token) => {
-        return token.symbol ? token.symbol.length === 0 : true
-      })
-    }
     if (!tokenListValidator(json)) {
-      const validationErrors: string =
-        tokenListValidator.errors?.reduce<string>((memo, error) => {
-          const add = `${(error as any).dataPath} ${error.message ?? ''}`
-          return memo.length > 0 ? `${memo}; ${add}` : `${add}`
-        }, '') ?? 'unknown error'
-      throw new Error(`Token list failed validation: ${validationErrors}`)
+      if (json.tokens) {
+        remove<TokenInfo>(json.tokens, (token) => {
+          return !tokenListValidator({ ...json, tokens: [token] })
+        })
+      }
+      if (!tokenListValidator(json)) {
+        const validationErrors: string =
+          tokenListValidator.errors?.reduce<string>((memo, error) => {
+            const add = `${(error as any).dataPath} ${error.message ?? ''}`
+            return memo.length > 0 ? `${memo}; ${add}` : `${add}`
+          }, '') ?? 'unknown error'
+        throw new Error(`Token list failed validation: ${validationErrors}`)
+      }
     }
     return json as TokenList
   }
