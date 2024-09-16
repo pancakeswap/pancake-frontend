@@ -22,6 +22,7 @@ import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import { useStablecoinPriceAmount } from 'hooks/useStablecoinPrice'
 import { StablePair } from 'views/AddLiquidity/AddStableLiquidity/hooks/useStableLPDerivedMintInfo'
 
+import { RiskInputPanelDisplay } from 'components/AccessRisk/SwapRevampRiskDisplay'
 import { FiatLogo } from 'components/Logo/CurrencyLogo'
 import { useCurrencyBalance } from 'state/wallet/hooks'
 import { useAccount } from 'wagmi'
@@ -192,16 +193,21 @@ const CurrencyInputPanelSimplify = memo(function CurrencyInputPanel({
                     {pair?.token0.symbol}:{pair?.token1.symbol}
                   </Text>
                 ) : (
-                  <Text id="pair" bold fontSize="24px">
-                    {(currency && currency.symbol && currency.symbol.length > 10
-                      ? `${currency.symbol.slice(0, 4)}...${currency.symbol.slice(
-                          currency.symbol.length - 5,
-                          currency.symbol.length,
-                        )}`
-                      : currency?.symbol) || t('Select a currency')}
-                  </Text>
+                  <Flex alignItems="start" flexDirection="column">
+                    <Flex alignItems="center" justifyContent="space-between">
+                      <Text id="pair" bold fontSize="24px">
+                        {(currency && currency.symbol && currency.symbol.length > 10
+                          ? `${currency.symbol.slice(0, 4)}...${currency.symbol.slice(
+                              currency.symbol.length - 5,
+                              currency.symbol.length,
+                            )}`
+                          : currency?.symbol) || t('Select a currency')}
+                      </Text>
+                      {!currencyLoading && !disableCurrencySelect && <ChevronDownIcon />}
+                    </Flex>
+                    <RiskInputPanelDisplay token={token ?? undefined} />
+                  </Flex>
                 )}
-                {!currencyLoading && !disableCurrencySelect && <ChevronDownIcon />}
               </Flex>
             </CurrencySelectButton>
           </Flex>
