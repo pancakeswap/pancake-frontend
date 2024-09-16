@@ -92,7 +92,7 @@ const IfoCardActions: React.FC<React.PropsWithChildren<Props>> = ({
           walletIfoData={walletIfoData}
           // In a Cross-Chain Public Sale (poolUnlimited),
           // the user needs to have credit (iCAKE) available to participate and an active profile
-          disabled={isCrossChainIfo && poolId === PoolIds.poolUnlimited && credit?.equalTo(0) && !isProfileSynced}
+          disabled={isCrossChainIfo && poolId === PoolIds.poolUnlimited && (credit?.equalTo(0) || !isProfileSynced)}
         />
       )}
     </>
