@@ -34,6 +34,11 @@ export default async function getTokenList(listUrl: string): Promise<TokenList> 
 
     const json = await response.json()
     if (!tokenListValidator(json)) {
+      const preFilterValidationErrors: string =
+        tokenListValidator.errors?.reduce<string>((memo, error) => {
+          const add = `${(error as any).dataPath} ${error.message ?? ''}`
+          return memo.length > 0 ? `${memo}; ${add}` : `${add}`
+        }, '') ?? 'unknown error'
       if (json.tokens) {
         remove<TokenInfo>(json.tokens, (token) => {
           return !tokenListValidator({ ...json, tokens: [token] })
@@ -45,7 +50,9 @@ export default async function getTokenList(listUrl: string): Promise<TokenList> 
             const add = `${(error as any).dataPath} ${error.message ?? ''}`
             return memo.length > 0 ? `${memo}; ${add}` : `${add}`
           }, '') ?? 'unknown error'
-        throw new Error(`Token list failed validation: ${validationErrors}`)
+        throw new Error(`Token list ${url} failed validation: ${validationErrors}`)
+      } else {
+        console.warn(`Token list ${url} validation failed before token filtering: ${preFilterValidationErrors}`)
       }
     }
     return json as TokenList
