@@ -1,14 +1,15 @@
-import { useTranslation } from '@pancakeswap/localization'
 import { isNativeIfoSupported, PROFILE_SUPPORTED_CHAIN_IDS } from '@pancakeswap/ifos'
-import { useCallback, useMemo } from 'react'
-import { useRouter } from 'next/router'
-import { useActiveChainId } from 'hooks/useActiveChainId'
-import { Flex, Button, useModalV2, ProfileAvatar, Text } from '@pancakeswap/uikit'
+import { useTranslation } from '@pancakeswap/localization'
+import { Button, Flex, ProfileAvatar, Text, useModalV2 } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useRouter } from 'next/router'
+import { useCallback, useMemo } from 'react'
 
-import { NetworkSwitcherModal } from './NetworkSwitcherModal'
+import { isTestnetChainId } from '@pancakeswap/chains'
 import { useChainNames } from '../../../hooks/useChainNames'
-import { WarningTips, LinkTitle, ContentText } from '../../WarningTips'
+import { ContentText, LinkTitle, WarningTips } from '../../WarningTips'
+import { NetworkSwitcherModal } from './NetworkSwitcherModal'
 
 type Props = {
   saleFinished?: boolean
@@ -20,7 +21,13 @@ export function ActivateProfileButton({ saleFinished }: Props) {
   const profileSupported = useMemo(() => isNativeIfoSupported(chainId), [chainId])
   const { t } = useTranslation()
   const { onOpen, onDismiss, isOpen } = useModalV2()
-  const chainNames = useChainNames(PROFILE_SUPPORTED_CHAIN_IDS)
+
+  const supportedChainIds = useMemo(
+    () => PROFILE_SUPPORTED_CHAIN_IDS.filter((profileChainId) => !isTestnetChainId(profileChainId)),
+    [],
+  )
+
+  const chainNames = useChainNames(supportedChainIds)
   const to = useMemo(() => '/create-profile', [])
 
   // FIXME: not sure why push got canceled after network switching. Need further investigation
@@ -42,7 +49,7 @@ export function ActivateProfileButton({ saleFinished }: Props) {
     <>
       <NetworkSwitcherModal
         isOpen={isOpen}
-        supportedChains={PROFILE_SUPPORTED_CHAIN_IDS}
+        supportedChains={supportedChainIds}
         title={t('Create Profile')}
         description={t('Create your Pancake Profile on %chain%', {
           chain: chainNames,
