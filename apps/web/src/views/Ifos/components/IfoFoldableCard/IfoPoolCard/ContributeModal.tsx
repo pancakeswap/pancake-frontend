@@ -201,18 +201,21 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
             })}
           </Text>
           <Flex justifyContent="space-between" mb="16px">
-            {multiplierValues.map((multiplierValue, index) => (
-              <Button
-                key={multiplierValue}
-                scale="xs"
-                variant="tertiary"
-                onClick={() => setValue(getBalanceAmount(maximumTokenCommittable.times(multiplierValue)).toString())}
-                mr={index < multiplierValues.length - 1 ? '8px' : 0}
-                width="100%"
-              >
-                {multiplierValue * 100}%
-              </Button>
-            ))}
+            {multiplierValues.map((multiplierValue, index) => {
+              const multiplierResultValue = getBalanceAmount(maximumTokenCommittable.times(multiplierValue)).toString()
+              return (
+                <Button
+                  key={multiplierValue}
+                  scale="xs"
+                  variant={value === multiplierResultValue ? 'primary' : 'tertiary'}
+                  onClick={() => setValue(multiplierResultValue)}
+                  mr={index < multiplierValues.length - 1 ? '8px' : 0}
+                  width="100%"
+                >
+                  {multiplierValue * 100}%
+                </Button>
+              )
+            })}
           </Flex>
           {vestingInformation?.percentage && vestingInformation.percentage > 0 ? (
             <IfoHasVestingNotice url={articleUrl} />
