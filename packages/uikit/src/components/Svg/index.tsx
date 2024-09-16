@@ -160,6 +160,7 @@ export { default as RefreshIcon } from "./Icons/Refresh";
 export { default as RemoveIcon } from "./Icons/Remove";
 export { default as ResourcesIcon } from "./Icons/Resources";
 export { default as ResourcesFilledIcon } from "./Icons/ResourcesFilled";
+export { RiskAlertIcon } from "./Icons/RiskAlertIcon";
 export { default as RocketIcon } from "./Icons/RocketIcon";
 export { default as SafePalIcon } from "./Icons/SafePal";
 export { default as SearchIcon } from "./Icons/Search";
