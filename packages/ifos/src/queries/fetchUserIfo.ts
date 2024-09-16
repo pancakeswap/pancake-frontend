@@ -72,12 +72,10 @@ export async function getUserIfoInfo({ account, ifo, chainId, provider }: GetIfo
 
   const ifoCreditContract = getIfoCreditAddressContract(chainId, provider)
 
-  // if (!ifo) {
-
-  // if need to fetch iCAKE bridging for source chain (BSC)
-  if (!ifo || ifo !== ifoCreditContract.address) {
+  if (!ifo) {
     // @ts-ignore
     const credit = await ifoCreditContract.read.getUserCreditForNextIfo([account])
+
     return {
       credit: BigInt(credit.toString()),
       endTimestamp: 0,

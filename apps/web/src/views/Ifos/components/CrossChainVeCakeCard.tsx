@@ -97,6 +97,7 @@ export function CrossChainVeCakeCard({ ifoAddress }: Props) {
   }, [hasProxyCakeButNoNativeVeCake, nativeUnlockTime, proxyUnlockTime])
 
   const { snapshotTime, credit, veCake } = useUserIfoInfo({ ifoAddress, chainId: targetChainId })
+
   const creditBN = useMemo(
     () => credit && new BN(credit.numerator.toString()).div(credit.decimalScale.toString()),
     [credit],

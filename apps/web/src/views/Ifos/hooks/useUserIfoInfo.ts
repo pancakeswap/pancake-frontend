@@ -1,11 +1,11 @@
+import { getCurrentIfoRatio, getUserIfoInfo } from '@pancakeswap/ifos'
 import { ChainId, CurrencyAmount } from '@pancakeswap/sdk'
-import { Address } from 'viem'
-import { useQuery } from '@tanstack/react-query'
-import { useAccount } from 'wagmi'
-import { getUserIfoInfo, getCurrentIfoRatio } from '@pancakeswap/ifos'
 import { CAKE } from '@pancakeswap/tokens'
-import { useMemo } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import BigNumber from 'bignumber.js'
+import { useMemo } from 'react'
+import { Address } from 'viem'
+import { useAccount } from 'wagmi'
 
 import { getViemClients } from 'utils/viem'
 
@@ -37,6 +37,7 @@ type Params = {
 export function useUserIfoInfo({ chainId, ifoAddress }: Params) {
   const { address: account } = useAccount()
   const ratio = useICakeRatio({ chainId })
+
   const { data } = useQuery({
     queryKey: [account, chainId, ifoAddress, 'user-ifo-info'],
 

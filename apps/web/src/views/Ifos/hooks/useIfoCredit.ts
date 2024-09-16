@@ -36,8 +36,11 @@ type ICakeStatusParams = {
 
 export function useICakeBridgeStatus({ ifoChainId, ifoAddress }: ICakeStatusParams) {
   const srcChainId = useIfoSourceChain(ifoChainId)
+
+  const isCrossChainIfo = useMemo(() => srcChainId !== ifoChainId, [srcChainId, ifoChainId])
+
   const destChainCredit = useIfoCredit({ chainId: ifoChainId, ifoAddress })
-  const sourceChainCredit = useIfoCredit({ chainId: srcChainId, ifoAddress })
+  const sourceChainCredit = useIfoCredit({ chainId: srcChainId, ifoAddress: isCrossChainIfo ? undefined : ifoAddress })
 
   const noICake = useMemo(() => !sourceChainCredit || sourceChainCredit.quotient === 0n, [sourceChainCredit])
   const isICakeSynced = useMemo(
