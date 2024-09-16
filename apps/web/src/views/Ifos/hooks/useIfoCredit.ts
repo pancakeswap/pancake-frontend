@@ -40,6 +40,8 @@ export function useICakeBridgeStatus({ ifoChainId, ifoAddress }: ICakeStatusPara
   const isCrossChainIfo = useMemo(() => srcChainId !== ifoChainId, [srcChainId, ifoChainId])
 
   const destChainCredit = useIfoCredit({ chainId: ifoChainId, ifoAddress })
+
+  // Ifo address is only on target chain so pass undefined for source chain
   const sourceChainCredit = useIfoCredit({ chainId: srcChainId, ifoAddress: isCrossChainIfo ? undefined : ifoAddress })
 
   const noICake = useMemo(() => !sourceChainCredit || sourceChainCredit.quotient === 0n, [sourceChainCredit])
