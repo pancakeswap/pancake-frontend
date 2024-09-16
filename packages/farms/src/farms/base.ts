@@ -73,6 +73,33 @@ const pinnedFarmConfig: UniversalFarmConfig[] = [
 export const baseFarmConfig: UniversalFarmConfig[] = [
   ...pinnedFarmConfig,
   {
+    pid: 49,
+    chainId: ChainId.BASE,
+    protocol: Protocol.V3,
+    lpAddress: '0x55B40f8911402568414ec6e7e0d2D87c3D19e65C',
+    token0: baseTokens.cbBTC,
+    token1: baseTokens.usdbc,
+    feeAmount: FeeAmount.LOWEST,
+  },
+  {
+    pid: 48,
+    chainId: ChainId.BASE,
+    protocol: Protocol.V3,
+    lpAddress: '0xb94b22332ABf5f89877A14Cc88f2aBC48c34B3Df',
+    token0: baseTokens.usdc,
+    token1: baseTokens.cbBTC,
+    feeAmount: FeeAmount.LOWEST,
+  },
+  {
+    pid: 47,
+    chainId: ChainId.BASE,
+    protocol: Protocol.V3,
+    lpAddress: '0xC211e1f853A898Bd1302385CCdE55f33a8C4B3f3',
+    token0: baseTokens.weth,
+    token1: baseTokens.cbBTC,
+    feeAmount: FeeAmount.LOWEST,
+  },
+  {
     pid: 46,
     chainId: ChainId.BASE,
     protocol: Protocol.V3,

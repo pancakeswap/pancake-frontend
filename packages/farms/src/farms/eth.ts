@@ -83,6 +83,33 @@ const pinnedFarmConfig: UniversalFarmConfig[] = [
 export const ethereumFarmConfig: UniversalFarmConfig[] = [
   ...pinnedFarmConfig,
   {
+    pid: 81,
+    chainId: ChainId.ETHEREUM,
+    protocol: Protocol.V3,
+    lpAddress: '0x5fbbC3380DD9f7253Aa10838DD641dAc8242F817',
+    token0: ethereumTokens.usdc,
+    token1: ethereumTokens.cbBTC,
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 80,
+    chainId: ChainId.ETHEREUM,
+    protocol: Protocol.V3,
+    lpAddress: '0xF84AAd7ab687b1BB1FBB190344240b60B39e5b79',
+    token0: ethereumTokens.weth,
+    token1: ethereumTokens.cbBTC,
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 79,
+    chainId: ChainId.ETHEREUM,
+    protocol: Protocol.V3,
+    lpAddress: '0x3E253Ae716eBf5047d6deeE8f2607121ceA08482',
+    token0: ethereumTokens.wbtc,
+    token1: ethereumTokens.cbBTC,
+    feeAmount: FeeAmount.LOWEST,
+  },
+  {
     chainId: ChainId.ETHEREUM,
     protocol: Protocol.STABLE,
     lpAddress: '0xaB9dEBAED21270832cCdf54a7461A8E4B133B57A',
