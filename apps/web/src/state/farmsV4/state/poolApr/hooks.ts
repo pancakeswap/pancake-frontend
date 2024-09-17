@@ -34,7 +34,10 @@ export const usePoolApr = (
       return getAllNetworkMerklApr().then((aprs) => {
         updateMerklApr(aprs)
         return aprs[key!] ?? '0'
-      })
+      }).catch((error) => {
+        console.error("Error fetching Merkl APR:", error);
+        return '0';
+      });
     }
     return merklAprs[key!] ?? '0'
   }, [key, merklAprs, updateMerklApr])

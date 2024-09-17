@@ -196,37 +196,32 @@ export const getV2PoolCakeApr = async (
   }
 }
 
-export const getMerklApr = async (resp: Response, chainId: number, signal?: AbortSignal) => {
+export const getMerklApr = async (result: any, chainId: number) => {
   try {
-    if (resp.ok) {
-      const result = await resp.json()
-      if (!result[chainId] || !result[chainId].pools) return {}
-      return Object.keys(result[chainId].pools).reduce((acc, poolId) => {
-        const key = `${chainId}:${safeGetAddress(poolId)}`
-        if (!result[chainId].pools[poolId].aprs || !Object.keys(result[chainId].pools[poolId].aprs).length) return acc
+    if (!result[chainId] || !result[chainId].pools) return {}
+    return Object.keys(result[chainId].pools).reduce((acc, poolId) => {
+      const key = `${chainId}:${safeGetAddress(poolId)}`
+      if (!result[chainId].pools[poolId].aprs || !Object.keys(result[chainId].pools[poolId].aprs).length) return acc
 
-        const apr = result[chainId].pools[poolId].aprs?.['Average APR (rewards / pool TVL)'] ?? '0'
-        // eslint-disable-next-line no-param-reassign
-        acc[key] = apr / 100
-        return acc
-      }, {} as MerklApr)
-    }
-    throw resp
+      const apr = result[chainId].pools[poolId].aprs?.['Average APR (rewards / pool TVL)'] ?? '0'
+      // eslint-disable-next-line no-param-reassign
+      acc[key] = apr / 100
+      return acc
+    }, {} as MerklApr)
   } catch (error) {
-    if (error instanceof Error) {
-      if (error.name === 'AbortError') {
-        throw error
-      }
-    }
-    console.error('Failed to fetch merkl apr', error)
+    console.error('Failed to process merkl apr', error)
     return {}
   }
 }
 
 export const getAllNetworkMerklApr = async (signal?: AbortSignal) => {
-    const resp = await fetch(`https://api.angle.money/v2/merkl?AMMs=pancakeswapv3`)
-    const aprs = await Promise.all(supportedChainIdV4.map((chainId) => getMerklApr(resp, chainId, signal)))
-  return aprs.reduce((acc, apr) => Object.assign(acc, apr), {})
+  const resp = await fetch(`https://api.angle.money/v2/merkl?AMMs=pancakeswapv3`, { signal })
+  if (resp.ok) {
+    const result = await resp.json()
+    const aprs = await Promise.all(supportedChainIdV4.map((chainId) => getMerklApr(result, chainId)))
+    return aprs.reduce((acc, apr) => Object.assign(acc, apr), {})
+  }
+  throw resp
 }
 
 const getV3PoolsCakeAprByChainId = async (pools: V3PoolInfo[], chainId: number, cakePrice: BigNumber) => {
