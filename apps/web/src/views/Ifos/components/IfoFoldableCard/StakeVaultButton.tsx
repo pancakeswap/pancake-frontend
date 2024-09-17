@@ -1,15 +1,16 @@
-import { useMemo, useCallback } from 'react'
-import { useRouter } from 'next/router'
-import { Button, useModalV2, Flex, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { isCakeVaultSupported, CAKE_VAULT_SUPPORTED_CHAINS } from '@pancakeswap/pools'
+import { CAKE_VAULT_SUPPORTED_CHAINS, isCakeVaultSupported } from '@pancakeswap/pools'
+import { Button, Flex, Text, useModalV2 } from '@pancakeswap/uikit'
+import { useRouter } from 'next/router'
+import { useCallback, useMemo } from 'react'
 
-import { useConfig } from 'views/Ifos/contexts/IfoContext'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useConfig } from 'views/Ifos/contexts/IfoContext'
 
-import { NetworkSwitcherModal } from './IfoPoolCard/NetworkSwitcherModal'
+import { isTestnetChainId } from '@pancakeswap/chains'
 import { useChainNames } from '../../hooks/useChainNames'
 import { ICakeLogo } from '../Icons'
+import { NetworkSwitcherModal } from './IfoPoolCard/NetworkSwitcherModal'
 
 const StakeVaultButton = (props) => {
   const { t } = useTranslation()
@@ -18,7 +19,13 @@ const StakeVaultButton = (props) => {
   const { isExpanded, setIsExpanded } = useConfig() as any
   const isFinishedPage = router.pathname.includes('history')
   const cakeVaultSupported = useMemo(() => isCakeVaultSupported(chainId), [chainId])
-  const chainNames = useChainNames(CAKE_VAULT_SUPPORTED_CHAINS)
+
+  const supportedChainIds = useMemo(
+    () => CAKE_VAULT_SUPPORTED_CHAINS.filter((vaultChainId) => !isTestnetChainId(vaultChainId)),
+    [],
+  )
+  const cakeVaultChainNames = useChainNames(supportedChainIds)
+
   const { onOpen, onDismiss, isOpen } = useModalV2()
 
   const scrollToTop = useCallback(() => {
@@ -57,10 +64,10 @@ const StakeVaultButton = (props) => {
     <>
       <NetworkSwitcherModal
         isOpen={isOpen}
-        supportedChains={CAKE_VAULT_SUPPORTED_CHAINS}
+        supportedChains={supportedChainIds}
         title={t('Lock CAKE')}
         description={t('Lock CAKE on %chain% to obtain iCAKE', {
-          chain: chainNames,
+          chain: cakeVaultChainNames,
         })}
         buttonText={t('Switch chain to stake CAKE')}
         onDismiss={onDismiss}
