@@ -39,8 +39,9 @@ const IfoPoolVaultCard = ({ ifoBasicSaleType, ifoAddress }: Props) => {
     <Flex width="100%" maxWidth={400} alignItems="center" flexDirection="column">
       {vault}
 
-      {/* Note: Hide on non-BSC chains for now. When CrossChain IFO is moved to finished, can enable this again for all chains */}
-      {targetChainId === ChainId.BSC && <IfoVesting ifoBasicSaleType={ifoBasicSaleType} />}
+      {/* Note: Only show when user is connected to BSC for now. 
+      When CrossChain IFO is moved to finished, can enable this again for all chains */}
+      {chainId === ChainId.BSC && <IfoVesting ifoBasicSaleType={ifoBasicSaleType} />}
     </Flex>
   )
 }
