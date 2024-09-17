@@ -24,6 +24,7 @@ interface LiquidityCardRowProps {
   currency1?: Currency
   pairText: string | React.ReactElement
   feeAmount?: number
+  outOfRange?: boolean
   tokenId?: bigint
   tags: React.ReactElement
   subtitle: string
@@ -40,13 +41,14 @@ export const LiquidityCardRow = ({
   subtitle,
   tokenId,
   onSwitch,
+  outOfRange,
 }: LiquidityCardRowProps) => {
   const poolAddress = useMemo(
     () =>
-      currency0 && currency1 && feeAmount
+      currency0 && currency1 && feeAmount && !outOfRange
         ? Pool.getAddress(currency0.wrapped, currency1.wrapped, feeAmount)
         : undefined,
-    [currency0, currency1, feeAmount],
+    [currency0, currency1, feeAmount, outOfRange],
   )
 
   const content = (

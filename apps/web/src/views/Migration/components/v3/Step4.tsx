@@ -92,6 +92,7 @@ export function Step4() {
                   currency0={currencyQuote}
                   currency1={currencyBase}
                   tokenId={p.tokenId}
+                  outOfRange={outOfRange}
                   pairText={
                     !currencyQuote || !currencyBase ? (
                       <Dots>{t('Loading')}</Dots>
