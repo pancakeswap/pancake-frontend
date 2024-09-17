@@ -197,33 +197,34 @@ export const getV2PoolCakeApr = async (
   }
 }
 
-export const getMerklApr = async (resp: Response, chainId: number) => {
+export const getMerklApr = async (result: any, chainId: number) => {
   try {
-    if (resp.ok) {
-      const result = await resp.json()
-      if (!result[chainId] || !result[chainId].pools) return {}
-      return Object.keys(result[chainId].pools).reduce((acc, poolId) => {
-        const key = `${chainId}:${safeGetAddress(poolId)}`
-        if (!result[chainId].pools[poolId].aprs || !Object.keys(result[chainId].pools[poolId].aprs).length) return acc
+    if (!result[chainId] || !result[chainId].pools) return {}
+    return Object.keys(result[chainId].pools).reduce((acc, poolId) => {
+      const key = `${chainId}:${safeGetAddress(poolId)}`
+      if (!result[chainId].pools[poolId].aprs || !Object.keys(result[chainId].pools[poolId].aprs).length) return acc
 
-        const apr = result[chainId].pools[poolId].aprs?.['Average APR (rewards / pool TVL)'] ?? '0'
-        return {
-          ...acc,
-          [key]: apr / 100,
-        }
-      }, {} as MerklApr)
-    }
-    throw resp
+      const apr = result[chainId].pools[poolId].aprs?.['Average APR (rewards / pool TVL)'] ?? '0'
+      return {
+        ...acc,
+        [key]: apr / 100,
+      }
+    }, {} as MerklApr)
   } catch (error) {
-    console.error('Failed to fetch merkl apr', error)
+    console.error('Failed to process merkl apr', error)
     return {}
   }
 }
 
 export const getAllNetworkMerklApr = async () => {
   const resp = await fetch(`https://api.angle.money/v2/merkl?AMMs=pancakeswapv3`)
-  const aprs = await Promise.all(supportedChainIdV4.map((chainId) => getMerklApr(resp, chainId)))
-  return aprs.reduce((acc, apr) => assign(acc, apr), {})
+  if (resp.ok) {
+    const result = await resp.json()
+    const aprs = await Promise.all(supportedChainIdV4.map((chainId) => getMerklApr(result, chainId)))
+    return aprs.reduce((acc, apr) => assign(acc, apr), {})
+  }
+  console.error('Failed to fetch merkl apr', resp)
+  return {}
 }
 
 const getV3PoolsCakeAprByChainId = async (pools: V3PoolInfo[], chainId: number, cakePrice: BigNumber) => {
