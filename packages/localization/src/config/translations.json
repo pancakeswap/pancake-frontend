@@ -1595,7 +1595,7 @@
   "View Tutorial": "View Tutorial",
   "Average lock duration": "Average lock duration",
   "The average lock duration of all the locked staking positions of other users": "The average lock duration of all the locked staking positions of other users",
-  "Your ICAKE": "Your ICAKE",
+  "Your ICAKE %iCakeSuffix%": "Your ICAKE %iCakeSuffix%",
   "Token Vesting": "Token Vesting",
   "You have tokens available for claiming now!": "You have tokens available for claiming now!",
   "You have no tokens available for claiming": "You have no tokens available for claiming",

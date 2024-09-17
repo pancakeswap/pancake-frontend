@@ -25,6 +25,7 @@ const CurrentIfo: React.FC<React.PropsWithChildren<TypeProps>> = ({ activeIfo })
     ifoChainId: activeIfo.chainId,
     ifoAddress: activeIfo.address,
   })
+
   const isCrossChainIfo = useMemo(() => isCrossChainIfoSupportedOnly(activeIfo.chainId), [activeIfo.chainId])
 
   const { poolBasic, poolUnlimited } = walletIfoData

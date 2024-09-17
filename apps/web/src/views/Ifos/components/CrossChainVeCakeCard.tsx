@@ -36,7 +36,7 @@ export function CrossChainVeCakeCard({ ifoAddress }: Props) {
   const router = useRouter()
 
   const { chainId } = useActiveChainId()
-  const { address: account, isConnected } = useAccount()
+  const { isConnected } = useAccount()
 
   const { activeIfo } = useActiveIfoConfig()
 

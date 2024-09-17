@@ -101,10 +101,12 @@ function ICakeCard({
 const Step1 = ({
   hasProfile,
   sourceChainIfoCredit,
+  isCrossChainIfo,
 }: {
   srcChainId?: ChainId
   hasProfile: boolean
   sourceChainIfoCredit?: CurrencyAmount<Currency>
+  isCrossChainIfo?: boolean
 }) => {
   const { t } = useTranslation()
   const cakePrice = useCakePrice()
@@ -147,7 +149,7 @@ const Step1 = ({
             />
           }
           credit={sourceChainIfoCredit}
-          title={t('Your ICAKE')}
+          title={t('Your ICAKE %iCakeSuffix%', { iCakeSuffix: isCrossChainIfo ? 'on BNB' : '' })}
           more={
             <Text fontSize="12px" color="textSubtle">
               {creditDollarValue !== undefined ? (
@@ -338,7 +340,12 @@ const IfoSteps: React.FC<React.PropsWithChildren<TypeProps>> = ({
         )
       case 1:
         return (
-          <Step1 hasProfile={hasActiveProfile} sourceChainIfoCredit={sourceChainIfoCredit} srcChainId={srcChainId} />
+          <Step1
+            hasProfile={hasActiveProfile}
+            sourceChainIfoCredit={sourceChainIfoCredit}
+            srcChainId={srcChainId}
+            isCrossChainIfo={isCrossChainIfo}
+          />
         )
       case 2:
         if (isCrossChainIfo) {
