@@ -65,7 +65,7 @@ export const LiquidityCardRow = ({
               {new Percent(feeAmount, 1_000_000).toSignificant()}%
             </Tag>
           )}
-          {!hasMerkl && <MerklRewardsTag poolAddress={poolAddress} />}
+          {!hasMerkl && <MerklRewardsTag poolAddress={poolAddress ?? undefined} />}
           <TagCell>{tags}</TagCell>
         </Flex>
         <Flex>

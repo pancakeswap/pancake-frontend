@@ -21,7 +21,7 @@ import { useMasterchefV3 } from 'hooks/useContract'
 
 export const MERKL_API_V2 = 'https://api.angle.money/v2/merkl'
 
-export function useMerklInfo(poolAddress: string | null): {
+export function useMerklInfo(poolAddress?: string): {
   rewardsPerToken: CurrencyAmount<Currency>[]
   isPending: boolean
   transactionData: {
@@ -173,7 +173,7 @@ export function useMerklInfo(poolAddress: string | null): {
   }, [chainId, data, lists, refetch, merklApr, isPending, poolAddress, account, masterChefV3Address])
 }
 
-export default function useMerkl(poolAddress: string | null) {
+export default function useMerkl(poolAddress?: string) {
   const { account, chainId } = useAccountActiveChain()
 
   const { data: signer } = useWalletClient()

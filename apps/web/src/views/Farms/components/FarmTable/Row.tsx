@@ -146,7 +146,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
   const columnNames = useMemo(() => tableSchema.map((column) => column.name), [tableSchema])
   const merklUserLink = useMerklUserLink()
 
-  const { merklApr } = useMerklInfo(farm?.merklLink ? props.details.lpAddress : null)
+  const { merklApr } = useMerklInfo(farm?.merklLink ? props.details.lpAddress : undefined)
 
   return (
     <>
