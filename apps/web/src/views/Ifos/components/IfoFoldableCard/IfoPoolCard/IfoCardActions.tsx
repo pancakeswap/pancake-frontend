@@ -1,15 +1,13 @@
 import { IfoSkeletonCardActions } from '@pancakeswap/uikit'
 
-import { Ifo, isCrossChainIfoSupportedOnly, PoolIds } from '@pancakeswap/ifos'
+import { Ifo, PoolIds } from '@pancakeswap/ifos'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { isBasicSale } from 'views/Ifos/hooks/v7/helpers'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import { useAccount } from 'wagmi'
 
-import { useUserVeCakeStatus } from 'components/CrossChainVeCakeModal/hooks/useUserVeCakeStatus'
 import { useMemo } from 'react'
-import { useVeCakeUserCreditWithTime } from 'views/Ifos/hooks/useIfoCredit'
 import { EnableStatus } from '../types'
 import { ActivateProfileButton } from './ActivateProfileButton'
 import ClaimButton from './ClaimButton'
@@ -41,13 +39,19 @@ const IfoCardActions: React.FC<React.PropsWithChildren<Props>> = ({
   const { chainId } = useActiveChainId()
   const userPoolCharacteristics = walletIfoData[poolId]
 
-  const { isProfileSynced } = useUserVeCakeStatus(ifo.chainId)
-  const { userCreditWithTime: credit } = useVeCakeUserCreditWithTime(
-    publicIfoData.endTimestamp ?? Date.now() / 1000 + 60,
-    ifo.chainId,
+  const needClaim = useMemo(
+    () =>
+      publicIfoData.status === 'finished' &&
+      !userPoolCharacteristics?.hasClaimed &&
+      (userPoolCharacteristics?.offeringAmountInToken.isGreaterThan(0) ||
+        userPoolCharacteristics?.refundingAmountInLP.isGreaterThan(0)),
+    [
+      publicIfoData.status,
+      userPoolCharacteristics?.hasClaimed,
+      userPoolCharacteristics?.offeringAmountInToken,
+      userPoolCharacteristics?.refundingAmountInLP,
+    ],
   )
-
-  const isCrossChainIfo = useMemo(() => isCrossChainIfoSupportedOnly(ifo.chainId), [ifo.chainId])
 
   if (isLoading) {
     return <IfoSkeletonCardActions />
@@ -65,12 +69,6 @@ const IfoCardActions: React.FC<React.PropsWithChildren<Props>> = ({
     return <SwitchNetworkTips ifoChainId={ifo.chainId} />
   }
 
-  const needClaim =
-    publicIfoData.status === 'finished' &&
-    !userPoolCharacteristics?.hasClaimed &&
-    (userPoolCharacteristics?.offeringAmountInToken.isGreaterThan(0) ||
-      userPoolCharacteristics?.refundingAmountInLP.isGreaterThan(0))
-
   if (needClaim) {
     return <ClaimButton poolId={poolId} ifoVersion={ifo.version} walletIfoData={walletIfoData} />
   }
@@ -85,15 +83,7 @@ const IfoCardActions: React.FC<React.PropsWithChildren<Props>> = ({
   return (
     <>
       {(publicIfoData.status === 'live' || publicIfoData.status === 'coming_soon') && (
-        <ContributeButton
-          poolId={poolId}
-          ifo={ifo}
-          publicIfoData={publicIfoData}
-          walletIfoData={walletIfoData}
-          // In a Cross-Chain Public Sale (poolUnlimited),
-          // the user needs to have credit (iCAKE) available to participate and an active profile
-          disabled={isCrossChainIfo && poolId === PoolIds.poolUnlimited && (credit?.equalTo(0) || !isProfileSynced)}
-        />
+        <ContributeButton poolId={poolId} ifo={ifo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />
       )}
     </>
   )

@@ -104,7 +104,8 @@ export const useProfileProxyUserStatus = (account?: Address, targetChainId?: Cha
   const { data: isProfileActive } = useQuery({
     queryKey: [account, 'profile-proxy-user-status'],
     queryFn: () => getProfileProxyUserStatus(account ?? localAccount, targetChainId ?? localChainId),
-    enabled: enabled && Boolean((account || localAccount) && (targetChainId || localChainId)),
+    enabled:
+      (enabled !== undefined ? enabled : true) && Boolean((account || localAccount) && (targetChainId || localChainId)),
     refetchInterval: FAST_INTERVAL,
   })
 

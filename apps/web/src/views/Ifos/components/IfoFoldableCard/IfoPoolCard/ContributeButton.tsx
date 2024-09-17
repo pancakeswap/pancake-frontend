@@ -1,4 +1,4 @@
-import { Ifo, PoolIds } from '@pancakeswap/ifos'
+import { Ifo, isCrossChainIfoSupportedOnly, PoolIds } from '@pancakeswap/ifos'
 import { useTranslation } from '@pancakeswap/localization'
 import { Button, IfoGetTokenModal, useModal, useToast } from '@pancakeswap/uikit'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
@@ -10,6 +10,7 @@ import { useCallback, useMemo } from 'react'
 import { useCurrentBlock } from 'state/block/hooks'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 
+import { useUserVeCakeStatus } from 'components/CrossChainVeCakeModal/hooks/useUserVeCakeStatus'
 import { logGTMIfoCommitEvent } from 'utils/customGTMEventTracking'
 import ContributeModal from './ContributeModal'
 
@@ -18,20 +19,15 @@ interface Props {
   ifo: Ifo
   publicIfoData: PublicIfoData
   walletIfoData: WalletIfoData
-  disabled?: boolean
 }
-const ContributeButton: React.FC<React.PropsWithChildren<Props>> = ({
-  poolId,
-  ifo,
-  publicIfoData,
-  walletIfoData,
-  disabled,
-}) => {
+const ContributeButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, ifo, publicIfoData, walletIfoData }) => {
   const publicPoolCharacteristics = publicIfoData[poolId]
   const userPoolCharacteristics = walletIfoData[poolId]
+
   const isPendingTx = userPoolCharacteristics?.isPendingTx
   const amountTokenCommittedInLP = userPoolCharacteristics?.amountTokenCommittedInLP
   const limitPerUserInLP = publicPoolCharacteristics?.limitPerUserInLP
+
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const currentBlock = useCurrentBlock()
@@ -40,6 +36,8 @@ const ContributeButton: React.FC<React.PropsWithChildren<Props>> = ({
     () => getTokenListTokenUrl(ifo.currency) || getTokenLogoURLByAddress(ifo.currency.address, ifo.currency.chainId),
     [ifo.currency],
   )
+  const { isProfileSynced } = useUserVeCakeStatus(ifo.chainId)
+  const isCrossChainIfo = useMemo(() => isCrossChainIfoSupportedOnly(ifo.chainId), [ifo.chainId])
 
   // Refetch all the data, and display a message when fetching is done
   const handleContributeSuccess = async (amount: BigNumber, txHash: string) => {
@@ -88,9 +86,19 @@ const ContributeButton: React.FC<React.PropsWithChildren<Props>> = ({
     [amountTokenCommittedInLP, limitPerUserInLP, noNeedCredit, walletIfoData.ifoCredit?.creditLeft],
   )
 
+  // In a Cross-Chain Public Sale (poolUnlimited),
+  // the user needs to have credit (iCAKE) available to participate and an active profile
+  const isCrossChainAndNoProfileOrCredit = useMemo(
+    () =>
+      poolId === PoolIds.poolUnlimited &&
+      isCrossChainIfo &&
+      (walletIfoData.ifoCredit?.credit.eq(0) || !isProfileSynced),
+    [isCrossChainIfo, isProfileSynced, poolId, walletIfoData.ifoCredit?.credit],
+  )
+
   const isDisabled = useMemo(
-    () => disabled || isPendingTx || isMaxCommitted || publicIfoData.status !== 'live',
-    [disabled, isPendingTx, isMaxCommitted, publicIfoData.status],
+    () => isPendingTx || isMaxCommitted || publicIfoData.status !== 'live' || isCrossChainAndNoProfileOrCredit,
+    [isPendingTx, isMaxCommitted, publicIfoData.status, isCrossChainAndNoProfileOrCredit],
   )
 
   return (
