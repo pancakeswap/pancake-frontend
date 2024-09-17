@@ -7,6 +7,7 @@ import useGetWalletIfoV8Data from 'views/Ifos/hooks/v8/useGetWalletIfoData'
 
 import IfoContainer from './components/IfoContainer'
 import { IfoCurrentCard } from './components/IfoFoldableCard'
+import { StakeButton } from './components/IfoFoldableCard/IfoPoolCard/StakeButton'
 import IfoQuestions from './components/IfoQuestions'
 import IfoSteps from './components/IfoSteps'
 import { SectionBackground } from './components/SectionBackground'
@@ -66,13 +67,20 @@ const CurrentIfo: React.FC<React.PropsWithChildren<TypeProps>> = ({ activeIfo })
   )
 
   return (
-    <IfoContainer
-      ifoAddress={activeIfo.address}
-      ifoBasicSaleType={publicIfoData?.poolBasic?.saleType}
-      ifoSection={<IfoCurrentCard ifo={activeIfo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />}
-      ifoSteps={steps}
-      faq={faq}
-    />
+    <>
+      {/* TODO: Remove after testing */}
+      <div style={{ width: '20%' }}>
+        <p>Testing button on deployment:</p>
+        <StakeButton />
+      </div>
+      <IfoContainer
+        ifoAddress={activeIfo.address}
+        ifoBasicSaleType={publicIfoData?.poolBasic?.saleType}
+        ifoSection={<IfoCurrentCard ifo={activeIfo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />}
+        ifoSteps={steps}
+        faq={faq}
+      />
+    </>
   )
 }
 
