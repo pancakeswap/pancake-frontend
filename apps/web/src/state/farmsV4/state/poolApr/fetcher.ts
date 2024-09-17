@@ -197,10 +197,8 @@ export const getV2PoolCakeApr = async (
   }
 }
 
-export const getMerklApr = async (chainId: number) => {
+export const getMerklApr = async (resp: Response, chainId: number) => {
   try {
-    // @todo @ChefJerry merkl api cannot accept multiple chainIds, we need to batch fetch
-    const resp = await fetch(`https://api.angle.money/v2/merkl?chainIds=${chainId}&AMMs=pancakeswapv3`)
     if (resp.ok) {
       const result = await resp.json()
       if (!result[chainId] || !result[chainId].pools) return {}
@@ -223,7 +221,8 @@ export const getMerklApr = async (chainId: number) => {
 }
 
 export const getAllNetworkMerklApr = async () => {
-  const aprs = await Promise.all(supportedChainIdV4.map((chainId) => getMerklApr(chainId)))
+  const resp = await fetch(`https://api.angle.money/v2/merkl?AMMs=pancakeswapv3`)
+  const aprs = await Promise.all(supportedChainIdV4.map((chainId) => getMerklApr(resp, chainId)))
   return aprs.reduce((acc, apr) => assign(acc, apr), {})
 }
 
