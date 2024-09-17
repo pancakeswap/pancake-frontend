@@ -148,6 +148,7 @@ export default function PoolListPage() {
               <LiquidityCardRow
                 feeAmount={feeAmount}
                 link={positionSummaryLink}
+                outOfRange={outOfRange}
                 currency0={currencyQuote}
                 currency1={currencyBase}
                 tokenId={p.tokenId}
