@@ -253,7 +253,7 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
   )
 
   const addLiquidityModal = useModalV2()
-  const { merklApr } = useMerklInfo(merklLink ? details.lpAddress : null)
+  const { merklApr } = useMerklInfo(merklLink ? details.lpAddress : undefined)
 
   return (
     <>

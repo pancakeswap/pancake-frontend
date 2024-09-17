@@ -232,7 +232,7 @@ export default function PoolPage() {
     return undefined
   }, [liquidity, pool, tickLower, tickUpper])
 
-  const poolAddress = useMemo(() => pool && Pool.getAddress(pool.token0, pool.token1, pool.fee), [pool])
+  const poolAddress = useMemo(() => (pool ? Pool.getAddress(pool.token0, pool.token1, pool.fee) : undefined), [pool])
 
   const poolInfo = usePoolInfo({ poolAddress, chainId })
 
@@ -805,6 +805,7 @@ export default function PoolPage() {
                       : false,
                   )}
                   poolAddress={poolAddress}
+                  chainId={pool?.chainId}
                 />
               </Flex>
               {positionDetails && currency0 && currency1 && (
