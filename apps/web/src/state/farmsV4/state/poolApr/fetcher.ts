@@ -217,14 +217,19 @@ export const getMerklApr = async (result: any, chainId: number) => {
 }
 
 export const getAllNetworkMerklApr = async () => {
-  const resp = await fetch(`https://api.angle.money/v2/merkl?AMMs=pancakeswapv3`)
-  if (resp.ok) {
-    const result = await resp.json()
-    const aprs = await Promise.all(supportedChainIdV4.map((chainId) => getMerklApr(result, chainId)))
-    return aprs.reduce((acc, apr) => assign(acc, apr), {})
-  }
-  console.error('Failed to fetch merkl apr', resp)
-  return {}
+  return fetch(`https://api.angle.money/v2/merkl?AMMs=pancakeswapv3`)
+    .then((resp) => {
+      if (!resp.ok) {
+        throw resp
+      }
+      return resp.json()
+    })
+    .then((result) => Promise.all(supportedChainIdV4.map((chainId) => getMerklApr(result, chainId))))
+    .then((aprs) => aprs.reduce((acc, apr) => Object.assign(acc, apr), {}))
+    .catch((error) => {
+      console.error('Failed to fetch Merkl APR data or process it', error)
+      return {}
+    })
 }
 
 const getV3PoolsCakeAprByChainId = async (pools: V3PoolInfo[], chainId: number, cakePrice: BigNumber) => {
