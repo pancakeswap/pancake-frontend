@@ -32,7 +32,7 @@ export const ifos: BaseIfoConfig[] = [
     address: '0xD134a41Ac8c54bD8713F8B9307ded4FFF340E5C1', // Test IFO
     plannedStartTime: 1726466400,
 
-    isActive: true,
+    isActive: false,
     name: 'Test Arbitrum IFO',
     description: 'This is an IFO on Arbitrum to test cross-chain IFOs functionality on PancakeSwap.',
     currency: arbitrumTokens.cake,
