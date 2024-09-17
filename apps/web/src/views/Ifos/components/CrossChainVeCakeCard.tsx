@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/chains'
+import { ChainId, isTestnetChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { CAKE } from '@pancakeswap/tokens'
 import { formatBigInt, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
@@ -16,6 +16,7 @@ import { useIsUserDelegated } from 'views/CakeStaking/hooks/useIsUserDelegated'
 import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 
 import { CAKE_VAULT_SUPPORTED_CHAINS } from '@pancakeswap/pools'
+import { Flex, Text } from '@pancakeswap/uikit'
 import { BigNumber as BN } from 'bignumber.js'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { CrossChainVeCakeModal } from 'components/CrossChainVeCakeModal'
@@ -26,6 +27,7 @@ import { useRouter } from 'next/router'
 import { logGTMIfoGoToCakeStakingEvent } from 'utils/customGTMEventTracking'
 import { useChainNames } from '../hooks/useChainNames'
 import { useUserIfoInfo } from '../hooks/useUserIfoInfo'
+import { ICakeLogo } from './Icons'
 import { NetworkSwitcherModal } from './IfoFoldableCard/IfoPoolCard/NetworkSwitcherModal'
 
 type Props = {
@@ -47,9 +49,14 @@ export function CrossChainVeCakeCard({ ifoAddress }: Props) {
   const isUserDelegated = useIsUserDelegated()
 
   const [isOpen, setIsOpen] = useState(false)
-  const [isNetworkModalOpen, setIsNetworkModalOpen] = useState(false)
 
-  const cakeVaultChainNames = useChainNames([ChainId.BSC])
+  // For "Switch Chain to Stake Cake" Modal
+  const [isNetworkModalOpen, setIsNetworkModalOpen] = useState(false)
+  const supportedChainIds = useMemo(
+    () => CAKE_VAULT_SUPPORTED_CHAINS.filter((vaultChainId) => !isTestnetChainId(vaultChainId)),
+    [],
+  )
+  const cakeVaultChainNames = useChainNames(supportedChainIds)
 
   const {
     cakeUnlockTime: nativeUnlockTime,
@@ -152,12 +159,22 @@ export function CrossChainVeCakeCard({ ifoAddress }: Props) {
 
           <NetworkSwitcherModal
             isOpen={isNetworkModalOpen}
-            supportedChains={CAKE_VAULT_SUPPORTED_CHAINS}
+            supportedChains={supportedChainIds}
             title={t('Stake CAKE')}
             description={t('Lock CAKE on %chain% to obtain iCAKE', {
               chain: cakeVaultChainNames,
             })}
             buttonText={t('Switch chain to stake CAKE')}
+            tips={
+              <>
+                <Flex flexDirection="column" justifyContent="flex-start">
+                  <ICakeLogo />
+                  <Text mt="0.625rem">
+                    {t('Stake CAKE to obtain iCAKE - in order to be eligible in this public sale.')}
+                  </Text>
+                </Flex>
+              </>
+            }
             onDismiss={() => setIsNetworkModalOpen(false)}
             onSwitchNetworkSuccess={handleSwitchNetworkSuccess}
           />
