@@ -77,7 +77,7 @@ export function useMerklInfo(poolAddress?: string): {
       .filter((poolId) => poolId === poolAddress)
       .some((poolId) => {
         const pool = pools[poolId]
-        const hasMeanAPR = pool.meanAPR !== 0
+        const hasMeanAPR = pool.meanAPR > 0
 
         if (!hasMeanAPR) return false
 
