@@ -23,6 +23,7 @@ import { useUserVeCakeStatus } from 'components/CrossChainVeCakeModal/hooks/useU
 import { useActiveIfoConfig } from 'hooks/useIfoConfig'
 import { useVeCakeBalance } from 'hooks/useTokenBalance'
 import { useRouter } from 'next/router'
+import { logGTMIfoGoToCakeStakingEvent } from 'utils/customGTMEventTracking'
 import { useChainNames } from '../hooks/useChainNames'
 import { useUserIfoInfo } from '../hooks/useUserIfoInfo'
 import { NetworkSwitcherModal } from './IfoFoldableCard/IfoPoolCard/NetworkSwitcherModal'
@@ -142,7 +143,10 @@ export function CrossChainVeCakeCard({ ifoAddress }: Props) {
             isConnected={isConnected}
             userChainId={chainId}
             nativeChainId={ChainId.BSC}
-            onClick={() => setIsNetworkModalOpen(true)}
+            onClick={() => {
+              setIsNetworkModalOpen(true)
+              logGTMIfoGoToCakeStakingEvent()
+            }}
             ConnectWalletButton={<ConnectWalletButton width="100%" mt="8px" />}
           />
 

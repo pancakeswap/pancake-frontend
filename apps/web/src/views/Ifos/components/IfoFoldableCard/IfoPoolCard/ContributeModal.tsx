@@ -24,6 +24,7 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { useMemo, useState } from 'react'
+import { logGTMIfoCommitTxnSentEvent } from 'utils/customGTMEventTracking'
 import { parseUnits } from 'viem'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 
@@ -88,6 +89,7 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
         ])
       },
       onSuccess: async ({ receipt }) => {
+        logGTMIfoCommitTxnSentEvent(poolId)
         await onSuccess(valueWithTokenDecimals, receipt.transactionHash)
         onDismiss?.()
       },

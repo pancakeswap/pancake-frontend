@@ -6,10 +6,11 @@ import { getTokenListTokenUrl, getTokenLogoURLByAddress } from '@pancakeswap/wid
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useTokenBalanceByChain } from 'hooks/useTokenBalance'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useCurrentBlock } from 'state/block/hooks'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 
+import { logGTMIfoCommitEvent } from 'utils/customGTMEventTracking'
 import ContributeModal from './ContributeModal'
 
 interface Props {
@@ -71,6 +72,11 @@ const ContributeButton: React.FC<React.PropsWithChildren<Props>> = ({
     false,
   )
 
+  const presentContributeModal = useCallback(() => {
+    onPresentContributeModal()
+    logGTMIfoCommitEvent(poolId)
+  }, [onPresentContributeModal, poolId])
+
   const noNeedCredit = useMemo(() => ifo.version >= 3.1 && poolId === PoolIds.poolBasic, [ifo.version, poolId])
 
   const isMaxCommitted = useMemo(
@@ -89,7 +95,7 @@ const ContributeButton: React.FC<React.PropsWithChildren<Props>> = ({
 
   return (
     <Button
-      onClick={userCurrencyBalance.isEqualTo(0) ? onPresentGetTokenModal : onPresentContributeModal}
+      onClick={userCurrencyBalance.isEqualTo(0) ? onPresentGetTokenModal : presentContributeModal}
       width="100%"
       disabled={isDisabled}
     >
