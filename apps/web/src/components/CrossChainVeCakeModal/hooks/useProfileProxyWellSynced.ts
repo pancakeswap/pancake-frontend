@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { pancakeProfileProxyABI } from 'config/abi/pancakeProfileProxy'
 import { FAST_INTERVAL } from 'config/constants'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import { useActiveIfoConfig } from 'hooks/useIfoConfig'
 import { useMemo } from 'react'
 import { useProfile } from 'state/profile/hooks'
 import { getPancakeProfileProxyAddress } from 'utils/addressHelpers'
@@ -115,20 +116,25 @@ export const useProfileProxyUserStatus = (account?: Address, targetChainId?: Cha
 export const useProfileProxyWellSynced = (targetChainId?: ChainId) => {
   const { profile, isLoading } = useProfile()
   const { profileProxy, isLoading: isProfileProxyLoading } = useProfileProxy(targetChainId)
-  const { isProfileActive } = useProfileProxyUserStatus(undefined, targetChainId)
+
+  // Check if IFO is active for this chain, only then check isProfileActive
+  const { activeIfo } = useActiveIfoConfig()
+  const isIfoActiveOnChain = useMemo(() => activeIfo?.chainId === targetChainId, [activeIfo, targetChainId])
+
+  const { isProfileActive } = useProfileProxyUserStatus(undefined, targetChainId, isIfoActiveOnChain)
 
   const isSynced = useMemo(() => {
     return (
       !isLoading &&
       !isProfileProxyLoading &&
-      isProfileActive &&
+      (isIfoActiveOnChain ? isProfileActive : true) &&
       profile?.tokenId === profileProxy?.tokenId &&
       profile?.nft?.collectionAddress === profileProxy?.nftAddress &&
       profile?.isActive === profileProxy?.isActive &&
       profile?.points === profileProxy?.points &&
       profile?.userId === profileProxy?.userId
     )
-  }, [profile, profileProxy, isLoading, isProfileProxyLoading, isProfileActive])
+  }, [profile, profileProxy, isLoading, isProfileProxyLoading, isProfileActive, isIfoActiveOnChain])
 
   return { isLoading: isLoading || isProfileProxyLoading, isSynced }
 }
