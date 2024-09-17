@@ -45,7 +45,9 @@ export const LiquidityCardRow = ({
 }: LiquidityCardRowProps) => {
   const poolAddress = useMemo(
     () =>
-      currency0 && currency1 && feeAmount ? Pool.getAddress(currency0.wrapped, currency1.wrapped, feeAmount) : null,
+      currency0 && currency1 && feeAmount
+        ? Pool.getAddress(currency0.wrapped, currency1.wrapped, feeAmount)
+        : undefined,
     [currency0, currency1, feeAmount],
   )
 
@@ -65,7 +67,7 @@ export const LiquidityCardRow = ({
               {new Percent(feeAmount, 1_000_000).toSignificant()}%
             </Tag>
           )}
-          {!hasMerkl && <MerklRewardsTag poolAddress={poolAddress ?? undefined} />}
+          {!hasMerkl && <MerklRewardsTag poolAddress={poolAddress} />}
           <TagCell>{tags}</TagCell>
         </Flex>
         <Flex>
