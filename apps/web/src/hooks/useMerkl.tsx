@@ -38,26 +38,6 @@ export function useMerklInfo(poolAddress?: string): {
   const masterChefV3Address = useMasterchefV3()?.address as Address
   const lists = useAllLists()
 
-  const { data: merklApr } = useQuery({
-    queryKey: ['merklAprData', chainId],
-    queryFn: async () => {
-      const resp = await fetch(`https://api.angle.money/v2/merkl?chainIds[]=${chainId}&AMMs[]=pancakeswapv3`)
-      if (resp.ok) {
-        const result = await resp.json()
-        return result
-      }
-      throw resp
-    },
-    enabled: Boolean(chainId && poolAddress),
-    staleTime: FAST_INTERVAL,
-    retryDelay: (attemptIndex) => Math.min(2000 * 2 ** attemptIndex, 30000),
-    select: (data) => {
-      return data?.[chainId ?? 0]?.pools?.[poolAddress ?? '']?.aprs?.['Average APR (rewards / pool TVL)'] as
-        | number
-        | undefined
-    },
-  })
-
   const { data, isPending, refetch } = useQuery({
     queryKey: [`fetchMerkl-${chainId}-${account || 'no-account'}`],
     queryFn: async () => {
@@ -73,9 +53,7 @@ export function useMerklInfo(poolAddress?: string): {
 
       if (!chainId || !merklDataV2[chainId]) return null
 
-      const { pools, transactionData } = merklDataV2[chainId]
-
-      return { pools, transactionData }
+      return merklDataV2[chainId]
     },
     enabled: Boolean(chainId && poolAddress),
     staleTime: FAST_INTERVAL,
@@ -164,13 +142,17 @@ export function useMerklInfo(poolAddress?: string): {
         return CurrencyAmount.fromRawAmount(t, '0')
       })
 
+    const merklApr = data?.[chainId ?? 0]?.pools?.[poolAddress ?? '']?.aprs?.['Average APR (rewards / pool TVL)'] as
+      | number
+      | undefined
+
     return {
       ...rest,
       rewardsPerToken: rewardsPerToken.length ? rewardsPerToken : rewardCurrencies,
       refreshData: refetch,
       merklApr,
     }
-  }, [chainId, data, lists, refetch, merklApr, isPending, poolAddress, account, masterChefV3Address])
+  }, [chainId, data, lists, refetch, isPending, poolAddress, account, masterChefV3Address])
 }
 
 export default function useMerkl(poolAddress?: string) {
