@@ -1,4 +1,5 @@
 import { SmartRouter } from '@pancakeswap/smart-router/evm'
+import { SwapUIV2 } from '@pancakeswap/widgets-internal'
 import { useMemo } from 'react'
 import { PricingAndSlippage } from '../../Swap/V3Swap/containers'
 import { CommitButton } from '../../Swap/V3Swap/containers/CommitButton'
@@ -30,7 +31,7 @@ export function V4SwapForm() {
   }, [pauseQuoting, resumeQuoting])
 
   return (
-    <>
+    <SwapUIV2.SwapFormWrapper>
       {/* <FormHeader onRefresh={refreshTrade} refreshDisabled={refreshDisabled} /> */}
       <FormMain
         tradeLoading={isMMBetter ? false : !tradeLoaded}
@@ -48,6 +49,6 @@ export function V4SwapForm() {
           />
         }
       />
-    </>
+    </SwapUIV2.SwapFormWrapper>
   )
 }
