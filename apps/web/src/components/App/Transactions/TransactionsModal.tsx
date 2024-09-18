@@ -86,42 +86,44 @@ export function RecentTransactions() {
                 </Button>
               )}
             </AutoRow>
-            {hasTransactions
-              ? Object.entries(sortedRecentTransactions).map(([chainId_, transactions]) => {
-                  let content = <></>
+            {hasTransactions ? (
+              Object.entries(sortedRecentTransactions).map(([chainId_, transactions]) => {
+                let content = <></>
 
-                  const chainIdNumber = Number(chainId_)
+                const chainIdNumber = Number(chainId_)
 
-                  if (chainIdNumber === chainId) {
-                    content = (
-                      <TransactionWithX
-                        transactions={Object.values(transactions)}
-                        xOrders={xOrders}
-                        chainId={chainIdNumber}
-                      />
-                    )
-                  } else {
-                    content = (
-                      <Flex flexDirection="column">
-                        {Object.values(transactions).map((tx) => {
-                          return <Transaction key={tx.hash + tx.addedTime} tx={tx} chainId={chainIdNumber} />
-                        })}
-                      </Flex>
-                    )
-                  }
-
-                  return (
-                    <div key={`transactions#${chainIdNumber}`}>
-                      <AutoRow mb="1rem" style={{ justifyContent: 'space-between' }}>
-                        <Text fontSize="12px" color="textSubtle" mb="4px">
-                          {chains.find((c) => c.id === chainIdNumber)?.name ?? 'Unknown network'}
-                        </Text>
-                      </AutoRow>
-                      {content}
-                    </div>
+                if (chainIdNumber === chainId) {
+                  content = (
+                    <TransactionWithX
+                      transactions={Object.values(transactions)}
+                      xOrders={xOrders}
+                      chainId={chainIdNumber}
+                    />
                   )
-                })
-              : xOrders.map((order) => <XTransaction key={order.item.hash} order={order.item} />)}
+                } else {
+                  content = (
+                    <Flex flexDirection="column">
+                      {Object.values(transactions).map((tx) => {
+                        return <Transaction key={tx.hash + tx.addedTime} tx={tx} chainId={chainIdNumber} />
+                      })}
+                    </Flex>
+                  )
+                }
+
+                return (
+                  <div key={`transactions#${chainIdNumber}`}>
+                    <AutoRow mb="1rem" style={{ justifyContent: 'space-between' }}>
+                      <Text fontSize="12px" color="textSubtle" mb="4px">
+                        {chains.find((c) => c.id === chainIdNumber)?.name ?? 'Unknown network'}
+                      </Text>
+                    </AutoRow>
+                    {content}
+                  </div>
+                )
+              })
+            ) : (
+              <TransactionWithX xOrders={xOrders} chainId={chainId} />
+            )}
           </>
         ) : (
           <Text>{t('No recent transactions')}</Text>
@@ -150,14 +152,14 @@ function TransactionWithX({
   xOrders = [],
   chainId,
 }: {
-  transactions: TransactionDetails[]
+  transactions?: TransactionDetails[]
   xOrders?: TransactionItem[]
-  chainId: number
+  chainId?: number
 }) {
   const allTransactionItems = useMemo(
     () =>
       [
-        ...transactions.map(
+        ...(transactions || []).map(
           (t) =>
             ({
               type: 'tx',
@@ -168,6 +170,10 @@ function TransactionWithX({
       ].sort(sortByTransactionTime),
     [transactions, xOrders],
   )
+
+  if (!chainId) {
+    return null
+  }
 
   return (
     <TransactionList>
