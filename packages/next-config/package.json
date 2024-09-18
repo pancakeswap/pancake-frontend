@@ -8,10 +8,10 @@
     "build": "npx tsc"
   },
   "peerDependencies": {
-    "next": "14.2.5"
+    "next": "catalog:"
   },
   "devDependencies": {
-    "next": "14.2.5"
+    "next": "catalog:"
   },
   "exports": {
     "./withWebSecurityHeaders": {
