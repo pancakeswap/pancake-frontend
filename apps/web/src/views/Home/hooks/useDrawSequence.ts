@@ -18,8 +18,8 @@ export const useDrawSequenceImages = (
   const drawSequenceImage = useCallback(
     (width: number, height: number) => {
       const canvas = canvasRef.current
-      if (!canvas || ImageDrawProgress.current + 1 >= imageCount) return
-      if (ImageDrawProgress.current + 1 >= imageCount) {
+      if (!canvas || ImageDrawProgress.current >= imageCount) return
+      if (ImageDrawProgress.current >= imageCount) {
         clearInterval(intervalRef.current)
         onplayEnd()
       } else {
@@ -30,7 +30,7 @@ export const useDrawSequenceImages = (
           context?.drawImage(img, 0, 0, width, height)
         }
         ImageDrawProgress.current++
-        if (loop && ImageDrawProgress.current + 1 >= imageCount) {
+        if (loop && ImageDrawProgress.current >= imageCount) {
           ImageDrawProgress.current = 0
         }
       }
