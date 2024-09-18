@@ -13,6 +13,7 @@ import {
 } from '@pancakeswap/smart-router'
 import { BigintIsh } from '@pancakeswap/swap-sdk-core'
 import { AbortControl } from '@pancakeswap/utils/abortControl'
+import { useUserSlippage } from '@pancakeswap/utils/user'
 import { keepPreviousData, useQuery, useQueryClient } from '@tanstack/react-query'
 import qs from 'qs'
 import { useCallback, useDeferredValue, useEffect, useMemo, useRef } from 'react'
@@ -28,6 +29,7 @@ import { useFeeDataWithGasPrice } from 'state/user/hooks'
 import { tracker } from 'utils/datadog'
 import { createViemPublicClientGetter } from 'utils/viem'
 import { publicClient } from 'utils/wagmi'
+import { basisPointsToPercent } from 'utils/exchange'
 
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useUserXEnable } from 'state/user/smartRouter'
@@ -524,6 +526,7 @@ export function useBestTradeFromApi({
   v2Swap,
   v3Swap,
 }: Options) {
+  const [slippage] = useUserSlippage()
   const poolTypes = useMemo(() => {
     const types: PoolType[] = []
     if (v2Swap) {
@@ -569,6 +572,7 @@ export function useBestTradeFromApi({
       maxHops,
       maxSplits,
       poolTypes,
+      slippage,
     ] as const,
     queryFn: async ({ signal, queryKey }) => {
       const [key] = queryKey
@@ -582,6 +586,7 @@ export function useBestTradeFromApi({
         amount,
         quoteCurrency: currency,
         tradeType,
+        slippage: basisPointsToPercent(slippage),
         amm: { maxHops, maxSplits, poolTypes, gasPriceWei: gasPrice },
         x: {
           useSyntheticQuotes: true,

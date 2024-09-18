@@ -14,7 +14,7 @@ type Trade = SmartRouterTrade<TradeType> | V4Router.V4TradeWithoutGraph<TradeTyp
 export const useAllTypeBestTrade = () => {
   const [isQuotingPaused, setIsQuotingPaused] = useState(false)
   const bestOrder = useSwapBestOrder()
-  const { isLoading, trade, refresh, syncing, isStale, error } = useSwapBestTrade()
+  const { isLoading, trade, refresh, syncing, isStale, error } = useSwapBestTrade({ maxHops: 3 })
   const lockedAMMTrade = useRef<Trade | undefined>()
   const lockedOrder = useRef<
     | (InterfaceOrder<Currency, Currency> & {
