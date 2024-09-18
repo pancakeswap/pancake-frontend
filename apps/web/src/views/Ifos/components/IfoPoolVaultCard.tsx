@@ -1,11 +1,14 @@
-import { useMemo } from 'react'
-import { Flex } from '@pancakeswap/uikit'
-import { isCakeVaultSupported } from '@pancakeswap/pools'
-import { Address } from 'viem'
 import { ChainId } from '@pancakeswap/chains'
+import { isCakeVaultSupported } from '@pancakeswap/pools'
+import { Flex } from '@pancakeswap/uikit'
+import { useMemo } from 'react'
+import { Address } from 'viem'
 
 import { useActiveChainId } from 'hooks/useActiveChainId'
 
+import { isCrossChainIfoSupportedOnly } from '@pancakeswap/ifos'
+import { useActiveIfoConfig } from 'hooks/useIfoConfig'
+import { CrossChainVeCakeCard } from './CrossChainVeCakeCard'
 import IfoVesting from './IfoVesting/index'
 import { VeCakeCard } from './VeCakeCard'
 
@@ -17,14 +20,28 @@ type Props = {
 
 const IfoPoolVaultCard = ({ ifoBasicSaleType, ifoAddress }: Props) => {
   const { chainId } = useActiveChainId()
-  const cakeVaultSupported = useMemo(() => isCakeVaultSupported(chainId), [chainId])
+  const { activeIfo } = useActiveIfoConfig()
 
-  const vault = <VeCakeCard ifoAddress={ifoAddress} />
+  const targetChainId = useMemo(() => activeIfo?.chainId || chainId, [activeIfo, chainId])
+  const cakeVaultSupported = useMemo(() => isCakeVaultSupported(targetChainId), [targetChainId])
+
+  const vault = useMemo(
+    () =>
+      cakeVaultSupported ? (
+        <VeCakeCard ifoAddress={ifoAddress} />
+      ) : isCrossChainIfoSupportedOnly(targetChainId) ? (
+        <CrossChainVeCakeCard ifoAddress={ifoAddress} />
+      ) : null,
+    [targetChainId, cakeVaultSupported, ifoAddress],
+  )
 
   return (
     <Flex width="100%" maxWidth={400} alignItems="center" flexDirection="column">
-      {cakeVaultSupported ? vault : null}
-      <IfoVesting ifoBasicSaleType={ifoBasicSaleType} />
+      {vault}
+
+      {/* Note: Only show when user is connected to BSC for now. 
+      When CrossChain IFO is moved to finished, can enable this again for all chains */}
+      {chainId === ChainId.BSC && <IfoVesting ifoBasicSaleType={ifoBasicSaleType} />}
     </Flex>
   )
 }

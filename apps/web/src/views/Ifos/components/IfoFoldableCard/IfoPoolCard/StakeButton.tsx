@@ -1,23 +1,33 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { isCakeVaultSupported, CAKE_VAULT_SUPPORTED_CHAINS } from '@pancakeswap/pools'
+import { CAKE_VAULT_SUPPORTED_CHAINS, isCakeVaultSupported } from '@pancakeswap/pools'
+import { Button, Flex, Text, useModalV2 } from '@pancakeswap/uikit'
+import { useCallback, useMemo } from 'react'
 import { SpaceProps } from 'styled-system'
-import { useMemo } from 'react'
-import { Button, useModalV2, Flex, Text } from '@pancakeswap/uikit'
 
 import { useActiveChainId } from 'hooks/useActiveChainId'
 
-import { NetworkSwitcherModal } from './NetworkSwitcherModal'
+import { isTestnetChainId } from '@pancakeswap/chains'
+import { useRouter } from 'next/router'
 import { useChainNames } from '../../../hooks/useChainNames'
 import { ICakeLogo } from '../../Icons'
+import { NetworkSwitcherModal } from './NetworkSwitcherModal'
 
-type Props = SpaceProps
+interface StakeButtonProps extends SpaceProps {}
 
-export function StakeButton(props: Props) {
+export function StakeButton(props: StakeButtonProps) {
   const { chainId } = useActiveChainId()
+  const router = useRouter()
   const cakeVaultSupported = useMemo(() => isCakeVaultSupported(chainId), [chainId])
   const { t } = useTranslation()
   const { onOpen, onDismiss, isOpen } = useModalV2()
-  const chainNames = useChainNames(CAKE_VAULT_SUPPORTED_CHAINS)
+
+  const supportedChainIds = useMemo(
+    () => CAKE_VAULT_SUPPORTED_CHAINS.filter((vaultChainId) => !isTestnetChainId(vaultChainId)),
+    [],
+  )
+  const chainNames = useChainNames(supportedChainIds)
+
+  const goToCakeStakingPage = useCallback(() => router.push('/cake-staking'), [router])
 
   const tips = (
     <Flex flexDirection="column" justifyContent="flex-start">
@@ -30,14 +40,15 @@ export function StakeButton(props: Props) {
     <>
       <NetworkSwitcherModal
         isOpen={isOpen}
-        supportedChains={CAKE_VAULT_SUPPORTED_CHAINS}
+        supportedChains={supportedChainIds}
         title={t('Stake CAKE')}
         description={t('Lock CAKE on %chain% to obtain iCAKE', {
           chain: chainNames,
         })}
         buttonText={t('Switch chain to stake CAKE')}
-        onDismiss={onDismiss}
         tips={tips}
+        onDismiss={onDismiss}
+        onSwitchNetworkSuccess={goToCakeStakingPage}
       />
       <Button width="100%" onClick={onOpen} {...props}>
         {t('Stake CAKE')}

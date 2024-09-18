@@ -1,3 +1,4 @@
+import { PoolIds } from '@pancakeswap/ifos'
 import { BetPosition } from '@pancakeswap/prediction'
 
 export enum GTMEvent {
@@ -23,6 +24,11 @@ export enum GTMEvent {
   FiatOnRampModalOpened = 'fiatOnRampModalOpened',
   PredictionBet = 'predictionBet',
   PredictionBetPlaced = 'predictionBetPlaced',
+
+  // IFO
+  IFOGoToCakeStaking = 'ifoGoToCakeStaking',
+  IFOCommit = 'ifoCommit',
+  IFOCommitTxnSent = 'ifoCommitTxnSent',
 }
 
 export enum GTMCategory {
@@ -40,6 +46,7 @@ export enum GTMCategory {
   Lottery = 'Lottery',
   FiatOnRamp = 'FiatOnRamp',
   Prediction = 'Prediction',
+  IFO = 'IFO',
 }
 
 export enum GTMAction {
@@ -67,6 +74,13 @@ export enum GTMAction {
   ClickBetUpButton = 'Click Bet Up Button',
   ClickBetDownButton = 'Click Bet Down Button',
   PredictionBetPlaced = 'Prediction Bet Placed',
+
+  // IFO
+  ClickGoToCakeStakingButton = 'Click Go To Cake Staking Button',
+  ClickCommitPublicSale = 'Click Commit Button for Public Sale',
+  ClickCommitBasicSale = 'Click Commit Button for Basic Sale',
+  CommitTxnSentPublicSale = 'Commit Transaction Sent for Public Sale',
+  CommitTxnSentBasicSale = 'Commit Transaction Sent for Basic Sale',
 }
 
 interface CustomGTMDataLayer {
@@ -305,5 +319,32 @@ export const logGTMPredictionBetPlacedEvent = (position: string) => {
     action: GTMAction.PredictionBetPlaced,
     category: GTMCategory.Prediction,
     label: `Position: ${position}`,
+  })
+}
+
+export const logGTMIfoGoToCakeStakingEvent = () => {
+  console.info('---IFOGoToCakeStaking---')
+  window?.dataLayer?.push({
+    event: GTMEvent.IFOGoToCakeStaking,
+    action: GTMAction.ClickGoToCakeStakingButton,
+    category: GTMCategory.IFO,
+  })
+}
+
+export const logGTMIfoCommitEvent = (poolId: PoolIds) => {
+  console.info('---IFOCommit---')
+  window?.dataLayer?.push({
+    event: GTMEvent.IFOCommit,
+    action: poolId === PoolIds.poolUnlimited ? GTMAction.ClickCommitPublicSale : GTMAction.ClickCommitBasicSale,
+    category: GTMCategory.IFO,
+  })
+}
+
+export const logGTMIfoCommitTxnSentEvent = (poolId: PoolIds) => {
+  console.info('---IFOCommitTxnSent---')
+  window?.dataLayer?.push({
+    event: GTMEvent.IFOCommitTxnSent,
+    action: poolId === PoolIds.poolUnlimited ? GTMAction.CommitTxnSentPublicSale : GTMAction.CommitTxnSentBasicSale,
+    category: GTMCategory.IFO,
   })
 }

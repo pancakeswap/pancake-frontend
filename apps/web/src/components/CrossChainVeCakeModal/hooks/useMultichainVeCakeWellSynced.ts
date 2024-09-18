@@ -10,26 +10,38 @@ import { CROSS_CHAIN_CONFIG } from '../constants'
 
 export const useMultichainVeCakeWellSynced = (
   targetChainId?: ChainId,
+  targetTime?: number,
 ): {
-  isVeCakeWillSync?: boolean | null
   isLoading: boolean
+  isVeCakeWillSync?: boolean | null
+  bscBalance?: bigint
+  bscProxyBalance?: bigint
+  targetChainBalance?: bigint
+  targetChainProxyBalance?: bigint
 } => {
   const { address: account } = useAccount()
   const enabled = Boolean(account) && Boolean(targetChainId)
   const { data, isLoading } = useQuery({
-    queryKey: [account, 'veCakeSyncData', targetChainId],
+    queryKey: [account, 'veCakeSyncData', targetChainId, targetTime],
 
     queryFn: () => {
       if (!account) throw new Error('account is required')
-      return getVCakeAndProxyData(account, targetChainId!)
+      return getVCakeAndProxyData(account, targetChainId!, targetTime)
     },
 
     enabled,
     refetchInterval: FAST_INTERVAL,
     staleTime: FAST_INTERVAL,
   })
-  // return { isVeCakeWillSync: false, isLoading } //  mock status
-  return { isVeCakeWillSync: data, isLoading }
+
+  return {
+    isVeCakeWillSync: data?.isVeCakeWillSync,
+    bscBalance: data?.bscBalance,
+    bscProxyBalance: data?.bscProxyBalance,
+    targetChainBalance: data?.targetChainBalance,
+    targetChainProxyBalance: data?.targetChainProxyBalance,
+    isLoading,
+  }
 }
 
 export const useAllMultichainSyncedCount = (): {
@@ -59,7 +71,7 @@ export const getAllMultichainSyncedCount = async (
   const totalCount = queryChainList.length + 1 // add BSC CHAIN to count
 
   const multichainIsWellSync = await Promise.all(
-    queryChainList.map((chainId) => getVCakeAndProxyData(address, chainId)),
+    queryChainList.map((chainId) => getVCakeAndProxyData(address, chainId).then((data) => data?.isVeCakeWillSync)),
   )
   return {
     totalCount,
@@ -67,12 +79,12 @@ export const getAllMultichainSyncedCount = async (
   }
 }
 
-export const getVCakeAndProxyData = async (address: Address, targetChainId: ChainId): Promise<boolean | null> => {
+export const getVCakeAndProxyData = async (address: Address, targetChainId: ChainId, targetTime?: number) => {
   try {
     const targetClient = publicClient({ chainId: targetChainId })
     const bscClient = publicClient({ chainId: ChainId.BSC })
 
-    const targetTime = Math.floor(Date.now() / 1000) + 60
+    const finalTargetTime = targetTime || Math.floor(Date.now() / 1000) + 60
 
     const [{ result: userInfo }] = await bscClient.multicall({
       contracts: [
@@ -93,13 +105,13 @@ export const getVCakeAndProxyData = async (address: Address, targetChainId: Chai
           address: getVeCakeAddress(ChainId.BSC),
           abi: veCakeABI,
           functionName: 'balanceOfAtTime',
-          args: [address, BigInt(targetTime)],
+          args: [address, BigInt(finalTargetTime)],
         },
         {
           address: getVeCakeAddress(ChainId.BSC),
           abi: veCakeABI,
           functionName: 'balanceOfAtTime',
-          args: [userInfo?.[2], BigInt(targetTime)],
+          args: [userInfo?.[2], BigInt(finalTargetTime)],
         },
       ],
     })
@@ -110,13 +122,13 @@ export const getVCakeAndProxyData = async (address: Address, targetChainId: Chai
           address: getVeCakeAddress(targetChainId),
           abi: veCakeABI,
           functionName: 'balanceOfAtTime',
-          args: [address, BigInt(targetTime)],
+          args: [address, BigInt(finalTargetTime)],
         },
         {
           address: getVeCakeAddress(targetChainId),
           abi: veCakeABI,
           functionName: 'balanceOfAtTime',
-          args: [userInfo?.[2] ?? '0x0000000000000000000000000000000000000000', BigInt(targetTime)],
+          args: [userInfo?.[2] ?? '0x0000000000000000000000000000000000000000', BigInt(finalTargetTime)],
         },
       ],
     })
@@ -136,7 +148,7 @@ export const getVCakeAndProxyData = async (address: Address, targetChainId: Chai
 
     const isVeCakeWillSync = bscBalance + bscProxyBalance === targetChainBalance + targetChainProxyBalance
 
-    return isVeCakeWillSync
+    return { isVeCakeWillSync, bscBalance, bscProxyBalance, targetChainBalance, targetChainProxyBalance }
   } catch (e) {
     console.error(e)
     return null

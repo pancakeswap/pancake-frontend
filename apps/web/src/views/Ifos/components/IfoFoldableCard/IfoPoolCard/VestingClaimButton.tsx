@@ -30,7 +30,7 @@ const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, amountA
   )
 
   const handleClaim = useCallback(async () => {
-    if (walletIfoData.version !== 3 && walletIfoData.version !== 7) {
+    if (walletIfoData.version !== 3 && walletIfoData.version !== 7 && walletIfoData.version !== 8) {
       throw new Error('Invalid IFO version')
     }
     const receipt = await fetchWithCatchTxError(() => {
@@ -39,6 +39,8 @@ const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, amountA
         throw new Error('Invalid wallet ifo contract or account')
       }
       return walletIfoData.version === 3
+        ? walletIfoData.contract.write.release([userPoolCharacteristics?.vestingId as Address], { account, chain })
+        : walletIfoData.version === 8
         ? walletIfoData.contract.write.release([userPoolCharacteristics?.vestingId as Address], { account, chain })
         : walletIfoData.contract.write.release([userPoolCharacteristics?.vestingId as Address], { account, chain })
     })

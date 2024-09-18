@@ -1,7 +1,7 @@
 import { ChainId, getChainName } from '@pancakeswap/chains'
 import { BaseIfoConfig, Ifo } from '../types'
-import { isCrossChainIfoSupportedOnly, isIfoSupported } from './isIfoSupported'
 import { getDestChains } from './getDestChains'
+import { isCrossChainIfoSupportedOnly, isIfoSupported } from './isIfoSupported'
 
 export async function getIfoConfig(chainId?: ChainId): Promise<Ifo[]> {
   if (!chainId) {

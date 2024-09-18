@@ -1,17 +1,17 @@
-import { useMemo } from 'react'
 import { Ifo, isCrossChainIfoSupportedOnly } from '@pancakeswap/ifos'
+import { useMemo } from 'react'
 
+import { useFetchIfo } from 'state/pools/hooks'
 import useGetPublicIfoV8Data from 'views/Ifos/hooks/v8/useGetPublicIfoData'
 import useGetWalletIfoV8Data from 'views/Ifos/hooks/v8/useGetWalletIfoData'
-import { useFetchIfo } from 'state/pools/hooks'
 
-import { IfoCurrentCard } from './components/IfoFoldableCard'
 import IfoContainer from './components/IfoContainer'
+import { IfoCurrentCard } from './components/IfoFoldableCard'
+import IfoQuestions from './components/IfoQuestions'
 import IfoSteps from './components/IfoSteps'
+import { SectionBackground } from './components/SectionBackground'
 import { useICakeBridgeStatus } from './hooks/useIfoCredit'
 import { isBasicSale } from './hooks/v7/helpers'
-import IfoQuestions from './components/IfoQuestions'
-import { SectionBackground } from './components/SectionBackground'
 
 interface TypeProps {
   activeIfo: Ifo
@@ -25,6 +25,7 @@ const CurrentIfo: React.FC<React.PropsWithChildren<TypeProps>> = ({ activeIfo })
     ifoChainId: activeIfo.chainId,
     ifoAddress: activeIfo.address,
   })
+
   const isCrossChainIfo = useMemo(() => isCrossChainIfoSupportedOnly(activeIfo.chainId), [activeIfo.chainId])
 
   const { poolBasic, poolUnlimited } = walletIfoData

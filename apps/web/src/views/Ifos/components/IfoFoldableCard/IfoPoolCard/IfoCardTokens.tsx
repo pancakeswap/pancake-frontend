@@ -34,7 +34,7 @@ import { useAccount } from 'wagmi'
 import { TextLink } from '../../IfoCardStyles'
 import StakeVaultButton from '../StakeVaultButton'
 import { EnableStatus } from '../types'
-import { ICakeTips } from './ICakeTips'
+import { CrossChainVeCakeTips } from './CrossChainVeCakeTips'
 import IFORequirements from './IFORequirements'
 
 interface TokenSectionProps extends FlexProps {
@@ -228,7 +228,12 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
       publicIfoData.status !== 'finished' &&
       hasProfile
     ) {
-      message = <ICakeTips ifoId={ifo.id} ifoChainId={ifo.chainId} ifoAddress={ifo.address} />
+      // If Cross-Chain IFO
+      // if (ifo.chainId !== ChainId.BSC) {
+      message = <CrossChainVeCakeTips ifoChainId={ifo.chainId} />
+      // }
+      // Phase this out later, as it applies at the same time
+      // else message = <ICakeTips ifoId={ifo.id} ifoChainId={ifo.chainId} ifoAddress={ifo.address} />
     }
 
     if (account && !hasProfile && !isPublicPoolBasicSale && publicIfoData.status !== 'finished') {
@@ -277,7 +282,7 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
     if (publicIfoData.status === 'live') {
       return (
         <>
-          <CommitTokenSection commitToken={ifo.currency} mb="24px">
+          <CommitTokenSection commitToken={ifo.currency} mb="12px">
             <Label>{t('Your %symbol% committed', { symbol: currency.symbol })}</Label>
             {amountTokenCommittedInLP ? (
               <Value value={getBalanceAmount(amountTokenCommittedInLP, currency.decimals)} />
@@ -286,7 +291,7 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
               userAmount={amountTokenCommittedInLP || BIG_ZERO}
               totalAmount={publicPoolCharacteristics?.totalAmountPool || BIG_ZERO}
             />
-            <Flex>
+            <Flex mt="8px">
               <Box>
                 <Flex>
                   <Label>{t('Your %symbol% spent', { symbol: currency.symbol })}</Label>

@@ -1,20 +1,20 @@
-import { useState, useCallback, useEffect, useMemo } from 'react'
-import { useAccount } from 'wagmi'
-import { Address } from 'viem'
-import BigNumber from 'bignumber.js'
 import { Ifo, PoolIds, ifoV8ABI } from '@pancakeswap/ifos'
-import { useERC20, useIfoV7Contract } from 'hooks/useContract'
-import { fetchCakeVaultUserData } from 'state/pools'
-import { useAppDispatch } from 'state'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import BigNumber from 'bignumber.js'
+import { useERC20, useIfoV8Contract } from 'hooks/useContract'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useAppDispatch } from 'state'
+import { fetchCakeVaultUserData } from 'state/pools'
 import { publicClient } from 'utils/wagmi'
+import { Address } from 'viem'
+import { useAccount } from 'wagmi'
 
 import { useActiveChainId } from 'hooks/useActiveChainId'
 
+import { WalletIfoData, WalletIfoState } from '../../types'
 import useIfoAllowance from '../useIfoAllowance'
-import { WalletIfoState, WalletIfoData } from '../../types'
-import { useIfoSourceChain } from '../useIfoSourceChain'
 import { useIfoCredit } from '../useIfoCredit'
+import { useIfoSourceChain } from '../useIfoSourceChain'
 
 const initialState = {
   isInitialized: false,
@@ -50,7 +50,7 @@ const initialState = {
  * Gets all data from an IFO related to a wallet
  */
 const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
-  const { chainId: currenctChainId } = useActiveChainId()
+  const { chainId: currentChainId } = useActiveChainId()
   const [state, setState] = useState<WalletIfoState>(initialState)
   const dispatch = useAppDispatch()
   const { chainId } = ifo
@@ -64,7 +64,7 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
   const { address, currency, version } = ifo
 
   const { address: account } = useAccount()
-  const contract = useIfoV7Contract(address, { chainId })
+  const contract = useIfoV8Contract(address, { chainId })
   const currencyContract = useERC20(currency.address, { chainId })
   const allowance = useIfoAllowance(currencyContract, address)
 
@@ -266,7 +266,7 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
     creditLeft: BigNumber.maximum(BIG_ZERO, creditLeftWithNegative),
   }
 
-  useEffect(() => resetIfoData(), [currenctChainId, account, resetIfoData])
+  useEffect(() => resetIfoData(), [currentChainId, account, resetIfoData])
 
   return {
     ...state,
@@ -277,7 +277,7 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
     fetchIfoData,
     resetIfoData,
     ifoCredit,
-    version: 7,
+    version: 8,
   }
 }
 

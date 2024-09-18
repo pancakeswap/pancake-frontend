@@ -101,10 +101,12 @@ function ICakeCard({
 const Step1 = ({
   hasProfile,
   sourceChainIfoCredit,
+  isCrossChainIfo,
 }: {
   srcChainId?: ChainId
   hasProfile: boolean
   sourceChainIfoCredit?: CurrencyAmount<Currency>
+  isCrossChainIfo?: boolean
 }) => {
   const { t } = useTranslation()
   const cakePrice = useCakePrice()
@@ -117,7 +119,7 @@ const Step1 = ({
   return (
     <CardBody>
       <Heading as="h4" color="secondary" mb="16px">
-        {t('Lock CAKE in the CAKE pool')}
+        {t('Lock CAKE in the BNB Chain CAKE Staking')}
       </Heading>
       <Box>
         <Text mb="4px" color="textSubtle" small>
@@ -132,7 +134,7 @@ const Step1 = ({
           small
           href="https://docs.pancakeswap.finance/products/ifo-initial-farm-offering/icake#how-is-icake-calculated"
         >
-          {t('How does the number of iCAKE calculated?')}
+          {t('How is the number of iCAKE calculated?')}
         </Link>
         <Text mt="4px" color="textSubtle" small>
           {t('Missed this IFO? Lock CAKE today for the next IFO, while enjoying a wide range of veCAKE benefits!')}
@@ -147,7 +149,7 @@ const Step1 = ({
             />
           }
           credit={sourceChainIfoCredit}
-          title={t('Your ICAKE')}
+          title={t('Your ICAKE %iCakeSuffix%', { iCakeSuffix: isCrossChainIfo ? 'on BNB' : '' })}
           more={
             <Text fontSize="12px" color="textSubtle">
               {creditDollarValue !== undefined ? (
@@ -164,21 +166,40 @@ const Step1 = ({
               )}
             </Text>
           }
+          action={
+            <RouterLink to="/cake-staking">
+              <Button>{t('View CAKE Staking')}</Button>
+            </RouterLink>
+          }
         />
       )}
     </CardBody>
   )
 }
 
-const Step2 = ({ hasProfile, isLive, isCommitted }: { hasProfile: boolean; isLive: boolean; isCommitted: boolean }) => {
+const Step2 = ({
+  hasProfile,
+  isLive,
+  isCommitted,
+  isCrossChainIfo,
+}: {
+  hasProfile: boolean
+  isLive: boolean
+  isCommitted: boolean
+  isCrossChainIfo?: boolean
+}) => {
   const { t } = useTranslation()
   return (
     <CardBody>
       <Heading as="h4" color="secondary" mb="1rem">
-        {t('Commit CAKE')}
+        {isCrossChainIfo ? t('Switch network and commit CAKE') : t('Commit CAKE')}
       </Heading>
       <Text color="textSubtle" small>
-        {t('When the IFO sales are live, you can click “commit” to commit CAKE and buy the tokens being sold.')}
+        {isCrossChainIfo
+          ? t(
+              'When the IFO sales are live, you can switch the network to the blockchain where the IFO is hosted on, click “commit” to commit CAKE and buy the tokens being sold.',
+            )
+          : t('When the IFO sales are live, you can click “commit” to commit CAKE and buy the tokens being sold.')}
       </Text>
       <Text color="textSubtle" small mt="1rem">
         {t('You will need a separate amount of CAKE in your wallet balance to commit to the IFO sales.')}
@@ -251,7 +272,12 @@ const IfoSteps: React.FC<React.PropsWithChildren<TypeProps>> = ({
     }
 
     const renderCommitCakeStep = () => (
-      <Step2 hasProfile={hasActiveProfile} isLive={Boolean(isLive)} isCommitted={isCommitted} />
+      <Step2
+        hasProfile={hasActiveProfile}
+        isLive={Boolean(isLive)}
+        isCommitted={isCommitted}
+        isCrossChainIfo={isCrossChainIfo}
+      />
     )
     const renderClaimStep = () => (
       <CardBody>
@@ -259,7 +285,11 @@ const IfoSteps: React.FC<React.PropsWithChildren<TypeProps>> = ({
           {t('Claim your tokens')}
         </Heading>
         <Text color="textSubtle" small>
-          {t('After the IFO sales finish, you can claim any IFO tokens that you bought, and any unspent CAKE.')}
+          {isCrossChainIfo
+            ? t(
+                'After the IFO sales finish, you can switch the network to the blockchain where the IFO is hosted on, claim any IFO tokens that you bought, and any unspent CAKE.',
+              )
+            : t('After the IFO sales finish, you can claim any IFO tokens that you bought, and any unspent CAKE.')}
         </Text>
       </CardBody>
     )
@@ -270,12 +300,12 @@ const IfoSteps: React.FC<React.PropsWithChildren<TypeProps>> = ({
         </Heading>
         <Text color="textSubtle" small>
           {t(
-            'To participate in the cross chain Public Sale, you need to bridge your iCAKE to the blockchain where the IFO will be hosted on.',
+            'To participate in the cross chain Public Sale, you need to bridge your veCAKE to the blockchain where the IFO will be hosted on.',
           )}
         </Text>
         <Text color="textSubtle" small mt="1rem">
           {t(
-            'Before or during the sale, you may bridge you iCAKE again if you’ve added more CAKE or extended your lock staking position.',
+            'Before or during the sale, you may bridge your veCAKE again if you’ve added more CAKE or extended your lock staking position.',
           )}
         </Text>
         {sourceChainHasICake && (
@@ -285,7 +315,7 @@ const IfoSteps: React.FC<React.PropsWithChildren<TypeProps>> = ({
             title={t('Your iCAKE on %chainName%', { chainName: ifoChainName })}
             action={
               !isStepValid && !isFinished ? (
-                <Button as="a" href="#bridge-icake">
+                <Button as="a" href="#sync-vecake">
                   {t('Bridge iCAKE')}
                 </Button>
               ) : null
@@ -300,17 +330,24 @@ const IfoSteps: React.FC<React.PropsWithChildren<TypeProps>> = ({
         return (
           <CardBody>
             <Heading as="h4" color="secondary" mb="16px">
-              {t('Activate your Profile')}
+              {t('Activate your Profile on BNB Chain')}
             </Heading>
             <Text color="textSubtle" small mb="16px">
-              {t('You’ll need an active PancakeSwap Profile to take part in an IFO!')}
+              {isCrossChainIfo
+                ? t('You’ll need an active PancakeSwap Profile to take part in the IFO’s Public Sale!')
+                : t('You’ll need an active PancakeSwap Profile to take part in an IFO!')}
             </Text>
             {renderAccountStatus()}
           </CardBody>
         )
       case 1:
         return (
-          <Step1 hasProfile={hasActiveProfile} sourceChainIfoCredit={sourceChainIfoCredit} srcChainId={srcChainId} />
+          <Step1
+            hasProfile={hasActiveProfile}
+            sourceChainIfoCredit={sourceChainIfoCredit}
+            srcChainId={srcChainId}
+            isCrossChainIfo={isCrossChainIfo}
+          />
         )
       case 2:
         if (isCrossChainIfo) {

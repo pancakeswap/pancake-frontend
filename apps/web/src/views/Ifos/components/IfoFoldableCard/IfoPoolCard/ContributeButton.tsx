@@ -1,15 +1,17 @@
+import { Ifo, isCrossChainIfoSupportedOnly, PoolIds } from '@pancakeswap/ifos'
 import { useTranslation } from '@pancakeswap/localization'
-import { useMemo } from 'react'
 import { Button, IfoGetTokenModal, useModal, useToast } from '@pancakeswap/uikit'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { getTokenListTokenUrl, getTokenLogoURLByAddress } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { Ifo, PoolIds } from '@pancakeswap/ifos'
 import { useTokenBalanceByChain } from 'hooks/useTokenBalance'
+import { useCallback, useMemo } from 'react'
 import { useCurrentBlock } from 'state/block/hooks'
-import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 
+import { useUserVeCakeStatus } from 'components/CrossChainVeCakeModal/hooks/useUserVeCakeStatus'
+import { logGTMIfoCommitEvent } from 'utils/customGTMEventTracking'
 import ContributeModal from './ContributeModal'
 
 interface Props {
@@ -21,9 +23,11 @@ interface Props {
 const ContributeButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, ifo, publicIfoData, walletIfoData }) => {
   const publicPoolCharacteristics = publicIfoData[poolId]
   const userPoolCharacteristics = walletIfoData[poolId]
+
   const isPendingTx = userPoolCharacteristics?.isPendingTx
   const amountTokenCommittedInLP = userPoolCharacteristics?.amountTokenCommittedInLP
   const limitPerUserInLP = publicPoolCharacteristics?.limitPerUserInLP
+
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const currentBlock = useCurrentBlock()
@@ -32,6 +36,8 @@ const ContributeButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, if
     () => getTokenListTokenUrl(ifo.currency) || getTokenLogoURLByAddress(ifo.currency.address, ifo.currency.chainId),
     [ifo.currency],
   )
+  const { isProfileSynced } = useUserVeCakeStatus(ifo.chainId)
+  const isCrossChainIfo = useMemo(() => isCrossChainIfoSupportedOnly(ifo.chainId), [ifo.chainId])
 
   // Refetch all the data, and display a message when fetching is done
   const handleContributeSuccess = async (amount: BigNumber, txHash: string) => {
@@ -64,19 +70,40 @@ const ContributeButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, if
     false,
   )
 
-  const noNeedCredit = ifo.version >= 3.1 && poolId === PoolIds.poolBasic
+  const presentContributeModal = useCallback(() => {
+    onPresentContributeModal()
+    logGTMIfoCommitEvent(poolId)
+  }, [onPresentContributeModal, poolId])
 
-  const isMaxCommitted =
-    (!noNeedCredit &&
-      walletIfoData.ifoCredit?.creditLeft &&
-      walletIfoData.ifoCredit?.creditLeft.isLessThanOrEqualTo(0)) ||
-    (limitPerUserInLP?.isGreaterThan(0) && amountTokenCommittedInLP?.isGreaterThanOrEqualTo(limitPerUserInLP))
+  const noNeedCredit = useMemo(() => ifo.version >= 3.1 && poolId === PoolIds.poolBasic, [ifo.version, poolId])
 
-  const isDisabled = isPendingTx || isMaxCommitted || publicIfoData.status !== 'live'
+  const isMaxCommitted = useMemo(
+    () =>
+      (!noNeedCredit &&
+        walletIfoData.ifoCredit?.creditLeft &&
+        walletIfoData.ifoCredit?.creditLeft.isLessThanOrEqualTo(0)) ||
+      (limitPerUserInLP?.isGreaterThan(0) && amountTokenCommittedInLP?.isGreaterThanOrEqualTo(limitPerUserInLP)),
+    [amountTokenCommittedInLP, limitPerUserInLP, noNeedCredit, walletIfoData.ifoCredit?.creditLeft],
+  )
+
+  // In a Cross-Chain Public Sale (poolUnlimited),
+  // the user needs to have credit (iCAKE) available to participate and an active profile
+  const isCrossChainAndNoProfileOrCredit = useMemo(
+    () =>
+      poolId === PoolIds.poolUnlimited &&
+      isCrossChainIfo &&
+      (walletIfoData.ifoCredit?.credit.eq(0) || !isProfileSynced),
+    [isCrossChainIfo, isProfileSynced, poolId, walletIfoData.ifoCredit?.credit],
+  )
+
+  const isDisabled = useMemo(
+    () => isPendingTx || isMaxCommitted || publicIfoData.status !== 'live' || isCrossChainAndNoProfileOrCredit,
+    [isPendingTx, isMaxCommitted, publicIfoData.status, isCrossChainAndNoProfileOrCredit],
+  )
 
   return (
     <Button
-      onClick={userCurrencyBalance.isEqualTo(0) ? onPresentGetTokenModal : onPresentContributeModal}
+      onClick={userCurrencyBalance.isEqualTo(0) ? onPresentGetTokenModal : presentContributeModal}
       width="100%"
       disabled={isDisabled}
     >

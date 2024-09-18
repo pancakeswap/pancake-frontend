@@ -455,4 +455,12 @@ export const arbitrumTokens = {
     'GUSD',
     'https://gains.trade/',
   ),
+  egp: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0x7E7a7C916c19a45769f6BDAF91087f93c6C12F78',
+    18,
+    'EGP',
+    'Eigenpie',
+    'https://www.eigenlayer.magpiexyz.io/',
+  ),
 }
