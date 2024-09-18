@@ -1,6 +1,5 @@
 import { Currency } from '@pancakeswap/sdk'
 import { BottomDrawer, Box, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { AppBody } from 'components/App'
 import { useRouter } from 'next/router'
 import { useContext, useEffect, useState } from 'react'
 
@@ -104,13 +103,16 @@ export default function V4Swap() {
             setIsOpen={(isOpen) => setIsChartDisplayed?.(isOpen)}
           />
         )}
-        <Flex flexDirection="column" width="100%">
-          <StyledSwapContainer justifyContent="center" width="100%" $isChartExpanded={isChartExpanded}>
-            <Wrapper mt={isChartExpanded ? '24px' : '0'}>
+        <Flex flexDirection="column" width="100%" height="100%" alignItems="center">
+          <StyledSwapContainer
+            justifyContent="center"
+            width="100%"
+            style={{ height: '100%' }}
+            $isChartExpanded={isChartExpanded}
+          >
+            <Wrapper mt={isChartExpanded ? '24px' : '0'} height="100%">
               {/* <SwapSelection swapType={SwapType.MARKET} /> */}
-              <AppBody>
-                <V4SwapForm />
-              </AppBody>
+              <V4SwapForm />
             </Wrapper>
           </StyledSwapContainer>
         </Flex>
