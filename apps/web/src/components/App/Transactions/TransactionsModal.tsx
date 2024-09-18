@@ -30,18 +30,18 @@ type TransactionItem =
 
 function sortByTransactionTime(a: TransactionItem, b: TransactionItem) {
   if (a.type === 'tx' && b.type === 'tx') {
-    return b.item.addedTime > a.item.addedTime ? -1 : 1
+    return b.item.addedTime > a.item.addedTime ? 1 : -1
   }
 
   if (a.type === 'xOrder' && b.type === 'xOrder') {
-    return new Date(b.item.createdAt).getTime() > new Date(a.item.createdAt).getTime() ? -1 : 1
+    return new Date(b.item.createdAt).getTime() > new Date(a.item.createdAt).getTime() ? 1 : -1
   }
 
   if (b.type === 'tx' && a.type === 'xOrder') {
-    return b.item.addedTime > new Date(a.item.createdAt).getTime() ? -1 : 1
+    return b.item.addedTime > new Date(a.item.createdAt).getTime() ? 1 : -1
   }
   if (b.type === 'xOrder' && a.type === 'tx') {
-    return new Date(b.item.createdAt).getTime() > a.item.addedTime ? -1 : 1
+    return new Date(b.item.createdAt).getTime() > a.item.addedTime ? 1 : -1
   }
   return 0
 }
