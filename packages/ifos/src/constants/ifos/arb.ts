@@ -24,6 +24,7 @@ export const ifos: BaseIfoConfig[] = [
       additionalClaimingFee: false,
     },
     tokenOfferingPrice: 0.1,
+    vestingTitle: 'testCrossChainIfo4',
   },
   {
     id: 'testCrossChainIfo3',
@@ -47,6 +48,7 @@ export const ifos: BaseIfoConfig[] = [
       additionalClaimingFee: false,
     },
     tokenOfferingPrice: 0.1,
+    vestingTitle: 'testCrossChainIfo3',
   },
   {
     id: 'testCrossChainIfo2',
@@ -70,6 +72,7 @@ export const ifos: BaseIfoConfig[] = [
       additionalClaimingFee: false,
     },
     tokenOfferingPrice: 0.1,
+    vestingTitle: 'testCrossChainIfo2',
   },
   {
     id: 'testCrossChainIfo1',
@@ -93,6 +96,7 @@ export const ifos: BaseIfoConfig[] = [
       additionalClaimingFee: false,
     },
     tokenOfferingPrice: 0.1,
+    vestingTitle: 'testCrossChainIfo1',
   },
   {
     id: 'testCrossChainIfo0',
@@ -116,5 +120,6 @@ export const ifos: BaseIfoConfig[] = [
       additionalClaimingFee: false,
     },
     tokenOfferingPrice: 0.1,
+    vestingTitle: 'testCrossChainIfo0',
   },
 ]
