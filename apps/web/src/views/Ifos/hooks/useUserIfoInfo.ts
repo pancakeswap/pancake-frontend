@@ -76,5 +76,6 @@ export function useUserIfoInfo({ chainId, ifoAddress }: Params) {
     snapshotTime,
     credit,
     veCake,
+    ratio,
   }
 }
