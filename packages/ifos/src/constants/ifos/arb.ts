@@ -3,13 +3,36 @@ import { BaseIfoConfig } from '../../types'
 
 export const ifos: BaseIfoConfig[] = [
   {
+    id: 'testCrossChainIfo4',
+    version: 8,
+
+    address: '0x41cE6614F310315A43942fa6eCEdc19E93E50E63', // Test IFO
+    plannedStartTime: 1726632000,
+
+    isActive: true,
+    name: 'Test Arbitrum IFO',
+    description: 'This is an IFO on Arbitrum to test cross-chain IFOs functionality on PancakeSwap.',
+    currency: arbitrumTokens.cake,
+    token: arbitrumTokens.usdc,
+    articleUrl: 'https://pancakeswap.medium.com/',
+    campaignId: 'random-for-testing',
+    poolBasic: {
+      raiseAmount: '$10,000',
+    },
+    poolUnlimited: {
+      raiseAmount: '$90,000',
+      additionalClaimingFee: false,
+    },
+    tokenOfferingPrice: 0.1,
+  },
+  {
     id: 'testCrossChainIfo3',
     version: 8,
 
     address: '0xb7AdE79F9c517C9b3cc45E3522eBc4dCe1C54e7D', // Test IFO
     plannedStartTime: 1726552801,
 
-    isActive: true,
+    isActive: false,
     name: 'Test Arbitrum IFO',
     description: 'This is an IFO on Arbitrum to test cross-chain IFOs functionality on PancakeSwap.',
     currency: arbitrumTokens.cake,
