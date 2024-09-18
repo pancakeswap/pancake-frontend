@@ -1,5 +1,5 @@
 import shuffle from 'lodash/shuffle'
-import { useMemo, type ReactElement } from 'react'
+import { type ReactElement, useMemo } from 'react'
 import { BirthdayBanner } from '../BirthdayBanner'
 import CompetitionBanner from '../CompetitionBanner'
 import { FourMemeBanner } from '../FourMemeBanner'
@@ -9,7 +9,6 @@ import { PaymasterBanner } from '../PaymasterBanner'
 import { PerpetualSeasonalBanner } from '../PerpetualSeasonalBanner'
 import { QuestBanner } from '../QuestBanner'
 import { TgPredictionBotBanner } from '../TgPredictionBotBanner'
-import { TopperCampaignBanner } from '../TopperCampaignBanner'
 import UserBanner from '../UserBanner'
 import { V4InfoBanner } from '../V4InfoBanner'
 import { VeCakeBanner } from '../VeCakeBanner'
@@ -51,10 +50,6 @@ export const useMultipleBannerConfig = () => {
       {
         shouldRender: isRenderTgPredictionBotBanner,
         banner: <TgPredictionBotBanner />,
-      },
-      {
-        shouldRender: true,
-        banner: <TopperCampaignBanner />,
       },
       {
         shouldRender: true,
