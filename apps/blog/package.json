@@ -16,7 +16,7 @@
     "@pancakeswap/utils": "workspace:*",
     "@tanstack/react-query": "^5.52.1",
     "@vanilla-extract/next-plugin": "^2.3.0",
-    "next": "14.2.5",
+    "next": "14.2.10",
     "next-seo": "^5.15.0",
     "next-themes": "^0.2.1",
     "qs": "^6.0.0",
