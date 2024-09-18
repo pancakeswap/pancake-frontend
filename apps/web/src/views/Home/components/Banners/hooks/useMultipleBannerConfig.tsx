@@ -2,6 +2,7 @@ import shuffle from 'lodash/shuffle'
 import { useMemo, type ReactElement } from 'react'
 import { BirthdayBanner } from '../BirthdayBanner'
 import CompetitionBanner from '../CompetitionBanner'
+import { EigenpieIFOBanner } from '../EigenpieIFOBanner'
 import { FourMemeBanner } from '../FourMemeBanner'
 import { V4HackathonBanner } from '../HackathonBanner'
 import { OptionsBanner } from '../OptionsBanner'
@@ -16,6 +17,7 @@ import { VeCakeBanner } from '../VeCakeBanner'
 import WebNotificationBanner from '../WebNotificationBanner'
 import { ZksyncAirDropBanner } from '../ZksyncAirdropBanner'
 import useIsRenderCompetitionBanner from './useIsRenderCompetitionBanner'
+import useIsRenderIfoBanner from './useIsRenderIFOBanner'
 import { useIsRenderTgPredictionBotBanner } from './useIsRenderTgPredictionBotBanner'
 import useIsRenderUserBanner from './useIsRenderUserBanner'
 
@@ -41,9 +43,14 @@ export const useMultipleBannerConfig = () => {
   const isRenderCompetitionBanner = useIsRenderCompetitionBanner()
   const isRenderUserBanner = useIsRenderUserBanner()
   const isRenderTgPredictionBotBanner = useIsRenderTgPredictionBotBanner()
+  const isRenderIFOBanner = useIsRenderIfoBanner()
 
   return useMemo(() => {
     const NO_SHUFFLE_BANNERS: IBannerConfig[] = [
+      {
+        shouldRender: isRenderIFOBanner,
+        banner: <EigenpieIFOBanner />,
+      },
       {
         shouldRender: isRenderUserBanner.shouldRender && !isRenderUserBanner.isEarningsBusdZero,
         banner: <UserBanner />,
@@ -121,5 +128,6 @@ export const useMultipleBannerConfig = () => {
     isRenderTgPredictionBotBanner,
     isRenderUserBanner.isEarningsBusdZero,
     isRenderUserBanner.shouldRender,
+    isRenderIFOBanner,
   ])
 }
