@@ -1,12 +1,12 @@
 import { Column } from '@pancakeswap/uikit'
 import { PropsWithChildren, memo } from 'react'
 
-import { Wrapper } from '../../Swap/components/styleds'
+import { SwapUIV2 } from '@pancakeswap/widgets-internal'
 
 export const FormContainer = memo(function FormContainer({ children }: PropsWithChildren) {
   return (
-    <Wrapper id="swap-page" style={{ minHeight: 'atuo' }}>
+    <SwapUIV2.InputPanelWrapper id="swap-page">
       <Column gap="sm">{children}</Column>
-    </Wrapper>
+    </SwapUIV2.InputPanelWrapper>
   )
 })
