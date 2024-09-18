@@ -12,7 +12,7 @@ export const activeCampaigns: { [provider in keyof typeof ONRAMP_PROVIDERS]: boo
   [ONRAMP_PROVIDERS.Mercuryo]: false,
   [ONRAMP_PROVIDERS.MoonPay]: false,
   [ONRAMP_PROVIDERS.Transak]: false,
-  [ONRAMP_PROVIDERS.Topper]: true,
+  [ONRAMP_PROVIDERS.Topper]: false,
 }
 
 const ProviderCampaign = () => {
