@@ -74,14 +74,15 @@ export async function findBestTradeByStreams(
 
   // Exact output doesn't support mixed route
   const poolsByType = groupPoolsByType(candidatePools)
-  const trades = await Promise.all(
+  const trades = await Promise.allSettled(
     poolsByType.map((pools) => getBestTrade({ tradeType, candidatePools: pools, ...rest })),
   )
   let bestTrade: TradeWithGraph<TradeType> | undefined
-  for (const trade of trades) {
-    if (!trade) {
+  for (const result of trades) {
+    if (result.status === 'rejected' || !result.value) {
       continue
     }
+    const { value: trade } = result
     if (!bestTrade) {
       bestTrade = trade
       continue
@@ -242,7 +243,7 @@ async function getBestTrade({
 
       // DEBUG
       // console.log(
-      //   'BestRoute: ',
+      //   '[DEBUG ROUTE]: ',
       //   path
       //     .map((t) => {
       //       const v = graph.getVertice(t)
@@ -375,11 +376,6 @@ async function getBestTrade({
   for (const { amount, percent } of amounts) {
     // eslint-disable-next-line no-await-in-loop
     const route = await findBestRoute(amount)
-    // console.log(
-    //   'Route -> ',
-    //   route?.inputAmount.currency.symbol,
-    //   route?.outputAmount.currency.symbol,
-    // );
     invariant(
       route !== undefined,
       `No valid route found for base amount ${amount.toExact()} ${amount.currency.symbol} and quote currency ${
