@@ -32,7 +32,6 @@ import { publicClient } from 'utils/wagmi'
 import { basisPointsToPercent } from 'utils/exchange'
 
 import useNativeCurrency from 'hooks/useNativeCurrency'
-import { useUserXEnable } from 'state/user/smartRouter'
 import {
   CommonPoolsParams,
   PoolsWithState,
@@ -47,6 +46,7 @@ import { useSpeedQuote } from './useSpeedQuote'
 import { useTokenFee } from './useTokenFee'
 import { useTradeVerifiedByQuoter } from './useTradeVerifiedByQuoter'
 import { useGlobalWorker } from './useWorker'
+import { usePCSX } from './usePCSX'
 
 export class NoValidRouteError extends Error {
   constructor(message?: string) {
@@ -140,7 +140,7 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
   )
 
   const isPriceApiEnabled = useExperimentalFeatureEnabled(EXPERIMENTAL_FEATURES.PriceAPI)
-  const [isXEnabled] = useUserXEnable()
+  const [isXEnabled] = usePCSX()
   const isQuoterAPIEnabled = useMemo(() => Boolean(!isWrapping && type === 'api'), [isWrapping, type])
 
   const apiAutoRevalidate = typeof autoRevalidate === 'boolean' ? autoRevalidate : isQuoterAPIEnabled

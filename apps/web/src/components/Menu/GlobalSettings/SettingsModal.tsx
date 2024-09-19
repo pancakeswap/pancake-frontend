@@ -48,8 +48,8 @@ import {
   useUserStableSwapEnable,
   useUserV2SwapEnable,
   useUserV3SwapEnable,
-  useUserXEnable,
 } from 'state/user/smartRouter'
+import { usePCSX } from 'hooks/usePCSX'
 import { styled } from 'styled-components'
 import GasSettings from './GasSettings'
 import TransactionSettings from './TransactionSettings'
@@ -350,7 +350,7 @@ function RoutingSettings() {
   const [isStableSwapByDefault, setIsStableSwapByDefault] = useUserStableSwapEnable()
   const [v2Enable, setV2Enable] = useUserV2SwapEnable()
   const [v3Enable, setV3Enable] = useUserV3SwapEnable()
-  const [xEnable, setXEnable] = useUserXEnable()
+  const [xEnable, setXEnable] = usePCSX()
   const [split, setSplit] = useUserSplitRouteEnable()
   const [isMMLinkedPoolByDefault, setIsMMLinkedPoolByDefault] = useMMLinkedPoolByDefault()
   const [singleHopOnly, setSingleHopOnly] = useUserSingleHopOnly()

@@ -4,6 +4,7 @@ import { useUserSingleHopOnly } from '@pancakeswap/utils/user'
 
 import { useCurrency } from 'hooks/Tokens'
 import { useBestAMMTrade, useBestTradeFromApi } from 'hooks/useBestAMMTrade'
+import { usePCSX } from 'hooks/usePCSX'
 import { useCallback, useDeferredValue, useMemo, useState } from 'react'
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
@@ -12,7 +13,6 @@ import {
   useUserStableSwapEnable,
   useUserV2SwapEnable,
   useUserV3SwapEnable,
-  useUserXEnable,
 } from 'state/user/smartRouter'
 
 interface Options {
@@ -44,7 +44,7 @@ export function useSwapBestOrder({ maxHops }: Options = {}) {
     return stableSwap && isExactIn
   }, [stableSwap, isExactIn])
 
-  const [xEnabled] = useUserXEnable()
+  const [xEnabled] = usePCSX()
 
   const { fetchStatus, data, isStale, error, refetch } = useBestTradeFromApi({
     enabled: xEnabled,
