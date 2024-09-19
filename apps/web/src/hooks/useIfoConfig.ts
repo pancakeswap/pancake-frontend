@@ -10,6 +10,9 @@ export function useIfoConfigs() {
   const { data } = useQuery({
     queryKey: [chainId, 'ifo-configs'],
     queryFn: () => getIfoConfig(chainId),
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
   })
   return data
 }
@@ -33,6 +36,9 @@ export function useActiveIfoConfig() {
   const { data, isPending } = useQuery({
     queryKey: [chainId, 'active-ifo'],
     queryFn: () => getActiveIfo(chainId),
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
   })
   return {
     activeIfo: data,
@@ -45,6 +51,9 @@ export function useInActiveIfoConfigs() {
   const { data } = useQuery({
     queryKey: [chainId, 'inactive-ifo-configs'],
     queryFn: () => getInActiveIfos(chainId),
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
   })
   return data
 }
