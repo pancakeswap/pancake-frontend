@@ -3317,4 +3317,12 @@ export const bscTokens = {
     'uniBTC',
     'https://www.bedrock.technology/',
   ),
+  wBTC: new ERC20Token(
+    ChainId.BSC,
+    '0x0555E30da8f98308EdB960aa94C0Db47230d2B9c',
+    8,
+    'WBTC',
+    'Wrapped BTC',
+    'https://wbtc.network/',
+  ),
 }
