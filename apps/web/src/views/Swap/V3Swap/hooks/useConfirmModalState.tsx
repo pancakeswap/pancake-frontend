@@ -19,6 +19,7 @@ import { RetryableError, retry } from 'state/multicall/retry'
 import { logGTMSwapTxSentEvent } from 'utils/customGTMEventTracking'
 import { UserUnexpectedTxError } from 'utils/errors'
 import { publicClient } from 'utils/wagmi'
+import { logSwap } from 'utils/log'
 import {
   Address,
   Hex,
@@ -438,9 +439,36 @@ const useConfirmActions = (
           })
           if (xOrder?.hash) {
             setOrderHash(xOrder.hash)
+            const inputAmount = order.trade.maximumAmountIn.toExact()
+            const outputAmount = order.trade.minimumAmountOut.toExact()
+            const input = order.trade.inputAmount.currency
+            const output = order.trade.outputAmount.currency
+            const { tradeType } = order.trade
+            logSwap({
+              tradeType,
+              account,
+              chainId: xOrder.chainId,
+              hash: xOrder.hash,
+              inputAmount,
+              outputAmount,
+              input,
+              output,
+              type: 'X',
+            })
             const receipt = await waitForXOrderReceipt(xOrder)
 
             if (receipt.transactionHash) {
+              logSwap({
+                tradeType,
+                account,
+                chainId: xOrder.chainId,
+                hash: receipt.transactionHash,
+                inputAmount,
+                outputAmount,
+                input,
+                output,
+                type: 'X-Filled',
+              })
               setTxHash(receipt.transactionHash)
               setConfirmState(ConfirmModalState.COMPLETED)
               toastSuccess(
@@ -464,7 +492,7 @@ const useConfirmActions = (
       },
       showIndicator: false,
     }
-  }, [t, order, resetState, sendXOrder, showError, nativeCurrency, toastSuccess, toastError])
+  }, [account, t, order, resetState, sendXOrder, showError, nativeCurrency, toastSuccess, toastError])
 
   const actions = useMemo(() => {
     return {

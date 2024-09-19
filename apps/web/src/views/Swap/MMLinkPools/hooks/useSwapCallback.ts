@@ -194,6 +194,7 @@ const useSendMMTransaction = (
               },
             )
             logSwap({
+              tradeType: trade.tradeType,
               account,
               hash,
               chainId,

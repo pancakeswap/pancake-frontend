@@ -217,6 +217,7 @@ export default function useSendSwapTransaction(
               },
             )
             logSwap({
+              tradeType: trade.tradeType,
               account,
               chainId,
               hash: response,

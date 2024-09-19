@@ -180,6 +180,7 @@ export function useSwapCallback(
               },
             )
             logSwap({
+              tradeType: trade.tradeType,
               account,
               hash: response,
               chainId,
