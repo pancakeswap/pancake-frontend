@@ -150,13 +150,13 @@ export const Quest = () => {
           {quest?.startDateTime > 0 && quest?.endDateTime > 0 && (
             <Flex width="100%" maxWidth="270px">
               <CalenderIcon width={16} mr="8px" />
-              <Text mt="4px" fontSize="14px">{`${convertTimestampToDate(
+              <Text style={{ alignSelf: 'center' }} fontSize="14px">{`${convertTimestampToDate(
                 quest.startDateTime,
               )} - ${convertTimestampToDate(quest.endDateTime)}`}</Text>
             </Flex>
           )}
           {!quest?.reward?.currency && (
-            <Box width="100%" m={['18px 0 0 0', '18px 0 0 0', '18px 0 0 0', '18px 0 0 0', '18px 0 0 0', '4px 0 0 8px']}>
+            <Box width="100%" m={['18px 0 0 0', '18px 0 0 0', '18px 0 0 0', '18px 0 0 0', '18px 0 0 0', '0 0 0 8px']}>
               <Questers questId={questId} size={24} fontSize={14} />
             </Box>
           )}
