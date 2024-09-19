@@ -17,7 +17,7 @@ export const ifos: BaseIfoConfig[] = [
   {
     id: '1101-test-3',
     address: '0x6A70E184cb070df1F68c15934fC3C8B2EbDBAc29',
-    isActive: true,
+    isActive: false,
     name: 'USDT',
     plannedStartTime: 1699531200,
     poolBasic: {
