@@ -1,5 +1,13 @@
 # @pancakeswap/price-api-sdk
 
+## 4.0.0
+
+### Patch Changes
+
+- Updated dependencies [c227943]
+  - @pancakeswap/pcsx-sdk@1.0.0
+  - @pancakeswap/smart-router@6.1.3
+
 ## 3.0.2
 
 ### Patch Changes

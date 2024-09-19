@@ -1,5 +1,13 @@
 # @pancakeswap/tokens
 
+## 0.6.26
+
+### Patch Changes
+
+- 72fb1db: Listed new tokens & farms & gauges config
+- Updated dependencies [f3e8a77]
+  - @pancakeswap/token-lists@0.0.13
+
 ## 0.6.25
 
 ### Patch Changes

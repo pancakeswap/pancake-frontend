@@ -1,5 +1,11 @@
 # @pancakeswap/routing-sdk
 
+## 0.2.1
+
+### Patch Changes
+
+- f2818f6: Fix an issue where there's no quote for exact output
+
 ## 0.2.0
 
 ### Minor Changes

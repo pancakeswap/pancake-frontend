@@ -1,5 +1,11 @@
 # @pancakeswap/pcsx-sdk
 
+## 1.0.0
+
+### Major Changes
+
+- c227943: add eth reactor
+
 ## 0.0.13
 
 ### Patch Changes
