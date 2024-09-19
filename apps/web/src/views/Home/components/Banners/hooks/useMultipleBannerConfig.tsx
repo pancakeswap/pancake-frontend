@@ -16,7 +16,7 @@ import { VeCakeBanner } from '../VeCakeBanner'
 import WebNotificationBanner from '../WebNotificationBanner'
 import { ZksyncAirDropBanner } from '../ZksyncAirdropBanner'
 import useIsRenderCompetitionBanner from './useIsRenderCompetitionBanner'
-import useIsRenderIfoBanner from './useIsRenderIFOBanner'
+import { useIsRenderIfoBannerFromConfig } from './useIsRenderIFOBanner'
 import { useIsRenderTgPredictionBotBanner } from './useIsRenderTgPredictionBotBanner'
 import useIsRenderUserBanner from './useIsRenderUserBanner'
 
@@ -42,12 +42,12 @@ export const useMultipleBannerConfig = () => {
   const isRenderCompetitionBanner = useIsRenderCompetitionBanner()
   const isRenderUserBanner = useIsRenderUserBanner()
   const isRenderTgPredictionBotBanner = useIsRenderTgPredictionBotBanner()
-  const isRenderIFOBanner = useIsRenderIfoBanner()
+  const isRenderIFOBannerFromConfig = useIsRenderIfoBannerFromConfig()
 
   return useMemo(() => {
     const NO_SHUFFLE_BANNERS: IBannerConfig[] = [
       {
-        shouldRender: isRenderIFOBanner,
+        shouldRender: isRenderIFOBannerFromConfig,
         banner: <EigenpieIFOBanner />,
       },
       {
@@ -123,6 +123,6 @@ export const useMultipleBannerConfig = () => {
     isRenderTgPredictionBotBanner,
     isRenderUserBanner.isEarningsBusdZero,
     isRenderUserBanner.shouldRender,
-    isRenderIFOBanner,
+    isRenderIFOBannerFromConfig,
   ])
 }
