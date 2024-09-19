@@ -31,6 +31,7 @@ import {
   TaskConfigType,
   TaskHoldTokenConfig,
   TaskLiquidityConfig,
+  TaskMakePredictionConfig,
   TaskSocialConfig,
   TaskSwapConfig,
 } from 'views/DashboardQuestEdit/context/types'
@@ -365,6 +366,20 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
     setIsPending(true)
     setActionPanelExpanded(false)
 
+    if (taskType === TaskType.MAKE_PREDICTION) {
+      handleVerifyPrediction()
+    }
+
+    if (
+      taskType === TaskType.X_FOLLOW_ACCOUNT ||
+      taskType === TaskType.X_LIKE_POST ||
+      taskType === TaskType.X_REPOST_POST
+    ) {
+      handleSocialTwitterVerify()
+    }
+  }
+
+  const handleSocialTwitterVerify = () => {
     const providerId = (session as any)?.user?.twitter?.providerId
     const token = (session as any)?.user?.twitter?.token
     const tokenSecret = (session as any)?.user?.twitter?.tokenSecret
@@ -383,6 +398,24 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
     }
   }
 
+  const handleVerifyPrediction = () => {
+    try {
+      setIsError(false)
+      // call API
+    } catch (error) {
+      setIsError(true)
+    } finally {
+      setIsPending(false)
+    }
+  }
+
+  const handleRedirectPrediction = () => {
+    const url = (task as TaskMakePredictionConfig)?.link
+    if (url) {
+      window.open(url, '_blank', 'noopener noreferrer')
+    }
+  }
+
   const handleAction = () => {
     switch (taskType as TaskType) {
       case TaskType.MAKE_A_SWAP:
@@ -398,6 +431,8 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
       case TaskType.TELEGRAM_JOIN_GROUP:
       case TaskType.DISCORD_JOIN_SERVER:
         return handleSocial()
+      case TaskType.MAKE_PREDICTION:
+        return handleRedirectPrediction()
       default:
         return null
     }
@@ -407,7 +442,8 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
     () =>
       taskType === TaskType.X_FOLLOW_ACCOUNT ||
       taskType === TaskType.X_LIKE_POST ||
-      taskType === TaskType.X_REPOST_POST,
+      taskType === TaskType.X_REPOST_POST ||
+      taskType === TaskType.MAKE_PREDICTION,
     [taskType],
   )
 

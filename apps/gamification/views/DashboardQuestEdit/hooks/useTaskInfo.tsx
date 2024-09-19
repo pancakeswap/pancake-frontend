@@ -157,6 +157,8 @@ export const useTaskInfo = (primaryColor: boolean = false, iconSize: number = 20
           return t('Comment')
         case TaskType.VISIT_BLOG_POST:
           return t('Visit the post')
+        case TaskType.MAKE_PREDICTION:
+          return t('Make a Bet')
         default:
           return ''
       }
