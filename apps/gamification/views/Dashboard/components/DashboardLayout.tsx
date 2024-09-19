@@ -11,10 +11,20 @@ export const DashboardLayout: React.FC<React.PropsWithChildren> = ({ children })
   const { isValidLoginToDashboard, isFetched } = useIsValidDashboardUser()
 
   useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!account) {
+        replace('/')
+      }
+    }, 10)
+
     if (isFetched && !isValidLoginToDashboard) {
       replace('/')
     }
-  }, [isFetched, isValidLoginToDashboard, replace])
+
+    return () => {
+      clearTimeout(timer)
+    }
+  }, [account, isFetched, isValidLoginToDashboard, replace])
 
   if (!isFetched || !isValidLoginToDashboard || !account) {
     return null
