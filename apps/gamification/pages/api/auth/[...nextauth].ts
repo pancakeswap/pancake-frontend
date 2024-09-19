@@ -51,7 +51,7 @@ export default NextAuth({
           case TwitterFollowersId.TWITTER_ID_2:
           case TwitterFollowersId.TWITTER_ID_3:
           case TwitterFollowersId.TWITTER_ID_4:
-          case TwitterFollowersId.TWITTER_ID_5:
+            // case TwitterFollowersId.TWITTER_ID_5:
             // eslint-disable-next-line no-param-reassign
             token.twitter = {
               providerId: account.provider,
