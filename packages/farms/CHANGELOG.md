@@ -1,5 +1,17 @@
 # @pancakeswap/farms
 
+## 1.0.76
+
+### Patch Changes
+
+- 72fb1db: Listed new tokens & farms & gauges config
+- Updated dependencies [f3e8a77]
+- Updated dependencies [72fb1db]
+  - @pancakeswap/token-lists@0.0.13
+  - @pancakeswap/tokens@0.6.26
+  - @pancakeswap/stable-swap-sdk@1.1.2
+  - @pancakeswap/price-api-sdk@4.0.0
+
 ## 1.0.75
 
 ### Patch Changes
