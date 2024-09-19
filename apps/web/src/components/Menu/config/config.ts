@@ -227,7 +227,6 @@ const config: (
         {
           label: t('IFO'),
           href: '/ifo',
-          supportChainIds: IFO_SUPPORTED_CHAINS,
           image: '/images/ifos/ifo-bunny.png',
         },
         {
