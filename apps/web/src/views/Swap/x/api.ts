@@ -1,4 +1,5 @@
 import { observe } from '@pancakeswap/utils/observe'
+import { X_API_ENDPOINT } from 'config/constants/endpoints'
 import { BaseError, isHash, stringify, type Address, type Hash, type Hex } from 'viem'
 
 export type XOrderStatus = 'OPEN' | 'PENDING' | 'EXPIRED' | 'FILLED'
@@ -37,16 +38,14 @@ export type GetXOrdersResponse = {
 }
 
 export const getRecentXOrders = async (chainId: number, address: Address) => {
-  const resp = await fetch(
-    `https://sgp1.test.x.pancakeswap.com/order-handler/orders?chainId=${chainId}&offerer=${address}`,
-  )
+  const resp = await fetch(`${X_API_ENDPOINT}/order-handler/orders?chainId=${chainId}&offerer=${address}`)
 
   const data = (await resp.json()) as GetXOrdersResponse
   return data
 }
 
 export const getXOrderReceipt = async (chainId: number, hash: Hash) => {
-  const resp = await fetch(`https://sgp1.test.x.pancakeswap.com/order-handler/order/${chainId}/${hash}`)
+  const resp = await fetch(`${X_API_ENDPOINT}/order-handler/order/${chainId}/${hash}`)
 
   const receipt = (await resp.json()) as GetXOrderReceiptResponse
   return receipt
@@ -140,7 +139,7 @@ export const submitXOrder = async ({
   chainId: number
   signature: Hex
 }) => {
-  const resp = await fetch('https://sgp1.test.x.pancakeswap.com/order-handler/order', {
+  const resp = await fetch(`${X_API_ENDPOINT}/order-handler/order`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
