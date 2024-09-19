@@ -11,14 +11,14 @@ import { useQuestEdit } from 'views/DashboardQuestEdit/context/useQuestEdit'
 import { useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
 import { TaskType } from 'views/DashboardQuestEdit/type'
 
-interface AddBlogPostProps {
+interface AddMakePredictionProps {
   task: TaskMakePredictionConfig
   isDrafted: boolean
 }
 
 type SocialKeyType = 'title' | 'description'
 
-export const AddMakePrediction: React.FC<AddBlogPostProps> = ({ task, isDrafted }) => {
+export const AddMakePrediction: React.FC<AddMakePredictionProps> = ({ task, isDrafted }) => {
   const { t } = useTranslation()
   const [isExpanded, setIsExpanded] = useState(true)
   const { tasks, onTasksChange, deleteTask } = useQuestEdit()
