@@ -28,6 +28,7 @@ export const SUPPORT_ADD_TASK = [
   TaskType.X_REPOST_POST,
   TaskType.TELEGRAM_JOIN_GROUP,
   TaskType.DISCORD_JOIN_SERVER,
+  TaskType.MAKE_PREDICTION,
   // TaskType.PARTICIPATE_LOTTERY,
 ]
 

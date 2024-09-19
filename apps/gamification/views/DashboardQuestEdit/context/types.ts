@@ -86,6 +86,10 @@ export interface TaskBlogPostConfig extends TaskBaseConfig {
   blogUrl: string
 }
 
+export interface TaskMakePredictionConfig extends TaskBaseConfig {
+  taskType: TaskType.MAKE_PREDICTION
+}
+
 export type TaskConfigType =
   | TaskSwapConfig
   | TaskHoldTokenConfig
@@ -93,6 +97,7 @@ export type TaskConfigType =
   | TaskLiquidityConfig
   | TaskSocialConfig
   | TaskBlogPostConfig
+  | TaskMakePredictionConfig
 
 export interface QuestRewardType {
   title: string
