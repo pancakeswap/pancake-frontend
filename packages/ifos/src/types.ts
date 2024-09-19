@@ -35,6 +35,10 @@ export type BaseIfoConfig = {
   vestingTitle?: string
   cIFO?: boolean
   plannedStartTime?: number
+
+  /** Useful for rendering IFO banner */
+  plannedEndTime?: number
+
   [PoolIds.poolBasic]?: IfoPoolInfo
   [PoolIds.poolUnlimited]: IfoPoolInfo
 }
