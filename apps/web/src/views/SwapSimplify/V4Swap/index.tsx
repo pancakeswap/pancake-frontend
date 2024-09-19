@@ -32,7 +32,6 @@ export function V4SwapForm() {
 
   return (
     <SwapUIV2.SwapFormWrapper>
-      {/* <FormHeader onRefresh={refreshTrade} refreshDisabled={refreshDisabled} /> */}
       <FormMain
         tradeLoading={isMMBetter ? false : !tradeLoaded}
         pricingAndSlippage={
