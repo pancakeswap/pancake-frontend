@@ -2,11 +2,11 @@ import { ifoV7ABI } from '@pancakeswap/ifos'
 import { useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
 
-import { useActiveIfoConfig } from 'hooks/useIfoConfig'
+import { useActiveIfoConfigAcrossChains } from 'hooks/useIfoConfig'
 import { publicClient } from 'utils/wagmi'
 
 export const useIfoStatus = () => {
-  const { activeIfo } = useActiveIfoConfig()
+  const activeIfo = useActiveIfoConfigAcrossChains()
 
   const { data = { startTime: 0, endTime: 0 } } = useQuery({
     queryKey: ['ifo', 'currentIfo_timestamps', activeIfo?.chainId],

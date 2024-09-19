@@ -3,6 +3,7 @@ import { getActiveIfo, getInActiveIfos, getIfoConfig, SUPPORTED_CHAIN_IDS, Ifo }
 
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useMemo } from 'react'
+import sortBy from 'lodash/sortBy'
 
 export function useIfoConfigs() {
   const { chainId } = useActiveChainId()
@@ -14,14 +15,15 @@ export function useIfoConfigs() {
 }
 
 export function useIfoConfigsAcrossChains() {
-  const { chainId } = useActiveChainId()
   const { data } = useQuery({
-    queryKey: [chainId, 'ifo-configs'],
-
+    queryKey: ['ifo-configs'],
     queryFn: async () => {
       const configs = await Promise.all(SUPPORTED_CHAIN_IDS.map(getIfoConfig))
       return configs.reduce<Ifo[]>((acc, cur) => [...acc, ...cur], [])
     },
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
   })
   return data
 }
@@ -55,4 +57,12 @@ export function useIfoConfigById(id: string) {
 export function useIfoConfigAcrossChainsById(id: string) {
   const configs = useIfoConfigsAcrossChains()
   return useMemo(() => configs?.find((ifo) => ifo.id === id), [configs, id])
+}
+
+export function useActiveIfoConfigAcrossChains() {
+  const configs = useIfoConfigsAcrossChains()
+  return useMemo(() => {
+    const sortedConfigs = sortBy(configs, 'plannedStartTime')
+    return sortedConfigs?.find((ifo) => ifo.isActive)
+  }, [configs])
 }
