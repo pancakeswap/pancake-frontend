@@ -88,6 +88,7 @@ export interface TaskBlogPostConfig extends TaskBaseConfig {
 
 export interface TaskMakePredictionConfig extends TaskBaseConfig {
   taskType: TaskType.MAKE_PREDICTION
+  link: string
 }
 
 export type TaskConfigType =
