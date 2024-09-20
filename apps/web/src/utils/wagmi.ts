@@ -87,6 +87,7 @@ export function createWagmiConfig() {
     ...CLIENT_CONFIG,
 
     connectors: [
+      injected({ target: 'metaMask', shimDisconnect: false }),
       metaMaskConnector,
       injectedConnector,
       safe(),
