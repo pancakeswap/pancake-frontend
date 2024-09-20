@@ -78,7 +78,7 @@ export const getPoolAddressByToken = memoize(
     const token0 = new Token(chainId, token0Address, 18, '')
     const token1 = new Token(chainId, token1Address, 18, '')
     if (!token0 || !token1) {
-      return null
+      return undefined
     }
     return computePoolAddress({
       deployerAddress,
@@ -95,7 +95,7 @@ export const usePoolInfo = <TPoolType extends PoolInfo>({
   poolAddress,
   chainId,
 }: {
-  poolAddress: string | null
+  poolAddress: `0x${string}` | undefined
   chainId: number
 }): TPoolType | undefined | null => {
   const { data: poolInfo } = useQuery({
