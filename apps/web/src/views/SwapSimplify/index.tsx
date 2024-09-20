@@ -111,7 +111,6 @@ export default function V4Swap() {
             $isChartExpanded={isChartExpanded}
           >
             <Wrapper mt={isChartExpanded ? '24px' : '0'} height="100%">
-              {/* <SwapSelection swapType={SwapType.MARKET} /> */}
               <V4SwapForm />
             </Wrapper>
           </StyledSwapContainer>

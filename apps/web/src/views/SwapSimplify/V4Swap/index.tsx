@@ -1,11 +1,13 @@
 import { SmartRouter } from '@pancakeswap/smart-router/evm'
 import { SwapUIV2 } from '@pancakeswap/widgets-internal'
 import { useMemo } from 'react'
+import { SwapType } from '../../Swap/types'
 import { PricingAndSlippage } from '../../Swap/V3Swap/containers'
 import { CommitButton } from '../../Swap/V3Swap/containers/CommitButton'
 import { useAllTypeBestTrade } from '../../Swap/V3Swap/hooks/useAllTypeBestTrade'
 import { useCheckInsufficientError } from '../../Swap/V3Swap/hooks/useCheckSufficient'
 import { FormMain } from './FormMainV4'
+import { SwapSelection } from './SwapSelectionTab'
 
 export function V4SwapForm() {
   const {
@@ -32,6 +34,7 @@ export function V4SwapForm() {
 
   return (
     <SwapUIV2.SwapFormWrapper>
+      <SwapSelection swapType={SwapType.MARKET} />
       <FormMain
         tradeLoading={isMMBetter ? false : !tradeLoaded}
         pricingAndSlippage={
