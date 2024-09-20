@@ -9,7 +9,7 @@ import { chains, createWagmiConfig, walletConnectNoQrCodeConnector } from '../ut
 import { ASSET_CDN } from './constants/endpoints'
 
 export enum ConnectorNames {
-  MetaMask = 'metaMaskSDK',
+  MetaMask = 'metaMask',
   Injected = 'injected',
   WalletConnect = 'walletConnect',
   WalletConnectV1 = 'walletConnectLegacy',
