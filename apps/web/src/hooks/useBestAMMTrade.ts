@@ -40,13 +40,12 @@ import {
   useCommonPools as useCommonPoolsWithTicks,
 } from './useCommonPools'
 import { useCurrencyUsdPrice } from './useCurrencyUsdPrice'
-import { useExperimentalFeatureEnabled } from './useExperimentalFeatureEnabled'
+// import { useExperimentalFeatureEnabled } from './useExperimentalFeatureEnabled'
 import { useMulticallGasLimit } from './useMulticallGasLimit'
 import { useSpeedQuote } from './useSpeedQuote'
 import { useTokenFee } from './useTokenFee'
 import { useTradeVerifiedByQuoter } from './useTradeVerifiedByQuoter'
 import { useGlobalWorker } from './useWorker'
-import { usePCSX } from './usePCSX'
 
 export class NoValidRouteError extends Error {
   constructor(message?: string) {
@@ -139,17 +138,17 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
     [type, isWrapping],
   )
 
-  const isPriceApiEnabled = useExperimentalFeatureEnabled(EXPERIMENTAL_FEATURES.PriceAPI)
-  const [isXEnabled] = usePCSX()
+  // const isPriceApiEnabled = useExperimentalFeatureEnabled(EXPERIMENTAL_FEATURES.PriceAPI)
   const isQuoterAPIEnabled = useMemo(() => Boolean(!isWrapping && type === 'api'), [isWrapping, type])
 
   const apiAutoRevalidate = typeof autoRevalidate === 'boolean' ? autoRevalidate : isQuoterAPIEnabled
 
-  useBestTradeFromApi({
-    ...params,
-    enabled: Boolean(enabled && isPriceApiEnabled && !isXEnabled),
-    autoRevalidate: apiAutoRevalidate,
-  })
+  // TODO: re-enable after amm endpoint is ready
+  // useBestTradeFromApi({
+  //   ...params,
+  //   enabled: Boolean(enabled && isPriceApiEnabled),
+  //   autoRevalidate: apiAutoRevalidate,
+  // })
 
   const bestTradeFromQuoterApi = useBestAMMTradeFromQuoterWorker2({
     ...params,
