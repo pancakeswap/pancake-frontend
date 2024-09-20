@@ -1,17 +1,17 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Column, Skeleton, Text } from '@pancakeswap/uikit'
 import React, { useMemo } from 'react'
-import { usePoolApr, usePoolInfo } from 'state/farmsV4/hooks'
+import { usePoolApr } from 'state/farmsV4/hooks'
 import { useAccountV3Position } from 'state/farmsV4/state/accountPositions/hooks/useAccountV3Position'
 import { PoolInfo } from 'state/farmsV4/state/type'
 import { PoolGlobalAprButton, V3PoolDerivedAprButton, V3PoolPositionAprButton } from 'views/universalFarms/components'
 
 interface AprCalculatorV2Props {
-  poolAddress: string | null
-  chainId: number
+  pool?: PoolInfo | null
   tokenId?: bigint
   showTitle?: boolean
   derived?: boolean
+  inverted?: boolean
 }
 
 const WithTitle = ({ children, pool }: { children: React.ReactNode; pool: PoolInfo }) => {
@@ -29,20 +29,18 @@ const WithTitle = ({ children, pool }: { children: React.ReactNode; pool: PoolIn
   )
 }
 
-export function AprCalculatorV2({ poolAddress, chainId, tokenId, showTitle = true, derived }: AprCalculatorV2Props) {
+export function AprCalculatorV2({ pool, tokenId, showTitle = true, derived, inverted }: AprCalculatorV2Props) {
   if (derived) {
-    return <DerivedAprCalculator poolAddress={poolAddress} chainId={chainId} showTitle={showTitle} />
+    return <DerivedAprCalculator pool={pool} showTitle={showTitle} inverted={inverted} />
   }
 
   if (tokenId) {
-    return <PositionAprCalculator poolAddress={poolAddress} chainId={chainId} tokenId={tokenId} showTitle={showTitle} />
+    return <PositionAprCalculator pool={pool} tokenId={tokenId} showTitle={showTitle} />
   }
-  return <GlobalAprCalculator poolAddress={poolAddress} chainId={chainId} showTitle={showTitle} />
+  return <GlobalAprCalculator pool={pool} showTitle={showTitle} />
 }
 
-const GlobalAprCalculator: React.FC<AprCalculatorV2Props> = ({ poolAddress, chainId, showTitle }) => {
-  const pool = usePoolInfo({ poolAddress, chainId })
-
+const GlobalAprCalculator: React.FC<AprCalculatorV2Props> = ({ pool, showTitle }) => {
   if (!pool) {
     return <Skeleton height="40px" />
   }
@@ -56,30 +54,22 @@ const GlobalAprCalculator: React.FC<AprCalculatorV2Props> = ({ poolAddress, chai
   )
 }
 
-const DerivedAprCalculator: React.FC<AprCalculatorV2Props> = ({ poolAddress, chainId, showTitle }) => {
-  const pool = usePoolInfo({ poolAddress, chainId })
-
+const DerivedAprCalculator: React.FC<AprCalculatorV2Props> = ({ pool, inverted, showTitle }) => {
   if (!pool) {
     return <Skeleton height="40px" />
   }
 
   return showTitle ? (
     <WithTitle pool={pool}>
-      <V3PoolDerivedAprButton pool={pool} />
+      <V3PoolDerivedAprButton pool={pool} inverted={inverted} />
     </WithTitle>
   ) : (
-    <V3PoolDerivedAprButton pool={pool} />
+    <V3PoolDerivedAprButton pool={pool} inverted={inverted} />
   )
 }
 
-const PositionAprCalculator: React.FC<AprCalculatorV2Props & { tokenId: bigint }> = ({
-  poolAddress,
-  chainId,
-  tokenId,
-  showTitle,
-}) => {
-  const pool = usePoolInfo({ poolAddress, chainId })
-  const { data: userPosition } = useAccountV3Position(chainId, tokenId)
+const PositionAprCalculator: React.FC<AprCalculatorV2Props & { tokenId: bigint }> = ({ pool, tokenId, showTitle }) => {
+  const { data: userPosition } = useAccountV3Position(pool?.chainId, tokenId)
 
   if (!pool || !userPosition) {
     return <Skeleton height="40px" />

@@ -1,6 +1,6 @@
 import { BIG_ONE, BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { encodeSqrtRatioX96, FeeAmount, FeeCalculator, isPoolTickInRange } from '@pancakeswap/v3-sdk'
-import { useAmountsByUsdValue } from '@pancakeswap/widgets-internal/roi'
+import { encodeSqrtRatioX96, FeeAmount, FeeCalculator, isPoolTickInRange, parseProtocolFees } from '@pancakeswap/v3-sdk'
+import { useAmountsByUsdValue, useRoi } from '@pancakeswap/widgets-internal/roi'
 import BigNumber from 'bignumber.js'
 import { useCakePrice } from 'hooks/useCakePrice'
 import { useCurrencyUsdPrice } from 'hooks/useCurrencyUsdPrice'
@@ -13,6 +13,7 @@ import { useV3FormState } from 'views/AddLiquidityV3/formViews/V3FormView/form/r
 import { useLmPoolLiquidity } from 'views/Farms/hooks/useLmPoolLiquidity'
 import { useMyPositions } from 'views/PoolDetail/components/MyPositionsContext'
 import { useEstimateUserMultiplier } from 'views/universalFarms/hooks/useEstimateUserMultiplier'
+import { formatPercent } from '@pancakeswap/utils/formatFractions'
 import { PoolAprButton } from './PoolAprButton'
 
 const V3_LP_FEE_RATE = {
@@ -25,6 +26,7 @@ const V3_LP_FEE_RATE = {
 type PoolPositionAprButtonProps<TPosition> = {
   pool: PoolInfo
   userPosition: TPosition
+  inverted?: boolean
 }
 
 export const V2PoolPositionAprButton: React.FC<PoolPositionAprButtonProps<StableLPDetail | V2LPDetail>> = ({
@@ -59,8 +61,9 @@ export const V3PoolPositionAprButton: React.FC<PoolPositionAprButtonProps<Positi
 
 export const V3PoolDerivedAprButton: React.FC<Omit<PoolPositionAprButtonProps<PositionDetail>, 'userPosition'>> = ({
   pool,
+  inverted,
 }) => {
-  const { lpApr, cakeApr, merklApr } = useV3FormDerivedApr(pool)
+  const { lpApr, cakeApr, merklApr } = useV3FormDerivedApr(pool, inverted)
 
   return <PoolAprButton pool={pool} lpApr={lpApr} cakeApr={cakeApr} merklApr={merklApr} />
 }
@@ -223,28 +226,36 @@ export const useV3PositionApr = (pool: PoolInfo, userPosition: PositionDetail) =
   }
 }
 
-export const useV3FormDerivedApr = (pool: PoolInfo) => {
+export const useV3FormDerivedApr = (pool: PoolInfo, inverted?: boolean) => {
   const key = useMemo(() => `${pool.chainId}:${pool.lpAddress}` as const, [pool.chainId, pool.lpAddress])
   const formState = useV3FormState()
   // const { data: estimateUserMultiplier } = useEstimateUserMultiplier(pool.chainId, userPosition.tokenId)
   // const { removed, outOfRange, position } = useExtraV3PositionInfo(userPosition)
+
+  const [token0, token1] = useMemo(() => {
+    if (inverted) {
+      return [pool.token1, pool.token0]
+    }
+    return [pool.token0, pool.token1]
+  }, [pool, inverted])
+
   const { cakeApr: globalCakeApr, merklApr } = usePoolApr(key, pool)
   const lmPoolLiquidity = useLmPoolLiquidity(pool.lpAddress, pool.chainId)
-  const { data: token0UsdPrice } = useCurrencyUsdPrice(pool.token0)
-  const { data: token1UsdPrice } = useCurrencyUsdPrice(pool.token1)
+  const { data: token0UsdPrice } = useCurrencyUsdPrice(token0)
+  const { data: token1UsdPrice } = useCurrencyUsdPrice(token1)
   const {
     pool: _pool,
     ticks,
     price,
     pricesAtTicks,
     parsedAmounts,
-  } = useV3DerivedInfo(pool.token0, pool.token1, pool.feeTier, pool.token0, undefined, formState)
+  } = useV3DerivedInfo(token0, token1, pool.feeTier, token0, undefined, formState)
   const sqrtRatioX96 = useMemo(() => price && encodeSqrtRatioX96(price.numerator, price.denominator), [price])
 
   const { amountA: aprAmountA, amountB: aprAmountB } = useAmountsByUsdValue({
     usdValue: '1',
-    currencyA: pool.token0,
-    currencyB: pool.token1,
+    currencyA: token0,
+    currencyB: token1,
     price,
     priceLower: pricesAtTicks.LOWER,
     priceUpper: pricesAtTicks.UPPER,
@@ -312,19 +323,27 @@ export const useV3FormDerivedApr = (pool: PoolInfo) => {
     }
   }, [inRange, globalCakeApr, cakePrice, liquidity, lmPoolLiquidity, userTVLUsd])
 
-  const lpApr = useMemo(() => {
-    if (!inRange) return 0
-    const apr = new BigNumber(pool.fee24hUsd ?? 0)
-      .times(365)
-      .times(V3_LP_FEE_RATE[pool.feeTier] ?? 1)
-      .times(new BigNumber(liquidity.toString()).dividedBy(pool.liquidity?.toString() ?? 1))
-      .div(userTVLUsd)
-      .toNumber()
-    return apr
-  }, [inRange, liquidity, pool.fee24hUsd, pool.feeTier, pool.liquidity, userTVLUsd])
+  const [protocolFee] = useMemo(
+    () => (_pool?.feeProtocol && parseProtocolFees(_pool.feeProtocol)) || [],
+    [_pool?.feeProtocol],
+  )
+
+  const { apr } = useRoi({
+    amountA,
+    amountB,
+    currencyAUsdPrice: token0UsdPrice,
+    currencyBUsdPrice: token1UsdPrice,
+    tickLower: ticks?.LOWER,
+    tickUpper: ticks?.UPPER,
+    volume24H: pool?.vol24hUsd && parseFloat(pool?.vol24hUsd),
+    sqrtRatioX96,
+    mostActiveLiquidity: _pool?.liquidity,
+    fee: pool?.feeTier,
+    protocolFee,
+  })
 
   return {
-    lpApr,
+    lpApr: parseFloat(`${formatPercent(apr, 5) || '0'}`) / 100,
     cakeApr,
     merklApr: inRange ? parseFloat(merklApr ?? 0) ?? 0 : 0,
   }
