@@ -95,7 +95,7 @@ export const usePoolInfo = <TPoolType extends PoolInfo>({
   poolAddress,
   chainId,
 }: {
-  poolAddress: `0x${string}` | undefined
+  poolAddress: string | undefined
   chainId: number
 }): TPoolType | undefined | null => {
   const { data: poolInfo } = useQuery({
