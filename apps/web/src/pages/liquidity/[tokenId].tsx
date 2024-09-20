@@ -81,6 +81,7 @@ import { AprCalculatorV2 } from 'views/AddLiquidityV3/components/AprCalculatorV2
 import RateToggle from 'views/AddLiquidityV3/formViews/V3FormView/components/RateToggle'
 import Page from 'views/Page'
 import { useSendTransaction, useWalletClient } from 'wagmi'
+import { usePoolInfo } from 'state/farmsV4/state/extendPools/hooks'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -232,6 +233,8 @@ export default function PoolPage() {
   }, [liquidity, pool, tickLower, tickUpper])
 
   const poolAddress = useMemo(() => pool && Pool.getAddress(pool.token0, pool.token1, pool.fee), [pool])
+
+  const poolInfo = usePoolInfo({ poolAddress, chainId })
 
   const tickAtLimit = useIsTickAtLimit(feeAmount, tickLower, tickUpper)
 
@@ -617,7 +620,7 @@ export default function PoolPage() {
                 >
                   <Box width="100%" mb={['8px', '8px', 0]} position="relative">
                     <Flex position="absolute" right={0}>
-                      <AprCalculatorV2 tokenId={BigInt(tokenId ?? 0)} poolAddress={poolAddress} chainId={chainId} />
+                      <AprCalculatorV2 tokenId={BigInt(tokenId ?? 0)} pool={poolInfo} />
                     </Flex>
                     <Text fontSize="12px" color="secondary" bold textTransform="uppercase">
                       {t('Liquidity')}

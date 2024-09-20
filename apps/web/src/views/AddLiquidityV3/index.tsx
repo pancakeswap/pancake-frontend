@@ -37,6 +37,7 @@ import noop from 'lodash/noop'
 import { resetMintState } from 'state/mint/actions'
 import { useAddLiquidityV2FormDispatch } from 'state/mint/reducer'
 import { safeGetAddress } from 'utils'
+import { usePoolInfo } from 'state/farmsV4/state/extendPools/hooks'
 import FeeSelector from './formViews/V3FormView/components/FeeSelector'
 
 import { AprCalculatorV2 } from './components/AprCalculatorV2'
@@ -403,6 +404,19 @@ export function AddLiquidityV3Layout({
 
   const title = SELECTOR_TYPE_T[selectType] || t('Add Liquidity')
 
+  const pool = usePoolInfo({ poolAddress, chainId })
+
+  const inverted = useMemo(
+    () =>
+      Boolean(
+        pool?.token0 &&
+          pool?.token1 &&
+          pool?.token0?.wrapped.address !== pool?.token1?.wrapped.address &&
+          pool?.token0?.wrapped.address !== baseCurrency?.wrapped.address,
+      ),
+    [pool, baseCurrency],
+  )
+
   return (
     <Page>
       <BodyWrapper>
@@ -411,9 +425,7 @@ export function AddLiquidityV3Layout({
           backTo="/liquidity/positions"
           IconSlot={
             <>
-              {selectType === SELECTOR_TYPE.V3 && (
-                <AprCalculatorV2 derived poolAddress={poolAddress} chainId={chainId} />
-              )}
+              {selectType === SELECTOR_TYPE.V3 && <AprCalculatorV2 derived pool={pool} inverted={inverted} />}
               {showRefreshButton && (
                 <IconButton variant="text" scale="sm">
                   <RefreshIcon onClick={handleRefresh || noop} color="textSubtle" height={24} width={24} />
