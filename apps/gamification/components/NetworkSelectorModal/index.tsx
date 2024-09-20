@@ -23,11 +23,13 @@ const StyledContainer = styled(Flex)`
 `
 
 interface NetworkSelectorModalProps extends InjectedModalProps {
+  customSupportChains?: any
   pickedChainId: ChainId
   setPickedChainId: (chainId: ChainId) => void
 }
 
 export const NetworkSelectorModal: React.FC<React.PropsWithChildren<NetworkSelectorModalProps>> = ({
+  customSupportChains,
   pickedChainId,
   setPickedChainId,
   onDismiss,
@@ -42,7 +44,7 @@ export const NetworkSelectorModal: React.FC<React.PropsWithChildren<NetworkSelec
   return (
     <Modal title={t('Select a Network')} onDismiss={onDismiss}>
       <StyledContainer flexDirection="column" width={['100%', '100%', '100%', '280px']}>
-        {targetChains.map((chain) => (
+        {(customSupportChains || targetChains).map((chain) => (
           <StyledChainList key={chain.id} onClick={() => onClickNetwork(chain.id)}>
             <ChainLogo chainId={chain.id} />
             <Text color={chain.id === pickedChainId ? 'secondary' : 'text'} bold={chain.id === pickedChainId} pl="12px">

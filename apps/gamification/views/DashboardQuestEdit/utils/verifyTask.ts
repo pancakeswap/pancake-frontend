@@ -4,6 +4,7 @@ import {
   TaskHoldTokenConfig,
   TaskLiquidityConfig,
   TaskLotteryConfig,
+  TaskMakePredictionConfig,
   TaskSocialConfig,
   TaskSwapConfig,
 } from 'views/DashboardQuestEdit/context/types'
@@ -39,7 +40,9 @@ export const verifyTask = (task: TaskConfigType) => {
         !validateNumber((task as TaskLiquidityConfig).stakePeriodInDays.toString())
       )
     case TaskType.VISIT_BLOG_POST:
-      return !validateIsNotEmpty((task as TaskBlogPostConfig).blogUrl)
+      return !validateUrl((task as TaskBlogPostConfig).blogUrl)
+    case TaskType.MAKE_A_PREDICTION:
+      return !validateIsNotEmpty(task.title) && !validateUrl((task as TaskMakePredictionConfig).link)
     case TaskType.X_LIKE_POST:
     case TaskType.X_REPOST_POST:
     case TaskType.X_FOLLOW_ACCOUNT:
