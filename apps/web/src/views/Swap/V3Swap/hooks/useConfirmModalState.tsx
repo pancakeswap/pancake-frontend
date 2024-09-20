@@ -446,7 +446,7 @@ const useConfirmActions = (
             const { tradeType } = order.trade
             logSwap({
               tradeType,
-              account,
+              account: account ?? '0x',
               chainId: xOrder.chainId,
               hash: xOrder.hash,
               inputAmount,
@@ -460,7 +460,7 @@ const useConfirmActions = (
             if (receipt.transactionHash) {
               logSwap({
                 tradeType,
-                account,
+                account: account ?? '0x',
                 chainId: xOrder.chainId,
                 hash: receipt.transactionHash,
                 inputAmount,
