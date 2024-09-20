@@ -9,7 +9,7 @@ import { chains, createWagmiConfig, walletConnectNoQrCodeConnector } from '../ut
 import { ASSET_CDN } from './constants/endpoints'
 
 export enum ConnectorNames {
-  MetaMask = 'metaMask',
+  MetaMask = 'metaMaskSDK',
   Injected = 'injected',
   WalletConnect = 'walletConnect',
   WalletConnectV1 = 'walletConnectLegacy',
@@ -52,10 +52,6 @@ const createQrCode =
 const isMetamaskInstalled = () => {
   if (typeof window === 'undefined') {
     return false
-  }
-
-  if (window.ethereum?.isMetaMask) {
-    return true
   }
 
   if (window.ethereum?.providers?.some((p) => p.isMetaMask)) {
