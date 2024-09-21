@@ -105,7 +105,7 @@ export const Quest = () => {
   }, [data, tasks, hasIdRegister])
 
   const isTasksCompleted = useMemo(
-    () => totalTaskCompleted === tasks?.length && hasIdRegister,
+    () => totalTaskCompleted >= tasks?.length && hasIdRegister,
     [hasIdRegister, tasks?.length, totalTaskCompleted],
   )
 
