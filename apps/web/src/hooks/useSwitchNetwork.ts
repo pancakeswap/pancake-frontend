@@ -28,7 +28,7 @@ export function useSwitchNetworkLocal() {
           pathname: router.pathname,
           query: {
             ...router.query,
-            chain: chainId === ChainId.BSC ? null : CHAIN_QUERY_NAME[chainId],
+            chain: CHAIN_QUERY_NAME[chainId],
           },
         },
         undefined,
