@@ -44,9 +44,9 @@ const ROUND_DIGIT = 3
  */
 const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
   const { address, plannedStartTime } = ifo
-  const cakePriceUsd = useCakePrice()
+  const cakePrice = useCakePrice()
   const lpTokenPriceInUsd = useLpTokenPrice(ifo.currency.symbol)
-  const currencyPriceInUSD = ifo.currency === bscTokens.cake ? cakePriceUsd : lpTokenPriceInUsd
+  const currencyPriceInUSD = ifo.currency === bscTokens.cake ? cakePrice : lpTokenPriceInUsd
 
   const [state, setState] = useState({
     isInitialized: false,

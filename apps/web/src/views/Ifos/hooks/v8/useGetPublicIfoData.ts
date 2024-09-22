@@ -99,9 +99,9 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
   const { address: account } = useAccount()
   const { chainId } = ifo
   const { address, plannedStartTime } = ifo
-  const cakePriceUsd = useCakePrice()
+  const cakePrice = useCakePrice()
   const lpTokenPriceInUsd = useLpTokenPrice(ifo.currency.symbol)
-  const currencyPriceInUSD = ifo.currency === CAKE[ifo.chainId] ? cakePriceUsd : lpTokenPriceInUsd
+  const currencyPriceInUSD = ifo.currency === CAKE[ifo.chainId] ? cakePrice : lpTokenPriceInUsd
 
   const [state, setState] = useState(INITIAL_STATE)
 
