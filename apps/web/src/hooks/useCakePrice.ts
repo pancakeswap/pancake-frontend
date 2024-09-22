@@ -16,6 +16,9 @@ export const useCakePrice = ({ enabled = true } = {}) => {
     staleTime: FAST_INTERVAL,
     refetchInterval: FAST_INTERVAL,
     enabled,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
   })
   return data ?? BIG_ZERO
 }
