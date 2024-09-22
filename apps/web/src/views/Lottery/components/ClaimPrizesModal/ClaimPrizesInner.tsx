@@ -37,9 +37,9 @@ const ClaimInnerContainer: React.FC<React.PropsWithChildren<ClaimInnerProps>> = 
   const lotteryContract = useLotteryV2Contract()
   const activeClaimData = roundsToClaim[activeClaimIndex]
 
-  const cakePriceBusd = useCakePrice()
+  const cakePrice = useCakePrice()
   const cakeReward = activeClaimData.cakeTotal
-  const dollarReward = cakeReward.times(cakePriceBusd)
+  const dollarReward = cakeReward.times(cakePrice)
   const rewardAsBalance = getBalanceAmount(cakeReward).toNumber()
   const dollarRewardAsBalance = getBalanceAmount(dollarReward).toNumber()
 

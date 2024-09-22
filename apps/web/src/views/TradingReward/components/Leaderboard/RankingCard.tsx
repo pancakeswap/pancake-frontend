@@ -51,13 +51,13 @@ const getRankingColor = (rank: number) => {
 const RankingCard: React.FC<React.PropsWithChildren<RankingCardProps>> = ({ rank, user }) => {
   const { t } = useTranslation()
   const rankColor = getRankingColor(rank)
-  const cakePriceBusd = useCakePrice()
+  const cakePrice = useCakePrice()
   const { profile, isLoading: isProfileLoading } = useProfileForAddress(user?.origin)
   const { domainName, avatar } = useDomainNameForAddress(user?.origin, !profile && !isProfileLoading)
 
   const cakeAmount = useMemo(
-    () => new BigNumber(user?.estimateRewardUSD).div(cakePriceBusd).toNumber() ?? 0,
-    [cakePriceBusd, user?.estimateRewardUSD],
+    () => new BigNumber(user?.estimateRewardUSD).div(cakePrice).toNumber() ?? 0,
+    [cakePrice, user?.estimateRewardUSD],
   )
 
   return (

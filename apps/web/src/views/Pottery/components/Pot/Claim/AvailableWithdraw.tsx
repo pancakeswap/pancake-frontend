@@ -19,7 +19,7 @@ const AvailableWithdraw: React.FC<React.PropsWithChildren<AvailableWithdrawProps
     t,
     currentLanguage: { locale },
   } = useTranslation()
-  const cakePriceBusd = useCakePrice()
+  const cakePrice = useCakePrice()
   const { previewRedeem, lockedDate, shares, status, potteryVaultAddress, totalSupply, totalLockCake, balanceOf } =
     withdrawData
 
@@ -33,7 +33,7 @@ const AvailableWithdraw: React.FC<React.PropsWithChildren<AvailableWithdrawProps
   })
 
   const amount = getBalanceNumber(amountAsBn)
-  const amountInBusd = new BigNumber(amount).times(cakePriceBusd).toNumber()
+  const amountInBusd = new BigNumber(amount).times(cakePrice).toNumber()
 
   const lockDate = useMemo(() => getDrawnDate(locale, lockedDate?.toString()), [lockedDate, locale])
   const withdrawableDate = dayjs.unix(parseInt(lockedDate, 10)).add(70, 'days').unix()

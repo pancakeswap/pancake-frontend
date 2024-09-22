@@ -124,8 +124,8 @@ const CakeDataRow = () => {
     enabled: Boolean(loadData),
     refetchInterval: SLOW_INTERVAL,
   })
-  const cakePriceBusd = useCakePrice()
-  const mcap = cakePriceBusd.times(circulatingSupply)
+  const cakePrice = useCakePrice()
+  const mcap = cakePrice.times(circulatingSupply)
   const mcapString = formatLocalisedCompactNumber(mcap.toNumber(), isMobile)
 
   useEffect(() => {

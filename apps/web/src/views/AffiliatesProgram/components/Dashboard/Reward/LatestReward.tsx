@@ -43,19 +43,19 @@ const LatestReward: React.FC<React.PropsWithChildren<LatestRewardProps>> = ({
   const { isUserExist } = useUserExist()
   const { toastSuccess, toastError } = useToast()
   const { signMessageAsync } = useSignMessage()
-  const cakePriceBusd = useCakePrice()
+  const cakePrice = useCakePrice()
 
   const [isAffiliateClaimLoading, setIsAffiliateClaimLoading] = useState(false)
   const [isUserClaimLoading, setIsUserClaimLoading] = useState(false)
   const contract = useAffiliateProgramContract({ chainId: ChainId.BSC })
 
   const affiliateTotalCakeEarned = useMemo(
-    () => new BigNumber(affiliateRewardFeeUSD).div(cakePriceBusd).toNumber(),
-    [cakePriceBusd, affiliateRewardFeeUSD],
+    () => new BigNumber(affiliateRewardFeeUSD).div(cakePrice).toNumber(),
+    [cakePrice, affiliateRewardFeeUSD],
   )
   const userTotalCakeEarned = useMemo(
-    () => new BigNumber(userRewardFeeUSD).div(cakePriceBusd).toNumber(),
-    [cakePriceBusd, userRewardFeeUSD],
+    () => new BigNumber(userRewardFeeUSD).div(cakePrice).toNumber(),
+    [cakePrice, userRewardFeeUSD],
   )
 
   const handleClaim = async (isAffiliateClaim: boolean) => {

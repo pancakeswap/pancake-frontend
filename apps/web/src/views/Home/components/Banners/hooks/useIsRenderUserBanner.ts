@@ -11,8 +11,8 @@ const useIsRenderUserBanner = () => {
   const { account, chainId } = useActiveWeb3React()
 
   const { earningsSum: farmEarningsSum } = useFarmsWithBalance()
-  const cakePriceBusd = useCakePrice()
-  const isEarningsBusdZero = new BigNumber(farmEarningsSum).multipliedBy(cakePriceBusd).isZero()
+  const cakePrice = useCakePrice()
+  const isEarningsBusdZero = new BigNumber(farmEarningsSum).multipliedBy(cakePrice).isZero()
 
   const { data: shouldRenderUserBanner } = useQuery({
     queryKey: ['shouldRenderUserBanner', account],

@@ -86,7 +86,7 @@ const BuyTicketsModal: React.FC<React.PropsWithChildren<BuyTicketsModalProps>> =
   const stringifiedUserCake = userCake.toJSON()
   const memoisedUserCake = useMemo(() => new BigNumber(stringifiedUserCake), [stringifiedUserCake])
 
-  const cakePriceBusd = useCakePrice()
+  const cakePrice = useCakePrice()
   const dispatch = useAppDispatch()
   const hasFetchedBalance = fetchStatus === FetchStatus.Fetched
   const userCakeDisplayBalance = getFullDisplayBalance(userCake, 18, 3)
@@ -321,7 +321,7 @@ const BuyTicketsModal: React.FC<React.PropsWithChildren<BuyTicketsModalProps>> =
         value={ticketsToBuy}
         onUserInput={handleInputChange}
         currencyValue={
-          cakePriceBusd.gt(0) &&
+          cakePrice.gt(0) &&
           `~${ticketsToBuy ? getFullDisplayBalance(priceTicketInCake.times(new BigNumber(ticketsToBuy))) : '0.00'} CAKE`
         }
       />

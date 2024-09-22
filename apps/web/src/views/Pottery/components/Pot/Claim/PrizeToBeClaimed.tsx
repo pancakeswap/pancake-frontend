@@ -12,10 +12,10 @@ interface PrizeToBeClaimedProps {
 
 const PrizeToBeClaimed: React.FC<React.PropsWithChildren<PrizeToBeClaimedProps>> = ({ userData }) => {
   const { t } = useTranslation()
-  const cakePriceBusd = useCakePrice()
+  const cakePrice = useCakePrice()
 
   const rewardToken = getBalanceNumber(userData.rewards)
-  const rewardInBusd = new BigNumber(rewardToken).times(cakePriceBusd).toNumber()
+  const rewardInBusd = new BigNumber(rewardToken).times(cakePrice).toNumber()
 
   return (
     <Box mt="20px">

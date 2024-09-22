@@ -23,7 +23,7 @@ const useGetTopFarmsByApr = (isIntersecting: boolean) => {
       version: 2 | 3
     } | null)[]
   >(() => [null, null, null, null, null])
-  const cakePriceBusd = useCakePrice()
+  const cakePrice = useCakePrice()
   const { chainId } = useActiveChainId()
 
   const { status: fetchStatus, isFetching } = useQuery({
@@ -77,7 +77,7 @@ const useGetTopFarmsByApr = (isIntersecting: boolean) => {
         const { cakeRewardsApr, lpRewardsApr } = getFarmApr(
           chainId,
           farm.poolWeight,
-          cakePriceBusd,
+          cakePrice,
           totalLiquidity,
           farm.lpAddress,
           regularCakePerBlock,
@@ -102,7 +102,7 @@ const useGetTopFarmsByApr = (isIntersecting: boolean) => {
       )
       setTopFarms(sortedByApr.slice(0, 5))
     }
-  }, [cakePriceBusd, chainId, farms, farmsV3.farmsWithPrice, fetchStatus, isLoading, regularCakePerBlock, farmsV3Aprs])
+  }, [cakePrice, chainId, farms, farmsV3.farmsWithPrice, fetchStatus, isLoading, regularCakePerBlock, farmsV3Aprs])
   return { topFarms, fetched: fetchStatus === 'success' && !isFetching, chainId }
 }
 

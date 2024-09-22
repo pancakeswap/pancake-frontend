@@ -26,7 +26,7 @@ const PreviousRoundCardFooter: React.FC<
   const { t } = useTranslation()
   const [fetchedLotteryGraphData, setFetchedLotteryGraphData] = useState<LotteryRoundGraphEntity>()
   const lotteryGraphDataFromState = useGetLotteryGraphDataById(lotteryId)
-  const cakePriceBusd = useCakePrice()
+  const cakePrice = useCakePrice()
 
   useEffect(() => {
     if (!lotteryId) return
@@ -43,7 +43,7 @@ const PreviousRoundCardFooter: React.FC<
   let prizeInBusd = new BigNumber(NaN)
   if (lotteryNodeData) {
     const { amountCollectedInCake } = lotteryNodeData
-    prizeInBusd = amountCollectedInCake.times(cakePriceBusd)
+    prizeInBusd = amountCollectedInCake.times(cakePrice)
   }
 
   const getTotalUsers = (): string | null => {

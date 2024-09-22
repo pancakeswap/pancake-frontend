@@ -47,9 +47,9 @@ const HasSharesActions: React.FC<React.PropsWithChildren<HasStakeActionProps>> =
 
   const { stakingToken } = pool
   const { t } = useTranslation()
-  const cakePriceBusd = useCakePrice()
-  const stakedDollarValue = cakePriceBusd.gt(0)
-    ? getBalanceNumber(cakeAsBigNumber?.multipliedBy(cakePriceBusd), stakingToken.decimals)
+  const cakePrice = useCakePrice()
+  const stakedDollarValue = cakePrice.gt(0)
+    ? getBalanceNumber(cakeAsBigNumber?.multipliedBy(cakePrice), stakingToken.decimals)
     : 0
 
   const [onPresentTokenRequired] = useModal(<NotEnoughTokensModal tokenSymbol={stakingToken.symbol} />)
@@ -68,7 +68,7 @@ const HasSharesActions: React.FC<React.PropsWithChildren<HasStakeActionProps>> =
         <Flex flexDirection="column">
           <Balance fontSize="20px" bold value={cakeAsNumberBalance ?? 0} decimals={5} />
           <Text as={Flex} fontSize="12px" color="textSubtle" flexWrap="wrap">
-            {cakePriceBusd.gt(0) ? (
+            {cakePrice.gt(0) ? (
               <Balance
                 value={stakedDollarValue}
                 fontSize="12px"

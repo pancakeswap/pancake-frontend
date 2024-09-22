@@ -66,14 +66,14 @@ const BalanceStyle = styled(Balance)`
 
 const Pot: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
-  const cakePriceBusd = useCakePrice()
+  const cakePrice = useCakePrice()
   const { isMobile } = useMatchBreakpoints()
   const { publicData } = usePotteryData()
 
   const [activeTab, setIndex] = useState<POT_CATEGORY>(POT_CATEGORY.Deposit)
   const handleClick = useCallback((tabType: POT_CATEGORY) => setIndex(tabType), [])
 
-  const prizeInBusd = publicData.totalPrize.times(cakePriceBusd)
+  const prizeInBusd = publicData.totalPrize.times(cakePrice)
   const prizeTotal = getBalanceNumber(prizeInBusd)
 
   const tabMenuItems = useMemo(() => {

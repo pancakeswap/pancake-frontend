@@ -70,11 +70,11 @@ interface BannerProps {
 
 const Banner: React.FC<React.PropsWithChildren<BannerProps>> = ({ handleScroll }) => {
   const { t } = useTranslation()
-  const cakePriceBusd = useCakePrice()
+  const cakePrice = useCakePrice()
   const { publicData } = usePotteryData()
   const { getLockedApy } = useVaultApy()
 
-  const prizeInBusd = publicData.totalPrize.times(cakePriceBusd)
+  const prizeInBusd = publicData.totalPrize.times(cakePrice)
   const prizeTotal = getBalanceNumber(prizeInBusd)
 
   const apy = useMemo(() => Number(getLockedApy(weeksToSeconds(10))), [getLockedApy])

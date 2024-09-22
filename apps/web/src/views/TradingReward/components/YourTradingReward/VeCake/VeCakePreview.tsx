@@ -38,7 +38,7 @@ export const VeCakePreview: React.FC<React.PropsWithChildren<VeCakePreviewProps>
 }) => {
   const { t } = useTranslation()
   const router = useRouter()
-  const cakePriceBusd = useCakePrice()
+  const cakePrice = useCakePrice()
   const { status, cakeLockExpired, cakeLocked } = useCakeLockStatus()
   const timeUntil = getTimePeriods(timeRemaining)
 
@@ -72,7 +72,7 @@ export const VeCakePreview: React.FC<React.PropsWithChildren<VeCakePreviewProps>
     timeRemaining,
     totalEstimateRewardUSD: currentUserCampaignInfo?.totalEstimateRewardUSD ?? 0,
     totalReward: currentUserCampaignInfo?.canClaim ?? '0',
-    cakePriceBusd,
+    cakePrice,
     rewardPrice: currentRewardInfo?.rewardPrice ?? '0',
     rewardTokenDecimal: currentRewardInfo?.rewardTokenDecimal ?? 0,
   })

@@ -15,13 +15,13 @@ const RecentCakeProfitCountdownRow = ({ pool }: { pool: Pool.DeserializedPool<To
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const { pricePerFullShare, userData } = useVaultPoolByKey(pool.vaultKey)
-  const cakePriceBusd = useCakePrice()
+  const cakePrice = useCakePrice()
   const { hasAutoEarnings, autoCakeToDisplay } = getCakeVaultEarnings(
     account,
     userData?.cakeAtLastUserAction || BIG_ZERO,
     userData?.userShares || BIG_ZERO,
     pricePerFullShare || BIG_ZERO,
-    cakePriceBusd.toNumber(),
+    cakePrice.toNumber(),
     pool.vaultKey === VaultKey.CakeVault
       ? (userData as DeserializedLockedVaultUser).currentPerformanceFee.plus(
           (userData as DeserializedLockedVaultUser).currentOverdueFee,
