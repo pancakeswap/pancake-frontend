@@ -42,19 +42,13 @@ export const PosManagerMigrationFarmTable: React.FC<React.PropsWithChildren<ITab
   const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
 
-  const needToMigrateList: VaultConfig[] = useMemo(() => {
-    if (!chainId) return []
-    return (
+  const rows = useMemo(() => {
+    if (!chainId || columnSchema !== V3Step1DesktopColumnSchema) return []
+
+    const needToMigrateList: VaultConfig[] =
       VAULTS_CONFIG_BY_CHAIN[chainId]?.filter(
         (vault) => vault.address && vault?.bCakeWrapperAddress && vault?.bCakeWrapperAddress !== vault.address,
       ) ?? []
-    )
-  }, [chainId])
-
-  const rows = useMemo(() => {
-    if (columnSchema !== V3Step1DesktopColumnSchema) {
-      return []
-    }
 
     return needToMigrateList.map((d) => ({
       id: d.id,
@@ -71,7 +65,7 @@ export const PosManagerMigrationFarmTable: React.FC<React.PropsWithChildren<ITab
       onStake: noop,
       onUnStake: noop,
     }))
-  }, [needToMigrateList, columnSchema])
+  }, [chainId, columnSchema])
 
   return (
     <Container>
