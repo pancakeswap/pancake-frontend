@@ -28,11 +28,13 @@ export function useAutoSiwe() {
 
   const trySignIn = useCallback(
     async ({ address: addr }: { address: Address }) => {
-      try {
-        await signIn({ address: addr })
-      } catch (e) {
-        console.error('Failed to sign in', e)
-      }
+      setTimeout(async () => {
+        try {
+          await signIn({ address: addr })
+        } catch (e) {
+          console.error('Failed to sign in', e)
+        }
+      }, 100)
     },
     [signIn],
   )
