@@ -7,7 +7,6 @@ import { useSiwe } from 'hooks/useSiwe'
 import { styled } from 'styled-components'
 import { OptionIcon } from 'views/DashboardQuestEdit/components/Tasks/OptionIcon'
 import { SingleQuestData } from 'views/DashboardQuestEdit/hooks/useGetSingleQuestData'
-import { CompletionStatus } from 'views/DashboardQuestEdit/type'
 import { MakeProfileModal } from 'views/Quest/components/MakeProfileModal'
 import { Task } from 'views/Quest/components/Tasks/Task'
 import { VerifyTaskStatus } from 'views/Quest/hooks/useVerifyTaskStatus'
@@ -47,7 +46,6 @@ interface TasksProps {
   totalTaskCompleted: number
   hasOptionsInTasks: boolean
   isEnoughCompleted: boolean
-  completionStatus: CompletionStatus
   refreshSocialHub: () => void
   refreshVerifyTaskStatus: () => void
 }
@@ -62,7 +60,6 @@ export const Tasks: React.FC<TasksProps> = ({
   isSocialHubFetched,
   hasOptionsInTasks,
   isEnoughCompleted,
-  completionStatus,
   refreshSocialHub,
   refreshVerifyTaskStatus,
 }) => {
@@ -157,7 +154,6 @@ export const Tasks: React.FC<TasksProps> = ({
                 taskStatus={taskStatus}
                 hasIdRegister={hasIdRegister}
                 isQuestFinished={isQuestFinished}
-                completionStatus={completionStatus}
                 refresh={refreshVerifyTaskStatus}
               />
             ))}
