@@ -7,7 +7,7 @@ export const ifos: BaseIfoConfig[] = [
     version: 8,
 
     address: '0xa6f907493269BEF3383fF0CBFd25e1Cc35167c3B',
-    plannedStartTime: 1727172900,
+    plannedStartTime: 1727068165,
     plannedEndTime: 1727259300,
 
     isActive: true,

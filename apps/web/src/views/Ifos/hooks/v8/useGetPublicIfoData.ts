@@ -201,7 +201,10 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
       ? new BigNumber(privateSaleTaxRate.toString()).div(TAX_PRECISION).toNumber()
       : 0
 
-    const now = Math.floor(Date.now() / 1000)
+    // const now = Math.floor(Date.now() / 1000)
+    const now = 1727173900 // evm_setNextBlockTimestamp, evm_increaseTime
+
+    // const status = getStatusByTimestamp(now, startTime, endTime)
     const status = getStatusByTimestamp(now, startTime, endTime)
     const duration = endTime - startTime
     const secondsUntilEnd = endTime - now
