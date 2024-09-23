@@ -417,8 +417,7 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
     () =>
       taskType === TaskType.X_FOLLOW_ACCOUNT ||
       taskType === TaskType.X_LIKE_POST ||
-      taskType === TaskType.X_REPOST_POST ||
-      taskType === TaskType.MAKE_A_PREDICTION,
+      taskType === TaskType.X_REPOST_POST,
     [taskType],
   )
 
