@@ -272,7 +272,6 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
         setSocialName('Youtube')
         return Boolean(userInfo.socialHubToSocialUserIdMap?.Youtube)
       case TaskType.TELEGRAM_JOIN_GROUP:
-      case TaskType.MAKE_A_PREDICTION:
         setSocialName('Telegram')
         return Boolean(userInfo.socialHubToSocialUserIdMap?.Telegram)
       case TaskType.DISCORD_JOIN_SERVER:
