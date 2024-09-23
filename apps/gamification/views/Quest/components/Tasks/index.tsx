@@ -102,7 +102,7 @@ export const Tasks: React.FC<TasksProps> = ({
   }
 
   const handleStartQuest = () => {
-    if (new Date().getTime() / 1000 < Number(quest?.startTime) && completionStatus === CompletionStatus.SCHEDULED) {
+    if (new Date().getTime() / 1000 < Number(quest?.startTime) || completionStatus === CompletionStatus.SCHEDULED) {
       toastError(t('This quest is not started.'))
     } else if (!hasProfile) {
       onPressMakeProfileModal()
