@@ -14,7 +14,7 @@ import {
 } from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { CurrencyLogo, DoubleCurrencyLogo, SwapUIV2 } from '@pancakeswap/widgets-internal'
-import { memo, useCallback, useState } from 'react'
+import { memo, useCallback, useMemo, useState } from 'react'
 import { styled } from 'styled-components'
 import { safeGetAddress } from 'utils'
 
@@ -31,6 +31,34 @@ import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
 const CurrencySelectButton = styled(Button).attrs({ variant: 'text', scale: 'sm' })`
   padding: 0px;
 `
+
+const useSizeAdaption = (value: string, currencySymbol?: string) => {
+  const shortedSymbol = useMemo(() => {
+    if (currencySymbol && currencySymbol.length > 10) {
+      return `${currencySymbol.slice(0, 4)}...${currencySymbol.slice(currencySymbol.length - 5, currencySymbol.length)}`
+    }
+    return currencySymbol
+  }, [currencySymbol])
+  const adaptedSize = useMemo(() => {
+    let input = '24px'
+    let symbol = '24px'
+    if (value.length > 6 || (currencySymbol && currencySymbol.length > 6)) {
+      input = '20px'
+      symbol = '20px'
+    }
+    if (value.length > 10 || (currencySymbol && currencySymbol.length > 10)) {
+      input = '16px'
+      symbol = '16px'
+    }
+    if (value.length > 10 && currencySymbol && currencySymbol.length > 10) {
+      input = '10px'
+      symbol = '10px'
+    }
+    return { input, symbol }
+  }, [value, currencySymbol])
+
+  return { shortedSymbol, adaptedSize }
+}
 
 interface CurrencyInputPanelProps {
   value: string | undefined
@@ -120,6 +148,8 @@ const CurrencyInputPanelSimplify = memo(function CurrencyInputPanel({
     />,
   )
 
+  const { shortedSymbol, adaptedSize } = useSizeAdaption(value ?? '', currency?.symbol)
+
   const handleUserInput = useCallback(
     (val: string) => {
       onUserInput(val)
@@ -152,6 +182,7 @@ const CurrencyInputPanelSimplify = memo(function CurrencyInputPanel({
       onInputFocus={handleUserInputFocus}
       onUserInput={handleUserInput}
       loading={inputLoading}
+      inputFontSize={`${adaptedSize.input}`}
       top={
         <Flex justifyContent="space-between" alignItems="center" width="100%" position="relative">
           {title}
@@ -195,12 +226,9 @@ const CurrencyInputPanelSimplify = memo(function CurrencyInputPanel({
                 ) : (
                   <Flex alignItems="start" flexDirection="column">
                     <Flex alignItems="center" justifyContent="space-between">
-                      <Text id="pair" bold fontSize="24px">
+                      <Text id="pair" bold fontSize={`${adaptedSize.symbol}`}>
                         {(currency && currency.symbol && currency.symbol.length > 10
-                          ? `${currency.symbol.slice(0, 4)}...${currency.symbol.slice(
-                              currency.symbol.length - 5,
-                              currency.symbol.length,
-                            )}`
+                          ? shortedSymbol
                           : currency?.symbol) || t('Select a currency')}
                       </Text>
                       {!currencyLoading && !disableCurrencySelect && <ChevronDownIcon />}

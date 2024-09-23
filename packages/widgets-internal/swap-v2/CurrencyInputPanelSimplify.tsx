@@ -10,6 +10,7 @@ interface CurrencyInputPanelProps extends Omit<NumericalInputProps, "onBlur" | "
   bottom?: React.ReactNode;
   inputLeft?: React.ReactNode;
   showBridgeWarning?: boolean;
+  inputFontSize?: string;
 }
 export function CurrencyInputPanelSimplify({
   value,
@@ -24,6 +25,7 @@ export function CurrencyInputPanelSimplify({
   loading,
   showBridgeWarning,
   inputLeft,
+  inputFontSize,
 }: CurrencyInputPanelProps) {
   return (
     <AtomBox position="relative" id={id} display="grid" gap="4px">
@@ -71,6 +73,7 @@ export function CurrencyInputPanelSimplify({
               onUserInput={(val) => {
                 onUserInput(val);
               }}
+              fontSize={inputFontSize}
             />
           </AtomBox>
           {bottom}
