@@ -78,7 +78,7 @@ export function useSiwe() {
       if (!chainId) {
         throw new Error(`Invalid chain ${chainId}`)
       }
-
+      console.log('isSiweValid', isSiweValid)
       if (isSiweValid && siwe) {
         return siwe
       }
