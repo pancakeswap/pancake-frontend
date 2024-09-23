@@ -1056,7 +1056,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
 
   {
     gid: 104,
-    address: '0xb1Da7D2C257c5700612BdE35C8d7187dc80d79f1',
+    address: '0xB2Aa63f363196caba3154D4187949283F085a488',
     pairName: 'lisUSD-USDT',
     chainId: ChainId.BSC,
     type: GaugeType.StableSwap,
