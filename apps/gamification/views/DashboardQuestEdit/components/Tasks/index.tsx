@@ -6,6 +6,7 @@ import { AddBlogPost } from 'views/DashboardQuestEdit/components/Tasks/AddBlogPo
 import { AddHoldToken } from 'views/DashboardQuestEdit/components/Tasks/AddHoldToken'
 import { AddLottery } from 'views/DashboardQuestEdit/components/Tasks/AddLottery'
 import { AddLpAddress } from 'views/DashboardQuestEdit/components/Tasks/AddLpAddress'
+import { AddMakePrediction } from 'views/DashboardQuestEdit/components/Tasks/AddMakePrediction'
 import { AddSwap } from 'views/DashboardQuestEdit/components/Tasks/AddSwap'
 import { AddTaskList } from 'views/DashboardQuestEdit/components/Tasks/AddTaskList'
 import { EmptyTasks } from 'views/DashboardQuestEdit/components/Tasks/EmptyTasks'
@@ -44,6 +45,7 @@ const Item = ({
       <Card style={{ width: '100%' }}>
         <Box padding="8px">
           {item.taskType === TaskType.MAKE_A_SWAP && <AddSwap task={item} isDrafted={isDrafted} />}
+          {item.taskType === TaskType.MAKE_A_PREDICTION && <AddMakePrediction task={item} isDrafted={isDrafted} />}
           {item.taskType === TaskType.HOLD_A_TOKEN && <AddHoldToken task={item} isDrafted={isDrafted} />}
           {item.taskType === TaskType.PARTICIPATE_LOTTERY && <AddLottery task={item} isDrafted={isDrafted} />}
           {item.taskType === TaskType.ADD_LIQUIDITY && <AddLpAddress task={item} isDrafted={isDrafted} />}

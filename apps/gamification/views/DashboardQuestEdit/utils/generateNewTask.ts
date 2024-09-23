@@ -78,6 +78,17 @@ export const generateNewTask = (tasks: TaskConfigType[], taskType: TaskType): Ta
         orderNumber: 0,
         isOptional: false,
       }
+    case TaskType.MAKE_A_PREDICTION:
+      return {
+        sid: randomId,
+        title: '',
+        description: '',
+        link: 'https://t.me/pancakefi_bot',
+        taskType,
+        orderNumber: 0,
+        network: DEFAULT_CHAIN,
+        isOptional: false,
+      }
     case TaskType.X_LIKE_POST:
     case TaskType.X_REPOST_POST:
     case TaskType.X_FOLLOW_ACCOUNT:

@@ -23,6 +23,8 @@ export const targetChains = [
   // opBNB,
 ]
 
+export const predictionTaskSupportChains = [bsc]
+
 export const SUPPORTED_CHAIN = [
   ChainId.ETHEREUM,
   ChainId.BSC,

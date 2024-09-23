@@ -23,7 +23,7 @@ export const useTaskInfo = (primaryColor: boolean = false, iconSize: number = 20
         case TaskType.ADD_LIQUIDITY:
         case TaskType.PARTICIPATE_LOTTERY:
         case TaskType.HOLD_A_TOKEN:
-        case TaskType.MAKE_PREDICTION:
+        case TaskType.MAKE_A_PREDICTION:
           return <BunnyFillIcon color={color} width={size} height={size} />
         case TaskType.X_LIKE_POST:
         case TaskType.X_FOLLOW_ACCOUNT:
@@ -59,7 +59,7 @@ export const useTaskInfo = (primaryColor: boolean = false, iconSize: number = 20
           return t('Add liquidity')
         case TaskType.PARTICIPATE_LOTTERY:
           return t('Participate in a lottery')
-        case TaskType.MAKE_PREDICTION:
+        case TaskType.MAKE_A_PREDICTION:
           return t('Make a prediction')
         case TaskType.X_LIKE_POST:
         case TaskType.IG_LIKE_POST:
@@ -107,6 +107,8 @@ export const useTaskInfo = (primaryColor: boolean = false, iconSize: number = 20
           return t('Instagram account link')
         case TaskType.VISIT_BLOG_POST:
           return t('Blog post link')
+        case TaskType.MAKE_A_PREDICTION:
+          return t('Prediction link')
         default:
           return ''
       }
@@ -157,6 +159,8 @@ export const useTaskInfo = (primaryColor: boolean = false, iconSize: number = 20
           return t('Comment')
         case TaskType.VISIT_BLOG_POST:
           return t('Visit the post')
+        case TaskType.MAKE_A_PREDICTION:
+          return t('Make a Bet')
         default:
           return ''
       }

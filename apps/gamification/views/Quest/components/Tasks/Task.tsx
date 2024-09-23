@@ -31,6 +31,7 @@ import {
   TaskConfigType,
   TaskHoldTokenConfig,
   TaskLiquidityConfig,
+  TaskMakePredictionConfig,
   TaskSocialConfig,
   TaskSwapConfig,
 } from 'views/DashboardQuestEdit/context/types'
@@ -383,6 +384,13 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
     }
   }
 
+  const handleRedirectPrediction = () => {
+    const url = (task as TaskMakePredictionConfig)?.link
+    if (url) {
+      window.open(url, '_blank', 'noopener noreferrer')
+    }
+  }
+
   const handleAction = () => {
     switch (taskType as TaskType) {
       case TaskType.MAKE_A_SWAP:
@@ -398,6 +406,8 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
       case TaskType.TELEGRAM_JOIN_GROUP:
       case TaskType.DISCORD_JOIN_SERVER:
         return handleSocial()
+      case TaskType.MAKE_A_PREDICTION:
+        return handleRedirectPrediction()
       default:
         return null
     }
