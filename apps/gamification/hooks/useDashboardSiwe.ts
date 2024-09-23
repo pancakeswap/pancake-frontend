@@ -28,13 +28,11 @@ export function useAutoSiwe() {
 
   const trySignIn = useCallback(
     async ({ address: addr }: { address: Address }) => {
-      setTimeout(async () => {
-        try {
-          await signIn({ address: addr })
-        } catch (e) {
-          console.error('Failed to sign in', e)
-        }
-      }, 500)
+      try {
+        await signIn({ address: addr })
+      } catch (e) {
+        console.error('Failed to sign in', e)
+      }
     },
     [signIn],
   )
@@ -47,7 +45,9 @@ export function useAutoSiwe() {
 
   useAccountEffect({
     onConnect({ address: addr }) {
-      trySignIn({ address: addr })
+      setTimeout(() => {
+        trySignIn({ address: addr })
+      }, 1000)
     },
     onDisconnect() {
       signOut()
