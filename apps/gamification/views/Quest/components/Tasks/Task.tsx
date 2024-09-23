@@ -36,7 +36,7 @@ import {
   TaskSwapConfig,
 } from 'views/DashboardQuestEdit/context/types'
 import { useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
-import { TaskType } from 'views/DashboardQuestEdit/type'
+import { CompletionStatus, TaskType } from 'views/DashboardQuestEdit/type'
 import { parseAction, useConnectTwitter } from 'views/Profile/hooks/settingsModal/useConnectTwitter'
 import { useUserSocialHub } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
 import { TwitterFollowersId } from 'views/Profile/utils/verifyTwitterFollowersIds'
@@ -55,10 +55,19 @@ interface TaskProps {
   hasIdRegister: boolean
   taskStatus: VerifyTaskStatus
   isQuestFinished: boolean
+  completionStatus: CompletionStatus
   refresh: () => void
 }
 
-export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegister, isQuestFinished, refresh }) => {
+export const Task: React.FC<TaskProps> = ({
+  questId,
+  task,
+  taskStatus,
+  hasIdRegister,
+  isQuestFinished,
+  completionStatus,
+  refresh,
+}) => {
   const { asPath, replace } = useRouter()
   const { t } = useTranslation()
   const { toastError } = useToast()
@@ -295,6 +304,8 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
   const toggleActionPanel = useCallback(() => {
     if (isQuestFinished) {
       toastError(t('This quest has expired.'))
+    } else if (completionStatus === CompletionStatus.SCHEDULED) {
+      toastError(t('This quest is not started.'))
     } else if (!isUserConnectSocialConnected) {
       onPresentConnectSocialAccountModal()
     } else {
@@ -302,6 +313,7 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
     }
   }, [
     isQuestFinished,
+    completionStatus,
     actionPanelExpanded,
     isUserConnectSocialConnected,
     t,

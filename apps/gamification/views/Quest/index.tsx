@@ -178,6 +178,7 @@ export const Quest = () => {
           totalTaskCompleted={totalTaskCompleted}
           isSocialHubFetched={isSocialHubFetched}
           isEnoughCompleted={isEnoughCompleted}
+          completionStatus={completionStatus}
           refreshSocialHub={refreshSocialHub}
           refreshVerifyTaskStatus={refreshVerifyTaskStatus}
         />
