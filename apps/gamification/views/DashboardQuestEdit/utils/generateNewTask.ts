@@ -83,7 +83,7 @@ export const generateNewTask = (tasks: TaskConfigType[], taskType: TaskType): Ta
         sid: randomId,
         title: '',
         description: '',
-        link: '',
+        link: 'https://t.me/pancakefi_bot',
         taskType,
         orderNumber: 0,
         network: DEFAULT_CHAIN,
