@@ -111,10 +111,11 @@ export const PUBLIC_NODES: Record<ChainId, string[] | readonly string[]> = {
     'https://eth-goerli.public.blastapi.io',
   ].filter(notEmpty),
   [ChainId.ARBITRUM_ONE]: [
-    ...ARBITRUM_NODES,
-    process.env.NEXT_PUBLIC_NODIES_ARB || '',
-    getNodeRealUrl(ChainId.ARBITRUM_ONE, process.env.NEXT_PUBLIC_NODE_REAL_API_ETH) || '',
-    getGroveUrl(ChainId.ARBITRUM_ONE, process.env.NEXT_PUBLIC_GROVE_API_KEY) || '',
+    'https://virtual.arbitrum.rpc.tenderly.co/83d98074-4c61-4b07-8c9e-5328335be1ff',
+    // ...ARBITRUM_NODES,
+    // process.env.NEXT_PUBLIC_NODIES_ARB || '',
+    // getNodeRealUrl(ChainId.ARBITRUM_ONE, process.env.NEXT_PUBLIC_NODE_REAL_API_ETH) || '',
+    // getGroveUrl(ChainId.ARBITRUM_ONE, process.env.NEXT_PUBLIC_GROVE_API_KEY) || '',
   ].filter(notEmpty),
   [ChainId.ARBITRUM_GOERLI]: arbitrumGoerli.rpcUrls.default.http,
   [ChainId.POLYGON_ZKEVM]: [
