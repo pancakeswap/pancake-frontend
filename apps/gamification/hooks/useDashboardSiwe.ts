@@ -34,7 +34,7 @@ export function useAutoSiwe() {
         } catch (e) {
           console.error('Failed to sign in', e)
         }
-      }, 100)
+      }, 500)
     },
     [signIn],
   )
