@@ -64,6 +64,11 @@ const nextConfig = {
         destination: '/quests',
         permanent: false,
       },
+      {
+        source: '/quests/645993fe48c14376934f6b95ee7d6668',
+        destination: '/404',
+        permanent: true,
+      },
     ]
   },
   async headers() {
