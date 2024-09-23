@@ -71,6 +71,7 @@ export function useSiwe() {
 
   const signIn = useCallback(
     async ({ address, chainId = currentChainId }: { address: Address; chainId?: ChainId }) => {
+      console.log('siwe', siwe)
       if (typeof window === 'undefined') {
         throw new Error('Unable to sign in outside of browser context')
       }
