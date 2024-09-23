@@ -111,7 +111,7 @@ export const PUBLIC_NODES: Record<ChainId, string[] | readonly string[]> = {
     'https://eth-goerli.public.blastapi.io',
   ].filter(notEmpty),
   [ChainId.ARBITRUM_ONE]: [
-    'https://virtual.arbitrum.rpc.tenderly.co/83d98074-4c61-4b07-8c9e-5328335be1ff',
+    'https://virtual.arbitrum.rpc.tenderly.co/ff3fe4fe-9b56-4254-b9e1-74a6b91b3aab',
     // ...ARBITRUM_NODES,
     // process.env.NEXT_PUBLIC_NODIES_ARB || '',
     // getNodeRealUrl(ChainId.ARBITRUM_ONE, process.env.NEXT_PUBLIC_NODE_REAL_API_ETH) || '',
