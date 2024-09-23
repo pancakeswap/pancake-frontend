@@ -5,6 +5,7 @@ import { Flex, Spinner } from '@pancakeswap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import React, { useMemo } from 'react'
 import { styled } from 'styled-components'
+import noop from 'lodash/noop'
 import EmptyText from '../MigrationTable/EmptyText'
 import TableStyle from '../MigrationTable/StyledTable'
 import TableHeader from '../MigrationTable/TableHeader'
@@ -43,13 +44,19 @@ export const PosManagerMigrationFarmTable: React.FC<React.PropsWithChildren<ITab
 
   const needToMigrateList: VaultConfig[] = useMemo(() => {
     if (!chainId) return []
-    return VAULTS_CONFIG_BY_CHAIN[chainId].filter(
-      (vault) => vault.address && vault?.bCakeWrapperAddress && vault?.bCakeWrapperAddress !== vault.address,
+    return (
+      VAULTS_CONFIG_BY_CHAIN[chainId]?.filter(
+        (vault) => vault.address && vault?.bCakeWrapperAddress && vault?.bCakeWrapperAddress !== vault.address,
+      ) ?? []
     )
   }, [chainId])
 
-  const rows = needToMigrateList.map((d) => {
-    return {
+  const rows = useMemo(() => {
+    if (columnSchema !== V3Step1DesktopColumnSchema) {
+      return []
+    }
+
+    return needToMigrateList.map((d) => ({
       id: d.id,
       data: {
         token: d.currencyA.wrapped,
@@ -61,10 +68,10 @@ export const PosManagerMigrationFarmTable: React.FC<React.PropsWithChildren<ITab
         bCakeWrapperAddress: d.bCakeWrapperAddress ?? '0x',
         earningToken: d.earningToken.wrapped,
       },
-      onStake: () => {},
-      onUnStake: () => {},
-    }
-  })
+      onStake: noop,
+      onUnStake: noop,
+    }))
+  }, [needToMigrateList, columnSchema])
 
   return (
     <Container>
@@ -79,12 +86,7 @@ export const PosManagerMigrationFarmTable: React.FC<React.PropsWithChildren<ITab
         {account && userDataReady && rows.length === 0 && <EmptyText text={noStakedFarmText} />}
         {account &&
           userDataReady &&
-          rows.map((d) => {
-            if (columnSchema === V3Step1DesktopColumnSchema) {
-              return <PositionManagerFarmRow step={step} {...d} key={`table-row-${d.id}`} />
-            }
-            return null
-          })}
+          rows.map((d) => <PositionManagerFarmRow step={step} {...d} key={`table-row-${d.id}`} />)}
       </TableStyle>
     </Container>
   )
