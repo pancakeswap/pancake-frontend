@@ -45,9 +45,7 @@ export function useAutoSiwe() {
 
   useAccountEffect({
     onConnect({ address: addr }) {
-      setTimeout(() => {
-        trySignIn({ address: addr })
-      }, 1000)
+      trySignIn({ address: addr })
     },
     onDisconnect() {
       signOut()
