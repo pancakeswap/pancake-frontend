@@ -17,6 +17,13 @@ interface RiskDetailsProps {
   riskLevelDescription?: string
 }
 
+interface RiskDetailsPanelProps {
+  token0?: ERC20Token
+  token0RiskLevelDescription?: string
+  token1?: ERC20Token
+  token1RiskLevelDescription?: string
+}
+
 const useRiskCheckData = (token?: ERC20Token) => {
   const { data, refetch } = useTokenRisk(token)
   useEffect(() => {
@@ -94,4 +101,29 @@ export const RiskDetails: React.FC<RiskDetailsProps> = ({ token, riskLevelDescri
     }
   }
   return null
+}
+
+export const useShouldRiskPanelDisplay = (token0?: ERC20Token, token1?: ERC20Token) => {
+  const { isDataLoading: isDataLoading0, riskLevel: riskLevel0 } = useRiskCheckData(token0)
+  const { isDataLoading: isDataLoading1, riskLevel: riskLevel1 } = useRiskCheckData(token1)
+  return (
+    isDataLoading0 ||
+    isDataLoading1 ||
+    (riskLevel0 && riskLevel0 <= TOKEN_RISK.SIGNIFICANT && riskLevel0 >= TOKEN_RISK.HIGH) ||
+    (riskLevel1 && riskLevel1 <= TOKEN_RISK.SIGNIFICANT && riskLevel1 >= TOKEN_RISK.HIGH)
+  )
+}
+
+export const RiskDetailsPanel: React.FC<RiskDetailsPanelProps> = ({
+  token0,
+  token1,
+  token0RiskLevelDescription,
+  token1RiskLevelDescription,
+}) => {
+  return (
+    <FlexGap>
+      <RiskDetails token={token0} riskLevelDescription={token0RiskLevelDescription} />
+      <RiskDetails token={token1} riskLevelDescription={token1RiskLevelDescription} />
+    </FlexGap>
+  )
 }
