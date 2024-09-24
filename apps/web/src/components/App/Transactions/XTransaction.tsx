@@ -1,6 +1,6 @@
 import { ModalV2, useModalV2, ChevronRightIcon, Text, FlexGap } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { useToken } from 'hooks/Tokens'
+import { useCurrency } from 'hooks/Tokens'
 import { useMemo } from 'react'
 import { formatUnits } from 'viem'
 import { XSwapTransactionDetailModal } from 'views/Swap/x/XSwapTransactionDetail'
@@ -27,8 +27,8 @@ export function XTransaction({ order }: { order: GetXOrderReceiptResponseOrder }
     return TransactionStatus.Failed
   }, [order.status, order.transactionHash])
 
-  const inputToken = useToken(order.input.token)
-  const outputToken = useToken(order.outputs[0].token)
+  const inputToken = useCurrency(order.input.token)
+  const outputToken = useCurrency(order.outputs[0].token)
 
   const text = useMemo(() => {
     const isExactOut = order.input.endAmount !== order.input.startAmount
@@ -51,7 +51,7 @@ export function XTransaction({ order }: { order: GetXOrderReceiptResponseOrder }
         title={<TransactionListItemTitle>PancakeSwap X</TransactionListItemTitle>}
         action={
           <FlexGap gap="0.25rem" justifyContent="flex-end">
-            <Countdown to={order.deadline} />
+            {status === TransactionStatus.Pending ? <Countdown to={order.deadline} /> : null}
             <ChevronRightIcon style={{ cursor: 'pointer' }} fontSize="1.25rem" onClick={modal.onOpen} />
           </FlexGap>
         }

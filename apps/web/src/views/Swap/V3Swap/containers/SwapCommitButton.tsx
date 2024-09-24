@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
+import { Currency } from '@pancakeswap/swap-sdk-core'
 import { AutoColumn, Box, Button, Dots, Message, MessageText, Text, useModal } from '@pancakeswap/uikit'
 import React, { memo, useCallback, useEffect, useMemo, useState } from 'react'
 
@@ -169,7 +169,7 @@ const SwapCommitButtonInner = memo(function SwapCommitButtonInner({
   const { callToAction, confirmState, txHash, orderHash, confirmActions, errorMessage, resetState } =
     useConfirmModalState(
       isExpertMode ? order : tradeToConfirm,
-      amountToApprove?.currency.isToken ? (amountToApprove as CurrencyAmount<Token>) : undefined,
+      amountToApprove?.wrapped,
       getUniversalRouterAddress(chainId),
     )
 

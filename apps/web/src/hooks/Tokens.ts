@@ -1,8 +1,8 @@
 /* eslint-disable no-param-reassign */
 import { ChainId } from '@pancakeswap/chains'
+import { type Address, zeroAddress } from 'viem'
 import { ERC20Token } from '@pancakeswap/sdk'
 import { Currency, NativeCurrency } from '@pancakeswap/swap-sdk-core'
-import type { Address } from 'viem'
 
 import { TokenAddressMap } from '@pancakeswap/token-lists'
 import { useReadContracts } from '@pancakeswap/wagmi'
@@ -259,7 +259,9 @@ export function useOnRampToken(currencyId?: string): Currency | undefined {
 export function useCurrency(currencyId: string | undefined): UnsafeCurrency {
   const native: NativeCurrency = useNativeCurrency()
   const isNative =
-    currencyId?.toUpperCase() === native.symbol?.toUpperCase() || currencyId?.toLowerCase() === GELATO_NATIVE
+    currencyId?.toUpperCase() === native.symbol?.toUpperCase() ||
+    currencyId?.toLowerCase() === GELATO_NATIVE ||
+    currencyId?.toLowerCase() === zeroAddress
 
   const token = useToken(isNative ? undefined : currencyId)
   return isNative ? native : token
@@ -268,7 +270,9 @@ export function useCurrency(currencyId: string | undefined): UnsafeCurrency {
 export function useOnRampCurrency(currencyId: string | undefined): NativeCurrency | Currency | null | undefined {
   const native: NativeCurrency = useNativeCurrency()
   const isNative =
-    currencyId?.toUpperCase() === native.symbol?.toUpperCase() || currencyId?.toLowerCase() === GELATO_NATIVE
+    currencyId?.toUpperCase() === native.symbol?.toUpperCase() ||
+    currencyId?.toLowerCase() === GELATO_NATIVE ||
+    currencyId?.toLowerCase() === zeroAddress
   const token = useOnRampToken(currencyId)
 
   return isNative ? native : token
