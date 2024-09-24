@@ -3,6 +3,12 @@ import { SwapCSS } from "@pancakeswap/uikit";
 import { escapeRegExp } from "@pancakeswap/utils/escapeRegExp";
 import clsx from "clsx";
 import { memo } from "react";
+import { styled } from "styled-components";
+
+const StyledInput = styled.input`
+  will-change: font-size;
+  transition: font-size 0.2s ease-in-out;
+`;
 
 const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`); // match escaped "." characters via in a non-capturing group
 
@@ -10,6 +16,7 @@ export type NumericalInputProps = {
   value: string | number | undefined;
   onUserInput: (input: string) => void;
   fontSize?: string;
+  ref?: React.RefObject<HTMLInputElement>;
 } & SwapCSS.InputVariants &
   Omit<React.HTMLProps<HTMLInputElement>, "ref" | "onChange" | "as">;
 
@@ -21,6 +28,8 @@ export const NumericalInput = memo(function InnerInput({
   align,
   className,
   loading,
+  fontSize,
+  ref,
   ...rest
 }: NumericalInputProps) {
   const enforcer = (nextUserInput: string) => {
@@ -32,7 +41,8 @@ export const NumericalInput = memo(function InnerInput({
   const { t } = useTranslation();
 
   return (
-    <input
+    <StyledInput
+      ref={ref}
       className={clsx(
         className,
         SwapCSS.inputVariants({
@@ -59,7 +69,7 @@ export const NumericalInput = memo(function InnerInput({
       minLength={1}
       maxLength={79}
       spellCheck="false"
-      style={{ fontWeight: 600, fontSize: "24px" }}
+      style={{ fontWeight: 600, fontSize: fontSize ?? "24px" }}
     />
   );
 });

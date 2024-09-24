@@ -11,6 +11,8 @@ interface CurrencyInputPanelProps extends Omit<NumericalInputProps, "onBlur" | "
   inputLeft?: React.ReactNode;
   showBridgeWarning?: boolean;
   inputFontSize?: string;
+  wrapperRef?: React.RefObject<HTMLDivElement>;
+  inputRef?: React.RefObject<HTMLInputElement>;
 }
 export function CurrencyInputPanelSimplify({
   value,
@@ -26,6 +28,8 @@ export function CurrencyInputPanelSimplify({
   showBridgeWarning,
   inputLeft,
   inputFontSize,
+  wrapperRef,
+  inputRef,
 }: CurrencyInputPanelProps) {
   return (
     <AtomBox position="relative" id={id} display="grid" gap="4px">
@@ -39,6 +43,7 @@ export function CurrencyInputPanelSimplify({
         position="relative"
         backgroundColor="backgroundAlt"
         zIndex="1"
+        ref={wrapperRef}
       >
         <AtomBox
           as="label"
@@ -66,6 +71,7 @@ export function CurrencyInputPanelSimplify({
               error={Boolean(error)}
               disabled={disabled}
               loading={loading}
+              ref={inputRef}
               className="token-amount-input"
               value={value}
               onBlur={onInputBlur}
