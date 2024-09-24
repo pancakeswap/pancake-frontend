@@ -88,7 +88,7 @@ const useSizeAdaption = (value: string, currencySymbol?: string) => {
       inputElement.style.fontSize = '24px'
       symbolElement.style.fontSize = '24px'
       logoElement.style.width = '40px'
-      logoElement.style.width = '40px'
+      logoElement.style.height = '40px'
     }
   }, [value, currencySymbol])
 
