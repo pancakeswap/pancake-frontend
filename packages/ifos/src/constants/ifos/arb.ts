@@ -16,8 +16,7 @@ export const ifos: BaseIfoConfig[] = [
       'Eigenpie is a Liquid Restaking Platform built on top of EigenLayer that allows users to restake their ETH or LSTs to validate new services while earning rewards and maintaining liquidity through LRTs',
     currency: arbitrumTokens.cake,
     token: arbitrumTokens.egp,
-    articleUrl:
-      'https://blog.pancakeswap.finance/articles/pancake-swap-launches-first-ifo-on-arbitrum-featuring-eigenpie?utm_source=Homepage&utm_medium=website&utm_campaign=Eigenpie&utm_id=IFO',
+    articleUrl: 'https://forum.pancakeswap.finance/t/eigenpie-ifo-discussion-thread/778/1',
     campaignId: '',
     poolBasic: {
       raiseAmount: '$30,000',
