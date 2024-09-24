@@ -16,7 +16,7 @@ export type NumericalInputProps = {
   value: string | number | undefined;
   onUserInput: (input: string) => void;
   fontSize?: string;
-  ref?: React.RefObject<HTMLInputElement>;
+  inputRef?: React.RefObject<HTMLInputElement>;
 } & SwapCSS.InputVariants &
   Omit<React.HTMLProps<HTMLInputElement>, "ref" | "onChange" | "as">;
 
@@ -29,7 +29,7 @@ export const NumericalInput = memo(function InnerInput({
   className,
   loading,
   fontSize,
-  ref,
+  inputRef,
   ...rest
 }: NumericalInputProps) {
   const enforcer = (nextUserInput: string) => {
@@ -39,10 +39,9 @@ export const NumericalInput = memo(function InnerInput({
   };
 
   const { t } = useTranslation();
-
+  console.log();
   return (
     <StyledInput
-      ref={ref}
       className={clsx(
         className,
         SwapCSS.inputVariants({
@@ -70,6 +69,7 @@ export const NumericalInput = memo(function InnerInput({
       maxLength={79}
       spellCheck="false"
       style={{ fontWeight: 600, fontSize: fontSize ?? "24px" }}
+      ref={inputRef}
     />
   );
 });

@@ -14,7 +14,7 @@ import {
 } from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { CurrencyLogo, DoubleCurrencyLogo, SwapUIV2 } from '@pancakeswap/widgets-internal'
-import { memo, useCallback, useMemo, useRef, useState } from 'react'
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { styled } from 'styled-components'
 import { safeGetAddress } from 'utils'
 
@@ -31,6 +31,20 @@ import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
 const CurrencySelectButton = styled(Button).attrs({ variant: 'text', scale: 'sm' })`
   padding: 0px;
 `
+const SymbolText = styled(Text)`
+  font-size: 24px;
+`
+
+const SIZE_ADAPTION_BOUNDARY_PX = 40
+const MAX_FONT_SIZE = 24
+const MIN_FONT_SIZE = 16
+
+const handleFontSizeChange = (fontSize: string, operation: number) => {
+  const currentFontSize = parseInt(fontSize.replace('px', ''), 10)
+  if ((currentFontSize > MIN_FONT_SIZE && operation < 0) || (currentFontSize < MAX_FONT_SIZE && operation > 0))
+    return `${currentFontSize + operation}px`
+  return fontSize
+}
 
 const useSizeAdaption = (value: string, currencySymbol?: string) => {
   const inputRef = useRef<HTMLInputElement>(null)
@@ -43,25 +57,30 @@ const useSizeAdaption = (value: string, currencySymbol?: string) => {
     }
     return currencySymbol
   }, [currencySymbol])
-  const adaptedSize = useMemo(() => {
-    let input = '24px'
-    let symbol = '24px'
-    if (value.length > 6 || (currencySymbol && currencySymbol.length > 6)) {
-      input = '20px'
-      symbol = '20px'
+  useEffect(() => {
+    if (!inputRef.current || !symbolRef.current || !wrapperRef.current) return
+    const inputElement = inputRef.current
+    const symbolElement = symbolRef.current
+    const wrapperWidth = wrapperRef.current.offsetWidth
+    const symbolWidth = symbolElement.offsetWidth
+    const inputWidth = inputElement.scrollWidth
+
+    if (wrapperWidth - symbolWidth - inputWidth < SIZE_ADAPTION_BOUNDARY_PX) {
+      console.log('smaller')
+      console.log(
+        handleFontSizeChange(inputElement.style.fontSize, -2),
+        handleFontSizeChange(symbolElement.style.fontSize, -2),
+      )
+      inputElement.style.fontSize = handleFontSizeChange(inputElement.style.fontSize, -2)
+      symbolElement.style.fontSize = handleFontSizeChange(symbolElement.style.fontSize, -2)
+    } else {
+      console.log('bigger')
+      inputElement.style.fontSize = handleFontSizeChange(inputElement.style.fontSize, 2)
+      symbolElement.style.fontSize = handleFontSizeChange(symbolElement.style.fontSize, 2)
     }
-    if (value.length > 10 || (currencySymbol && currencySymbol.length > 10)) {
-      input = '16px'
-      symbol = '16px'
-    }
-    if (value.length > 10 && currencySymbol && currencySymbol.length > 10) {
-      input = '10px'
-      symbol = '10px'
-    }
-    return { input, symbol }
   }, [value, currencySymbol])
 
-  return { shortedSymbol, adaptedSize, inputRef, symbolRef, wrapperRef }
+  return { shortedSymbol, inputRef, symbolRef, wrapperRef }
 }
 
 interface CurrencyInputPanelProps {
@@ -230,11 +249,11 @@ const CurrencyInputPanelSimplify = memo(function CurrencyInputPanel({
                 ) : (
                   <Flex alignItems="start" flexDirection="column">
                     <Flex alignItems="center" justifyContent="space-between">
-                      <Text id="pair" bold ref={symbolRef}>
+                      <SymbolText id="pair" bold ref={symbolRef} style={{ fontSize: '24px' }}>
                         {(currency && currency.symbol && currency.symbol.length > 10
                           ? shortedSymbol
                           : currency?.symbol) || t('Select a currency')}
-                      </Text>
+                      </SymbolText>
                       {!currencyLoading && !disableCurrencySelect && <ChevronDownIcon />}
                     </Flex>
                     <RiskInputPanelDisplay token={token ?? undefined} />
