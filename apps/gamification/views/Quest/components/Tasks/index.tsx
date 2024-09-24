@@ -100,12 +100,12 @@ export const Tasks: React.FC<TasksProps> = ({
   }
 
   const handleStartQuest = () => {
-    logGTMClickStartQuestEvent(`${account}-${questId}`)
     if (new Date().getTime() / 1000 < Number(quest?.startDateTime)) {
       toastError(t('This quest is not started.'))
     } else if (!hasProfile) {
       onPressMakeProfileModal()
     } else {
+      logGTMClickStartQuestEvent(`${account}-${questId}`)
       handleLinkUserToQuest()
     }
   }
