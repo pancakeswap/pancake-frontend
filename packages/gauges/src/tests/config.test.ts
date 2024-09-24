@@ -24,8 +24,9 @@ const PUBLIC_NODES: Record<string, string[]> = {
 }
 
 describe('Gauges Config', async () => {
-  const gidGroups = groupBy(CONFIG_PROD, 'gid')
-  const chainIdGroups = groupBy(CONFIG_PROD, 'chainId')
+  const configProd = await CONFIG_PROD()
+  const gidGroups = groupBy(configProd, 'gid')
+  const chainIdGroups = groupBy(configProd, 'chainId')
 
   Object.keys(chainIdGroups).forEach((chainId) => {
     it(`chainId ${
@@ -52,7 +53,7 @@ describe('Gauges Config', async () => {
     })
   })
   let index = 0
-  CONFIG_PROD.forEach((gauge) => {
+  configProd.forEach((gauge) => {
     const chainName = chainNames[gauge.chainId]
     it(`${chainName} gid #${gauge.gid} should follow the index`, () => {
       expect(gauge.gid).toBe(index)
@@ -103,7 +104,7 @@ describe('Gauges Config', async () => {
     })
   })
 
-  CONFIG_PROD.forEach((gauge) => {
+  configProd.forEach((gauge) => {
     const chainName = chainNames[gauge.chainId]
     it(`${chainName} gid #${gauge.gid} tokens chainId-lpAddress-feeTier should be matched`, () => {
       if (gauge.type === GaugeType.V3) {
