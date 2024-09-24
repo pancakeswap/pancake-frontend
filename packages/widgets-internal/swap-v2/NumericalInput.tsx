@@ -6,8 +6,8 @@ import { memo } from "react";
 import { styled } from "styled-components";
 
 const StyledInput = styled.input`
-  will-change: font-size;
-  transition: font-size 0.2s ease-in-out;
+  /* will-change: font-size;
+  transition: font-size 0.2s ease-in-out; */
 `;
 
 const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`); // match escaped "." characters via in a non-capturing group
