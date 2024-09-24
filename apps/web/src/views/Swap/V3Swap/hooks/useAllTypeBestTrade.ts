@@ -1,9 +1,8 @@
 import { OrderType } from '@pancakeswap/price-api-sdk'
 import { SmartRouterTrade, V4Router } from '@pancakeswap/smart-router'
 import { Currency, TradeType } from '@pancakeswap/swap-sdk-core'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 
-import { getLogger } from 'utils/datadog'
 import { useBetterQuote } from 'hooks/useBestAMMTrade'
 import { useThrottleFn } from 'hooks/useThrottleFn'
 import { InterfaceOrder } from 'views/Swap/utils'
@@ -12,8 +11,6 @@ import { usePCSX } from 'hooks/usePCSX'
 import { useSwapBestOrder, useSwapBestTrade } from './useSwapBestTrade'
 
 type Trade = SmartRouterTrade<TradeType> | V4Router.V4TradeWithoutGraph<TradeType>
-
-const logger = getLogger('best-quote', { forwardErrorsToLogs: false })
 
 export const useAllTypeBestTrade = () => {
   const [xEnabled] = usePCSX()
@@ -73,30 +70,17 @@ export const useAllTypeBestTrade = () => {
   }, [ammCurrentTrade, isLoading, error])
 
   // TODO: switch to use classic amm by default before launch
-  const hasAvailableDutchOrder = bestOrder.order?.type === OrderType.DUTCH_LIMIT
+  const hasAvailableDutchOrder = bestOrder.enabled && bestOrder.order?.type === OrderType.DUTCH_LIMIT
   const betterQuote = useBetterQuote(
     hasAvailableDutchOrder ? undefined : classicAmmOrder,
     hasAvailableDutchOrder ? currentOrder : undefined,
   )
   const finalOrder = xEnabled ? betterQuote : classicAmmOrder
 
-  useEffect(() => {
-    if (betterQuote?.trade && !betterQuote.isLoading) {
-      console.log('[DEBUG ROUTE]: better quote update', betterQuote)
-      try {
-        logger.info('Best quote', {
-          quoteType: betterQuote.type,
-        })
-      } catch (e) {
-        console.error(e)
-      }
-    }
-  }, [betterQuote])
-
   return {
+    ammOrder: classicAmmOrder,
+    xOrder: currentOrder,
     bestOrder: finalOrder as InterfaceOrder,
-    isMMBetter: false,
-    mmTrade: undefined,
     tradeLoaded: !finalOrder?.isLoading,
     tradeError: finalOrder?.error,
     refreshDisabled:
