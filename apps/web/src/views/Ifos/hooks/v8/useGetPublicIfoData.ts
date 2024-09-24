@@ -202,9 +202,8 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
       : 0
 
     // const now = Math.floor(Date.now() / 1000)
-    const now = 1727267400 // evm_setNextBlockTimestamp, evm_increaseTime
+    const now = 1727172960 // evm_setNextBlockTimestamp, evm_increaseTime
 
-    // const status = getStatusByTimestamp(now, startTime, endTime)
     const status = getStatusByTimestamp(now, startTime, endTime)
     const duration = endTime - startTime
     const secondsUntilEnd = endTime - now
