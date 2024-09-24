@@ -11,6 +11,7 @@ import { MakeProfileModal } from 'views/Quest/components/MakeProfileModal'
 import { Task } from 'views/Quest/components/Tasks/Task'
 import { VerifyTaskStatus } from 'views/Quest/hooks/useVerifyTaskStatus'
 import { useAccount } from 'wagmi'
+import { logGTMClickStartQuestEvent } from 'utils/customGTMEventTracking'
 
 const OverlapContainer = styled(Box)`
   position: absolute;
@@ -104,6 +105,7 @@ export const Tasks: React.FC<TasksProps> = ({
     } else if (!hasProfile) {
       onPressMakeProfileModal()
     } else {
+      logGTMClickStartQuestEvent(`${account}-${questId}`)
       handleLinkUserToQuest()
     }
   }
