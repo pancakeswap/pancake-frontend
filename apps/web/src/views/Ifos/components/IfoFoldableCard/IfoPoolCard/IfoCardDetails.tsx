@@ -210,7 +210,14 @@ const IfoCardDetails: React.FC<React.PropsWithChildren<IfoCardDetailsProps>> = (
   const maxToken = ifo.version >= 3.1 && poolId === PoolIds.poolBasic && !isEligible ? 0 : maxLpTokens
   const basicSale = useMemo(() => isBasicSale(poolCharacteristic?.saleType), [poolCharacteristic?.saleType])
 
-  const tokenEntry = <MaxTokenEntry poolId={poolId} ifo={ifo} maxToken={maxToken} basicSale={basicSale} />
+  const tokenEntry = useMemo(
+    () =>
+      // For Basic Pool, if max lp tokens is 0, it means Unlimited so don't show the max token entry
+      !(basicSale && maxToken === 0) && (
+        <MaxTokenEntry poolId={poolId} ifo={ifo} maxToken={maxToken} basicSale={basicSale} />
+      ),
+    [poolId, ifo, maxToken, basicSale],
+  )
 
   const durationInSeconds = ifo.version >= 3.2 ? poolCharacteristic?.vestingInformation?.duration ?? 0 : 0
   const vestingDays = Math.ceil(durationInSeconds / DAY_IN_SECONDS)

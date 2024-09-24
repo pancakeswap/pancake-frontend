@@ -1,5 +1,6 @@
 import { Ifo, PoolIds } from '@pancakeswap/ifos'
 import { useTranslation } from '@pancakeswap/localization'
+import { MaxUint256 } from '@pancakeswap/swap-sdk-core'
 import { CAKE } from '@pancakeswap/tokens'
 import {
   BalanceInput,
@@ -98,6 +99,9 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
   // in v3 max token entry is based on ifo credit and hard cap limit per user minus amount already committed
   const maximumTokenEntry = useMemo(() => {
     if (!creditLeft || (ifo.version >= 3.1 && poolId === PoolIds.poolBasic)) {
+      // limit of 0 in Basic Sale means Unlimited
+      if (limitPerUserInLP?.isEqualTo(0)) return BigNumber(MaxUint256.toString())
+
       return limitPerUserInLP?.minus(amountTokenCommittedInLP || new BigNumber(0))
     }
     if (limitPerUserInLP?.isGreaterThan(0)) {
@@ -150,11 +154,15 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
           <Flex justifyContent="space-between" mb="16px">
             {tooltipVisible && tooltip}
             <TooltipText ref={targetRef}>{label}:</TooltipText>
-            <Text>{`${formatNumber(
-              getBalanceAmount(maximumTokenEntry || new BigNumber(0), currency.decimals).toNumber(),
-              3,
-              3,
-            )} ${ifo.currency.symbol}`}</Text>
+            <Text>
+              {limitPerUserInLP?.isEqualTo(0) && poolId === PoolIds.poolBasic
+                ? t('No limit')
+                : `${formatNumber(
+                    getBalanceAmount(maximumTokenEntry || new BigNumber(0), currency.decimals).toNumber(),
+                    3,
+                    3,
+                  )} ${ifo.currency.symbol}`}
+            </Text>
           </Flex>
           <Flex justifyContent="space-between" mb="8px">
             <Text>{t('Commit')}:</Text>
