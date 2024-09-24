@@ -12,7 +12,6 @@ const StyledLogo = styled(TokenLogo)<{ size: string }>`
   width: ${({ size }) => size};
   height: ${({ size }) => size};
   border-radius: 50%;
-
   ${space}
 `;
 
@@ -21,6 +20,7 @@ export function CurrencyLogo({
   size = "24px",
   style,
   useTrustWalletUrl,
+  imageRef,
   ...props
 }: {
   currency?: CurrencyInfo & {
@@ -29,6 +29,7 @@ export function CurrencyLogo({
   size?: string;
   style?: React.CSSProperties;
   useTrustWalletUrl?: boolean;
+  imageRef?: React.RefObject<HTMLImageElement>;
 } & SpaceProps) {
   const uriLocations = useHttpLocations(currency?.logoURI);
 
@@ -55,11 +56,21 @@ export function CurrencyLogo({
         size={size}
         srcs={[`https://assets.pancakeswap.finance/web/native/${currency.chainId}.png`]}
         width={size}
+        imageRef={imageRef}
         style={style}
         {...props}
       />
     );
   }
 
-  return <StyledLogo size={size} srcs={srcs} alt={`${currency?.symbol ?? "token"} logo`} style={style} {...props} />;
+  return (
+    <StyledLogo
+      imageRef={imageRef}
+      size={size}
+      srcs={srcs}
+      alt={`${currency?.symbol ?? "token"} logo`}
+      style={style}
+      {...props}
+    />
+  );
 }

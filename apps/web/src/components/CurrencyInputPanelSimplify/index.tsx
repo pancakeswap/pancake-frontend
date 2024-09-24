@@ -35,9 +35,12 @@ const SymbolText = styled(Text)`
   font-size: 24px;
 `
 
-const SIZE_ADAPTION_BOUNDARY_PX = 40
+const SIZE_ADAPTION_BOUNDARY_MIN_PX_ = 90
+const SIZE_ADAPTION_BOUNDARY_MAX_PX = 120
 const MAX_FONT_SIZE = 24
 const MIN_FONT_SIZE = 16
+const MAX_LOGO_SIZE = 40
+const MIN_LOGO_SIZE = 24
 
 const handleFontSizeChange = (fontSize: string, operation: number) => {
   const currentFontSize = parseInt(fontSize.replace('px', ''), 10)
@@ -48,8 +51,10 @@ const handleFontSizeChange = (fontSize: string, operation: number) => {
 
 const useSizeAdaption = (value: string, currencySymbol?: string) => {
   const inputRef = useRef<HTMLInputElement>(null)
+  const tokenImageRef = useRef<HTMLImageElement>(null)
   const symbolRef = useRef<HTMLDivElement>(null)
   const wrapperRef = useRef<HTMLDivElement>(null)
+  console.log({ inputRef, tokenImageRef, symbolRef, wrapperRef }, 'useSizeAdaption')
 
   const shortedSymbol = useMemo(() => {
     if (currencySymbol && currencySymbol.length > 10) {
@@ -58,29 +63,37 @@ const useSizeAdaption = (value: string, currencySymbol?: string) => {
     return currencySymbol
   }, [currencySymbol])
   useEffect(() => {
-    if (!inputRef.current || !symbolRef.current || !wrapperRef.current) return
+    if (!inputRef.current || !symbolRef.current || !wrapperRef.current || !tokenImageRef.current) return
     const inputElement = inputRef.current
     const symbolElement = symbolRef.current
+    const logoElement = tokenImageRef.current
     const wrapperWidth = wrapperRef.current.offsetWidth
     const symbolWidth = symbolElement.offsetWidth
     const inputWidth = inputElement.scrollWidth
+    const logoWidth = logoElement.offsetWidth
 
-    if (wrapperWidth - symbolWidth - inputWidth < SIZE_ADAPTION_BOUNDARY_PX) {
-      console.log('smaller')
-      console.log(
-        handleFontSizeChange(inputElement.style.fontSize, -2),
-        handleFontSizeChange(symbolElement.style.fontSize, -2),
-      )
+    if (wrapperWidth - symbolWidth - inputWidth < SIZE_ADAPTION_BOUNDARY_MIN_PX_) {
       inputElement.style.fontSize = handleFontSizeChange(inputElement.style.fontSize, -2)
       symbolElement.style.fontSize = handleFontSizeChange(symbolElement.style.fontSize, -2)
-    } else {
-      console.log('bigger')
+      const size = `${Math.max(logoWidth - 2, MIN_LOGO_SIZE)}px`
+      logoElement.style.width = size
+      logoElement.style.height = size
+    } else if (wrapperWidth - symbolWidth - inputWidth > SIZE_ADAPTION_BOUNDARY_MAX_PX) {
       inputElement.style.fontSize = handleFontSizeChange(inputElement.style.fontSize, 2)
       symbolElement.style.fontSize = handleFontSizeChange(symbolElement.style.fontSize, 2)
+      const size = `${Math.min(logoWidth + 2, MAX_LOGO_SIZE)}px`
+      logoElement.style.width = size
+      logoElement.style.height = size
+    }
+    if (value === '') {
+      inputElement.style.fontSize = '24px'
+      symbolElement.style.fontSize = '24px'
+      logoElement.style.width = '40px'
+      logoElement.style.width = '40px'
     }
   }, [value, currencySymbol])
 
-  return { shortedSymbol, inputRef, symbolRef, wrapperRef }
+  return { shortedSymbol, inputRef, symbolRef, wrapperRef, tokenImageRef }
 }
 
 interface CurrencyInputPanelProps {
@@ -170,7 +183,10 @@ const CurrencyInputPanelSimplify = memo(function CurrencyInputPanel({
     />,
   )
 
-  const { shortedSymbol, inputRef, wrapperRef, symbolRef } = useSizeAdaption(value ?? '', currency?.symbol)
+  const { shortedSymbol, inputRef, wrapperRef, tokenImageRef, symbolRef } = useSizeAdaption(
+    value ?? '',
+    currency?.symbol,
+  )
 
   const handleUserInput = useCallback(
     (val: string) => {
@@ -237,7 +253,12 @@ const CurrencyInputPanelSimplify = memo(function CurrencyInputPanel({
                   id === 'onramp-input' ? (
                     <FiatLogo currency={currency} size="40px" style={{ marginRight: '8px' }} />
                   ) : (
-                    <CurrencyLogo currency={currency} size="40px" style={{ marginRight: '8px' }} />
+                    <CurrencyLogo
+                      imageRef={tokenImageRef}
+                      currency={currency}
+                      size="40px"
+                      style={{ marginRight: '8px' }}
+                    />
                   )
                 ) : currencyLoading ? (
                   <Skeleton width="40px" height="40px" variant="circle" />
