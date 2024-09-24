@@ -35,8 +35,8 @@ const SymbolText = styled(Text)`
   font-size: 24px;
 `
 
-const SIZE_ADAPTION_BOUNDARY_MIN_PX_ = 90
-const SIZE_ADAPTION_BOUNDARY_MAX_PX = 120
+const SIZE_ADAPTION_BOUNDARY_MIN_PX_ = 96
+const SIZE_ADAPTION_BOUNDARY_MAX_PX = 116
 const MAX_FONT_SIZE = 24
 const MIN_FONT_SIZE = 16
 const MAX_LOGO_SIZE = 40
@@ -54,7 +54,6 @@ const useSizeAdaption = (value: string, currencySymbol?: string) => {
   const tokenImageRef = useRef<HTMLImageElement>(null)
   const symbolRef = useRef<HTMLDivElement>(null)
   const wrapperRef = useRef<HTMLDivElement>(null)
-  console.log({ inputRef, tokenImageRef, symbolRef, wrapperRef }, 'useSizeAdaption')
 
   const shortedSymbol = useMemo(() => {
     if (currencySymbol && currencySymbol.length > 10) {
