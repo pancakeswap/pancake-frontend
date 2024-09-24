@@ -71,7 +71,7 @@ export function CurrencyInputPanelSimplify({
               error={Boolean(error)}
               disabled={disabled}
               loading={loading}
-              ref={inputRef}
+              inputRef={inputRef}
               className="token-amount-input"
               value={value}
               onBlur={onInputBlur}
