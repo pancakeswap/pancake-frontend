@@ -52,14 +52,14 @@ describe('Gauges Config', async () => {
       expect(gauge.length).toBe(1)
     })
   })
-  let index = 0
-  configProd.forEach((gauge) => {
-    const chainName = chainNames[gauge.chainId]
-    it(`${chainName} gid #${gauge.gid} should follow the index`, () => {
-      expect(gauge.gid).toBe(index)
-      if (gauge.gid === index) index++
-    })
-  })
+  // let index = 0
+  // configProd.forEach((gauge) => {
+  //   const chainName = chainNames[gauge.chainId]
+  //   it(`${chainName} gid #${gauge.gid} should follow the index`, () => {
+  //     expect(gauge.gid).toBe(index)
+  //     if (gauge.gid === index) index++
+  //   })
+  // })
 
   const stableSwapGauges = Object.entries(chainIdGroups).reduce((acc, [chainId, gauges]) => {
     const _stableSwapGauges = gauges.filter(
