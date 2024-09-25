@@ -1,13 +1,9 @@
 import { SmartRouter } from '@pancakeswap/smart-router/evm'
-import { Box } from '@pancakeswap/uikit'
 import { useMemo } from 'react'
-import { MMLiquidityWarning } from 'views/Swap/MMLinkPools/components/MMLiquidityWarning'
-import { shouldShowMMLiquidityError } from 'views/Swap/MMLinkPools/utils/exchange'
 import { logger } from 'utils/datadog'
 import { useCurrencyUsdPrice } from 'hooks/useCurrencyUsdPrice'
 
-import { isMMOrder } from '../utils'
-import { BuyCryptoLink, FormHeader, FormMain, MMTradeDetail, PricingAndSlippage, TradeDetails } from './containers'
+import { BuyCryptoLink, FormHeader, FormMain, PricingAndSlippage, TradeDetails } from './containers'
 import { CommitButton } from './containers/CommitButton'
 import { useAllTypeBestTrade } from './hooks/useAllTypeBestTrade'
 import { useCheckInsufficientError } from './hooks/useCheckSufficient'
@@ -96,17 +92,7 @@ export function V3SwapForm() {
 
       <BuyCryptoLink currency={insufficientFundCurrency} />
 
-      {isMMOrder(bestOrder) ? (
-        <MMTradeDetail loaded={!bestOrder.mmOrderBookTrade?.isLoading} mmTrade={bestOrder.mmTradeInfo} />
-      ) : (
-        <TradeDetails loaded={tradeLoaded} order={bestOrder} />
-      )}
-      {isMMOrder(bestOrder) &&
-        (shouldShowMMLiquidityError(bestOrder?.mmOrderBookTrade?.inputError) || bestOrder?.mmRFQTrade?.error) && (
-          <Box mt="5px">
-            <MMLiquidityWarning />
-          </Box>
-        )}
+      <TradeDetails loaded={tradeLoaded} order={bestOrder} />
     </>
   )
 }

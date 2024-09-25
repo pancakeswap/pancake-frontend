@@ -12,14 +12,13 @@ import { RouteDisplayEssentials, RouteDisplayModal } from './RouteDisplayModal'
 
 interface Props {
   routes?: RouteDisplayEssentials[]
-  isMM?: boolean
 }
 
 const RouteInfoContainer = styled(RowBetween)`
   padding: 4px 24px 0;
 `
 
-export const RoutesBreakdown = memo(function RoutesBreakdown({ routes = [], isMM }: Props) {
+export const RoutesBreakdown = memo(function RoutesBreakdown({ routes = [] }: Props) {
   const [wallchainStatus] = useWallchainStatus()
   const { t } = useTranslation()
   const routeDisplayModal = useModalV2()
@@ -36,7 +35,7 @@ export const RoutesBreakdown = memo(function RoutesBreakdown({ routes = [], isMM
       <RouteInfoContainer>
         <span style={{ display: 'flex', alignItems: 'center' }}>
           <Text fontSize="14px" color="textSubtle">
-            {isMM ? t('MM Route') : deferWallchainStatus === 'found' ? t('Bonus Route') : t('Route')}
+            {deferWallchainStatus === 'found' ? t('Bonus Route') : t('Route')}
           </Text>
           <QuestionHelper
             text={

@@ -1,10 +1,8 @@
-import { InterfaceOrder, isMMOrder } from 'views/Swap/utils'
-import { MMCommitButton } from './MMCommitButton'
+import { InterfaceOrder } from 'views/Swap/utils'
 import { SwapCommitButton } from './SwapCommitButton'
 
 export type CommitButtonProps = {
   order: InterfaceOrder | undefined
-  // trade: Trade | MMCommitTrade<SmartRouterTrade<TradeType>> | undefined
   tradeError?: Error | null
   tradeLoaded: boolean
   beforeCommit?: () => void
@@ -18,10 +16,6 @@ export const CommitButton: React.FC<CommitButtonProps> = ({
   beforeCommit,
   afterCommit,
 }) => {
-  if (isMMOrder(order)) {
-    return <MMCommitButton order={order} beforeCommit={beforeCommit} afterCommit={afterCommit} />
-  }
-
   return (
     <SwapCommitButton
       order={order}

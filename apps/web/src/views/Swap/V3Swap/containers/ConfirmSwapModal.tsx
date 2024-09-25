@@ -3,7 +3,7 @@ import { ChainId, Currency, CurrencyAmount, Token } from '@pancakeswap/sdk'
 import { useCallback, useMemo } from 'react'
 
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
-import { Box, BscScanIcon, Column, Flex, InjectedModalProps, Link, Text } from '@pancakeswap/uikit'
+import { Box, BscScanIcon, Flex, InjectedModalProps, Link } from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import { useUserSlippage } from '@pancakeswap/utils/user'
@@ -14,7 +14,6 @@ import {
   SwapTransactionReceiptModalContent,
 } from '@pancakeswap/widgets-internal'
 import AddToWalletButton, { AddToWalletTextOptions } from 'components/AddToWallet/AddToWalletButton'
-import DescriptionWithTx from 'components/Toast/DescriptionWithTx'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
@@ -24,7 +23,7 @@ import ConfirmSwapModalContainer from 'views/Swap/components/ConfirmSwapModalCon
 import { SwapTransactionErrorContent } from 'views/Swap/components/SwapTransactionErrorContent'
 
 import { Hash } from 'viem'
-import { InterfaceOrder, isMMOrder, isXOrder } from 'views/Swap/utils'
+import { InterfaceOrder, isXOrder } from 'views/Swap/utils'
 import { TransactionConfirmSwapContent } from '../components'
 import { ConfirmAction } from '../hooks/useConfirmModalState'
 import { AllowedAllowanceState } from '../types'
@@ -50,7 +49,6 @@ type ConfirmSwapModalProps = InjectedModalProps & {
   onDismiss?: () => void
   confirmModalState: ConfirmModalState
   pendingModalSteps: ConfirmAction[]
-  isRFQReady?: boolean
   order?: InterfaceOrder | null
   originalOrder?: InterfaceOrder | null
   currencyBalances?: { [field in Field]?: CurrencyAmount<Currency> }
@@ -65,7 +63,6 @@ type ConfirmSwapModalProps = InjectedModalProps & {
 export const ConfirmSwapModal: React.FC<ConfirmSwapModalProps> = ({
   confirmModalState,
   pendingModalSteps,
-  isRFQReady,
   order,
   originalOrder,
   currencyBalances,
@@ -126,22 +123,10 @@ export const ConfirmSwapModal: React.FC<ConfirmSwapModalProps> = ({
     const amountB = formatAmount(order?.trade?.outputAmount, 6) ?? ''
 
     if (swapErrorMessage) {
-      const errorMessage =
-        txHash && isMMOrder(order) ? (
-          <Column style={{ margin: '0 -12rem' }} alignItems="center">
-            <DescriptionWithTx txHash={txHash} txChainId={chainId}>
-              <Text color="failure" mb="16px">
-                {t('Transaction failed: quote expired')}
-              </Text>
-            </DescriptionWithTx>
-          </Column>
-        ) : (
-          swapErrorMessage
-        )
       return (
         <Flex width="100%" alignItems="center" height="calc(430px - 73px - 120px)">
           <SwapTransactionErrorContent
-            message={errorMessage}
+            message={swapErrorMessage}
             onDismiss={handleDismiss}
             openSettingModal={openSettingModal}
           />
@@ -156,7 +141,6 @@ export const ConfirmSwapModal: React.FC<ConfirmSwapModalProps> = ({
       return (
         <ApproveModalContent
           title={stepContents}
-          isMM={isMMOrder(order)}
           isX={isXOrder(order)}
           // TODO
           isBonus={false}
@@ -269,7 +253,6 @@ export const ConfirmSwapModal: React.FC<ConfirmSwapModalProps> = ({
       <TransactionConfirmSwapContent
         order={order}
         recipient={recipient}
-        isRFQReady={isRFQReady}
         originalOrder={originalOrder}
         allowedSlippage={allowedSlippage}
         currencyBalances={currencyBalances}
@@ -284,7 +267,6 @@ export const ConfirmSwapModal: React.FC<ConfirmSwapModalProps> = ({
     confirmModalState,
     txHash,
     recipient,
-    isRFQReady,
     originalOrder,
     allowedSlippage,
     onConfirm,

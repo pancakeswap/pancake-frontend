@@ -6,7 +6,6 @@ import {
   BackForwardIcon,
   Box,
   Button,
-  Dots,
   Flex,
   Link,
   QuestionHelper,
@@ -17,17 +16,15 @@ import {
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { CurrencyLogo as CurrencyLogoWidget } from '@pancakeswap/widgets-internal'
 import { AutoRow, RowBetween, RowFixed } from 'components/Layout/Row'
-import { BUYBACK_FEE, LP_HOLDERS_FEE, TOTAL_FEE, TREASURY_FEE } from 'config/constants/info'
 import { useGasToken } from 'hooks/useGasToken'
 import { memo, useMemo, useState } from 'react'
 import { Field } from 'state/swap/actions'
 import { styled } from 'styled-components'
 import { warningSeverity } from 'utils/exchange'
-import { formatExecutionPrice as mmFormatExecutionPrice } from 'views/Swap/MMLinkPools/utils/exchange'
 
 import { paymasterInfo } from 'config/paymaster'
 import { usePaymaster } from 'hooks/usePaymaster'
-import { InterfaceOrder, isMMOrder, isXOrder } from 'views/Swap/utils'
+import { InterfaceOrder, isXOrder } from 'views/Swap/utils'
 import FormattedPriceImpact from '../../components/FormattedPriceImpact'
 import { StyledBalanceMaxMini, SwapCallbackError } from '../../components/styleds'
 import { SlippageAdjustedAmounts, formatExecutionPrice } from '../utils/exchange'
@@ -75,7 +72,6 @@ export const SwapModalFooter = memo(function SwapModalFooter({
   onConfirm,
   swapErrorMessage,
   disabledConfirm,
-  isRFQReady,
 }: {
   order?: InterfaceOrder
   tradeType: TradeType
@@ -87,7 +83,6 @@ export const SwapModalFooter = memo(function SwapModalFooter({
   isEnoughInputBalance?: boolean
   swapErrorMessage?: string | undefined
   disabledConfirm: boolean
-  isRFQReady?: boolean
   onConfirm: () => void
 }) {
   const { t } = useTranslation()
@@ -117,16 +112,8 @@ export const SwapModalFooter = memo(function SwapModalFooter({
   )
 
   const severity = warningSeverity(priceImpactWithoutFee)
-  const totalFeePercent = `${(TOTAL_FEE * 100).toFixed(2)}%`
-  const lpHoldersFeePercent = `${(LP_HOLDERS_FEE * 100).toFixed(2)}%`
-  const treasuryFeePercent = `${(TREASURY_FEE * 100).toFixed(4)}%`
-  const buyBackFeePercent = `${(BUYBACK_FEE * 100).toFixed(4)}%`
 
   const executionPriceDisplay = useMemo(() => {
-    if (isMMOrder(order)) {
-      return mmFormatExecutionPrice(order.trade, showInverted)
-    }
-
     const price = SmartRouter.getExecutionPrice(order?.trade) ?? undefined
     return formatExecutionPrice(price, inputAmount, outputAmount, showInverted)
   }, [order, inputAmount, outputAmount, showInverted])
@@ -182,33 +169,10 @@ export const SwapModalFooter = memo(function SwapModalFooter({
             <QuestionHelper
               ml="4px"
               placement="top"
-              text={
-                isMMOrder(order) ? (
-                  <>
-                    <Text>
-                      <Text bold display="inline-block">
-                        {t('AMM')}
-                      </Text>
-                      {`: ${t('The difference between the market price and estimated price due to trade size.')}`}
-                    </Text>
-                    <Text mt="10px">
-                      <Text bold display="inline-block">
-                        {t('MM')}
-                      </Text>
-                      {`: ${t('No slippage against quote from market maker')}`}
-                    </Text>
-                  </>
-                ) : (
-                  <>{t('The difference between the market price and your price due to trade size.')}</>
-                )
-              }
+              text={<>{t('The difference between the market price and your price due to trade size.')}</>}
             />
           </RowFixed>
-          {isMMOrder(order) ? (
-            <Text color="textSubtle">--</Text>
-          ) : (
-            <FormattedPriceImpact isX={isXOrder(order)} priceImpact={priceImpactWithoutFee} />
-          )}
+          <FormattedPriceImpact isX={isXOrder(order)} priceImpact={priceImpactWithoutFee} />
         </RowBetween>
         <RowBetween>
           <RowFixed>
@@ -217,57 +181,23 @@ export const SwapModalFooter = memo(function SwapModalFooter({
               ml="4px"
               placement="top"
               text={
-                isMMOrder(order) ? (
-                  <>
-                    <Text mb="12px">
-                      <Text bold display="inline-block">
-                        {t('AMM')}
-                      </Text>
-                      : {t('For each non-stableswap trade, a %amount% fee is paid', { amount: totalFeePercent })}
-                    </Text>
-                    <Text>- {t('%amount% to LP token holders', { amount: lpHoldersFeePercent })}</Text>
-                    <Text>- {t('%amount% to the Treasury', { amount: treasuryFeePercent })}</Text>
-                    <Text>- {t('%amount% towards CAKE buyback and burn', { amount: buyBackFeePercent })}</Text>
-                    <Text mt="12px">
-                      {t('For each stableswap trade, refer to the fee table')}
-                      <Link
-                        style={{ display: 'inline' }}
-                        ml="4px"
-                        external
-                        href="https://docs.pancakeswap.finance/products/stableswap#stableswap-fees"
-                      >
-                        {t('here.')}
-                      </Link>
-                    </Text>
-                    <Text mt="10px">
-                      <Text bold display="inline-block">
-                        {t('MM')}
-                      </Text>
-                      :{' '}
-                      {t(
-                        'PancakeSwap does not charge any fees for trades. However, the market makers charge an implied fee of 0.05% - 0.25% (non-stablecoin) / 0.01% (stablecoin) factored into the quotes provided by them.',
-                      )}
-                    </Text>
-                  </>
-                ) : (
-                  <>
-                    <Text>
-                      {t(
-                        'Fee ranging from 0.1% to 0.01% depending on the pool fee tier. You can check the fee tier by clicking the magnifier icon under the “Route” section.',
-                      )}
-                    </Text>
-                    <Text mt="12px">
-                      <Link
-                        style={{ display: 'inline' }}
-                        ml="4px"
-                        external
-                        href="https://docs.pancakeswap.finance/products/pancakeswap-exchange/faq#what-will-be-the-trading-fee-breakdown-for-v3-exchange"
-                      >
-                        {t('Fee Breakdown and Tokenomics')}
-                      </Link>
-                    </Text>
-                  </>
-                )
+                <>
+                  <Text>
+                    {t(
+                      'Fee ranging from 0.1% to 0.01% depending on the pool fee tier. You can check the fee tier by clicking the magnifier icon under the “Route” section.',
+                    )}
+                  </Text>
+                  <Text mt="12px">
+                    <Link
+                      style={{ display: 'inline' }}
+                      ml="4px"
+                      external
+                      href="https://docs.pancakeswap.finance/products/pancakeswap-exchange/faq#what-will-be-the-trading-fee-breakdown-for-v3-exchange"
+                    >
+                      {t('Fee Breakdown and Tokenomics')}
+                    </Link>
+                  </Text>
+                </>
               }
             />
           </RowFixed>
@@ -341,18 +271,14 @@ export const SwapModalFooter = memo(function SwapModalFooter({
         <Button
           variant={severity > 2 ? 'danger' : 'primary'}
           onClick={onConfirm}
-          disabled={isMMOrder(order) ? disabledConfirm || !isRFQReady : disabledConfirm}
+          disabled={disabledConfirm}
           mt="12px"
           id="confirm-swap-or-send"
           width="100%"
         >
-          {isMMOrder(order) && !isRFQReady ? (
-            <Dots>{t('Checking RFQ with MM')}</Dots>
-          ) : severity > 2 || (tradeType === TradeType.EXACT_OUTPUT && !isEnoughInputBalance) ? (
-            t('Swap Anyway')
-          ) : (
-            t('Confirm Swap')
-          )}
+          {severity > 2 || (tradeType === TradeType.EXACT_OUTPUT && !isEnoughInputBalance)
+            ? t('Swap Anyway')
+            : t('Confirm Swap')}
         </Button>
 
         {swapErrorMessage ? <SwapCallbackError error={swapErrorMessage} /> : null}

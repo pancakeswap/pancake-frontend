@@ -1,16 +1,13 @@
-import { TradeType } from '@pancakeswap/sdk'
-import { SmartRouter, SmartRouterTrade } from '@pancakeswap/smart-router'
+import { SmartRouter } from '@pancakeswap/smart-router'
 import { AutoColumn } from '@pancakeswap/uikit'
-import useLastTruthy from 'hooks/useLast'
 import { memo, useMemo } from 'react'
 
-import { AdvancedSwapDetails, TradeSummary } from 'views/Swap/components/AdvancedSwapDetails'
+import { TradeSummary } from 'views/Swap/components/AdvancedSwapDetails'
 import { AdvancedDetailsFooter } from 'views/Swap/components/AdvancedSwapDetailsDropdown'
 
 import { GasTokenSelector } from 'components/Paymaster/GasTokenSelector'
 import { usePaymaster } from 'hooks/usePaymaster'
 import { PriceOrder } from '@pancakeswap/price-api-sdk'
-import { MMTradeInfo } from 'views/Swap/MMLinkPools/hooks'
 import { isClassicOrder, isXOrder } from 'views/Swap/utils'
 import { RoutesBreakdown, XRoutesBreakdown } from '../components'
 import { useIsWrapping, useSlippageAdjustedAmounts } from '../hooks'
@@ -19,36 +16,6 @@ import { computeTradePriceBreakdown } from '../utils/exchange'
 interface Props {
   loaded: boolean
   order?: PriceOrder
-}
-
-export function MMTradeDetail({
-  loaded,
-  mmTrade,
-}: {
-  loaded: boolean
-  mmTrade?: MMTradeInfo<SmartRouterTrade<TradeType>> | null
-}) {
-  const lastTrade = useLastTruthy(mmTrade?.trade)
-
-  return (
-    <AdvancedDetailsFooter show={loaded}>
-      <AutoColumn gap="0px">
-        {lastTrade && mmTrade && (
-          <AdvancedSwapDetails
-            pairs={[]}
-            path={lastTrade?.routes[0].path}
-            slippageAdjustedAmounts={mmTrade?.slippageAdjustedAmounts}
-            realizedLPFee={mmTrade?.realizedLPFee ?? undefined}
-            inputAmount={mmTrade?.inputAmount}
-            outputAmount={mmTrade?.outputAmount}
-            tradeType={mmTrade?.tradeType}
-            priceImpactWithoutFee={mmTrade?.priceImpactWithoutFee}
-            isMM
-          />
-        )}
-      </AutoColumn>
-    </AdvancedDetailsFooter>
-  )
 }
 
 export const TradeDetails = memo(function TradeDetails({ loaded, order }: Props) {

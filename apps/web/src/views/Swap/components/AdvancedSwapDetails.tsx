@@ -22,7 +22,6 @@ export const TradeSummary = memo(function TradeSummary({
   slippageAdjustedAmounts,
   priceImpactWithoutFee,
   realizedLPFee,
-  isMM = false,
   gasTokenSelector,
   isX = false,
 }: {
@@ -33,7 +32,6 @@ export const TradeSummary = memo(function TradeSummary({
   slippageAdjustedAmounts: SlippageAdjustedAmounts
   priceImpactWithoutFee?: Percent | null
   realizedLPFee?: CurrencyAmount<Currency> | null
-  isMM?: boolean
   gasTokenSelector?: React.ReactNode
   isX?: boolean
 }) {
@@ -129,13 +127,7 @@ export const TradeSummary = memo(function TradeSummary({
             />
           </RowFixed>
 
-          {isX ? (
-            <Text color="primary">0%</Text>
-          ) : isMM ? (
-            <Text color="textSubtle">--</Text>
-          ) : (
-            <FormattedPriceImpact priceImpact={priceImpactWithoutFee} />
-          )}
+          {isX ? <Text color="primary">0%</Text> : <FormattedPriceImpact priceImpact={priceImpactWithoutFee} />}
         </RowBetween>
       )}
       {(realizedLPFee || isX) && (
@@ -161,11 +153,7 @@ export const TradeSummary = memo(function TradeSummary({
                       style={{ display: 'inline' }}
                       ml="4px"
                       external
-                      href={
-                        isMM
-                          ? 'https://docs.pancakeswap.finance/products/pancakeswap-exchange/market-maker-integration#fees'
-                          : 'https://docs.pancakeswap.finance/products/pancakeswap-exchange/faq#what-will-be-the-trading-fee-breakdown-for-v3-exchange'
-                      }
+                      href="https://docs.pancakeswap.finance/products/pancakeswap-exchange/faq#what-will-be-the-trading-fee-breakdown-for-v3-exchange"
                     >
                       {t('Fee Breakdown and Tokenomics')}
                     </Link>
@@ -208,7 +196,6 @@ export interface AdvancedSwapDetailsProps {
   inputAmount?: CurrencyAmount<Currency>
   outputAmount?: CurrencyAmount<Currency>
   tradeType?: TradeType
-  isMM?: boolean
 }
 
 export const AdvancedSwapDetails = memo(function AdvancedSwapDetails({
@@ -221,7 +208,6 @@ export const AdvancedSwapDetails = memo(function AdvancedSwapDetails({
   outputAmount,
   tradeType,
   hasStablePair,
-  isMM = false,
 }: AdvancedSwapDetailsProps) {
   const { t } = useTranslation()
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -238,7 +224,6 @@ export const AdvancedSwapDetails = memo(function AdvancedSwapDetails({
             priceImpactWithoutFee={priceImpactWithoutFee}
             realizedLPFee={realizedLPFee}
             hasStablePair={hasStablePair}
-            isMM={isMM}
           />
           {showRoute && (
             <>
@@ -274,7 +259,6 @@ export const AdvancedSwapDetails = memo(function AdvancedSwapDetails({
                     onDismiss={() => setIsModalOpen(false)}
                   >
                     <RouterViewer
-                      isMM={isMM}
                       inputCurrency={inputAmount?.currency}
                       pairs={pairs}
                       path={path}

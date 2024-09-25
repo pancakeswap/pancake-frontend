@@ -3,12 +3,7 @@ import { ConfirmationModalContent } from '@pancakeswap/widgets-internal'
 import { memo, useCallback, useMemo } from 'react'
 import { Field } from 'state/swap/actions'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
-import { MMSlippageTolerance } from 'views/Swap/MMLinkPools/components/MMSlippageTolerance'
-import {
-  computeSlippageAdjustedAmounts as mmComputeSlippageAdjustedAmountsWithSmartRouter,
-  computeTradePriceBreakdown as mmComputeTradePriceBreakdownWithSmartRouter,
-} from 'views/Swap/MMLinkPools/utils/exchange'
-import { InterfaceOrder, isMMOrder, isXOrder } from 'views/Swap/utils'
+import { InterfaceOrder, isXOrder } from 'views/Swap/utils'
 import SwapModalHeader from '../../components/SwapModalHeader'
 import {
   computeSlippageAdjustedAmounts as computeSlippageAdjustedAmountsWithSmartRouter,
@@ -32,8 +27,6 @@ function tradeMeaningfullyDiffers(tradeA: InterfaceOrder['trade'], tradeB: Inter
 }
 
 interface TransactionConfirmSwapContentProps {
-  // isMM?: boolean
-  isRFQReady?: boolean
   order: InterfaceOrder | undefined | null
   originalOrder: InterfaceOrder | undefined | null
   // trade: Trade | undefined | null
@@ -52,7 +45,6 @@ export const TransactionConfirmSwapContent = memo<TransactionConfirmSwapContentP
   function TransactionConfirmSwapContentComp({
     order,
     recipient,
-    isRFQReady,
     originalOrder,
     allowedSlippage,
     currencyBalances,
@@ -65,17 +57,11 @@ export const TransactionConfirmSwapContent = memo<TransactionConfirmSwapContentP
     )
 
     const slippageAdjustedAmounts = useMemo(
-      () =>
-        isMMOrder(order)
-          ? mmComputeSlippageAdjustedAmountsWithSmartRouter(order.trade)
-          : computeSlippageAdjustedAmountsWithSmartRouter(order, allowedSlippage),
+      () => computeSlippageAdjustedAmountsWithSmartRouter(order, allowedSlippage),
       [order, allowedSlippage],
     )
     const { priceImpactWithoutFee, lpFeeAmount } = useMemo(
-      () =>
-        isMMOrder(order)
-          ? mmComputeTradePriceBreakdownWithSmartRouter(order.trade)
-          : computeTradePriceBreakdownWithSmartRouter(isXOrder(order) ? undefined : order?.trade),
+      () => computeTradePriceBreakdownWithSmartRouter(isXOrder(order) ? undefined : order?.trade),
       [order],
     )
 
@@ -103,7 +89,7 @@ export const TransactionConfirmSwapContent = memo<TransactionConfirmSwapContentP
           currencyBalances={currencyBalances}
           tradeType={order.trade.tradeType}
           priceImpactWithoutFee={priceImpactWithoutFee ?? undefined}
-          allowedSlippage={isMMOrder(order) ? <MMSlippageTolerance /> : allowedSlippage}
+          allowedSlippage={allowedSlippage}
           slippageAdjustedAmounts={slippageAdjustedAmounts ?? undefined}
           isEnoughInputBalance={isEnoughInputBalance ?? undefined}
           recipient={recipient ?? undefined}
@@ -127,7 +113,6 @@ export const TransactionConfirmSwapContent = memo<TransactionConfirmSwapContentP
       return order ? (
         <SwapModalFooter
           order={order}
-          isRFQReady={isRFQReady}
           tradeType={order.trade.tradeType}
           inputAmount={order.trade.inputAmount}
           outputAmount={order.trade.outputAmount}
@@ -141,7 +126,6 @@ export const TransactionConfirmSwapContent = memo<TransactionConfirmSwapContentP
       ) : null
     }, [
       order,
-      isRFQReady,
       lpFeeAmount,
       priceImpactWithoutFee,
       showAcceptChanges,
