@@ -1746,7 +1746,6 @@
   "You have successfully claimed your rewards.": "Ви отримали свої винагороди.",
   "Pottery (BETA)": "Потерея (БЕТА)",
   "This IFO has token vesting. Purchased tokens are released over a period of time.": "У цьому IFO використовується довірення токенів. Придбані токени розблоковуються з плином часу.",
-  "Learn more in the vote proposal": "Дізнайтеся більше в пропозиції голосування",
   "What is the difference between an IFO and a cIFO?": "У чому відмінність між cIFO та IFO?",
   "If you don’t commit enough CAKE, you may not receive a meaningful amount of IFO tokens, or you may not receive any IFO tokens at all.": "Якщо не виділити достатньо CAKE, ви можете не отримати значущої кількості токенів IFO або токенів IFO взагалі.",
   "~%num% available to claim at sales end": "~%num% доступно для отримання після завершення продажу",
@@ -3525,5 +3524,6 @@
   "You’ll need an active PancakeSwap Profile to take part in the IFO’s Public Sale!": "Щоб узяти участь у публічному продажі IFO, потрібен активний профіль PancakeSwap!",
   "This is not investment advice. Participation involves risks and may be restricted in some regions. Please ensure compliance with local laws and regulations before participating.": "Це не інвестиційна порада. Участь несе ризики й може бути обмежена в деяких регіонах. Перед участю переконайтеся, що ви дієте згідно з місцевим законодавством і правилами.",
   "Eigenpie IFO": "Eigenpie IFO",
-  "Join IFO": "Долучитися до IFO"
+  "Join IFO": "Долучитися до IFO",
+  "No limit": "No limit"
 }
