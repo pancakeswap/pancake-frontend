@@ -1746,7 +1746,6 @@
   "You have successfully claimed your rewards.": "لقد طالبت بمكافآتك بنجاح.",
   "Pottery (BETA)": "رهان اليانصيب (إصدار تجريبي)",
   "This IFO has token vesting. Purchased tokens are released over a period of time.": "لدى هذا العرض الأولي للمزرعة (IFO) فترة تجميد للرموز المميزة. وتصدر الرموز المميزة المشتراة خلال فترة من الزمن.",
-  "Learn more in the vote proposal": "اعرف المزيد في مقترح التصويت",
   "What is the difference between an IFO and a cIFO?": "ما الفرق بين IFO (العرض الأولي للمزرعة) وcIFO؟",
   "If you don’t commit enough CAKE, you may not receive a meaningful amount of IFO tokens, or you may not receive any IFO tokens at all.": "إذا لم تخصص كمية كافية من CAKE، فقد لا تتلقى كمية معقولة من الرموز المميزة للعرض الأولي للمزرعة (IFO)، أو قد لا تتلقى أي رموز مميزة للعرض الأولي للمزرعة (IFO) أبدًا.",
   "~%num% available to claim at sales end": "~%num% متاح للمطالبة عند نهاية البيع",
@@ -3525,5 +3524,6 @@
   "You’ll need an active PancakeSwap Profile to take part in the IFO’s Public Sale!": "You’ll need an active PancakeSwap Profile to take part in the IFO’s Public Sale!",
   "This is not investment advice. Participation involves risks and may be restricted in some regions. Please ensure compliance with local laws and regulations before participating.": "This is not investment advice. Participation involves risks and may be restricted in some regions. Please ensure compliance with local laws and regulations before participating.",
   "Eigenpie IFO": "Eigenpie IFO",
-  "Join IFO": "Join IFO"
+  "Join IFO": "Join IFO",
+  "No limit": "No limit"
 }
