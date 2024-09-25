@@ -1746,7 +1746,6 @@
   "You have successfully claimed your rewards.": "Matagumpay mong naangkin ang iyong mga gantimpala.",
   "Pottery (BETA)": "Pottery (BETA)",
   "This IFO has token vesting. Purchased tokens are released over a period of time.": "May pag-vest ng token ang IFO na ito. Ire-release ang mga nabiling token sa loob ng isang yugto ng panahon.",
-  "Learn more in the vote proposal": "Matuto pa tungkol sa mungkahi sa pagboto",
   "What is the difference between an IFO and a cIFO?": "Ano ang pagkakaiba ng IFO at cIFO?",
   "If you don’t commit enough CAKE, you may not receive a meaningful amount of IFO tokens, or you may not receive any IFO tokens at all.": "Kung hindi ka magko-commit ng sapat na CAKE, posibleng hindi ka makatanggap ng makabuluhang halaga ng mga IFO token, o posibleng wala ka talagang matanggap na anumang IFO token.",
   "~%num% available to claim at sales end": "~%num% ang available na i-claim sa pagtatapos ng pagbebenta",
@@ -3525,5 +3524,6 @@
   "You’ll need an active PancakeSwap Profile to take part in the IFO’s Public Sale!": "You’ll need an active PancakeSwap Profile to take part in the IFO’s Public Sale!",
   "This is not investment advice. Participation involves risks and may be restricted in some regions. Please ensure compliance with local laws and regulations before participating.": "This is not investment advice. Participation involves risks and may be restricted in some regions. Please ensure compliance with local laws and regulations before participating.",
   "Eigenpie IFO": "Eigenpie IFO",
-  "Join IFO": "Join IFO"
+  "Join IFO": "Join IFO",
+  "No limit": "No limit"
 }
