@@ -61,13 +61,13 @@ function candidatePoolsOnChainHookFactory<TPool extends Pool>(
       queryKey: [poolType, 'pools', key],
 
       queryFn: async ({ signal }) => {
-        const resolvedPairs = await SmartRouter.getPairCombinations(currencyA, currencyB)
-        if (!blockNumber || !resolvedPairs) {
+        if (!blockNumber) {
           throw new Error('Failed to get pools on chain. Missing valid params')
         }
         const label = `[POOLS_ONCHAIN](${poolType}) ${key} at block ${blockNumber}`
         SmartRouter.logger.metric(label)
         const getViemClients = createViemPublicClientGetter({ transportSignal: signal })
+        const resolvedPairs = await SmartRouter.getPairCombinations(currencyA, currencyB)
         const pools = await getPoolsOnChain(resolvedPairs ?? [], getViemClients, blockNumber)
         SmartRouter.logger.metric(label, pools)
 
