@@ -1746,7 +1746,6 @@
   "You have successfully claimed your rewards.": "Bạn đã nhận thành công phần thưởng của mình.",
   "Pottery (BETA)": "Hũ (BETA)",
   "This IFO has token vesting. Purchased tokens are released over a period of time.": "IFO này có đầu tư token. Các token đã mua sẽ được giải ngân trong một khoảng thời gian.",
-  "Learn more in the vote proposal": "Tìm hiểu thêm trong phần đề xuất bỏ phiếu",
   "What is the difference between an IFO and a cIFO?": "Sự khác biệt giữa IFO và cIFO là gì?",
   "If you don’t commit enough CAKE, you may not receive a meaningful amount of IFO tokens, or you may not receive any IFO tokens at all.": "Nếu bạn không cam kết đủ CAKE, bạn có thể không nhận được lượng token IFO có ý nghĩa, hay thậm chí không nhận được token IFO nào.",
   "~%num% available to claim at sales end": "~%num% có thể nhận khi kết thúc chào bán",
@@ -3525,5 +3524,6 @@
   "You’ll need an active PancakeSwap Profile to take part in the IFO’s Public Sale!": "Bạn sẽ cần một Hồ sơ PancakeSwap đang hoạt động để tham gia tham gia Chào bán công khai của IFO!",
   "This is not investment advice. Participation involves risks and may be restricted in some regions. Please ensure compliance with local laws and regulations before participating.": "Đây không phải là một lời khuyên đầu tư. Việc tham gia đồng nghĩa với rủi ro và có thể bị hạn chế ở một số khu vực. Vui lòng đảm bảo bạn tuân thủ với luật pháp và quy định địa phương trước khi tham gia.",
   "Eigenpie IFO": "Eigenpie IFO",
-  "Join IFO": "Tham gia IFO"
+  "Join IFO": "Tham gia IFO",
+  "No limit": "No limit"
 }
