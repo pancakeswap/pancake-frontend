@@ -1746,7 +1746,6 @@
   "You have successfully claimed your rewards.": "Je hebt succesvol je beloningen geclaimd.",
   "Pottery (BETA)": "Stakingloterij (BÈTA)",
   "This IFO has token vesting. Purchased tokens are released over a period of time.": "Deze IFO heeft tokenvesting. Gekochte tokens worden vrijgegeven over een bepaalde periode.",
-  "Learn more in the vote proposal": "Lees meer in het stemmingsvoorstel",
   "What is the difference between an IFO and a cIFO?": "Wat is het verschil tussen een IFO en een cIFO?",
   "If you don’t commit enough CAKE, you may not receive a meaningful amount of IFO tokens, or you may not receive any IFO tokens at all.": "Als je niet genoeg CAKE inlegt, ontvang je misschien geen betekenisvolle hoeveelheid IFO-tokens of ontvang je mogelijk helemaal geen IFO-tokens.",
   "~%num% available to claim at sales end": "~%num% beschikbaar om te claimen na afloop van de verkoop",
@@ -3525,5 +3524,6 @@
   "You’ll need an active PancakeSwap Profile to take part in the IFO’s Public Sale!": "Je hebt een actief PancakeSwap-profiel nodig om deel te nemen aan de publieke IFO-verkoop!",
   "This is not investment advice. Participation involves risks and may be restricted in some regions. Please ensure compliance with local laws and regulations before participating.": "Dit is geen beleggingsadvies. Deelname houdt risico's in en kan in sommige regio's beperkt zijn. Zorg ervoor dat je voldoet aan de lokale wet- en regelgeving voordat je deelneemt.",
   "Eigenpie IFO": "Eigenpie IFO",
-  "Join IFO": "Deelnemen aan IFO"
+  "Join IFO": "Deelnemen aan IFO",
+  "No limit": "Geen limiet"
 }
