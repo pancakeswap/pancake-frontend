@@ -11,6 +11,13 @@ async function handler(_: NextApiRequest, response: NextApiResponse) {
 
   const apiData: ApiData = {
     definitions: {
+      [EXPERIMENTAL_FEATURES.PCSX]: {
+        description: 'Controls whether PCS X is enabled',
+        options: [
+          { value: false, label: 'Off' },
+          { value: true, label: 'On' },
+        ],
+      },
       [EXPERIMENTAL_FEATURES.SpeedQuote]: {
         description: 'Controls whether fast routing is enabled for quoting',
         options: [
