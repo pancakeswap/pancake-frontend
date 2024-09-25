@@ -4,8 +4,8 @@ import { OnChainProvider, Pool, SmartRouter } from '@pancakeswap/smart-router'
 import { useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
 
-import { createViemPublicClientGetter } from 'utils/viem'
 import { POOLS_FAST_REVALIDATE } from 'config/pools'
+import { createViemPublicClientGetter } from 'utils/viem'
 
 interface Options {
   blockNumber?: number
@@ -72,7 +72,8 @@ function candidatePoolsOnChainHookFactory<TPool extends Pool>(
         const label = `[POOLS_ONCHAIN](${poolType}) ${key} at block ${blockNumber}`
         SmartRouter.logger.metric(label)
         const getViemClients = createViemPublicClientGetter({ transportSignal: signal })
-        const pools = await getPoolsOnChain(pairs, getViemClients, blockNumber)
+        const resolvedPairs = await pairs
+        const pools = await getPoolsOnChain(resolvedPairs ?? [], getViemClients, blockNumber)
         SmartRouter.logger.metric(label, pools)
 
         return {
