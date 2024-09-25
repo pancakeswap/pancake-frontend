@@ -36,7 +36,7 @@ export function createV2PoolsProviderByCommonTokenPrices<T = any>(getCommonToken
     blockNumber,
     ...rest
   }: GetV2PoolsParams & T) {
-    const pairs = providedPairs || getPairCombinations(currencyA, currencyB)
+    const pairs = providedPairs || (await getPairCombinations(currencyA, currencyB))
     const [poolsFromOnChain, baseTokenUsdPrices] = await Promise.all([
       getV2PoolsOnChain(pairs, onChainProvider, blockNumber),
       getCommonTokenPrices({ currencyA, currencyB, ...(rest as T) }),
