@@ -1746,7 +1746,6 @@
   "You have successfully claimed your rewards.": "आपने अपने पुरस्कार को सफलतापूर्वक क्लेम किया है।",
   "Pottery (BETA)": "पॉटरी (बीटा)",
   "This IFO has token vesting. Purchased tokens are released over a period of time.": "इस IFO में टोकन वेस्टिंग है। खरीदे गए टोकन एक समयावधि के दौरान रिलीज़ किए जाते हैं।",
-  "Learn more in the vote proposal": "वोट प्रस्ताव में अधिक जानें",
   "What is the difference between an IFO and a cIFO?": "IFO और cIFO में क्या अंतर है?",
   "If you don’t commit enough CAKE, you may not receive a meaningful amount of IFO tokens, or you may not receive any IFO tokens at all.": "यदि आप पर्याप्त CAKE कमिट नहीं करते हैं, तो आपको IFO टोकन की सार्थक राशि प्राप्त नहीं होगी या आपको कोई भी IFO टोकन प्राप्त नहीं होगा।",
   "~%num% available to claim at sales end": "सेल की समाप्ति पर क्लेम करने के लिए ~%num% उपलब्ध हैं",
@@ -3525,5 +3524,6 @@
   "You’ll need an active PancakeSwap Profile to take part in the IFO’s Public Sale!": "IFO की पब्लिक सेल में हिस्सा लेने के लिए, आपको PancakeSwap की एक्टिव प्रोफ़ाइल की जरूरत पड़ेगी!",
   "This is not investment advice. Participation involves risks and may be restricted in some regions. Please ensure compliance with local laws and regulations before participating.": "यह निवेश के लिए सलाह नहीं है। इसमें शामिल होने में जोखिम मौजूद है और कुछ क्षेत्रों में यह प्रतिबंधित हो सकता है। कृपया शामिल होने से पहले स्थानीय कानूनों और विनियमों का अनुपालन सुनिश्चित करें।",
   "Eigenpie IFO": "Eigenpie IFO",
-  "Join IFO": "IFO से जुड़ें"
+  "Join IFO": "IFO से जुड़ें",
+  "No limit": "No limit"
 }
