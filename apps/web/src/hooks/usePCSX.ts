@@ -5,8 +5,12 @@ import { useExperimentalFeatureEnabled } from 'hooks/useExperimentalFeatureEnabl
 import { useMemo } from 'react'
 import { useUserXEnable } from 'state/user/smartRouter'
 
+export function usePCSXFeatureEnabled() {
+  return useExperimentalFeatureEnabled(EXPERIMENTAL_FEATURES.PCSX)
+}
+
 export const usePCSX = () => {
-  const featureEnabled = useExperimentalFeatureEnabled(EXPERIMENTAL_FEATURES.PCSX)
+  const featureEnabled = usePCSXFeatureEnabled()
   const [xEnabled, setX] = useUserXEnable()
   const enabled = Boolean(xEnabled ?? featureEnabled)
 
