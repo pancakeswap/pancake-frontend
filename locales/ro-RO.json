@@ -1746,7 +1746,6 @@
   "You have successfully claimed your rewards.": "Ți-ai revendicat cu succes recompensele.",
   "Pottery (BETA)": "Pottery (BETA)",
   "This IFO has token vesting. Purchased tokens are released over a period of time.": "Acest IFO cuprinde o achiziție de jetoane. Jetoanele achiziționate sunt eliberate după o perioadă.",
-  "Learn more in the vote proposal": "Aflați mai multe despre propunerea de vot",
   "What is the difference between an IFO and a cIFO?": "Care este diferența dintre un IFO și un cIFO?",
   "If you don’t commit enough CAKE, you may not receive a meaningful amount of IFO tokens, or you may not receive any IFO tokens at all.": "Dacă nu depuneți suficient CAKE, este posibil să nu primiți o sumă semnificativă de jetoane IFO sau să nu primiți niciun jeton IFO.",
   "~%num% available to claim at sales end": "Recuperarea ~%num% disponibil la termenul de vânzare",
@@ -3525,5 +3524,6 @@
   "You’ll need an active PancakeSwap Profile to take part in the IFO’s Public Sale!": "Vei avea nevoie de un Profil PancakeSwap activ pentru a participa la o vânzare publică IFO!",
   "This is not investment advice. Participation involves risks and may be restricted in some regions. Please ensure compliance with local laws and regulations before participating.": "Aceasta nu este o recomandare de investiții. Participarea implică riscuri și poate fi restricționată în unele regiuni. Asigurați conformitatea cu legile și reglementările locale înainte de participare.",
   "Eigenpie IFO": "Eigenpie IFO",
-  "Join IFO": "Intră în IFO"
+  "Join IFO": "Intră în IFO",
+  "No limit": "No limit"
 }
