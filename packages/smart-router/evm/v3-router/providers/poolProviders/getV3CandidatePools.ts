@@ -137,7 +137,7 @@ export async function getV3CandidatePools(params: DefaultParams) {
     // Fallback to get all pools info from subgraph
     fallbacks.push(async (p) => {
       const { currencyA, currencyB, pairs: providedPairs, subgraphProvider } = p
-      const pairs = providedPairs || getPairCombinations(currencyA, currencyB)
+      const pairs = providedPairs || (await getPairCombinations(currencyA, currencyB))
       return getV3PoolSubgraph({ provider: subgraphProvider, pairs })
     })
   }

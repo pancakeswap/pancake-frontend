@@ -104,8 +104,8 @@ export function createGetV2CandidatePools<T = any>(
 
 export async function getV2CandidatePools(params: Params) {
   const fallbacks: GetV2Pools[] = [
-    ({ pairs: providedPairs, currencyA, currencyB, v2SubgraphProvider }) => {
-      const pairs = providedPairs || getPairCombinations(currencyA, currencyB)
+    async ({ pairs: providedPairs, currencyA, currencyB, v2SubgraphProvider }) => {
+      const pairs = providedPairs || (await getPairCombinations(currencyA, currencyB))
       return getV2PoolSubgraph({ provider: v2SubgraphProvider, pairs })
     },
   ]

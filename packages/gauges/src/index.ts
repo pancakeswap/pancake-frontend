@@ -1,6 +1,6 @@
 export * from './abis'
 export * from './constants'
 export { GAUGES_ADDRESS, GAUGES_CALC_ADDRESS } from './constants/address'
-export { CONFIG_PROD } from './constants/config/prod'
 export * from './getAllGauges'
 export * from './types'
+export * from './getGaugesByChain'

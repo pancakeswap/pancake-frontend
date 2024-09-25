@@ -1,5 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
-import { CONFIG_PROD, GaugeConfig, GaugeType } from '@pancakeswap/gauges'
+import { getGaugesByChain, GaugeType } from '@pancakeswap/gauges'
 import { Currency, Token } from '@pancakeswap/sdk'
 import { getTokensByChain } from '@pancakeswap/tokens'
 import flatMap from 'lodash/flatMap.js'
@@ -25,15 +25,6 @@ const getToken = memoize(
     return undefined
   },
   (chainId, address) => `${chainId}_${address}`,
-)
-
-// TODO: move to gauges
-const getGaugesByChain = memoize(
-  async (chainId?: ChainId): Promise<GaugeConfig[]> => {
-    const result = await CONFIG_PROD()
-    return result.filter((gauge) => gauge.chainId === chainId)
-  },
-  (chainId) => chainId,
 )
 
 function isTokenInCommonBases(token?: Token) {
