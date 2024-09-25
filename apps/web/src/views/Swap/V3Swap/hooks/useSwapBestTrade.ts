@@ -57,6 +57,7 @@ export function useSwapBestOrder({ maxHops }: Options = {}) {
     v3Swap,
     stableSwap: stableSwapEnable,
     trackPerf: true,
+    retry: 1,
   })
   const [loading, setLoading] = useState(false)
   const refresh = useCallback(async () => {

@@ -21,7 +21,6 @@ import { zeroAddress } from 'viem'
 import { useAccount } from 'wagmi'
 
 import { QUOTING_API, QUOTING_API_PREFIX } from 'config/constants/endpoints'
-import { EXPERIMENTAL_FEATURES } from 'config/experimentalFeatures'
 import { POOLS_FAST_REVALIDATE, POOLS_NORMAL_REVALIDATE } from 'config/pools'
 import { useIsWrapping } from 'hooks/useWrapCallback'
 import { useCurrentBlock } from 'state/block/hooks'
@@ -86,6 +85,7 @@ interface Options {
   enabled?: boolean
   autoRevalidate?: boolean
   trackPerf?: boolean
+  retry?: number | boolean
 }
 
 interface useBestAMMTradeOptions extends Options {
@@ -513,7 +513,7 @@ export const useBestAMMTradeFromOffchainQuoter = bestTradeHookFactory<V4Router.V
 })
 
 export function useBestTradeFromApi({
-  baseCurrency,
+  // baseCurrency,
   amount,
   currency,
   enabled,
@@ -524,6 +524,7 @@ export function useBestTradeFromApi({
   tradeType = TradeType.EXACT_INPUT,
   v2Swap,
   v3Swap,
+  retry = false,
 }: Options) {
   const [slippage] = useUserSlippage()
   const poolTypes = useMemo(() => {
@@ -543,12 +544,12 @@ export function useBestTradeFromApi({
     return types
   }, [v2Swap, v3Swap, stableSwap])
 
-  useTradeApiPrefetch({
-    currencyA: baseCurrency,
-    currencyB: currency,
-    enabled,
-    poolTypes,
-  })
+  // useTradeApiPrefetch({
+  //   currencyA: baseCurrency,
+  //   currencyB: currency,
+  //   enabled,
+  //   poolTypes,
+  // })
 
   const deferQuotientRaw = useDeferredValue(amount?.quotient?.toString())
   const deferQuotient = useDebounce(deferQuotientRaw, 500)
@@ -573,6 +574,7 @@ export function useBestTradeFromApi({
       poolTypes,
       slippage,
     ] as const,
+    retry,
     queryFn: async ({ signal, queryKey }) => {
       const [key] = queryKey
       if (!amount || !amount.currency || !currency || !deferQuotient) {
@@ -769,7 +771,7 @@ function getCurrencyIdentifierForApi(currency: Currency) {
   return currency.isNative ? zeroAddress : currency.address
 }
 
-function useTradeApiPrefetch({ currencyA, currencyB, poolTypes, enabled = true }: PrefetchParams) {
+export function useTradeApiPrefetch({ currencyA, currencyB, poolTypes, enabled = true }: PrefetchParams) {
   return useQuery({
     enabled: !!(currencyA && currencyB && poolTypes?.length && enabled),
     queryKey: ['quote-api-prefetch', currencyA?.chainId, currencyA?.symbol, currencyB?.symbol, poolTypes] as const,
