@@ -1746,7 +1746,6 @@
   "You have successfully claimed your rewards.": "Nagrody zostały przez Ciebie odebrane.",
   "Pottery (BETA)": "Puloloteria (BETA)",
   "This IFO has token vesting. Purchased tokens are released over a period of time.": "W tym IFO obowiązuje nabywanie uprawnień do tokenów. Zakupione tokeny są wydawane przez pewien czas.",
-  "Learn more in the vote proposal": "Dowiedz się więcej w propozycji głosowania",
   "What is the difference between an IFO and a cIFO?": "Jaka jest różnica między IFO a cIFO?",
   "If you don’t commit enough CAKE, you may not receive a meaningful amount of IFO tokens, or you may not receive any IFO tokens at all.": "Jeśli nie zainwestujesz wystarczająco dużo CAKE, możesz nie otrzymać znaczącej ilości tokenów IFO lub możesz w ogóle nie otrzymać żadnych tokenów IFO.",
   "~%num% available to claim at sales end": "~%num% dostępne do odebrania po zakończeniu sprzedaży",
@@ -3525,5 +3524,6 @@
   "You’ll need an active PancakeSwap Profile to take part in the IFO’s Public Sale!": "Aby móc wziąć udział w sprzedaży publicznej IFO, musisz mieć aktywny profil PancakeSwap!",
   "This is not investment advice. Participation involves risks and may be restricted in some regions. Please ensure compliance with local laws and regulations before participating.": "To nie jest porada inwestycyjna. Uczestnictwo wiąże się z ryzykiem i może być ograniczone w niektórych regionach. Przed wzięciem udziału upewnij się, że przestrzegasz lokalnych przepisów ustawowych i wykonawczych.",
   "Eigenpie IFO": "Eigenpie IFO",
-  "Join IFO": "Dołącz do IFO"
+  "Join IFO": "Dołącz do IFO",
+  "No limit": "Bez ograniczeń"
 }
