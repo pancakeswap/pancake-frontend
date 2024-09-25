@@ -33,6 +33,7 @@
     "@pancakeswap/chains": "workspace:^",
     "@pancakeswap/tokens": "workspace:^",
     "@pancakeswap/v3-sdk": "workspace:^",
-    "viem": "catalog:"
+    "viem": "catalog:",
+    "async-retry": "^1.3.1"
   }
 }
