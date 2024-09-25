@@ -1746,7 +1746,6 @@
   "You have successfully claimed your rewards.": "您已成功領取獎勵。",
   "Pottery (BETA)": "糖漿彩券 (測試版)",
   "This IFO has token vesting. Purchased tokens are released over a period of time.": "此次 IFO 有線性釋放機制，因此，您購買的代幣將會在一段時間內逐漸釋放。",
-  "Learn more in the vote proposal": "在投票提案中瞭解詳情",
   "What is the difference between an IFO and a cIFO?": "IFO 和 cIFO 之間有什麼差別？",
   "If you don’t commit enough CAKE, you may not receive a meaningful amount of IFO tokens, or you may not receive any IFO tokens at all.": "如果您沒有提交足夠的 CAKE，您可能不會收到有意義數量的 IFO 代幣，或者您可能根本不會收到任何 IFO 代幣。",
   "~%num% available to claim at sales end": "銷售結束時大約可以領取 %num%",
@@ -3525,5 +3524,6 @@
   "You’ll need an active PancakeSwap Profile to take part in the IFO’s Public Sale!": "You’ll need an active PancakeSwap Profile to take part in the IFO’s Public Sale!",
   "This is not investment advice. Participation involves risks and may be restricted in some regions. Please ensure compliance with local laws and regulations before participating.": "This is not investment advice. Participation involves risks and may be restricted in some regions. Please ensure compliance with local laws and regulations before participating.",
   "Eigenpie IFO": "Eigenpie IFO",
-  "Join IFO": "Join IFO"
+  "Join IFO": "Join IFO",
+  "No limit": "No limit"
 }
