@@ -9,10 +9,10 @@ test('exports', () => {
       "GAUGES_SUPPORTED_CHAIN_IDS",
       "GAUGES_ADDRESS",
       "GAUGES_CALC_ADDRESS",
-      "CONFIG_PROD",
       "getAllGauges",
       "GaugeType",
       "GAUGE_TYPE_NAMES",
+      "getGaugesByChain",
     ]
   `)
 })
