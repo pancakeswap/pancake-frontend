@@ -34,6 +34,8 @@ import { isClassicOrder, isXOrder } from 'views/Swap/utils'
 import { waitForXOrderReceipt } from 'views/Swap/x/api'
 import { useSendXOrder } from 'views/Swap/x/useSendXOrder'
 import { useCurrencyBalance } from 'state/wallet/hooks'
+import { BLOCK_CONFIRMATION } from 'config/confirmation'
+
 import { computeTradePriceBreakdown } from '../utils/exchange'
 import { userRejectedError } from './useSendSwapTransaction'
 import { useSwapCallback } from './useSwapCallback'
@@ -158,7 +160,10 @@ const useConfirmActions = (
         const getReceipt = async () => {
           console.info('retryWaitForTransaction', hash, retryTimes++)
           try {
-            return await publicClient({ chainId }).waitForTransactionReceipt({ hash })
+            return await publicClient({ chainId }).waitForTransactionReceipt({
+              hash,
+              confirmations: BLOCK_CONFIRMATION[chainId],
+            })
           } catch (error) {
             if (error instanceof TransactionReceiptNotFoundError || error instanceof TransactionNotFoundError) {
               throw new RetryableError()
