@@ -1746,7 +1746,6 @@
   "You have successfully claimed your rewards.": "Anda berhasil mengeklaim hadiah Anda.",
   "Pottery (BETA)": "Pottery (BETA)",
   "This IFO has token vesting. Purchased tokens are released over a period of time.": "IFO ini memiliki vesting token. Token yang dibeli dirilis selama jangka waktu tertentu.",
-  "Learn more in the vote proposal": "Pelajari lebih lanjut dalam proposal pemberian suara",
   "What is the difference between an IFO and a cIFO?": "Apa perbedaan antara IFO dan cIFO?",
   "If you don’t commit enough CAKE, you may not receive a meaningful amount of IFO tokens, or you may not receive any IFO tokens at all.": "Jika Anda tidak menggunakan cukup CAKE, Anda mungkin tidak akan menerima jumlah token IFO yang berarti, atau Anda mungkin tidak akan menerima token IFO apa pun sama sekali.",
   "~%num% available to claim at sales end": "~%num% tersedia untuk diklaim pada akhir penjualan",
@@ -3525,5 +3524,6 @@
   "You’ll need an active PancakeSwap Profile to take part in the IFO’s Public Sale!": "Anda akan memerlukan Profil PancakeSwap yang aktif agar dapat mengambil bagian dalam Penjualan Publik IFO!",
   "This is not investment advice. Participation involves risks and may be restricted in some regions. Please ensure compliance with local laws and regulations before participating.": "Ini bukan saran investasi. Partisipasi melibatkan berbagai risiko dan mungkin dibatasi di beberapa wilayah. Harap pastikan kepatuhan terhadap undang-undang dan peraturan setempat sebelum berpartisipasi.",
   "Eigenpie IFO": "Eigenpie IFO",
-  "Join IFO": "Ikuti IFO"
+  "Join IFO": "Ikuti IFO",
+  "No limit": "Tanpa batas"
 }
