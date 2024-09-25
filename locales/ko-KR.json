@@ -1746,7 +1746,6 @@
   "You have successfully claimed your rewards.": "리워드 클레임에 성공했습니다.",
   "Pottery (BETA)": "Pottery(BETA)",
   "This IFO has token vesting. Purchased tokens are released over a period of time.": "이 IFO에는 토큰 베스팅이 있습니다. 구매한 토큰은 일정 기간 동안 릴리스됩니다.",
-  "Learn more in the vote proposal": "투표 제안에서 자세히 알아보기",
   "What is the difference between an IFO and a cIFO?": "IFO와 cIFO의 차이점은 무엇입니까?",
   "If you don’t commit enough CAKE, you may not receive a meaningful amount of IFO tokens, or you may not receive any IFO tokens at all.": "CAKE를 충분히 커밋하지 않으면 의미 있는 IFO 토큰 금액을 받지 못하거나 IFO 토큰을 전혀 받지 못할 수 있습니다.",
   "~%num% available to claim at sales end": "~%num%: 판매 종료 시 클레임 가능",
@@ -3525,5 +3524,6 @@
   "You’ll need an active PancakeSwap Profile to take part in the IFO’s Public Sale!": "IFO의 공개 판매에 참여하려면 활성 PancakeSwap 프로필이 필요합니다!",
   "This is not investment advice. Participation involves risks and may be restricted in some regions. Please ensure compliance with local laws and regulations before participating.": "이는 투자 조언이 아닙니다. 참여에는 위험이 따르며 일부 지역에서는 참여가 제한될 수 있습니다. 참여하기 전에 현지 법률 및 규정을 준수하는지 확인하세요.",
   "Eigenpie IFO": "Eigenpie IFO",
-  "Join IFO": "IFO 참여"
+  "Join IFO": "IFO 참여",
+  "No limit": "No limit"
 }
