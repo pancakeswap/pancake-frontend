@@ -46,6 +46,15 @@ const pinnedFarmConfig: UniversalFarmConfig[] = [
 export const arbFarmConfig: UniversalFarmConfig[] = [
   ...pinnedFarmConfig,
   {
+    pid: 93,
+    chainId: ChainId.ARBITRUM_ONE,
+    protocol: Protocol.V3,
+    lpAddress: Pool.getAddress(arbitrumTokens.egp, arbitrumTokens.weth, FeeAmount.HIGH),
+    token0: arbitrumTokens.egp,
+    token1: arbitrumTokens.weth,
+    feeAmount: FeeAmount.HIGH,
+  },
+  {
     pid: 92,
     chainId: ChainId.ARBITRUM_ONE,
     protocol: Protocol.V3,
