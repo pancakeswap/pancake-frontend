@@ -1746,7 +1746,6 @@
   "You have successfully claimed your rewards.": "உங்கள் வெகுமதிகளை வெற்றிகரமாக கிளைம் செய்துள்ளீர்கள்.",
   "Pottery (BETA)": "பாட்டரி (பீட்டா)",
   "This IFO has token vesting. Purchased tokens are released over a period of time.": "இந்த IFOல் டோக்கன் வெஸ்டிங் உள்ளது. வாங்கிய டோக்கன்கள் காலப்போக்கில் விடுவிக்கப்படுகின்றன.",
-  "Learn more in the vote proposal": "வாக்களிப்பு முன்மொழிவில் மேலும் அறிக",
   "What is the difference between an IFO and a cIFO?": "ஒரு IFOக்கும் cIFOக்கும் உள்ள வேறுபாடு என்ன?",
   "If you don’t commit enough CAKE, you may not receive a meaningful amount of IFO tokens, or you may not receive any IFO tokens at all.": "நீங்கள் போதுமான CAKE-ஐ கமிட் செய்யவில்லை என்றால், IFO டோக்கன்களின் அர்த்தமுள்ள தொகை உங்களுக்குக் கிடைக்காமல் போகலாம், அல்லது IFO டோக்கன்கள் எதையும் நீங்கள் பெறாமலேயே போகலாம்.",
   "~%num% available to claim at sales end": "~%num%, விற்பனையின் முடிவில் கிளைம் செய்யக் கிடைக்கிறது",
@@ -3525,5 +3524,6 @@
   "You’ll need an active PancakeSwap Profile to take part in the IFO’s Public Sale!": "You’ll need an active PancakeSwap Profile to take part in the IFO’s Public Sale!",
   "This is not investment advice. Participation involves risks and may be restricted in some regions. Please ensure compliance with local laws and regulations before participating.": "This is not investment advice. Participation involves risks and may be restricted in some regions. Please ensure compliance with local laws and regulations before participating.",
   "Eigenpie IFO": "Eigenpie IFO",
-  "Join IFO": "Join IFO"
+  "Join IFO": "Join IFO",
+  "No limit": "No limit"
 }
