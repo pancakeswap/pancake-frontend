@@ -57,22 +57,17 @@ function candidatePoolsOnChainHookFactory<TPool extends Pool>(
       return [...symbols, currencyA.chainId].join('_')
     }, [currencyA, currencyB])
 
-    const pairs = useMemo(() => {
-      return currencyA && currencyB && SmartRouter.getPairCombinations(currencyA, currencyB)
-    }, [currencyA, currencyB])
-
-    const queryEnabled = !!(enabled && blockNumber && key && pairs)
     const poolState = useQuery({
       queryKey: [poolType, 'pools', key],
 
       queryFn: async ({ signal }) => {
-        if (!blockNumber || !pairs) {
+        const resolvedPairs = await SmartRouter.getPairCombinations(currencyA, currencyB)
+        if (!blockNumber || !resolvedPairs) {
           throw new Error('Failed to get pools on chain. Missing valid params')
         }
         const label = `[POOLS_ONCHAIN](${poolType}) ${key} at block ${blockNumber}`
         SmartRouter.logger.metric(label)
         const getViemClients = createViemPublicClientGetter({ transportSignal: signal })
-        const resolvedPairs = await pairs
         const pools = await getPoolsOnChain(resolvedPairs ?? [], getViemClients, blockNumber)
         SmartRouter.logger.metric(label, pools)
 
@@ -83,7 +78,7 @@ function candidatePoolsOnChainHookFactory<TPool extends Pool>(
         }
       },
 
-      enabled: queryEnabled,
+      enabled: Boolean(enabled && blockNumber && key && currencyA && currencyB),
       refetchInterval,
       refetchOnWindowFocus: false,
     })
