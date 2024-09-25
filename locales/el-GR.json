@@ -1746,7 +1746,6 @@
   "You have successfully claimed your rewards.": "Έχετε διεκδικήσει με επιτυχία τις ανταμοιβές σας.",
   "Pottery (BETA)": "Pottery (BETA)",
   "This IFO has token vesting. Purchased tokens are released over a period of time.": "Αυτή η IFO δεσμεύει νομίσματα. Τα αγορασμένα νομίσματα απελευθερώνονται σε ένα χρονικό διάστημα.",
-  "Learn more in the vote proposal": "Μάθετε περισσότερα στην πρόταση ψήφου",
   "What is the difference between an IFO and a cIFO?": "Ποια είναι η διαφορά μεταξύ μιας IFO και μιας cIFO;",
   "If you don’t commit enough CAKE, you may not receive a meaningful amount of IFO tokens, or you may not receive any IFO tokens at all.": "Εάν δεν δεσμεύσετε αρκετό CAKE, ενδέχεται να μην λάβετε ένα σημαντικό ποσό νομισμάτων IFO ή να μην λάβετε καθόλου νομίσματα IFO.",
   "~%num% available to claim at sales end": "~%num% διαθέσιμα για διεκδίκηση στο τέλος της πώλησης",
@@ -3525,5 +3524,6 @@
   "You’ll need an active PancakeSwap Profile to take part in the IFO’s Public Sale!": "Χρειάζεστε ένα ενεργό προφίλ PancakeSwap για να λάβετε μέρος σε μία δημόσια IFO!",
   "This is not investment advice. Participation involves risks and may be restricted in some regions. Please ensure compliance with local laws and regulations before participating.": "Δεν αποτελεί επενδυτική συμβουλή. Η συμμετοχή ενέχει κινδύνους και μπορεί να είναι περιορισμένη σε ορισμένες περιοχές. Βεβαιωθείτε για τη συμμόρφωση με τους τοπικούς νόμους και κανονισμούς πριν συμμετάσχετε.",
   "Eigenpie IFO": "Eigenpie IFO",
-  "Join IFO": "Συμμετοχή στην IFO"
+  "Join IFO": "Συμμετοχή στην IFO",
+  "No limit": "No limit"
 }
