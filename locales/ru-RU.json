@@ -1746,7 +1746,6 @@
   "You have successfully claimed your rewards.": "Вы получили вознаграждения.",
   "Pottery (BETA)": "Лотерея вложений (БЕТА)",
   "This IFO has token vesting. Purchased tokens are released over a period of time.": "У этого IFO есть вестирование токенов. Купленные токены выпускаются в течение определенного времени.",
-  "Learn more in the vote proposal": "Подробнее — в предложении для голосования",
   "What is the difference between an IFO and a cIFO?": "В чем разница между IFO и cIFO?",
   "If you don’t commit enough CAKE, you may not receive a meaningful amount of IFO tokens, or you may not receive any IFO tokens at all.": "Если не выделить достаточно CAKE, вы можете не получить приемлемое количество токенов IFO или вообще не получить их.",
   "~%num% available to claim at sales end": "В конце продаж можно получить примерно %num%",
@@ -3525,5 +3524,6 @@
   "You’ll need an active PancakeSwap Profile to take part in the IFO’s Public Sale!": "You’ll need an active PancakeSwap Profile to take part in the IFO’s Public Sale!",
   "This is not investment advice. Participation involves risks and may be restricted in some regions. Please ensure compliance with local laws and regulations before participating.": "This is not investment advice. Participation involves risks and may be restricted in some regions. Please ensure compliance with local laws and regulations before participating.",
   "Eigenpie IFO": "Eigenpie IFO",
-  "Join IFO": "Join IFO"
+  "Join IFO": "Join IFO",
+  "No limit": "No limit"
 }
