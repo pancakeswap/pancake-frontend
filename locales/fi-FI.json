@@ -1746,7 +1746,6 @@
   "You have successfully claimed your rewards.": "Palkintojesi lunastaminen onnistui.",
   "Pottery (BETA)": "Pottery (BEETA)",
   "This IFO has token vesting. Purchased tokens are released over a period of time.": "Tähän IFO:hon kuuluu polettien vestaus. Ostetut poletit julkaistaan ajan mittaan.",
-  "Learn more in the vote proposal": "Lue lisätietoja äänestysehdotuksessa",
   "What is the difference between an IFO and a cIFO?": "Mitä eroa on IFO:lla ja cIFO:lla?",
   "If you don’t commit enough CAKE, you may not receive a meaningful amount of IFO tokens, or you may not receive any IFO tokens at all.": "Jos et luovuta tarpeeksi CAKEa, et saa välttämättä merkittävää summaa IFO-poletteja tai et välttämättä saa IFO-poletteja lainkaan.",
   "~%num% available to claim at sales end": "~%num% lunastettavana myynnin päättyessä",
@@ -3525,5 +3524,6 @@
   "You’ll need an active PancakeSwap Profile to take part in the IFO’s Public Sale!": "Tarvitset aktiivisen PancakeSwap-profiilin, jotta voit osallistua IFO:n julkiseen myyntiin!",
   "This is not investment advice. Participation involves risks and may be restricted in some regions. Please ensure compliance with local laws and regulations before participating.": "Tämä ei ole sijoitusneuvontaa. Osallistumiseen liittyy riskejä, ja se saattaa olla rajoitettua joillakin alueilla. Varmista noudattavasi paikallisia lakeja ja määräyksiä ennen osallistumista.",
   "Eigenpie IFO": "Eigenpie IFO",
-  "Join IFO": "Liity IFO:hon"
+  "Join IFO": "Liity IFO:hon",
+  "No limit": "No limit"
 }
