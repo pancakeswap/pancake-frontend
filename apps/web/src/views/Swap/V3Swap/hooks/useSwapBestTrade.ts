@@ -69,10 +69,8 @@ export function useSwapBestOrder({ maxHops }: Options = {}) {
     }
   }, [refetch])
 
-  const isAutoRefetch = useMemo(
+  const isValidQuote = useMemo(
     () =>
-      !loading &&
-      fetchStatus === 'fetching' &&
       amount &&
       inputCurrency &&
       outputCurrency &&
@@ -80,13 +78,19 @@ export function useSwapBestOrder({ maxHops }: Options = {}) {
       amount.toExact() === (isExactIn ? data.trade.inputAmount.toExact() : data.trade.outputAmount.toExact()) &&
       data.trade.inputAmount.currency.equals(inputCurrency) &&
       data.trade.outputAmount.currency.equals(outputCurrency),
-    [loading, fetchStatus, amount, data?.trade, isExactIn, inputCurrency, outputCurrency],
+    [amount, data?.trade, isExactIn, inputCurrency, outputCurrency],
+  )
+
+  const isAutoRefetch = useMemo(
+    () => !loading && fetchStatus === 'fetching' && isValidQuote,
+    [loading, fetchStatus, isValidQuote],
   )
 
   return {
     enabled,
     refresh,
     isStale,
+    isValidQuote,
     error,
     isLoading: useDeferredValue(
       Boolean((fetchStatus === 'fetching' && !isAutoRefetch) || (typedValue && !data && !error)),

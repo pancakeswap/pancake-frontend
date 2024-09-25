@@ -273,10 +273,12 @@ export const SwapModalFooter = memo(function SwapModalFooter({
           </RowFixed>
           {realizedLPFee || isXOrder(order) ? (
             <Flex>
-              <Text color="primary" fontSize="14px">
-                0 {inputAmount.currency.symbol}
-              </Text>
-              {realizedLPFee && (
+              {isXOrder(order) ? (
+                <Text color="primary" fontSize="14px">
+                  0 {inputAmount.currency.symbol}
+                </Text>
+              ) : null}
+              {!isXOrder(order) && realizedLPFee && (
                 <Text fontSize="14px" mr="8px" strikeThrough={isXOrder(order)}>
                   {`${formatAmount(realizedLPFee, 6)} ${inputAmount.currency.symbol}`}
                 </Text>
