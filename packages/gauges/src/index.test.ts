@@ -12,6 +12,7 @@ test('exports', () => {
       "getAllGauges",
       "GaugeType",
       "GAUGE_TYPE_NAMES",
+      "CONFIG_PROD"
     ]
   `)
 })
