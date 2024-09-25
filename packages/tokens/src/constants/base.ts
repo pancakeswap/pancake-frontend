@@ -182,4 +182,20 @@ export const baseTokens = {
     'cbBTC',
     'https://www.coinbase.com/',
   ),
+  lava: new ERC20Token(
+    ChainId.BASE,
+    '0x11e969e9B3f89cB16D686a03Cd8508C9fC0361AF',
+    6,
+    'Axelar Wrapped LAVA',
+    'LAVA',
+    'https://www.lavanet.xyz/',
+  ),
+  eurc: new ERC20Token(
+    ChainId.BASE,
+    '0x60a3E35Cc302bFA44Cb288Bc5a4F316Fdb1adb42',
+    6,
+    'EURC',
+    'EURC',
+    'https://www.circle.com/en/',
+  ),
 }
