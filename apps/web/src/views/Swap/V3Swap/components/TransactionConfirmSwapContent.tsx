@@ -52,7 +52,7 @@ export const TransactionConfirmSwapContent = memo<TransactionConfirmSwapContentP
     onAcceptChanges,
   }) {
     const showAcceptChanges = useMemo(
-      () => Boolean(order && originalOrder && tradeMeaningfullyDiffers(order.trade, order.trade)),
+      () => Boolean(order && originalOrder && tradeMeaningfullyDiffers(order.trade, originalOrder.trade)),
       [originalOrder, order],
     )
 
