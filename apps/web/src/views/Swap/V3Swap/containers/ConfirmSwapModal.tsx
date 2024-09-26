@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ChainId, Currency, CurrencyAmount, Token } from '@pancakeswap/sdk'
+import { ChainId, Currency, CurrencyAmount, Token, TradeType } from '@pancakeswap/sdk'
 import { useCallback, useMemo } from 'react'
 
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
@@ -28,6 +28,7 @@ import { TransactionConfirmSwapContent } from '../components'
 import { ConfirmAction } from '../hooks/useConfirmModalState'
 import { AllowedAllowanceState } from '../types'
 import { ApproveStepFlow } from './ApproveStepFlow'
+import { useSlippageAdjustedAmounts } from '../hooks'
 
 export const useApprovalPhaseStepTitles: ({ trade }: { trade: InterfaceOrder['trade'] | undefined }) => {
   [step in AllowedAllowanceState]: string
@@ -78,6 +79,7 @@ export const ConfirmSwapModal: React.FC<ConfirmSwapModalProps> = ({
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
   const [allowedSlippage] = useUserSlippage()
+  const slippageAdjustedAmounts = useSlippageAdjustedAmounts(originalOrder)
   const { recipient } = useSwapState()
   const loadingAnimationVisible = useMemo(() => {
     return [
@@ -95,18 +97,18 @@ export const ConfirmSwapModal: React.FC<ConfirmSwapModalProps> = ({
     return pendingModalSteps.length > 0 && pendingModalSteps.some((step) => step.showIndicator)
   }, [confirmModalState, pendingModalSteps, swapErrorMessage, txHash])
 
-  const stepContents = useApprovalPhaseStepTitles({ trade: order?.trade })
+  const stepContents = useApprovalPhaseStepTitles({ trade: originalOrder?.trade })
   const token: Token | undefined = useMemo(
-    () => wrappedCurrency(order?.trade?.outputAmount?.currency, chainId),
-    [chainId, order?.trade?.outputAmount?.currency],
+    () => wrappedCurrency(originalOrder?.trade?.outputAmount?.currency, chainId),
+    [chainId, originalOrder?.trade?.outputAmount?.currency],
   )
 
   const showAddToWalletButton = useMemo(() => {
-    if (token && order?.trade?.outputAmount?.currency) {
-      return !order?.trade?.outputAmount?.currency?.isNative
+    if (token && originalOrder?.trade?.outputAmount?.currency) {
+      return !originalOrder?.trade?.outputAmount?.currency?.isNative
     }
     return false
-  }, [token, order])
+  }, [token, originalOrder])
 
   const handleDismiss = useCallback(() => {
     if (typeof customOnDismiss === 'function') {
@@ -117,10 +119,13 @@ export const ConfirmSwapModal: React.FC<ConfirmSwapModalProps> = ({
   }, [customOnDismiss, onDismiss])
 
   const modalContent = useMemo(() => {
-    const currencyA = currencyBalances?.INPUT?.currency ?? order?.trade?.inputAmount?.currency
-    const currencyB = currencyBalances?.OUTPUT?.currency ?? order?.trade?.outputAmount?.currency
-    const amountA = formatAmount(order?.trade?.inputAmount, 6) ?? ''
-    const amountB = formatAmount(order?.trade?.outputAmount, 6) ?? ''
+    const isExactIn = originalOrder?.trade.tradeType === TradeType.EXACT_INPUT
+    const currencyA = currencyBalances?.INPUT?.currency ?? originalOrder?.trade?.inputAmount?.currency
+    const currencyB = currencyBalances?.OUTPUT?.currency ?? originalOrder?.trade?.outputAmount?.currency
+    const amountAWithSlippage = formatAmount(slippageAdjustedAmounts[Field.INPUT], 6) ?? ''
+    const amountBWithSlippage = formatAmount(slippageAdjustedAmounts[Field.OUTPUT], 6) ?? ''
+    const amountA = isExactIn ? amountA : `Max ${amountAWithSlippage}`
+    const amountB = isExactIn ? `Min ${amountBWithSlippage}` : amountBWithSlippage
 
     if (swapErrorMessage) {
       return (
@@ -159,8 +164,8 @@ export const ConfirmSwapModal: React.FC<ConfirmSwapModalProps> = ({
           title={t('Wrap')}
           currencyA={currencyA}
           currencyB={currencyA?.wrapped}
-          amountA={amountA}
-          amountB={amountA}
+          amountA={amountAWithSlippage}
+          amountB={amountAWithSlippage}
           currentStep={confirmModalState}
         >
           {showAddToWalletButton && (txHash || orderHash) ? (
@@ -185,7 +190,7 @@ export const ConfirmSwapModal: React.FC<ConfirmSwapModalProps> = ({
     if (confirmModalState === ConfirmModalState.PENDING_CONFIRMATION) {
       let title = txHash ? t('Transaction Submitted') : t('Confirm Swap')
 
-      if (isXOrder(order)) {
+      if (isXOrder(originalOrder)) {
         title = txHash ? t('Order Filled') : orderHash ? t('Order Submitted') : t('Confirm Swap')
       }
       return (
@@ -261,6 +266,7 @@ export const ConfirmSwapModal: React.FC<ConfirmSwapModalProps> = ({
       />
     )
   }, [
+    slippageAdjustedAmounts,
     currencyBalances,
     order,
     swapErrorMessage,

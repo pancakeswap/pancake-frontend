@@ -80,7 +80,8 @@ const useCreateConfirmSteps = (
     if (
       isXOrder(order) &&
       order.trade.inputAmount.currency.isNative &&
-      (!balance || balance.lessThan(order.trade.inputAmount.wrapped))
+      amountToApprove &&
+      (!balance || balance.lessThan(amountToApprove))
     ) {
       steps.push(ConfirmModalState.WRAPPING)
     }
@@ -95,7 +96,7 @@ const useCreateConfirmSteps = (
     }
     steps.push(ConfirmModalState.PENDING_CONFIRMATION)
     return steps
-  }, [requireRevoke, requireApprove, requirePermit, order, balance])
+  }, [requireRevoke, requireApprove, requirePermit, order, balance, amountToApprove])
 }
 
 // define the actions of each step
@@ -280,8 +281,7 @@ const useConfirmActions = (
       action: async (nextState?: ConfirmModalState) => {
         try {
           setConfirmState(ConfirmModalState.WRAPPING)
-          // const result = await execute?.()
-          const wrapAmount = BigInt(order?.trade.inputAmount.quotient ?? 0)
+          const wrapAmount = BigInt(amountToApprove?.quotient ?? 0)
           const result = await nativeWrap(wrapAmount - (wrappedBalance?.quotient ?? 0n))
           if (result && result.hash) {
             await retryWaitForTransaction({ hash: txHash })
@@ -301,6 +301,7 @@ const useConfirmActions = (
       showIndicator: true,
     }
   }, [
+    amountToApprove,
     nativeWrap,
     order?.trade.inputAmount.quotient,
     retryWaitForTransaction,

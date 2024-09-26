@@ -131,17 +131,6 @@ const SwapCommitButtonInner = memo(function SwapCommitButtonInner({
   const [inputCurrency, outputCurrency] = useSwapCurrency()
   const { isExpertMode } = useSwapConfig()
 
-  const slippageAdjustedAmounts = useSlippageAdjustedAmounts(order)
-  const amountToApprove = useMemo(
-    () =>
-      inputCurrency?.isNative
-        ? isXOrder(order)
-          ? slippageAdjustedAmounts[Field.INPUT]
-          : undefined
-        : slippageAdjustedAmounts[Field.INPUT],
-    [inputCurrency?.isNative, order, slippageAdjustedAmounts],
-  )
-
   const tradePriceBreakdown = useMemo(
     () => computeTradePriceBreakdown(isXOrder(order) ? undefined : order?.trade),
     [order],
@@ -166,12 +155,20 @@ const SwapCommitButtonInner = memo(function SwapCommitButtonInner({
   const [tradeToConfirm, setTradeToConfirm] = useState<PriceOrder | undefined>(undefined)
   const [indirectlyOpenConfirmModalState, setIndirectlyOpenConfirmModalState] = useState(false)
 
+  const orderToExecute = useMemo(() => (isExpertMode ? order : tradeToConfirm), [isExpertMode, order, tradeToConfirm])
+  const slippageAdjustedAmounts = useSlippageAdjustedAmounts(orderToExecute)
+  const amountToApprove = useMemo(
+    () =>
+      inputCurrency?.isNative
+        ? isXOrder(orderToExecute)
+          ? slippageAdjustedAmounts[Field.INPUT]
+          : undefined
+        : slippageAdjustedAmounts[Field.INPUT],
+    [inputCurrency?.isNative, orderToExecute, slippageAdjustedAmounts],
+  )
+
   const { callToAction, confirmState, txHash, orderHash, confirmActions, errorMessage, resetState } =
-    useConfirmModalState(
-      isExpertMode ? order : tradeToConfirm,
-      amountToApprove?.wrapped,
-      getUniversalRouterAddress(chainId),
-    )
+    useConfirmModalState(orderToExecute, amountToApprove?.wrapped, getUniversalRouterAddress(chainId))
 
   const { onUserInput } = useSwapActionHandlers()
   const reset = useCallback(() => {
