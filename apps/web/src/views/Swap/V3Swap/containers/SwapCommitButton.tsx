@@ -178,6 +178,7 @@ const SwapCommitButtonInner = memo(function SwapCommitButtonInner({
   const { onUserInput } = useSwapActionHandlers()
   const reset = useCallback(() => {
     afterCommit?.()
+    setTradeToConfirm(undefined)
     if (confirmState === ConfirmModalState.COMPLETED) {
       onUserInput(Field.INPUT, '')
     }
