@@ -71,7 +71,7 @@ const useCreateConfirmSteps = (
   spender: Address | undefined,
 ) => {
   const { requireApprove, requirePermit, requireRevoke } = usePermit2Requires(amountToApprove, spender)
-  const nativeCurrency = useNativeCurrency(order?.trade.inputAmount.currency.chainId)
+  const nativeCurrency = useNativeCurrency(order?.trade?.inputAmount.currency.chainId)
   const { account } = useAccountActiveChain()
   const balance = useCurrencyBalance(account ?? undefined, nativeCurrency.wrapped)
 
@@ -130,7 +130,7 @@ const useConfirmActions = (
     permitSignature: permit2Signature,
   })
 
-  const nativeCurrency = useNativeCurrency(order?.trade.inputAmount.currency.chainId)
+  const nativeCurrency = useNativeCurrency(order?.trade?.inputAmount.currency.chainId)
   const wrappedBalance = useCurrencyBalance(account ?? undefined, nativeCurrency.wrapped)
 
   const { mutateAsync: sendXOrder } = useSendXOrder()
@@ -303,7 +303,7 @@ const useConfirmActions = (
   }, [
     amountToApprove,
     nativeWrap,
-    order?.trade.inputAmount.quotient,
+    order?.trade?.inputAmount.quotient,
     retryWaitForTransaction,
     showError,
     txHash,
