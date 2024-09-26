@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, Flex, InjectedModalProps, Modal, ModalBody, Text } from '@pancakeswap/uikit'
+import { Button, InjectedModalProps, Modal, ModalBody, Text } from '@pancakeswap/uikit'
 import isEmpty from 'lodash/isEmpty'
 import { useCallback, useMemo } from 'react'
 import { useAppDispatch } from 'state'
@@ -88,27 +88,14 @@ export function RecentTransactions() {
             </AutoRow>
             {hasTransactions ? (
               Object.entries(sortedRecentTransactions).map(([chainId_, transactions]) => {
-                let content = <></>
-
                 const chainIdNumber = Number(chainId_)
-
-                if (chainIdNumber === chainId) {
-                  content = (
-                    <TransactionWithX
-                      transactions={Object.values(transactions)}
-                      xOrders={xOrders}
-                      chainId={chainIdNumber}
-                    />
-                  )
-                } else {
-                  content = (
-                    <Flex flexDirection="column">
-                      {Object.values(transactions).map((tx) => {
-                        return <Transaction key={tx.hash + tx.addedTime} tx={tx} chainId={chainIdNumber} />
-                      })}
-                    </Flex>
-                  )
-                }
+                const content = (
+                  <TransactionWithX
+                    transactions={Object.values(transactions)}
+                    xOrders={chainIdNumber === chainId ? xOrders : undefined}
+                    chainId={chainIdNumber}
+                  />
+                )
 
                 return (
                   <div key={`transactions#${chainIdNumber}`}>
