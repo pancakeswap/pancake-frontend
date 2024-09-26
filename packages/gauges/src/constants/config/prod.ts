@@ -17,7 +17,9 @@ export const CONFIG_PROD = async (): Promise<GaugeConfig[]> => {
   return new Promise((resolve) => {
     retry(
       async () => {
-        const response = await fetch('https://cms-public-api-7ys4p.ondigitalocean.app/api/data/gauges')
+        const response = await fetch('https://cms-public-api-7ys4p.ondigitalocean.app/api/data/gauges', {
+          signal: AbortSignal.timeout(3000),
+        })
         if (response.ok) {
           const result = await response.json()
           cache = result
@@ -34,8 +36,6 @@ export const CONFIG_PROD = async (): Promise<GaugeConfig[]> => {
       },
       {
         retries: 3,
-        factor: 2,
-        minTimeout: 1000,
         onRetry: (error: Error, attempt: number) => {
           console.warn(`Attempt ${attempt} failed: ${error.message}. Retrying...`)
         },
