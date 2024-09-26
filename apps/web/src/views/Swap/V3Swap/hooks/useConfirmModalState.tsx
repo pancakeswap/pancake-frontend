@@ -155,7 +155,7 @@ const useConfirmActions = (
   }, [])
 
   const retryWaitForTransaction = useCallback(
-    async ({ hash }: { hash: Hex | undefined }) => {
+    async ({ hash, confirmations }: { hash?: Hex; confirmations?: number }) => {
       if (hash && chainId) {
         let retryTimes = 0
         const getReceipt = async () => {
@@ -163,7 +163,7 @@ const useConfirmActions = (
           try {
             return await publicClient({ chainId }).waitForTransactionReceipt({
               hash,
-              confirmations: BLOCK_CONFIRMATION[chainId],
+              confirmations,
             })
           } catch (error) {
             if (error instanceof TransactionReceiptNotFoundError || error instanceof TransactionNotFoundError) {
@@ -175,7 +175,7 @@ const useConfirmActions = (
         const { promise } = retry<TransactionReceipt>(getReceipt, {
           n: 6,
           minWait: 2000,
-          maxWait: 5000,
+          maxWait: confirmations ? confirmations * 5000 : 5000,
         })
         return promise
       }
@@ -284,7 +284,11 @@ const useConfirmActions = (
           const wrapAmount = BigInt(amountToApprove?.quotient ?? 0)
           const result = await nativeWrap(wrapAmount - (wrappedBalance?.quotient ?? 0n))
           if (result && result.hash) {
-            await retryWaitForTransaction({ hash: txHash })
+            const chain = amountToApprove?.currency.chainId
+            await retryWaitForTransaction({
+              hash: txHash,
+              confirmations: chain ? BLOCK_CONFIRMATION[chain] : undefined,
+            })
           }
           if (nextState) {
             setConfirmState(nextState)
@@ -300,15 +304,7 @@ const useConfirmActions = (
       },
       showIndicator: true,
     }
-  }, [
-    amountToApprove,
-    nativeWrap,
-    order?.trade?.inputAmount.quotient,
-    retryWaitForTransaction,
-    showError,
-    txHash,
-    wrappedBalance?.quotient,
-  ])
+  }, [amountToApprove, nativeWrap, retryWaitForTransaction, showError, txHash, wrappedBalance?.quotient])
 
   const approveStep = useMemo(() => {
     return {
