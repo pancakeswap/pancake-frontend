@@ -33,4 +33,5 @@ export const SwapTabAndInputPanelWrapper = styled(Flex)`
   will-change: transform;
   transition: transform 0.2 ease;
   transform: translateY(0px);
+  width: 100%;
 `;

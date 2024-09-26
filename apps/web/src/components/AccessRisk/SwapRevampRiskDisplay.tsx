@@ -121,7 +121,7 @@ export const RiskDetailsPanel: React.FC<RiskDetailsPanelProps> = ({
   token1RiskLevelDescription,
 }) => {
   return (
-    <FlexGap>
+    <FlexGap width="100%" flexDirection="column" justifyContent="center" alignItems="center">
       <RiskDetails token={token0} riskLevelDescription={token0RiskLevelDescription} />
       <RiskDetails token={token1} riskLevelDescription={token1RiskLevelDescription} />
     </FlexGap>
