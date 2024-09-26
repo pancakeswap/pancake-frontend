@@ -158,7 +158,7 @@ const SwapCommitButtonInner = memo(function SwapCommitButtonInner({
   // FIXME: using order as fallback here simply to avoid empty permit2 detail
   // Need to fetch permit2 information on the fly instead
   const orderToExecute = useMemo(
-    () => (isExpertMode ? order : tradeToConfirm ?? order),
+    () => (isExpertMode ? order : tradeToConfirm?.trade ? tradeToConfirm : order),
     [isExpertMode, order, tradeToConfirm],
   )
   const slippageAdjustedAmounts = useSlippageAdjustedAmounts(orderToExecute)
