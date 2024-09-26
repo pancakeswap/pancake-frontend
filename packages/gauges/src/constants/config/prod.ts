@@ -36,6 +36,7 @@ export const CONFIG_PROD = async (): Promise<GaugeConfig[]> => {
       },
       {
         retries: 3,
+        minTimeout: 0,
         onRetry: (error: Error, attempt: number) => {
           console.warn(`Attempt ${attempt} failed: ${error.message}. Retrying...`)
         },
