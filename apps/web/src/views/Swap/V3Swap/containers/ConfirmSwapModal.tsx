@@ -124,7 +124,7 @@ export const ConfirmSwapModal: React.FC<ConfirmSwapModalProps> = ({
     const currencyB = currencyBalances?.OUTPUT?.currency ?? originalOrder?.trade?.outputAmount?.currency
     const amountAWithSlippage = formatAmount(slippageAdjustedAmounts[Field.INPUT], 6) ?? ''
     const amountBWithSlippage = formatAmount(slippageAdjustedAmounts[Field.OUTPUT], 6) ?? ''
-    const amountA = isExactIn ? amountA : `Max ${amountAWithSlippage}`
+    const amountA = isExactIn ? amountAWithSlippage : `Max ${amountAWithSlippage}`
     const amountB = isExactIn ? `Min ${amountBWithSlippage}` : amountBWithSlippage
 
     if (swapErrorMessage) {
