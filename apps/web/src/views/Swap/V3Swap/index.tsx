@@ -59,13 +59,15 @@ export function V3SwapForm() {
               inputUsdValue: inputUsdPrice && ammInputAmount ? Number(ammInputAmount) * inputUsdPrice : undefined,
               outputUsdValue: outputUsdPrice && ammOutputAmount ? Number(ammOutputAmount) * outputUsdPrice : undefined,
             },
-            xOrder: {
-              type: xOrder?.type,
-              inputAmount: xInputAmount,
-              outputAmount: xOutputAmount,
-              inputUsdValue: inputUsdPrice && xInputAmount ? Number(xInputAmount) * inputUsdPrice : undefined,
-              outputUsdValue: outputUsdPrice && xOutputAmount ? Number(xOutputAmount) * outputUsdPrice : undefined,
-            },
+            xOrder: xOrder
+              ? {
+                  type: xOrder.type,
+                  inputAmount: xInputAmount,
+                  outputAmount: xOutputAmount,
+                  inputUsdValue: inputUsdPrice && xInputAmount ? Number(xInputAmount) * inputUsdPrice : undefined,
+                  outputUsdValue: outputUsdPrice && xOutputAmount ? Number(xOutputAmount) * outputUsdPrice : undefined,
+                }
+              : undefined,
           })
         } catch (error) {
           //
