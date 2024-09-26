@@ -52,6 +52,7 @@ export function V3SwapForm() {
             outputNative: outputCurrency.isNative,
             inputToken: inputCurrency.wrapped.address,
             outputToken: outputCurrency.wrapped.address,
+            bestOrderType: bestOrder.type,
             ammOrder: {
               type: ammOrder.type,
               inputAmount: ammInputAmount,
@@ -75,7 +76,7 @@ export function V3SwapForm() {
       },
       afterCommit: resumeQuoting,
     }
-  }, [pauseQuoting, resumeQuoting, xOrder, ammOrder, inputUsdPrice, outputUsdPrice])
+  }, [pauseQuoting, resumeQuoting, xOrder, ammOrder, inputUsdPrice, outputUsdPrice, bestOrder.type])
 
   return (
     <>
