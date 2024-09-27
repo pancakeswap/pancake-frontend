@@ -17,7 +17,7 @@ export const CONFIG_PROD = async (): Promise<GaugeConfig[]> => {
   return new Promise((resolve) => {
     retry(
       async () => {
-        const response = await fetch('https://cms-public-api-7ys4p.ondigitalocean.app/api/data/gauges', {
+        const response = await fetch('https://cms-public-api-7ys4p.ondigitalocean.app/api/data/cached/gauges', {
           signal: AbortSignal.timeout(3000),
         })
         if (response.ok) {
