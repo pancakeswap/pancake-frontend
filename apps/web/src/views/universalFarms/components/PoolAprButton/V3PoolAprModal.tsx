@@ -33,7 +33,7 @@ export const V3PoolAprModal: React.FC<V3PoolAprModalProps> = ({ modal, ...props 
 const AprModal: React.FC<V3PoolAprModalProps> = ({ modal, poolInfo, userPosition, cakeApr }) => {
   const { t } = useTranslation()
   const cakePrice = useCakePrice()
-  const { priceUpper, priceLower, position } = useExtraV3PositionInfo(userPosition)
+  const { position } = useExtraV3PositionInfo(userPosition)
   const { data: token0PriceUsd } = useCurrencyUsdPrice(poolInfo.token0, { enabled: !!poolInfo.token0 })
   const { data: token1PriceUsd } = useCurrencyUsdPrice(poolInfo.token1, { enabled: !!poolInfo.token1 })
   const formState = useV3FormState()
@@ -51,14 +51,17 @@ const AprModal: React.FC<V3PoolAprModalProps> = ({ modal, poolInfo, userPosition
   const sqrtRatioX96 = price && encodeSqrtRatioX96(price.numerator, price.denominator)
   const depositUsdAsBN = useMemo(
     () =>
-      currencyBalances.CURRENCY_A &&
-      currencyBalances.CURRENCY_B &&
       token0PriceUsd &&
       token1PriceUsd &&
-      new BigNumber(currencyBalances.CURRENCY_A.toExact())
+      new BigNumber(position?.amount0?.toExact() ?? 0)
         .times(token0PriceUsd)
-        .plus(new BigNumber(currencyBalances.CURRENCY_B.toExact()).times(token1PriceUsd)),
-    [currencyBalances.CURRENCY_A, currencyBalances.CURRENCY_B, token0PriceUsd, token1PriceUsd],
+        .plus(new BigNumber(position?.amount1?.toExact() ?? 0).times(token1PriceUsd))
+        .plus(
+          new BigNumber(currencyBalances?.CURRENCY_A?.toExact() ?? 0)
+            .times(token0PriceUsd)
+            .plus(new BigNumber(currencyBalances?.CURRENCY_B?.toExact() ?? 0).times(token1PriceUsd)),
+        ),
+    [currencyBalances.CURRENCY_A, currencyBalances.CURRENCY_B, token0PriceUsd, token1PriceUsd, position],
   )
   const lmPoolLiquidity = useLmPoolLiquidity(poolInfo.lpAddress, poolInfo.chainId)
   const cakeAprFactor = useMemo(() => {
@@ -84,8 +87,6 @@ const AprModal: React.FC<V3PoolAprModalProps> = ({ modal, poolInfo, userPosition
       closeOnOverlayClick={false}
       depositAmountInUsd={depositUsdAsBN?.toString()}
       max={depositUsdAsBN?.toString()}
-      balanceA={position?.amount0 ?? currencyBalances.CURRENCY_A}
-      balanceB={position?.amount1 ?? currencyBalances.CURRENCY_B}
       price={price}
       currencyA={poolInfo.token0.wrapped}
       currencyB={poolInfo.token1.wrapped}
@@ -97,8 +98,8 @@ const AprModal: React.FC<V3PoolAprModalProps> = ({ modal, poolInfo, userPosition
       feeAmount={poolInfo.feeTier}
       ticks={ticksData}
       volume24H={Number(poolInfo.vol24hUsd) || 0}
-      priceUpper={priceUpper}
-      priceLower={priceLower}
+      priceUpper={position?.token0PriceUpper}
+      priceLower={position?.token0PriceLower}
       cakePrice={cakePrice.toFixed(3)}
       cakeAprFactor={cakeAprFactor}
       prices={prices}
