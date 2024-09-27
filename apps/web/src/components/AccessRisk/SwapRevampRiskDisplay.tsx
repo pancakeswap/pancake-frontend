@@ -1,7 +1,6 @@
-import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { ERC20Token } from '@pancakeswap/sdk'
-import { Flex, FlexGap, Link, RiskAlertIcon, Text } from '@pancakeswap/uikit'
+import { Box, FlexGap, Link, RiskAlertIcon, Text } from '@pancakeswap/uikit'
 import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useEffect, useMemo } from 'react'
@@ -90,26 +89,33 @@ export const RiskDetails: React.FC<RiskDetailsProps> = ({ token, riskLevelDescri
   if (!isDataLoading && riskLevel && riskLevel <= TOKEN_RISK.SIGNIFICANT && riskLevel >= TOKEN_RISK.MEDIUM) {
     if (riskLevel && riskLevel >= TOKEN_RISK.VERY_LOW && token?.address) {
       return (
-        <>
-          <Text>
-            {t(
-              'Scan risk level description for the output token shows here. This risk level is for a reference only, not as an investment advice.',
-            )}
-          </Text>
-          <Text my="8px">{riskLevelDescription}</Text>
-          <Text as="span">{t('Risk scan results are provided by a third party,')}</Text>
-          <Link style={{ display: 'inline' }} ml="4px" external href="https://www.hashdit.io">
-            HashDit
-          </Link>
-          {chainId === ChainId.BSC && (
+        <FlexGap alignItems="flex-start" gap="8px">
+          <Box>
+            <RiskAlertIcon width={24} color={tagColor} />
+          </Box>
+          <FlexGap justifyContent="center" alignItems="flex-start" flexDirection="column" gap="8px">
+            <Text fontSize="16px">
+              {TOKEN_RISK_T[riskLevel]} {t('High risk detected for output token:')} {token?.symbol}
+            </Text>
+
+            <Text>
+              {t(
+                'Scan risk level description for the output token shows here. This risk level is for a reference only, not as an investment advice.',
+              )}
+            </Text>
+            <Link style={{ display: 'inline' }} ml="4px" external href="https://www.hashdit.io">
+              Powered by HashDit
+            </Link>
+            {/* {chainId === ChainId.BSC && (
             <Flex mt="4px">
               <Text>{t('Get more details from')}</Text>
               <Link ml="4px" external href={`https://dappbay.bnbchain.org/risk-scanner/${token?.address ?? ''}`}>
                 {t('RedAlarm')}
               </Link>
             </Flex>
-          )}
-        </>
+          )} */}
+          </FlexGap>
+        </FlexGap>
       )
     }
   }
