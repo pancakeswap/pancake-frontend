@@ -99,7 +99,7 @@ export const RiskDetails: React.FC<RiskDetailsProps> = ({ token }) => {
           </Box>
           <FlexGap justifyContent="center" alignItems="flex-start" flexDirection="column" gap="8px">
             <Text fontSize="16px">
-              {TOKEN_RISK_T[riskLevel]} {t('High risk detected for output token:')} {token?.symbol}
+              {TOKEN_RISK_T[riskLevel]} {t('detected for output token:')} {token?.symbol}
             </Text>
 
             <Text>
