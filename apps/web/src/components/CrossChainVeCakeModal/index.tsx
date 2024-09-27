@@ -146,7 +146,7 @@ export const CrossChainVeCakeModal: React.FC<{
   const { address: account, chain } = useAccount()
   const { switchNetworkAsync } = useSwitchNetwork()
   const veCakeSenderV2Contract = usePancakeVeSenderV2Contract(ChainId.BSC)
-  const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError(({ throwUserRejectError: true }))
+  const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError({ throwUserRejectError: true })
   const { balance: veCakeOnBsc } = useVeCakeBalance(ChainId.BSC)
   const { balance: bnbBalance } = useGetBnbBalance()
 
@@ -154,7 +154,7 @@ export const CrossChainVeCakeModal: React.FC<{
 
   const [txByChain, setTxByChain] = useTxnByChain()
 
-  const [modalState, setModalState] = useState<'list' | 'ready' | 'submitted' | 'done'>('list')
+  const [modalState, setModalState] = useState<'list' | 'insufficent' | 'ready' | 'submitted' | 'done'>('list')
   const [nativeFee, setNativeFee] = useState<bigint>(0n)
   const [isSwitching, setIsSwitching] = useState(false)
 
