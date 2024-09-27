@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 
 import { useActiveIfoWithTimestamps } from 'hooks/useActiveIfoWithTimestamps'
-import { useActiveIfoConfig, useActiveIfoConfigAcrossChains } from 'hooks/useIfoConfig'
+import { useActiveIfoConfigAcrossChains } from 'hooks/useIfoConfig'
 
 const useIsRenderIfoBanner = () => {
   const ifo = useActiveIfoWithTimestamps()

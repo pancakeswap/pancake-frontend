@@ -1,5 +1,4 @@
 import { useRouter } from 'next/router'
-import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { useToast } from '@pancakeswap/uikit'
 import { CHAIN_QUERY_NAME } from 'config/chains'
