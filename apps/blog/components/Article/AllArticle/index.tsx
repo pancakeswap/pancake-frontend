@@ -14,6 +14,7 @@ import { useQuery } from '@tanstack/react-query'
 import ArticleSortSelect from 'components/Article/ArticleSortSelect'
 import CardArticle from 'components/Article/CardArticle'
 import CategoriesSelector from 'components/Article/CategoriesSelector'
+import NoSSR from 'components/NoSSR'
 import SkeletonArticle from 'components/SkeletonArticle'
 import useAllArticle from 'hooks/useAllArticle'
 import useLanguage from 'hooks/useLanguage'
@@ -147,16 +148,18 @@ const AllArticle = () => {
         {t('All articles')}
       </Text>
       <Flex p={['0', '0', '0', '0', '0', '0 16px', '0 16px']}>
-        {isDesktop && !isXl && (
-          <StyledTagContainer>
-            <CategoriesSelector
-              selected={selectedCategories}
-              categoriesData={categoriesData ?? []}
-              setSelected={setSelectCategoriesSelected}
-              childMargin="0 0 28px 0"
-            />
-          </StyledTagContainer>
-        )}
+        <NoSSR>
+          {isDesktop && !isXl && (
+            <StyledTagContainer>
+              <CategoriesSelector
+                selected={selectedCategories}
+                categoriesData={categoriesData ?? []}
+                setSelected={setSelectCategoriesSelected}
+                childMargin="0 0 28px 0"
+              />
+            </StyledTagContainer>
+          )}
+        </NoSSR>
         <Flex width={['100%', '100%', '100%', '100%', '100%', '845px', '907px']} flexDirection="column">
           <Flex
             mb={['18px', '18px', '18px', '24px']}
