@@ -53,4 +53,5 @@ export const bscWarningTokens = {
   ),
   nmt: new ERC20Token(ChainId.BSC, '0x03AA6298F1370642642415EDC0db8b957783e8D6', 18, 'NMT', 'NetMind Token'),
   pnp: new ERC20Token(ChainId.BSC, '0x5012c90F14d190607662CA8344120812Aaa2639D', 18, 'PNP', 'Penpie Token'),
+  uniBTC: new ERC20Token(ChainId.BSC, '0x6B2a01A5f79dEb4c2f3c0eDa7b01DF456FbD726a', 8, 'uniBTC', 'uniBTC'),
 }
