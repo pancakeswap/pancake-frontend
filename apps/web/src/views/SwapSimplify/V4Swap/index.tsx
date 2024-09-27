@@ -14,6 +14,7 @@ import { useAllTypeBestTrade } from '../../Swap/V3Swap/hooks/useAllTypeBestTrade
 import { ButtonAndDetailsPanel } from './ButtonAndDetailsPanel'
 import { FormMain } from './FormMainV4'
 import { SwapSelection } from './SwapSelectionTab'
+import { TradeDetails } from './TradeDetails'
 
 export function V4SwapForm() {
   const {
@@ -116,6 +117,7 @@ export function V4SwapForm() {
         swapCommitButton={
           <CommitButton order={bestOrder} tradeLoaded={tradeLoaded} tradeError={tradeError} {...commitHooks} />
         }
+        tradeDetails={<TradeDetails loaded={tradeLoaded} order={bestOrder} />}
       />
       {/* <TradeDetails loaded={tradeLoaded} order={bestOrder} /> */}
     </SwapUIV2.SwapFormWrapper>
