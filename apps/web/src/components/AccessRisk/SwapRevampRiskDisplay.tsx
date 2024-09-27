@@ -5,6 +5,7 @@ import { Flex, FlexGap, Link, RiskAlertIcon, Text } from '@pancakeswap/uikit'
 import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useEffect, useMemo } from 'react'
+import { styled } from 'styled-components'
 
 import { TOKEN_RISK, TOKEN_RISK_T, useTokenRisk } from './index'
 
@@ -23,6 +24,13 @@ interface RiskDetailsPanelProps {
   token1?: ERC20Token
   token1RiskLevelDescription?: string
 }
+
+export const RiskDetailsPanelWrapper = styled(FlexGap)`
+  border-radius: 20px;
+  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
+  background-color: ${({ theme }) => theme.colors.card};
+  padding: 12px;
+`
 
 const useRiskCheckData = (token?: ERC20Token) => {
   const { data, refetch } = useTokenRisk(token)
@@ -83,6 +91,11 @@ export const RiskDetails: React.FC<RiskDetailsProps> = ({ token, riskLevelDescri
     if (riskLevel && riskLevel >= TOKEN_RISK.VERY_LOW && token?.address) {
       return (
         <>
+          <Text>
+            {t(
+              'Scan risk level description for the output token shows here. This risk level is for a reference only, not as an investment advice.',
+            )}
+          </Text>
           <Text my="8px">{riskLevelDescription}</Text>
           <Text as="span">{t('Risk scan results are provided by a third party,')}</Text>
           <Link style={{ display: 'inline' }} ml="4px" external href="https://www.hashdit.io">
@@ -121,9 +134,9 @@ export const RiskDetailsPanel: React.FC<RiskDetailsPanelProps> = ({
   token1RiskLevelDescription,
 }) => {
   return (
-    <FlexGap width="100%" flexDirection="column" justifyContent="center" alignItems="center">
+    <RiskDetailsPanelWrapper width="100%" flexDirection="column" justifyContent="center" alignItems="center">
       <RiskDetails token={token0} riskLevelDescription={token0RiskLevelDescription} />
       <RiskDetails token={token1} riskLevelDescription={token1RiskLevelDescription} />
-    </FlexGap>
+    </RiskDetailsPanelWrapper>
   )
 }
