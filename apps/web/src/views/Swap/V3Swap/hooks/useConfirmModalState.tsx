@@ -36,6 +36,7 @@ import { useCurrencyBalance } from 'state/wallet/hooks'
 import { BLOCK_CONFIRMATION } from 'config/confirmation'
 
 import { useAccount } from 'wagmi'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { computeTradePriceBreakdown } from '../utils/exchange'
 import { userRejectedError } from './useSendSwapTransaction'
 import { useSwapCallback } from './useSwapCallback'
