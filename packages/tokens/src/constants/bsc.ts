@@ -3325,4 +3325,12 @@ export const bscTokens = {
     'Wrapped BTC',
     'https://wbtc.network/',
   ),
+  pufETH: new ERC20Token(
+    ChainId.BSC,
+    '0x64274835D88F5c0215da8AADd9A5f2D2A2569381',
+    18,
+    'xPufETH',
+    'xPufETH',
+    'https://www.puffer.fi/',
+  ),
 }
