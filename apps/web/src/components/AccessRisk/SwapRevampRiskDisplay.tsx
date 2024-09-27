@@ -2,11 +2,23 @@ import { useTranslation } from '@pancakeswap/localization'
 import { ERC20Token } from '@pancakeswap/sdk'
 import { Box, FlexGap, Link, RiskAlertIcon, Text } from '@pancakeswap/uikit'
 import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useEffect, useMemo } from 'react'
-import { styled } from 'styled-components'
+import { keyframes, styled } from 'styled-components'
 
 import { TOKEN_RISK, TOKEN_RISK_T, useTokenRisk } from './index'
+
+const appearAni = keyframes`
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0px); }
+`
+export const RiskDetailsPanelWrapper = styled(FlexGap)`
+  opacity: 0;
+  border-radius: 20px;
+  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
+  background-color: ${({ theme }) => theme.colors.card};
+  padding: 12px;
+  animation: ${appearAni} 0.25s ease-in-out 0.5s forwards;
+`
 
 interface RiskInputPanelDisplayProps {
   token?: ERC20Token
@@ -23,13 +35,6 @@ interface RiskDetailsPanelProps {
   token1?: ERC20Token
   token1RiskLevelDescription?: string
 }
-
-export const RiskDetailsPanelWrapper = styled(FlexGap)`
-  border-radius: 20px;
-  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
-  background-color: ${({ theme }) => theme.colors.card};
-  padding: 12px;
-`
 
 const useRiskCheckData = (token?: ERC20Token) => {
   const { data, refetch } = useTokenRisk(token)
@@ -82,9 +87,8 @@ export const RiskInputPanelDisplay: React.FC<RiskInputPanelDisplayProps> = ({ to
   return null
 }
 
-export const RiskDetails: React.FC<RiskDetailsProps> = ({ token, riskLevelDescription }) => {
+export const RiskDetails: React.FC<RiskDetailsProps> = ({ token }) => {
   const { t } = useTranslation()
-  const { chainId } = useActiveChainId()
   const { isDataLoading, riskLevel, tagColor } = useRiskCheckData(token)
   if (!isDataLoading && riskLevel && riskLevel <= TOKEN_RISK.SIGNIFICANT && riskLevel >= TOKEN_RISK.MEDIUM) {
     if (riskLevel && riskLevel >= TOKEN_RISK.VERY_LOW && token?.address) {
@@ -106,14 +110,6 @@ export const RiskDetails: React.FC<RiskDetailsProps> = ({ token, riskLevelDescri
             <Link style={{ display: 'inline' }} ml="4px" external href="https://www.hashdit.io">
               Powered by HashDit
             </Link>
-            {/* {chainId === ChainId.BSC && (
-            <Flex mt="4px">
-              <Text>{t('Get more details from')}</Text>
-              <Link ml="4px" external href={`https://dappbay.bnbchain.org/risk-scanner/${token?.address ?? ''}`}>
-                {t('RedAlarm')}
-              </Link>
-            </Flex>
-          )} */}
           </FlexGap>
         </FlexGap>
       )
