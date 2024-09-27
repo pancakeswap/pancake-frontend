@@ -77,6 +77,8 @@ export const useAllTypeBestTrade = () => {
   return {
     ammOrder: classicAmmOrder,
     xOrder: currentOrder,
+    // TODO: for log purpose in this stage
+    betterOrder: betterQuote,
     bestOrder: finalOrder as InterfaceOrder,
     tradeLoaded: !finalOrder?.isLoading,
     tradeError: finalOrder?.error,
