@@ -11,6 +11,7 @@ import { SwapType } from '../../Swap/types'
 import { PricingAndSlippage } from '../../Swap/V3Swap/containers'
 import { CommitButton } from '../../Swap/V3Swap/containers/CommitButton'
 import { useAllTypeBestTrade } from '../../Swap/V3Swap/hooks/useAllTypeBestTrade'
+import { ButtonAndDetailsPanel } from './ButtonAndDetailsPanel'
 import { FormMain } from './FormMainV4'
 import { SwapSelection } from './SwapSelectionTab'
 
@@ -106,11 +107,17 @@ export function V4SwapForm() {
           inputAmount={bestOrder?.trade?.inputAmount}
           outputAmount={bestOrder?.trade?.outputAmount}
           swapCommitButton={
-            <CommitButton order={bestOrder} tradeError={tradeError} tradeLoaded={tradeLoaded} {...commitHooks} />
+            <CommitButton order={bestOrder} tradeLoaded={tradeLoaded} tradeError={tradeError} {...commitHooks} />
           }
         />
       </SwapUIV2.SwapTabAndInputPanelWrapper>
       {shouldRiskPanelDisplay && <RiskDetailsPanel token0={inputCurrency?.wrapped} token1={outputCurrency?.wrapped} />}
+      <ButtonAndDetailsPanel
+        swapCommitButton={
+          <CommitButton order={bestOrder} tradeLoaded={tradeLoaded} tradeError={tradeError} {...commitHooks} />
+        }
+      />
+      {/* <TradeDetails loaded={tradeLoaded} order={bestOrder} /> */}
     </SwapUIV2.SwapFormWrapper>
   )
 }
