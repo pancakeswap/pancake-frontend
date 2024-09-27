@@ -2,7 +2,7 @@ import { ChainId, getChainName } from '@pancakeswap/chains'
 import { getStableSwapPools } from '@pancakeswap/stable-swap-sdk'
 import { isAddressEqual } from 'viem'
 import { supportedChainIdV4 } from './const'
-import { SerializedFarmConfig, SerializedFarmPublicData, UniversalFarmConfig } from './types'
+import { SerializedFarmConfig, SerializedFarmPublicData, UniversalFarmConfig, UniversalFarmConfigV2 } from './types'
 
 /**
  * @deprecated only used for legacy farms
@@ -21,9 +21,8 @@ export async function getLegacyFarmConfig(chainId?: ChainId): Promise<Serialized
         })
       }
 
-      const farmConfig = universalConfig.filter((f) => f.protocol === 'v2' || f.protocol === 'stable')
-
-      const transformedFarmConfig: SerializedFarmConfig[] = farmConfig
+      const transformedFarmConfig: SerializedFarmConfig[] = universalConfig
+        .filter((f) => f.pid && (f.protocol === 'v2' || f.protocol === 'stable'))
         .map((farm) => {
           const stablePair =
             farm.protocol === 'stable'
@@ -31,7 +30,6 @@ export async function getLegacyFarmConfig(chainId?: ChainId): Promise<Serialized
                   return isAddressEqual(s.lpAddress, farm.lpAddress)
                 })
               : undefined
-          if (!farm.pid) return undefined
           return {
             pid: farm.pid ?? 0,
             lpAddress: farm.lpAddress,
@@ -45,10 +43,11 @@ export async function getLegacyFarmConfig(chainId?: ChainId): Promise<Serialized
                   stableLpFee: stablePair.stableLpFee,
                   stableLpFeeRateOfTotalFee: stablePair.stableLpFeeRateOfTotalFee,
                 }
+              : (farm as UniversalFarmConfigV2).bCakeWrapperAddress
+              ? { bCakeWrapperAddress: (farm as UniversalFarmConfigV2).bCakeWrapperAddress }
               : {}),
           } satisfies SerializedFarmConfig
         })
-        .filter((farm): farm is SerializedFarmConfig => farm !== undefined)
 
       return legacyFarmConfig.concat(transformedFarmConfig)
     } catch (error) {
