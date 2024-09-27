@@ -13,7 +13,6 @@ import { useGasPriceManager, useSubgraphHealthIndicatorManager, useUserUsernameV
 import { useUserChart } from 'state/user/hooks/useUserChart'
 import { useUserTokenRisk } from 'state/user/hooks/useUserTokenRisk'
 import {
-  useMMLinkedPoolByDefault,
   useUserSplitRouteEnable,
   useUserStableSwapEnable,
   useUserV2SwapEnable,
@@ -51,14 +50,12 @@ export function useGlobalSettingsEvaluation() {
   const [v2Enable] = useUserV2SwapEnable()
   const [v3Enable] = useUserV3SwapEnable()
   const [split] = useUserSplitRouteEnable()
-  const [isMMLinkedPoolByDefault] = useMMLinkedPoolByDefault()
   const [singleHopOnly] = useUserSingleHopOnly()
   const [speedQuote] = useSpeedQuote()
   useFeatureFlagEvaluation('global-settings-routing-stableswap', isStableSwapByDefault)
   useFeatureFlagEvaluation('global-settings-routing-v2', v2Enable)
   useFeatureFlagEvaluation('global-settings-routing-v3', v3Enable)
   useFeatureFlagEvaluation('global-settings-routing-split', split)
-  useFeatureFlagEvaluation('global-settings-routing-mm', isMMLinkedPoolByDefault)
   useFeatureFlagEvaluation('global-settings-routing-single-hop', singleHopOnly)
   useFeatureFlagEvaluation('global-settings-speed-quote', speedQuote)
 

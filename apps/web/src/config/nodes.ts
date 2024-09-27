@@ -97,7 +97,10 @@ export const PUBLIC_NODES: Record<ChainId, string[] | readonly string[]> = {
     'https://bsc-dataseed1.defibit.io',
     'https://bsc-dataseed1.binance.org',
   ].filter(notEmpty),
-  [ChainId.BSC_TESTNET]: ['https://data-seed-prebsc-1-s1.binance.org:8545'],
+  [ChainId.BSC_TESTNET]: [
+    getNodeRealUrl(ChainId.BSC_TESTNET, process.env.SERVER_NODE_REAL_API_ETH) || '',
+    'https://data-seed-prebsc-1-s1.binance.org:8545',
+  ].filter(notEmpty),
   [ChainId.ETHEREUM]: [
     getNodeRealUrl(ChainId.ETHEREUM, process.env.NEXT_PUBLIC_NODE_REAL_API_ETH) || '',
     process.env.NEXT_PUBLIC_NODIES_ETH || '',

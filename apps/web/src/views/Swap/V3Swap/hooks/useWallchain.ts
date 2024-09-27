@@ -16,6 +16,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { basisPointsToPercent } from 'utils/exchange'
 import { useWalletClient } from 'wagmi'
 
+import { ClassicOrder } from '@pancakeswap/price-api-sdk'
 import Bottleneck from 'bottleneck'
 import { WALLCHAIN_ENABLED, WallchainKeys, WallchainTokens } from 'config/wallchain'
 import { Address, Hex } from 'viem'
@@ -119,7 +120,7 @@ export function useWallchainStatus() {
 }
 
 export function useWallchainApi(
-  trade?: SmartRouterTrade<TradeType>,
+  trade?: ClassicOrder['trade'],
   deadline?: bigint,
   feeOptions?: FeeOptions,
 ): [WallchainStatus, string | undefined, [TMEVFoundResponse['searcherRequest'], string | undefined] | undefined] {

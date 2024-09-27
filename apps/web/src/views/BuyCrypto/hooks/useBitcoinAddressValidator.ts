@@ -2,7 +2,7 @@ import type { UseQueryResult } from '@tanstack/react-query'
 import { useQuery } from '@tanstack/react-query'
 import { ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
 import qs from 'qs'
-import { createQueryKey, type Evaluate, type UseQueryParameters } from '../types'
+import { createQueryKey, type Evaluate, type UseQueryParameters } from 'utils/reactQuery'
 
 export enum BtcNetwork {
   mainnet = 'mainnet',

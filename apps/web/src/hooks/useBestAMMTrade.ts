@@ -1,8 +1,7 @@
 import { ChainId } from '@pancakeswap/chains'
-import { useDebounce, usePropsChanged } from '@pancakeswap/hooks'
+import { useDebounce, usePreviousValue, usePropsChanged } from '@pancakeswap/hooks'
 import { getPoolTypeKey, getRequestBody, parseAMMPriceResponse, parseQuoteResponse } from '@pancakeswap/price-api-sdk'
 import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
-import { zeroAddress } from 'viem'
 import {
   BATCH_MULTICALL_CONFIGS,
   PoolType,
@@ -14,13 +13,14 @@ import {
 } from '@pancakeswap/smart-router'
 import { BigintIsh } from '@pancakeswap/swap-sdk-core'
 import { AbortControl } from '@pancakeswap/utils/abortControl'
+import { useUserSlippage } from '@pancakeswap/utils/user'
 import { keepPreviousData, useQuery, useQueryClient } from '@tanstack/react-query'
-import { useAccount } from 'wagmi'
 import qs from 'qs'
 import { useCallback, useDeferredValue, useEffect, useMemo, useRef } from 'react'
+import { zeroAddress } from 'viem'
+import { useAccount } from 'wagmi'
 
 import { QUOTING_API, QUOTING_API_PREFIX } from 'config/constants/endpoints'
-import { EXPERIMENTAL_FEATURES } from 'config/experimentalFeatures'
 import { POOLS_FAST_REVALIDATE, POOLS_NORMAL_REVALIDATE } from 'config/pools'
 import { useIsWrapping } from 'hooks/useWrapCallback'
 import { useCurrentBlock } from 'state/block/hooks'
@@ -28,6 +28,7 @@ import { useFeeDataWithGasPrice } from 'state/user/hooks'
 import { tracker } from 'utils/datadog'
 import { createViemPublicClientGetter } from 'utils/viem'
 import { publicClient } from 'utils/wagmi'
+import { basisPointsToPercent } from 'utils/exchange'
 
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import {
@@ -38,12 +39,12 @@ import {
   useCommonPools as useCommonPoolsWithTicks,
 } from './useCommonPools'
 import { useCurrencyUsdPrice } from './useCurrencyUsdPrice'
-import { useExperimentalFeatureEnabled } from './useExperimentalFeatureEnabled'
+// import { useExperimentalFeatureEnabled } from './useExperimentalFeatureEnabled'
 import { useMulticallGasLimit } from './useMulticallGasLimit'
 import { useSpeedQuote } from './useSpeedQuote'
 import { useTokenFee } from './useTokenFee'
-import { useGlobalWorker } from './useWorker'
 import { useTradeVerifiedByQuoter } from './useTradeVerifiedByQuoter'
+import { useGlobalWorker } from './useWorker'
 
 export class NoValidRouteError extends Error {
   constructor(message?: string) {
@@ -84,31 +85,44 @@ interface Options {
   enabled?: boolean
   autoRevalidate?: boolean
   trackPerf?: boolean
+  retry?: number | boolean
 }
 
 interface useBestAMMTradeOptions extends Options {
   type?: 'offchain' | 'quoter' | 'auto' | 'api'
 }
 
-type QuoteResult = ReturnType<ReturnType<typeof bestTradeHookFactory>>
+type QuoteTrade = Pick<
+  NonNullable<ReturnType<ReturnType<typeof bestTradeHookFactory>>['trade']>,
+  'inputAmount' | 'outputAmount' | 'tradeType'
+>
 
-function useBetterQuote<A extends QuoteResult, B extends QuoteResult>(quoteA: A, quoteB: B) {
+type QuoteResult = Pick<ReturnType<ReturnType<typeof bestTradeHookFactory>>, 'isLoading' | 'error'> & {
+  trade?: QuoteTrade
+}
+
+export function useBetterQuote<A extends QuoteResult, B extends QuoteResult>(quoteA?: A, quoteB?: B): A | B | undefined
+export function useBetterQuote<A extends QuoteResult, B extends QuoteResult>(quoteA: A, quoteB: B): A | B
+export function useBetterQuote<A extends QuoteResult, B extends QuoteResult>(
+  quoteA?: A,
+  quoteB?: B,
+): A | B | undefined {
   return useMemo(() => {
-    if (!quoteB.trade) {
+    if (!quoteB?.trade || (!quoteA?.trade && !quoteB?.trade)) {
       return quoteA
     }
-    if (!quoteA.trade && quoteB.trade) {
+    if (!quoteA?.trade) {
       return quoteB
     }
     // prioritize quoteA. Use quoteB as fallback
     if (quoteA.isLoading && !quoteA.error) {
       return quoteA
     }
-    return quoteA.trade!.tradeType === TradeType.EXACT_INPUT
-      ? quoteB.trade?.outputAmount.greaterThan(quoteA.trade!.outputAmount)
+    return quoteA.trade.tradeType === TradeType.EXACT_INPUT
+      ? quoteB.trade.outputAmount.greaterThan(quoteA.trade!.outputAmount)
         ? quoteB
         : quoteA
-      : quoteB.trade?.inputAmount.lessThan(quoteA.trade!.inputAmount)
+      : quoteB.trade.inputAmount.lessThan(quoteA.trade!.inputAmount)
       ? quoteB
       : quoteA
   }, [quoteA, quoteB])
@@ -124,16 +138,17 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
     [type, isWrapping],
   )
 
-  const isPriceApiEnabled = useExperimentalFeatureEnabled(EXPERIMENTAL_FEATURES.PriceAPI)
+  // const isPriceApiEnabled = useExperimentalFeatureEnabled(EXPERIMENTAL_FEATURES.PriceAPI)
   const isQuoterAPIEnabled = useMemo(() => Boolean(!isWrapping && type === 'api'), [isWrapping, type])
 
   const apiAutoRevalidate = typeof autoRevalidate === 'boolean' ? autoRevalidate : isQuoterAPIEnabled
 
-  useBestTradeFromApi({
-    ...params,
-    enabled: Boolean(enabled && isPriceApiEnabled),
-    autoRevalidate: apiAutoRevalidate,
-  })
+  // TODO: re-enable after amm endpoint is ready
+  // useBestTradeFromApi({
+  //   ...params,
+  //   enabled: Boolean(enabled && isPriceApiEnabled),
+  //   autoRevalidate: apiAutoRevalidate,
+  // })
 
   const bestTradeFromQuoterApi = useBestAMMTradeFromQuoterWorker2({
     ...params,
@@ -180,7 +195,7 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
 
   const bestTradeFromQuoterWorker = shouldFallbackQuoterOnChain
     ? bestTradeFromOnChainQuoter
-    : bestOffchainWithQuickOnChainQuote
+    : bestOffchainWithQuickOnChainQuote!
 
   return useMemo(
     () => (isQuoterAPIEnabled ? bestTradeFromQuoterApi : bestTradeFromQuoterWorker),
@@ -497,8 +512,8 @@ export const useBestAMMTradeFromOffchainQuoter = bestTradeHookFactory<V4Router.V
   useGetBestTrade: createUseWorkerGetBestTradeOffchain(),
 })
 
-function useBestTradeFromApi({
-  baseCurrency,
+export function useBestTradeFromApi({
+  // baseCurrency,
   amount,
   currency,
   enabled,
@@ -509,7 +524,9 @@ function useBestTradeFromApi({
   tradeType = TradeType.EXACT_INPUT,
   v2Swap,
   v3Swap,
+  retry = false,
 }: Options) {
+  const [slippage] = useUserSlippage()
   const poolTypes = useMemo(() => {
     const types: PoolType[] = []
     if (v2Swap) {
@@ -527,19 +544,23 @@ function useBestTradeFromApi({
     return types
   }, [v2Swap, v3Swap, stableSwap])
 
-  useTradeApiPrefetch({
-    currencyA: baseCurrency,
-    currencyB: currency,
-    enabled,
-    poolTypes,
-  })
+  // useTradeApiPrefetch({
+  //   currencyA: baseCurrency,
+  //   currencyB: currency,
+  //   enabled,
+  //   poolTypes,
+  // })
 
   const deferQuotientRaw = useDeferredValue(amount?.quotient?.toString())
   const deferQuotient = useDebounce(deferQuotientRaw, 500)
   const { address } = useAccount()
+  const { gasPrice } = useFeeDataWithGasPrice()
+
+  const previousEnabled = usePreviousValue(enabled)
 
   return useQuery({
     enabled: !!(amount && currency && deferQuotient && enabled),
+    refetchInterval: POOLS_FAST_REVALIDATE[currency?.chainId as keyof typeof POOLS_FAST_REVALIDATE] ?? 10_000,
     queryKey: [
       'quote-api',
       address,
@@ -551,7 +572,9 @@ function useBestTradeFromApi({
       maxHops,
       maxSplits,
       poolTypes,
+      slippage,
     ] as const,
+    retry,
     queryFn: async ({ signal, queryKey }) => {
       const [key] = queryKey
       if (!amount || !amount.currency || !currency || !deferQuotient) {
@@ -564,12 +587,14 @@ function useBestTradeFromApi({
         amount,
         quoteCurrency: currency,
         tradeType,
-        amm: { maxHops, maxSplits, poolTypes },
+        slippage: basisPointsToPercent(slippage),
+        amm: { maxHops, maxSplits, poolTypes, gasPriceWei: gasPrice },
         x: {
           useSyntheticQuotes: true,
           swapper: address,
         },
       })
+
       const serverRes = await fetch(`${QUOTING_API}`, {
         method: 'POST',
         signal,
@@ -580,10 +605,11 @@ function useBestTradeFromApi({
       })
       const serializedRes = await serverRes.json()
 
+      const isExactIn = tradeType === TradeType.EXACT_INPUT
       const result = parseQuoteResponse(serializedRes, {
         chainId: currency.chainId,
-        currencyIn: amount.currency,
-        currencyOut: currency,
+        currencyIn: isExactIn ? amount.currency : currency,
+        currencyOut: isExactIn ? currency : amount.currency,
         tradeType,
       })
 
@@ -598,6 +624,14 @@ function useBestTradeFromApi({
       }
 
       return result
+    },
+    placeholderData: (previousData, previousQuery) => {
+      const queryKey = previousQuery?.queryKey
+
+      if (!queryKey) return undefined
+      if (!previousEnabled) return undefined
+
+      return previousData
     },
   })
 }
@@ -737,7 +771,7 @@ function getCurrencyIdentifierForApi(currency: Currency) {
   return currency.isNative ? zeroAddress : currency.address
 }
 
-function useTradeApiPrefetch({ currencyA, currencyB, poolTypes, enabled = true }: PrefetchParams) {
+export function useTradeApiPrefetch({ currencyA, currencyB, poolTypes, enabled = true }: PrefetchParams) {
   return useQuery({
     enabled: !!(currencyA && currencyB && poolTypes?.length && enabled),
     queryKey: ['quote-api-prefetch', currencyA?.chainId, currencyA?.symbol, currencyB?.symbol, poolTypes] as const,

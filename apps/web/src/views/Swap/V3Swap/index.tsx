@@ -1,69 +1,101 @@
 import { SmartRouter } from '@pancakeswap/smart-router/evm'
-import { Box } from '@pancakeswap/uikit'
 import { useMemo } from 'react'
-import { MMLiquidityWarning } from 'views/Swap/MMLinkPools/components/MMLiquidityWarning'
-import { shouldShowMMLiquidityError } from 'views/Swap/MMLinkPools/utils/exchange'
-import { BuyCryptoLink, FormHeader, FormMain, MMTradeDetail, PricingAndSlippage, TradeDetails } from './containers'
+import { logger } from 'utils/datadog'
+import { useCurrencyUsdPrice } from 'hooks/useCurrencyUsdPrice'
+
+import { BuyCryptoLink, FormHeader, FormMain, PricingAndSlippage, TradeDetails } from './containers'
 import { CommitButton } from './containers/CommitButton'
 import { useAllTypeBestTrade } from './hooks/useAllTypeBestTrade'
 import { useCheckInsufficientError } from './hooks/useCheckSufficient'
 
 export function V3SwapForm() {
   const {
-    bestTrade,
-    ammTrade,
-    mmTrade,
-    isMMBetter,
+    bestOrder,
+    refreshOrder,
     tradeError,
     tradeLoaded,
-    refreshTrade,
     refreshDisabled,
     pauseQuoting,
     resumeQuoting,
+    xOrder,
+    ammOrder,
   } = useAllTypeBestTrade()
+  const { data: inputUsdPrice } = useCurrencyUsdPrice(bestOrder?.trade?.inputAmount.currency)
+  const { data: outputUsdPrice } = useCurrencyUsdPrice(bestOrder?.trade?.outputAmount.currency)
 
-  const ammPrice = useMemo(() => (ammTrade ? SmartRouter.getExecutionPrice(ammTrade) : undefined), [ammTrade])
-  const insufficientFundCurrency = useCheckInsufficientError(ammTrade)
+  const executionPrice = useMemo(
+    () => (bestOrder?.trade ? SmartRouter.getExecutionPrice(bestOrder.trade) : undefined),
+    [bestOrder?.trade],
+  )
+  const insufficientFundCurrency = useCheckInsufficientError(bestOrder)
   const commitHooks = useMemo(() => {
     return {
-      beforeCommit: pauseQuoting,
+      beforeCommit: () => {
+        pauseQuoting()
+        try {
+          const validTrade = ammOrder.trade ?? xOrder?.trade
+          if (!validTrade) {
+            throw new Error('No valid trade to log')
+          }
+          const { inputAmount, tradeType, outputAmount } = validTrade
+          const { currency: inputCurrency } = inputAmount
+          const { currency: outputCurrency } = outputAmount
+          const { chainId } = inputCurrency
+          const ammInputAmount = ammOrder.trade?.inputAmount.toExact()
+          const ammOutputAmount = ammOrder.trade?.outputAmount.toExact()
+          const xInputAmount = xOrder?.trade?.inputAmount.toExact()
+          const xOutputAmount = xOrder?.trade?.outputAmount.toExact()
+          logger.info('X/AMM Quote Comparison', {
+            chainId,
+            tradeType,
+            inputNative: inputCurrency.isNative,
+            outputNative: outputCurrency.isNative,
+            inputToken: inputCurrency.wrapped.address,
+            outputToken: outputCurrency.wrapped.address,
+            bestOrderType: bestOrder.type,
+            ammOrder: {
+              type: ammOrder.type,
+              inputAmount: ammInputAmount,
+              outputAmount: ammOutputAmount,
+              inputUsdValue: inputUsdPrice && ammInputAmount ? Number(ammInputAmount) * inputUsdPrice : undefined,
+              outputUsdValue: outputUsdPrice && ammOutputAmount ? Number(ammOutputAmount) * outputUsdPrice : undefined,
+            },
+            xOrder: xOrder
+              ? {
+                  type: xOrder.type,
+                  inputAmount: xInputAmount,
+                  outputAmount: xOutputAmount,
+                  inputUsdValue: inputUsdPrice && xInputAmount ? Number(xInputAmount) * inputUsdPrice : undefined,
+                  outputUsdValue: outputUsdPrice && xOutputAmount ? Number(xOutputAmount) * outputUsdPrice : undefined,
+                }
+              : undefined,
+          })
+        } catch (error) {
+          //
+        }
+      },
       afterCommit: resumeQuoting,
     }
-  }, [pauseQuoting, resumeQuoting])
+  }, [pauseQuoting, resumeQuoting, xOrder, ammOrder, inputUsdPrice, outputUsdPrice, bestOrder.type])
 
   return (
     <>
-      <FormHeader onRefresh={refreshTrade} refreshDisabled={refreshDisabled} />
+      <FormHeader onRefresh={refreshOrder} refreshDisabled={refreshDisabled} />
       <FormMain
-        tradeLoading={isMMBetter ? false : !tradeLoaded}
+        tradeLoading={!tradeLoaded}
         pricingAndSlippage={
-          <PricingAndSlippage priceLoading={!tradeLoaded} price={ammPrice ?? undefined} showSlippage={!isMMBetter} />
+          <PricingAndSlippage priceLoading={!tradeLoaded} price={executionPrice ?? undefined} showSlippage={false} />
         }
-        inputAmount={bestTrade?.inputAmount}
-        outputAmount={bestTrade?.outputAmount}
+        inputAmount={bestOrder?.trade?.inputAmount}
+        outputAmount={bestOrder?.trade?.outputAmount}
         swapCommitButton={
-          <CommitButton
-            trade={isMMBetter ? mmTrade : ammTrade}
-            tradeError={tradeError}
-            tradeLoaded={tradeLoaded}
-            {...commitHooks}
-          />
+          <CommitButton order={bestOrder} tradeError={tradeError} tradeLoaded={tradeLoaded} {...commitHooks} />
         }
       />
 
       <BuyCryptoLink currency={insufficientFundCurrency} />
 
-      {isMMBetter ? (
-        <MMTradeDetail loaded={!mmTrade.mmOrderBookTrade.isLoading} mmTrade={mmTrade.mmTradeInfo} />
-      ) : (
-        <TradeDetails loaded={tradeLoaded} trade={ammTrade} />
-      )}
-      {(shouldShowMMLiquidityError(mmTrade?.mmOrderBookTrade?.inputError) || mmTrade?.mmRFQTrade?.error) &&
-        !ammTrade && (
-          <Box mt="5px">
-            <MMLiquidityWarning />
-          </Box>
-        )}
+      <TradeDetails loaded={tradeLoaded} order={bestOrder} />
     </>
   )
 }

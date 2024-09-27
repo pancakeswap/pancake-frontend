@@ -1,13 +1,7 @@
 import { useQuery, type UseQueryResult } from '@tanstack/react-query'
 import { ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
-import {
-  createQueryKey,
-  type Evaluate,
-  type ExactPartial,
-  type OnRampProviderQuote,
-  type OnRampQuotesPayload,
-  type UseQueryParameters,
-} from '../types'
+import { createQueryKey, type Evaluate, type ExactPartial, type UseQueryParameters } from 'utils/reactQuery'
+import { type OnRampProviderQuote, type OnRampQuotesPayload } from '../types'
 
 const getOnRampQuotesQueryKey = createQueryKey<'fetch-onramp-quotes', [ExactPartial<OnRampQuotesPayload>]>(
   'fetch-onramp-quotes',

@@ -1,6 +1,4 @@
 import { ConfirmModalState } from '@pancakeswap/widgets-internal'
-import { MMTradeInfo } from '../MMLinkPools/hooks'
-import { MMOrderBookTrade, MMRfqTrade } from '../MMLinkPools/types'
 
 export enum ConfirmModalStateV1 {
   REVIEWING,
@@ -32,14 +30,6 @@ export type AllowedAllowanceState =
   | ConfirmModalState.RESETTING_APPROVAL
   | ConfirmModalState.APPROVING_TOKEN
   | ConfirmModalState.PERMITTING
-
-export type MMCommitTrade<T> = {
-  isMMBetter: boolean
-  mmOrderBookTrade: MMOrderBookTrade<T> | null
-  mmRFQTrade: MMRfqTrade<T> | null
-  mmQuoteExpiryRemainingSec: number | null
-  mmTradeInfo: MMTradeInfo<T> | null
-}
 
 export type CommitButtonProps = {
   beforeCommit?: () => void

@@ -1,5 +1,3 @@
-import { SmartRouterTrade } from '@pancakeswap/smart-router'
-import { TradeType } from '@pancakeswap/swap-sdk-core'
 import { useAccount } from 'wagmi'
 
 import { useCurrency } from 'hooks/Tokens'
@@ -8,11 +6,10 @@ import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
 import { useCurrencyBalances } from 'state/wallet/hooks'
 
+import { InterfaceOrder } from 'views/Swap/utils'
 import { useSlippageAdjustedAmounts } from './useSlippageAdjustedAmounts'
 
-export function useCheckInsufficientError(
-  trade?: Pick<SmartRouterTrade<TradeType>, 'inputAmount' | 'outputAmount' | 'tradeType'>,
-) {
+export function useCheckInsufficientError(order?: InterfaceOrder | null | undefined) {
   const { address: account } = useAccount()
 
   const {
@@ -23,7 +20,7 @@ export function useCheckInsufficientError(
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
 
-  const slippageAdjustedAmounts = useSlippageAdjustedAmounts(trade)
+  const slippageAdjustedAmounts = useSlippageAdjustedAmounts(order)
 
   const currencyBalances = useCurrencyBalances(account ?? undefined, [
     inputCurrency ?? undefined,

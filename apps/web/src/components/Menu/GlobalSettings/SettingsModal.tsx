@@ -32,6 +32,7 @@ import { ExpertModal } from '@pancakeswap/widgets-internal'
 import { TOKEN_RISK } from 'components/AccessRisk'
 import AccessRiskTooltips from 'components/AccessRisk/AccessRiskTooltips'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useSpeedQuote } from 'hooks/useSpeedQuote'
 import useTheme from 'hooks/useTheme'
 import { useWebNotifications } from 'hooks/useWebNotifications'
 import { ReactNode, Suspense, lazy, useCallback, useState } from 'react'
@@ -39,9 +40,7 @@ import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { useSubgraphHealthIndicatorManager, useUserUsernameVisibility } from 'state/user/hooks'
 import { useUserShowTestnet } from 'state/user/hooks/useUserShowTestnet'
 import { useUserTokenRisk } from 'state/user/hooks/useUserTokenRisk'
-import { useSpeedQuote } from 'hooks/useSpeedQuote'
 import {
-  useMMLinkedPoolByDefault,
   useOnlyOneAMMSourceEnabled,
   useRoutingSettingChanged,
   useUserSplitRouteEnable,
@@ -49,6 +48,7 @@ import {
   useUserV2SwapEnable,
   useUserV3SwapEnable,
 } from 'state/user/smartRouter'
+import { usePCSX, usePCSXFeatureEnabled } from 'hooks/usePCSX'
 import { styled } from 'styled-components'
 import GasSettings from './GasSettings'
 import TransactionSettings from './TransactionSettings'
@@ -349,8 +349,9 @@ function RoutingSettings() {
   const [isStableSwapByDefault, setIsStableSwapByDefault] = useUserStableSwapEnable()
   const [v2Enable, setV2Enable] = useUserV2SwapEnable()
   const [v3Enable, setV3Enable] = useUserV3SwapEnable()
+  const [xEnable, setXEnable] = usePCSX()
+  const xFeatureEnabled = usePCSXFeatureEnabled()
   const [split, setSplit] = useUserSplitRouteEnable()
-  const [isMMLinkedPoolByDefault, setIsMMLinkedPoolByDefault] = useMMLinkedPoolByDefault()
   const [singleHopOnly, setSingleHopOnly] = useUserSingleHopOnly()
   const onlyOneAMMSourceEnabled = useOnlyOneAMMSourceEnabled()
   const [isRoutingSettingChange, reset] = useRoutingSettingChanged()
@@ -373,6 +374,24 @@ function RoutingSettings() {
         }}
         gap="16px"
       >
+        {xFeatureEnabled ? (
+          <Flex justifyContent="space-between" alignItems="flex-start" mb="24px">
+            <Flex flexDirection="column">
+              <Text>{t('Experimental Trading')}</Text>
+              <Text fontSize="12px" color="textSubtle" maxWidth={360} mt={10}>
+                When applicable, aggregates liquidity to provide better price, more token options, and gas free swaps.
+              </Text>
+            </Flex>
+            <PancakeToggle
+              id="stable-swap-toggle"
+              scale="md"
+              checked={xEnable}
+              onChange={() => {
+                setXEnable((s) => !s)
+              }}
+            />
+          </Flex>
+        ) : null}
         <AtomBox>
           <PreTitle mb="24px">{t('Liquidity source')}</PreTitle>
           <Flex justifyContent="space-between" alignItems="center" mb="24px">
@@ -441,7 +460,7 @@ function RoutingSettings() {
                 ml="4px"
               />
             </Flex>
-            <PancakeToggle
+            <Toggle
               disabled={isStableSwapByDefault && onlyOneAMMSourceEnabled}
               id="stable-swap-toggle"
               scale="md"
@@ -449,31 +468,6 @@ function RoutingSettings() {
               onChange={() => {
                 setIsStableSwapByDefault((s) => !s)
               }}
-            />
-          </Flex>
-          <Flex justifyContent="space-between" alignItems="center" mb="24px">
-            <Flex alignItems="center">
-              <Text>{`PancakeSwap ${t('MM Linked Pool')}`}</Text>
-              <QuestionHelper
-                text={
-                  <Flex flexDirection="column">
-                    <Text mr="5px">{t('Trade through the market makers if they provide better deal')}</Text>
-                    <Text mr="5px" mt="1em">
-                      {t(
-                        'If a trade is going through market makers, it will no longer route through any traditional AMM DEX pools.',
-                      )}
-                    </Text>
-                  </Flex>
-                }
-                placement="top"
-                ml="4px"
-              />
-            </Flex>
-            <Toggle
-              id="toggle-disable-mm-button"
-              checked={isMMLinkedPoolByDefault}
-              onChange={(e) => setIsMMLinkedPoolByDefault(e.target.checked)}
-              scale="md"
             />
           </Flex>
           {onlyOneAMMSourceEnabled && (
