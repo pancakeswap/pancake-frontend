@@ -14,7 +14,7 @@ export const SwapFormWrapper = styled.div`
 export const InputPanelWrapper = styled(Flex)`
   position: relative;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   padding: 1rem;
   width: 100%;
   background-color: ${({ theme }) => theme.colors.backgroundAlt};
@@ -29,7 +29,6 @@ export const SwapTabAndInputPanelWrapper = styled(Flex)`
   gap: 16px;
   justify-content: center;
   align-items: center;
-  height: 100%;
   will-change: transform;
   transition: transform 0.2 ease;
   transform: translateY(0px);
