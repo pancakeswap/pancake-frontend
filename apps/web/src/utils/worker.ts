@@ -23,13 +23,15 @@ class WorkerProxy {
     this.id = id
     const promise = new Promise<T>((resolve, reject) => {
       const handler = (e: any) => {
-        const [eId, data] = e.data
-        if (id === eId) {
-          this.worker.removeEventListener('message', handler)
-          if (data.success === false) {
-            reject(data.error)
-          } else {
-            resolve(data.result)
+        if (typeof e?.data?.[Symbol.iterator] === 'function') {
+          const [eId, data] = e.data
+          if (id === eId) {
+            this.worker.removeEventListener('message', handler)
+            if (data.success === false) {
+              reject(data.error)
+            } else {
+              resolve(data.result)
+            }
           }
         }
       }
