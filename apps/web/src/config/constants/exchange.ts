@@ -174,3 +174,4 @@ export const GENERIC_GAS_LIMIT_ORDER_EXECUTION = 500000n
 export const LIMIT_ORDERS_DOCS_URL = 'https://docs.pancakeswap.finance/products/pancakeswap-exchange/limit-orders'
 
 export const EXCHANGE_PAGE_PATHS = ['/swap', '/limit-orders', 'liquidity', '/add', '/find', '/remove', '/stable', '/v2']
+export const UNIVERSAL_PAGE_PATHS = ['/liquidity/pools', '/liquidity/positions']
