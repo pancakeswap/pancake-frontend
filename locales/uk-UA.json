@@ -3529,5 +3529,8 @@
   "Swap order filled": "Swap order filled",
   "We are having some trouble filling your order. Please retry.": "We are having some trouble filling your order. Please retry.",
   "No gas cost or fee will be charged on failed orders.": "No gas cost or fee will be charged on failed orders.",
-  "Please exercise due caution when trading / providing liquidity for the PNP token. The protocol recently encountered a": "Дійте обережно під час торгівлі токеном PNP та надання ліквідності для нього: протокол нещодавно постраждав від"
+  "Please exercise due caution when trading / providing liquidity for the PNP token. The protocol recently encountered a": "Дійте обережно під час торгівлі токеном PNP та надання ліквідності для нього: протокол нещодавно постраждав від",
+  "For more information, please refer to %org%’s": "For more information, please refer to %org%’s",
+  "Please exercise due caution when trading / providing liquidity for the uniBTC token. The protocol recently encountered a security compromise.": "Please exercise due caution when trading / providing liquidity for the uniBTC token. The protocol recently encountered a security compromise.",
+  "Caution - %token% Token": "Caution - %token% Token"
 }
