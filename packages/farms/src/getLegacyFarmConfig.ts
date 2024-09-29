@@ -2,13 +2,7 @@ import { ChainId, getChainName } from '@pancakeswap/chains'
 import { getStableSwapPools } from '@pancakeswap/stable-swap-sdk'
 import { isAddressEqual } from 'viem'
 import { supportedChainIdV4 } from './const'
-import {
-  SerializedFarmConfig,
-  SerializedFarmPublicData,
-  UniversalFarmConfig,
-  UniversalFarmConfigStableSwap,
-  UniversalFarmConfigV2,
-} from './types'
+import { SerializedFarmConfig, SerializedFarmPublicData, UniversalFarmConfig } from './types'
 
 /**
  * @deprecated only used for legacy farms
@@ -36,8 +30,7 @@ export async function getLegacyFarmConfig(chainId?: ChainId): Promise<Serialized
                   return isAddressEqual(s.lpAddress, farm.lpAddress)
                 })
               : undefined
-          const bCakeWrapperAddress = (farm as UniversalFarmConfigV2 | UniversalFarmConfigStableSwap)
-            .bCakeWrapperAddress
+          const bCakeWrapperAddress = 'bCakeWrapperAddress' in farm ? farm.bCakeWrapperAddress : undefined
 
           return {
             pid: farm.pid ?? 0,
