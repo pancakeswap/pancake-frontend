@@ -23,7 +23,7 @@ class WorkerProxy {
     this.id = id
     const promise = new Promise<T>((resolve, reject) => {
       const handler = (e: any) => {
-        if (typeof e?.data?.[Symbol.iterator] === 'function') {
+        if (Array.isArray(e?.data)) {
           const [eId, data] = e.data
           if (id === eId) {
             this.worker.removeEventListener('message', handler)
