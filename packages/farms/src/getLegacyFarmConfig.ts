@@ -2,7 +2,13 @@ import { ChainId, getChainName } from '@pancakeswap/chains'
 import { getStableSwapPools } from '@pancakeswap/stable-swap-sdk'
 import { isAddressEqual } from 'viem'
 import { supportedChainIdV4 } from './const'
-import { SerializedFarmConfig, SerializedFarmPublicData, UniversalFarmConfig, UniversalFarmConfigV2 } from './types'
+import {
+  SerializedFarmConfig,
+  SerializedFarmPublicData,
+  UniversalFarmConfig,
+  UniversalFarmConfigStableSwap,
+  UniversalFarmConfigV2,
+} from './types'
 
 /**
  * @deprecated only used for legacy farms
@@ -30,22 +36,24 @@ export async function getLegacyFarmConfig(chainId?: ChainId): Promise<Serialized
                   return isAddressEqual(s.lpAddress, farm.lpAddress)
                 })
               : undefined
+          const bCakeWrapperAddress = (farm as UniversalFarmConfigV2 | UniversalFarmConfigStableSwap)
+            .bCakeWrapperAddress
+
           return {
             pid: farm.pid ?? 0,
             lpAddress: farm.lpAddress,
             lpSymbol: `${farm.token0.symbol}-${farm.token1.symbol}`,
             token: farm.token0.serialize,
             quoteToken: farm.token1.serialize,
-            ...(stablePair
-              ? {
-                  stableSwapAddress: stablePair.stableSwapAddress,
-                  infoStableSwapAddress: stablePair.infoStableSwapAddress,
-                  stableLpFee: stablePair.stableLpFee,
-                  stableLpFeeRateOfTotalFee: stablePair.stableLpFeeRateOfTotalFee,
-                }
-              : (farm as UniversalFarmConfigV2).bCakeWrapperAddress
-              ? { bCakeWrapperAddress: (farm as UniversalFarmConfigV2).bCakeWrapperAddress }
-              : {}),
+            ...{
+              ...(stablePair && {
+                stableSwapAddress: stablePair.stableSwapAddress,
+                infoStableSwapAddress: stablePair.infoStableSwapAddress,
+                stableLpFee: stablePair.stableLpFee,
+                stableLpFeeRateOfTotalFee: stablePair.stableLpFeeRateOfTotalFee,
+              }),
+              ...(bCakeWrapperAddress && { bCakeWrapperAddress }),
+            },
           } satisfies SerializedFarmConfig
         })
 
