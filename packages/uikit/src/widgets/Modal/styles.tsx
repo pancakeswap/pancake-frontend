@@ -48,7 +48,7 @@ export const ModalCloseButton: React.FC<React.PropsWithChildren<{ onDismiss: Mod
       }}
       aria-label="Close the dialog"
     >
-      <CloseIcon color="primary" />
+      <CloseIcon color="textSubtle" />
     </IconButton>
   );
 };
