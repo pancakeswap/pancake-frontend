@@ -1,7 +1,7 @@
 import { getVersionUpgrade, VersionUpgrade } from '@pancakeswap/token-lists'
 import { acceptListUpdate, updateListVersion, useFetchListCallback } from '@pancakeswap/token-lists/react'
 import { useQuery } from '@tanstack/react-query'
-import { EXCHANGE_PAGE_PATHS } from 'config/constants/exchange'
+import { EXCHANGE_PAGE_PATHS, UNIVERSAL_PAGE_PATHS } from 'config/constants/exchange'
 import { UNSUPPORTED_LIST_URLS } from 'config/constants/lists'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useRouter } from 'next/router'
@@ -21,7 +21,7 @@ export function UpdaterByChainId({ chainId }: { chainId: number }): null {
   const [listState, dispatch] = useListState()
   const router = useRouter()
   const includeListUpdater = useMemo(() => {
-    return EXCHANGE_PAGE_PATHS.some((item) => {
+    return [...EXCHANGE_PAGE_PATHS, ...UNIVERSAL_PAGE_PATHS].some((item) => {
       return router.pathname.startsWith(item)
     })
   }, [router.pathname])
@@ -61,7 +61,7 @@ export function UpdaterByChainId({ chainId }: { chainId: number }): null {
   })
 
   useQuery({
-    queryKey: ['token-list'],
+    queryKey: ['token-list', chainId],
 
     queryFn: async () => {
       return Promise.all(
