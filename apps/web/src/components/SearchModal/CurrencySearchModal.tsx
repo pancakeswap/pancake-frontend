@@ -171,7 +171,7 @@ export default function CurrencySearchModal({
                 {selectedCurrency.symbol}
               </Text>
               {!selectedCurrency.isNative && (
-                <FlexGap ml="2px" gap="8px" alignItems="center">
+                <FlexGap ml={isMobile ? '8px' : '4px'} gap={isMobile ? '18px' : '12px'} alignItems="center">
                   <CopyButton
                     data-dd-action-name="Copy token address"
                     width="16px"
@@ -190,7 +190,7 @@ export default function CurrencySearchModal({
                     data-dd-action-name="Add to wallet"
                     variant="text"
                     p="0"
-                    ml="2px"
+                    ml="3px"
                     height="auto"
                     width="fit-content"
                     tokenAddress={selectedCurrency.wrapped.address}
