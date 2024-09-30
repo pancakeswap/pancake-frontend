@@ -17,13 +17,13 @@ describe('getActiveMenuItem', () => {
 
   it('should return an active item if pathname found in subitems', () => {
     // Given
-    const pathname = '/pools'
+    const pathname = '/farms'
 
     // When
     const result = getActiveMenuItem({ pathname, menuConfig: menuConfig(mockT, false, undefined) })
 
     // Then
-    expect(result).toEqual(menuConfig(mockT, false, undefined)[2])
+    expect(result).toEqual(menuConfig(mockT, false, undefined)[1])
   })
 
   it('should not return an item that only includes pathname but not starts with', () => {
@@ -34,7 +34,7 @@ describe('getActiveMenuItem', () => {
     const result = getActiveMenuItem({ pathname, menuConfig: menuConfig(mockT, false, undefined) })
 
     // Then
-    expect(result).toEqual(menuConfig(mockT, false, undefined)[6])
+    expect(result).toEqual(menuConfig(mockT, false, undefined)[4])
   })
 
   it('should return undefined if item is not found', () => {
@@ -63,24 +63,13 @@ describe('getActiveSubMenuItem', () => {
 
   it('should return an active sub item', () => {
     // Given
-    const pathname = '/pools'
+    const pathname = '/farms'
 
     // When
     const result = getActiveSubMenuItem({ pathname, menuItem: menuConfig(mockT, false, undefined)[1] })
 
     // Then
-    expect(result).toEqual(menuConfig(mockT, false, undefined)[1].items?.[2])
-  })
-
-  it('should return the item with the longest href when multiple items are found', () => {
-    // Given
-    const pathname = '/nfts/collections/0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07'
-
-    // When
-    const result = getActiveSubMenuItem({ pathname, menuItem: menuConfig(mockT, false, undefined)[4] })
-
-    // Then
-    expect(result).toEqual(menuConfig(mockT, false, undefined)[4].items?.[1])
+    expect(result).toEqual(menuConfig(mockT, false, undefined)[1].items?.[0])
   })
 
   it('should return undefined if item is not found', () => {
@@ -92,17 +81,6 @@ describe('getActiveSubMenuItem', () => {
 
     // Then
     expect(result).toEqual(undefined)
-  })
-
-  it('should return the item with the longest href when multiple items are found', () => {
-    // Given
-    const pathname = '/nfts/collections/0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07'
-
-    // When
-    const result = getActiveSubMenuItem({ pathname, menuItem: menuConfig(mockT, false, undefined)[4] })
-
-    // Then
-    expect(result).toEqual(menuConfig(mockT, false, undefined)[4].items?.[1])
   })
 
   it.todo('should return items with supportChainId')
