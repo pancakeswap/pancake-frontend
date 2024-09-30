@@ -1,5 +1,5 @@
 import { PublicClient } from 'viem'
-import { getAllFlatGauges, getGauges } from './constants/config/getGauges'
+import { getAllFlatGauges } from './constants/config/getGauges'
 import { CONFIG_TESTNET } from './constants/config/testnet'
 import { fetchAllGauges } from './fetchAllGauges'
 import { fetchAllKilledGauges } from './fetchAllKilledGauges'
