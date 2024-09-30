@@ -1,6 +1,6 @@
 import { ButtonProps, CogIcon, Flex, IconButton, useModal } from '@pancakeswap/uikit'
 
-import SettingsModal from './SettingsModal'
+import { SettingsModalV2 } from './SettingsModalV2'
 
 type Props = {
   color?: string
@@ -9,7 +9,7 @@ type Props = {
 } & ButtonProps
 
 const GlobalSettings = ({ color, mr = '8px', mode, ...rest }: Props) => {
-  const [onPresentSettingsModal] = useModal(<SettingsModal mode={mode} />)
+  const [onPresentSettingsModal] = useModal(<SettingsModalV2 mode={mode} />)
 
   return (
     <Flex>
