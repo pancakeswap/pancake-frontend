@@ -36,7 +36,7 @@ export const getGauges = async (): Promise<GaugeConfig[]> => {
   ).catch((error: Error) => {
     console.error('Failed to fetch gauges config after retries: ', error)
     ongoingRequest = null // Clear the ongoing request on failure
-    throw error
+    return [] // Resolve with an empty array without caching it
   })
 
   return ongoingRequest
