@@ -3539,7 +3539,6 @@
   "Token Launches": "Token Launches",
   "Get Help": "Get Help",
   "Audits": "Audits",
-  "Legacy products": "Legacy products",
   "Perps": "Perps",
   "Farm / Liquidity": "Farm / Liquidity",
   "Stargate": "Stargate",
@@ -3547,5 +3546,6 @@
   "Celer": "Celer",
   "Wormhole": "Wormhole",
   "Aptos": "Aptos",
-  "Play": "Play"
+  "Play": "Play",
+  "Legacy products": "Legacy products"
 }
