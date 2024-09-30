@@ -95,7 +95,7 @@ const CurrentRewardPool: React.FC<React.PropsWithChildren<CurrentRewardPoolProps
     currentLanguage: { locale },
   } = useTranslation()
   const { isDesktop } = useMatchBreakpoints()
-  const cakePriceBusd = useCakePrice()
+  const cakePrice = useCakePrice()
   const { totalReward, campaignClaimTime } = incentives ?? { totalReward: '0', campaignClaimTime: 0 }
 
   const currentDate = Date.now() / 1000
@@ -108,7 +108,7 @@ const CurrentRewardPool: React.FC<React.PropsWithChildren<CurrentRewardPoolProps
     timeRemaining,
     totalEstimateRewardUSD: campaignInfoData?.totalEstimateRewardUSD ?? 0,
     totalReward,
-    cakePriceBusd,
+    cakePrice,
     rewardPrice: currentRewardInfo?.rewardPrice ?? '0',
     rewardTokenDecimal: currentRewardInfo?.rewardTokenDecimal ?? 0,
   })

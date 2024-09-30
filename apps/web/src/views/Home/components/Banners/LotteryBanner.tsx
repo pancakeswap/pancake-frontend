@@ -72,8 +72,8 @@ const LotteryPrice: React.FC<React.PropsWithChildren> = () => {
   const { data } = useQuery<LotteryResponse>({
     queryKey: ['currentLottery'],
   })
-  const cakePriceBusd = useCakePrice()
-  const prizeInBusd = new BigNumber(data?.amountCollectedInCake || Number.NaN).times(cakePriceBusd)
+  const cakePrice = useCakePrice()
+  const prizeInBusd = new BigNumber(data?.amountCollectedInCake || Number.NaN).times(cakePrice)
   const prizeTotal = getBalanceNumber(prizeInBusd)
   const { t } = useTranslation()
 

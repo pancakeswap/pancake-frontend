@@ -26,13 +26,13 @@ interface MobileResultProps {
 
 const MobileResult: React.FC<React.PropsWithChildren<MobileResultProps>> = ({ isMyRank, rank }) => {
   const { t } = useTranslation()
-  const cakePriceBusd = useCakePrice()
+  const cakePrice = useCakePrice()
   const { profile, isLoading: isProfileLoading } = useProfileForAddress(rank.origin)
   const { domainName, avatar } = useDomainNameForAddress(rank.origin, !profile && !isProfileLoading)
 
   const cakeAmount = useMemo(
-    () => new BigNumber(rank?.estimateRewardUSD).div(cakePriceBusd).toNumber(),
-    [cakePriceBusd, rank?.estimateRewardUSD],
+    () => new BigNumber(rank?.estimateRewardUSD).div(cakePrice).toNumber(),
+    [cakePrice, rank?.estimateRewardUSD],
   )
 
   return (

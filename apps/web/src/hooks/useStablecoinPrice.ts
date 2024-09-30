@@ -29,9 +29,9 @@ export function useStablecoinPrice(
   const chainId = currency?.chainId
   const { enabled, hideIfPriceImpactTooHigh } = { ...DEFAULT_CONFIG, ...config }
 
-  const cakePrice = useCakePrice()
+  const isCake = Boolean(chainId && currency && CAKE[chainId] && currency.wrapped.equals(CAKE[chainId]))
+  const cakePrice = useCakePrice({ enabled: Boolean(isCake && enabled) })
   const stableCoin = chainId && chainId in ChainId ? STABLE_COIN[chainId as ChainId] : undefined
-  const isCake = chainId && currency && CAKE[chainId] && currency.wrapped.equals(CAKE[chainId])
 
   const isStableCoin = currency && stableCoin && currency.wrapped.equals(stableCoin)
 

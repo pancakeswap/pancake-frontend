@@ -21,15 +21,15 @@ const RevenueSharing: React.FunctionComponent<React.PropsWithChildren<RevenueSha
     t,
     currentLanguage: { locale },
   } = useTranslation()
-  const cakePriceBusd = useCakePrice()
+  const cakePrice = useCakePrice()
   const { userData } = useVaultPoolByKey(VaultKey.CakeVault) as DeserializedLockedCakeVault
 
   const { lastTokenTimestamp, availableClaim } = useRevenueSharingPool()
 
   const availableCake = useMemo(() => getBalanceAmount(new BigNumber(availableClaim)).toNumber(), [availableClaim])
   const availableCakeUsdValue = useMemo(
-    () => new BigNumber(availableCake).times(cakePriceBusd).toNumber(),
-    [availableCake, cakePriceBusd],
+    () => new BigNumber(availableCake).times(cakePrice).toNumber(),
+    [availableCake, cakePrice],
   )
 
   const showNoCakeAmountWarning = useMemo(

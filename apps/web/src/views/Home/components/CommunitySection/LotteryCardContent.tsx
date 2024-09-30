@@ -25,7 +25,7 @@ const LotteryCardContent = () => {
   const { t } = useTranslation()
   const { observerRef, isIntersecting } = useIntersectionObserver()
   const [loadData, setLoadData] = useState(false)
-  const cakePriceBusd = useCakePrice()
+  const cakePrice = useCakePrice()
   const { data: currentLotteryId } = useQuery({
     queryKey: ['currentLotteryId'],
     queryFn: fetchCurrentLotteryId,
@@ -46,10 +46,10 @@ const LotteryCardContent = () => {
     refetchOnWindowFocus: false,
   })
 
-  const cakePrizesText = t('%cakePrizeInUsd% in CAKE prizes this round', { cakePrizeInUsd: cakePriceBusd.toString() })
-  const [pretext, prizesThisRound] = cakePrizesText.split(cakePriceBusd.toString())
+  const cakePrizesText = t('%cakePrizeInUsd% in CAKE prizes this round', { cakePrizeInUsd: cakePrice.toString() })
+  const [pretext, prizesThisRound] = cakePrizesText.split(cakePrice.toString())
   const amountCollectedInCake = currentLottery ? parseFloat(currentLottery.amountCollectedInCake) : null
-  const currentLotteryPrize = amountCollectedInCake ? cakePriceBusd.times(amountCollectedInCake) : null
+  const currentLotteryPrize = amountCollectedInCake ? cakePrice.times(amountCollectedInCake) : null
 
   useEffect(() => {
     if (isIntersecting) {

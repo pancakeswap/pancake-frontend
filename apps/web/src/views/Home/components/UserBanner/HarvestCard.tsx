@@ -51,11 +51,11 @@ const HarvestCard: React.FC<React.PropsWithChildren<HarvestCardProps>> = ({ onHa
   const { fetchWithCatchTxError, loading: v2PendingTx } = useCatchTxError()
   const { farmsWithStakedBalance, earningsSum: farmEarningsSum } = useFarmsWithBalance()
 
-  const cakePriceBusd = useCakePrice()
+  const cakePrice = useCakePrice()
   const masterChefAddress = useMasterchef()
   const { isMobile } = useMatchBreakpoints()
   const gasPrice = useGasPrice()
-  const earningsBusd = new BigNumber(farmEarningsSum).multipliedBy(cakePriceBusd)
+  const earningsBusd = new BigNumber(farmEarningsSum).multipliedBy(cakePrice)
   const numTotalToCollect = farmsWithStakedBalance.length
   const numFarmsToCollect = farmsWithStakedBalance.filter(
     (value) => (value && 'pid' in value && value.pid !== 0) || (value && 'sendTx' in value && value.sendTx !== null),

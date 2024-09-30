@@ -94,7 +94,7 @@ export const CakeRewardsCard = ({ onDismiss }) => {
     currentLanguage: { locale },
   } = useTranslation()
   const { isDesktop } = useMatchBreakpoints()
-  const cakePriceBusd = useCakePrice()
+  const cakePrice = useCakePrice()
   const { cakeUnlockTime, cakeLockedAmount } = useCakeLockStatus()
   const { balanceOfAt, totalSupplyAt, nextDistributionTimestamp, lastTokenTimestamp, availableClaim } =
     useRevenueSharingVeCake()
@@ -112,8 +112,8 @@ export const CakeRewardsCard = ({ onDismiss }) => {
     [availableClaimFromCakePool],
   )
   const availableCakePoolCakeUsdValue = useMemo(
-    () => new BigNumber(availableCakePoolCake).times(cakePriceBusd).toNumber(),
-    [availableCakePoolCake, cakePriceBusd],
+    () => new BigNumber(availableCakePoolCake).times(cakePrice).toNumber(),
+    [availableCakePoolCake, cakePrice],
   )
 
   const availableRevenueSharingCake = useMemo(
@@ -121,8 +121,8 @@ export const CakeRewardsCard = ({ onDismiss }) => {
     [availableClaim],
   )
   const availableRevenueSharingCakeUsdValue = useMemo(
-    () => new BigNumber(availableRevenueSharingCake).times(cakePriceBusd).toNumber(),
-    [availableRevenueSharingCake, cakePriceBusd],
+    () => new BigNumber(availableRevenueSharingCake).times(cakePrice).toNumber(),
+    [availableRevenueSharingCake, cakePrice],
   )
 
   const totalAvailableClaim = useMemo(
@@ -130,8 +130,8 @@ export const CakeRewardsCard = ({ onDismiss }) => {
     [availableClaim, availableClaimFromCakePool],
   )
   const totalAvailableClaimUsdValue = useMemo(
-    () => new BigNumber(totalAvailableClaim).times(cakePriceBusd).toNumber(),
-    [totalAvailableClaim, cakePriceBusd],
+    () => new BigNumber(totalAvailableClaim).times(cakePrice).toNumber(),
+    [totalAvailableClaim, cakePrice],
   )
 
   const showExpireSoonWarning = useMemo(() => {

@@ -21,10 +21,10 @@ const CakeInput: React.FC<{
   disabled?: boolean
 }> = ({ value, onUserInput, disabled }) => {
   const { t } = useTranslation()
-  const cakeUsdPrice = useCakePrice()
+  const cakePrice = useCakePrice()
   const cakeUsdValue = useMemo(() => {
-    return cakeUsdPrice && value ? cakeUsdPrice.times(value).toNumber() : 0
-  }, [cakeUsdPrice, value])
+    return cakePrice && value ? cakePrice.times(value).toNumber() : 0
+  }, [cakePrice, value])
   const [percent, setPercent] = useState<number | null>(null)
   const _cakeBalance = useBSCCakeBalance()
   const cakeBalance = BigInt(_cakeBalance.toString())

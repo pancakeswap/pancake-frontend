@@ -16,16 +16,16 @@ interface Leaderboard {
 }
 
 const useLeaderboard = (): Leaderboard => {
-  const cakePriceBusd = useCakePrice()
+  const cakePrice = useCakePrice()
 
   const { data, isPending } = useQuery({
-    queryKey: ['affiliates-program', 'affiliate-program-leaderboard', cakePriceBusd],
+    queryKey: ['affiliates-program', 'affiliate-program-leaderboard', cakePrice],
 
     queryFn: async () => {
       const response = await fetch(`/api/affiliates-program/leader-board`)
       const result = await response.json()
       const list: ListType[] = result.affiliates.map((affiliate) => {
-        const cakeBalance = new BigNumber(affiliate.metric.totalEarnFeeUSD).div(cakePriceBusd)
+        const cakeBalance = new BigNumber(affiliate.metric.totalEarnFeeUSD).div(cakePrice)
         return {
           ...affiliate,
           cakeBalance: cakeBalance.isNaN() ? '0' : cakeBalance.toString(),
@@ -34,7 +34,7 @@ const useLeaderboard = (): Leaderboard => {
       return list
     },
 
-    enabled: cakePriceBusd.gt(0),
+    enabled: cakePrice.gt(0),
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
   })

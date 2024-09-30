@@ -53,7 +53,7 @@ const QualifiedPreview: React.FC<React.PropsWithChildren<QualifiedPreviewProps>>
 
   const timeUntil = getTimePeriods(timeRemaining)
 
-  const cakePriceBusd = useCakePrice()
+  const cakePrice = useCakePrice()
 
   const rewardInUSD = useRewardInUSD({
     timeRemaining,
@@ -67,7 +67,7 @@ const QualifiedPreview: React.FC<React.PropsWithChildren<QualifiedPreviewProps>>
     timeRemaining,
     totalEstimateRewardUSD: currentUserCampaignInfo?.totalEstimateRewardUSD ?? 0,
     totalReward: currentUserCampaignInfo?.canClaim ?? '0',
-    cakePriceBusd,
+    cakePrice,
     rewardPrice: currentRewardInfo?.rewardPrice ?? '0',
     rewardTokenDecimal: currentRewardInfo?.rewardTokenDecimal ?? 0,
   })
@@ -79,8 +79,8 @@ const QualifiedPreview: React.FC<React.PropsWithChildren<QualifiedPreviewProps>>
   )
 
   const totalMapCapCovertCakeAmount = useMemo(
-    () => new BigNumber(totalMapCap).dividedBy(cakePriceBusd).toNumber() ?? 0,
-    [totalMapCap, cakePriceBusd],
+    () => new BigNumber(totalMapCap).dividedBy(cakePrice).toNumber() ?? 0,
+    [totalMapCap, cakePrice],
   )
 
   const additionalAmount = useMemo(() => {

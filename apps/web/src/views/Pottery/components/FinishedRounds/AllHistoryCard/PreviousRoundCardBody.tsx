@@ -58,11 +58,11 @@ const PreviousRoundCardBody: React.FC<React.PropsWithChildren<PreviousRoundCardB
     currentLanguage: { locale },
   } = useTranslation()
   const { isFetched, roundId, prizePot, totalPlayers, txid, winners, lockDate } = finishedRoundInfo
-  const cakePriceBusd = useCakePrice()
+  const cakePrice = useCakePrice()
 
   const prizeAsBn = new BigNumber(prizePot)
   const prize = getBalanceNumber(prizeAsBn)
-  const prizeInBusd = new BigNumber(prize).times(cakePriceBusd).toNumber()
+  const prizeInBusd = new BigNumber(prize).times(cakePrice).toNumber()
 
   const isLatest = useMemo(
     () => latestRoundId && new BigNumber(latestRoundId).minus(1).eq(roundId),

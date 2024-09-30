@@ -13,10 +13,10 @@ interface YourDepositProps {
 const YourDeposit: React.FC<React.PropsWithChildren<YourDepositProps>> = ({ depositBalance }) => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
-  const cakePriceBusd = useCakePrice()
+  const cakePrice = useCakePrice()
   const { userData } = usePotteryData()
   const totalDepositBalance = getBalanceAmount(depositBalance).toNumber()
-  const balanceInBusd = new BigNumber(totalDepositBalance).times(cakePriceBusd).toNumber()
+  const balanceInBusd = new BigNumber(totalDepositBalance).times(cakePrice).toNumber()
 
   return (
     <Box>

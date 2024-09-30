@@ -41,7 +41,7 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
     t,
     currentLanguage: { locale },
   } = useTranslation()
-  const cakePriceBusd = useCakePrice()
+  const cakePrice = useCakePrice()
   const { data: rank } = useUserTradeRank({ campaignId: currentUserCampaignInfo?.campaignId ?? '' })
 
   const currentDate = Date.now() / 1000
@@ -65,7 +65,7 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
     timeRemaining,
     totalEstimateRewardUSD: currentUserCampaignInfo?.totalEstimateRewardUSD ?? 0,
     totalReward: currentUserCampaignInfo?.canClaim ?? '0',
-    cakePriceBusd,
+    cakePrice,
     rewardPrice: currentRewardInfo?.rewardPrice ?? '0',
     rewardTokenDecimal: currentRewardInfo?.rewardTokenDecimal ?? 0,
   })

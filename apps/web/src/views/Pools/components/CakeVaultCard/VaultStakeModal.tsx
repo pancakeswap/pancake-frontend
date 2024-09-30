@@ -96,9 +96,9 @@ const VaultStakeModal: React.FC<React.PropsWithChildren<VaultStakeModalProps>> =
   const [percent, setPercent] = useState(0)
   const [showRoiCalculator, setShowRoiCalculator] = useState(false)
   const { hasUnstakingFee } = useWithdrawalFeeTimer(parseInt(lastDepositedTime || '0', 10), userShares || BIG_ZERO)
-  const cakePriceBusd = useCakePrice()
-  const usdValueStaked = new BigNumber(stakeAmount).times(cakePriceBusd)
-  const formattedUsdValueStaked = cakePriceBusd.gt(0) && stakeAmount ? formatNumber(usdValueStaked.toNumber()) : ''
+  const cakePrice = useCakePrice()
+  const usdValueStaked = new BigNumber(stakeAmount).times(cakePrice)
+  const formattedUsdValueStaked = cakePrice.gt(0) && stakeAmount ? formatNumber(usdValueStaked.toNumber()) : ''
   const { flexibleApy } = useVaultApy()
   const { allowance, setLastUpdated } = useCheckVaultApprovalStatus(vaultKey)
   const { handleApprove: handleCakeApprove, pendingTx: cakePendingTx } = useVaultApprove(vaultKey, setLastUpdated)
@@ -263,7 +263,7 @@ const VaultStakeModal: React.FC<React.PropsWithChildren<VaultStakeModalProps>> =
         value={stakeAmount}
         isWarning={needEnable}
         onUserInput={handleStakeInputChange}
-        currencyValue={cakePriceBusd.gt(0) && `~${formattedUsdValueStaked || 0} USD`}
+        currencyValue={cakePrice.gt(0) && `~${formattedUsdValueStaked || 0} USD`}
         decimals={stakingToken.decimals}
       />
       {needEnable && (
