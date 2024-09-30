@@ -8,10 +8,10 @@ import TransactionSettings from '../TransactionSettings'
 import { TabContent } from './TabContent'
 
 interface SettingsTabProps {
-  onClickCustomizeRouting?: () => void
+  onCustomizeRoutingClick?: () => void
 }
 
-export const SettingsTab = memo(({ onClickCustomizeRouting }: SettingsTabProps) => {
+export const SettingsTab = memo(({ onCustomizeRoutingClick }: SettingsTabProps) => {
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
 
@@ -24,7 +24,7 @@ export const SettingsTab = memo(({ onClickCustomizeRouting }: SettingsTabProps) 
         </Flex>
         <TransactionSettings />
       </Flex>
-      <Button mt="auto" width="100%" onClick={() => onClickCustomizeRouting?.()}>
+      <Button mt="auto" width="100%" onClick={() => onCustomizeRoutingClick?.()}>
         {t('Customize Routing')}
       </Button>
     </TabContent>
