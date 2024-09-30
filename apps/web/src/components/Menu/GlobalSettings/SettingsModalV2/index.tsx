@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { domAnimation, Heading, LazyAnimatePresence, Modal, Text } from '@pancakeswap/uikit'
+import { domAnimation, Heading, LazyAnimatePresence, MotionModal, Text } from '@pancakeswap/uikit'
 import { MotionTabs } from 'components/Motion/MotionTabs'
 import { useCallback, useState } from 'react'
 import { SettingsMode } from '../types'
@@ -27,7 +27,7 @@ export const SettingsModalV2 = ({ onDismiss, mode }: SettingsModalV2Props) => {
   const renderTab = useCallback(() => {
     switch (activeTabIndex) {
       case 0:
-        return <SettingsTab key="settings_tab" onClickCustomizeRouting={() => setActiveTabIndex(2)} />
+        return <SettingsTab key="settings_tab" onCustomizeRoutingClick={() => setActiveTabIndex(2)} />
       case 1:
         return <RecentTransactionsTab key="recent_txns_tab" />
       case 2:
@@ -39,7 +39,7 @@ export const SettingsModalV2 = ({ onDismiss, mode }: SettingsModalV2Props) => {
 
   return (
     <>
-      <Modal
+      <MotionModal
         minWidth="480px"
         headerPadding="0px"
         title={
@@ -60,7 +60,7 @@ export const SettingsModalV2 = ({ onDismiss, mode }: SettingsModalV2Props) => {
         <LazyAnimatePresence features={domAnimation} mode="wait">
           {renderTab()}
         </LazyAnimatePresence>
-      </Modal>
+      </MotionModal>
     </>
   )
 }

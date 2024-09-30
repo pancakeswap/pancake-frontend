@@ -23,7 +23,7 @@ export const TabContent = ({ children, type = 'default', ...props }: TabContentP
     () => ({
       initial: {
         opacity: 0.4,
-        x: type === 'to_right' ? 10 : 0,
+        x: type === 'to_right' ? 20 : 0,
       },
       animate: {
         opacity: 1,
