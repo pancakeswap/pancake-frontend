@@ -10,9 +10,9 @@ test('exports', () => {
       "GAUGES_ADDRESS",
       "GAUGES_CALC_ADDRESS",
       "getAllGauges",
+      "getGaugesByChain",
       "GaugeType",
       "GAUGE_TYPE_NAMES",
-      "getGaugesByChain",
     ]
   `)
 })
