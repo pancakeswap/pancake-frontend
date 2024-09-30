@@ -200,7 +200,7 @@ function CurrencySearch({
     }
 
     return Boolean(filteredSortedTokens?.length) || hasFilteredInactiveTokens ? (
-      <Box mx="-24px" my="24px">
+      <Box mx="-24px" mt="20px" mb="24px">
         <CurrencyList
           height={isMobile ? (showCommonBases ? height || 250 : height ? height + 80 : 350) : 390}
           showNative={showNative}
@@ -249,7 +249,7 @@ function CurrencySearch({
           <Row>
             <Input
               id="token-search-input"
-              placeholder={t('Search name or paste address')}
+              placeholder={t('Search by name or paste address')}
               scale="lg"
               autoComplete="off"
               value={searchQuery}

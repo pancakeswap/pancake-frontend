@@ -179,6 +179,7 @@ const CurrencyInputPanelSimplify = memo(function CurrencyInputPanel({
       showSearchInput={showSearchInput}
       tokensToShow={tokensToShow}
       mode={mode}
+      showCurrencyInHeader
     />,
   )
 

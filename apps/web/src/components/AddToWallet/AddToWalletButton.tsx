@@ -94,6 +94,7 @@ const AddToWalletButton: React.FC<AddToWalletButtonProps & ButtonProps> = ({
   return (
     <Button
       {...props}
+      title={t('Add token to wallet')}
       onClick={() => {
         const image = tokenLogo ? (BAD_SRCS[tokenLogo] ? undefined : tokenLogo) : undefined
         if (!tokenAddress || !tokenSymbol || !tokenDecimals) return

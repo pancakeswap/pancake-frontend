@@ -47,7 +47,7 @@ const MenuItem = styled(RowBetween)<{ disabled: boolean; selected: boolean }>`
   height: 56px;
   display: grid;
   grid-template-columns: auto minmax(auto, 1fr) minmax(0, 72px);
-  grid-gap: 8px;
+  grid-gap: 10px;
   cursor: ${({ disabled }) => !disabled && 'pointer'};
   pointer-events: ${({ disabled }) => disabled && 'none'};
   &:hover {
@@ -87,7 +87,7 @@ function CurrencyRow({
       disabled={isSelected}
       selected={otherSelected}
     >
-      <CurrencyLogo currency={currency} size="24px" />
+      <CurrencyLogo currency={currency} size="28px" />
 
       <Column>
         <Text bold>{currency?.symbol}</Text>
