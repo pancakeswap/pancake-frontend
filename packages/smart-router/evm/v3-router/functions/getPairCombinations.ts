@@ -1,5 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
-import { getGaugesByChain, GaugeType } from '@pancakeswap/gauges'
+import { GaugeType, getGaugesByChain } from '@pancakeswap/gauges'
 import { Currency, Token } from '@pancakeswap/sdk'
 import { getTokensByChain } from '@pancakeswap/tokens'
 import flatMap from 'lodash/flatMap.js'
