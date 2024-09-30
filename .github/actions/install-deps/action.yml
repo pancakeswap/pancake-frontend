@@ -6,7 +6,7 @@ runs:
   steps:
     - uses: pnpm/action-setup@v4
       with:
-        version: 9.10.0
+        version: 9.11.0
 
     - name: Install Node.js
       uses: actions/setup-node@v4
