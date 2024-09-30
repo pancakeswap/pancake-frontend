@@ -23,7 +23,7 @@ const Container = styled(Flex).withConfig({ shouldForwardProp: (prop) => !['$bac
 
   ${({ theme }) => theme.mediaQueries.lg} {
     position: absolute;
-    top: 0;
+    top: 42px;
     left: 0;
     right: 0;
   }
