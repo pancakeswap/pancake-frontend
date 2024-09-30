@@ -94,7 +94,7 @@ export const footerLinks: (t: ContextApi['t']) => FooterLinkType[] = (t) => [
       },
       {
         label: t('Legacy products'),
-        href: '/', // TODO
+        href: 'https://docs.pancakeswap.finance/products/legacy-products',
       },
     ],
   },
