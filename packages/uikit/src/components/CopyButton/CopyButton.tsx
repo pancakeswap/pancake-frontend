@@ -1,8 +1,9 @@
+import { useTranslation } from "@pancakeswap/localization";
 import { ElementType, useCallback, useEffect, useState } from "react";
-import { copyText } from "./copyText";
-import { CopyIcon, SvgProps } from "../Svg";
 import { useTooltip } from "../../hooks";
 import { IconButton } from "../Button";
+import { CopyIcon, SvgProps } from "../Svg";
+import { copyText } from "./copyText";
 
 interface CopyButtonProps extends SvgProps {
   text: string;
@@ -19,6 +20,7 @@ export const CopyButton: React.FC<React.PropsWithChildren<CopyButtonProps>> = ({
   icon: Icon = CopyIcon,
   ...props
 }) => {
+  const { t } = useTranslation();
   const [isTooltipDisplayed, setIsTooltipDisplayed] = useState(false);
 
   const { targetRef, tooltip } = useTooltip(tooltipMessage, {
@@ -48,7 +50,7 @@ export const CopyButton: React.FC<React.PropsWithChildren<CopyButtonProps>> = ({
 
   return (
     <>
-      <div ref={targetRef}>
+      <div ref={targetRef} title={t("Copy")}>
         <IconButton onClick={handleOnClick} scale="sm" variant="text" style={{ width: "auto", position: "relative" }}>
           <Icon color={buttonColor} width={width} {...props} />
         </IconButton>
