@@ -4,6 +4,7 @@ export { default as ModalActions } from "./ModalActions";
 export { default as ModalProvider } from "./ModalContext";
 export { default as ModalInput } from "./ModalInput";
 export * from "./ModalV2";
+export { default as MotionModal } from "./MotionModal";
 export { default as NotEnoughTokensModal } from "./NotEnoughTokensModal";
 export * from "./styles";
 export type { InjectedProps as InjectedModalProps, ModalProps } from "./types";
