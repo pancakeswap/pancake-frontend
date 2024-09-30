@@ -4,9 +4,9 @@ import { Box, Button, Card, Flex, InfoFilledIcon, Modal, ModalV2, PreTitle, Text
 import { Currency, CurrencyAmount, Percent } from '@pancakeswap/sdk'
 import { LightGreyCard } from 'components/Card'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { ReactNode, useState } from 'react'
 
+import { useAccount } from 'wagmi'
 import { FixedStakingPool, UnstakeType } from '../type'
 import { AmountWithUSDSub } from './AmountWithUSDSub'
 import { DisclaimerCheckBox } from './DisclaimerCheckBox'
@@ -50,7 +50,7 @@ export function HarvestModal({
   pendingTx: boolean
   handleSubmission: (type: UnstakeType, amount: CurrencyAmount<Currency>) => Promise<void>
 }) {
-  const { account } = useAccountActiveChain()
+  const { address: account } = useAccount()
   const [check, setCheck] = useState(false)
 
   const { t } = useTranslation()

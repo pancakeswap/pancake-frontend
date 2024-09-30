@@ -3,7 +3,7 @@ import { Currency, ERC20Token } from '@pancakeswap/sdk'
 import { AutoRenewIcon, Button } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import { useAccount } from 'wagmi'
 import { LiquidStakingList } from '../constants/types'
 import { useRequestWithdraw } from '../hooks/useRequestWithdraw'
 
@@ -15,7 +15,7 @@ interface RequestWithdrawButtonProps {
 
 export function RequestWithdrawButton({ inputCurrency, currentAmount, selectedList }: RequestWithdrawButtonProps) {
   const { t } = useTranslation()
-  const { account } = useAccountActiveChain()
+  const { address: account } = useAccount()
 
   const { loading, requestWithdraw } = useRequestWithdraw({
     inputCurrency,

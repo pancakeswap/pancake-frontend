@@ -1,14 +1,14 @@
 import { useQuery } from '@tanstack/react-query'
-import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useVeCakeContract } from 'hooks/useContract'
 import { Address, isAddressEqual, zeroAddress } from 'viem'
 import { useVeCakeUserInfo } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
+import { useAccount } from 'wagmi'
 import { useNextEpochStart } from './useEpochTime'
 
 export const useEpochVotePower = () => {
   const nextEpoch = useNextEpochStart()
   const contract = useVeCakeContract()
-  const { account } = useAccountActiveChain()
+  const { address: account } = useAccount()
   const { data: userInfo } = useVeCakeUserInfo()
 
   const { data, isLoading } = useQuery({

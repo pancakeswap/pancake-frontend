@@ -2,7 +2,7 @@ import { CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
 import { bscTestnetTokens, ethereumTokens, goerliTestnetTokens } from '@pancakeswap/tokens'
 import { useMemo } from 'react'
 import { Address, isAddressEqual } from 'viem'
-import useAccountActiveChain from './useAccountActiveChain'
+import { useAccount } from 'wagmi'
 import useCurrentBlockTimestamp from './useCurrentBlockTimestamp'
 import { usePermit2Allowance } from './usePermit2Allowance'
 import { usePermit2Details } from './usePermit2Details'
@@ -10,7 +10,7 @@ import { usePermit2Details } from './usePermit2Details'
 const EXPIRES_BUFFER = 60n * 15n // 15 minutes in seconds
 
 export const usePermit2Requires = (amount: CurrencyAmount<Token> | undefined, spender?: Address) => {
-  const { account } = useAccountActiveChain()
+  const { address: account } = useAccount()
   const { allowance, refetch } = usePermit2Allowance(account, amount?.currency)
   const { data } = usePermit2Details(account, amount?.currency, spender)
   const { amount: permitAmount, expiration = 0n } = data ?? {}

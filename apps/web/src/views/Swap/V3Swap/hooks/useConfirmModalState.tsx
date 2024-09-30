@@ -6,7 +6,6 @@ import { Currency, CurrencyAmount, Percent, Token } from '@pancakeswap/swap-sdk-
 import { Permit2Signature } from '@pancakeswap/universal-router-sdk'
 import { ConfirmModalState, useAsyncConfirmPriceImpactWithoutFee } from '@pancakeswap/widgets-internal'
 import { ALLOWED_PRICE_IMPACT_HIGH, PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN } from 'config/constants/exchange'
-import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useNativeWrap } from 'hooks/useNativeWrap'
 import useNativeCurrency from 'hooks/useNativeCurrency'
@@ -36,6 +35,8 @@ import { useSendXOrder } from 'views/Swap/x/useSendXOrder'
 import { useCurrencyBalance } from 'state/wallet/hooks'
 import { BLOCK_CONFIRMATION } from 'config/confirmation'
 
+import { useAccount } from 'wagmi'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { computeTradePriceBreakdown } from '../utils/exchange'
 import { userRejectedError } from './useSendSwapTransaction'
 import { useSwapCallback } from './useSwapCallback'
@@ -113,7 +114,7 @@ const useConfirmActions = (
     enablePaymaster: true,
   })
   const nativeWrap = useNativeWrap()
-  const { account } = useAccountActiveChain()
+  const { address: account } = useAccount()
   const getAllowanceArgs = useMemo(() => {
     if (!chainId) return undefined
     const inputs = [account, getPermit2Address(chainId)] as [`0x${string}`, `0x${string}`]

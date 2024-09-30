@@ -10,11 +10,11 @@ import {
   ButtonLinkAction,
   GraphicDetail,
 } from '@pancakeswap/widgets-internal'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useTheme from 'hooks/useTheme'
 import styled from 'styled-components'
 import bCakeMigrationImage from 'views/Farms/images/bCakeMigration.png'
 import bCakeMigrationMobileImage from 'views/Farms/images/bCakeMigrationMobileBg.png'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 
 const bgSmVariant: GraphicDetail = {
   src: bCakeMigrationMobileImage.src,
@@ -43,7 +43,7 @@ const migrationLink = '/migration/bcake'
 const learnMoreLink = 'https://docs.pancakeswap.finance/products/yield-farming/bcake/migration-guide'
 
 export const BCakeMigrationBanner = () => {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
   const { theme } = useTheme()

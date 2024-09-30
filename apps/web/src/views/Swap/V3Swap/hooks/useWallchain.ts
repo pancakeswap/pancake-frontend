@@ -9,12 +9,11 @@ import type WallchainSDK from '@wallchain/sdk'
 import type { TMEVFoundResponse } from '@wallchain/sdk'
 import { TOptions } from '@wallchain/sdk'
 import { INITIAL_ALLOWED_SLIPPAGE } from 'config/constants'
-import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { atom, useAtom } from 'jotai'
 import { useEffect, useMemo, useState } from 'react'
 import { basisPointsToPercent } from 'utils/exchange'
-import { useWalletClient } from 'wagmi'
+import { useAccount, useWalletClient } from 'wagmi'
 
 import { ClassicOrder } from '@pancakeswap/price-api-sdk'
 import Bottleneck from 'bottleneck'
@@ -130,7 +129,7 @@ export function useWallchainApi(
     undefined | [TMEVFoundResponse['searcherRequest'], string | undefined]
   >(undefined)
   const { data: walletClient } = useWalletClient()
-  const { account } = useAccountActiveChain()
+  const { address: account } = useAccount()
   const [allowedSlippageRaw] = useUserSlippage() || [INITIAL_ALLOWED_SLIPPAGE]
   const allowedSlippage = useMemo(() => basisPointsToPercent(allowedSlippageRaw), [allowedSlippageRaw])
   const [lastUpdate, setLastUpdate] = useState(0)

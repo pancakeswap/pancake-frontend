@@ -5,12 +5,12 @@ import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getDecimalAmount } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useContract } from 'hooks/useContract'
 import { useRouter } from 'next/router'
 import { useCallback, useMemo } from 'react'
+import { useAccount } from 'wagmi'
 import { LiquidStakingList } from '../constants/types'
 
 interface RequestWithdrawButtonProps {
@@ -23,7 +23,7 @@ export function useRequestWithdraw({ inputCurrency, currentAmount, selectedList 
   const { fetchWithCatchTxError, loading } = useCatchTxError()
   const { callWithGasPrice } = useCallWithGasPrice()
   const { toastSuccess } = useToast()
-  const { account } = useAccountActiveChain()
+  const { address: account } = useAccount()
 
   const { t } = useTranslation()
   const router = useRouter()
