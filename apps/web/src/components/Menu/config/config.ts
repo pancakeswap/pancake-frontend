@@ -3,13 +3,14 @@ import { SUPPORTED_CHAIN_IDS as POOL_SUPPORTED_CHAINS } from '@pancakeswap/pools
 import { SUPPORTED_CHAIN_IDS as POSITION_MANAGERS_SUPPORTED_CHAINS } from '@pancakeswap/position-managers'
 import { SUPPORTED_CHAIN_IDS as PREDICTION_SUPPORTED_CHAINS } from '@pancakeswap/prediction'
 import {
+  BridgeIcon,
   DropdownMenuItems,
   DropdownMenuItemType,
   EarnFillIcon,
   EarnIcon,
+  GameIcon,
   MenuItemsType,
   MoreIcon,
-  PancakeProtectorIcon,
   SwapFillIcon,
   SwapIcon,
 } from '@pancakeswap/uikit'
@@ -76,30 +77,6 @@ const config: (
       ].map((item) => addMenuItemSupported(item, chainId)),
     },
     {
-      label: t('Bridge'),
-      href: 'https://bridge.pancakeswap.finance',
-      icon: EarnIcon,
-      fillIcon: EarnFillIcon,
-      image: '/images/decorations/pe2.png',
-      items: [
-        {
-          label: t('CAKE'),
-          href: 'https://bridge.pancakeswap.finance/',
-          type: DropdownMenuItemType.EXTERNAL_LINK,
-        },
-        {
-          label: t('EVMs'),
-          href: 'https://bridge.pancakeswap.finance/axelar',
-          type: DropdownMenuItemType.EXTERNAL_LINK,
-        },
-        {
-          label: t('Aptos'),
-          href: 'https://bridge.pancakeswap.finance/', // TODO
-          type: DropdownMenuItemType.EXTERNAL_LINK,
-        },
-      ].map((item) => addMenuItemSupported(item, chainId)),
-    },
-    {
       label: t('Earn'),
       href: '/liquidity/pools',
       icon: EarnIcon,
@@ -135,8 +112,31 @@ const config: (
       ].map((item) => addMenuItemSupported(item, chainId)),
     },
     {
+      label: t('Bridge'),
+      href: 'https://bridge.pancakeswap.finance',
+      icon: BridgeIcon,
+      image: '/images/decorations/pe2.png',
+      items: [
+        {
+          label: t('CAKE'),
+          href: 'https://bridge.pancakeswap.finance/',
+          type: DropdownMenuItemType.EXTERNAL_LINK,
+        },
+        {
+          label: t('EVMs'),
+          href: 'https://bridge.pancakeswap.finance/axelar',
+          type: DropdownMenuItemType.EXTERNAL_LINK,
+        },
+        {
+          label: t('Aptos'),
+          href: 'https://bridge.pancakeswap.finance/', // TODO
+          type: DropdownMenuItemType.EXTERNAL_LINK,
+        },
+      ].map((item) => addMenuItemSupported(item, chainId)),
+    },
+    {
       label: t('Play'),
-      icon: PancakeProtectorIcon,
+      icon: GameIcon,
       hideSubNav: true,
       items: [
         {
