@@ -1,11 +1,12 @@
 import retry from 'async-retry'
 import { GaugeConfig } from '../../types'
+import { GAUGES_API } from './endpoint'
 
 let cache: GaugeConfig[] | undefined
 let promiseQueue: ((value: GaugeConfig[] | PromiseLike<GaugeConfig[]>) => void)[] = []
 let inProgress = false
 
-export const CONFIG_PROD = async (): Promise<GaugeConfig[]> => {
+export const getGauges = async (): Promise<GaugeConfig[]> => {
   if (cache) return Promise.resolve(cache)
 
   if (inProgress) {
@@ -17,7 +18,7 @@ export const CONFIG_PROD = async (): Promise<GaugeConfig[]> => {
   return new Promise((resolve) => {
     retry(
       async () => {
-        const response = await fetch('https://cms-public-api-7ys4p.ondigitalocean.app/api/data/cached/gauges', {
+        const response = await fetch(GAUGES_API, {
           signal: AbortSignal.timeout(3000),
         })
         if (response.ok) {

@@ -1,5 +1,5 @@
 import { PublicClient } from 'viem'
-import { CONFIG_PROD } from './constants/config/prod'
+import { getGauges } from './constants/config/getGauges'
 import { CONFIG_TESTNET } from './constants/config/testnet'
 import { fetchAllGauges } from './fetchAllGauges'
 import { fetchAllKilledGauges } from './fetchAllKilledGauges'
@@ -25,7 +25,7 @@ export const getAllGauges = async (
   },
 ): Promise<Gauge[]> => {
   const { testnet, inCap, bothCap, killed, blockNumber } = options
-  const presets = testnet ? CONFIG_TESTNET : await CONFIG_PROD()
+  const presets = testnet ? CONFIG_TESTNET : await getGauges()
 
   const allGaugeInfos = await fetchAllGauges(client, {
     blockNumber,
