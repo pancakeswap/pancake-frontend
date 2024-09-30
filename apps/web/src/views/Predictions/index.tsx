@@ -4,7 +4,7 @@ import { useAccountLocalEventListener } from 'hooks/useAccountLocalEventListener
 import { useEffect, useRef } from 'react'
 import { useChartView, useIsChartPaneOpen } from 'state/predictions/hooks'
 import { useUserPredictionChainlinkChartDisclaimerShow, useUserPredictionChartDisclaimerShow } from 'state/user/hooks'
-
+import { SubMenu } from 'views/Lottery/components/SubMenu'
 import Desktop from './Desktop'
 import Mobile from './Mobile'
 import ChainlinkChartDisclaimer from './components/ChainlinkChartDisclaimer'
@@ -68,6 +68,7 @@ const Predictions = () => {
   return (
     <SwiperProvider>
       <Container>
+        <SubMenu />
         <Warnings />
         <RiskDisclaimer />
         {isDesktop ? <Desktop /> : <Mobile />}

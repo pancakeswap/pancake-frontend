@@ -3532,14 +3532,6 @@
   "For more information, please refer to %org%’s": "For more information, please refer to %org%’s",
   "Please exercise due caution when trading / providing liquidity for the uniBTC token. The protocol recently encountered a security compromise.": "Please exercise due caution when trading / providing liquidity for the uniBTC token. The protocol recently encountered a security compromise.",
   "Caution - %token% Token": "Caution - %token% Token",
-  "Perps": "Perps",
-  "Farm / Liquidity": "Farm / Liquidity",
-  "Stargate": "Stargate",
-  "Axelar": "Axelar",
-  "Celer": "Celer",
-  "Wormhole": "Wormhole",
-  "Aptos": "Aptos",
-  "Play": "Play",
   "Gauges": "Gauges",
   "V4": "V4",
   "CAKE Incentives": "CAKE Incentives",
@@ -3555,12 +3547,5 @@
   "Celer": "Celer",
   "Wormhole": "Wormhole",
   "Aptos": "Aptos",
-  "Play": "Play",
-  "Quests": "Quests",
-  "Pancake4ever! Celebrate PancakeSwap's 4th Birthday with us!": "Pancake4ever! Celebrate PancakeSwap's 4th Birthday with us!",
-  "Join Now": "Join Now",
-  "PancakeSwap Quest-Beta Now Live": "PancakeSwap Quest-Beta Now Live",
-  "Your Multichain Defi Quest Platform - Create your Defi profile now": "Your Multichain Defi Quest Platform - Create your Defi profile now",
-  "Your Multichain Defi Quest Platform": "Your Multichain Defi Quest Platform",
-  "Create Your Profile": "Create Your Profile"
+  "Play": "Play"
 }
