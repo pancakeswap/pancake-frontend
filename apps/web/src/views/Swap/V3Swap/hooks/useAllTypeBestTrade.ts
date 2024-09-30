@@ -61,12 +61,14 @@ export const useAllTypeBestTrade = () => {
   const refreshOrder = useThrottleFn(bestOrder.refresh, 3000)
 
   const classicAmmOrder = useMemo(() => {
-    return {
-      trade: ammCurrentTrade,
-      type: OrderType.PCS_CLASSIC,
-      isLoading,
-      error: error ?? undefined,
-    }
+    return ammCurrentTrade
+      ? {
+          trade: ammCurrentTrade,
+          type: OrderType.PCS_CLASSIC,
+          isLoading,
+          error: error ?? undefined,
+        }
+      : undefined
   }, [ammCurrentTrade, isLoading, error])
 
   const hasAvailableDutchOrder =
@@ -79,7 +81,7 @@ export const useAllTypeBestTrade = () => {
     xOrder: currentOrder,
     // TODO: for log purpose in this stage
     betterOrder: betterQuote,
-    bestOrder: finalOrder as InterfaceOrder,
+    bestOrder: finalOrder as InterfaceOrder | undefined,
     tradeLoaded: !finalOrder?.isLoading,
     tradeError: finalOrder?.error,
     refreshDisabled:

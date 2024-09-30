@@ -34,7 +34,7 @@ export function V3SwapForm() {
       beforeCommit: () => {
         pauseQuoting()
         try {
-          const validTrade = ammOrder.trade ?? xOrder?.trade
+          const validTrade = ammOrder?.trade ?? xOrder?.trade
           if (!validTrade) {
             throw new Error('No valid trade to log')
           }
@@ -42,8 +42,8 @@ export function V3SwapForm() {
           const { currency: inputCurrency } = inputAmount
           const { currency: outputCurrency } = outputAmount
           const { chainId } = inputCurrency
-          const ammInputAmount = ammOrder.trade?.inputAmount.toExact()
-          const ammOutputAmount = ammOrder.trade?.outputAmount.toExact()
+          const ammInputAmount = ammOrder?.trade?.inputAmount.toExact()
+          const ammOutputAmount = ammOrder?.trade?.outputAmount.toExact()
           const xInputAmount = xOrder?.trade?.inputAmount.toExact()
           const xOutputAmount = xOrder?.trade?.outputAmount.toExact()
           logger.info('X/AMM Quote Comparison', {
@@ -55,7 +55,7 @@ export function V3SwapForm() {
             outputToken: outputCurrency.wrapped.address,
             bestOrderType: betterOrder?.type,
             ammOrder: {
-              type: ammOrder.type,
+              type: ammOrder?.type,
               inputAmount: ammInputAmount,
               outputAmount: ammOutputAmount,
               inputUsdValue: inputUsdPrice && ammInputAmount ? Number(ammInputAmount) * inputUsdPrice : undefined,
