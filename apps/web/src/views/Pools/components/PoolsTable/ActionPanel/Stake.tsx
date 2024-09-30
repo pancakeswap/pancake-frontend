@@ -38,6 +38,7 @@ import { useCallback } from 'react'
 import { logGTMClickEnablePoolEvent } from 'utils/customGTMEventTracking'
 import { VeCakeButton } from 'views/CakeStaking/components/SyrupPool/VeCakeButton'
 import { useIsUserDelegated } from 'views/CakeStaking/hooks/useIsUserDelegated'
+import noop from 'lodash/noop'
 import { useApprovePool, useCheckVaultApprovalStatus, useVaultApprove } from '../../../hooks/useApprove'
 import VaultStakeModal from '../../CakeVaultCard/VaultStakeModal'
 import BurningCountDown from '../../LockedPool/Common/BurningCountDown'
@@ -504,7 +505,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
         {vaultKey ? (
           <VaultStakeButtonGroup
             onFlexibleClick={stakingTokenBalance.gt(0) ? onStake : onPresentTokenRequired}
-            onLockedClick={vaultKey === VaultKey.CakeVault ? openPresentLockedStakeModal : () => {}}
+            onLockedClick={vaultKey === VaultKey.CakeVault ? openPresentLockedStakeModal : noop}
           />
         ) : (
           <Button

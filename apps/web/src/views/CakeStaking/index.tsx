@@ -10,6 +10,7 @@ import useTheme from 'hooks/useTheme'
 import { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { useGauges } from 'views/GaugesVoting/hooks/useGauges'
+import noop from 'lodash/noop'
 import { BenefitCard } from './components/BenefitCard'
 import { CakeRewardsCard } from './components/CakeRewardsCard'
 import { LockCake } from './components/LockCake'
@@ -78,7 +79,7 @@ const CakeStaking = () => {
             }
             type="gaugesVoting"
             dataText={`${gaugesVotingCount ?? 0}`}
-            onClick={() => {}}
+            onClick={noop}
           />
         </Grid>
       </StyledPageHeader>

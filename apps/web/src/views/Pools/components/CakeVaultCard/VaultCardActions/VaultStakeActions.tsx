@@ -4,6 +4,7 @@ import { Pool } from '@pancakeswap/widgets-internal'
 import { Token } from '@pancakeswap/sdk'
 import BigNumber from 'bignumber.js'
 import { VaultKey } from 'state/types'
+import noop from 'lodash/noop'
 import LockedStakeModal from '../../LockedPool/Modals/LockedStakeModal'
 import NotEnoughTokensModal from '../../Modals/NotEnoughTokensModal'
 import { VaultStakeButtonGroup } from '../../Vault/VaultStakeButtonGroup'
@@ -43,7 +44,7 @@ const VaultStakeActions: React.FC<React.PropsWithChildren<VaultStakeActionsProps
     ) : (
       <VaultStakeButtonGroup
         onFlexibleClick={stakingTokenBalance.gt(0) ? onPresentStake : onPresentTokenRequired}
-        onLockedClick={pool.vaultKey === VaultKey.CakeVault ? openPresentLockedStakeModal : () => {}}
+        onLockedClick={pool.vaultKey === VaultKey.CakeVault ? openPresentLockedStakeModal : noop}
       />
     )
   }
