@@ -57,5 +57,5 @@ export const getAllFlatGauges = async (useFreshData = false): Promise<GaugeConfi
   if (!gaugesByChainId) {
     return []
   }
-  return Object.values(gaugesByChainId).flat()
+  return Object.values(gaugesByChainId).reduce((acc, val) => acc.concat(val), [])
 }
