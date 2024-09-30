@@ -90,7 +90,7 @@ export const footerLinks: (t: ContextApi["t"]) => FooterLinkType[] = (t) => [
       },
       {
         label: t("Legacy products"),
-        href: "/", // TODO
+        href: "/",
       },
     ],
   },
