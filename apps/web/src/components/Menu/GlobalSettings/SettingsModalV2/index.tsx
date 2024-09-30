@@ -41,7 +41,7 @@ export const SettingsModalV2 = ({ onDismiss, mode }: SettingsModalV2Props) => {
     <>
       <MotionModal
         minWidth="480px"
-        headerPadding="0px"
+        headerPadding="6px 24px 0"
         title={
           activeTabIndex === 2 ? (
             <TabContent type="to_right">

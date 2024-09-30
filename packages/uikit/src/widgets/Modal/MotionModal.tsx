@@ -97,7 +97,7 @@ const MotionModal: React.FC<React.PropsWithChildren<ModalProps>> = ({
     >
       <ModalHeader
         background={getThemeValue(theme, `colors.${headerBackground}`, headerBackground)}
-        p={headerPadding}
+        style={{ padding: headerPadding }}
         headerBorderColor={headerBorderColor}
       >
         <ModalTitle>
