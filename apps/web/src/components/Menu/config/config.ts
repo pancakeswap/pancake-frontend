@@ -54,12 +54,12 @@ const config: (
       label: t('Trade'),
       icon: SwapIcon,
       fillIcon: SwapFillIcon,
-      href: '/swap',
+      href: '/',
       showItemsOnMobile: false,
       items: [
         {
           label: t('Swap'),
-          href: '/swap',
+          href: '/',
         },
         {
           label: t('Perps'),
