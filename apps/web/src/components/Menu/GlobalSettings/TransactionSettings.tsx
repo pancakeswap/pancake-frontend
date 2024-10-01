@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Button, Flex, Input, QuestionHelper, Text } from '@pancakeswap/uikit'
+import { Box, Button, Flex, FlexGap, Input, QuestionHelper, Text } from '@pancakeswap/uikit'
 import { useUserSlippage } from '@pancakeswap/utils/user'
 import { useState } from 'react'
 import { escapeRegExp } from 'utils'
@@ -9,7 +9,7 @@ import { useUserTransactionTTL } from 'hooks/useTransactionDeadline'
 import styled from 'styled-components'
 import { PrimaryOutlineButton } from './styles'
 
-const ButtonsContainer = styled(Flex).attrs({ flexWrap: 'wrap' })`
+const ButtonsContainer = styled(FlexGap).attrs({ flexWrap: 'wrap', gap: '4px' })`
   background-color: ${({ theme }) => theme.colors.input};
   border-radius: ${({ theme }) => theme.radii.default};
   padding: 1px;
