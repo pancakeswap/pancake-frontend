@@ -22,17 +22,13 @@ export const TabContent = ({ children, type = 'default', ...props }: TabContentP
   const motionBoxConfig = useMemo(
     () => ({
       initial: {
-        opacity: 0.4,
+        opacity: 0.2,
         x: type === 'to_right' ? 20 : 0,
       },
       animate: {
         opacity: 1,
         x: 0,
       },
-      // exit: {
-      //   opacity: 0.4,
-      //   x: type === 'to_right' ? -10 : 0,
-      // },
     }),
     [type],
   )
