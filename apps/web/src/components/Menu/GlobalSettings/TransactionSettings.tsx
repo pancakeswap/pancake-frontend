@@ -219,6 +219,7 @@ const SlippageTabs = () => {
           </Box>
           <PrimaryOutlineButton
             ml="8px"
+            mt="3px"
             variant="text"
             scale="sm"
             onClick={() => parseCustomDeadline(DEFAULT_TXN_DEADLINE.toString())}
