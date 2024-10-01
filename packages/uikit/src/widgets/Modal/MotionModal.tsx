@@ -59,7 +59,8 @@ export const ModalWrapper = ({
       style={{ overflow: "hidden" }}
       $minHeight={minHeight}
       // Note: Not using layout attr from framer-motion, we animate only height right now manually.
-      animate={{ height: Math.max(dimensions.height, parseInt(minHeight?.toString() || "0")) }}
+      // Note: Layout animations on mobile can be costly in performance
+      animate={!isMobile && { height: Math.max(dimensions.height, parseInt(minHeight?.toString() || "0")) }}
     >
       <Box ref={innerRef} overflow="hidden" borderRadius="32px" {...props}>
         {children}
