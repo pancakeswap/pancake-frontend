@@ -104,7 +104,7 @@ export const SettingsModalV2 = ({ onDismiss, mode }: SettingsModalV2Props) => {
   return (
     <>
       <MotionModal
-        minWidth="480px"
+        minWidth="420px"
         minHeight={isMobile ? '500px' : undefined}
         headerPadding="6px 24px 0"
         title={renderTabHeading()}
