@@ -12,13 +12,19 @@ export const PanelWrapper = styled.div`
 `
 interface ButtonAndDetailsPanelProps {
   swapCommitButton: React.ReactNode
+  pricingAndSlippage: React.ReactNode
   tradeDetails: React.ReactNode
 }
 
-export const ButtonAndDetailsPanel: React.FC<ButtonAndDetailsPanelProps> = ({ swapCommitButton, tradeDetails }) => {
+export const ButtonAndDetailsPanel: React.FC<ButtonAndDetailsPanelProps> = ({
+  swapCommitButton,
+  pricingAndSlippage,
+  tradeDetails,
+}) => {
   return (
     <PanelWrapper>
       {swapCommitButton}
+      {pricingAndSlippage}
       {tradeDetails}
     </PanelWrapper>
   )
