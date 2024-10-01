@@ -51,7 +51,7 @@ export const SettingsTab = memo(
 
           <PreTitle>{t('Interface Settings')}</PreTitle>
 
-          <Flex justifyContent="space-between" alignItems="center" mt="4px">
+          <Flex justifyContent="space-between" alignItems="center" mt="8px">
             <Flex alignItems="center">
               <Text>{t('Expert Mode')}</Text>
               <QuestionHelper
@@ -63,7 +63,7 @@ export const SettingsTab = memo(
             <Toggle id="toggle-expert-mode-button" scale="md" checked={expertMode} onChange={handleExpertModeToggle} />
           </Flex>
 
-          <Flex justifyContent="space-between" alignItems="center" mt="12px">
+          <Flex justifyContent="space-between" alignItems="center" mt="16px">
             <Flex alignItems="center">
               <Text>{t('Flippy sounds')}</Text>
               <QuestionHelper
