@@ -78,6 +78,7 @@ export { default as EthChainIcon } from "./Icons/EthChain";
 export { default as ExpandIcon } from "./Icons/Expand";
 export { default as FarmIcon } from "./Icons/Farm";
 export { default as FavoriteBorderIcon } from "./Icons/FavoriteBorder";
+export { default as GameIcon } from "./Icons/Game";
 export { default as GithubIcon } from "./Icons/Github";
 export { default as GlassGlobeIcon } from "./Icons/GlassGlobe";
 export { default as GovernanceIcon } from "./Icons/Governance";

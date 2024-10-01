@@ -19,7 +19,7 @@ import GlobalSettings from './GlobalSettings'
 import { SettingsMode } from './GlobalSettings/types'
 import UserMenu from './UserMenu'
 import { UseMenuItemsParams, useMenuItems } from './hooks/useMenuItems'
-import { getActiveMenuItem, getActiveSubMenuItem } from './utils'
+import { getActiveMenuItem, getActiveSubMenuChildItem, getActiveSubMenuItem } from './utils'
 
 const Notifications = lazy(() => import('views/Notifications'))
 
@@ -87,6 +87,7 @@ const Menu = (props) => {
 
   const activeMenuItem = getActiveMenuItem({ menuConfig: menuItems, pathname })
   const activeSubMenuItem = getActiveSubMenuItem({ menuItem: activeMenuItem, pathname })
+  const activeSubChildMenuItem = getActiveSubMenuChildItem({ menuItem: activeMenuItem, pathname })
 
   const toggleTheme = useMemo(() => {
     return () => setTheme(isDark ? 'light' : 'dark')
@@ -125,6 +126,7 @@ const Menu = (props) => {
         footerLinks={getFooterLinks}
         activeItem={activeMenuItem?.href}
         activeSubItem={activeSubMenuItem?.href}
+        activeSubItemChildItem={activeSubChildMenuItem?.href}
         buyCakeLabel={t('Buy CAKE')}
         buyCakeLink="https://pancakeswap.finance/swap?outputCurrency=0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82&chainId=56"
         {...props}

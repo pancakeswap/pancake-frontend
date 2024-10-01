@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createElement, memo } from "react";
-import { Flex } from "../Box";
 import isTouchDevice from "../../util/isTouchDevice";
+import { Flex } from "../Box";
 import DropdownMenu from "../DropdownMenu/DropdownMenu";
 import MenuItem from "../MenuItem/MenuItem";
 import { MenuItemsProps } from "./types";
@@ -10,6 +10,7 @@ const MenuItems: React.FC<React.PropsWithChildren<MenuItemsProps>> = ({
   items = [],
   activeItem,
   activeSubItem,
+  activeSubItemChildItem,
   ...props
 }) => {
   return (
@@ -25,6 +26,7 @@ const MenuItems: React.FC<React.PropsWithChildren<MenuItemsProps>> = ({
             items={menuItems}
             py={1}
             activeItem={activeSubItem}
+            activeSubItemChildItem={activeSubItemChildItem}
             isDisabled={disabled}
           >
             <MenuItem

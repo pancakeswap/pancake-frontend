@@ -19,4 +19,5 @@ export interface MenuItemsProps extends BoxProps {
   items: MenuItemsType[];
   activeItem?: string;
   activeSubItem?: string;
+  activeSubItemChildItem?: string;
 }

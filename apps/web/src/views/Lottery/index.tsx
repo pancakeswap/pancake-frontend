@@ -6,6 +6,7 @@ import useTheme from 'hooks/useTheme'
 import { useState } from 'react'
 import { useFetchLottery, useLottery } from 'state/lottery/hooks'
 import { styled } from 'styled-components'
+import { SubMenu } from 'views/Lottery/components/SubMenu'
 import AllHistoryCard from './components/AllHistoryCard'
 import CheckPrizesSection from './components/CheckPrizesSection'
 import Countdown from './components/Countdown'
@@ -44,6 +45,7 @@ const Lottery = () => {
 
   return (
     <>
+      <SubMenu />
       <LotteryPage>
         <PageSection background={TITLE_BG} index={1} hasCurvedDivider={false}>
           <Hero />

@@ -84,6 +84,7 @@ const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
   footerLinks,
   activeItem,
   activeSubItem,
+  activeSubItemChildItem,
   langs,
   buyCakeLabel,
   buyCakeLink,
@@ -151,7 +152,13 @@ const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
               <Flex>
                 {logoComponent ?? <Logo href={homeLink?.href ?? "/"} />}
                 <AtomBox display={{ xs: "none", lg: "block" }}>
-                  <MenuItems items={links} activeItem={activeItem} activeSubItem={activeSubItem} ml="24px" />
+                  <MenuItems
+                    ml="24px"
+                    items={links}
+                    activeItem={activeItem}
+                    activeSubItem={activeSubItem}
+                    activeSubItemChildItem={activeSubItemChildItem}
+                  />
                 </AtomBox>
               </Flex>
               <Flex alignItems="center" height="100%">

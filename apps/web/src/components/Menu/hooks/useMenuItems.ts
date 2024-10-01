@@ -22,13 +22,14 @@ export const useMenuItems = ({ onClick }: UseMenuItemsParams = {}): ConfigMenuIt
   const { chainId } = useActiveChainId()
   const { isDark } = useTheme()
   const menuItemsStatus = useMenuItemsStatus()
-  const { isMobile } = useMatchBreakpoints()
+  const { isDesktop } = useMatchBreakpoints()
 
   const menuItems = useMemo(() => {
     const mobileConfig = [...config(t, isDark, languageCode, chainId)]
-    mobileConfig.push(mobileConfig.splice(3, 1)[0])
-    return isMobile ? mobileConfig : config(t, isDark, languageCode, chainId)
-  }, [t, isDark, languageCode, chainId, isMobile])
+    mobileConfig.splice(3, 0, mobileConfig.splice(2, 1)[0])
+
+    return isDesktop ? config(t, isDark, languageCode, chainId) : mobileConfig
+  }, [t, isDark, languageCode, chainId, isDesktop])
 
   return useMemo(() => {
     if (menuItemsStatus && Object.keys(menuItemsStatus).length) {
