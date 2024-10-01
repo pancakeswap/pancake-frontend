@@ -116,7 +116,7 @@ export const NigeriaMeetupBanner = memo(function NigeriaMeetupBanner() {
     <BannerContainer background="radial-gradient(94.59% 117.72% at 26.47% 0%, #B1F5CE 0%, #50936B 46.5%, #125429 79.02%)">
       <BannerMain
         badges={
-          <Flex alignItems="center" height="20px" style={{ gap: '4px' }}>
+          <Flex alignItems="center" height="20px" style={{ gap: '4px' }} minWidth="220px">
             <PancakeSwapBadge />
             <VerticalDivider />
             <BannerTitle variant="gold" fontSize={18} strokeSize={1}>
