@@ -45,6 +45,7 @@ export const MotionTabs: React.FC<React.PropsWithChildren<MotionTabsProps>> = ({
                   color,
                   bold: isActive,
                   isActive,
+                  tabIndex: 0, // TODO: fix not clickable by pressing enter or space
                 })}
               </Box>
               {isActive && <MotionBoxUnderline layoutId="underline" />}
