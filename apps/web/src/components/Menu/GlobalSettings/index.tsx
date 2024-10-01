@@ -1,5 +1,7 @@
 import { ButtonProps, CogIcon, Flex, IconButton, useModal } from '@pancakeswap/uikit'
 
+import { useCallback } from 'react'
+import SettingsModal from './SettingsModal'
 import { SettingsModalV2 } from './SettingsModalV2'
 import { SettingsMode } from './types'
 
@@ -10,12 +12,18 @@ type Props = {
 } & ButtonProps
 
 const GlobalSettings = ({ color, mr = '8px', mode = SettingsMode.GLOBAL, ...rest }: Props) => {
-  const [onPresentSettingsModal] = useModal(<SettingsModalV2 mode={mode} />)
+  const [onPresentSettingsModal] = useModal(<SettingsModal mode={mode} />)
+  const [onPresentSettingsV2Modal] = useModal(<SettingsModalV2 mode={mode} />)
+
+  const onButtonClick = useCallback(() => {
+    if (mode === SettingsMode.GLOBAL) onPresentSettingsModal()
+    else onPresentSettingsV2Modal()
+  }, [mode, onPresentSettingsModal, onPresentSettingsV2Modal])
 
   return (
     <Flex>
       <IconButton
-        onClick={onPresentSettingsModal}
+        onClick={onButtonClick}
         variant="text"
         scale="sm"
         mr={mr}
