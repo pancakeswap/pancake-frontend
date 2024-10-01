@@ -51,11 +51,6 @@ export const SettingsModalV2 = ({ onDismiss, mode }: SettingsModalV2Props) => {
           <TabContent type="to_right">
             <Flex alignItems="center">
               <Heading>{t('Customize Routing')}</Heading>
-              {isRoutingSettingChange && (
-                <Button ml="8px" variant="text" scale="sm" onClick={reset}>
-                  {t('Reset')}
-                </Button>
-              )}
             </Flex>
           </TabContent>
         )
@@ -74,7 +69,7 @@ export const SettingsModalV2 = ({ onDismiss, mode }: SettingsModalV2Props) => {
           </MotionTabs>
         )
     }
-  }, [activeTabIndex, t, onTabChange, isRoutingSettingChange, reset])
+  }, [activeTabIndex, t, onTabChange])
 
   const renderTab = useCallback(() => {
     switch (activeTabIndex) {
@@ -121,6 +116,16 @@ export const SettingsModalV2 = ({ onDismiss, mode }: SettingsModalV2Props) => {
         minWidth="420px"
         minHeight={isMobile ? '500px' : undefined}
         headerPadding="6px 24px 0"
+        headerRightSlot={
+          activeTabIndex === 2 &&
+          isRoutingSettingChange && (
+            <TabContent type="to_right">
+              <Button ml="8px" variant="text" scale="sm" onClick={reset}>
+                {t('Reset')}
+              </Button>
+            </TabContent>
+          )
+        }
         title={renderTabHeading()}
         onDismiss={onDismiss}
         onBack={activeTabIndex === 2 || activeTabIndex === 3 ? () => setActiveTabIndex(0) : undefined}
