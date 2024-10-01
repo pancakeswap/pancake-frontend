@@ -2,14 +2,27 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Button, Flex, Heading, MotionModal, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useExpertMode, useUserExpertModeAcknowledgement } from '@pancakeswap/utils/user'
 import { MotionTabs } from 'components/Motion/MotionTabs'
+import dynamic from 'next/dynamic'
 import { useCallback, useState } from 'react'
 import { useRoutingSettingChanged } from 'state/user/smartRouter'
 import { SettingsMode } from '../types'
-import { CustomizeRoutingTab } from './CustomizeRoutingTab'
-import { ExpertModeTab } from './ExpertModeTab'
-import { RecentTransactionsTab } from './RecentTransactionsTab'
-import { SettingsTab } from './SettingsTab'
 import { TabContent } from './TabContent'
+
+const SettingsTab = dynamic(() => import('./SettingsTab').then((mod) => mod.SettingsTab), {
+  ssr: false,
+})
+const RecentTransactionsTab = dynamic(
+  () => import('./RecentTransactionsTab').then((mod) => mod.RecentTransactionsTab),
+  {
+    ssr: false,
+  },
+)
+const CustomizeRoutingTab = dynamic(() => import('./CustomizeRoutingTab').then((mod) => mod.CustomizeRoutingTab), {
+  ssr: false,
+})
+const ExpertModeTab = dynamic(() => import('./ExpertModeTab').then((mod) => mod.ExpertModeTab), {
+  ssr: false,
+})
 
 interface SettingsModalV2Props {
   onDismiss?: () => void
@@ -65,7 +78,7 @@ export const SettingsModalV2 = ({ onDismiss, mode }: SettingsModalV2Props) => {
 
   const renderTab = useCallback(() => {
     switch (activeTabIndex) {
-      case 0:
+      case 0: {
         return (
           <SettingsTab
             key="settings_tab"
@@ -76,6 +89,7 @@ export const SettingsModalV2 = ({ onDismiss, mode }: SettingsModalV2Props) => {
             setExpertMode={setExpertMode}
           />
         )
+      }
       case 1:
         return <RecentTransactionsTab key="recent_txns_tab" />
       case 2:
