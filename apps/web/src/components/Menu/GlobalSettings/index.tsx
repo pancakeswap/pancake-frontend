@@ -9,8 +9,8 @@ type Props = {
   mode?: SettingsMode
 } & ButtonProps
 
-const GlobalSettings = ({ color, mr = '8px', mode, ...rest }: Props) => {
-  const [onPresentSettingsModal] = useModal(<SettingsModalV2 mode={mode ?? SettingsMode.GLOBAL} />)
+const GlobalSettings = ({ color, mr = '8px', mode = SettingsMode.GLOBAL, ...rest }: Props) => {
+  const [onPresentSettingsModal] = useModal(<SettingsModalV2 mode={mode} />)
 
   return (
     <Flex>

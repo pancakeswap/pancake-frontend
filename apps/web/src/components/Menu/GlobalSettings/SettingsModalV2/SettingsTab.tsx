@@ -1,9 +1,10 @@
 import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, Flex, PreTitle } from '@pancakeswap/uikit'
+import { Flex, PreTitle } from '@pancakeswap/uikit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { memo } from 'react'
 import GasSettings from '../GasSettings'
+import { PrimaryOutlineButton } from '../styles'
 import TransactionSettings from '../TransactionSettings'
 import { TabContent } from './TabContent'
 
@@ -24,9 +25,15 @@ export const SettingsTab = memo(({ onCustomizeRoutingClick }: SettingsTabProps) 
         </Flex>
         <TransactionSettings />
       </Flex>
-      <Button mt="auto" width="100%" onClick={() => onCustomizeRoutingClick?.()}>
+      <PrimaryOutlineButton
+        variant="text"
+        mt="auto"
+        $height="48px"
+        width="100%"
+        onClick={() => onCustomizeRoutingClick?.()}
+      >
         {t('Customize Routing')}
-      </Button>
+      </PrimaryOutlineButton>
     </TabContent>
   )
 })

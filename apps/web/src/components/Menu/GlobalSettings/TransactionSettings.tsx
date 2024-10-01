@@ -4,7 +4,26 @@ import { useUserSlippage } from '@pancakeswap/utils/user'
 import { useState } from 'react'
 import { escapeRegExp } from 'utils'
 
+import { VerticalDivider } from '@pancakeswap/widgets-internal'
 import { useUserTransactionTTL } from 'hooks/useTransactionDeadline'
+import styled from 'styled-components'
+
+const ButtonsContainer = styled(Flex).attrs({ flexWrap: 'wrap' })`
+  background-color: ${({ theme }) => theme.colors.input};
+  border-radius: ${({ theme }) => theme.radii.default};
+  padding: 1px;
+  width: fit-content;
+
+  box-shadow: ${({ theme }) => theme.shadows.inset};
+`
+
+const StyledButton = styled(Button)`
+  height: 52px;
+`
+
+const StyledVerticalDivider = styled(VerticalDivider).attrs(({ theme }) => ({ bg: theme.colors.inputSecondary }))`
+  margin: 0 4px;
+`
 
 enum SlippageError {
   InvalidInput = 'InvalidInput',
@@ -93,47 +112,41 @@ const SlippageTabs = () => {
             ml="4px"
           />
         </Flex>
-        <Flex flexWrap="wrap">
-          <Button
-            mt="4px"
-            mr="4px"
+        <ButtonsContainer>
+          <StyledButton
             scale="sm"
             onClick={() => {
               setSlippageInput('')
               setUserSlippageTolerance(10)
             }}
-            variant={userSlippageTolerance === 10 ? 'primary' : 'tertiary'}
+            variant={userSlippageTolerance === 10 ? 'subtle' : 'light'}
           >
             0.1%
-          </Button>
-          <Button
-            mt="4px"
-            mr="4px"
+          </StyledButton>
+          <StyledButton
             scale="sm"
             onClick={() => {
               setSlippageInput('')
               setUserSlippageTolerance(50)
             }}
-            variant={userSlippageTolerance === 50 ? 'primary' : 'tertiary'}
+            variant={userSlippageTolerance === 50 ? 'subtle' : 'light'}
           >
             0.5%
-          </Button>
-          <Button
-            mr="4px"
-            mt="4px"
+          </StyledButton>
+          <StyledButton
             scale="sm"
             onClick={() => {
               setSlippageInput('')
               setUserSlippageTolerance(100)
             }}
-            variant={userSlippageTolerance === 100 ? 'primary' : 'tertiary'}
+            variant={userSlippageTolerance === 100 ? 'subtle' : 'light'}
           >
             1.0%
-          </Button>
-          <Flex alignItems="center">
-            <Box width="76px" mt="4px">
+          </StyledButton>
+          <Flex ml="8px" pr="8px" alignItems="center">
+            <Box position="relative" width="82px">
               <Input
-                scale="sm"
+                scale="md"
                 inputMode="decimal"
                 pattern="^[0-9]*[.,]?[0-9]{0,2}$"
                 placeholder={(userSlippageTolerance / 100).toFixed(2)}
@@ -148,13 +161,17 @@ const SlippageTabs = () => {
                 }}
                 isWarning={!slippageInputIsValid}
                 isSuccess={![10, 50, 100].includes(userSlippageTolerance)}
+                style={{
+                  paddingRight: '28px',
+                }}
               />
+              <Flex position="absolute" right="8px" top="8px" alignItems="center">
+                <StyledVerticalDivider />
+                <Text color="textSubtle"> %</Text>
+              </Flex>
             </Box>
-            <Text color="primary" bold ml="2px">
-              %
-            </Text>
           </Flex>
-        </Flex>
+        </ButtonsContainer>
         {!!slippageError && (
           <Text fontSize="14px" color={slippageError === SlippageError.InvalidInput ? 'red' : '#F3841E'} mt="8px">
             {slippageError === SlippageError.InvalidInput
