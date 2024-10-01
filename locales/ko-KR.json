@@ -3530,7 +3530,7 @@
   "We are having some trouble filling your order. Please retry.": "주문을 작성하는 데 문제가 있습니다. 다시 시도하세요.",
   "No gas cost or fee will be charged on failed orders.": "주문 실패 시 가스 비용이나 수수료가 청구되지 않습니다.",
   "Please exercise due caution when trading / providing liquidity for the PNP token. The protocol recently encountered a": "PNP 토큰에 대한 거래/유동성 제공 시 각별히 주의하시기 바랍니다. 이 프로토콜은 최근 다음과 같은 영향을 받았습니다:",
-  "For more information, please refer to %org%’s": "For more information, please refer to %org%’s",
-  "Please exercise due caution when trading / providing liquidity for the uniBTC token. The protocol recently encountered a security compromise.": "Please exercise due caution when trading / providing liquidity for the uniBTC token. The protocol recently encountered a security compromise.",
-  "Caution - %token% Token": "Caution - %token% Token"
+  "For more information, please refer to %org%’s": "자세한 정보는 다음을 참조하세요: %org%",
+  "Please exercise due caution when trading / providing liquidity for the uniBTC token. The protocol recently encountered a security compromise.": "uniBTC 토큰에 대한 거래/유동성 제공 시 각별히 주의하시기 바랍니다. 최근에 이 프로토콜에 보안 침해가 발생했습니다.",
+  "Caution - %token% Token": "주의 - %token% 토큰"
 }
