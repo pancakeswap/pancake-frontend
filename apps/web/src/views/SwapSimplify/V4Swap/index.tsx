@@ -8,11 +8,11 @@ import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
 import { logger } from 'utils/datadog'
 import { SwapType } from '../../Swap/types'
-import { PricingAndSlippage } from '../../Swap/V3Swap/containers'
 import { useAllTypeBestTrade } from '../../Swap/V3Swap/hooks/useAllTypeBestTrade'
 import { ButtonAndDetailsPanel } from './ButtonAndDetailsPanel'
 import { CommitButton } from './CommitButton'
 import { FormMain } from './FormMainV4'
+import { PricingAndSlippage } from './PricingAndSlippage'
 import { SwapSelection } from './SwapSelectionTab'
 import { TradeDetails } from './TradeDetails'
 
@@ -116,6 +116,9 @@ export function V4SwapForm() {
       <ButtonAndDetailsPanel
         swapCommitButton={
           <CommitButton order={bestOrder} tradeLoaded={tradeLoaded} tradeError={tradeError} {...commitHooks} />
+        }
+        pricingAndSlippage={
+          <PricingAndSlippage priceLoading={!tradeLoaded} price={executionPrice ?? undefined} showSlippage={false} />
         }
         tradeDetails={<TradeDetails loaded={tradeLoaded} order={bestOrder} />}
       />
