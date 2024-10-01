@@ -63,7 +63,7 @@ export const SettingsModalV2 = ({ onDismiss, mode }: SettingsModalV2Props) => {
 
       default:
         return (
-          <MotionTabs activeIndex={activeTabIndex} onItemClick={onTabChange}>
+          <MotionTabs activeIndex={activeTabIndex} onItemClick={onTabChange} animateOnMobile={false}>
             <Text>{t('Settings')}</Text>
             <Text>{t('Recent Transactions')}</Text>
           </MotionTabs>
