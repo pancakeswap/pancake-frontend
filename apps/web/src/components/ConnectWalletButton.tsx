@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { WalletModalV2 } from '@pancakeswap/ui-wallets'
-import { Button, ButtonProps } from '@pancakeswap/uikit'
+import { Button, ButtonProps, FlexGap, WalletFilledV2Icon } from '@pancakeswap/uikit'
 import { createWallets, getDocLink } from 'config/wallet'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useAuth from 'hooks/useAuth'
@@ -11,7 +11,11 @@ import { logGTMWalletConnectEvent } from 'utils/customGTMEventTracking'
 import { useConnect } from 'wagmi'
 import Trans from './Trans'
 
-const ConnectWalletButton = ({ children, ...props }: ButtonProps) => {
+interface ConnectWalletButtonProps extends ButtonProps {
+  withIcon?: boolean
+}
+
+const ConnectWalletButton = ({ children, withIcon, ...props }: ConnectWalletButtonProps) => {
   const { login } = useAuth()
   const {
     t,
@@ -28,7 +32,9 @@ const ConnectWalletButton = ({ children, ...props }: ButtonProps) => {
   return (
     <>
       <Button onClick={() => setOpen(true)} {...props}>
-        {children || <Trans>Connect Wallet</Trans>}
+        <FlexGap gap="8px" justifyContent="center" alignItems="center">
+          {children || <Trans>Connect Wallet</Trans>} {withIcon && <WalletFilledV2Icon color="white" />}
+        </FlexGap>
       </Button>
       <style jsx global>{`
         w3m-modal {
