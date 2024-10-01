@@ -569,4 +569,12 @@ export const ethereumTokens = {
     'Coinbase Wrapped BTC',
     'https://www.coinbase.com/',
   ),
+  eigen: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0xec53bF9167f50cDEB3Ae105f56099aaaB9061F83',
+    18,
+    'EIGEN',
+    'Eigen',
+    'https://www.eigenlayer.xyz/',
+  ),
 }
