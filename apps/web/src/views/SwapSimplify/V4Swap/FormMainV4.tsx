@@ -30,7 +30,7 @@ interface Props {
   swapCommitButton?: ReactNode
 }
 
-export function FormMain({ pricingAndSlippage, inputAmount, outputAmount, tradeLoading, swapCommitButton }: Props) {
+export function FormMain({ inputAmount, outputAmount, tradeLoading }: Props) {
   const { address: account } = useAccount()
   const { t } = useTranslation()
   const warningSwapHandler = useWarningImport()
@@ -150,8 +150,6 @@ export function FormMain({ pricingAndSlippage, inputAmount, outputAmount, tradeL
         title={<Text fontSize={12}>{t('To')}</Text>}
       />
       <Recipient />
-      {pricingAndSlippage}
-      {/* {swapCommitButton} */}
     </FormContainer>
   )
 }
