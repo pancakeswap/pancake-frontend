@@ -1,8 +1,9 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Heading, MotionModal, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Button, Flex, Heading, MotionModal, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useExpertMode, useUserExpertModeAcknowledgement } from '@pancakeswap/utils/user'
 import { MotionTabs } from 'components/Motion/MotionTabs'
 import { useCallback, useState } from 'react'
+import { useRoutingSettingChanged } from 'state/user/smartRouter'
 import { SettingsMode } from '../types'
 import { CustomizeRoutingTab } from './CustomizeRoutingTab'
 import { ExpertModeTab } from './ExpertModeTab'
@@ -21,6 +22,7 @@ export const SettingsModalV2 = ({ onDismiss, mode }: SettingsModalV2Props) => {
   const [activeTabIndex, setActiveTabIndex] = useState(0)
   const [showExpertModeAcknowledgement, setShowExpertModeAcknowledgement] = useUserExpertModeAcknowledgement()
   const [expertMode, setExpertMode] = useExpertMode()
+  const [isRoutingSettingChange, reset] = useRoutingSettingChanged()
 
   const onTabChange = useCallback(
     (index: number) => {
@@ -34,7 +36,14 @@ export const SettingsModalV2 = ({ onDismiss, mode }: SettingsModalV2Props) => {
       case 2:
         return (
           <TabContent type="to_right">
-            <Heading>{t('Customize Routing')}</Heading>
+            <Flex alignItems="center">
+              <Heading>{t('Customize Routing')}</Heading>
+              {isRoutingSettingChange && (
+                <Button ml="8px" variant="text" scale="sm" onClick={reset}>
+                  {t('Reset')}
+                </Button>
+              )}
+            </Flex>
           </TabContent>
         )
       case 3:
@@ -52,7 +61,7 @@ export const SettingsModalV2 = ({ onDismiss, mode }: SettingsModalV2Props) => {
           </MotionTabs>
         )
     }
-  }, [activeTabIndex, t, onTabChange])
+  }, [activeTabIndex, t, onTabChange, isRoutingSettingChange, reset])
 
   const renderTab = useCallback(() => {
     switch (activeTabIndex) {

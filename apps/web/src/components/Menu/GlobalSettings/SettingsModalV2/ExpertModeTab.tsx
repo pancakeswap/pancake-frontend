@@ -13,8 +13,8 @@ export const ExpertModeTab = memo(
   ({ setShowConfirmExpertModal, setShowExpertModeAcknowledgement, toggleExpertMode }: ExpertModeTabProps) => {
     const { t } = useTranslation()
     const prompt = usePrompt()
-
     const [isRememberChecked, setIsRememberChecked] = useState(false)
+
     const onPromptConfirm = useCallback(
       (value: string) => {
         if (value === 'confirm') {
