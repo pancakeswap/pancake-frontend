@@ -26,7 +26,7 @@ export const PricingAndSlippage = memo(function PricingAndSlippage({
   const isWrapping = useIsWrapping()
   const [onPresentSettingsModal] = useModal(<SettingsModal mode={SettingsMode.SWAP_LIQUIDITY} />)
 
-  if (isWrapping) {
+  if (isWrapping || !price) {
     return null
   }
 
