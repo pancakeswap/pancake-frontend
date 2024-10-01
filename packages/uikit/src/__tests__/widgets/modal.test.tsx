@@ -12,8 +12,8 @@ it("renders correctly", () => {
     <DocumentFragment>
       .c10 {
       align-self: center;
-      fill: var(--colors-primary);
-      color: var(--colors-primary);
+      fill: var(--colors-textSubtle);
+      color: var(--colors-textSubtle);
       flex-shrink: 0;
     }
 
@@ -203,7 +203,7 @@ it("renders correctly", () => {
             >
               <svg
                 class="c10"
-                color="primary"
+                color="textSubtle"
                 viewBox="0 0 24 24"
                 width="20px"
                 xmlns="http://www.w3.org/2000/svg"
