@@ -7,6 +7,7 @@ import { escapeRegExp } from 'utils'
 import { VerticalDivider } from '@pancakeswap/widgets-internal'
 import { useUserTransactionTTL } from 'hooks/useTransactionDeadline'
 import styled from 'styled-components'
+import { PrimaryOutlineButton } from './styles'
 
 const ButtonsContainer = styled(Flex).attrs({ flexWrap: 'wrap' })`
   background-color: ${({ theme }) => theme.colors.input};
@@ -37,6 +38,8 @@ enum DeadlineError {
 
 const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`) // match escaped "." characters via in a non-capturing group
 const THREE_DAYS_IN_SECONDS = 60 * 60 * 24 * 3
+
+const DEFAULT_TXN_DEADLINE = 20 // In Minutes
 
 const SlippageTabs = () => {
   const [userSlippageTolerance, setUserSlippageTolerance] = useUserSlippage()
@@ -182,19 +185,19 @@ const SlippageTabs = () => {
           </Text>
         )}
       </Flex>
-      <Flex justifyContent="space-between" alignItems="center" mb="24px">
+      <Box mb="24px">
         <Flex alignItems="center">
-          <Text>{t('Tx deadline (mins)')}</Text>
+          <Text>{t('Tx deadline')}</Text>
           <QuestionHelper
             text={t('Your transaction will revert if it is left confirming for longer than this time.')}
             placement="top"
             ml="4px"
           />
         </Flex>
-        <Flex>
-          <Box width="52px" mt="4px">
+        <Flex alignItems="center">
+          <Box position="relative" width="128px" mt="4px">
             <Input
-              scale="sm"
+              scale="md"
               inputMode="numeric"
               pattern="^[0-9]+$"
               isWarning={!!deadlineError}
@@ -205,10 +208,25 @@ const SlippageTabs = () => {
                   parseCustomDeadline(event.target.value)
                 }
               }}
+              style={{
+                paddingRight: '48px',
+              }}
             />
+            <Flex position="absolute" right="8px" top="8px" alignItems="center">
+              <StyledVerticalDivider />
+              <Text color="textSubtle">{t('Mins')}</Text>
+            </Flex>
           </Box>
+          <PrimaryOutlineButton
+            ml="8px"
+            variant="text"
+            scale="sm"
+            onClick={() => parseCustomDeadline(DEFAULT_TXN_DEADLINE.toString())}
+          >
+            {t('Reset')}
+          </PrimaryOutlineButton>
         </Flex>
-      </Flex>
+      </Box>
     </Flex>
   )
 }
