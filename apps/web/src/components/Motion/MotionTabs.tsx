@@ -1,8 +1,8 @@
-import { Box, MotionBox, MotionFlexGap, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Box, FlexGapProps, MotionBox, MotionFlexGap, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { Children, cloneElement, ReactElement } from 'react'
 import styled from 'styled-components'
 
-interface MotionTabsProps {
+interface MotionTabsProps extends FlexGapProps {
   children: React.ReactElement[]
   activeIndex?: number
   onItemClick?: (index: number) => void
@@ -28,10 +28,11 @@ export const MotionTabs: React.FC<React.PropsWithChildren<MotionTabsProps>> = ({
   children,
   onItemClick,
   activeIndex = 0,
+  ...props
 }) => {
   const { isMobile } = useMatchBreakpoints()
   return (
-    <MotionFlexGap gap={isMobile ? '8px' : '12px'} alignItems="baseline">
+    <MotionFlexGap gap={isMobile ? '8px' : '12px'} alignItems="baseline" {...props}>
       {Children.map(children, (child: ReactElement, index) => {
         const isActive = activeIndex === index
         const color = isActive ? 'text' : 'textSubtle'
