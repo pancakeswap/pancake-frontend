@@ -1,11 +1,11 @@
-import { Text } from '@pancakeswap/uikit'
+import { RecentTransactions } from 'components/App/Transactions/TransactionsModal'
 import { memo } from 'react'
 import { TabContent } from './TabContent'
 
 export const RecentTransactionsTab = memo(() => {
   return (
     <TabContent>
-      <Text>Recent Transactions</Text>
+      <RecentTransactions />
     </TabContent>
   )
 })
