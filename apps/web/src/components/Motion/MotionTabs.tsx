@@ -6,6 +6,9 @@ interface MotionTabsProps extends FlexGapProps {
   children: React.ReactElement[]
   activeIndex?: number
   onItemClick?: (index: number) => void
+
+  /** Default: true */
+  animateOnMobile?: boolean
 }
 
 const MotionBoxUnderline = styled(MotionBox)`
@@ -28,6 +31,7 @@ export const MotionTabs: React.FC<React.PropsWithChildren<MotionTabsProps>> = ({
   children,
   onItemClick,
   activeIndex = 0,
+  animateOnMobile = true,
   ...props
 }) => {
   const { isMobile } = useMatchBreakpoints()
@@ -38,20 +42,22 @@ export const MotionTabs: React.FC<React.PropsWithChildren<MotionTabsProps>> = ({
         const color = isActive ? 'text' : 'textSubtle'
 
         return (
-          <>
-            <StyledTab position="relative" width="fit-content">
-              <Box px={['8px', '12px']} py="8px">
-                {cloneElement(child, {
-                  onClick: onItemClick ? () => onItemClick(index) : undefined,
-                  color,
-                  bold: isActive,
-                  isActive,
-                  tabIndex: 0, // TODO: fix not clickable by pressing enter or space
-                })}
-              </Box>
-              {isActive && <MotionBoxUnderline layoutId="underline" />}
-            </StyledTab>
-          </>
+          // TODO: Fix not clickable by pressing enter/space when in tab focus
+          <StyledTab
+            position="relative"
+            width="fit-content"
+            tabIndex={0}
+            onClick={onItemClick ? () => onItemClick(index) : undefined}
+          >
+            <Box px={['8px', '12px']} py="8px">
+              {cloneElement(child, {
+                color,
+                bold: isActive,
+                isactive: isActive,
+              })}
+            </Box>
+            {isActive && <MotionBoxUnderline {...(!(isMobile && !animateOnMobile) && { layoutId: 'underline' })} />}
+          </StyledTab>
         )
       })}
     </MotionFlexGap>
