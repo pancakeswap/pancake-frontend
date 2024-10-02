@@ -27,13 +27,13 @@ const NumberDisplayContainer = styled(FlexGap)`
 `
 const CountDownWrapper = styled.div`
   display: flex;
-  background-color: white;
+  background-color: #082814;
   font-family: Kanit;
   font-size: 18px;
   font-style: normal;
   font-weight: 600;
   line-height: 90%;
-  color: #08060b;
+  color: white;
   padding: 8px;
   border-radius: 8px;
   margin-top: 5px;
@@ -127,7 +127,7 @@ export const NigeriaMeetupBanner = memo(function NigeriaMeetupBanner() {
         }
         title={
           <BannerTitle variant="white" marginTop={isMd ? '-10px' : '0px'}>
-            {t('PancakeSwap Meetup')}
+            {t('PancakeSwap Workshop')}
           </BannerTitle>
         }
         desc={<Countdown />}
