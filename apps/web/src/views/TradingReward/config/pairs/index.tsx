@@ -18,6 +18,7 @@ import { tradingRewardLineaV3Pair } from './edgeCasesFarms/lineaFarm'
 import { tradingRewardZkEvmV3Pair } from './edgeCasesFarms/zkEVMFarm'
 import { tradingRewardZkSyncV3Pair } from './edgeCasesFarms/zkSyncFarm'
 
+// TODO: Need take care this part
 export const tradingRewardPairConfigChainMap: Record<FarmV3SupportedChainId, ComputedFarmConfigV3[]> = {
   [ChainId.ETHEREUM]: legacyV3EthereumFarmConfig,
   [ChainId.BSC]: [...legacyV3BscFarmConfig, ...tradingRewardBscV3Pair],
