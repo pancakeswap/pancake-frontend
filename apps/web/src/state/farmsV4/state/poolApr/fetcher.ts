@@ -67,7 +67,6 @@ const masterChefV3CacheMap = new Map<
   {
     totalAllocPoint: bigint
     latestPeriodCakePerSecond: bigint
-    poolInfo: readonly [bigint, `0x${string}`, `0x${string}`, `0x${string}`, number, bigint, bigint]
   }
 >()
 
@@ -82,17 +81,17 @@ export const getV3PoolCakeApr = async (pool: V3PoolInfo, cakePrice: BigNumber): 
     }
   }
 
-  const hasCache = masterChefV3CacheMap.has(pool.chainId)
-
   const [totalAllocPoint, latestPeriodCakePerSecond, poolInfo] = await Promise.all([
-    hasCache ? masterChefV3CacheMap.get(pool.chainId)!.totalAllocPoint : masterChefV3.read.totalAllocPoint(),
-    hasCache
-      ? masterChefV3CacheMap.get(pool.chainId)!.latestPeriodCakePerSecond
-      : masterChefV3.read.latestPeriodCakePerSecond(),
-    hasCache ? masterChefV3CacheMap.get(pool.chainId)!.poolInfo : masterChefV3.read.poolInfo([BigInt(pool.pid)]),
+    masterChefV3CacheMap.get(pool.chainId)?.totalAllocPoint ?? masterChefV3.read.totalAllocPoint(),
+    masterChefV3CacheMap.get(pool.chainId)?.latestPeriodCakePerSecond ?? masterChefV3.read.latestPeriodCakePerSecond(),
+    masterChefV3.read.poolInfo([BigInt(pool.pid)]),
   ])
 
-  if (!hasCache) masterChefV3CacheMap.set(pool.chainId, { totalAllocPoint, latestPeriodCakePerSecond, poolInfo })
+  masterChefV3CacheMap.set(pool.chainId, {
+    ...(masterChefV3CacheMap.get(pool.chainId) ?? {}),
+    totalAllocPoint,
+    latestPeriodCakePerSecond,
+  })
 
   const cakePerYear = new BigNumber(SECONDS_PER_YEAR)
     .times(latestPeriodCakePerSecond.toString())
@@ -233,15 +232,20 @@ const getV3PoolsCakeAprByChainId = async (pools: V3PoolInfo[], chainId: number, 
 
   if (!masterChefV3 || !client) return {}
 
+  const [totalAllocPoint, latestPeriodCakePerSecond] = await Promise.all([
+    masterChefV3CacheMap.get(chainId)?.totalAllocPoint ?? masterChefV3.read.totalAllocPoint(),
+    masterChefV3CacheMap.get(chainId)?.latestPeriodCakePerSecond ?? masterChefV3.read.latestPeriodCakePerSecond(),
+  ])
+
+  masterChefV3CacheMap.set(chainId, {
+    ...(masterChefV3CacheMap.get(chainId) ?? {}),
+    totalAllocPoint,
+    latestPeriodCakePerSecond,
+  })
+
   const validPools = pools.filter((pool) => {
     return pool.pid && pool.chainId === chainId
   })
-
-  const masterChefV3Cache = masterChefV3CacheMap.get(chainId)
-  const [totalAllocPoint, latestPeriodCakePerSecond] = await Promise.all([
-    masterChefV3Cache ? masterChefV3Cache.totalAllocPoint : masterChefV3.read.totalAllocPoint(),
-    masterChefV3Cache ? masterChefV3Cache.latestPeriodCakePerSecond : masterChefV3.read.latestPeriodCakePerSecond(),
-  ])
 
   const poolInfoCalls = validPools.map(
     (pool) =>
