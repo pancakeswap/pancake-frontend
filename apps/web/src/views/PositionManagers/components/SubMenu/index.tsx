@@ -17,7 +17,7 @@ export const SubMenu: React.FC<React.PropsWithChildren> = () => {
     return [
       {
         label: t('Farm / Liquidity'),
-        href: '/farms',
+        href: '/liquidity/pools',
         supportChainIds: SUPPORT_FARMS,
       },
       {
@@ -39,11 +39,11 @@ export const SubMenu: React.FC<React.PropsWithChildren> = () => {
   }, [chainId, t])
 
   const activeSubItem = useMemo(() => {
-    if (pathname === '/pools/history') {
-      return subMenuItems[3].href // pools
+    if (pathname === '/liquidity/positions') {
+      return subMenuItems[0].href // liquidity
     }
 
-    return subMenuItems.find((subMenuItem) => subMenuItem.href === pathname)?.href
+    return subMenuItems.find((subMenuItem) => pathname.includes(subMenuItem.href))?.href
   }, [subMenuItems, pathname])
 
   return <SubMenuItems items={subMenuItems} activeItem={activeSubItem} />

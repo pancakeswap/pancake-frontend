@@ -86,7 +86,7 @@ const config: (
       hideSubNav: true,
       items: [
         {
-          label: t('Farms'),
+          label: t('Farm / Liquidity'),
           href: '/liquidity/pools',
           supportChainIds: SUPPORT_FARMS,
         },
