@@ -151,12 +151,12 @@ export function BannerTitle({
   variant,
   strokeSize,
   strokeColor,
-  color: defaultColor,
+  color,
   ...props
 }: PropsWithChildren<Omit<TextProps, "fontSize" | "lineHeight"> & Props>) {
   const variantData = typeof variant === "string" ? variants[variant] : variant;
   const {
-    color,
+    color: variantColor,
     fontSize,
     fontWeight,
     strokeSize: variantStrokeSize,
@@ -165,7 +165,7 @@ export function BannerTitle({
   } = variantData;
   return (
     <FancyText
-      color={color ?? defaultColor}
+      color={color ?? variantColor}
       fontSize={fontSize}
       lineHeight={lineHeight}
       fontWeight={fontWeight}
