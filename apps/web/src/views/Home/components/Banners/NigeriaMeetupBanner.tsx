@@ -15,6 +15,7 @@ import {
   LinkExternalAction,
   PancakeSwapBadge,
 } from '@pancakeswap/widgets-internal'
+import { ASSET_CDN } from 'config/constants/endpoints'
 
 const NumberDisplayContainer = styled(FlexGap)`
   border-radius: 1.5rem;
@@ -146,7 +147,7 @@ export const NigeriaMeetupBanner = memo(function NigeriaMeetupBanner() {
 
       <BannerGraphics>
         <BackgroundGraphic
-          src="/images/nigeria-meetup-bunny.png"
+          src={`${ASSET_CDN}/web/banners/nigeria-meet-up/nigeria-meetup-bunny.png`}
           width={isMobile ? 185 : isTablet ? 265 : 360}
           height={isMobile ? 120 : isTablet ? 170 : 227}
         />
@@ -157,7 +158,7 @@ export const NigeriaMeetupBanner = memo(function NigeriaMeetupBanner() {
           top={isMobile ? '15%' : isTablet ? '10%' : null}
         >
           <FloatingGraphic
-            src="/images/floating-cake.png"
+            src={`${ASSET_CDN}/web/banners/nigeria-meet-up/floating-cake.png`}
             width={isMobile ? 70 : isTablet ? 86 : 104}
             height={isMobile ? 68 : isTablet ? 84 : 101}
           />
