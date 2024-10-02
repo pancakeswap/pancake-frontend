@@ -302,7 +302,7 @@ const getV3PoolsCakeApr = async (pools: V3PoolInfo[]): Promise<CakeApr> => {
   const poolsByChainId = groupBy(pools, 'chainId')
   const aprs = await Promise.all(
     Object.keys(poolsByChainId).map((chainId) =>
-      getV3PoolsCakeAprByChainId(poolsByChainId[Number(chainId)], Number(chainId), cakePrice),
+      getV3PoolsCakeAprByChainId(poolsByChainId[chainId], Number(chainId), cakePrice),
     ),
   )
   return aprs.reduce((acc, apr) => assign(acc, apr), {})
