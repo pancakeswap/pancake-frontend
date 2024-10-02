@@ -241,7 +241,6 @@ const getV3PoolsCakeAprByChainId = async (pools: V3PoolInfo[], chainId: number, 
   const [totalAllocPoint, latestPeriodCakePerSecond] = await Promise.all([
     masterChefV3Cache ? masterChefV3Cache.totalAllocPoint : masterChefV3.read.totalAllocPoint(),
     masterChefV3Cache ? masterChefV3Cache.latestPeriodCakePerSecond : masterChefV3.read.latestPeriodCakePerSecond(),
-    getCakePriceFromOracle(),
   ])
 
   const poolInfoCalls = validPools.map(
