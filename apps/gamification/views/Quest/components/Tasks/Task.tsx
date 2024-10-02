@@ -25,7 +25,7 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { styled } from 'styled-components'
-// import { StyledOptionIcon } from 'views/DashboardQuestEdit/components/Tasks/StyledOptionIcon'
+import { StyledOptionIcon } from 'views/DashboardQuestEdit/components/Tasks/StyledOptionIcon'
 import {
   TaskBlogPostConfig,
   TaskConfigType,
@@ -432,7 +432,7 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
           <Flex mr="auto">
             <Flex position="relative">
               {taskIcon(taskType)}
-              {/* {task.isOptional && <StyledOptionIcon />} */}
+              {task.isOptional && <StyledOptionIcon />}
             </Flex>
             <Text ml="16px" bold>
               {title || taskNaming(taskType)}
