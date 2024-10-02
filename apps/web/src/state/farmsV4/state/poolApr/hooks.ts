@@ -97,10 +97,9 @@ export const usePoolAprUpdater = () => {
   const fetchCakeApr = useCallback(
     async (newPools: PoolInfo[]) => {
       if (newPools && newPools.length) {
-        newPools.forEach((pool) => {
-          getCakeApr(pool).then((apr) => {
-            updateCakeApr(apr)
-          })
+        const aprPromises = newPools.map((pool) => getCakeApr(pool))
+        Promise.all(aprPromises).then((aprList) => {
+          updateCakeApr(aprList.reduce((acc, apr) => Object.assign(acc, apr), {} as CakeApr))
         })
       }
     },
