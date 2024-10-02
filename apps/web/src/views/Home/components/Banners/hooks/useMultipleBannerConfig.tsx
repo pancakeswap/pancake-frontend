@@ -19,6 +19,7 @@ import useIsRenderCompetitionBanner from './useIsRenderCompetitionBanner'
 import { useIsRenderIfoBannerFromConfig } from './useIsRenderIFOBanner'
 import { useIsRenderTgPredictionBotBanner } from './useIsRenderTgPredictionBotBanner'
 import useIsRenderUserBanner from './useIsRenderUserBanner'
+import { NigeriaMeetupBanner } from '../NigeriaMeetupBanner'
 
 interface IBannerConfig {
   shouldRender: boolean
@@ -46,6 +47,10 @@ export const useMultipleBannerConfig = () => {
 
   return useMemo(() => {
     const NO_SHUFFLE_BANNERS: IBannerConfig[] = [
+      {
+        shouldRender: true,
+        banner: <NigeriaMeetupBanner />,
+      },
       {
         shouldRender: isRenderIFOBannerFromConfig,
         banner: <EigenpieIFOBanner />,

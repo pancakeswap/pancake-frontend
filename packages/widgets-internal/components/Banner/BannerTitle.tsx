@@ -2,7 +2,7 @@ import { Text, TextProps, breakpoints } from "@pancakeswap/uikit";
 import { PropsWithChildren } from "react";
 import styled from "styled-components";
 
-type VariantTypes = "purple" | "orange" | "yellow" | "listaBlue" | "green";
+type VariantTypes = "white" | "gold" | "purple" | "orange" | "yellow" | "listaBlue" | "green";
 
 type Props = {
   variant: VariantTypes | Variant;
@@ -22,6 +22,22 @@ type Variant = {
 };
 
 const variants: { [key in VariantTypes]: Variant } = {
+  white: {
+    color: "#ffffff",
+    strokeColor: "#000000",
+    strokeSize: 2,
+    fontSize: 28,
+    lineHeight: 30,
+    fontWeight: 800,
+  },
+  gold: {
+    color: "#FFF500",
+    strokeColor: "#081910",
+    strokeSize: 2,
+    fontSize: 28,
+    lineHeight: 30,
+    fontWeight: 800,
+  },
   purple: {
     color: "#7645D9",
     strokeColor: "#ffffff",
@@ -127,24 +143,34 @@ const FancyText = styled(Text)<{
   }
 `;
 
+const defaultStrokeSize = 2;
+const defaultStrokeColor = "#ffffff";
+
 export function BannerTitle({
   children,
   variant,
-  strokeSize: defaultStrokeSize = 2,
-  strokeColor: defaultStrokeColor = "#ffffff",
-  color: defaultColor,
+  strokeSize,
+  strokeColor,
+  color,
   ...props
 }: PropsWithChildren<Omit<TextProps, "fontSize" | "lineHeight"> & Props>) {
   const variantData = typeof variant === "string" ? variants[variant] : variant;
-  const { color, fontSize, fontWeight, strokeSize, strokeColor, lineHeight } = variantData;
+  const {
+    color: variantColor,
+    fontSize,
+    fontWeight,
+    strokeSize: variantStrokeSize,
+    strokeColor: variantStrokeColor,
+    lineHeight,
+  } = variantData;
   return (
     <FancyText
-      color={color ?? defaultColor}
+      color={color ?? variantColor}
       fontSize={fontSize}
       lineHeight={lineHeight}
       fontWeight={fontWeight}
-      $strokeSize={strokeSize ?? defaultStrokeSize}
-      $strokeColor={strokeColor ?? defaultStrokeColor}
+      $strokeSize={strokeSize ?? variantStrokeSize ?? defaultStrokeSize}
+      $strokeColor={strokeColor ?? variantStrokeColor ?? defaultStrokeColor}
       {...props}
     >
       {children}
