@@ -42,11 +42,8 @@ export const SubMenu: React.FC<React.PropsWithChildren> = () => {
     if (pathname === '/liquidity/positions') {
       return subMenuItems[0].href // liquidity
     }
-    if (pathname === '/pools/history') {
-      return subMenuItems[3].href // pools
-    }
 
-    return subMenuItems.find((subMenuItem) => subMenuItem.href === pathname)?.href
+    return subMenuItems.find((subMenuItem) => pathname.includes(subMenuItem.href))?.href
   }, [subMenuItems, pathname])
 
   return <SubMenuItems items={subMenuItems} activeItem={activeSubItem} />
