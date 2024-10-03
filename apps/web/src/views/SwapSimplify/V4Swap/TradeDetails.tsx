@@ -66,7 +66,11 @@ export const TradeDetails = memo(function TradeDetails({ loaded, order }: Props)
           hasStablePair={hasStablePool}
           gasTokenSelector={isPaymasterAvailable && <GasTokenSelector currency={order?.trade.inputAmount.currency} />}
         />
-        {isXOrder(order) ? <XRoutesBreakdown /> : <RoutesBreakdown routes={order?.trade?.routes} />}
+        {isXOrder(order) ? (
+          <XRoutesBreakdown wrapperStyle={{ padding: 0 }} />
+        ) : (
+          <RoutesBreakdown routes={order?.trade?.routes} wrapperStyle={{ padding: 0 }} />
+        )}
       </AutoColumn>
     </AdvancedDetailsFooter>
   )
