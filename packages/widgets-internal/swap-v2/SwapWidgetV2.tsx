@@ -1,4 +1,5 @@
 import { AssetSettingButtonList } from "./AssetSettingButtonList";
+import { Collapse } from "./Collapse";
 import { CurrencyInputPanelSimplify } from "./CurrencyInputPanelSimplify";
 import { NumericalInput } from "./NumericalInput";
 import { SwapInfo, SwapInfoLabel } from "./SwapInfo";
@@ -9,6 +10,7 @@ import { WalletAssetDisplay } from "./WalletAssetDisplay";
 
 export {
   AssetSettingButtonList,
+  Collapse,
   CurrencyInputPanelSimplify,
   InputPanelWrapper,
   NumericalInput,
