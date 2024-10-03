@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ERC20Token } from '@pancakeswap/sdk'
-import { Box, FlexGap, Link, RiskAlertIcon, Text } from '@pancakeswap/uikit'
+import { Box, FlexGap, Link, RiskAlertIcon, Text, WarningIcon } from '@pancakeswap/uikit'
 import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import { SwapUIV2 } from '@pancakeswap/widgets-internal'
 import { useEffect, useMemo, useState } from 'react'
@@ -35,6 +35,8 @@ interface RiskDetailsPanelProps {
   token0RiskLevelDescription?: string
   token1?: ERC20Token
   token1RiskLevelDescription?: string
+  isPriceImpactTooHigh?: boolean
+  isSlippageTooHigh?: boolean
 }
 
 const useRiskCheckData = (token?: ERC20Token) => {
@@ -111,6 +113,70 @@ export const RiskTitle: React.FC<RiskDetailsProps> = ({ token }) => {
   return null
 }
 
+export const PriceImpactTitle: React.FC = () => {
+  const { t } = useTranslation()
+  return (
+    <FlexGap alignItems="flex-start" gap="8px">
+      <Box>
+        <WarningIcon width={24} color="failure" />
+      </Box>
+      <FlexGap justifyContent="center" alignItems="flex-start" flexDirection="column" gap="8px">
+        <Text fontSize="16px">{t('Price impact too high. Proceed with caution.')}</Text>
+      </FlexGap>
+    </FlexGap>
+  )
+}
+
+export const SlippageTitle: React.FC = () => {
+  const { t } = useTranslation()
+  return (
+    <FlexGap alignItems="flex-start" gap="8px">
+      <Box>
+        <WarningIcon width={24} color="failure" />
+      </Box>
+      <FlexGap justifyContent="center" alignItems="flex-start" flexDirection="column" gap="8px">
+        <Text fontSize="16px">{t('Slippage settings too high. Proceed with caution.')}</Text>
+      </FlexGap>
+    </FlexGap>
+  )
+}
+
+const PriceImpactDetails: React.FC = () => {
+  const { t } = useTranslation()
+  return (
+    <FlexGap alignItems="flex-start" gap="8px">
+      <FlexGap justifyContent="center" alignItems="flex-start" flexDirection="column" gap="8px">
+        <Text>
+          {t(
+            'Final execution price may be differ from the market price due to trader size, available liquidity, and trading route. Please proceed with caution.',
+          )}
+        </Text>
+        <Link style={{ display: 'inline' }} ml="4px" external href="https://www.hashdit.io">
+          Learn More
+        </Link>
+      </FlexGap>
+    </FlexGap>
+  )
+}
+
+const SlippageDetails: React.FC = () => {
+  const { t } = useTranslation()
+  return (
+    <FlexGap alignItems="flex-start" gap="8px">
+      <FlexGap justifyContent="center" alignItems="flex-start" flexDirection="column" gap="8px">
+        <Text>
+          {t(
+            'You may only get the amount of “Minimum received” with a high slippage setting. Reset your slippage to avoid potential losses.',
+          )}
+        </Text>
+        <Link style={{ display: 'inline' }} ml="4px" external href="https://www.hashdit.io">
+          Learn More
+        </Link>
+      </FlexGap>
+    </FlexGap>
+  )
+}
+
 export const RiskDetails: React.FC<RiskDetailsProps> = ({ token }) => {
   const { t } = useTranslation()
   const { isDataLoading, riskLevel } = useRiskCheckData(token)
@@ -139,9 +205,10 @@ export const RiskDetails: React.FC<RiskDetailsProps> = ({ token }) => {
 export const useShouldRiskPanelDisplay = (token0?: ERC20Token, token1?: ERC20Token) => {
   const { isDataLoading: isDataLoading0, riskLevel: riskLevel0 } = useRiskCheckData(token0)
   const { isDataLoading: isDataLoading1, riskLevel: riskLevel1 } = useRiskCheckData(token1)
+  if (isDataLoading0 || isDataLoading1) {
+    return false
+  }
   return (
-    isDataLoading0 ||
-    isDataLoading1 ||
     (riskLevel0 && riskLevel0 <= TOKEN_RISK.SIGNIFICANT && riskLevel0 >= TOKEN_RISK.HIGH) ||
     (riskLevel1 && riskLevel1 <= TOKEN_RISK.SIGNIFICANT && riskLevel1 >= TOKEN_RISK.HIGH)
   )
@@ -152,26 +219,58 @@ export const RiskDetailsPanel: React.FC<RiskDetailsPanelProps> = ({
   token1,
   token0RiskLevelDescription,
   token1RiskLevelDescription,
+  isPriceImpactTooHigh,
+  isSlippageTooHigh,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
+  const isRiskToken0 = useShouldRiskPanelDisplay(token0)
+  const isRiskToken1 = useShouldRiskPanelDisplay(token1)
+  const isRiskMoreThanOne = useMemo(() => {
+    let count = 0
+    if (isRiskToken0) {
+      count++
+      console.log('isRiskToken0', isRiskToken0)
+    }
+    if (isRiskToken1) {
+      count++
+      console.log('isRiskToken1', isRiskToken1)
+    }
+    if (isPriceImpactTooHigh) {
+      count++
+      console.log('isPriceImpactTooHigh', isPriceImpactTooHigh)
+    }
+    if (isSlippageTooHigh) {
+      count++
+      console.log('isSlippageTooHigh', isSlippageTooHigh)
+    }
+    return count > 1
+  }, [isRiskToken0, isRiskToken1, isPriceImpactTooHigh, isSlippageTooHigh])
   return (
     <RiskDetailsPanelWrapper width="100%" flexDirection="column" justifyContent="center" alignItems="center">
-      <SwapUIV2.Collapse
-        isOpen={isOpen}
-        onToggle={() => setIsOpen(!isOpen)}
-        title={
-          <FlexGap flexDirection="column">
-            <RiskTitle token={token0} />
-            <RiskTitle token={token1} />
-          </FlexGap>
-        }
-        content={
-          <FlexGap flexDirection="column" pl="32px" pr="8px">
-            <RiskDetails token={token0} riskLevelDescription={token0RiskLevelDescription} />
-            <RiskDetails token={token1} riskLevelDescription={token1RiskLevelDescription} />
-          </FlexGap>
-        }
-      />
+      {isRiskMoreThanOne ? (
+        'risk more than one'
+      ) : (
+        <SwapUIV2.Collapse
+          isOpen={isOpen}
+          onToggle={() => setIsOpen(!isOpen)}
+          title={
+            <FlexGap flexDirection="column">
+              <RiskTitle token={token0} />
+              <RiskTitle token={token1} />
+              {isPriceImpactTooHigh && <PriceImpactTitle />}
+              {isSlippageTooHigh && <SlippageTitle />}
+            </FlexGap>
+          }
+          content={
+            <FlexGap flexDirection="column" pl="32px" pr="8px">
+              <RiskDetails token={token0} riskLevelDescription={token0RiskLevelDescription} />
+              <RiskDetails token={token1} riskLevelDescription={token1RiskLevelDescription} />
+              {isPriceImpactTooHigh && <PriceImpactDetails />}
+              {isSlippageTooHigh && <SlippageDetails />}
+            </FlexGap>
+          }
+        />
+      )}
     </RiskDetailsPanelWrapper>
   )
 }

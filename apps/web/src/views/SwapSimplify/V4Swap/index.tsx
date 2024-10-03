@@ -1,4 +1,5 @@
 import { SmartRouter } from '@pancakeswap/smart-router/evm'
+import { useUserSlippage } from '@pancakeswap/utils/user'
 import { SwapUIV2 } from '@pancakeswap/widgets-internal'
 import { RiskDetailsPanel, useShouldRiskPanelDisplay } from 'components/AccessRisk/SwapRevampRiskDisplay'
 import { useCurrency } from 'hooks/Tokens'
@@ -7,8 +8,11 @@ import { useMemo } from 'react'
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
 import { logger } from 'utils/datadog'
+import { warningSeverity } from 'utils/exchange'
+import { isXOrder } from 'views/Swap/utils'
 import { SwapType } from '../../Swap/types'
 import { useAllTypeBestTrade } from '../../Swap/V3Swap/hooks/useAllTypeBestTrade'
+import { computeTradePriceBreakdown } from '../../Swap/V3Swap/utils/exchange'
 import { ButtonAndDetailsPanel } from './ButtonAndDetailsPanel'
 import { CommitButton } from './CommitButton'
 import { FormMain } from './FormMainV4'
@@ -90,9 +94,19 @@ export function V4SwapForm() {
     () => (bestOrder?.trade ? SmartRouter.getExecutionPrice(bestOrder.trade) : undefined),
     [bestOrder?.trade],
   )
-
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
+
+  const { priceImpactWithoutFee } = useMemo(
+    () => computeTradePriceBreakdown(isXOrder(bestOrder) ? bestOrder?.ammTrade : bestOrder?.trade),
+    [bestOrder],
+  )
+  const isPriceImpactTooHigh = useMemo(() => {
+    const warningLevel = warningSeverity(priceImpactWithoutFee)
+    return warningLevel >= 3
+  }, [priceImpactWithoutFee])
+  const [userSlippageTolerance] = useUserSlippage()
+  const isSlippageTooHigh = useMemo(() => userSlippageTolerance > 500, [userSlippageTolerance])
 
   const shouldRiskPanelDisplay = useShouldRiskPanelDisplay(inputCurrency?.wrapped, outputCurrency?.wrapped)
 
@@ -102,9 +116,6 @@ export function V4SwapForm() {
         <SwapSelection swapType={SwapType.MARKET} />
         <FormMain
           tradeLoading={!tradeLoaded}
-          pricingAndSlippage={
-            <PricingAndSlippage priceLoading={!tradeLoaded} price={executionPrice ?? undefined} showSlippage={false} />
-          }
           inputAmount={bestOrder?.trade?.inputAmount}
           outputAmount={bestOrder?.trade?.outputAmount}
           swapCommitButton={
@@ -112,7 +123,14 @@ export function V4SwapForm() {
           }
         />
       </SwapUIV2.SwapTabAndInputPanelWrapper>
-      {shouldRiskPanelDisplay && <RiskDetailsPanel token0={inputCurrency?.wrapped} token1={outputCurrency?.wrapped} />}
+      {(shouldRiskPanelDisplay || isPriceImpactTooHigh || isSlippageTooHigh) && (
+        <RiskDetailsPanel
+          isPriceImpactTooHigh={isPriceImpactTooHigh}
+          isSlippageTooHigh={isSlippageTooHigh}
+          token0={inputCurrency?.wrapped}
+          token1={outputCurrency?.wrapped}
+        />
+      )}
       <ButtonAndDetailsPanel
         swapCommitButton={
           <CommitButton order={bestOrder} tradeLoaded={tradeLoaded} tradeError={tradeError} {...commitHooks} />
