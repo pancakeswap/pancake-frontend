@@ -1,8 +1,12 @@
 import { SmartRouter } from '@pancakeswap/smart-router/evm'
+import { FlexGap, IconButton } from '@pancakeswap/uikit'
 import { useUserSlippage } from '@pancakeswap/utils/user'
 import { SwapUIV2 } from '@pancakeswap/widgets-internal'
 import { RiskDetailsPanel, useShouldRiskPanelDisplay } from 'components/AccessRisk/SwapRevampRiskDisplay'
+import RefreshIcon from 'components/Svg/RefreshIcon'
+import { CHAIN_REFRESH_TIME } from 'config/constants/exchange'
 import { useCurrency } from 'hooks/Tokens'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCurrencyUsdPrice } from 'hooks/useCurrencyUsdPrice'
 import { useMemo } from 'react'
 import { Field } from 'state/swap/actions'
@@ -11,6 +15,7 @@ import { logger } from 'utils/datadog'
 import { warningSeverity } from 'utils/exchange'
 import { isXOrder } from 'views/Swap/utils'
 import { SwapType } from '../../Swap/types'
+import { useIsWrapping } from '../../Swap/V3Swap/hooks'
 import { useAllTypeBestTrade } from '../../Swap/V3Swap/hooks/useAllTypeBestTrade'
 import { computeTradePriceBreakdown } from '../../Swap/V3Swap/utils/exchange'
 import { ButtonAndDetailsPanel } from './ButtonAndDetailsPanel'
@@ -35,6 +40,8 @@ export function V4SwapForm() {
 
   const { data: inputUsdPrice } = useCurrencyUsdPrice(bestOrder?.trade?.inputAmount.currency)
   const { data: outputUsdPrice } = useCurrencyUsdPrice(bestOrder?.trade?.outputAmount.currency)
+  const isWrapping = useIsWrapping()
+  const { chainId: activeChianId } = useActiveChainId()
 
   const commitHooks = useMemo(() => {
     return {
@@ -136,9 +143,28 @@ export function V4SwapForm() {
           <CommitButton order={bestOrder} tradeLoaded={tradeLoaded} tradeError={tradeError} {...commitHooks} />
         }
         pricingAndSlippage={
-          <PricingAndSlippage priceLoading={!tradeLoaded} price={executionPrice ?? undefined} showSlippage={false} />
+          <FlexGap
+            onClick={(e) => {
+              e.stopPropagation()
+            }}
+          >
+            <IconButton variant="text" scale="sm" onClick={refreshOrder} data-dd-action-name="Swap refresh button">
+              <RefreshIcon
+                disabled={refreshDisabled}
+                color="textSubtle"
+                width="24px"
+                duration={
+                  activeChianId && CHAIN_REFRESH_TIME[activeChianId]
+                    ? CHAIN_REFRESH_TIME[activeChianId] / 1000
+                    : undefined
+                }
+              />
+            </IconButton>
+            <PricingAndSlippage priceLoading={!tradeLoaded} price={executionPrice ?? undefined} showSlippage={false} />
+          </FlexGap>
         }
         tradeDetails={<TradeDetails loaded={tradeLoaded} order={bestOrder} />}
+        shouldRenderDetails={Boolean(executionPrice) && Boolean(bestOrder) && !isWrapping}
       />
       {/* <TradeDetails loaded={tradeLoaded} order={bestOrder} /> */}
     </SwapUIV2.SwapFormWrapper>
