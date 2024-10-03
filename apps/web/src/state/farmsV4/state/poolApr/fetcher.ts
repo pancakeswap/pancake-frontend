@@ -232,6 +232,12 @@ const getV3PoolsCakeAprByChainId = async (pools: V3PoolInfo[], chainId: number, 
 
   if (!masterChefV3 || !client) return {}
 
+  const validPools = pools.filter((pool) => {
+    return pool.pid && pool.chainId === chainId
+  })
+
+  if (!validPools?.length) return {}
+
   const [totalAllocPoint, latestPeriodCakePerSecond] = await Promise.all([
     masterChefV3CacheMap.get(chainId)?.totalAllocPoint ?? masterChefV3.read.totalAllocPoint(),
     masterChefV3CacheMap.get(chainId)?.latestPeriodCakePerSecond ?? masterChefV3.read.latestPeriodCakePerSecond(),
@@ -241,10 +247,6 @@ const getV3PoolsCakeAprByChainId = async (pools: V3PoolInfo[], chainId: number, 
     ...(masterChefV3CacheMap.get(chainId) ?? {}),
     totalAllocPoint,
     latestPeriodCakePerSecond,
-  })
-
-  const validPools = pools.filter((pool) => {
-    return pool.pid && pool.chainId === chainId
   })
 
   const poolInfoCalls = validPools.map(
@@ -389,6 +391,8 @@ const getV2PoolsCakeAprByChainId = async (
   const client = publicClient({ chainId })
   const validPools = pools.filter((p) => p.chainId === chainId && p.bCakeWrapperAddress)
 
+  if (!validPools?.length) return {}
+
   const rewardPerSecondCalls = validPools.map((pool) => {
     return {
       address: pool.bCakeWrapperAddress!,
@@ -504,7 +508,7 @@ const getV2PoolsCakeApr = async (pools: Array<V2PoolInfo | StablePoolInfo>): Pro
   const poolsByChainId = groupBy(pools, 'chainId')
   const aprs = await Promise.all(
     Object.keys(poolsByChainId).map((chainId) =>
-      getV2PoolsCakeAprByChainId(poolsByChainId[Number(chainId)], Number(chainId), cakePrice),
+      getV2PoolsCakeAprByChainId(poolsByChainId[chainId], Number(chainId), cakePrice),
     ),
   )
   return aprs.reduce((acc, apr) => assign(acc, apr), {})
