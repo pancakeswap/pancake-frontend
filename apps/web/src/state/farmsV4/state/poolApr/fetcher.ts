@@ -371,18 +371,7 @@ const calcV2PoolApr = ({
   }
 }
 
-const cakePriceCache = {
-  value: new BigNumber(0),
-  timestamp: 0,
-}
-const getCakePrice = async () => {
-  const now = Date.now()
-  // cache for 10 minutes
-  if (now - cakePriceCache.timestamp < 1000 * 60 * 10) {
-    return cakePriceCache.value
-  }
-  return new BigNumber(await getCakePriceFromOracle())
-}
+const getCakePrice = async () => new BigNumber(await getCakePriceFromOracle())
 const getV2PoolsCakeAprByChainId = async (
   pools: Array<V2PoolInfo | StablePoolInfo>,
   chainId: number,
