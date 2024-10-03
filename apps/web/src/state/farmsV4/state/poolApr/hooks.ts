@@ -91,35 +91,22 @@ export const usePoolAprUpdater = () => {
   const updateCakeApr = useSetAtom(cakeAprSetterAtom)
   const updateMerklApr = useSetAtom(merklAprAtom)
 
-  const fetchMerklApr = useCallback(async () => {
-    const merklAprs = await getAllNetworkMerklApr()
-    updateMerklApr(merklAprs)
-  }, [updateMerklApr])
-
-  const fetchCakeApr = useCallback(
-    async (newPools: PoolInfo[]) => {
-      if (newPools && newPools.length) {
-        const aprPromises = newPools.map((pool) => getCakeApr(pool))
-        Promise.all(aprPromises).then((aprList) => {
-          updateCakeApr(aprList.reduce((acc, apr) => Object.assign(acc, apr), {} as CakeApr))
-        })
-      }
-    },
-    [updateCakeApr],
-  )
-
   useQuery({
     queryKey: ['apr', 'merkl', 'fetchMerklApr'],
-    queryFn: fetchMerklApr,
+    queryFn: () => getAllNetworkMerklApr().then(updateMerklApr),
     refetchInterval: SLOW_INTERVAL,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
   })
 
   useQuery({
-    queryKey: ['apr', 'cake', 'fetchCakeApr'],
-    queryFn: () => fetchCakeApr(pools),
-    enabled: pools && pools.length > 0,
+    queryKey: ['apr', 'cake', 'fetchCakeApr', pools],
+    queryFn: async () => {
+      Promise.all(pools.map((pool) => getCakeApr(pool))).then((aprList) => {
+        updateCakeApr(aprList.reduce((acc, apr) => Object.assign(acc, apr), {}))
+      })
+    },
+    enabled: pools?.length > 0,
     refetchInterval: SLOW_INTERVAL,
     refetchOnMount: false,
     refetchOnWindowFocus: false,

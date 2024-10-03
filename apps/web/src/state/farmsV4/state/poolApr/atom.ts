@@ -79,5 +79,5 @@ export const emptyCakeAprPoolsAtom = atom((get) => {
   const pools = get(poolsAtom)
   const aprs = get(cakeAprAtom)
 
-  return pools.filter((pool) => !aprs[`${pool.chainId}:${pool.lpAddress}`])
+  return pools.filter((pool) => !(`${pool.chainId}:${pool.lpAddress}` in aprs))
 })
