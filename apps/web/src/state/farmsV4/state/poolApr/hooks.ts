@@ -101,11 +101,10 @@ export const usePoolAprUpdater = () => {
 
   useQuery({
     queryKey: ['apr', 'cake', 'fetchCakeApr', pools],
-    queryFn: async () => {
+    queryFn: () =>
       Promise.all(pools.map((pool) => getCakeApr(pool))).then((aprList) => {
         updateCakeApr(aprList.reduce((acc, apr) => Object.assign(acc, apr), {}))
-      })
-    },
+      }),
     enabled: pools?.length > 0,
     refetchInterval: SLOW_INTERVAL,
     refetchOnMount: false,
