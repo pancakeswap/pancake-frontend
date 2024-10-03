@@ -24,8 +24,8 @@ import { useCurrencyBalances } from 'state/wallet/hooks'
 import { logGTMClickSwapConfirmEvent, logGTMClickSwapEvent } from 'utils/customGTMEventTracking'
 import { warningSeverity } from 'utils/exchange'
 import { isClassicOrder, isXOrder } from 'views/Swap/utils'
+import { ConfirmSwapModalV2 } from 'views/Swap/V3Swap/containers/ConfirmSwapModalV2'
 import { useAccount, useChainId } from 'wagmi'
-import { ConfirmSwapModal } from '../../Swap/V3Swap/containers/ConfirmSwapModal'
 import { useParsedAmounts, useSlippageAdjustedAmounts, useSwapInputError } from '../../Swap/V3Swap/hooks'
 import { useConfirmModalState } from '../../Swap/V3Swap/hooks/useConfirmModalState'
 import { useSwapConfig } from '../../Swap/V3Swap/hooks/useSwapConfig'
@@ -215,7 +215,7 @@ const SwapCommitButtonInner = memo(function SwapCommitButtonInner({
   }, [])
   const openSettingModal = useSettingModal(onSettingModalDismiss)
   const [openConfirmSwapModal] = useModal(
-    <ConfirmSwapModal
+    <ConfirmSwapModalV2
       order={order}
       orderHash={orderHash}
       originalOrder={tradeToConfirm}
@@ -231,7 +231,7 @@ const SwapCommitButtonInner = memo(function SwapCommitButtonInner({
     />,
     true,
     true,
-    'confirmSwapModal',
+    'confirmSwapModalV2',
   )
 
   const handleSwap = useCallback(() => {
