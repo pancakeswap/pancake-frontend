@@ -26,10 +26,10 @@ const ExpertModeTab = dynamic(() => import('./ExpertModeTab').then((mod) => mod.
 
 interface SettingsModalV2Props {
   onDismiss?: () => void
-  mode: SettingsMode
+  mode?: SettingsMode
 }
 
-export const SettingsModalV2 = ({ onDismiss, mode }: SettingsModalV2Props) => {
+export const SettingsModalV2 = ({ onDismiss }: SettingsModalV2Props) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
   const [activeTabIndex, setActiveTabIndex] = useState(0)
