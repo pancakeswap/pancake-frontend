@@ -90,10 +90,12 @@ export const usePoolAprUpdater = () => {
   const pools = useAtomValue(emptyCakeAprPoolsAtom)
   const updateCakeApr = useSetAtom(cakeAprSetterAtom)
   const updateMerklApr = useSetAtom(merklAprAtom)
+
   const fetchMerklApr = useCallback(async () => {
     const merklAprs = await getAllNetworkMerklApr()
     updateMerklApr(merklAprs)
   }, [updateMerklApr])
+
   const fetchCakeApr = useCallback(
     async (newPools: PoolInfo[]) => {
       if (newPools && newPools.length) {
@@ -107,7 +109,7 @@ export const usePoolAprUpdater = () => {
   )
 
   useQuery({
-    queryKey: ['apr', 'merkl', fetchMerklApr],
+    queryKey: ['apr', 'merkl', 'fetchMerklApr'],
     queryFn: fetchMerklApr,
     refetchInterval: SLOW_INTERVAL,
     refetchOnMount: false,
@@ -115,7 +117,7 @@ export const usePoolAprUpdater = () => {
   })
 
   useQuery({
-    queryKey: ['apr', 'cake', fetchCakeApr],
+    queryKey: ['apr', 'cake', 'fetchCakeApr'],
     queryFn: () => fetchCakeApr(pools),
     enabled: pools && pools.length > 0,
     refetchInterval: SLOW_INTERVAL,
