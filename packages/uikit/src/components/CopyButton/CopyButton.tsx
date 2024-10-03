@@ -50,8 +50,14 @@ export const CopyButton: React.FC<React.PropsWithChildren<CopyButtonProps>> = ({
 
   return (
     <>
-      <div ref={targetRef} title={t("Copy")}>
-        <IconButton onClick={handleOnClick} scale="sm" variant="text" style={{ width: "auto", position: "relative" }}>
+      <div ref={targetRef}>
+        <IconButton
+          title={t("Copy")}
+          onClick={handleOnClick}
+          scale="sm"
+          variant="text"
+          style={{ width: "auto", position: "relative" }}
+        >
           <Icon color={buttonColor} width={width} {...props} />
         </IconButton>
       </div>
