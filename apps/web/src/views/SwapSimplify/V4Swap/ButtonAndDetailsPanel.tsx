@@ -1,4 +1,6 @@
+import { useState } from 'react'
 import { styled } from 'styled-components'
+import { Collapse } from './Collapse'
 
 export const PanelWrapper = styled.div`
   display: flex;
@@ -21,11 +23,11 @@ export const ButtonAndDetailsPanel: React.FC<ButtonAndDetailsPanelProps> = ({
   pricingAndSlippage,
   tradeDetails,
 }) => {
+  const [isOpen, setIsOpen] = useState(false)
   return (
     <PanelWrapper>
       {swapCommitButton}
-      {pricingAndSlippage}
-      {tradeDetails}
+      <Collapse isOpen={isOpen} onToggle={() => setIsOpen(!isOpen)} title={pricingAndSlippage} content={tradeDetails} />
     </PanelWrapper>
   )
 }
