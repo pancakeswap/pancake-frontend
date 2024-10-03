@@ -13,6 +13,7 @@ export const PANCAKE_OPBNB_DEFAULT = 'https://tokens.pancakeswap.finance/pancake
 
 export const PANCAKE_ETH_MM = 'https://tokens.pancakeswap.finance/pancakeswap-eth-mm.json'
 export const PANCAKE_BSC_MM = 'https://tokens.pancakeswap.finance/pancakeswap-bnb-mm.json'
+export const PANCAKE_ARB_MM = 'https://tokens.pancakeswap.finance/pancakeswap-arb-mm.json'
 
 const COINGECKO_ETH = 'https://tokens.coingecko.com/uniswap/all.json'
 // export const CMC = 'https://tokens.pancakeswap.finance/cmc.json' // not updated for a while
@@ -25,6 +26,7 @@ const POLYGON_ZKEVM_URLS = [
 ]
 const ARBITRUM_URLS = [
   PANCAKE_ARB_DEFAULT,
+  PANCAKE_ARB_MM,
   // 'https://tokens.coingecko.com/arbitrum-one/all.json'
 ]
 const LINEA_URLS = [PANCAKE_LINEA_DEFAULT, 'https://tokens.coingecko.com/linea/all.json']
