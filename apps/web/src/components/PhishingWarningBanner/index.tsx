@@ -7,7 +7,6 @@ import 'swiper/css/effect-fade'
 
 import { ASSET_CDN } from 'config/constants/endpoints'
 import { Countdown } from './Countdown'
-import { PerpetualSeason } from './PerpetualSeason'
 import { Step1 } from './Step1'
 import { Step2 } from './Step2'
 
@@ -108,14 +107,6 @@ const CONFIG: BannerConfig[] = [
     stripeImage: `${ASSET_CDN}/web/phishing-warning/phishing-warning-bunny-2.png`,
     stripeImageWidth: '92px',
     stripeImageAlt: 'Phishing Warning',
-  },
-  {
-    component: PerpetualSeason,
-    stripeImage: PerpetualSeason.stripeImage,
-    stripeImageWidth: PerpetualSeason.stripeImageWidth,
-    stripeImageAlt: PerpetualSeason.stripeImageAlt,
-    background: PerpetualSeason.background,
-    customStyle: { position: 'relative', transform: 'scale(1.25) translateX(-10px)' },
   },
 ]
 

@@ -1,25 +1,20 @@
 import shuffle from 'lodash/shuffle'
 import { type ReactElement, useMemo } from 'react'
-import { BirthdayBanner } from '../BirthdayBanner'
 import CompetitionBanner from '../CompetitionBanner'
 import { EigenpieIFOBanner } from '../EigenpieIFOBanner'
 import { FourMemeBanner } from '../FourMemeBanner'
-import { V4HackathonBanner } from '../HackathonBanner'
+import { NigeriaMeetupBanner } from '../NigeriaMeetupBanner'
 import { OptionsBanner } from '../OptionsBanner'
-import { PaymasterBanner } from '../PaymasterBanner'
-import { PerpetualSeasonalBanner } from '../PerpetualSeasonalBanner'
 import { QuestBanner } from '../QuestBanner'
 import { TgPredictionBotBanner } from '../TgPredictionBotBanner'
 import UserBanner from '../UserBanner'
 import { V4InfoBanner } from '../V4InfoBanner'
 import { VeCakeBanner } from '../VeCakeBanner'
 import WebNotificationBanner from '../WebNotificationBanner'
-import { ZksyncAirDropBanner } from '../ZksyncAirdropBanner'
 import useIsRenderCompetitionBanner from './useIsRenderCompetitionBanner'
 import { useIsRenderIfoBannerFromConfig } from './useIsRenderIFOBanner'
 import { useIsRenderTgPredictionBotBanner } from './useIsRenderTgPredictionBotBanner'
 import useIsRenderUserBanner from './useIsRenderUserBanner'
-import { NigeriaMeetupBanner } from '../NigeriaMeetupBanner'
 
 interface IBannerConfig {
   shouldRender: boolean
@@ -65,15 +60,7 @@ export const useMultipleBannerConfig = () => {
       },
       {
         shouldRender: true,
-        banner: <V4HackathonBanner />,
-      },
-      {
-        shouldRender: true,
         banner: <WebNotificationBanner />,
-      },
-      {
-        shouldRender: true,
-        banner: <BirthdayBanner />,
       },
       {
         shouldRender: true,
@@ -82,18 +69,6 @@ export const useMultipleBannerConfig = () => {
       {
         shouldRender: true,
         banner: <FourMemeBanner />,
-      },
-      {
-        shouldRender: true,
-        banner: <ZksyncAirDropBanner />,
-      },
-      {
-        shouldRender: true,
-        banner: <PerpetualSeasonalBanner />,
-      },
-      {
-        shouldRender: true,
-        banner: <PaymasterBanner />,
       },
       {
         shouldRender: true,
