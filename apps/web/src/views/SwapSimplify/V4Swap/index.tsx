@@ -1,10 +1,8 @@
 import { SmartRouter } from '@pancakeswap/smart-router/evm'
-import { FlexGap, IconButton } from '@pancakeswap/uikit'
+import { FlexGap } from '@pancakeswap/uikit'
 import { useUserSlippage } from '@pancakeswap/utils/user'
 import { SwapUIV2 } from '@pancakeswap/widgets-internal'
 import { RiskDetailsPanel, useShouldRiskPanelDisplay } from 'components/AccessRisk/SwapRevampRiskDisplay'
-import RefreshIcon from 'components/Svg/RefreshIcon'
-import { CHAIN_REFRESH_TIME } from 'config/constants/exchange'
 import { useCurrency } from 'hooks/Tokens'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCurrencyUsdPrice } from 'hooks/useCurrencyUsdPrice'
@@ -22,6 +20,7 @@ import { ButtonAndDetailsPanel } from './ButtonAndDetailsPanel'
 import { CommitButton } from './CommitButton'
 import { FormMain } from './FormMainV4'
 import { PricingAndSlippage } from './PricingAndSlippage'
+import { RefreshButton } from './RefreshButton'
 import { SwapSelection } from './SwapSelectionTab'
 import { TradeDetails } from './TradeDetails'
 
@@ -147,26 +146,16 @@ export function V4SwapForm() {
             onClick={(e) => {
               e.stopPropagation()
             }}
+            justifyContent="center"
+            alignItems="center"
           >
-            <IconButton variant="text" scale="sm" onClick={refreshOrder} data-dd-action-name="Swap refresh button">
-              <RefreshIcon
-                disabled={refreshDisabled}
-                color="textSubtle"
-                width="24px"
-                duration={
-                  activeChianId && CHAIN_REFRESH_TIME[activeChianId]
-                    ? CHAIN_REFRESH_TIME[activeChianId] / 1000
-                    : undefined
-                }
-              />
-            </IconButton>
+            <RefreshButton onRefresh={refreshOrder} refreshDisabled={refreshDisabled} chainId={activeChianId} />
             <PricingAndSlippage priceLoading={!tradeLoaded} price={executionPrice ?? undefined} showSlippage={false} />
           </FlexGap>
         }
         tradeDetails={<TradeDetails loaded={tradeLoaded} order={bestOrder} />}
         shouldRenderDetails={Boolean(executionPrice) && Boolean(bestOrder) && !isWrapping}
       />
-      {/* <TradeDetails loaded={tradeLoaded} order={bestOrder} /> */}
     </SwapUIV2.SwapFormWrapper>
   )
 }
