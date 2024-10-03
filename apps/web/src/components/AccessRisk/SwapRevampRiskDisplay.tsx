@@ -229,19 +229,15 @@ export const RiskDetailsPanel: React.FC<RiskDetailsPanelProps> = ({
     let count = 0
     if (isRiskToken0) {
       count++
-      console.log('isRiskToken0', isRiskToken0)
     }
     if (isRiskToken1) {
       count++
-      console.log('isRiskToken1', isRiskToken1)
     }
     if (isPriceImpactTooHigh) {
       count++
-      console.log('isPriceImpactTooHigh', isPriceImpactTooHigh)
     }
     if (isSlippageTooHigh) {
       count++
-      console.log('isSlippageTooHigh', isSlippageTooHigh)
     }
     return count > 1
   }, [isRiskToken0, isRiskToken1, isPriceImpactTooHigh, isSlippageTooHigh])
