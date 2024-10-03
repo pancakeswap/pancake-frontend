@@ -2,7 +2,8 @@ import { useTranslation } from '@pancakeswap/localization'
 import { ERC20Token } from '@pancakeswap/sdk'
 import { Box, FlexGap, Link, RiskAlertIcon, Text } from '@pancakeswap/uikit'
 import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
-import { useEffect, useMemo } from 'react'
+import { SwapUIV2 } from '@pancakeswap/widgets-internal'
+import { useEffect, useMemo, useState } from 'react'
 import { keyframes, styled } from 'styled-components'
 
 import { TOKEN_RISK, TOKEN_RISK_T, useTokenRisk } from './index'
@@ -87,7 +88,7 @@ export const RiskInputPanelDisplay: React.FC<RiskInputPanelDisplayProps> = ({ to
   return null
 }
 
-export const RiskDetails: React.FC<RiskDetailsProps> = ({ token }) => {
+export const RiskTitle: React.FC<RiskDetailsProps> = ({ token }) => {
   const { t } = useTranslation()
   const { isDataLoading, riskLevel, tagColor } = useRiskCheckData(token)
   if (!isDataLoading && riskLevel && riskLevel <= TOKEN_RISK.SIGNIFICANT && riskLevel >= TOKEN_RISK.MEDIUM) {
@@ -101,7 +102,23 @@ export const RiskDetails: React.FC<RiskDetailsProps> = ({ token }) => {
             <Text fontSize="16px">
               {TOKEN_RISK_T[riskLevel]} {t('detected for output token:')} {token?.symbol}
             </Text>
+          </FlexGap>
+        </FlexGap>
+      )
+    }
+    return null
+  }
+  return null
+}
 
+export const RiskDetails: React.FC<RiskDetailsProps> = ({ token }) => {
+  const { t } = useTranslation()
+  const { isDataLoading, riskLevel } = useRiskCheckData(token)
+  if (!isDataLoading && riskLevel && riskLevel <= TOKEN_RISK.SIGNIFICANT && riskLevel >= TOKEN_RISK.MEDIUM) {
+    if (riskLevel && riskLevel >= TOKEN_RISK.VERY_LOW && token?.address) {
+      return (
+        <FlexGap alignItems="flex-start" gap="8px">
+          <FlexGap justifyContent="center" alignItems="flex-start" flexDirection="column" gap="8px">
             <Text>
               {t(
                 'Scan risk level description for the output token shows here. This risk level is for a reference only, not as an investment advice.',
@@ -114,6 +131,7 @@ export const RiskDetails: React.FC<RiskDetailsProps> = ({ token }) => {
         </FlexGap>
       )
     }
+    return null
   }
   return null
 }
@@ -135,10 +153,25 @@ export const RiskDetailsPanel: React.FC<RiskDetailsPanelProps> = ({
   token0RiskLevelDescription,
   token1RiskLevelDescription,
 }) => {
+  const [isOpen, setIsOpen] = useState(false)
   return (
     <RiskDetailsPanelWrapper width="100%" flexDirection="column" justifyContent="center" alignItems="center">
-      <RiskDetails token={token0} riskLevelDescription={token0RiskLevelDescription} />
-      <RiskDetails token={token1} riskLevelDescription={token1RiskLevelDescription} />
+      <SwapUIV2.Collapse
+        isOpen={isOpen}
+        onToggle={() => setIsOpen(!isOpen)}
+        title={
+          <FlexGap flexDirection="column">
+            <RiskTitle token={token0} />
+            <RiskTitle token={token1} />
+          </FlexGap>
+        }
+        content={
+          <FlexGap flexDirection="column" pl="32px" pr="8px">
+            <RiskDetails token={token0} riskLevelDescription={token0RiskLevelDescription} />
+            <RiskDetails token={token1} riskLevelDescription={token1RiskLevelDescription} />
+          </FlexGap>
+        }
+      />
     </RiskDetailsPanelWrapper>
   )
 }
