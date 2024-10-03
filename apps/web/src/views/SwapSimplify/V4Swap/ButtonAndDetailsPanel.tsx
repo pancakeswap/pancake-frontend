@@ -1,6 +1,6 @@
+import { SwapUIV2 } from '@pancakeswap/widgets-internal'
 import { useState } from 'react'
 import { styled } from 'styled-components'
-import { Collapse } from './Collapse'
 
 export const PanelWrapper = styled.div`
   display: flex;
@@ -27,7 +27,14 @@ export const ButtonAndDetailsPanel: React.FC<ButtonAndDetailsPanelProps> = ({
   return (
     <PanelWrapper>
       {swapCommitButton}
-      <Collapse isOpen={isOpen} onToggle={() => setIsOpen(!isOpen)} title={pricingAndSlippage} content={tradeDetails} />
+      {pricingAndSlippage !== null && tradeDetails !== null && (
+        <SwapUIV2.Collapse
+          isOpen={isOpen}
+          onToggle={() => setIsOpen(!isOpen)}
+          title={pricingAndSlippage}
+          content={tradeDetails}
+        />
+      )}
     </PanelWrapper>
   )
 }
