@@ -16,18 +16,20 @@ interface ButtonAndDetailsPanelProps {
   swapCommitButton: React.ReactNode
   pricingAndSlippage: React.ReactNode
   tradeDetails: React.ReactNode
+  shouldRenderDetails?: boolean
 }
 
 export const ButtonAndDetailsPanel: React.FC<ButtonAndDetailsPanelProps> = ({
   swapCommitButton,
   pricingAndSlippage,
   tradeDetails,
+  shouldRenderDetails,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   return (
     <PanelWrapper>
       {swapCommitButton}
-      {pricingAndSlippage !== null && tradeDetails !== null && (
+      {shouldRenderDetails && (
         <SwapUIV2.Collapse
           isOpen={isOpen}
           onToggle={() => setIsOpen(!isOpen)}
