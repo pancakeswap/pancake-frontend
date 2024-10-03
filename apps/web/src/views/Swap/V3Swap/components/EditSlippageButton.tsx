@@ -24,7 +24,7 @@ export const EditSlippageButton = ({ slippage }: EditSlippageButtonProps) => {
   const color =
     typeof slippage === 'number'
       ? slippage < 50
-        ? theme.colors.warning
+        ? theme.colors.yellow
         : slippage > 500
         ? theme.colors.failure
         : theme.colors.primary60
