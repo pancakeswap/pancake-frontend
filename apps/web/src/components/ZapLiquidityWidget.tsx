@@ -136,7 +136,7 @@ export const ZapLiquidityWidget: React.FC<ZapLiquidityProps> = ({
             theme={isDark ? 'dark' : 'light'}
             onDismiss={handleOnDismiss}
             onTxSubmit={handleTransaction}
-            source="zap-widget"
+            source="pancakeswap"
           />
         </ModalContainer>
       </ModalV2>

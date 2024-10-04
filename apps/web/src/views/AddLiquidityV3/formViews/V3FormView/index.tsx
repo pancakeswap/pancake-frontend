@@ -174,8 +174,14 @@ export default function V3FormView({
     formState,
   )
   const hasZapV3Pool = useMemo(() => {
-    const poolAddress = pool && Pool.getAddress(pool.token0, pool.token1, pool.fee)
-    return poolAddress ? ZAP_V3_POOL_ADDRESSES.includes(poolAddress) : false
+    if (pool) {
+      const zapV3Whitelist = ZAP_V3_POOL_ADDRESSES[pool.chainId]
+      if (zapV3Whitelist) {
+        if (zapV3Whitelist.length === 0) return true
+        return zapV3Whitelist.includes(Pool.getAddress(pool.token0, pool.token1, pool.fee))
+      }
+    }
+    return false
   }, [pool])
   const { onFieldAInput, onFieldBInput, onLeftRangeInput, onRightRangeInput, onStartPriceInput, onBothRangeInput } =
     useV3MintActionHandlers(noLiquidity)
