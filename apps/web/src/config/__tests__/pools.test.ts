@@ -12,9 +12,10 @@ import { describe, it } from 'vitest'
 
 describe.concurrent(
   'Config pools',
-  () => {
+  async () => {
     for (const chainId of SUPPORTED_CHAIN_IDS.filter((chainId_) => !testnetChainIds.includes(chainId_))) {
-      const pools = getPoolsConfig(chainId) ?? []
+      // eslint-disable-next-line no-await-in-loop
+      const pools = (await getPoolsConfig(chainId)) ?? []
       // Pool 0 is special (cake pool)
       // Pool 78 is a broken pool, not used, and break the tests
       const idsToRemove = chainId === ChainId.BSC ? [0, 78] : chainId === ChainId.BSC_TESTNET ? [0] : []
@@ -35,7 +36,7 @@ describe.concurrent(
       it.each<SerializedPool>(poolsToTest.filter((pool) => pool.earningToken.symbol !== 'BNB'))(
         'Pool %p has the correct earning token',
         async (pool) => {
-          const contract = getPoolContractBySousId({
+          const contract = await getPoolContractBySousId({
             sousId: pool.sousId,
             chainId,
             publicClient: publicClient({ chainId }),
@@ -50,14 +51,14 @@ describe.concurrent(
         async (pool) => {
           let stakingTokenAddress: null | Address = null
           try {
-            const contract = getPoolContractBySousId({
+            const contract = await getPoolContractBySousId({
               sousId: pool.sousId,
               chainId,
               publicClient: publicClient({ chainId }),
             })
             stakingTokenAddress = await contract.read.stakedToken()
           } catch (error) {
-            const contract = getPoolContractBySousId({
+            const contract = await getPoolContractBySousId({
               sousId: pool.sousId,
               chainId,
               publicClient: publicClient({ chainId }),
@@ -74,7 +75,7 @@ describe.concurrent(
       it.each<SerializedPool>(poolsToTest.filter((pool) => pool.stakingToken.symbol !== 'BNB'))(
         'Pool %p has the correct tokenPerBlock',
         async (pool) => {
-          const contract = getPoolContractBySousId({
+          const contract = await getPoolContractBySousId({
             sousId: pool.sousId,
             chainId,
             publicClient: publicClient({ chainId }),

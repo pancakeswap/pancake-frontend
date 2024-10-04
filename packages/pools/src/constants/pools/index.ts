@@ -1,5 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
-
+import { POOLS_API } from '../config/endpoint'
 import { livePools as ethLivePools, pools as ethPools } from './1'
 import { livePools as polygonZkEvmLivePools, pools as polygonZkEvmPools } from './1101'
 import { livePools as polygonZkEvmTestnetLivePools, pools as polygonZkEvmTestnetPools } from './1442'
@@ -57,18 +57,35 @@ export const LIVE_POOLS_CONFIG_BY_CHAIN = {
   [ChainId.OPBNB]: opBNBLivePools,
 } as PoolsConfigByChain<SupportedChainId>
 
-export const getPoolsConfig = (chainId: ChainId) => {
+export const getPoolsConfig = async (chainId: ChainId) => {
   if (!isPoolsSupported(chainId)) {
     return undefined
   }
-  return POOLS_CONFIG_BY_CHAIN[chainId]
+
+  try {
+    const response = await fetch(`${POOLS_API}?chainId=${chainId}`)
+    const result: SerializedPool[] = await response.json()
+    return result
+  } catch (error) {
+    console.error('Get all pools by chain config error: ', error)
+    return []
+  }
+  // return POOLS_CONFIG_BY_CHAIN[chainId]
 }
 
-export const getLivePoolsConfig = (chainId: ChainId) => {
+export const getLivePoolsConfig = async (chainId: ChainId) => {
   if (!isPoolsSupported(chainId)) {
     return undefined
   }
-  return LIVE_POOLS_CONFIG_BY_CHAIN[chainId]
+
+  try {
+    const response = await fetch(`${POOLS_API}?chainId=${chainId}&isFinished=false`)
+    const result: SerializedPool[] = await response.json()
+    return result
+  } catch (error) {
+    console.error('Get live pools by chain config error: ', error)
+    return []
+  }
 }
 
 export const MAX_LOCK_DURATION = 31536000

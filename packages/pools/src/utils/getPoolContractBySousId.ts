@@ -97,11 +97,11 @@ export function getSmartChefChefV2Contract({
   }
 }
 
-export function getPoolContractBySousId({ chainId, sousId, signer, publicClient }: Params): any | null {
+export async function getPoolContractBySousId({ chainId, sousId, signer, publicClient }: Params): Promise<any | null> {
   if (!chainId) {
     return null
   }
-  const pools = getPoolsConfig(chainId)
+  const pools = await getPoolsConfig(chainId)
   const pool = pools?.find((p) => p.sousId === Number(sousId))
   if (!pool) {
     return null
