@@ -143,6 +143,13 @@ export const subgraphTokenSymbol = {
     '0xB0b84D294e0C75A6abe60171b70edEb2EFd14A1B': 'slisBNB',
     '0x11727E5b7Fa33FF4D380F3E7E877F19876c25b97': 'mdLP',
   },
+  [ChainId.BASE]: {
+    '0x11e969e9B3f89cB16D686a03Cd8508C9fC0361AF': 'LAVA',
+    '0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf': 'cbBTC',
+    '0xCfA3Ef56d303AE4fAabA0592388F19d7C3399FB4': 'eUSD',
+    '0x2416092f143378750bb29b79eD961ab195CcEea5': 'ezETH',
+    '0x2Da56AcB9Ea78330f947bD57C54119Debda7AF71': 'Mog',
+  },
 }
 
 export const checkIsStableSwap = () => window.location.href.includes('stableSwap')
