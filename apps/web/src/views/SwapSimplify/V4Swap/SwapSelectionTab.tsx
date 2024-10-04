@@ -1,4 +1,11 @@
-import { ButtonMenu, ButtonMenuItem, ChartDisableIcon, ChartIcon, IconButton } from '@pancakeswap/uikit'
+import {
+  ButtonMenu,
+  ButtonMenuItem,
+  ChartDisableIcon,
+  ChartIcon,
+  IconButton,
+  useMatchBreakpoints,
+} from '@pancakeswap/uikit'
 import GlobalSettings from 'components/Menu/GlobalSettings'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useSwapHotTokenDisplay } from 'hooks/useSwapHotTokenDisplay'
@@ -21,15 +28,19 @@ const SwapSelectionWrapper = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  gap: 16px;
+  gap: 4px;
   padding: 16px;
   background-color: ${({ theme }) => theme.colors.backgroundAlt};
   border-radius: 24px;
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
+  ${({ theme }) => theme.mediaQueries.md} {
+    gap: 16px;
+  }
 `
 
 export const SwapSelection = ({ swapType }: { swapType: SwapType }) => {
   const router = useRouter()
+  const { isMobile } = useMatchBreakpoints()
 
   const onSelect = useCallback(
     (value: SwapType) => {
@@ -63,7 +74,7 @@ export const SwapSelection = ({ swapType }: { swapType: SwapType }) => {
   return (
     <SwapSelectionWrapper>
       <ButtonMenu scale="md" fullWidth activeIndex={swapType} onItemClick={(index) => onSelect(index)} variant="subtle">
-        <ButtonMenuItem>MARKET</ButtonMenuItem>
+        <ButtonMenuItem>SWAP</ButtonMenuItem>
         <ButtonMenuItem>TWAP</ButtonMenuItem>
         <ButtonMenuItem>LIMIT</ButtonMenuItem>
       </ButtonMenu>
