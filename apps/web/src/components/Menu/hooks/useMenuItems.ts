@@ -1,9 +1,9 @@
 import { ChainId } from '@pancakeswap/chains'
 import { useTheme } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
-import { DropdownMenuItems, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { DropdownMenuItems } from '@pancakeswap/uikit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import React, { MouseEventHandler, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { multiChainPaths } from 'state/info/constant'
 import { logMenuClick } from 'utils/customGTMEventTracking'
 
@@ -22,67 +22,68 @@ export const useMenuItems = ({ onClick }: UseMenuItemsParams = {}): ConfigMenuIt
   const { chainId } = useActiveChainId()
   const { isDark } = useTheme()
   const menuItemsStatus = useMenuItemsStatus()
-  const { isDesktop } = useMatchBreakpoints()
 
-  const menuItems = useMemo(() => {
-    const mobileConfig = [...config(t, isDark, languageCode, chainId)]
-    mobileConfig.splice(3, 0, mobileConfig.splice(2, 1)[0])
-
-    return isDesktop ? config(t, isDark, languageCode, chainId) : mobileConfig
-  }, [t, isDark, languageCode, chainId, isDesktop])
+  const menuItems = useMemo(() => config(t, isDark, languageCode, chainId), [t, isDark, languageCode, chainId])
 
   return useMemo(() => {
-    if (menuItemsStatus && Object.keys(menuItemsStatus).length) {
-      return menuItems.map((item) => {
-        const innerItems = item?.items?.map((currentItem) => {
-          const onClickEvent = (e: React.MouseEvent<HTMLButtonElement>) => {
-            if (currentItem.href) {
-              logMenuClick(currentItem.href)
-            }
-            currentItem.onClick?.(e)
-            onClick?.(e, currentItem)
-          }
-          const innerItem = {
-            ...currentItem,
-            onClick: onClickEvent,
-          }
+    const traverseItems = <T extends ConfigMenuItemsType | ConfigMenuDropDownItemsType>(
+      item: T,
+      menuStatus: Record<string, string>,
+      translationFn: (key: string) => string,
+      onClickFn?: (e: React.MouseEvent<HTMLButtonElement>, item: ConfigMenuDropDownItemsType) => void,
+      chainIdNumber?: number,
+    ): T => {
+      if (item?.items && item.items.length > 0) {
+        const innerItems = item.items.map((currentItem) =>
+          traverseItems(currentItem, menuStatus, translationFn, onClickFn, chainIdNumber),
+        )
+        return { ...item, items: innerItems }
+      }
 
-          const itemStatus = innerItem.href ? menuItemsStatus[innerItem.href] : undefined
-          const isInfo = innerItem.href === '/info/v3'
-
-          if (itemStatus) {
-            let itemMenuStatus: DropdownMenuItems['status'] | null = null
-            if (itemStatus === 'soon') {
-              itemMenuStatus = <DropdownMenuItems['status']>{ text: t('Soon'), color: 'warning' }
-            } else if (itemStatus === 'live') {
-              itemMenuStatus = <DropdownMenuItems['status']>{ text: t('Live'), color: 'failure' }
-            } else if (itemStatus === 'vote_now') {
-              itemMenuStatus = <DropdownMenuItems['status']>{ text: t('Vote Now'), color: 'success' }
-            } else if (itemStatus === 'pot_open') {
-              itemMenuStatus = <DropdownMenuItems['status']>{ text: t('Pot Open'), color: 'success' }
-            } else if (itemStatus === 'lock_end') {
-              itemMenuStatus = <DropdownMenuItems['status']>{ text: t('Lock End'), color: 'failure' }
-            } else {
-              itemMenuStatus = <DropdownMenuItems['status']>{ text: t('New'), color: 'success' }
-            }
-            return { ...innerItem, status: itemMenuStatus }
-          }
-
-          if (isInfo) {
-            const href = `${innerItem.href}${multiChainPaths[chainId || ChainId.BSC] ?? ''}`
-            return { ...innerItem, href }
-          }
-
-          return innerItem
-        })
-        const onItemClick: MouseEventHandler = (e) => {
-          if (item.href) {
-            logMenuClick(item.href)
-          }
-          item.onClick?.(e)
+      const onClickEvent = (e: React.MouseEvent<HTMLButtonElement>) => {
+        if (item.href) {
+          logMenuClick(item.href)
         }
-        return { ...item, items: innerItems, onClick: onItemClick }
-      })
+        item.onClick?.(e)
+        onClick?.(e, item)
+      }
+
+      const itemStatus = item.href ? menuItemsStatus[item.href] : undefined
+
+      if (itemStatus) {
+        let itemMenuStatus: DropdownMenuItems['status'] | undefined
+        switch (itemStatus) {
+          case 'soon':
+            itemMenuStatus = { text: t('Soon'), color: 'warning' }
+            break
+          case 'live':
+            itemMenuStatus = { text: t('Live'), color: 'failure' }
+            break
+          case 'vote_now':
+            itemMenuStatus = { text: t('Vote Now'), color: 'success' }
+            break
+          case 'pot_open':
+            itemMenuStatus = { text: t('Pot Open'), color: 'success' }
+            break
+          case 'lock_end':
+            itemMenuStatus = { text: t('Lock End'), color: 'failure' }
+            break
+          default:
+            itemMenuStatus = { text: t('New'), color: 'success' }
+        }
+        return { ...item, onClick: onClickEvent, status: itemMenuStatus }
+      }
+
+      if (item.href === '/info/v3') {
+        const href = `${item.href}${multiChainPaths[chainId || ChainId.BSC] ?? ''}`
+        return { ...item, href, onClick: onClickEvent }
+      }
+
+      return { ...item, onClick: onClickEvent }
+    }
+
+    if (menuItemsStatus && Object.keys(menuItemsStatus).length) {
+      return menuItems.map((item) => traverseItems(item, menuItemsStatus, t, onClick, chainId))
     }
     return menuItems
   }, [t, menuItems, menuItemsStatus, onClick, chainId])

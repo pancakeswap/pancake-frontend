@@ -98,40 +98,38 @@ const Menu = (props) => {
   }, [t])
 
   return (
-    <>
-      <UikitMenu
-        linkComponent={LinkComponent}
-        rightSide={
-          <>
-            <GlobalSettings mode={SettingsMode.GLOBAL} />
-            {enabled && (
-              <Suspense fallback={null}>
-                <Notifications />
-              </Suspense>
-            )}
-            <NetworkSwitcher />
-            <UserMenu />
-          </>
-        }
-        chainId={chainId}
-        banner={showPhishingWarningBanner && typeof window !== 'undefined' && <PhishingWarningBanner />}
-        isDark={isDark}
-        toggleTheme={toggleTheme}
-        currentLang={currentLanguage.code}
-        langs={languageList}
-        setLang={setLanguage}
-        cakePriceUsd={cakePrice.eq(BIG_ZERO) ? undefined : cakePrice}
-        links={menuItems}
-        subLinks={activeMenuItem?.hideSubNav || activeSubMenuItem?.hideSubNav ? [] : activeMenuItem?.items}
-        footerLinks={getFooterLinks}
-        activeItem={activeMenuItem?.href}
-        activeSubItem={activeSubMenuItem?.href}
-        activeSubItemChildItem={activeSubChildMenuItem?.href}
-        buyCakeLabel={t('Buy CAKE')}
-        buyCakeLink="https://pancakeswap.finance/swap?outputCurrency=0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82&chainId=56"
-        {...props}
-      />
-    </>
+    <UikitMenu
+      linkComponent={LinkComponent}
+      rightSide={
+        <>
+          <GlobalSettings mode={SettingsMode.GLOBAL} />
+          {enabled && (
+            <Suspense fallback={null}>
+              <Notifications />
+            </Suspense>
+          )}
+          <NetworkSwitcher />
+          <UserMenu />
+        </>
+      }
+      chainId={chainId}
+      banner={showPhishingWarningBanner && typeof window !== 'undefined' && <PhishingWarningBanner />}
+      isDark={isDark}
+      toggleTheme={toggleTheme}
+      currentLang={currentLanguage.code}
+      langs={languageList}
+      setLang={setLanguage}
+      cakePriceUsd={cakePrice.eq(BIG_ZERO) ? undefined : cakePrice}
+      links={menuItems}
+      subLinks={activeMenuItem?.hideSubNav || activeSubMenuItem?.hideSubNav ? [] : activeMenuItem?.items}
+      footerLinks={getFooterLinks}
+      activeItem={activeMenuItem?.href}
+      activeSubItem={activeSubMenuItem?.href}
+      activeSubItemChildItem={activeSubChildMenuItem?.href}
+      buyCakeLabel={t('Buy CAKE')}
+      buyCakeLink="https://pancakeswap.finance/swap?outputCurrency=0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82&chainId=56"
+      {...props}
+    />
   )
 }
 
