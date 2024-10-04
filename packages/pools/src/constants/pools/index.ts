@@ -70,7 +70,6 @@ export const getPoolsConfig = async (chainId: ChainId) => {
     console.error('Get all pools by chain config error: ', error)
     return []
   }
-  // return POOLS_CONFIG_BY_CHAIN[chainId]
 }
 
 export const getLivePoolsConfig = async (chainId: ChainId) => {
