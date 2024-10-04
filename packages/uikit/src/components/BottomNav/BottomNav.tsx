@@ -6,6 +6,7 @@ import DropdownMenu from "../DropdownMenu/DropdownMenu";
 import { BottomNavProps } from "./types";
 import { NotificationDot } from "../NotificationDot";
 import { Overlay } from "../Overlay";
+import { findMenuItemsStatusColor } from "../../util/findMenuItemsStatusColor";
 
 const BottomNav: React.FC<React.PropsWithChildren<BottomNavProps>> = ({
   items = [],
@@ -24,7 +25,7 @@ const BottomNav: React.FC<React.PropsWithChildren<BottomNavProps>> = ({
             { label, items: menuItems, href, icon, fillIcon, showOnMobile = true, showItemsOnMobile = true, disabled },
             index
           ) => {
-            const statusColor = menuItems?.find((menuItem) => menuItem.status !== undefined)?.status?.color;
+            const statusColor = findMenuItemsStatusColor(menuItems);
             return (
               showOnMobile && (
                 <DropdownMenu
