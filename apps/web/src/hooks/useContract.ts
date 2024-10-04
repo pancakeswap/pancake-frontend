@@ -6,7 +6,7 @@ import { usePublicClient, useWalletClient } from 'wagmi'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 
 import addresses from 'config/constants/contracts'
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { getMulticallAddress, getPredictionsV1Address, getZapAddress } from 'utils/addressHelpers'
 import {
   getAffiliateProgramContract,
@@ -144,16 +144,25 @@ export const useSousChef = (id) => {
   const { data: signer } = useWalletClient()
   const { chainId } = useActiveChainId()
   const publicClient = usePublicClient({ chainId })
-  return useMemo(
-    () =>
-      getPoolContractBySousId({
+  const [contract, setContract] = useState(null)
+
+  useEffect(() => {
+    if (!signer || !chainId || !publicClient || !id) return
+
+    const fetchContract = async () => {
+      const poolContract = await getPoolContractBySousId({
         sousId: id,
         signer,
         chainId,
         publicClient,
-      }),
-    [id, signer, chainId, publicClient],
-  )
+      })
+      setContract(poolContract)
+    }
+
+    fetchContract()
+  }, [id, signer, chainId, publicClient])
+
+  return contract
 }
 
 export const usePointCenterIfoContract = () => {
