@@ -8,8 +8,8 @@ import { useAppDispatch } from 'state'
 import {
   fetchCakeVaultFees,
   fetchCakeVaultPublicData,
+  fetchPoolsConfigAsync,
   fetchPoolsPublicDataAsync,
-  setInitialPoolConfig,
 } from 'state/pools'
 import { usePoolsWithVault } from 'state/pools/hooks'
 import { VaultKey } from 'state/types'
@@ -23,7 +23,8 @@ const useGetTopPoolsByApr = (isIntersecting: boolean, chainId?: number) => {
     queryKey: [chainId, 'fetchTopPoolsByApr'],
 
     queryFn: async () => {
-      await dispatch(setInitialPoolConfig({ chainId }))
+      if (!chainId) return null
+      await dispatch(fetchPoolsConfigAsync({ chainId }))
       return Promise.all([
         dispatch(fetchCakeVaultFees(chainId!)),
         dispatch(fetchCakeVaultPublicData(chainId!)),
