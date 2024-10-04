@@ -8,7 +8,6 @@ import { SECONDS_PER_YEAR } from 'config'
 import { v2BCakeWrapperABI } from 'config/abi/v2BCakeWrapper'
 import dayjs from 'dayjs'
 import { getCakePriceFromOracle } from 'hooks/useCakePrice'
-import assign from 'lodash/assign'
 import groupBy from 'lodash/groupBy'
 import set from 'lodash/set'
 import { chainIdToExplorerInfoChainName, explorerApiClient } from 'state/info/api/client'
@@ -223,7 +222,7 @@ export const getMerklApr = async (chainId: number) => {
 
 export const getAllNetworkMerklApr = async () => {
   const aprs = await Promise.all(supportedChainIdV4.map((chainId) => getMerklApr(chainId)))
-  return aprs.reduce((acc, apr) => assign(acc, apr), {})
+  return aprs.reduce((acc, apr) => Object.assign(acc, apr), {})
 }
 
 const getV3PoolsCakeAprByChainId = async (pools: V3PoolInfo[], chainId: number, cakePrice: BigNumber) => {
@@ -307,7 +306,7 @@ const getV3PoolsCakeApr = async (pools: V3PoolInfo[]): Promise<CakeApr> => {
       getV3PoolsCakeAprByChainId(poolsByChainId[chainId], Number(chainId), cakePrice),
     ),
   )
-  return aprs.reduce((acc, apr) => assign(acc, apr), {})
+  return aprs.reduce((acc, apr) => Object.assign(acc, apr), {})
 }
 
 const v3PoolCakeAprBatcher = create<CakeApr, V3PoolInfo, CakeApr>({
@@ -500,7 +499,7 @@ const getV2PoolsCakeApr = async (pools: Array<V2PoolInfo | StablePoolInfo>): Pro
       getV2PoolsCakeAprByChainId(poolsByChainId[chainId], Number(chainId), cakePrice),
     ),
   )
-  return aprs.reduce((acc, apr) => assign(acc, apr), {})
+  return aprs.reduce((acc, apr) => Object.assign(acc, apr), {})
 }
 const v2PoolCakeAprBatcher = create<CakeApr, V2PoolInfo | StablePoolInfo, CakeApr>({
   fetcher: getV2PoolsCakeApr,

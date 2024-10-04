@@ -27,7 +27,6 @@ import TransactionsModal from 'components/App/Transactions/TransactionsModal'
 import GlobalSettings from 'components/Menu/GlobalSettings'
 import { SettingsMode } from 'components/Menu/GlobalSettings/types'
 import { ASSET_CDN } from 'config/constants/endpoints'
-import assign from 'lodash/assign'
 import intersection from 'lodash/intersection'
 import NextLink from 'next/link'
 import { useCallback, useEffect, useMemo, useState } from 'react'
@@ -169,7 +168,7 @@ const useV3Positions = ({
   const v3PositionsWithStatus = useMemo(
     () =>
       v3Positions.map((pos, idx) =>
-        assign(pos, {
+        Object.assign(pos, {
           status: getPoolStatus(pos, pools[idx][1]),
         }),
       ),
