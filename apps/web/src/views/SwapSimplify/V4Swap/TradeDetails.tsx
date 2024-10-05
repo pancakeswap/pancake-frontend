@@ -46,14 +46,14 @@ export const TradeDetails = memo(function TradeDetails({ loaded, order }: Props)
 
   const { isPaymasterAvailable } = usePaymaster()
 
-  if (isWrapping || !loaded || !order || !slippageAdjustedAmounts || !order.trade) {
+  if (isWrapping || !order || !slippageAdjustedAmounts || !order.trade) {
     return null
   }
 
   const { inputAmount, outputAmount, tradeType } = order.trade
 
   return (
-    <AdvancedDetailsFooter show={loaded}>
+    <AdvancedDetailsFooter show>
       <AutoColumn gap="0px">
         <TradeSummary
           isX={isXOrder(order)}
@@ -65,6 +65,7 @@ export const TradeDetails = memo(function TradeDetails({ loaded, order }: Props)
           realizedLPFee={lpFeeAmount ?? undefined}
           hasStablePair={hasStablePool}
           gasTokenSelector={isPaymasterAvailable && <GasTokenSelector currency={order?.trade.inputAmount.currency} />}
+          loading={!loaded}
         />
         {isXOrder(order) ? (
           <XRoutesBreakdown wrapperStyle={{ padding: 0 }} />

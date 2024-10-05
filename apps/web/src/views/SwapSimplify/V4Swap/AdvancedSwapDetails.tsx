@@ -1,7 +1,17 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Percent, TradeType } from '@pancakeswap/sdk'
 import { LegacyPair as Pair } from '@pancakeswap/smart-router/legacy-router'
-import { AutoColumn, Flex, Link, Modal, ModalV2, QuestionHelper, SearchIcon, Text } from '@pancakeswap/uikit'
+import {
+  AutoColumn,
+  Flex,
+  Link,
+  Modal,
+  ModalV2,
+  QuestionHelper,
+  SearchIcon,
+  SkeletonV2,
+  Text,
+} from '@pancakeswap/uikit'
 import { formatAmount, formatFraction } from '@pancakeswap/utils/formatFractions'
 import React, { memo, useState } from 'react'
 
@@ -24,6 +34,7 @@ export const TradeSummary = memo(function TradeSummary({
   realizedLPFee,
   gasTokenSelector,
   isX = false,
+  loading = false,
 }: {
   hasStablePair?: boolean
   inputAmount?: CurrencyAmount<Currency>
@@ -34,6 +45,7 @@ export const TradeSummary = memo(function TradeSummary({
   realizedLPFee?: CurrencyAmount<Currency> | null
   gasTokenSelector?: React.ReactNode
   isX?: boolean
+  loading?: boolean
 }) {
   const { t } = useTranslation()
   const isExactIn = tradeType === TradeType.EXACT_INPUT
@@ -56,11 +68,13 @@ export const TradeSummary = memo(function TradeSummary({
           />
         </RowFixed>
         <RowFixed>
-          <Text fontSize="14px">
-            {isExactIn
-              ? `${formatAmount(slippageAdjustedAmounts[Field.OUTPUT], 4)} ${outputAmount?.currency?.symbol}` ?? '-'
-              : `${formatAmount(slippageAdjustedAmounts[Field.INPUT], 4)} ${inputAmount?.currency?.symbol}` ?? '-'}
-          </Text>
+          <SkeletonV2 width="80px" height="24px" borderRadius="12px" isDataReady={!loading}>
+            <Text fontSize="14px">
+              {isExactIn
+                ? `${formatAmount(slippageAdjustedAmounts[Field.OUTPUT], 4)} ${outputAmount?.currency?.symbol}` ?? '-'
+                : `${formatAmount(slippageAdjustedAmounts[Field.INPUT], 4)} ${inputAmount?.currency?.symbol}` ?? '-'}
+            </Text>
+          </SkeletonV2>
         </RowFixed>
       </RowBetween>
       {feeSavedAmount ? (
@@ -80,22 +94,26 @@ export const TradeSummary = memo(function TradeSummary({
             />
           </RowFixed>
           <RowFixed>
-            <NumberDisplay
-              as="span"
-              fontSize={14}
-              value={formatAmount(feeSavedAmount, 2)}
-              suffix={` ${outputAmount?.currency?.symbol}`}
-              color="success"
-            />
-            <NumberDisplay
-              as="span"
-              fontSize={14}
-              color="success"
-              value={formatFraction(feeSavedUsdValue, 2)}
-              prefix="(~$"
-              suffix=")"
-              ml={1}
-            />
+            <SkeletonV2 width="100px" height="24px" borderRadius="12px" isDataReady={!loading}>
+              <>
+                <NumberDisplay
+                  as="span"
+                  fontSize={14}
+                  value={formatAmount(feeSavedAmount, 2)}
+                  suffix={` ${outputAmount?.currency?.symbol}`}
+                  color="success"
+                />
+                <NumberDisplay
+                  as="span"
+                  fontSize={14}
+                  color="success"
+                  value={formatFraction(feeSavedUsdValue, 2)}
+                  prefix="(~$"
+                  suffix=")"
+                  ml={1}
+                />
+              </>
+            </SkeletonV2>
           </RowFixed>
         </RowBetween>
       ) : null}
