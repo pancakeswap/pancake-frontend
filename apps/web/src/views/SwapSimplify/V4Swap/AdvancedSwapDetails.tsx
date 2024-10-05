@@ -68,7 +68,7 @@ export const TradeSummary = memo(function TradeSummary({
           />
         </RowFixed>
         <RowFixed>
-          <SkeletonV2 width="80px" height="24px" borderRadius="12px" isDataReady={!loading}>
+          <SkeletonV2 width="80px" height="16px" borderRadius="8px" minHeight="auto" isDataReady={!loading}>
             <Text fontSize="14px">
               {isExactIn
                 ? `${formatAmount(slippageAdjustedAmounts[Field.OUTPUT], 4)} ${outputAmount?.currency?.symbol}` ?? '-'
@@ -93,28 +93,26 @@ export const TradeSummary = memo(function TradeSummary({
               placement="top"
             />
           </RowFixed>
-          <RowFixed>
-            <SkeletonV2 width="100px" height="24px" borderRadius="12px" isDataReady={!loading}>
-              <>
-                <NumberDisplay
-                  as="span"
-                  fontSize={14}
-                  value={formatAmount(feeSavedAmount, 2)}
-                  suffix={` ${outputAmount?.currency?.symbol}`}
-                  color="success"
-                />
-                <NumberDisplay
-                  as="span"
-                  fontSize={14}
-                  color="success"
-                  value={formatFraction(feeSavedUsdValue, 2)}
-                  prefix="(~$"
-                  suffix=")"
-                  ml={1}
-                />
-              </>
-            </SkeletonV2>
-          </RowFixed>
+          <SkeletonV2 width="100px" height="16px" borderRadius="8px" minHeight="auto" isDataReady={!loading}>
+            <RowFixed>
+              <NumberDisplay
+                as="span"
+                fontSize={14}
+                value={formatAmount(feeSavedAmount, 2)}
+                suffix={` ${outputAmount?.currency?.symbol}`}
+                color="success"
+              />
+              <NumberDisplay
+                as="span"
+                fontSize={14}
+                color="success"
+                value={formatFraction(feeSavedUsdValue, 2)}
+                prefix="(~$"
+                suffix=")"
+                ml={1}
+              />
+            </RowFixed>
+          </SkeletonV2>
         </RowBetween>
       ) : null}
       {priceImpactWithoutFee && (
@@ -144,8 +142,9 @@ export const TradeSummary = memo(function TradeSummary({
               placement="top"
             />
           </RowFixed>
-
-          {isX ? <Text color="primary">0%</Text> : <FormattedPriceImpact priceImpact={priceImpactWithoutFee} />}
+          <SkeletonV2 width="50px" height="16px" borderRadius="8px" minHeight="auto" isDataReady={!loading}>
+            {isX ? <Text color="primary">0%</Text> : <FormattedPriceImpact priceImpact={priceImpactWithoutFee} />}
+          </SkeletonV2>
         </RowBetween>
       )}
       {(realizedLPFee || isX) && (
@@ -191,13 +190,15 @@ export const TradeSummary = memo(function TradeSummary({
               placement="top"
             />
           </RowFixed>
-          {isX ? (
-            <Text color="primary" fontSize="14px">
-              0 {inputAmount?.currency?.symbol}
-            </Text>
-          ) : (
-            <Text fontSize="14px">{`${formatAmount(realizedLPFee, 4)} ${inputAmount?.currency?.symbol}`}</Text>
-          )}
+          <SkeletonV2 width="70px" height="16px" borderRadius="8px" minHeight="auto" isDataReady={!loading}>
+            {isX ? (
+              <Text color="primary" fontSize="14px">
+                0 {inputAmount?.currency?.symbol}
+              </Text>
+            ) : (
+              <Text fontSize="14px">{`${formatAmount(realizedLPFee, 4)} ${inputAmount?.currency?.symbol}`}</Text>
+            )}
+          </SkeletonV2>
         </RowBetween>
       )}
     </AutoColumn>

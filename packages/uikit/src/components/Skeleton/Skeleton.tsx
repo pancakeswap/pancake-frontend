@@ -1,16 +1,16 @@
 import shouldForwardProp from "@styled-system/should-forward-prop";
 import { AnimatePresence, domAnimation, LazyMotion, m as Motion } from "framer-motion";
 import React, { useRef } from "react";
-import { styled, keyframes } from "styled-components";
-import { layout, space, borderRadius } from "styled-system";
-import { animation as ANIMATION, SkeletonProps, SkeletonV2Props, variant as VARIANT } from "./types";
+import { keyframes, styled } from "styled-components";
+import { borderRadius, layout, space } from "styled-system";
 import {
+  animationHandler,
+  animationMap,
+  animationVariants,
   appearAnimation,
   disappearAnimation,
-  animationVariants,
-  animationMap,
-  animationHandler,
 } from "../../util/animationToolkit";
+import { animation as ANIMATION, SkeletonProps, SkeletonV2Props, variant as VARIANT } from "./types";
 
 const waves = keyframes`
    from {
@@ -116,7 +116,13 @@ export const SkeletonV2: React.FC<React.PropsWithChildren<SkeletonV2Props>> = ({
   const animationRef = useRef<HTMLDivElement>(null);
   const skeletonRef = useRef<HTMLDivElement>(null);
   return (
-    <SkeletonWrapper width={width} height={height} mr={mr} ml={ml} {...wrapperProps}>
+    <SkeletonWrapper
+      width={isDataReady ? "auto" : width}
+      height={isDataReady ? "auto" : height}
+      mr={mr}
+      ml={ml}
+      {...wrapperProps}
+    >
       <LazyMotion features={domAnimation}>
         <AnimatePresence>
           {isDataReady && (

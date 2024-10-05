@@ -1,7 +1,7 @@
 import { useDebounce } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { Route } from '@pancakeswap/smart-router'
-import { Box, IconButton, QuestionHelper, SearchIcon, Text, useModalV2 } from '@pancakeswap/uikit'
+import { Box, IconButton, QuestionHelper, SearchIcon, SkeletonV2, Text, useModalV2 } from '@pancakeswap/uikit'
 import { memo } from 'react'
 import { styled } from 'styled-components'
 
@@ -13,13 +13,14 @@ import { RouteDisplayEssentials, RouteDisplayModal } from './RouteDisplayModal'
 interface Props {
   routes?: RouteDisplayEssentials[]
   wrapperStyle?: React.CSSProperties
+  loading?: boolean
 }
 
 const RouteInfoContainer = styled(RowBetween)`
   padding: 4px 24px 0;
 `
 
-export const RoutesBreakdown = memo(function RoutesBreakdown({ routes = [], wrapperStyle }: Props) {
+export const RoutesBreakdown = memo(function RoutesBreakdown({ routes = [], wrapperStyle, loading }: Props) {
   const [wallchainStatus] = useWallchainStatus()
   const { t } = useTranslation()
   const routeDisplayModal = useModalV2()
@@ -53,16 +54,18 @@ export const RoutesBreakdown = memo(function RoutesBreakdown({ routes = [], wrap
           />
         </span>
         <Box onClick={routeDisplayModal.onOpen} role="button">
-          <span style={{ display: 'flex', alignItems: 'center' }}>
-            {count > 1 ? (
-              <Text fontSize="14px">{t('%count% Separate Routes', { count })}</Text>
-            ) : (
-              <RouteComp route={routes[0]} />
-            )}
-            <IconButton ml="8px" variant="text" color="textSubtle" scale="xs">
-              <SearchIcon width="16px" height="16px" color="textSubtle" />
-            </IconButton>
-          </span>
+          <SkeletonV2 width="120px" height="16px" borderRadius="8px" minHeight="auto" isDataReady={!loading}>
+            <span style={{ display: 'flex', alignItems: 'center' }}>
+              {count > 1 ? (
+                <Text fontSize="14px">{t('%count% Separate Routes', { count })}</Text>
+              ) : (
+                <RouteComp route={routes[0]} />
+              )}
+              <IconButton ml="8px" variant="text" color="textSubtle" scale="xs">
+                <SearchIcon width="16px" height="16px" color="textSubtle" />
+              </IconButton>
+            </span>
+          </SkeletonV2>
         </Box>
         <RouteDisplayModal {...routeDisplayModal} routes={routes} />
       </RouteInfoContainer>
