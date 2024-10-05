@@ -9,4 +9,4 @@ packages:
 catalog:
   viem: ^2.21.9
   wagmi: ^2.12.12
-  next: '14.2.10'
+  next: '14.2.14'
