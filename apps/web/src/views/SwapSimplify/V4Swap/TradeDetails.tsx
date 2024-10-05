@@ -70,7 +70,7 @@ export const TradeDetails = memo(function TradeDetails({ loaded, order }: Props)
         {isXOrder(order) ? (
           <XRoutesBreakdown wrapperStyle={{ padding: 0 }} />
         ) : (
-          <RoutesBreakdown routes={order?.trade?.routes} wrapperStyle={{ padding: 0 }} />
+          <RoutesBreakdown routes={order?.trade?.routes} wrapperStyle={{ padding: 0 }} loading={!loaded} />
         )}
       </AutoColumn>
     </AdvancedDetailsFooter>
