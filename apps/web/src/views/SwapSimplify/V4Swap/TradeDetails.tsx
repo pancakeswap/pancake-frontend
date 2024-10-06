@@ -8,10 +8,10 @@ import { PriceOrder } from '@pancakeswap/price-api-sdk'
 import { GasTokenSelector } from 'components/Paymaster/GasTokenSelector'
 import { usePaymaster } from 'hooks/usePaymaster'
 import { isClassicOrder, isXOrder } from 'views/Swap/utils'
-import { RoutesBreakdown, XRoutesBreakdown } from '../../Swap/V3Swap/components'
 import { useIsWrapping, useSlippageAdjustedAmounts } from '../../Swap/V3Swap/hooks'
 import { computeTradePriceBreakdown } from '../../Swap/V3Swap/utils/exchange'
 import { TradeSummary } from './AdvancedSwapDetails'
+import { RoutesBreakdown, XRoutesBreakdown } from './RoutesBreakdown'
 
 export const AdvancedDetailsFooter = styled.div<{ show: boolean }>`
   margin-top: ${({ show }) => (show ? '16px' : 0)};
