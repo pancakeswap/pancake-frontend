@@ -73,7 +73,7 @@ export const RoutesBreakdown = memo(function RoutesBreakdown({ routes = [], wrap
   )
 })
 
-export const XRoutesBreakdown = memo(function XRoutesBreakdown({ wrapperStyle }: Props) {
+export const XRoutesBreakdown = memo(function XRoutesBreakdown({ wrapperStyle, loading }: Props) {
   const { t } = useTranslation()
 
   return (
