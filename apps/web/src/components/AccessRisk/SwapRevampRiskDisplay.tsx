@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ERC20Token } from '@pancakeswap/sdk'
-import { Box, FlexGap, Link, RiskAlertIcon, Text, WarningIcon } from '@pancakeswap/uikit'
+import { Box, FlexGap, Link, Modal, ModalV2, RiskAlertIcon, Text, WarningIcon } from '@pancakeswap/uikit'
 import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import { SwapUIV2 } from '@pancakeswap/widgets-internal'
 import { useEffect, useMemo, useState } from 'react'
@@ -12,7 +12,7 @@ const appearAni = keyframes`
   from { opacity: 0; transform: translateY(5px); }
   to { opacity: 1; transform: translateY(0px); }
 `
-export const RiskDetailsPanelWrapper = styled(FlexGap)`
+const RiskDetailsPanelWrapper = styled(FlexGap)`
   opacity: 0;
   border-radius: 20px;
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
@@ -20,7 +20,15 @@ export const RiskDetailsPanelWrapper = styled(FlexGap)`
   padding: 12px;
   animation: ${appearAni} 0.25s ease-in-out 0.5s forwards;
 `
-
+const RiskModalDetailCardWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-radius: 16px;
+  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
+  background-color: #faf9fa;
+  padding: 16px;
+`
 interface RiskInputPanelDisplayProps {
   token?: ERC20Token
 }
@@ -37,6 +45,11 @@ interface RiskDetailsPanelProps {
   token1RiskLevelDescription?: string
   isPriceImpactTooHigh?: boolean
   isSlippageTooHigh?: boolean
+}
+
+interface RiskDetailsModalProps {
+  isOpen?: boolean
+  onDismiss?: () => void
 }
 
 const useRiskCheckData = (token?: ERC20Token) => {
@@ -205,7 +218,7 @@ export const RiskDetails: React.FC<RiskDetailsProps> = ({ token }) => {
 export const useShouldRiskPanelDisplay = (token0?: ERC20Token, token1?: ERC20Token) => {
   const { isDataLoading: isDataLoading0, riskLevel: riskLevel0 } = useRiskCheckData(token0)
   const { isDataLoading: isDataLoading1, riskLevel: riskLevel1 } = useRiskCheckData(token1)
-  if (isDataLoading0 || isDataLoading1) {
+  if ((isDataLoading0 && token0) || (isDataLoading1 && token1)) {
     return false
   }
   return (
@@ -223,6 +236,7 @@ export const RiskDetailsPanel: React.FC<RiskDetailsPanelProps> = ({
   isSlippageTooHigh,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
+  const [modalOpen, setModalOpen] = useState(false)
   const isRiskToken0 = useShouldRiskPanelDisplay(token0)
   const isRiskToken1 = useShouldRiskPanelDisplay(token1)
   const isRiskMoreThanOne = useMemo(() => {
@@ -242,13 +256,11 @@ export const RiskDetailsPanel: React.FC<RiskDetailsPanelProps> = ({
     return count > 1
   }, [isRiskToken0, isRiskToken1, isPriceImpactTooHigh, isSlippageTooHigh])
   return (
-    <RiskDetailsPanelWrapper width="100%" flexDirection="column" justifyContent="center" alignItems="center">
-      {isRiskMoreThanOne ? (
-        'risk more than one'
-      ) : (
+    <>
+      <RiskDetailsPanelWrapper width="100%" flexDirection="column" justifyContent="center" alignItems="center">
         <SwapUIV2.Collapse
           isOpen={isOpen}
-          onToggle={() => setIsOpen(!isOpen)}
+          onToggle={isRiskMoreThanOne ? () => setModalOpen(true) : () => setIsOpen(!isOpen)}
           title={
             <FlexGap flexDirection="column">
               <RiskTitle token={token0} />
@@ -266,7 +278,50 @@ export const RiskDetailsPanel: React.FC<RiskDetailsPanelProps> = ({
             </FlexGap>
           }
         />
-      )}
-    </RiskDetailsPanelWrapper>
+      </RiskDetailsPanelWrapper>
+      <RiskDetailsModal isOpen={modalOpen} onDismiss={() => setModalOpen(false)}>
+        <FlexGap flexDirection="column" gap="16px">
+          {isRiskToken0 && (
+            <RiskModalDetailCardWrapper>
+              <RiskTitle token={token0} />
+              <RiskDetails token={token0} riskLevelDescription={token0RiskLevelDescription} />
+            </RiskModalDetailCardWrapper>
+          )}
+          {isRiskToken1 && (
+            <RiskModalDetailCardWrapper>
+              <RiskTitle token={token1} />
+              <RiskDetails token={token1} riskLevelDescription={token1RiskLevelDescription} />
+            </RiskModalDetailCardWrapper>
+          )}
+          {isPriceImpactTooHigh && (
+            <RiskModalDetailCardWrapper>
+              <PriceImpactTitle />
+              <PriceImpactDetails />
+            </RiskModalDetailCardWrapper>
+          )}
+          {isSlippageTooHigh && (
+            <RiskModalDetailCardWrapper>
+              <SlippageTitle />
+              <SlippageDetails />
+            </RiskModalDetailCardWrapper>
+          )}
+        </FlexGap>
+      </RiskDetailsModal>
+    </>
+  )
+}
+
+export const RiskDetailsModal: React.FC<React.PropsWithChildren<RiskDetailsModalProps>> = ({
+  isOpen,
+  onDismiss,
+  children,
+}) => {
+  const { t } = useTranslation()
+  return (
+    <ModalV2 isOpen={isOpen} closeOnOverlayClick onDismiss={onDismiss}>
+      <Modal title={t('Note for this swap')} hideCloseButton maxWidth="480px">
+        {children}
+      </Modal>
+    </ModalV2>
   )
 }
