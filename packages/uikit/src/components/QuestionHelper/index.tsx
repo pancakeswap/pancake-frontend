@@ -35,3 +35,19 @@ export const QuestionHelper: React.FC<React.PropsWithChildren<Props>> = ({
     </Flex>
   );
 };
+
+export const QuestionHelperV2: React.FC<React.PropsWithChildren<Props>> = ({
+  text,
+  placement = "right-end",
+  children,
+  ...props
+}) => {
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(text, { placement });
+
+  return (
+    <Flex alignItems="center" {...props} ref={targetRef}>
+      {children}
+      {tooltipVisible && tooltip}
+    </Flex>
+  );
+};

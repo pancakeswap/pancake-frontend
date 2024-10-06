@@ -8,22 +8,34 @@ import {
   Modal,
   ModalV2,
   QuestionHelper,
+  QuestionHelperV2,
   SearchIcon,
   SkeletonV2,
   Text,
 } from '@pancakeswap/uikit'
 import { formatAmount, formatFraction } from '@pancakeswap/utils/formatFractions'
+import { useUserSlippage } from '@pancakeswap/utils/user'
 import React, { memo, useState } from 'react'
 
 import { NumberDisplay } from '@pancakeswap/widgets-internal'
 import { RowBetween, RowFixed } from 'components/Layout/Row'
 import { RoutingSettingsButton } from 'components/Menu/GlobalSettings/SettingsModal'
 import { Field } from 'state/swap/actions'
-import { SlippageAdjustedAmounts } from '../../Swap/V3Swap/utils/exchange'
+import { styled } from 'styled-components'
 import FormattedPriceImpact from '../../Swap/components/FormattedPriceImpact'
 import { RouterViewer } from '../../Swap/components/RouterViewer'
 import SwapRoute from '../../Swap/components/SwapRoute'
 import { useFeeSaved } from '../../Swap/hooks/useFeeSaved'
+import { EditSlippageButton } from '../../Swap/V3Swap/components/EditSlippageButton'
+import { SlippageAdjustedAmounts } from '../../Swap/V3Swap/utils/exchange'
+
+const DetailsTitle = styled(Text)`
+  text-decoration: underline dotted;
+  font-size: 14px;
+  color: ${({ theme }) => theme.colors.textSubtle};
+  line-height: 150%;
+  cursor: help;
+`
 
 export const TradeSummary = memo(function TradeSummary({
   inputAmount,
@@ -50,22 +62,21 @@ export const TradeSummary = memo(function TradeSummary({
   const { t } = useTranslation()
   const isExactIn = tradeType === TradeType.EXACT_INPUT
   const { feeSavedAmount, feeSavedUsdValue } = useFeeSaved(inputAmount, outputAmount)
+  const [allowedSlippage] = useUserSlippage()
 
   return (
     <AutoColumn>
       {gasTokenSelector}
       <RowBetween>
         <RowFixed>
-          <Text fontSize="14px" color="textSubtle">
-            {isExactIn ? t('Minimum received') : t('Maximum sold')}
-          </Text>
-          <QuestionHelper
+          <QuestionHelperV2
             text={t(
               'Your transaction will revert if there is a large, unfavorable price movement before it is confirmed.',
             )}
-            ml="4px"
             placement="top"
-          />
+          >
+            <DetailsTitle>{isExactIn ? t('Minimum received') : t('Maximum sold')}</DetailsTitle>
+          </QuestionHelperV2>
         </RowFixed>
         <RowFixed>
           <SkeletonV2 width="80px" height="16px" borderRadius="8px" minHeight="auto" isDataReady={!loading}>
@@ -80,18 +91,16 @@ export const TradeSummary = memo(function TradeSummary({
       {feeSavedAmount ? (
         <RowBetween align="flex-start">
           <RowFixed>
-            <Text fontSize="14px" color="textSubtle">
-              {t('Fee saved')}
-            </Text>
-            <QuestionHelper
+            <QuestionHelperV2
               text={
                 <>
                   <Text>{t('Fees saved on PancakeSwap compared to major DEXs charging interface fees')}</Text>
                 </>
               }
-              ml="4px"
               placement="top"
-            />
+            >
+              <DetailsTitle>{t('Fee saved')}</DetailsTitle>
+            </QuestionHelperV2>
           </RowFixed>
           <SkeletonV2 width="100px" height="16px" borderRadius="8px" minHeight="auto" isDataReady={!loading}>
             <RowFixed>
@@ -118,10 +127,7 @@ export const TradeSummary = memo(function TradeSummary({
       {priceImpactWithoutFee && (
         <RowBetween style={{ padding: '4px 0 0 0' }}>
           <RowFixed>
-            <Text fontSize="14px" color="textSubtle">
-              {t('Price Impact')}
-            </Text>
-            <QuestionHelper
+            <QuestionHelperV2
               text={
                 <>
                   <Text>
@@ -138,22 +144,47 @@ export const TradeSummary = memo(function TradeSummary({
                   </Text>
                 </>
               }
-              ml="4px"
               placement="top"
-            />
+            >
+              <DetailsTitle>{t('Price Impact')}</DetailsTitle>
+            </QuestionHelperV2>
           </RowFixed>
           <SkeletonV2 width="50px" height="16px" borderRadius="8px" minHeight="auto" isDataReady={!loading}>
             {isX ? <Text color="primary">0%</Text> : <FormattedPriceImpact priceImpact={priceImpactWithoutFee} />}
           </SkeletonV2>
         </RowBetween>
       )}
+      <RowBetween style={{ padding: '4px 0 0 0' }}>
+        <RowFixed>
+          <QuestionHelperV2
+            text={
+              <>
+                <Text>
+                  <Text bold display="inline-block">
+                    {t('AMM')}
+                  </Text>
+                  {`: ${t('The difference between the market price and estimated price due to trade size.')}`}
+                </Text>
+                <Text mt="10px">
+                  <Text bold display="inline-block">
+                    {t('MM')}
+                  </Text>
+                  {`: ${t('No slippage against quote from market maker')}`}
+                </Text>
+              </>
+            }
+            placement="top"
+          >
+            <DetailsTitle>{t('Slippage Tolerance')}</DetailsTitle>
+          </QuestionHelperV2>
+        </RowFixed>
+        <EditSlippageButton slippage={allowedSlippage} />
+      </RowBetween>
+
       {(realizedLPFee || isX) && (
         <RowBetween style={{ padding: '4px 0 0 0' }}>
           <RowFixed>
-            <Text fontSize="14px" color="textSubtle">
-              {t('Trading Fee')}
-            </Text>
-            <QuestionHelper
+            <QuestionHelperV2
               text={
                 <>
                   <Text mb="12px">
@@ -186,9 +217,12 @@ export const TradeSummary = memo(function TradeSummary({
                   </Text>
                 </>
               }
-              ml="4px"
               placement="top"
-            />
+            >
+              <DetailsTitle fontSize="14px" color="textSubtle">
+                {t('Trading Fee')}
+              </DetailsTitle>
+            </QuestionHelperV2>
           </RowFixed>
           <SkeletonV2 width="70px" height="16px" borderRadius="8px" minHeight="auto" isDataReady={!loading}>
             {isX ? (
