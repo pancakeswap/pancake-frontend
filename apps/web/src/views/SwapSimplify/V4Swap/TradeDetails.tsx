@@ -68,7 +68,7 @@ export const TradeDetails = memo(function TradeDetails({ loaded, order }: Props)
           loading={!loaded}
         />
         {isXOrder(order) ? (
-          <XRoutesBreakdown wrapperStyle={{ padding: 0 }} />
+          <XRoutesBreakdown wrapperStyle={{ padding: 0 }} loading={!loaded} />
         ) : (
           <RoutesBreakdown routes={order?.trade?.routes} wrapperStyle={{ padding: 0 }} loading={!loaded} />
         )}
