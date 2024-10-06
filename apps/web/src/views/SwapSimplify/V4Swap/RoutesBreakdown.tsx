@@ -1,25 +1,26 @@
 import { useDebounce } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { Route } from '@pancakeswap/smart-router'
-import { Box, IconButton, QuestionHelper, SearchIcon, Text, useModalV2 } from '@pancakeswap/uikit'
+import { Box, IconButton, QuestionHelperV2, SearchIcon, SkeletonV2, Text, useModalV2 } from '@pancakeswap/uikit'
 import { memo } from 'react'
 import { styled } from 'styled-components'
 
 import { RowBetween } from 'components/Layout/Row'
 import SwapRoute from 'views/Swap/components/SwapRoute'
-import { useWallchainStatus } from '../hooks/useWallchain'
-import { RouteDisplayEssentials, RouteDisplayModal } from './RouteDisplayModal'
+import { RouteDisplayEssentials, RouteDisplayModal } from '../../Swap/V3Swap/components/RouteDisplayModal'
+import { useWallchainStatus } from '../../Swap/V3Swap/hooks/useWallchain'
 
 interface Props {
   routes?: RouteDisplayEssentials[]
   wrapperStyle?: React.CSSProperties
+  loading?: boolean
 }
 
 const RouteInfoContainer = styled(RowBetween)`
   padding: 4px 24px 0;
 `
 
-export const RoutesBreakdown = memo(function RoutesBreakdown({ routes = [], wrapperStyle }: Props) {
+export const RoutesBreakdown = memo(function RoutesBreakdown({ routes = [], wrapperStyle, loading }: Props) {
   const [wallchainStatus] = useWallchainStatus()
   const { t } = useTranslation()
   const routeDisplayModal = useModalV2()
@@ -35,10 +36,7 @@ export const RoutesBreakdown = memo(function RoutesBreakdown({ routes = [], wrap
     <>
       <RouteInfoContainer style={wrapperStyle}>
         <span style={{ display: 'flex', alignItems: 'center' }}>
-          <Text fontSize="14px" color="textSubtle">
-            {deferWallchainStatus === 'found' ? t('Bonus Route') : t('Route')}
-          </Text>
-          <QuestionHelper
+          <QuestionHelperV2
             text={
               deferWallchainStatus === 'found'
                 ? t(
@@ -48,21 +46,26 @@ export const RoutesBreakdown = memo(function RoutesBreakdown({ routes = [], wrap
                     'Route is automatically calculated based on your routing preference to achieve the best price for your trade.',
                   )
             }
-            ml="4px"
             placement="top-start"
-          />
+          >
+            <Text fontSize="14px" color="textSubtle" style={{ textDecoration: 'underline dotted' }}>
+              {deferWallchainStatus === 'found' ? t('Bonus Route') : t('Route')}
+            </Text>
+          </QuestionHelperV2>
         </span>
         <Box onClick={routeDisplayModal.onOpen} role="button">
-          <span style={{ display: 'flex', alignItems: 'center' }}>
-            {count > 1 ? (
-              <Text fontSize="14px">{t('%count% Separate Routes', { count })}</Text>
-            ) : (
-              <RouteComp route={routes[0]} />
-            )}
-            <IconButton ml="8px" variant="text" color="textSubtle" scale="xs">
-              <SearchIcon width="16px" height="16px" color="textSubtle" />
-            </IconButton>
-          </span>
+          <SkeletonV2 width="120px" height="16px" borderRadius="8px" minHeight="auto" isDataReady={!loading}>
+            <span style={{ display: 'flex', alignItems: 'center' }}>
+              {count > 1 ? (
+                <Text fontSize="14px">{t('%count% Separate Routes', { count })}</Text>
+              ) : (
+                <RouteComp route={routes[0]} />
+              )}
+              <IconButton ml="8px" variant="text" color="textSubtle" scale="xs">
+                <SearchIcon width="16px" height="16px" color="textSubtle" />
+              </IconButton>
+            </span>
+          </SkeletonV2>
         </Box>
         <RouteDisplayModal {...routeDisplayModal} routes={routes} />
       </RouteInfoContainer>
@@ -70,30 +73,32 @@ export const RoutesBreakdown = memo(function RoutesBreakdown({ routes = [], wrap
   )
 })
 
-export const XRoutesBreakdown = memo(function XRoutesBreakdown({ wrapperStyle }: Props) {
+export const XRoutesBreakdown = memo(function XRoutesBreakdown({ wrapperStyle, loading }: Props) {
   const { t } = useTranslation()
 
   return (
     <>
       <RouteInfoContainer style={wrapperStyle}>
         <span style={{ display: 'flex', alignItems: 'center' }}>
-          <Text fontSize="14px" color="textSubtle">
-            {t('Route')}
-          </Text>
-          <QuestionHelper
+          <QuestionHelperV2
             text={t(
               'Route is automatically calculated based on your routing preference to achieve the best price for your trade.',
             )}
-            ml="4px"
             placement="top-start"
-          />
+          >
+            <Text fontSize="14px" color="textSubtle" style={{ textDecoration: 'underline dotted' }}>
+              {t('Route')}
+            </Text>
+          </QuestionHelperV2>
         </span>
         <Box>
-          <span style={{ display: 'flex', alignItems: 'center' }}>
-            <Text color="primary" fontSize="14px">
-              PancakeSwap X
-            </Text>
-          </span>
+          <SkeletonV2 width="120px" height="16px" borderRadius="8px" minHeight="auto" isDataReady={!loading}>
+            <span style={{ display: 'flex', alignItems: 'center' }}>
+              <Text color="primary" fontSize="14px">
+                {t('Experimental Trading')}
+              </Text>
+            </span>
+          </SkeletonV2>
         </Box>
       </RouteInfoContainer>
     </>
