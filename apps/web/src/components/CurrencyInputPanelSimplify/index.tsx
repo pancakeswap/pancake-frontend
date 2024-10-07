@@ -125,6 +125,7 @@ interface CurrencyInputPanelProps {
   inputLoading?: boolean
   title?: React.ReactNode
   hideBalanceComp?: boolean
+  isUserInsufficientBalance?: boolean
 }
 const CurrencyInputPanelSimplify = memo(function CurrencyInputPanel({
   value,
@@ -150,6 +151,7 @@ const CurrencyInputPanelSimplify = memo(function CurrencyInputPanel({
   currencyLoading,
   inputLoading,
   title,
+  isUserInsufficientBalance,
 }: CurrencyInputPanelProps) {
   const { address: account } = useAccount()
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
@@ -228,7 +230,11 @@ const CurrencyInputPanelSimplify = memo(function CurrencyInputPanel({
           <LazyAnimatePresence mode="wait" features={domAnimation}>
             {account ? (
               !isInputFocus || !onMax ? (
-                <SwapUIV2.WalletAssetDisplay balance={balance} onMax={onMax} />
+                <SwapUIV2.WalletAssetDisplay
+                  isUserInsufficientBalance={isUserInsufficientBalance}
+                  balance={balance}
+                  onMax={onMax}
+                />
               ) : (
                 <SwapUIV2.AssetSettingButtonList onPercentInput={onPercentInput} />
               )

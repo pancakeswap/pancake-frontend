@@ -28,9 +28,10 @@ interface Props {
   tradeLoading?: boolean
   pricingAndSlippage?: ReactNode
   swapCommitButton?: ReactNode
+  isUserInsufficientBalance?: boolean
 }
 
-export function FormMain({ inputAmount, outputAmount, tradeLoading }: Props) {
+export function FormMain({ inputAmount, outputAmount, tradeLoading, isUserInsufficientBalance }: Props) {
   const { address: account } = useAccount()
   const { t } = useTranslation()
   const warningSwapHandler = useWarningImport()
@@ -131,6 +132,7 @@ export function FormMain({ inputAmount, outputAmount, tradeLoading }: Props) {
         otherCurrency={outputCurrency}
         commonBasesType={CommonBasesType.SWAP_LIMITORDER}
         title={<Text fontSize={12}>{t('From')}</Text>}
+        isUserInsufficientBalance={isUserInsufficientBalance}
       />
       <FlipButton />
       <CurrencyInputPanelSimplify

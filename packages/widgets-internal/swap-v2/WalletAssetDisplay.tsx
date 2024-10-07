@@ -26,7 +26,11 @@ const Wrapper = styled(MotionBox)`
   }
 `;
 
-export const WalletAssetDisplay: React.FC<{ onMax?: () => void; balance?: string }> = memo(({ balance, onMax }) => {
+export const WalletAssetDisplay: React.FC<{
+  onMax?: () => void;
+  balance?: string;
+  isUserInsufficientBalance?: boolean;
+}> = memo(({ balance, onMax, isUserInsufficientBalance }) => {
   return (
     <Wrapper
       key="WalletAssetDisplay"
@@ -36,8 +40,8 @@ export const WalletAssetDisplay: React.FC<{ onMax?: () => void; balance?: string
       className={onMax ? "clickable" : undefined}
       onClick={onMax}
     >
-      <WalletFilledV2Icon color="textSubtle" width="16px" />
-      <StyledText color="textSubtle">{balance}</StyledText>
+      <WalletFilledV2Icon color={isUserInsufficientBalance ? "#D14293" : "textSubtle"} width="16px" />
+      <StyledText color={isUserInsufficientBalance ? "#D14293" : "textSubtle"}>{balance}</StyledText>
     </Wrapper>
   );
 });
