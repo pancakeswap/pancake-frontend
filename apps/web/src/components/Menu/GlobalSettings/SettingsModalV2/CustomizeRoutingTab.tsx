@@ -3,17 +3,16 @@ import {
   AtomBox,
   AutoColumn,
   Flex,
-  LogoIcon,
   Message,
   MessageText,
   PancakeToggle,
   PreTitle,
   QuestionHelper,
-  Tag,
   Text,
   Toggle,
 } from '@pancakeswap/uikit'
 import { useSpeedQuote, useUserSingleHopOnly } from '@pancakeswap/utils/user'
+import { PancakeSwapXTag } from 'components/PancakeSwapXTag'
 import { usePCSX, usePCSXFeatureEnabled } from 'hooks/usePCSX'
 import { memo } from 'react'
 import {
@@ -53,14 +52,7 @@ export const CustomizeRoutingTab = memo(() => {
         {xFeatureEnabled ? (
           <Flex justifyContent="space-between" alignItems="flex-start" mb="24px">
             <Flex flexDirection="column">
-              <Tag variant="success" style={{ width: 'fit-content' }}>
-                <Flex>
-                  <LogoIcon />
-                  <Text ml="6px" color="white" bold>
-                    PancakeSwap X
-                  </Text>
-                </Flex>
-              </Tag>
+              <PancakeSwapXTag />
               <Text fontSize="12px" color="textSubtle" maxWidth={360} mt={10}>
                 {t(
                   'When applicable, aggregates liquidity to provide better price, more token options, and gas free swaps.',
