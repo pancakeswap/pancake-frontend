@@ -13,10 +13,9 @@ import NFPWarning from './NFPWarning'
 import PNPWarning from './PNPWarning'
 import RugPullWarning from './RugPullWarning'
 import SafemoonWarning from './SafemoonWarning'
-import UniBTCWarning from './UniBTCWarning'
 import XCADWarning from './XCADWarning'
 
-const { safemoon, bondly, itam, ccar, bttold, pokemoney, free, gala, abnbc, xcad, metis, lusd, nfp, pnp, uniBTC } =
+const { safemoon, bondly, itam, ccar, bttold, pokemoney, free, gala, abnbc, xcad, metis, lusd, nfp, pnp } =
   SwapWarningTokensConfig[ChainId.BSC]
 
 const BSC_WARNING_LIST = {
@@ -75,10 +74,6 @@ const BSC_WARNING_LIST = {
   [pnp.address]: {
     symbol: pnp.symbol,
     component: <PNPWarning />,
-  },
-  [uniBTC.address]: {
-    symbol: uniBTC.symbol,
-    component: <UniBTCWarning />,
   },
 }
 
