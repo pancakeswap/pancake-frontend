@@ -15,11 +15,11 @@ const TertiaryButton = styled(Button).attrs({ variant: 'tertiary' })<{ $color: s
   color: ${({ $color }) => $color};
 `
 
-interface EditSlippageButtonProps {
+interface SlippageButtonProps {
   slippage?: number | ReactElement
 }
 
-export const EditSlippageButton = ({ slippage }: EditSlippageButtonProps) => {
+export const SlippageButton = ({ slippage }: SlippageButtonProps) => {
   const { theme } = useTheme()
   const color =
     typeof slippage === 'number'
