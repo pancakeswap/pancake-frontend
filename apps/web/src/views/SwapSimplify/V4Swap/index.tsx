@@ -15,8 +15,10 @@ import { isXOrder } from 'views/Swap/utils'
 import { SwapType } from '../../Swap/types'
 import { useIsWrapping } from '../../Swap/V3Swap/hooks'
 import { useAllTypeBestTrade } from '../../Swap/V3Swap/hooks/useAllTypeBestTrade'
+import { useUserInsufficientBalance } from '../../Swap/V3Swap/hooks/useUserInsufficientBalance'
 import { computeTradePriceBreakdown } from '../../Swap/V3Swap/utils/exchange'
 import { ButtonAndDetailsPanel } from './ButtonAndDetailsPanel'
+import { BuyCryptoPanel } from './BuyCryptoPanel'
 import { CommitButton } from './CommitButton'
 import { FormMain } from './FormMainV4'
 import { PricingAndSlippage } from './PricingAndSlippage'
@@ -42,6 +44,7 @@ export function V4SwapForm() {
   const { data: outputUsdPrice } = useCurrencyUsdPrice(bestOrder?.trade?.outputAmount.currency)
   const isWrapping = useIsWrapping()
   const { chainId: activeChianId } = useActiveChainId()
+  const isUserInsufficientBalance = useUserInsufficientBalance(bestOrder)
 
   const commitHooks = useMemo(() => {
     return {
@@ -130,6 +133,7 @@ export function V4SwapForm() {
           }
         />
       </SwapUIV2.SwapTabAndInputPanelWrapper>
+      {isUserInsufficientBalance && <BuyCryptoPanel />}
       {(shouldRiskPanelDisplay || isPriceImpactTooHigh || isSlippageTooHigh) && (
         <RiskDetailsPanel
           isPriceImpactTooHigh={isPriceImpactTooHigh}
