@@ -1,14 +1,20 @@
 import { ChainId } from '@pancakeswap/chains'
 import { useDebounce } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
-import { AutoColumn, BscScanIcon, Button, Link, Text } from '@pancakeswap/uikit'
+import { AutoColumn, BscScanIcon, FlexGap, Link, SwapCSS, Text } from '@pancakeswap/uikit'
+
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useGetENSAddressByName } from 'hooks/useGetENSAddressByName'
 import { useCallback } from 'react'
 import { styled } from 'styled-components'
 import { safeGetAddress } from 'utils'
-import { AutoRow } from '../../../components/Layout/Row'
 import { getBlockExploreLink, getBlockExploreName } from '../../../utils'
+
+const Divider = styled.div`
+  width: 1px;
+  height: 16px;
+  background-color: ${({ theme }) => theme.colors.cardBorder};
+`
 
 const InputPanel = styled.div`
   display: flex;
@@ -18,6 +24,7 @@ const InputPanel = styled.div`
   background-color: ${({ theme }) => theme.colors.backgroundAlt};
   z-index: 1;
   width: 100%;
+  margin-top: 16px;
 `
 
 const ContainerRow = styled.div<{ error: boolean }>`
@@ -29,7 +36,7 @@ const ContainerRow = styled.div<{ error: boolean }>`
   border: 1px solid ${({ error, theme }) => (error ? theme.colors.failure : theme.colors.background)};
   transition: border-color 300ms ${({ error }) => (error ? 'step-end' : 'step-start')},
     color 500ms ${({ error }) => (error ? 'step-end' : 'step-start')};
-  background-color: ${({ theme }) => theme.colors.backgroundAlt};
+  background-color: ${({ theme }) => theme.colors.input};
 `
 
 const InputContainer = styled.div`
@@ -41,7 +48,7 @@ const Input = styled.input<{ error?: boolean }>`
   outline: none;
   border: none;
   flex: 1 1 auto;
-  background-color: ${({ theme }) => theme.colors.backgroundAlt};
+  background-color: ${({ theme }) => theme.colors.input};
   transition: color 300ms ${({ error }) => (error ? 'step-end' : 'step-start')};
   color: ${({ error, theme }) => (error ? theme.colors.failure : theme.colors.primary)};
   overflow: hidden;
@@ -102,27 +109,36 @@ export default function AddressInputPanel({
     <InputPanel id={id}>
       <InputContainer>
         <AutoColumn gap="md">
-          <AutoRow>
-            <Text>{t('Recipient')}</Text>
-            {address && chainId && (
-              <Link external small href={getBlockExploreLink(address, 'address', chainId)}>
-                (
-                {t('View on %site%', {
-                  site: getBlockExploreName(chainId),
-                })}
-                {chainId === ChainId.BSC && <BscScanIcon color="primary" ml="4px" />})
-              </Link>
-            )}
-            <Button
-              variant="text"
+          <FlexGap gap="8px" justifyContent="flex-start" alignItems="center">
+            <FlexGap gap="4px">
+              <Text>{t('Recipient')}</Text>
+              {address && chainId && (
+                <Link external small href={getBlockExploreLink(address, 'address', chainId)}>
+                  (
+                  {t('View on %site%', {
+                    site: getBlockExploreName(chainId),
+                  })}
+                  {chainId === ChainId.BSC && <BscScanIcon color="primary" ml="4px" />})
+                </Link>
+              )}
+            </FlexGap>
+            <Divider />
+            <Text
               id="remove-recipient-button"
               onClick={() => onChange(null)}
               data-dd-action-name="Swap remove recipient button"
+              color="primary"
+              style={{ cursor: 'pointer' }}
             >
               {t('Remove')}
-            </Button>
-          </AutoRow>
-          <ContainerRow error={error}>
+            </Text>
+          </FlexGap>
+          <ContainerRow
+            error={error}
+            className={SwapCSS.inputContainerVariants({
+              error: Boolean(error),
+            })}
+          >
             <Input
               className="recipient-address-input"
               type="text"
