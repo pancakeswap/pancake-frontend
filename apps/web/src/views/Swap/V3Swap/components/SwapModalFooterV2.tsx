@@ -23,6 +23,7 @@ import { Field } from 'state/swap/actions'
 import { styled } from 'styled-components'
 import { warningSeverity } from 'utils/exchange'
 
+import { PancakeSwapXTag } from 'components/PancakeSwapXTag'
 import { paymasterInfo } from 'config/paymaster'
 import { usePaymaster } from 'hooks/usePaymaster'
 import { InterfaceOrder, isXOrder } from 'views/Swap/utils'
@@ -157,19 +158,21 @@ export const SwapModalFooterV2 = memo(function SwapModalFooterV2({
           </RowFixed>
           <FormattedPriceImpact isX={isXOrder(order)} priceImpact={priceImpactWithoutFee} />
         </RowBetween>
-        <RowBetween mb="8px">
-          <RowFixed>
-            <Text fontSize="14px">{t('Slippage Tolerance')}</Text>
-            <QuestionHelper
-              ml="4px"
-              placement="top"
-              text={t(
-                'Setting a high slippage tolerance can help transactions succeed, but you may not get such a good price. Use with caution.',
-              )}
-            />
-          </RowFixed>
-          <SlippageButton slippage={allowedSlippage} />
-        </RowBetween>
+        {!isXOrder(order) && (
+          <RowBetween mb="8px">
+            <RowFixed>
+              <Text fontSize="14px">{t('Slippage Tolerance')}</Text>
+              <QuestionHelper
+                ml="4px"
+                placement="top"
+                text={t(
+                  'Setting a high slippage tolerance can help transactions succeed, but you may not get such a good price. Use with caution.',
+                )}
+              />
+            </RowFixed>
+            <SlippageButton slippage={allowedSlippage} />
+          </RowBetween>
+        )}
         <RowBetween mb="8px">
           <RowFixed>
             <Text fontSize="14px">
@@ -195,7 +198,7 @@ export const SwapModalFooterV2 = memo(function SwapModalFooterV2({
           </RowFixed>
         </RowBetween>
 
-        <RowBetween>
+        <RowBetween mt="2px">
           <RowFixed>
             <Text fontSize="14px">{t('Trading Fee')}</Text>
             <QuestionHelper
@@ -223,17 +226,18 @@ export const SwapModalFooterV2 = memo(function SwapModalFooterV2({
             />
           </RowFixed>
           {realizedLPFee || isXOrder(order) ? (
-            <Flex>
+            <Flex alignItems="center">
               {isXOrder(order) ? (
-                <Text color="primary" fontSize="14px">
-                  0 {inputAmount.currency.symbol}
+                <Text color="positive60" fontSize="16px" bold>
+                  0
                 </Text>
               ) : null}
-              {!isXOrder(order) && realizedLPFee && (
-                <Text fontSize="14px" mr="8px" strikeThrough={isXOrder(order)}>
-                  {`${formatAmount(realizedLPFee, 6)} ${inputAmount.currency.symbol}`}
-                </Text>
-              )}
+              <Text fontSize="14px" ml="8px" strikeThrough={isXOrder(order)}>
+                {formatAmount(realizedLPFee, 6)}
+              </Text>
+              <Text ml="4px" fontSize="14px">
+                {inputAmount.currency.symbol}
+              </Text>
             </Flex>
           ) : (
             <Text fontSize="14px" textAlign="right">
@@ -241,6 +245,14 @@ export const SwapModalFooterV2 = memo(function SwapModalFooterV2({
             </Text>
           )}
         </RowBetween>
+        {isXOrder(order) && (
+          <RowBetween mt="8px">
+            <RowFixed>
+              <Text fontSize="14px">{t('Route')}</Text>
+            </RowFixed>
+            <PancakeSwapXTag fontSize="14px" />
+          </RowBetween>
+        )}
         {isPaymasterAvailable && isPaymasterTokenActive && (
           <RowBetween mt="8px">
             <RowFixed>
