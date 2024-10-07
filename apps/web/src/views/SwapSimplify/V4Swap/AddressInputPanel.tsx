@@ -111,7 +111,9 @@ export default function AddressInputPanel({
         <AutoColumn gap="md">
           <FlexGap gap="8px" justifyContent="flex-start" alignItems="center">
             <FlexGap gap="4px">
-              <Text>{t('Recipient')}</Text>
+              <Text bold color="textSubtle">
+                {t('Recipient')}
+              </Text>
               {address && chainId && (
                 <Link external small href={getBlockExploreLink(address, 'address', chainId)}>
                   (
@@ -129,6 +131,7 @@ export default function AddressInputPanel({
               data-dd-action-name="Swap remove recipient button"
               color="primary"
               style={{ cursor: 'pointer' }}
+              bold
             >
               {t('Remove')}
             </Text>
