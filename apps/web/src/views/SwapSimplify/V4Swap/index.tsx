@@ -23,6 +23,7 @@ import { PricingAndSlippage } from './PricingAndSlippage'
 import { RefreshButton } from './RefreshButton'
 import { SwapSelection } from './SwapSelectionTab'
 import { TradeDetails } from './TradeDetails'
+import { TradingFee } from './TradingFee'
 
 export function V4SwapForm() {
   const {
@@ -142,15 +143,22 @@ export function V4SwapForm() {
           <CommitButton order={bestOrder} tradeLoaded={tradeLoaded} tradeError={tradeError} {...commitHooks} />
         }
         pricingAndSlippage={
-          <FlexGap
-            onClick={(e) => {
-              e.stopPropagation()
-            }}
-            justifyContent="center"
-            alignItems="center"
-          >
-            <RefreshButton onRefresh={refreshOrder} refreshDisabled={refreshDisabled} chainId={activeChianId} />
-            <PricingAndSlippage priceLoading={!tradeLoaded} price={executionPrice ?? undefined} showSlippage={false} />
+          <FlexGap alignItems="center" style={{ flexBasis: '100%', flexGrow: 1 }}>
+            <FlexGap
+              onClick={(e) => {
+                e.stopPropagation()
+              }}
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <RefreshButton onRefresh={refreshOrder} refreshDisabled={refreshDisabled} chainId={activeChianId} />
+              <PricingAndSlippage
+                priceLoading={!tradeLoaded}
+                price={executionPrice ?? undefined}
+                showSlippage={false}
+              />
+            </FlexGap>
+            <TradingFee loaded={tradeLoaded} order={bestOrder} />
           </FlexGap>
         }
         tradeDetails={<TradeDetails loaded={tradeLoaded} order={bestOrder} />}
