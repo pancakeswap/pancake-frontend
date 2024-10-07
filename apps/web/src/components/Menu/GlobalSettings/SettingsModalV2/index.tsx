@@ -24,6 +24,13 @@ const ExpertModeTab = dynamic(() => import('./ExpertModeTab').then((mod) => mod.
   ssr: false,
 })
 
+enum TabIndex {
+  SETTINGS = 0,
+  RECENT_TRANSACTIONS = 1,
+  CUSTOMIZE_ROUTING = 2,
+  EXPERT_MODE = 3,
+}
+
 interface SettingsModalV2Props {
   onDismiss?: () => void
   mode?: SettingsMode
@@ -32,13 +39,15 @@ interface SettingsModalV2Props {
 export const SettingsModalV2 = ({ onDismiss }: SettingsModalV2Props) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
-  const [activeTabIndex, setActiveTabIndex] = useState(0)
+
   const [showExpertModeAcknowledgement, setShowExpertModeAcknowledgement] = useUserExpertModeAcknowledgement()
   const [expertMode, setExpertMode] = useExpertMode()
   const [isRoutingSettingChange, reset] = useRoutingSettingChanged()
 
+  const [activeTabIndex, setActiveTabIndex] = useState<TabIndex>(TabIndex.SETTINGS)
+
   const onTabChange = useCallback(
-    (index: number) => {
+    (index: TabIndex) => {
       setActiveTabIndex(index)
     },
     [setActiveTabIndex],
@@ -46,7 +55,7 @@ export const SettingsModalV2 = ({ onDismiss }: SettingsModalV2Props) => {
 
   const renderTabHeading = useCallback(() => {
     switch (activeTabIndex) {
-      case 2:
+      case TabIndex.CUSTOMIZE_ROUTING:
         return (
           <TabContent type="to_right">
             <Flex alignItems="center">
@@ -54,7 +63,7 @@ export const SettingsModalV2 = ({ onDismiss }: SettingsModalV2Props) => {
             </Flex>
           </TabContent>
         )
-      case 3:
+      case TabIndex.EXPERT_MODE:
         return (
           <TabContent type="to_right">
             <Heading>{t('Expert Mode')}</Heading>
@@ -73,27 +82,31 @@ export const SettingsModalV2 = ({ onDismiss }: SettingsModalV2Props) => {
 
   const renderTab = useCallback(() => {
     switch (activeTabIndex) {
-      case 0: {
+      case TabIndex.SETTINGS: {
         return (
           <SettingsTab
             key="settings_tab"
-            onCustomizeRoutingClick={() => setActiveTabIndex(2)}
-            setShowConfirmExpertModal={(show) => (show ? setActiveTabIndex(3) : setActiveTabIndex(0))}
+            onCustomizeRoutingClick={() => setActiveTabIndex(TabIndex.CUSTOMIZE_ROUTING)}
+            setShowConfirmExpertModal={(show) =>
+              show ? setActiveTabIndex(TabIndex.EXPERT_MODE) : setActiveTabIndex(TabIndex.SETTINGS)
+            }
             showExpertModeAcknowledgement={showExpertModeAcknowledgement}
             expertMode={expertMode}
             setExpertMode={setExpertMode}
           />
         )
       }
-      case 1:
+      case TabIndex.RECENT_TRANSACTIONS:
         return <RecentTransactionsTab key="recent_txns_tab" />
-      case 2:
+      case TabIndex.CUSTOMIZE_ROUTING:
         return <CustomizeRoutingTab key="customize_routing_tab" />
-      case 3:
+      case TabIndex.EXPERT_MODE:
         return (
           <ExpertModeTab
             key="expert_mode_tab"
-            setShowConfirmExpertModal={(show) => (show ? setActiveTabIndex(3) : setActiveTabIndex(0))}
+            setShowConfirmExpertModal={(show) =>
+              show ? setActiveTabIndex(TabIndex.EXPERT_MODE) : setActiveTabIndex(TabIndex.SETTINGS)
+            }
             toggleExpertMode={() => setExpertMode((s) => !s)}
             setShowExpertModeAcknowledgement={setShowExpertModeAcknowledgement}
           />
@@ -117,7 +130,7 @@ export const SettingsModalV2 = ({ onDismiss }: SettingsModalV2Props) => {
         minHeight={isMobile ? '500px' : undefined}
         headerPadding="6px 24px 0"
         headerRightSlot={
-          activeTabIndex === 2 &&
+          activeTabIndex === TabIndex.CUSTOMIZE_ROUTING &&
           isRoutingSettingChange && (
             <TabContent type="to_right">
               <Button ml="8px" variant="text" scale="sm" onClick={reset}>
@@ -128,7 +141,11 @@ export const SettingsModalV2 = ({ onDismiss }: SettingsModalV2Props) => {
         }
         title={renderTabHeading()}
         onDismiss={onDismiss}
-        onBack={activeTabIndex === 2 || activeTabIndex === 3 ? () => setActiveTabIndex(0) : undefined}
+        onBack={
+          activeTabIndex === TabIndex.CUSTOMIZE_ROUTING || activeTabIndex === TabIndex.EXPERT_MODE
+            ? () => setActiveTabIndex(TabIndex.SETTINGS)
+            : undefined
+        }
       >
         {renderTab()}
       </MotionModal>

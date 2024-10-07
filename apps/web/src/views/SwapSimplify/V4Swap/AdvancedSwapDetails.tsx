@@ -26,7 +26,7 @@ import FormattedPriceImpact from '../../Swap/components/FormattedPriceImpact'
 import { RouterViewer } from '../../Swap/components/RouterViewer'
 import SwapRoute from '../../Swap/components/SwapRoute'
 import { useFeeSaved } from '../../Swap/hooks/useFeeSaved'
-import { EditSlippageButton } from '../../Swap/V3Swap/components/EditSlippageButton'
+import { SlippageButton } from '../../Swap/V3Swap/components/SlippageButton'
 import { SlippageAdjustedAmounts } from '../../Swap/V3Swap/utils/exchange'
 
 const DetailsTitle = styled(Text)`
@@ -82,8 +82,8 @@ export const TradeSummary = memo(function TradeSummary({
           <SkeletonV2 width="80px" height="16px" borderRadius="8px" minHeight="auto" isDataReady={!loading}>
             <Text fontSize="14px">
               {isExactIn
-                ? `${formatAmount(slippageAdjustedAmounts[Field.OUTPUT], 4)} ${outputAmount?.currency?.symbol}` ?? '-'
-                : `${formatAmount(slippageAdjustedAmounts[Field.INPUT], 4)} ${inputAmount?.currency?.symbol}` ?? '-'}
+                ? `${formatAmount(slippageAdjustedAmounts[Field.OUTPUT], 4) ?? '-'} ${outputAmount?.currency?.symbol}`
+                : `${formatAmount(slippageAdjustedAmounts[Field.INPUT], 4) ?? '-'} ${inputAmount?.currency?.symbol}`}
             </Text>
           </SkeletonV2>
         </RowFixed>
@@ -178,7 +178,7 @@ export const TradeSummary = memo(function TradeSummary({
             <DetailsTitle>{t('Slippage Tolerance')}</DetailsTitle>
           </QuestionHelperV2>
         </RowFixed>
-        <EditSlippageButton slippage={allowedSlippage} />
+        <SlippageButton slippage={allowedSlippage} />
       </RowBetween>
 
       {(realizedLPFee || isX) && (
