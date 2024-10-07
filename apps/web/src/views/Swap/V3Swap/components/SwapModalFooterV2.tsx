@@ -29,7 +29,7 @@ import { InterfaceOrder, isXOrder } from 'views/Swap/utils'
 import FormattedPriceImpact from '../../components/FormattedPriceImpact'
 import { StyledBalanceMaxMini, SwapCallbackError } from '../../components/styleds'
 import { SlippageAdjustedAmounts, formatExecutionPrice } from '../utils/exchange'
-import { EditSlippageButton } from './EditSlippageButton'
+import { SlippageButton } from './SlippageButton'
 
 const SwapModalFooterContainer = styled(AutoColumn)`
   margin-top: 12px;
@@ -168,7 +168,7 @@ export const SwapModalFooterV2 = memo(function SwapModalFooterV2({
               )}
             />
           </RowFixed>
-          <EditSlippageButton slippage={allowedSlippage} />
+          <SlippageButton slippage={allowedSlippage} />
         </RowBetween>
         <RowBetween mb="8px">
           <RowFixed>
