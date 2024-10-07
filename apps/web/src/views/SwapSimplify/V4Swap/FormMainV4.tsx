@@ -17,10 +17,10 @@ import { maxAmountSpend } from 'utils/maxAmountSpend'
 
 import { useAccount } from 'wagmi'
 import useWarningImport from '../../Swap/hooks/useWarningImport'
-import { Recipient } from '../../Swap/V3Swap/containers/Recipient'
 import { useIsWrapping } from '../../Swap/V3Swap/hooks'
-import { FlipButton } from './FlipButton'
+import { AssignRecipientButton, FlipButton } from './FlipButton'
 import { FormContainer } from './FormContainer'
+import { Recipient } from './Recipient'
 
 interface Props {
   inputAmount?: CurrencyAmount<Currency>
@@ -151,6 +151,7 @@ export function FormMain({ inputAmount, outputAmount, tradeLoading, isUserInsuff
         commonBasesType={CommonBasesType.SWAP_LIMITORDER}
         title={<Text fontSize={12}>{t('To')}</Text>}
       />
+      <AssignRecipientButton />
       <Recipient />
     </FormContainer>
   )

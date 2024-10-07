@@ -5,7 +5,6 @@ import { useTranslation } from '@pancakeswap/localization'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { memo, useCallback } from 'react'
 
-import { useExpertMode } from '@pancakeswap/utils/user'
 import { AutoRow } from 'components/Layout/Row'
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
@@ -24,15 +23,11 @@ export const Line = styled.div`
 `
 
 export const FlipButton = memo(function FlipButton() {
-  const { t } = useTranslation()
-  const [isExpertMode] = useExpertMode()
-  const { onSwitchTokens, onChangeRecipient } = useSwapActionHandlers()
+  const { onSwitchTokens } = useSwapActionHandlers()
   const {
-    recipient,
     [Field.INPUT]: { currencyId: inputCurrencyId },
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
   } = useSwapState()
-  const allowRecipient = useAllowRecipient()
 
   const onFlip = useCallback(() => {
     onSwitchTokens()
@@ -43,19 +38,28 @@ export const FlipButton = memo(function FlipButton() {
   return (
     <AutoColumn justify="space-between" position="relative">
       <Line />
-      <AutoRow justify={isExpertMode ? 'space-between' : 'center'} style={{ padding: '0 1rem', marginTop: '1em' }}>
+      <AutoRow justify="center" style={{ padding: '0 1rem', marginTop: '1em' }}>
         <SwapUIV2.SwitchButtonV2 onClick={onFlip} />
-        {allowRecipient && recipient === null ? (
-          <Button
-            variant="text"
-            id="add-recipient-button"
-            onClick={() => onChangeRecipient('')}
-            data-dd-action-name="Swap flip button"
-          >
-            {t('+ Add a send (optional)')}
-          </Button>
-        ) : null}
       </AutoRow>
     </AutoColumn>
+  )
+})
+
+export const AssignRecipientButton: React.FC = memo(() => {
+  const { t } = useTranslation()
+  const { recipient } = useSwapState()
+  const { onChangeRecipient } = useSwapActionHandlers()
+  const allowRecipient = useAllowRecipient()
+  if (!allowRecipient || recipient !== null) return null
+  return (
+    <Button
+      variant="text"
+      id="add-recipient-button"
+      onClick={() => onChangeRecipient('')}
+      data-dd-action-name="Swap flip button"
+      width="100%"
+    >
+      {t('+ Assign Recipient')}
+    </Button>
   )
 })
