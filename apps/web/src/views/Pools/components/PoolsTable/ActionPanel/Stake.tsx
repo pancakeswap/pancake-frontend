@@ -418,7 +418,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
                   <IconButton
                     variant="secondary"
                     onClick={stakingTokenBalance.gt(0) ? onStake : onPresentTokenRequired}
-                    disabled={vaultPosition === VaultPosition.Flexible}
+                    disabled={vaultPosition === VaultPosition.Flexible || isFinished}
                   >
                     <AddIcon color="primary" width="14px" />
                   </IconButton>
