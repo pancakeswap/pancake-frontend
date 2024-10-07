@@ -27,7 +27,7 @@ export const TradingFee: React.FC<TradingFeeProps> = memo(({ order, loaded }) =>
   const { inputAmount } = order.trade
 
   return (
-    <FlexGap gap="8px" alignItems="center" ml="20px">
+    <FlexGap gap="8px" alignItems="center">
       <Text color="textSubtle">{t('Fee')}</Text>
       <SkeletonV2 width="70px" height="16px" borderRadius="8px" minHeight="auto" isDataReady={loaded}>
         {isXOrder(order) ? (

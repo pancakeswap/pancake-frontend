@@ -143,12 +143,11 @@ export function V4SwapForm() {
           <CommitButton order={bestOrder} tradeLoaded={tradeLoaded} tradeError={tradeError} {...commitHooks} />
         }
         pricingAndSlippage={
-          <FlexGap alignItems="center" style={{ flexBasis: '100%', flexGrow: 1 }}>
+          <FlexGap alignItems="center" flexWrap="wrap" justifyContent="space-between" width="calc(100% - 20px)">
             <FlexGap
               onClick={(e) => {
                 e.stopPropagation()
               }}
-              justifyContent="space-between"
               alignItems="center"
             >
               <RefreshButton onRefresh={refreshOrder} refreshDisabled={refreshDisabled} chainId={activeChianId} />
