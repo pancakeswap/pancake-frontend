@@ -131,6 +131,7 @@ export function V4SwapForm() {
           swapCommitButton={
             <CommitButton order={bestOrder} tradeLoaded={tradeLoaded} tradeError={tradeError} {...commitHooks} />
           }
+          isUserInsufficientBalance={isUserInsufficientBalance}
         />
       </SwapUIV2.SwapTabAndInputPanelWrapper>
       {isUserInsufficientBalance && <BuyCryptoPanel />}
