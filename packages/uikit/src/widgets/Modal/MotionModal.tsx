@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useContext, useEffect, useRef, useState } from "react";
+import React, { PropsWithChildren, useContext, useEffect, useRef } from "react";
 import { useTheme } from "styled-components";
 import { Box } from "../../components/Box";
 import Heading from "../../components/Heading/Heading";
@@ -22,13 +22,39 @@ export const ModalWrapper = ({
   const wrapperRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
 
-  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+  const previousHeight = useRef(300);
+
+  // const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
   useEffect(() => {
     const resizeObserver = new ResizeObserver((entries) => {
       for (const entry of entries) {
-        const { width, height } = entry.contentRect;
-        setDimensions({ width, height });
+        const { height } = entry.contentRect;
+        // setDimensions({ width, height });
+
+        // console.log("DIMENSIONS", {
+        //   previousHeight: previousHeight.current,
+        //   height,
+        // });
+
+        if (wrapperRef.current) {
+          wrapperRef.current.animate(
+            [
+              {
+                height: `${previousHeight.current}px`,
+              },
+              {
+                height: `${height}px`,
+              },
+            ],
+            {
+              duration: 200,
+              fill: "forwards",
+            }
+          );
+        }
+
+        previousHeight.current = height;
       }
     });
 
@@ -56,11 +82,15 @@ export const ModalWrapper = ({
         if (info.velocity.y > MODAL_SWIPE_TO_CLOSE_VELOCITY && onDismiss) onDismiss();
       }}
       ref={wrapperRef}
-      style={{ overflow: "hidden" }}
+      style={{ overflow: "hidden", height: `${previousHeight.current}px` }}
       $minHeight={minHeight}
       // Note: Not using layout attr from framer-motion, we animate only height right now manually.
       // Note: Layout animations on mobile can be costly in performance
-      animate={!isMobile && { height: Math.max(dimensions.height, parseInt(minHeight?.toString() || "0")) }}
+      // animate={
+      //   !isMobile && {
+      //     height: Math.max(dimensions.height, parseInt(minHeight?.toString() || "0")),
+      //   }
+      // }
     >
       <Box ref={innerRef} overflow="hidden" borderRadius="32px" {...props}>
         {children}
