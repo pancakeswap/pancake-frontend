@@ -65,7 +65,7 @@ export const Collapse: React.FC<CollapseProps> = ({ title, content, isOpen, onTo
       >
         {title}
         <IconWrapper className={isOpen ? "open" : undefined}>
-          <ChevronDownIcon />
+          <ChevronDownIcon color="primary" />
         </IconWrapper>
       </TitleWrapper>
       <ContentWrapper ref={contentRef}>{content}</ContentWrapper>
