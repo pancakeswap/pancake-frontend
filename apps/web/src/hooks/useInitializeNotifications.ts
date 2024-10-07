@@ -6,7 +6,7 @@ export const useInitializeNotifications = () => {
   const { address } = useAccount()
 
   const { data: client } = useWeb3InboxClient()
-  const { data: account, isRegistered } = useWeb3InboxAccount(`eip155:1:${address}`)
+  const { data: account, isRegistered } = useWeb3InboxAccount(address ? `eip155:1:${address}` : undefined)
 
   const isReady = useMemo(() => Boolean(client && account), [account, client])
 
