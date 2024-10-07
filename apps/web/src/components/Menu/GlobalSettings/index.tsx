@@ -1,4 +1,4 @@
-import { ButtonProps, CogIcon, Flex, IconButton, useModal } from '@pancakeswap/uikit'
+import { ButtonProps, CogIcon, Flex, IconButton, ModalV2, useModal, useModalV2 } from '@pancakeswap/uikit'
 
 import { useCallback } from 'react'
 import SettingsModal from './SettingsModal'
@@ -14,12 +14,14 @@ type Props = {
 
 const GlobalSettings = ({ color, mr = '8px', mode = SettingsMode.GLOBAL, overrideButton, ...rest }: Props) => {
   const [onPresentSettingsModal] = useModal(<SettingsModal mode={mode} />)
-  const [onPresentSettingsV2Modal] = useModal(<SettingsModalV2 mode={mode} />)
+
+  // For SettingsModalV2
+  const { isOpen, setIsOpen, onDismiss } = useModalV2()
 
   const onButtonClick = useCallback(() => {
     if (mode === SettingsMode.GLOBAL) onPresentSettingsModal()
-    else onPresentSettingsV2Modal()
-  }, [mode, onPresentSettingsModal, onPresentSettingsV2Modal])
+    else setIsOpen(true)
+  }, [mode, setIsOpen, onPresentSettingsModal])
 
   return (
     <Flex>
@@ -35,6 +37,10 @@ const GlobalSettings = ({ color, mr = '8px', mode = SettingsMode.GLOBAL, overrid
           <CogIcon height={24} width={24} color={color || 'textSubtle'} />
         </IconButton>
       )}
+
+      <ModalV2 isOpen={isOpen} onDismiss={onDismiss} closeOnOverlayClick>
+        <SettingsModalV2 />
+      </ModalV2>
     </Flex>
   )
 }

@@ -32,6 +32,8 @@ export const SlippageButton = ({ slippage }: SlippageButtonProps) => {
 
   return (
     <GlobalSettings
+      id="slippage_btn_global_settings"
+      key="slippage_btn_global_settings"
       mode={SettingsMode.SWAP_LIQUIDITY}
       overrideButton={(onClick) => (
         <TertiaryButton
