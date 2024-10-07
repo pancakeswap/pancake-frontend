@@ -11,11 +11,11 @@ export default function FormattedPriceImpact({ priceImpact, isX }: { priceImpact
   if (isX) {
     if (priceImpact) {
       return (
-        <Flex>
-          <Text fontSize="14px" color="primary">
-            0%
+        <Flex alignItems="center">
+          <Text fontSize="16px" color="positive60" bold>
+            0
           </Text>
-          <ErrorText fontSize="14px" severity={warningSeverity(priceImpact)} strikeThrough>
+          <ErrorText ml="4px" fontSize="14px" severity={isX ? 1 : warningSeverity(priceImpact)} strikeThrough>
             {priceImpact ? (priceImpact.lessThan(ONE_BIPS) ? '<0.01%' : `${priceImpact.toFixed(2)}%`) : '-'}
           </ErrorText>
         </Flex>
