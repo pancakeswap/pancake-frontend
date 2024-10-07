@@ -55,7 +55,7 @@ export function CurrencyInputPanelSimplify({
         >
           <AtomBox
             display="flex"
-            flexDirection="row"
+            flexDirection="row-reverse"
             flexWrap="nowrap"
             color="text"
             fontSize="12px"
@@ -66,7 +66,6 @@ export function CurrencyInputPanelSimplify({
             position="relative"
             style={{ height: 80 }}
           >
-            {inputLeft}
             <NumericalInput
               error={Boolean(error)}
               disabled={disabled}
@@ -81,6 +80,7 @@ export function CurrencyInputPanelSimplify({
               }}
               fontSize={inputFontSize}
             />
+            {inputLeft}
           </AtomBox>
           {bottom}
         </AtomBox>
