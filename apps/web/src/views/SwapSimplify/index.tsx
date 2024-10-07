@@ -23,7 +23,7 @@ const Wrapper = styled(Box)`
 
 export default function V4Swap() {
   const { query } = useRouter()
-  const { isDesktop } = useMatchBreakpoints()
+  const { isDesktop, isMobile } = useMatchBreakpoints()
   const {
     isChartExpanded,
     isChartDisplayed,
@@ -103,7 +103,12 @@ export default function V4Swap() {
             setIsOpen={(isOpen) => setIsChartDisplayed?.(isOpen)}
           />
         )}
-        <Flex flexDirection="column" width="100%" height="100%" alignItems="center">
+        <Flex
+          flexDirection="column"
+          width={isChartDisplayed && !isMobile ? 'auto' : '100%'}
+          height="100%"
+          alignItems="center"
+        >
           <StyledSwapContainer
             justifyContent="center"
             width="100%"
