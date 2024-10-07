@@ -39,7 +39,7 @@ const GlobalSettings = ({ color, mr = '8px', mode = SettingsMode.GLOBAL, overrid
       )}
 
       <ModalV2 isOpen={isOpen} onDismiss={onDismiss} closeOnOverlayClick>
-        <SettingsModalV2 />
+        <SettingsModalV2 onDismiss={onDismiss} />
       </ModalV2>
     </Flex>
   )

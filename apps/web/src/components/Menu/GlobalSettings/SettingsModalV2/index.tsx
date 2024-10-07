@@ -5,7 +5,6 @@ import { MotionTabs } from 'components/Motion/MotionTabs'
 import dynamic from 'next/dynamic'
 import { useCallback, useState } from 'react'
 import { useRoutingSettingChanged } from 'state/user/smartRouter'
-import { SettingsMode } from '../types'
 import { TabContent } from './TabContent'
 
 const SettingsTab = dynamic(() => import('./SettingsTab').then((mod) => mod.SettingsTab), {
@@ -33,7 +32,6 @@ enum TabIndex {
 
 interface SettingsModalV2Props {
   onDismiss?: () => void
-  mode?: SettingsMode
 }
 
 export const SettingsModalV2 = ({ onDismiss }: SettingsModalV2Props) => {
