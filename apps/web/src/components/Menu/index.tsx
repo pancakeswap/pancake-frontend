@@ -27,6 +27,8 @@ const LinkComponent = (linkProps) => {
   return <NextLinkFromReactRouter to={linkProps.href} {...linkProps} prefetch={false} />
 }
 
+const EMPTY_ARRAY = []
+
 const Menu = (props) => {
   const { enabled } = useWebNotifications()
   const { chainId } = useActiveChainId()
@@ -85,9 +87,15 @@ const Menu = (props) => {
     onClick: onSubMenuClick,
   })
 
-  const activeMenuItem = getActiveMenuItem({ menuConfig: menuItems, pathname })
-  const activeSubMenuItem = getActiveSubMenuItem({ menuItem: activeMenuItem, pathname })
-  const activeSubChildMenuItem = getActiveSubMenuChildItem({ menuItem: activeMenuItem, pathname })
+  const activeMenuItem = useMemo(() => getActiveMenuItem({ menuConfig: menuItems, pathname }), [menuItems, pathname])
+  const activeSubMenuItem = useMemo(
+    () => getActiveSubMenuItem({ menuItem: activeMenuItem, pathname }),
+    [menuItems, pathname],
+  )
+  const activeSubChildMenuItem = useMemo(
+    () => getActiveSubMenuChildItem({ menuItem: activeMenuItem, pathname }),
+    [activeMenuItem, pathname],
+  )
 
   const toggleTheme = useMemo(() => {
     return () => setTheme(isDark ? 'light' : 'dark')
@@ -98,40 +106,38 @@ const Menu = (props) => {
   }, [t])
 
   return (
-    <>
-      <UikitMenu
-        linkComponent={LinkComponent}
-        rightSide={
-          <>
-            <GlobalSettings mode={SettingsMode.GLOBAL} />
-            {enabled && (
-              <Suspense fallback={null}>
-                <Notifications />
-              </Suspense>
-            )}
-            <NetworkSwitcher />
-            <UserMenu />
-          </>
-        }
-        chainId={chainId}
-        banner={showPhishingWarningBanner && typeof window !== 'undefined' && <PhishingWarningBanner />}
-        isDark={isDark}
-        toggleTheme={toggleTheme}
-        currentLang={currentLanguage.code}
-        langs={languageList}
-        setLang={setLanguage}
-        cakePriceUsd={cakePrice.eq(BIG_ZERO) ? undefined : cakePrice}
-        links={menuItems}
-        subLinks={activeMenuItem?.hideSubNav || activeSubMenuItem?.hideSubNav ? [] : activeMenuItem?.items}
-        footerLinks={getFooterLinks}
-        activeItem={activeMenuItem?.href}
-        activeSubItem={activeSubMenuItem?.href}
-        activeSubItemChildItem={activeSubChildMenuItem?.href}
-        buyCakeLabel={t('Buy CAKE')}
-        buyCakeLink="https://pancakeswap.finance/swap?outputCurrency=0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82&chainId=56"
-        {...props}
-      />
-    </>
+    <UikitMenu
+      linkComponent={LinkComponent}
+      rightSide={
+        <>
+          <GlobalSettings mode={SettingsMode.GLOBAL} />
+          {enabled && (
+            <Suspense fallback={null}>
+              <Notifications />
+            </Suspense>
+          )}
+          <NetworkSwitcher />
+          <UserMenu />
+        </>
+      }
+      chainId={chainId}
+      banner={showPhishingWarningBanner && typeof window !== 'undefined' && <PhishingWarningBanner />}
+      isDark={isDark}
+      toggleTheme={toggleTheme}
+      currentLang={currentLanguage.code}
+      langs={languageList}
+      setLang={setLanguage}
+      cakePriceUsd={cakePrice.eq(BIG_ZERO) ? undefined : cakePrice}
+      links={menuItems}
+      subLinks={activeMenuItem?.hideSubNav || activeSubMenuItem?.hideSubNav ? EMPTY_ARRAY : activeMenuItem?.items}
+      footerLinks={getFooterLinks}
+      activeItem={activeMenuItem?.href}
+      activeSubItem={activeSubMenuItem?.href}
+      activeSubItemChildItem={activeSubChildMenuItem?.href}
+      buyCakeLabel={t('Buy CAKE')}
+      buyCakeLink="https://pancakeswap.finance/swap?outputCurrency=0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82&chainId=56"
+      {...props}
+    />
   )
 }
 
