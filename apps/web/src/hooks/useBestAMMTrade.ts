@@ -94,7 +94,7 @@ interface useBestAMMTradeOptions extends Options {
 
 type QuoteTrade = Pick<
   NonNullable<ReturnType<ReturnType<typeof bestTradeHookFactory>>['trade']>,
-  'inputAmount' | 'outputAmount' | 'tradeType'
+  'inputAmount' | 'outputAmount' | 'tradeType' | 'inputAmountWithGasAdjusted' | 'outputAmountWithGasAdjusted'
 >
 
 type QuoteResult = Pick<ReturnType<ReturnType<typeof bestTradeHookFactory>>, 'isLoading' | 'error'> & {
@@ -119,10 +119,14 @@ export function useBetterQuote<A extends QuoteResult, B extends QuoteResult>(
       return quoteA
     }
     return quoteA.trade.tradeType === TradeType.EXACT_INPUT
-      ? quoteB.trade.outputAmount.greaterThan(quoteA.trade!.outputAmount)
+      ? (quoteB.trade.outputAmountWithGasAdjusted ?? quoteB.trade.outputAmount).greaterThan(
+          quoteA.trade!.outputAmountWithGasAdjusted ?? quoteA.trade!.outputAmount,
+        )
         ? quoteB
         : quoteA
-      : quoteB.trade.inputAmount.lessThan(quoteA.trade!.inputAmount)
+      : (quoteB.trade.inputAmountWithGasAdjusted ?? quoteB.trade.inputAmount).lessThan(
+          quoteA.trade!.inputAmountWithGasAdjusted ?? quoteA.trade!.inputAmount,
+        )
       ? quoteB
       : quoteA
   }, [quoteA, quoteB])
@@ -212,7 +216,10 @@ function createSimpleUseGetBestTradeHook<T>(
 }
 
 function bestTradeHookFactory<
-  T extends Pick<SmartRouterTrade<TradeType>, 'inputAmount' | 'outputAmount' | 'tradeType'> & {
+  T extends Pick<
+    SmartRouterTrade<TradeType>,
+    'inputAmount' | 'outputAmount' | 'tradeType' | 'inputAmountWithGasAdjusted' | 'outputAmountWithGasAdjusted'
+  > & {
     routes: Pick<Route, 'path' | 'pools' | 'inputAmount' | 'outputAmount'>[]
     blockNumber?: BigintIsh
   },

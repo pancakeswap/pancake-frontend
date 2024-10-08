@@ -1,5 +1,7 @@
 import { SmartRouter } from '@pancakeswap/smart-router/evm'
 import { useMemo } from 'react'
+import { OrderType } from '@pancakeswap/price-api-sdk'
+
 import { logger } from 'utils/datadog'
 import { useCurrencyUsdPrice } from 'hooks/useCurrencyUsdPrice'
 
@@ -63,6 +65,7 @@ export function V3SwapForm() {
             },
             xOrder: xOrder
               ? {
+                  filler: xOrder.type === OrderType.DUTCH_LIMIT ? xOrder.trade.orderInfo.exclusiveFiller : undefined,
                   type: xOrder.type,
                   inputAmount: xInputAmount,
                   outputAmount: xOutputAmount,
