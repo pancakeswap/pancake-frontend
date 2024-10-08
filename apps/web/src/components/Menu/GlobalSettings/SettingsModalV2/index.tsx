@@ -122,31 +122,29 @@ export const SettingsModalV2 = ({ onDismiss }: SettingsModalV2Props) => {
   ])
 
   return (
-    <>
-      <MotionModal
-        minWidth="420px"
-        minHeight={isMobile ? '500px' : undefined}
-        headerPadding="6px 24px 0"
-        headerRightSlot={
-          activeTabIndex === TabIndex.CUSTOMIZE_ROUTING &&
-          isRoutingSettingChange && (
-            <TabContent type="to_right">
-              <Button ml="8px" variant="text" scale="sm" onClick={reset}>
-                {t('Reset')}
-              </Button>
-            </TabContent>
-          )
-        }
-        title={renderTabHeading()}
-        onDismiss={onDismiss}
-        onBack={
-          activeTabIndex === TabIndex.CUSTOMIZE_ROUTING || activeTabIndex === TabIndex.EXPERT_MODE
-            ? () => setActiveTabIndex(TabIndex.SETTINGS)
-            : undefined
-        }
-      >
-        {renderTab()}
-      </MotionModal>
-    </>
+    <MotionModal
+      minWidth="420px"
+      minHeight={isMobile ? '500px' : undefined}
+      headerPadding="6px 24px 0"
+      headerRightSlot={
+        activeTabIndex === TabIndex.CUSTOMIZE_ROUTING &&
+        isRoutingSettingChange && (
+          <TabContent type="to_right">
+            <Button ml="8px" variant="text" scale="sm" onClick={reset}>
+              {t('Reset')}
+            </Button>
+          </TabContent>
+        )
+      }
+      title={renderTabHeading()}
+      onDismiss={onDismiss}
+      onBack={
+        activeTabIndex === TabIndex.CUSTOMIZE_ROUTING || activeTabIndex === TabIndex.EXPERT_MODE
+          ? () => setActiveTabIndex(TabIndex.SETTINGS)
+          : undefined
+      }
+    >
+      {renderTab()}
+    </MotionModal>
   )
 }

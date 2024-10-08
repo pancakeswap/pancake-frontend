@@ -22,7 +22,7 @@ export const ModalWrapper = ({
   const wrapperRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
 
-  const previousHeight = useRef(300);
+  const previousHeight = useRef(600);
 
   // const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
