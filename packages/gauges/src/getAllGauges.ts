@@ -1,5 +1,5 @@
 import { PublicClient } from 'viem'
-import { getAllFlatGauges } from './constants/config/getGauges'
+import { getGauges } from './constants/config/getGauges'
 import { CONFIG_TESTNET } from './constants/config/testnet'
 import { fetchAllGauges } from './fetchAllGauges'
 import { fetchAllKilledGauges } from './fetchAllKilledGauges'
@@ -13,7 +13,6 @@ export type getAllGaugesOptions = {
   // include killed gauges if true
   killed?: boolean
   blockNumber?: bigint
-  useFreshData?: boolean
 }
 
 export const getAllGauges = async (
@@ -23,11 +22,10 @@ export const getAllGauges = async (
     inCap: true,
     bothCap: false,
     killed: false,
-    useFreshData: true,
   },
 ): Promise<Gauge[]> => {
-  const { testnet, inCap, bothCap, killed, blockNumber, useFreshData } = options
-  const presets = testnet ? CONFIG_TESTNET : await getAllFlatGauges(useFreshData)
+  const { testnet, inCap, bothCap, killed, blockNumber } = options
+  const presets = testnet ? CONFIG_TESTNET : await getGauges()
 
   const allGaugeInfos = await fetchAllGauges(client, {
     blockNumber,

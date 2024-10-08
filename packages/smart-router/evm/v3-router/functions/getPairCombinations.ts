@@ -1,5 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
-import { GaugeType, getGaugesByChain } from '@pancakeswap/gauges'
+import { GaugeType, safeGetGaugesByChain } from '@pancakeswap/gauges'
 import { Currency, Token } from '@pancakeswap/sdk'
 import { getTokensByChain } from '@pancakeswap/tokens'
 import flatMap from 'lodash/flatMap.js'
@@ -31,18 +31,26 @@ function isTokenInCommonBases(token?: Token) {
   return Boolean(token && BASES_TO_CHECK_TRADES_AGAINST[token.chainId as ChainId]?.find((t) => t.equals(token)))
 }
 
-const getTokenBasesFromGauges = memoize(
-  async (currency?: Currency): Promise<Token[]> => {
+function createTokenBasesFromGaugesGetter() {
+  const getCurrencyIdentifier = (c?: Currency) => `${c?.chainId}_${c?.wrapped.address}_${c?.isNative}`
+  const cache: { [key: string]: Token[] } = {}
+
+  return async function getTokenBasesFromGauges(currency?: Currency): Promise<Token[]> {
+    const id = getCurrencyIdentifier(currency)
+    if (!id) return []
+    if (cache[id]) return cache[id]
+
     const chainId: ChainId | undefined = currency?.chainId
     const address = currency?.wrapped.address
-    const gauges = await getGaugesByChain(chainId)
+    const gauges = await safeGetGaugesByChain(chainId)
     const bases = new Set<Token>()
     const addTokenToBases = (token?: Token) => token && !isTokenInCommonBases(token) && bases.add(token)
     const addTokensToBases = (tokens: Token[]) => tokens.forEach(addTokenToBases)
     const isCurrentToken = (addr: Address) => addr.toLowerCase() === address?.toLowerCase()
 
     if (currency && chainId && isTokenInCommonBases(currency.wrapped)) {
-      return []
+      cache[id] = []
+      return cache[id]
     }
     for (const gauge of gauges) {
       const { type } = gauge
@@ -75,10 +83,12 @@ const getTokenBasesFromGauges = memoize(
         .map((base) => base.symbol)
         .join(',')}]`,
     )
+    cache[id] = baseList
     return baseList
-  },
-  (c) => `${c?.chainId}_${c?.wrapped.address}`,
-)
+  }
+}
+
+const getTokenBasesFromGauges = createTokenBasesFromGaugesGetter()
 
 const resolver = (currencyA?: Currency, currencyB?: Currency) => {
   if (
