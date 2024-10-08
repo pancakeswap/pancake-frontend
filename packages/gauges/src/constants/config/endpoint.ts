@@ -1,1 +1,1 @@
-export const GAUGES_API = 'https://cms-public-api-prod-eednf.ondigitalocean.app/api/data/cached/gauges'
+export const GAUGES_API = 'https://configs.pancakeswap.com/api/data/cached/gauges'
