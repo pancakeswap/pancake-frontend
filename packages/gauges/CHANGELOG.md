@@ -1,5 +1,11 @@
 # @pancakeswap/gauges
 
+## 2.0.0
+
+### Major Changes
+
+- 3e83a9c: Read gauge list from remote endpoint
+
 ## 1.2.17
 
 ### Patch Changes

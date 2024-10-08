@@ -1,5 +1,13 @@
 # @pancakeswap/smart-router
 
+## 6.1.5
+
+### Patch Changes
+
+- 3e83a9c: Read gauge list from remote endpoint
+- Updated dependencies [3e83a9c]
+  - @pancakeswap/gauges@2.0.0
+
 ## 6.1.4
 
 ### Patch Changes
