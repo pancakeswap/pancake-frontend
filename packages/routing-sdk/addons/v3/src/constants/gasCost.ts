@@ -13,6 +13,7 @@ export const BASE_SWAP_COST_V3 = (id: ChainId): bigint => {
     case ChainId.ZKSYNC_TESTNET:
     case ChainId.POLYGON_ZKEVM:
     case ChainId.POLYGON_ZKEVM_TESTNET:
+    case ChainId.ARBITRUM_ONE:
     case ChainId.OPBNB:
     case ChainId.OPBNB_TESTNET:
       return 2000n
@@ -30,6 +31,7 @@ export const COST_PER_INIT_TICK = (id: ChainId): bigint => {
     case ChainId.ZKSYNC_TESTNET:
     case ChainId.POLYGON_ZKEVM:
     case ChainId.POLYGON_ZKEVM_TESTNET:
+    case ChainId.ARBITRUM_ONE:
     case ChainId.OPBNB:
     case ChainId.OPBNB_TESTNET:
       return 31000n
@@ -48,6 +50,7 @@ export const COST_PER_HOP_V3 = (id: ChainId): bigint => {
     case ChainId.ZKSYNC_TESTNET:
     case ChainId.POLYGON_ZKEVM:
     case ChainId.POLYGON_ZKEVM_TESTNET:
+    case ChainId.ARBITRUM_ONE:
     case ChainId.OPBNB:
     case ChainId.OPBNB_TESTNET:
       return 80000n

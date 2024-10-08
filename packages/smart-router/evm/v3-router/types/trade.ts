@@ -8,7 +8,9 @@ import { Route } from './route'
 export interface SmartRouterTrade<TTradeType extends TradeType> {
   tradeType: TTradeType
   inputAmount: CurrencyAmount<Currency>
+  inputAmountWithGasAdjusted?: CurrencyAmount<Currency>
   outputAmount: CurrencyAmount<Currency>
+  outputAmountWithGasAdjusted?: CurrencyAmount<Currency>
 
   // From routes we know how many splits and what percentage does each split take
   routes: Route[]
