@@ -123,7 +123,7 @@ export function V4SwapForm() {
   return (
     <SwapUIV2.SwapFormWrapper>
       <SwapUIV2.SwapTabAndInputPanelWrapper>
-        <SwapSelection swapType={SwapType.MARKET} />
+        <SwapSelection swapType={SwapType.MARKET} withToolkit />
         <FormMain
           tradeLoading={!tradeLoaded}
           inputAmount={bestOrder?.trade?.inputAmount}
