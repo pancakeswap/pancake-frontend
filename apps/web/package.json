@@ -78,7 +78,7 @@
     "@pancakeswap/v3-sdk": "workspace:*",
     "@pancakeswap/wagmi": "workspace:*",
     "@pancakeswap/widgets-internal": "workspace:*",
-    "@kyberswap/pancake-liquidity-widgets": "^0.0.1-rc10",
+    "@kyberswap/pancake-liquidity-widgets": "0.1.0",
     "@pythnetwork/pyth-evm-js": "^1.29.2",
     "@reduxjs/toolkit": "^1.9.1",
     "@sentry/nextjs": "^8.16.0",
