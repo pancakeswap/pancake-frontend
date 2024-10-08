@@ -38,7 +38,15 @@ const SwapSelectionWrapper = styled.div`
   }
 `
 
-export const SwapSelection = ({ swapType }: { swapType: SwapType }) => {
+export const SwapSelection = ({
+  swapType,
+  withToolkit = false,
+  style,
+}: {
+  swapType: SwapType
+  withToolkit?: boolean
+  style?: React.CSSProperties
+}) => {
   const router = useRouter()
   const { isMobile } = useMatchBreakpoints()
 
@@ -72,13 +80,13 @@ export const SwapSelection = ({ swapType }: { swapType: SwapType }) => {
   if (!isTwapSupported(chainId)) return null
 
   return (
-    <SwapSelectionWrapper>
+    <SwapSelectionWrapper style={style}>
       <ButtonMenu scale="md" fullWidth activeIndex={swapType} onItemClick={(index) => onSelect(index)} variant="subtle">
         <ButtonMenuItem>SWAP</ButtonMenuItem>
         <ButtonMenuItem>TWAP</ButtonMenuItem>
         <ButtonMenuItem>LIMIT</ButtonMenuItem>
       </ButtonMenu>
-      {isChartSupported && (
+      {isChartSupported && withToolkit && (
         <ColoredIconButton
           onClick={() => {
             if (!isChartDisplayed && isSwapHotTokenDisplay) {
@@ -93,12 +101,14 @@ export const SwapSelection = ({ swapType }: { swapType: SwapType }) => {
           {isChartDisplayed ? <ChartDisableIcon color="textSubtle" /> : <ChartIcon width="24px" color="textSubtle" />}
         </ColoredIconButton>
       )}
-      <GlobalSettings
-        color="textSubtle"
-        mr="0"
-        mode={SettingsMode.SWAP_LIQUIDITY}
-        data-dd-action-name="Swap settings button"
-      />
+      {withToolkit && (
+        <GlobalSettings
+          color="textSubtle"
+          mr="0"
+          mode={SettingsMode.SWAP_LIQUIDITY}
+          data-dd-action-name="Swap settings button"
+        />
+      )}
     </SwapSelectionWrapper>
   )
 }
