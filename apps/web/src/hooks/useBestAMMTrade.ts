@@ -101,12 +101,26 @@ type QuoteResult = Pick<ReturnType<ReturnType<typeof bestTradeHookFactory>>, 'is
   trade?: QuoteTrade
 }
 
-export function useBetterQuote<A extends QuoteResult, B extends QuoteResult>(quoteA?: A, quoteB?: B): A | B | undefined
-export function useBetterQuote<A extends QuoteResult, B extends QuoteResult>(quoteA: A, quoteB: B): A | B
+type UseBetterQuoteOptions = {
+  factorGasCost?: false
+}
+
 export function useBetterQuote<A extends QuoteResult, B extends QuoteResult>(
   quoteA?: A,
   quoteB?: B,
+  options?: UseBetterQuoteOptions,
+): A | B | undefined
+export function useBetterQuote<A extends QuoteResult, B extends QuoteResult>(
+  quoteA: A,
+  quoteB: B,
+  options: UseBetterQuoteOptions | undefined,
+): A | B
+export function useBetterQuote<A extends QuoteResult, B extends QuoteResult>(
+  quoteA?: A,
+  quoteB?: B,
+  options?: UseBetterQuoteOptions,
 ): A | B | undefined {
+  const { factorGasCost = true } = options || {}
   return useMemo(() => {
     if (!quoteB?.trade || (!quoteA?.trade && !quoteB?.trade)) {
       return quoteA
@@ -119,17 +133,19 @@ export function useBetterQuote<A extends QuoteResult, B extends QuoteResult>(
       return quoteA
     }
     return quoteA.trade.tradeType === TradeType.EXACT_INPUT
-      ? (quoteB.trade.outputAmountWithGasAdjusted ?? quoteB.trade.outputAmount).greaterThan(
-          quoteA.trade!.outputAmountWithGasAdjusted ?? quoteA.trade!.outputAmount,
+      ? (
+          (factorGasCost ? quoteB.trade.outputAmountWithGasAdjusted : undefined) ?? quoteB.trade.outputAmount
+        ).greaterThan(
+          (factorGasCost ? quoteA.trade!.outputAmountWithGasAdjusted : undefined) ?? quoteA.trade!.outputAmount,
         )
         ? quoteB
         : quoteA
-      : (quoteB.trade.inputAmountWithGasAdjusted ?? quoteB.trade.inputAmount).lessThan(
-          quoteA.trade!.inputAmountWithGasAdjusted ?? quoteA.trade!.inputAmount,
+      : ((factorGasCost ? quoteB.trade.inputAmountWithGasAdjusted : undefined) ?? quoteB.trade.inputAmount).lessThan(
+          (factorGasCost ? quoteA.trade!.inputAmountWithGasAdjusted : undefined) ?? quoteA.trade!.inputAmount,
         )
       ? quoteB
       : quoteA
-  }, [quoteA, quoteB])
+  }, [quoteA, quoteB, factorGasCost])
 }
 
 export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeOptions) {
@@ -182,6 +198,7 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
   const bestOffchainWithQuickOnChainQuote = useBetterQuote(
     bestVerifiedTradeFromOffchainQuoter,
     bestTradeFromQuickOnChainQuote,
+    { factorGasCost: false },
   )
 
   const noValidRouteFromOffchainQuoter =
@@ -478,11 +495,18 @@ function createUseWorkerGetBestTradeOffchain() {
         if (!worker) {
           throw new Error('Quote worker not initialized')
         }
-        const candidatePools = await poolProvider.getCandidatePools({
-          currencyA: amount.currency,
-          currencyB: currency,
-          protocols: allowedPoolTypes,
-        })
+        const [candidatePoolsResult, gasPriceResult] = await Promise.allSettled([
+          poolProvider.getCandidatePools({
+            currencyA: amount.currency,
+            currencyB: currency,
+            protocols: allowedPoolTypes,
+          }),
+          typeof gasPriceWei === 'function' ? gasPriceWei() : Promise.resolve(gasPriceWei),
+        ])
+        if (candidatePoolsResult.status === 'rejected') {
+          throw new Error('Failed to get candidate pools')
+        }
+        const { value: candidatePools } = candidatePoolsResult
         try {
           const result = await worker.getBestTradeOffchain({
             chainId: currency.chainId,
@@ -492,7 +516,7 @@ function createUseWorkerGetBestTradeOffchain() {
               currency: SmartRouter.Transformer.serializeCurrency(amount.currency),
               value: amount.quotient.toString(),
             },
-            gasPriceWei: typeof gasPriceWei !== 'function' ? gasPriceWei?.toString() : undefined,
+            gasPriceWei: gasPriceResult.status === 'fulfilled' ? gasPriceResult.value.toString() : undefined,
             maxHops,
             maxSplits,
             candidatePools: candidatePools.map(SmartRouter.Transformer.serializePool),
