@@ -198,7 +198,7 @@ const CurrencyInputPanelSimplify = memo(function CurrencyInputPanel({
   )
   const handleUserInputBlur = useCallback(() => {
     onInputBlur?.()
-    setTimeout(() => setIsInputFocus(false), 100)
+    setTimeout(() => setIsInputFocus(false), 300)
   }, [onInputBlur])
 
   const handleUserInputFocus = useCallback(() => {
