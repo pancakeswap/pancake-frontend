@@ -45,7 +45,7 @@ export function createCommonTokenPriceProvider<T = any>(
   getTokenPrices: GetTokenPrices<T>,
 ): CommonTokenPriceProvider<T> {
   return async function getCommonTokenPrices({ currencyA, currencyB, ...rest }: GetCommonTokenPricesParams & T) {
-    const baseTokens: Token[] = getCheckAgainstBaseTokens(currencyA, currencyB)
+    const baseTokens: Token[] = await getCheckAgainstBaseTokens(currencyA, currencyB)
     if (!baseTokens) {
       return null
     }

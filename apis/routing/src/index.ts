@@ -70,7 +70,7 @@ router.get('/v0/quote', async (req, event: FetchEvent) => {
   let pools = await PoolCache.get(cacheKey)
 
   if (!pools) {
-    const pairs = SmartRouter.getPairCombinations(currencyA, currencyB)
+    const pairs = await SmartRouter.getPairCombinations(currencyA, currencyB)
 
     const [v3Pools, v2Pools, stablePools] = await Promise.all([
       SmartRouter.getV3PoolSubgraph({ provider: v3SubgraphProvider, pairs }).then((res) =>

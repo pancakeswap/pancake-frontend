@@ -7,10 +7,11 @@ test('exports', () => {
       "calcGaugesVotingABI",
       "gaugesVotingABI",
       "GAUGES_SUPPORTED_CHAIN_IDS",
-      "GAUGES_CONFIG",
       "GAUGES_ADDRESS",
       "GAUGES_CALC_ADDRESS",
       "getAllGauges",
+      "getGaugesByChain",
+      "safeGetGaugesByChain",
       "GaugeType",
       "GAUGE_TYPE_NAMES",
     ]

@@ -4,8 +4,8 @@ import { OnChainProvider, Pool, SmartRouter } from '@pancakeswap/smart-router'
 import { useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
 
-import { createViemPublicClientGetter } from 'utils/viem'
 import { POOLS_FAST_REVALIDATE } from 'config/pools'
+import { createViemPublicClientGetter } from 'utils/viem'
 
 interface Options {
   blockNumber?: number
@@ -57,22 +57,18 @@ function candidatePoolsOnChainHookFactory<TPool extends Pool>(
       return [...symbols, currencyA.chainId].join('_')
     }, [currencyA, currencyB])
 
-    const pairs = useMemo(() => {
-      return currencyA && currencyB && SmartRouter.getPairCombinations(currencyA, currencyB)
-    }, [currencyA, currencyB])
-
-    const queryEnabled = !!(enabled && blockNumber && key && pairs)
     const poolState = useQuery({
       queryKey: [poolType, 'pools', key],
 
       queryFn: async ({ signal }) => {
-        if (!blockNumber || !pairs) {
+        if (!blockNumber) {
           throw new Error('Failed to get pools on chain. Missing valid params')
         }
         const label = `[POOLS_ONCHAIN](${poolType}) ${key} at block ${blockNumber}`
         SmartRouter.logger.metric(label)
         const getViemClients = createViemPublicClientGetter({ transportSignal: signal })
-        const pools = await getPoolsOnChain(pairs, getViemClients, blockNumber)
+        const resolvedPairs = await SmartRouter.getPairCombinations(currencyA, currencyB)
+        const pools = await getPoolsOnChain(resolvedPairs ?? [], getViemClients, blockNumber)
         SmartRouter.logger.metric(label, pools)
 
         return {
@@ -82,7 +78,7 @@ function candidatePoolsOnChainHookFactory<TPool extends Pool>(
         }
       },
 
-      enabled: queryEnabled,
+      enabled: Boolean(enabled && blockNumber && key && currencyA && currencyB),
       refetchInterval,
       refetchOnWindowFocus: false,
     })

@@ -1,5 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
-import { GAUGES_CONFIG, GaugeConfig, GaugeType } from '@pancakeswap/gauges'
+import { GaugeType, safeGetGaugesByChain } from '@pancakeswap/gauges'
 import { Currency, Token } from '@pancakeswap/sdk'
 import { getTokensByChain } from '@pancakeswap/tokens'
 import flatMap from 'lodash/flatMap.js'
@@ -10,8 +10,6 @@ import type { Address } from 'viem'
 import { ADDITIONAL_BASES, BASES_TO_CHECK_TRADES_AGAINST, CUSTOM_BASES } from '../../constants'
 import { wrappedCurrency } from '../../utils/currency'
 import { isCurrenciesSameChain, log } from '../utils'
-
-const allGauges = GAUGES_CONFIG[ChainId.BSC]
 
 const getToken = memoize(
   (chainId?: ChainId, address?: Address): Token | undefined => {
@@ -29,28 +27,30 @@ const getToken = memoize(
   (chainId, address) => `${chainId}_${address}`,
 )
 
-// TODO: move to gauges
-const getGaugesByChain = memoize(
-  (chainId?: ChainId): GaugeConfig[] => allGauges.filter((gauge) => gauge.chainId === chainId),
-  (chainId) => chainId,
-)
-
 function isTokenInCommonBases(token?: Token) {
   return Boolean(token && BASES_TO_CHECK_TRADES_AGAINST[token.chainId as ChainId]?.find((t) => t.equals(token)))
 }
 
-const getTokenBasesFromGauges = memoize(
-  (currency?: Currency): Token[] => {
+function createTokenBasesFromGaugesGetter() {
+  const getCurrencyIdentifier = (c?: Currency) => `${c?.chainId}_${c?.wrapped.address}_${c?.isNative}`
+  const cache: { [key: string]: Token[] } = {}
+
+  return async function getTokenBasesFromGauges(currency?: Currency): Promise<Token[]> {
+    const id = getCurrencyIdentifier(currency)
+    if (!id) return []
+    if (cache[id]) return cache[id]
+
     const chainId: ChainId | undefined = currency?.chainId
     const address = currency?.wrapped.address
-    const gauges = getGaugesByChain(currency?.chainId)
+    const gauges = await safeGetGaugesByChain(chainId)
     const bases = new Set<Token>()
     const addTokenToBases = (token?: Token) => token && !isTokenInCommonBases(token) && bases.add(token)
     const addTokensToBases = (tokens: Token[]) => tokens.forEach(addTokenToBases)
     const isCurrentToken = (addr: Address) => addr.toLowerCase() === address?.toLowerCase()
 
     if (currency && chainId && isTokenInCommonBases(currency.wrapped)) {
-      return []
+      cache[id] = []
+      return cache[id]
     }
     for (const gauge of gauges) {
       const { type } = gauge
@@ -83,10 +83,12 @@ const getTokenBasesFromGauges = memoize(
         .map((base) => base.symbol)
         .join(',')}]`,
     )
+    cache[id] = baseList
     return baseList
-  },
-  (c) => `${c?.chainId}_${c?.wrapped.address}`,
-)
+  }
+}
+
+const getTokenBasesFromGauges = createTokenBasesFromGaugesGetter()
 
 const resolver = (currencyA?: Currency, currencyB?: Currency) => {
   if (
@@ -107,7 +109,7 @@ type TokenBases = {
   [tokenAddress: Address]: Token[]
 }
 
-function getAdditionalCheckAgainstBaseTokens(currencyA?: Currency, currencyB?: Currency) {
+async function getAdditionalCheckAgainstBaseTokens(currencyA?: Currency, currencyB?: Currency): Promise<Token[]> {
   const chainId: ChainId | undefined = currencyA?.chainId
   const additionalBases: TokenBases = {
     ...(chainId ? ADDITIONAL_BASES[chainId] ?? {} : {}),
@@ -115,81 +117,89 @@ function getAdditionalCheckAgainstBaseTokens(currencyA?: Currency, currencyB?: C
   const uniq = (tokens: Token[]) => uniqBy(tokens, (t) => t.address)
   const additionalA =
     currencyA && chainId
-      ? uniq([...(additionalBases[currencyA.wrapped.address] || []), ...getTokenBasesFromGauges(currencyA)]) ?? []
+      ? uniq([...(additionalBases[currencyA.wrapped.address] || []), ...(await getTokenBasesFromGauges(currencyA))]) ??
+        []
       : []
   const additionalB =
     currencyB && chainId
-      ? uniq([...(additionalBases[currencyB.wrapped.address] || []), ...getTokenBasesFromGauges(currencyB)]) ?? []
+      ? uniq([...(additionalBases[currencyB.wrapped.address] || []), ...(await getTokenBasesFromGauges(currencyB))]) ??
+        []
       : []
 
   return [...additionalA, ...additionalB]
 }
 
-export const getCheckAgainstBaseTokens = memoize((currencyA?: Currency, currencyB?: Currency): Token[] => {
-  // eslint-disable-next-line prefer-destructuring
-  const chainId: ChainId | undefined = currencyA?.chainId
-  if (!chainId || !currencyA || !currencyB || !isCurrenciesSameChain(currencyA, currencyB)) {
-    return []
-  }
+export const getCheckAgainstBaseTokens = memoize(
+  async (currencyA?: Currency, currencyB?: Currency): Promise<Token[]> => {
+    // eslint-disable-next-line prefer-destructuring
+    const chainId: ChainId | undefined = currencyA?.chainId
+    if (!chainId || !currencyA || !currencyB || !isCurrenciesSameChain(currencyA, currencyB)) {
+      return []
+    }
 
-  const [tokenA, tokenB] = chainId
-    ? [wrappedCurrency(currencyA, chainId), wrappedCurrency(currencyB, chainId)]
-    : [undefined, undefined]
+    const [tokenA, tokenB] = chainId
+      ? [wrappedCurrency(currencyA, chainId), wrappedCurrency(currencyB, chainId)]
+      : [undefined, undefined]
 
-  if (!tokenA || !tokenB) {
-    return []
-  }
+    if (!tokenA || !tokenB) {
+      return []
+    }
 
-  const common = BASES_TO_CHECK_TRADES_AGAINST[chainId] ?? []
+    const common = BASES_TO_CHECK_TRADES_AGAINST[chainId] ?? []
 
-  return [...common, ...getAdditionalCheckAgainstBaseTokens(currencyA, currencyB)]
-}, resolver)
+    return [...common, ...(await getAdditionalCheckAgainstBaseTokens(currencyA, currencyB))]
+  },
+  resolver,
+)
 
-export const getPairCombinations = memoize((currencyA?: Currency, currencyB?: Currency): [Currency, Currency][] => {
-  // eslint-disable-next-line prefer-destructuring
-  const chainId: ChainId | undefined = currencyA?.chainId
-  if (!chainId || !currencyA || !currencyB || !isCurrenciesSameChain(currencyA, currencyB)) {
-    return []
-  }
+export const getPairCombinations = memoize(
+  async (currencyA?: Currency, currencyB?: Currency): Promise<[Currency, Currency][]> => {
+    // eslint-disable-next-line prefer-destructuring
+    const chainId: ChainId | undefined = currencyA?.chainId
+    if (!chainId || !currencyA || !currencyB || !isCurrenciesSameChain(currencyA, currencyB)) {
+      return []
+    }
 
-  const [tokenA, tokenB] = chainId
-    ? [wrappedCurrency(currencyA, chainId), wrappedCurrency(currencyB, chainId)]
-    : [undefined, undefined]
+    const [tokenA, tokenB] = chainId
+      ? [wrappedCurrency(currencyA, chainId), wrappedCurrency(currencyB, chainId)]
+      : [undefined, undefined]
 
-  if (!tokenA || !tokenB) {
-    return []
-  }
+    if (!tokenA || !tokenB) {
+      return []
+    }
 
-  const bases = getCheckAgainstBaseTokens(currencyA, currencyB)
+    const bases = await getCheckAgainstBaseTokens(currencyA, currencyB)
 
-  const basePairs: [Currency, Currency][] = flatMap(bases, (base): [Currency, Currency][] =>
-    bases.map((otherBase) => [base, otherBase]),
-  )
+    const basePairs: [Currency, Currency][] = flatMap(bases, (base): [Currency, Currency][] =>
+      bases.map((otherBase) => [base, otherBase]),
+    )
 
-  return [
-    // the direct pair
-    [tokenA, tokenB],
-    // token A against all bases
-    ...bases.map((base): [Currency, Currency] => [tokenA, base]),
-    // token B against all bases
-    ...bases.map((base): [Currency, Currency] => [tokenB, base]),
-    // each base against all bases
-    ...basePairs,
-  ]
-    .filter((tokens): tokens is [Currency, Currency] => Boolean(tokens[0] && tokens[1]))
-    .filter(([t0, t1]) => !t0.equals(t1))
-    .filter(([tokenA_, tokenB_]) => {
-      if (!chainId) return true
-      const customBases = CUSTOM_BASES[chainId]
+    return [
+      // the direct pair
+      [tokenA, tokenB],
+      // token A against all bases
+      ...bases.map((base): [Currency, Currency] => [tokenA, base]),
+      // token B against all bases
+      ...bases.map((base): [Currency, Currency] => [tokenB, base]),
+      // each base against all bases
+      ...basePairs,
+    ]
+      .filter((tokens): tokens is [Currency, Currency] => Boolean(tokens[0] && tokens[1]))
+      .filter(([t0, t1]) => !t0.equals(t1))
+      .filter(([tokenA_, tokenB_]) => {
+        if (!chainId) return true
+        const customBases = CUSTOM_BASES[chainId]
 
-      const customBasesA: Currency[] | undefined = customBases?.[tokenA_.wrapped.address]
-      const customBasesB: Currency[] | undefined = customBases?.[tokenB_.wrapped.address]
+        const customBasesA: Currency[] | undefined = customBases?.[tokenA_.wrapped.address]
+        const customBasesB: Currency[] | undefined = customBases?.[tokenB_.wrapped.address]
 
-      if (!customBasesA && !customBasesB) return true
+        if (!customBasesA && !customBasesB) return true
 
-      if (customBasesA && !customBasesA.find((base) => tokenB_.equals(base))) return false
-      if (customBasesB && !customBasesB.find((base) => tokenA_.equals(base))) return false
+        if (customBasesA && !customBasesA.find((base) => tokenB_.equals(base))) return false
+        if (customBasesB && !customBasesB.find((base) => tokenA_.equals(base))) return false
 
-      return true
-    })
-}, resolver)
+        return true
+      })
+  },
+  resolver,
+)
