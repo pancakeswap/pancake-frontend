@@ -172,16 +172,16 @@ export const SlippageTitle: React.FC<{ bold?: boolean }> = ({ bold }) => {
 const PriceImpactDetails: React.FC = () => {
   const { t } = useTranslation()
   return (
-    <FlexGap alignItems="flex-start" gap="8px">
+    <FlexGap alignItems="flex-start">
       <FlexGap justifyContent="center" alignItems="flex-start" flexDirection="column" gap="8px">
         <Text>
           {t(
             'Final execution price may be differ from the market price due to trader size, available liquidity, and trading route. Please proceed with caution.',
           )}
         </Text>
-        <StyledLinkExternal color="primary60" external href="https://www.hashdit.io" showExternalIcon={false}>
+        {/* <StyledLinkExternal color="primary60" external href="https://www.hashdit.io" showExternalIcon={false}>
           {t('Learn More')}
-        </StyledLinkExternal>
+        </StyledLinkExternal> */}
       </FlexGap>
     </FlexGap>
   )
@@ -190,16 +190,16 @@ const PriceImpactDetails: React.FC = () => {
 const SlippageDetails: React.FC = () => {
   const { t } = useTranslation()
   return (
-    <FlexGap alignItems="flex-start" gap="8px">
+    <FlexGap alignItems="flex-start">
       <FlexGap justifyContent="center" alignItems="flex-start" flexDirection="column" gap="8px">
         <Text>
           {t(
             'You may only get the amount of “Minimum received” with a high slippage setting. Reset your slippage to avoid potential losses.',
           )}
         </Text>
-        <StyledLinkExternal color="primary60" external href="https://www.hashdit.io" showExternalIcon={false}>
+        {/* <StyledLinkExternal color="primary60" external href="https://www.hashdit.io" showExternalIcon={false}>
           {t('Learn More')}
-        </StyledLinkExternal>
+        </StyledLinkExternal> */}
       </FlexGap>
     </FlexGap>
   )
