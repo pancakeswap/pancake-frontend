@@ -15,8 +15,9 @@ import { isXOrder } from 'views/Swap/utils'
 import { SwapType } from '../../Swap/types'
 import { useIsWrapping } from '../../Swap/V3Swap/hooks'
 import { useAllTypeBestTrade } from '../../Swap/V3Swap/hooks/useAllTypeBestTrade'
-import { useUserInsufficientBalance } from '../../Swap/V3Swap/hooks/useUserInsufficientBalance'
 import { computeTradePriceBreakdown } from '../../Swap/V3Swap/utils/exchange'
+import { useBuyCryptoInfo } from '../hooks/useBuyCryptoInfo'
+import { useUserInsufficientBalance } from '../hooks/useUserInsufficientBalance'
 import { ButtonAndDetailsPanel } from './ButtonAndDetailsPanel'
 import { BuyCryptoPanel } from './BuyCryptoPanel'
 import { CommitButton } from './CommitButton'
@@ -45,6 +46,7 @@ export function V4SwapForm() {
   const isWrapping = useIsWrapping()
   const { chainId: activeChianId } = useActiveChainId()
   const isUserInsufficientBalance = useUserInsufficientBalance(bestOrder)
+  const { shouldShowBuyCrypto, buyCryptoLink } = useBuyCryptoInfo(bestOrder)
 
   const commitHooks = useMemo(() => {
     return {
@@ -117,7 +119,6 @@ export function V4SwapForm() {
   }, [priceImpactWithoutFee])
   const [userSlippageTolerance] = useUserSlippage()
   const isSlippageTooHigh = useMemo(() => userSlippageTolerance > 500, [userSlippageTolerance])
-
   const shouldRiskPanelDisplay = useShouldRiskPanelDisplay(inputCurrency?.wrapped, outputCurrency?.wrapped)
 
   return (
@@ -134,7 +135,7 @@ export function V4SwapForm() {
           isUserInsufficientBalance={isUserInsufficientBalance}
         />
       </SwapUIV2.SwapTabAndInputPanelWrapper>
-      {isUserInsufficientBalance && <BuyCryptoPanel />}
+      {shouldShowBuyCrypto && <BuyCryptoPanel link={buyCryptoLink} />}
       {(shouldRiskPanelDisplay || isPriceImpactTooHigh || isSlippageTooHigh) && (
         <RiskDetailsPanel
           isPriceImpactTooHigh={isPriceImpactTooHigh}

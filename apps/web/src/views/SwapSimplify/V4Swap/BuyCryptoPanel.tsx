@@ -15,7 +15,7 @@ export const Wrapper = styled.div`
   width: 100%;
 `
 
-export const BuyCryptoPanel: React.FC = memo(() => {
+export const BuyCryptoPanel: React.FC<{ link?: string }> = memo(({ link }) => {
   const { t } = useTranslation()
   const router = useRouter()
   return (
@@ -27,7 +27,7 @@ export const BuyCryptoPanel: React.FC = memo(() => {
       <Button
         scale="sm"
         onClick={() => {
-          router.push('/buy-crypto')
+          router.push(link || '/buy-crypto')
         }}
       >
         {t('Get it Now')}
