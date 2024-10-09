@@ -1,14 +1,13 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, QuestionHelper, Text } from '@pancakeswap/uikit'
 import { GAS_PRICE, GAS_PRICE_GWEI } from 'state/types'
-import { useDefaultGasPrice, useGasPriceManager } from 'state/user/hooks'
-import { formatGwei } from 'viem'
+import { useGasPriceManager } from 'state/user/hooks'
 import { PrimaryOutlineButton } from './styles'
 
 const GasSettings = () => {
   const { t } = useTranslation()
   const [gasPrice, setGasPrice] = useGasPriceManager()
-  const defaultGasPrice = useDefaultGasPrice()
+  // const defaultGasPrice = useDefaultGasPrice()
 
   return (
     <Flex flexDirection="column">
@@ -40,7 +39,7 @@ const GasSettings = () => {
           variant={gasPrice === GAS_PRICE_GWEI.rpcDefault ? 'primary' : 'text'}
         >
           {t('Default')}
-          {defaultGasPrice ? ` (${formatGwei(defaultGasPrice)})` : null}
+          {/* {defaultGasPrice ? ` (${formatGwei(defaultGasPrice)})` : null} */}
         </PrimaryOutlineButton>
         <PrimaryOutlineButton
           mr="4px"
@@ -58,22 +57,22 @@ const GasSettings = () => {
           mr="4px"
           scale="sm"
           onClick={() => {
-            setGasPrice(GAS_PRICE_GWEI.fast)
+            setGasPrice(GAS_PRICE_GWEI.default)
           }}
-          variant={gasPrice === GAS_PRICE_GWEI.fast ? 'primary' : 'text'}
+          variant={gasPrice === GAS_PRICE_GWEI.default ? 'primary' : 'text'}
         >
-          {t('Fast (%gasPrice%)', { gasPrice: GAS_PRICE.fast })}
+          {t('Standard (%gasPrice%)', { gasPrice: GAS_PRICE.default })}
         </PrimaryOutlineButton>
         <PrimaryOutlineButton
           mt="4px"
           mr="4px"
           scale="sm"
           onClick={() => {
-            setGasPrice(GAS_PRICE_GWEI.default)
+            setGasPrice(GAS_PRICE_GWEI.fast)
           }}
-          variant={gasPrice === GAS_PRICE_GWEI.default ? 'primary' : 'text'}
+          variant={gasPrice === GAS_PRICE_GWEI.fast ? 'primary' : 'text'}
         >
-          {t('Standard (%gasPrice%)', { gasPrice: GAS_PRICE.default })}
+          {t('Fast (%gasPrice%)', { gasPrice: GAS_PRICE.fast })}
         </PrimaryOutlineButton>
       </Flex>
     </Flex>
