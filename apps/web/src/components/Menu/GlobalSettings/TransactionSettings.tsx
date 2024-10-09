@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Button, Flex, FlexGap, Input, QuestionHelper, Text } from '@pancakeswap/uikit'
+import { Box, Button, Flex, FlexGap, Input, Message, QuestionHelper, Text } from '@pancakeswap/uikit'
 import { useUserSlippage } from '@pancakeswap/utils/user'
 import { useState } from 'react'
 import { escapeRegExp } from 'utils'
@@ -176,13 +176,45 @@ const SlippageTabs = () => {
           </Flex>
         </ButtonsContainer>
         {!!slippageError && (
-          <Text fontSize="14px" color={slippageError === SlippageError.InvalidInput ? 'red' : '#F3841E'} mt="8px">
-            {slippageError === SlippageError.InvalidInput
-              ? t('Enter a valid slippage percentage')
-              : slippageError === SlippageError.RiskyLow
-              ? t('Your transaction may fail')
-              : t('Your transaction may be frontrun')}
-          </Text>
+          <Message
+            mt="8px"
+            variant={
+              slippageError === SlippageError.InvalidInput
+                ? 'primary'
+                : slippageError === SlippageError.RiskyLow
+                ? 'warning'
+                : 'danger'
+            }
+          >
+            <Text>
+              {slippageError === SlippageError.InvalidInput
+                ? t('Enter a valid slippage percentage')
+                : slippageError === SlippageError.RiskyLow
+                ? t('Your transaction may fail')
+                : t('Your transaction may be frontrun')}
+              .<br />
+              <Text
+                as="button"
+                role="button"
+                onClick={() => {
+                  setSlippageInput('')
+                  setUserSlippageTolerance(50)
+                }}
+                style={{
+                  textDecoration: 'underline',
+                  cursor: 'pointer',
+                  display: 'inline-block',
+                  background: 'none',
+                  border: 'none',
+                  padding: 0,
+                }}
+                bold
+              >
+                {t('Reset slippage settings')}
+              </Text>{' '}
+              {t('to avoid potential loss')}.
+            </Text>
+          </Message>
         )}
       </Flex>
       <Box mb="24px">
