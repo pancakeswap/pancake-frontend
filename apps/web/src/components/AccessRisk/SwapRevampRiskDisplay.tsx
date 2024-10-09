@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ERC20Token } from '@pancakeswap/sdk'
-import { Box, FlexGap, Link, Modal, ModalV2, RiskAlertIcon, Text, WarningIcon } from '@pancakeswap/uikit'
+import { Box, FlexGap, Link, LinkExternal, Modal, ModalV2, RiskAlertIcon, Text, WarningIcon } from '@pancakeswap/uikit'
 import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import { SwapUIV2 } from '@pancakeswap/widgets-internal'
 import { useEffect, useMemo, useState } from 'react'
@@ -26,9 +26,10 @@ const RiskModalDetailCardWrapper = styled.div`
   gap: 8px;
   border-radius: 16px;
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
-  background-color: #faf9fa;
+  background-color: ${({ theme }) => theme.colors.background};
   padding: 16px;
 `
+
 interface RiskInputPanelDisplayProps {
   token?: ERC20Token
 }
@@ -36,6 +37,7 @@ interface RiskInputPanelDisplayProps {
 interface RiskDetailsProps {
   token?: ERC20Token
   riskLevelDescription?: string
+  isInputToken?: boolean
 }
 
 interface RiskDetailsPanelProps {
@@ -103,7 +105,7 @@ export const RiskInputPanelDisplay: React.FC<RiskInputPanelDisplayProps> = ({ to
   return null
 }
 
-export const RiskTitle: React.FC<RiskDetailsProps> = ({ token }) => {
+export const RiskTitle: React.FC<RiskDetailsProps & { bold?: boolean }> = ({ token, isInputToken, bold }) => {
   const { t } = useTranslation()
   const { isDataLoading, riskLevel, tagColor } = useRiskCheckData(token)
   if (!isDataLoading && riskLevel && riskLevel <= TOKEN_RISK.SIGNIFICANT && riskLevel >= TOKEN_RISK.MEDIUM) {
@@ -114,8 +116,12 @@ export const RiskTitle: React.FC<RiskDetailsProps> = ({ token }) => {
             <RiskAlertIcon width={24} color={tagColor} />
           </Box>
           <FlexGap justifyContent="center" alignItems="flex-start" flexDirection="column" gap="8px">
-            <Text fontSize="16px">
-              {TOKEN_RISK_T[riskLevel]} {t('detected for output token:')} {token?.symbol}
+            <Text fontSize="16px" bold={bold}>
+              {TOKEN_RISK_T[riskLevel]}{' '}
+              {t('detected for %tokenType% token:', {
+                tokenType: isInputToken ? t('input') : t('output'),
+              })}{' '}
+              {token?.symbol}
             </Text>
           </FlexGap>
         </FlexGap>
@@ -190,7 +196,7 @@ const SlippageDetails: React.FC = () => {
   )
 }
 
-export const RiskDetails: React.FC<RiskDetailsProps> = ({ token }) => {
+export const RiskDetails: React.FC<RiskDetailsProps> = ({ token, isInputToken }) => {
   const { t } = useTranslation()
   const { isDataLoading, riskLevel } = useRiskCheckData(token)
   if (!isDataLoading && riskLevel && riskLevel <= TOKEN_RISK.SIGNIFICANT && riskLevel >= TOKEN_RISK.MEDIUM) {
@@ -199,13 +205,18 @@ export const RiskDetails: React.FC<RiskDetailsProps> = ({ token }) => {
         <FlexGap alignItems="flex-start" gap="8px">
           <FlexGap justifyContent="center" alignItems="flex-start" flexDirection="column" gap="8px">
             <Text>
-              {t(
-                'Scan risk level description for the output token shows here. This risk level is for a reference only, not as an investment advice.',
-              )}
+              {riskLevel >= TOKEN_RISK.HIGH
+                ? t(
+                    'The address contains high risk factors that are possible to lead to partial loss of funds, or medium to lower chance of catastrophic losses.',
+                  )
+                : t(
+                    'Scan risk level description for the %tokenType% token shows here. This risk level is for a reference only, not as an investment advice.',
+                    { tokenType: isInputToken ? 'input' : 'output' },
+                  )}
             </Text>
-            <Link style={{ display: 'inline' }} ml="4px" external href="https://www.hashdit.io">
-              Powered by HashDit
-            </Link>
+            <LinkExternal ml="4px" color="primary60" href="https://www.hashdit.io">
+              {t('Result provided by HashDit')}
+            </LinkExternal>
           </FlexGap>
         </FlexGap>
       )
@@ -263,16 +274,16 @@ export const RiskDetailsPanel: React.FC<RiskDetailsPanelProps> = ({
           onToggle={isRiskMoreThanOne ? () => setModalOpen(true) : () => setIsOpen(!isOpen)}
           title={
             <FlexGap flexDirection="column">
-              <RiskTitle token={token0} />
-              <RiskTitle token={token1} />
+              <RiskTitle token={token0} isInputToken />
+              <RiskTitle token={token1} isInputToken={false} />
               {isPriceImpactTooHigh && <PriceImpactTitle />}
               {isSlippageTooHigh && <SlippageTitle />}
             </FlexGap>
           }
           content={
             <FlexGap flexDirection="column" pl="32px" pr="8px">
-              <RiskDetails token={token0} riskLevelDescription={token0RiskLevelDescription} />
-              <RiskDetails token={token1} riskLevelDescription={token1RiskLevelDescription} />
+              <RiskDetails token={token0} isInputToken riskLevelDescription={token0RiskLevelDescription} />
+              <RiskDetails token={token1} isInputToken={false} riskLevelDescription={token1RiskLevelDescription} />
               {isPriceImpactTooHigh && <PriceImpactDetails />}
               {isSlippageTooHigh && <SlippageDetails />}
             </FlexGap>
@@ -283,14 +294,14 @@ export const RiskDetailsPanel: React.FC<RiskDetailsPanelProps> = ({
         <FlexGap flexDirection="column" gap="16px">
           {isRiskToken0 && (
             <RiskModalDetailCardWrapper>
-              <RiskTitle token={token0} />
-              <RiskDetails token={token0} riskLevelDescription={token0RiskLevelDescription} />
+              <RiskTitle token={token0} isInputToken bold />
+              <RiskDetails token={token0} isInputToken riskLevelDescription={token0RiskLevelDescription} />
             </RiskModalDetailCardWrapper>
           )}
           {isRiskToken1 && (
             <RiskModalDetailCardWrapper>
-              <RiskTitle token={token1} />
-              <RiskDetails token={token1} riskLevelDescription={token1RiskLevelDescription} />
+              <RiskTitle token={token1} isInputToken={false} bold />
+              <RiskDetails token={token1} isInputToken={false} riskLevelDescription={token1RiskLevelDescription} />
             </RiskModalDetailCardWrapper>
           )}
           {isPriceImpactTooHigh && (
