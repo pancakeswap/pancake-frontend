@@ -5,12 +5,13 @@ import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
 import { useProfile } from 'hooks/useProfile'
 import { useSiwe } from 'hooks/useSiwe'
 import { styled } from 'styled-components'
-import { logGTMClickStartQuestEvent } from 'utils/customGTMEventTracking'
+import { OptionIcon } from 'views/DashboardQuestEdit/components/Tasks/OptionIcon'
 import { SingleQuestData } from 'views/DashboardQuestEdit/hooks/useGetSingleQuestData'
 import { MakeProfileModal } from 'views/Quest/components/MakeProfileModal'
 import { Task } from 'views/Quest/components/Tasks/Task'
 import { VerifyTaskStatus } from 'views/Quest/hooks/useVerifyTaskStatus'
 import { useAccount } from 'wagmi'
+import { logGTMClickStartQuestEvent } from 'utils/customGTMEventTracking'
 
 const OverlapContainer = styled(Box)`
   position: absolute;
@@ -159,7 +160,7 @@ export const Tasks: React.FC<TasksProps> = ({
               />
             ))}
           </FlexGap>
-          {/* {hasOptionsInTasks && (
+          {hasOptionsInTasks && (
             <Box ml="8px">
               <Box mt="16px">
                 <Text fontSize="12px" bold as="span" color="textSubtle">
@@ -180,7 +181,7 @@ export const Tasks: React.FC<TasksProps> = ({
                 </Text>
               )}
             </Box>
-          )} */}
+          )}
           {(!account || !isSiweValid || (isSocialHubFetched && !hasIdRegister)) && !isQuestFinished && (
             <OverlapContainer>
               {account ? (
