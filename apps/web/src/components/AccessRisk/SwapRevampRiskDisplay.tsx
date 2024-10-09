@@ -1,11 +1,12 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ERC20Token } from '@pancakeswap/sdk'
-import { Box, FlexGap, Link, LinkExternal, Modal, ModalV2, RiskAlertIcon, Text, WarningIcon } from '@pancakeswap/uikit'
+import { ChainId, ERC20Token } from '@pancakeswap/sdk'
+import { Box, FlexGap, LinkExternal, Modal, ModalV2, RiskAlertIcon, Text, WarningIcon } from '@pancakeswap/uikit'
 import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import { SwapUIV2 } from '@pancakeswap/widgets-internal'
 import { useEffect, useMemo, useState } from 'react'
 import { keyframes, styled } from 'styled-components'
 
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { TOKEN_RISK, TOKEN_RISK_T, useTokenRisk } from './index'
 
 const appearAni = keyframes`
@@ -28,6 +29,10 @@ const RiskModalDetailCardWrapper = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
   background-color: ${({ theme }) => theme.colors.background};
   padding: 16px;
+`
+
+const StyledLinkExternal = styled(LinkExternal).attrs({ color: 'primary60' })`
+  font-weight: normal;
 `
 
 interface RiskInputPanelDisplayProps {
@@ -132,7 +137,7 @@ export const RiskTitle: React.FC<RiskDetailsProps & { bold?: boolean }> = ({ tok
   return null
 }
 
-export const PriceImpactTitle: React.FC = () => {
+export const PriceImpactTitle: React.FC<{ bold?: boolean }> = ({ bold }) => {
   const { t } = useTranslation()
   return (
     <FlexGap alignItems="flex-start" gap="8px">
@@ -140,13 +145,15 @@ export const PriceImpactTitle: React.FC = () => {
         <WarningIcon width={24} color="failure" />
       </Box>
       <FlexGap justifyContent="center" alignItems="flex-start" flexDirection="column" gap="8px">
-        <Text fontSize="16px">{t('Price impact too high. Proceed with caution.')}</Text>
+        <Text fontSize="16px" bold={bold}>
+          {t('Price impact too high. Proceed with caution.')}
+        </Text>
       </FlexGap>
     </FlexGap>
   )
 }
 
-export const SlippageTitle: React.FC = () => {
+export const SlippageTitle: React.FC<{ bold?: boolean }> = ({ bold }) => {
   const { t } = useTranslation()
   return (
     <FlexGap alignItems="flex-start" gap="8px">
@@ -154,7 +161,9 @@ export const SlippageTitle: React.FC = () => {
         <WarningIcon width={24} color="failure" />
       </Box>
       <FlexGap justifyContent="center" alignItems="flex-start" flexDirection="column" gap="8px">
-        <Text fontSize="16px">{t('Slippage settings too high. Proceed with caution.')}</Text>
+        <Text fontSize="16px" bold={bold}>
+          {t('Slippage settings too high. Proceed with caution.')}
+        </Text>
       </FlexGap>
     </FlexGap>
   )
@@ -170,9 +179,9 @@ const PriceImpactDetails: React.FC = () => {
             'Final execution price may be differ from the market price due to trader size, available liquidity, and trading route. Please proceed with caution.',
           )}
         </Text>
-        <Link style={{ display: 'inline' }} ml="4px" external href="https://www.hashdit.io">
-          Learn More
-        </Link>
+        <StyledLinkExternal color="primary60" external href="https://www.hashdit.io" showExternalIcon={false}>
+          {t('Learn More')}
+        </StyledLinkExternal>
       </FlexGap>
     </FlexGap>
   )
@@ -188,9 +197,9 @@ const SlippageDetails: React.FC = () => {
             'You may only get the amount of “Minimum received” with a high slippage setting. Reset your slippage to avoid potential losses.',
           )}
         </Text>
-        <Link style={{ display: 'inline' }} ml="4px" external href="https://www.hashdit.io">
-          Learn More
-        </Link>
+        <StyledLinkExternal color="primary60" external href="https://www.hashdit.io" showExternalIcon={false}>
+          {t('Learn More')}
+        </StyledLinkExternal>
       </FlexGap>
     </FlexGap>
   )
@@ -199,6 +208,8 @@ const SlippageDetails: React.FC = () => {
 export const RiskDetails: React.FC<RiskDetailsProps> = ({ token, isInputToken }) => {
   const { t } = useTranslation()
   const { isDataLoading, riskLevel } = useRiskCheckData(token)
+  const { chainId } = useActiveChainId()
+
   if (!isDataLoading && riskLevel && riskLevel <= TOKEN_RISK.SIGNIFICANT && riskLevel >= TOKEN_RISK.MEDIUM) {
     if (riskLevel && riskLevel >= TOKEN_RISK.VERY_LOW && token?.address) {
       return (
@@ -214,9 +225,12 @@ export const RiskDetails: React.FC<RiskDetailsProps> = ({ token, isInputToken })
                     { tokenType: isInputToken ? 'input' : 'output' },
                   )}
             </Text>
-            <LinkExternal ml="4px" color="primary60" href="https://www.hashdit.io">
-              {t('Result provided by HashDit')}
-            </LinkExternal>
+            <StyledLinkExternal href="https://www.hashdit.io">{t('Result provided by HashDit')}</StyledLinkExternal>
+            {chainId === ChainId.BSC && (
+              <StyledLinkExternal external href={`https://dappbay.bnbchain.org/risk-scanner/${token.address}`}>
+                {t('Get more details from RedAlarm')}
+              </StyledLinkExternal>
+            )}
           </FlexGap>
         </FlexGap>
       )
@@ -274,10 +288,10 @@ export const RiskDetailsPanel: React.FC<RiskDetailsPanelProps> = ({
           onToggle={isRiskMoreThanOne ? () => setModalOpen(true) : () => setIsOpen(!isOpen)}
           title={
             <FlexGap flexDirection="column">
-              <RiskTitle token={token0} isInputToken />
-              <RiskTitle token={token1} isInputToken={false} />
-              {isPriceImpactTooHigh && <PriceImpactTitle />}
-              {isSlippageTooHigh && <SlippageTitle />}
+              <RiskTitle token={token0} isInputToken bold={!isRiskMoreThanOne} />
+              <RiskTitle token={token1} isInputToken={false} bold={!isRiskMoreThanOne} />
+              {isPriceImpactTooHigh && <PriceImpactTitle bold={!isRiskMoreThanOne} />}
+              {isSlippageTooHigh && <SlippageTitle bold={!isRiskMoreThanOne} />}
             </FlexGap>
           }
           content={
@@ -306,13 +320,13 @@ export const RiskDetailsPanel: React.FC<RiskDetailsPanelProps> = ({
           )}
           {isPriceImpactTooHigh && (
             <RiskModalDetailCardWrapper>
-              <PriceImpactTitle />
+              <PriceImpactTitle bold />
               <PriceImpactDetails />
             </RiskModalDetailCardWrapper>
           )}
           {isSlippageTooHigh && (
             <RiskModalDetailCardWrapper>
-              <SlippageTitle />
+              <SlippageTitle bold />
               <SlippageDetails />
             </RiskModalDetailCardWrapper>
           )}
