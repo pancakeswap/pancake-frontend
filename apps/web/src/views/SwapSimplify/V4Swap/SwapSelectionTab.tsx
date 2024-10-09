@@ -1,17 +1,9 @@
-import {
-  ButtonMenu,
-  ButtonMenuItem,
-  ChartDisableIcon,
-  ChartIcon,
-  IconButton,
-  useMatchBreakpoints,
-} from '@pancakeswap/uikit'
+import { ButtonMenu, ButtonMenuItem, ChartDisableIcon, ChartIcon, IconButton } from '@pancakeswap/uikit'
 import GlobalSettings from 'components/Menu/GlobalSettings'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useSwapHotTokenDisplay } from 'hooks/useSwapHotTokenDisplay'
 import { useRouter } from 'next/router'
-
-import { useCallback, useContext } from 'react'
+import { useCallback, useContext, useMemo } from 'react'
 import { styled } from 'styled-components'
 import { SettingsMode } from '../../../components/Menu/GlobalSettings/types'
 import { SwapFeaturesContext } from '../../Swap/SwapFeaturesContext'
@@ -48,7 +40,6 @@ export const SwapSelection = ({
   style?: React.CSSProperties
 }) => {
   const router = useRouter()
-  const { isMobile } = useMatchBreakpoints()
 
   const onSelect = useCallback(
     (value: SwapType) => {
@@ -77,14 +68,25 @@ export const SwapSelection = ({
   const toggleChartDisplayed = () => {
     setIsChartDisplayed?.((currentIsChartDisplayed) => !currentIsChartDisplayed)
   }
-  if (!isTwapSupported(chainId)) return null
+  const tSwapProps = useMemo(() => {
+    const isTSwapSupported = isTwapSupported(chainId)
+    return {
+      disabled: !isTSwapSupported,
+      style: {
+        cursor: isTSwapSupported ? 'pointer' : 'not-allowed',
+        pointerEvents: isTSwapSupported ? 'auto' : 'none',
+        color: !isTSwapSupported ? 'rgba(0, 0, 0, 0.15)' : undefined,
+        userSelect: 'none',
+      } as React.CSSProperties,
+    }
+  }, [chainId])
 
   return (
     <SwapSelectionWrapper style={style}>
       <ButtonMenu scale="md" fullWidth activeIndex={swapType} onItemClick={(index) => onSelect(index)} variant="subtle">
         <ButtonMenuItem>SWAP</ButtonMenuItem>
-        <ButtonMenuItem>TWAP</ButtonMenuItem>
-        <ButtonMenuItem>LIMIT</ButtonMenuItem>
+        <ButtonMenuItem {...tSwapProps}>TWAP</ButtonMenuItem>
+        <ButtonMenuItem {...tSwapProps}>LIMIT</ButtonMenuItem>
       </ButtonMenu>
       {isChartSupported && withToolkit && (
         <ColoredIconButton
