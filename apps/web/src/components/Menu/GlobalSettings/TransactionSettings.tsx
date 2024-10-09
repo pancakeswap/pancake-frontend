@@ -30,6 +30,7 @@ enum SlippageError {
   InvalidInput = 'InvalidInput',
   RiskyLow = 'RiskyLow',
   RiskyHigh = 'RiskyHigh',
+  RiskyVeryHigh = 'RiskyVeryHigh',
 }
 
 enum DeadlineError {
@@ -58,8 +59,13 @@ const SlippageTabs = () => {
   if (slippageInput !== '' && !slippageInputIsValid) {
     slippageError = SlippageError.InvalidInput
   } else if (slippageInputIsValid && userSlippageTolerance < 50) {
+    // Slippage < 0.5%
     slippageError = SlippageError.RiskyLow
-  } else if (slippageInputIsValid && userSlippageTolerance > 500) {
+  } else if (slippageInputIsValid && userSlippageTolerance > 2000) {
+    // Slippage > 20%
+    slippageError = SlippageError.RiskyVeryHigh
+  } else if (slippageInputIsValid && userSlippageTolerance > 100) {
+    // Slippage > 1%
     slippageError = SlippageError.RiskyHigh
   } else {
     slippageError = undefined
@@ -181,7 +187,7 @@ const SlippageTabs = () => {
             variant={
               slippageError === SlippageError.InvalidInput
                 ? 'primary'
-                : slippageError === SlippageError.RiskyLow
+                : slippageError === SlippageError.RiskyLow || slippageError === SlippageError.RiskyHigh
                 ? 'warning'
                 : 'danger'
             }
