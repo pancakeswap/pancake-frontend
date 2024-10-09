@@ -1,5 +1,6 @@
 import { useTheme } from '@pancakeswap/hooks'
-import { Button, PencilIcon, RiskAlertIcon, WarningIcon } from '@pancakeswap/uikit'
+import { useTranslation } from '@pancakeswap/localization'
+import { Button, PencilIcon, RiskAlertIcon, useTooltip, WarningIcon } from '@pancakeswap/uikit'
 import GlobalSettings from 'components/Menu/GlobalSettings'
 import { SettingsMode } from 'components/Menu/GlobalSettings/types'
 import { ReactElement } from 'react'
@@ -20,39 +21,49 @@ interface SlippageButtonProps {
 }
 
 export const SlippageButton = ({ slippage }: SlippageButtonProps) => {
+  const { t } = useTranslation()
   const { theme } = useTheme()
-  const color =
-    typeof slippage === 'number'
-      ? slippage < 50
-        ? theme.colors.yellow
-        : slippage > 500
-        ? theme.colors.failure
-        : theme.colors.primary60
-      : theme.colors.primary60
+
+  const isRiskyLow = typeof slippage === 'number' && slippage < 50
+  const isRiskyHigh = typeof slippage === 'number' && slippage > 500
+
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    isRiskyLow
+      ? t('Your transaction may fail. Reset settings to avoid potential loss')
+      : isRiskyHigh
+      ? t('Your transaction may be frontrun. Reset settings to avoid potential loss')
+      : '',
+    { placement: 'top' },
+  )
+
+  const color = isRiskyLow ? theme.colors.yellow : isRiskyHigh ? theme.colors.failure : theme.colors.primary60
 
   return (
-    <GlobalSettings
-      id="slippage_btn_global_settings"
-      key="slippage_btn_global_settings"
-      mode={SettingsMode.SWAP_LIQUIDITY}
-      overrideButton={(onClick) => (
-        <TertiaryButton
-          $color={color}
-          startIcon={
-            typeof slippage === 'number' ? (
-              slippage < 50 ? (
-                <WarningIcon color={color} width={16} />
-              ) : slippage > 500 ? (
-                <RiskAlertIcon color={color} width={16} />
-              ) : undefined
-            ) : undefined
-          }
-          endIcon={<PencilIcon color={color} width={12} />}
-          onClick={onClick}
-        >
-          {typeof slippage === 'number' ? `${basisPointsToPercent(slippage).toFixed(2)}%` : slippage}
-        </TertiaryButton>
-      )}
-    />
+    <>
+      <GlobalSettings
+        id="slippage_btn_global_settings"
+        key="slippage_btn_global_settings"
+        mode={SettingsMode.SWAP_LIQUIDITY}
+        overrideButton={(onClick) => (
+          <div ref={targetRef}>
+            <TertiaryButton
+              $color={color}
+              startIcon={
+                isRiskyLow ? (
+                  <WarningIcon color={color} width={16} />
+                ) : isRiskyHigh ? (
+                  <RiskAlertIcon color={color} width={16} />
+                ) : undefined
+              }
+              endIcon={<PencilIcon color={color} width={12} />}
+              onClick={onClick}
+            >
+              {typeof slippage === 'number' ? `${basisPointsToPercent(slippage).toFixed(2)}%` : slippage}
+            </TertiaryButton>
+            {(isRiskyLow || isRiskyHigh) && tooltipVisible && tooltip}
+          </div>
+        )}
+      />
+    </>
   )
 }
