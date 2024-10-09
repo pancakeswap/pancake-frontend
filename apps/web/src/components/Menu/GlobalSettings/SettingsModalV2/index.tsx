@@ -47,10 +47,10 @@ interface SettingsModalV2Props {
 
   /**
    * Tab Index:
-   * 0: Settings |
-   * 1: Recent Transactions |
-   * 2: Customize Routing |
-   * 3: Expert Mode
+   * (0) Settings |
+   * (1) Recent Transactions |
+   * (2) Customize Routing |
+   * (3) Expert Mode
    */
   defaultTabIndex?: TabIndex
 }
