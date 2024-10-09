@@ -26,7 +26,7 @@ const fadeIn = keyframes`
 const fadeInFromRight = keyframes`
   from {
     opacity: 0;
-    transform: translateX(40px);
+    transform: translateX(30px);
   }
   to {
     opacity: 1;
@@ -38,7 +38,7 @@ const AnimatedBox = styled(Box)<{ $type: AnimationType }>`
   animation: ${({ $type }) =>
     $type === 'to_right'
       ? css`
-          ${fadeInFromRight} 0.25s cubic-bezier(.19,.23,.75,1.05)
+          ${fadeInFromRight} 0.3s cubic-bezier(.19,.23,.75,1.05)
         `
       : css`
           ${fadeIn} 0.4s ease-out
@@ -51,25 +51,9 @@ interface TabContentProps extends BoxProps {
 }
 
 export const TabContent = ({ children, type = 'default', ...props }: TabContentProps) => {
-  // const motionBoxConfig = useMemo(
-  //   () => ({
-  //     initial: {
-  //       opacity: 0.2,
-  //       x: type === 'to_right' ? 20 : 0,
-  //     },
-  //     animate: {
-  //       opacity: 1,
-  //       x: 0,
-  //     },
-  //   }),
-  //   [type],
-  // )
-
   return (
-    // <MotionBox {...motionBoxConfig} {...props}>
     <AnimatedBox $type={type} {...props}>
       <ScrollableContainer>{children}</ScrollableContainer>
     </AnimatedBox>
-    // </MotionBox>
   )
 }

@@ -24,18 +24,10 @@ export const ModalWrapper = ({
 
   const previousHeight = useRef(600);
 
-  // const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
-
   useEffect(() => {
     const resizeObserver = new ResizeObserver((entries) => {
       for (const entry of entries) {
         const { height } = entry.contentRect;
-        // setDimensions({ width, height });
-
-        // console.log("DIMENSIONS", {
-        //   previousHeight: previousHeight.current,
-        //   height,
-        // });
 
         if (wrapperRef.current) {
           wrapperRef.current.animate(
@@ -48,8 +40,9 @@ export const ModalWrapper = ({
               },
             ],
             {
-              duration: 200,
+              duration: 300,
               fill: "forwards",
+              easing: "cubic-bezier(.19,.23,.75,1.05)",
             }
           );
         }
@@ -68,7 +61,6 @@ export const ModalWrapper = ({
   }, []);
 
   return (
-    // @ts-ignore
     <ModalContainer
       drag={isMobile && !hideCloseButton ? "y" : false}
       dragConstraints={{ top: 0, bottom: 600 }}

@@ -1,9 +1,21 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, Flex, Heading, MotionModal, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import {
+  AtomBox,
+  Button,
+  ButtonProps,
+  Flex,
+  Heading,
+  ModalV2,
+  MotionModal,
+  NotificationDot,
+  Text,
+  useMatchBreakpoints,
+  useModalV2,
+} from '@pancakeswap/uikit'
 import { useExpertMode, useUserExpertModeAcknowledgement } from '@pancakeswap/utils/user'
 import { MotionTabs } from 'components/Motion/MotionTabs'
 import dynamic from 'next/dynamic'
-import { useCallback, useState } from 'react'
+import { ReactNode, useCallback, useState } from 'react'
 import { useRoutingSettingChanged } from 'state/user/smartRouter'
 import { TabContent } from './TabContent'
 
@@ -32,9 +44,18 @@ enum TabIndex {
 
 interface SettingsModalV2Props {
   onDismiss?: () => void
+
+  /**
+   * Tab Index:
+   * 0: Settings |
+   * 1: Recent Transactions |
+   * 2: Customize Routing |
+   * 3: Expert Mode
+   */
+  defaultTabIndex?: TabIndex
 }
 
-export const SettingsModalV2 = ({ onDismiss }: SettingsModalV2Props) => {
+export const SettingsModalV2 = ({ onDismiss, defaultTabIndex = TabIndex.SETTINGS }: SettingsModalV2Props) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
 
@@ -42,7 +63,7 @@ export const SettingsModalV2 = ({ onDismiss }: SettingsModalV2Props) => {
   const [expertMode, setExpertMode] = useExpertMode()
   const [isRoutingSettingChange, reset] = useRoutingSettingChanged()
 
-  const [activeTabIndex, setActiveTabIndex] = useState<TabIndex>(TabIndex.SETTINGS)
+  const [activeTabIndex, setActiveTabIndex] = useState<TabIndex>(defaultTabIndex)
 
   const onTabChange = useCallback(
     (index: TabIndex) => {
@@ -146,5 +167,34 @@ export const SettingsModalV2 = ({ onDismiss }: SettingsModalV2Props) => {
     >
       {renderTab()}
     </MotionModal>
+  )
+}
+
+export function RoutingSettingsButton({
+  children,
+  showRedDot = true,
+  buttonProps,
+}: {
+  children?: ReactNode
+  showRedDot?: boolean
+  buttonProps?: ButtonProps
+}) {
+  const { t } = useTranslation()
+  const { isOpen, setIsOpen, onDismiss } = useModalV2()
+  const [isRoutingSettingChange] = useRoutingSettingChanged()
+
+  return (
+    <>
+      <AtomBox textAlign="center">
+        <NotificationDot show={isRoutingSettingChange && showRedDot}>
+          <Button variant="text" onClick={() => setIsOpen(true)} scale="sm" {...buttonProps}>
+            {children || t('Customize Routing')}
+          </Button>
+        </NotificationDot>
+      </AtomBox>
+      <ModalV2 isOpen={isOpen} onDismiss={onDismiss} closeOnOverlayClick>
+        <SettingsModalV2 defaultTabIndex={2} onDismiss={onDismiss} />
+      </ModalV2>
+    </>
   )
 }
