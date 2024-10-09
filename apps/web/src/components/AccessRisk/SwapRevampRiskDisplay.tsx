@@ -247,8 +247,8 @@ export const useShouldRiskPanelDisplay = (token0?: ERC20Token, token1?: ERC20Tok
     return false
   }
   return (
-    (riskLevel0 && riskLevel0 <= TOKEN_RISK.SIGNIFICANT && riskLevel0 >= TOKEN_RISK.HIGH) ||
-    (riskLevel1 && riskLevel1 <= TOKEN_RISK.SIGNIFICANT && riskLevel1 >= TOKEN_RISK.HIGH)
+    (riskLevel0 && riskLevel0 <= TOKEN_RISK.SIGNIFICANT && riskLevel0 >= TOKEN_RISK.MEDIUM) ||
+    (riskLevel1 && riskLevel1 <= TOKEN_RISK.SIGNIFICANT && riskLevel1 >= TOKEN_RISK.MEDIUM)
   )
 }
 
