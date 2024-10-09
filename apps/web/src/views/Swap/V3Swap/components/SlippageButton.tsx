@@ -25,7 +25,8 @@ export const SlippageButton = ({ slippage }: SlippageButtonProps) => {
   const { theme } = useTheme()
 
   const isRiskyLow = typeof slippage === 'number' && slippage < 50
-  const isRiskyHigh = typeof slippage === 'number' && slippage > 500
+  const isRiskyHigh = typeof slippage === 'number' && slippage > 100
+  const isRiskyVeryHigh = typeof slippage === 'number' && slippage > 2000
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     isRiskyLow
@@ -36,7 +37,11 @@ export const SlippageButton = ({ slippage }: SlippageButtonProps) => {
     { placement: 'top' },
   )
 
-  const color = isRiskyLow ? theme.colors.yellow : isRiskyHigh ? theme.colors.failure : theme.colors.primary60
+  const color = isRiskyVeryHigh
+    ? theme.colors.failure
+    : isRiskyLow || isRiskyHigh
+    ? theme.colors.yellow
+    : theme.colors.primary60
 
   return (
     <>
@@ -49,10 +54,10 @@ export const SlippageButton = ({ slippage }: SlippageButtonProps) => {
             <TertiaryButton
               $color={color}
               startIcon={
-                isRiskyLow ? (
-                  <WarningIcon color={color} width={16} />
-                ) : isRiskyHigh ? (
+                isRiskyVeryHigh ? (
                   <RiskAlertIcon color={color} width={16} />
+                ) : isRiskyLow || isRiskyHigh ? (
+                  <WarningIcon color={color} width={16} />
                 ) : undefined
               }
               endIcon={<PencilIcon color={color} width={12} />}
