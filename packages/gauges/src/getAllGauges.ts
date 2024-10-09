@@ -25,7 +25,8 @@ export const getAllGauges = async (
   },
 ): Promise<Gauge[]> => {
   const { testnet, inCap, bothCap, killed, blockNumber } = options
-  const presets = testnet ? CONFIG_TESTNET : await getGauges()
+  const gaugesConfig = testnet ? CONFIG_TESTNET : await getGauges()
+  const presets = gaugesConfig.sort((a, b) => (a.gid < b.gid ? -1 : 1))
 
   const allGaugeInfos = await fetchAllGauges(client, {
     blockNumber,
