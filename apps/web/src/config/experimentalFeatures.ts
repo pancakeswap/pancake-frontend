@@ -37,7 +37,7 @@ export const EXPERIMENTAL_FEATURE_CONFIGS: ExperimentalFeatureConfigs = [
   },
   {
     feature: EXPERIMENTAL_FEATURES.PCSX,
-    percentage: 0.2,
+    percentage: 1,
     whitelist: [],
   },
 ]
