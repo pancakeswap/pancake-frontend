@@ -14,6 +14,12 @@ const ColoredIconButton = styled(IconButton)`
   color: ${({ theme }) => theme.colors.textSubtle};
   overflow: hidden;
 `
+const StyledButtonMenuItem = styled(ButtonMenuItem)`
+  padding: 0 16px;
+  ${({ theme }) => theme.mediaQueries.md} {
+    padding: 0 24px;
+  }
+`
 
 const SwapSelectionWrapper = styled.div`
   display: flex;
@@ -84,9 +90,9 @@ export const SwapSelection = ({
   return (
     <SwapSelectionWrapper style={style}>
       <ButtonMenu scale="md" fullWidth activeIndex={swapType} onItemClick={(index) => onSelect(index)} variant="subtle">
-        <ButtonMenuItem>SWAP</ButtonMenuItem>
-        <ButtonMenuItem {...tSwapProps}>TWAP</ButtonMenuItem>
-        <ButtonMenuItem {...tSwapProps}>LIMIT</ButtonMenuItem>
+        <StyledButtonMenuItem>SWAP</StyledButtonMenuItem>
+        <StyledButtonMenuItem {...tSwapProps}>TWAP</StyledButtonMenuItem>
+        <StyledButtonMenuItem {...tSwapProps}>LIMIT</StyledButtonMenuItem>
       </ButtonMenu>
       {isChartSupported && withToolkit && (
         <ColoredIconButton
