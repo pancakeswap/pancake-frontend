@@ -218,7 +218,7 @@ export const RiskDetails: React.FC<RiskDetailsProps> = ({ token, riskLevelDescri
             <Text>
               {riskLevelDescription ||
                 t(
-                  'The address contains high risk factors that are possible to lead to partial loss of funds, or medium to lower chance of catastrophic losses.',
+                  'The address contains risk factors that are possible to lead to partial loss of funds, or medium to lower chance of catastrophic losses.',
                 )}
             </Text>
             <StyledLinkExternal href="https://www.hashdit.io">{t('Result provided by HashDit')}</StyledLinkExternal>
