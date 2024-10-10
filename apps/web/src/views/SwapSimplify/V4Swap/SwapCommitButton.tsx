@@ -10,7 +10,11 @@ import { GreyCard } from 'components/Card'
 import { CommitButton } from 'components/CommitButton'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { AutoRow } from 'components/Layout/Row'
-import SettingsModal, { RoutingSettingsButton, withCustomOnDismiss } from 'components/Menu/GlobalSettings/SettingsModal'
+import {
+  RoutingSettingsButton,
+  SettingsModalV2,
+  withCustomOnDismiss,
+} from 'components/Menu/GlobalSettings/SettingsModalV2'
 import { SettingsMode } from 'components/Menu/GlobalSettings/types'
 import { BIG_INT_ZERO } from 'config/constants/exchange'
 import { useCurrency } from 'hooks/Tokens'
@@ -33,7 +37,7 @@ import { useSwapCurrency } from '../../Swap/V3Swap/hooks/useSwapCurrency'
 import { CommitButtonProps } from '../../Swap/V3Swap/types'
 import { computeTradePriceBreakdown } from '../../Swap/V3Swap/utils/exchange'
 
-const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
+const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModalV2)
 
 interface SwapCommitButtonPropsType {
   order?: PriceOrder
