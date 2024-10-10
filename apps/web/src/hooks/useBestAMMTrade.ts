@@ -626,7 +626,12 @@ export function useBestTradeFromApi({
         },
       })
 
-      const serverRes = await fetch(`${QUOTING_API}`, {
+      const fillers = {
+        [ChainId.ETHEREUM]: '0xf3771ddf312bba0588c50944519b306fb0eeae16',
+        [ChainId.ARBITRUM_ONE]: '0x74958f75032c2aa51d3a91b3dc03590d2913b7c9',
+      }
+      const filler = fillers[amount.currency.chainId] ?? '0x74958f75032c2aa51d3a91b3dc03590d2913b7c9'
+      const serverRes = await fetch(`${QUOTING_API}?filler=${filler}`, {
         method: 'POST',
         signal,
         headers: {
