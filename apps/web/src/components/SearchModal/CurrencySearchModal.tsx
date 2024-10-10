@@ -171,13 +171,15 @@ export default function CurrencySearchModal({
                 {selectedCurrency.symbol}
               </Text>
               {!selectedCurrency.isNative && (
-                <FlexGap ml={isMobile ? '8px' : '4px'} gap={isMobile ? '18px' : '12px'} alignItems="center">
+                <FlexGap ml={isMobile ? '8px' : '4px'} alignItems="center">
                   <CopyButton
                     data-dd-action-name="Copy token address"
                     width="16px"
                     buttonColor="textSubtle"
                     text={selectedCurrency.wrapped.address}
                     tooltipMessage={t('Token address copied')}
+                    defaultTooltipMessage={t('Copy token address')}
+                    tooltipPlacement="top"
                   />
                   <ViewOnExplorerButton
                     address={selectedCurrency.wrapped.address}
@@ -185,12 +187,14 @@ export default function CurrencySearchModal({
                     type="token"
                     color="textSubtle"
                     width="18px"
+                    ml={isMobile ? '18px' : '12px'}
+                    tooltipPlacement="top"
                   />
                   <AddToWalletButton
                     data-dd-action-name="Add to wallet"
                     variant="text"
                     p="0"
-                    ml="3px"
+                    ml={isMobile ? '21px' : '15px'}
                     height="auto"
                     width="fit-content"
                     tokenAddress={selectedCurrency.wrapped.address}
@@ -201,6 +205,7 @@ export default function CurrencySearchModal({
                         ? selectedCurrency.wrapped.logoURI
                         : undefined
                     }
+                    tooltipPlacement="top"
                   />
                 </FlexGap>
               )}

@@ -1,6 +1,6 @@
 import { useTranslation } from "@pancakeswap/localization";
 import { ElementType, useCallback, useEffect, useState } from "react";
-import { useTooltip } from "../../hooks";
+import { TooltipOptions, useTooltip } from "../../hooks";
 import { IconButton } from "../Button";
 import { CopyIcon, SvgProps } from "../Svg";
 import { copyText } from "./copyText";
@@ -8,6 +8,8 @@ import { copyText } from "./copyText";
 interface CopyButtonProps extends SvgProps {
   text: string;
   tooltipMessage: string;
+  defaultTooltipMessage?: string;
+  tooltipPlacement?: TooltipOptions["placement"];
   buttonColor?: string;
   icon?: ElementType;
 }
@@ -15,19 +17,26 @@ interface CopyButtonProps extends SvgProps {
 export const CopyButton: React.FC<React.PropsWithChildren<CopyButtonProps>> = ({
   text,
   tooltipMessage,
+  defaultTooltipMessage,
   width,
   buttonColor = "primary",
+  tooltipPlacement = "auto",
   icon: Icon = CopyIcon,
   ...props
 }) => {
   const { t } = useTranslation();
   const [isTooltipDisplayed, setIsTooltipDisplayed] = useState(false);
 
-  const { targetRef, tooltip } = useTooltip(tooltipMessage, {
-    placement: "auto",
-    manualVisible: true,
-    trigger: "hover",
-  });
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    isTooltipDisplayed ? tooltipMessage : defaultTooltipMessage,
+    {
+      placement: tooltipPlacement,
+      manualVisible: !defaultTooltipMessage,
+      trigger: "hover",
+    }
+  );
+
+  const showToolTip = defaultTooltipMessage ? tooltipVisible : isTooltipDisplayed;
 
   const displayTooltip = useCallback(() => {
     setIsTooltipDisplayed(true);
@@ -61,7 +70,7 @@ export const CopyButton: React.FC<React.PropsWithChildren<CopyButtonProps>> = ({
           <Icon color={buttonColor} width={width} {...props} />
         </IconButton>
       </div>
-      {isTooltipDisplayed && tooltip}
+      {showToolTip && tooltip}
     </>
   );
 };

@@ -19,7 +19,7 @@ import React, { memo, useState } from 'react'
 
 import { NumberDisplay } from '@pancakeswap/widgets-internal'
 import { RowBetween, RowFixed } from 'components/Layout/Row'
-import { RoutingSettingsButton } from 'components/Menu/GlobalSettings/SettingsModal'
+import { RoutingSettingsButton } from 'components/Menu/GlobalSettings/SettingsModalV2'
 import { Field } from 'state/swap/actions'
 import { styled } from 'styled-components'
 import FormattedPriceImpact from '../../Swap/components/FormattedPriceImpact'
