@@ -626,7 +626,7 @@ export function useBestTradeFromApi({
         },
       })
 
-      const serverRes = await fetch(`${QUOTING_API}`, {
+      const serverRes = await fetch(`${QUOTING_API}?filler=0xff8ba4d1fc3762f6154cc942ccf30049a2a0cec6`, {
         method: 'POST',
         signal,
         headers: {
