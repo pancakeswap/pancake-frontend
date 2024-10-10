@@ -205,7 +205,7 @@ const SlippageDetails: React.FC = () => {
   )
 }
 
-export const RiskDetails: React.FC<RiskDetailsProps> = ({ token, isInputToken }) => {
+export const RiskDetails: React.FC<RiskDetailsProps> = ({ token, riskLevelDescription }) => {
   const { t } = useTranslation()
   const { isDataLoading, riskLevel } = useRiskCheckData(token)
   const { chainId } = useActiveChainId()
@@ -216,14 +216,10 @@ export const RiskDetails: React.FC<RiskDetailsProps> = ({ token, isInputToken })
         <FlexGap alignItems="flex-start" gap="8px">
           <FlexGap justifyContent="center" alignItems="flex-start" flexDirection="column" gap="8px">
             <Text>
-              {riskLevel >= TOKEN_RISK.HIGH
-                ? t(
-                    'The address contains high risk factors that are possible to lead to partial loss of funds, or medium to lower chance of catastrophic losses.',
-                  )
-                : t(
-                    'Scan risk level description for the %tokenType% token shows here. This risk level is for a reference only, not as an investment advice.',
-                    { tokenType: isInputToken ? 'input' : 'output' },
-                  )}
+              {riskLevelDescription ||
+                t(
+                  'The address contains high risk factors that are possible to lead to partial loss of funds, or medium to lower chance of catastrophic losses.',
+                )}
             </Text>
             <StyledLinkExternal href="https://www.hashdit.io">{t('Result provided by HashDit')}</StyledLinkExternal>
             {chainId === ChainId.BSC && (
@@ -296,8 +292,8 @@ export const RiskDetailsPanel: React.FC<RiskDetailsPanelProps> = ({
           }
           content={
             <FlexGap flexDirection="column" pl="32px" pr="8px">
-              <RiskDetails token={token0} isInputToken riskLevelDescription={token0RiskLevelDescription} />
-              <RiskDetails token={token1} isInputToken={false} riskLevelDescription={token1RiskLevelDescription} />
+              <RiskDetails token={token0} riskLevelDescription={token0RiskLevelDescription} />
+              <RiskDetails token={token1} riskLevelDescription={token1RiskLevelDescription} />
               {isPriceImpactTooHigh && <PriceImpactDetails />}
               {isSlippageTooHigh && <SlippageDetails />}
             </FlexGap>
@@ -309,13 +305,13 @@ export const RiskDetailsPanel: React.FC<RiskDetailsPanelProps> = ({
           {isRiskToken0 && (
             <RiskModalDetailCardWrapper>
               <RiskTitle token={token0} isInputToken bold />
-              <RiskDetails token={token0} isInputToken riskLevelDescription={token0RiskLevelDescription} />
+              <RiskDetails token={token0} riskLevelDescription={token0RiskLevelDescription} />
             </RiskModalDetailCardWrapper>
           )}
           {isRiskToken1 && (
             <RiskModalDetailCardWrapper>
               <RiskTitle token={token1} isInputToken={false} bold />
-              <RiskDetails token={token1} isInputToken={false} riskLevelDescription={token1RiskLevelDescription} />
+              <RiskDetails token={token1} riskLevelDescription={token1RiskLevelDescription} />
             </RiskModalDetailCardWrapper>
           )}
           {isPriceImpactTooHigh && (
