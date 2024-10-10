@@ -14,26 +14,15 @@ import {
 } from '@pancakeswap/uikit'
 import { useExpertMode, useUserExpertModeAcknowledgement } from '@pancakeswap/utils/user'
 import { MotionTabs } from 'components/Motion/MotionTabs'
-import dynamic from 'next/dynamic'
 import { ReactNode, useCallback, useState } from 'react'
 import { useRoutingSettingChanged } from 'state/user/smartRouter'
+import SettingsModal from '../SettingsModal'
+import { SettingsMode } from '../types'
+import { CustomizeRoutingTab } from './CustomizeRoutingTab'
+import { ExpertModeTab } from './ExpertModeTab'
+import { RecentTransactionsTab } from './RecentTransactionsTab'
+import { SettingsTab } from './SettingsTab'
 import { TabContent } from './TabContent'
-
-const SettingsTab = dynamic(() => import('./SettingsTab').then((mod) => mod.SettingsTab), {
-  ssr: false,
-})
-const RecentTransactionsTab = dynamic(
-  () => import('./RecentTransactionsTab').then((mod) => mod.RecentTransactionsTab),
-  {
-    ssr: false,
-  },
-)
-const CustomizeRoutingTab = dynamic(() => import('./CustomizeRoutingTab').then((mod) => mod.CustomizeRoutingTab), {
-  ssr: false,
-})
-const ExpertModeTab = dynamic(() => import('./ExpertModeTab').then((mod) => mod.ExpertModeTab), {
-  ssr: false,
-})
 
 enum TabIndex {
   SETTINGS = 0,
@@ -53,9 +42,15 @@ interface SettingsModalV2Props {
    * (3) Expert Mode
    */
   defaultTabIndex?: TabIndex
+
+  mode?: SettingsMode
 }
 
-export const SettingsModalV2 = ({ onDismiss, defaultTabIndex = TabIndex.SETTINGS }: SettingsModalV2Props) => {
+export const SettingsModalV2 = ({
+  onDismiss,
+  mode = SettingsMode.SWAP_LIQUIDITY,
+  defaultTabIndex = TabIndex.SETTINGS,
+}: SettingsModalV2Props) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
 
@@ -64,6 +59,8 @@ export const SettingsModalV2 = ({ onDismiss, defaultTabIndex = TabIndex.SETTINGS
   const [isRoutingSettingChange, reset] = useRoutingSettingChanged()
 
   const [activeTabIndex, setActiveTabIndex] = useState<TabIndex>(defaultTabIndex)
+
+  const { onDismiss: onDismissGlobalSettings } = useModalV2()
 
   const onTabChange = useCallback(
     (index: TabIndex) => {
@@ -142,6 +139,11 @@ export const SettingsModalV2 = ({ onDismiss, defaultTabIndex = TabIndex.SETTINGS
     setShowExpertModeAcknowledgement,
   ])
 
+  // For Global Settings, show existing modal
+  if (mode === SettingsMode.GLOBAL) {
+    return <SettingsModal onDismiss={onDismissGlobalSettings} mode={SettingsMode.GLOBAL} />
+  }
+
   return (
     <MotionModal
       minWidth="420px"
@@ -198,3 +200,25 @@ export function RoutingSettingsButton({
     </>
   )
 }
+
+export const withCustomOnDismiss =
+  (Component) =>
+  ({
+    onDismiss,
+    customOnDismiss,
+    mode,
+    ...props
+  }: {
+    onDismiss?: () => void
+    customOnDismiss: () => void
+    mode: SettingsMode
+  }) => {
+    const handleDismiss = useCallback(() => {
+      onDismiss?.()
+      if (customOnDismiss) {
+        customOnDismiss()
+      }
+    }, [customOnDismiss, onDismiss])
+
+    return <Component {...props} mode={mode} onDismiss={handleDismiss} />
+  }
