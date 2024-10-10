@@ -116,7 +116,7 @@ const config: (
         {
           label: t('Farm / Liquidity'),
           href: '/liquidity/pools',
-          matchHrefs: ['/liquidity/positions'],
+          matchHrefs: ['/liquidity/positions', '/farms'],
           supportChainIds: SUPPORT_FARMS,
         },
         {
