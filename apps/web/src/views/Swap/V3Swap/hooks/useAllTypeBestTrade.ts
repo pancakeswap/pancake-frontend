@@ -73,7 +73,11 @@ export const useAllTypeBestTrade = () => {
 
   const hasAvailableDutchOrder =
     bestOrder.enabled && bestOrder.order?.type === OrderType.DUTCH_LIMIT && bestOrder.isValidQuote
-  const betterQuote = useBetterQuote(classicAmmOrder, hasAvailableDutchOrder ? currentOrder : undefined)
+  // TODO: for testing purpose
+  const betterQuote = useBetterQuote(
+    hasAvailableDutchOrder ? undefined : classicAmmOrder,
+    hasAvailableDutchOrder ? currentOrder : undefined,
+  )
   const finalOrder = xEnabled ? betterQuote : classicAmmOrder
 
   return {

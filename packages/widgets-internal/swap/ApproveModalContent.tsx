@@ -104,7 +104,7 @@ export const ApproveModalContent: React.FC<ApproveModalContentProps> = ({
                     <Text fontSize="14px">{t("Swapping thru:")}</Text>
                     {isX ? (
                       <Text ml="4px" fontSize="14px">
-                        {t("Experimental Trading")}
+                        PancakeSwap X
                       </Text>
                     ) : isBonus ? (
                       <Text ml="4px" fontSize="14px">
