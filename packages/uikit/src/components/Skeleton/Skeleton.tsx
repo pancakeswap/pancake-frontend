@@ -142,7 +142,7 @@ export const SkeletonV2: React.FC<React.PropsWithChildren<SkeletonV2Props>> = ({
               key="skeleton"
               style={{ position: "absolute", top: skeletonTop, left: skeletonLeft }}
               ref={skeletonRef}
-              onAnimationStart={() => animationHandler(skeletonRef.current)}
+              onAnimationStart={() => animationHandler(skeletonRef.current, isDataReady)}
               {...animationMap}
               variants={animationVariants}
               transition={{ duration: 0.3 }}
