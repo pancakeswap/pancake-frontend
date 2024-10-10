@@ -264,18 +264,6 @@ const config: (
           href: 'https://docs.pancakeswap.finance',
           type: DropdownMenuItemType.EXTERNAL_LINK,
         },
-        {
-          label: t('v4'),
-          href: '/v4',
-          overrideSubNavItems: [
-            { label: t('Introducing v4'), href: '/v4' },
-            { label: t('Features'), href: '/v4#features' },
-            { label: t('Start Building'), href: '/v4#building' },
-            { label: t('Hooks'), href: '/v4#hooks' },
-            { label: t('Events and News'), href: '/v4#events' },
-          ],
-          isMobileOnly: true,
-        },
       ].map((item) => addMenuItemSupported(item, chainId)),
     },
   ].map((item) => addMenuItemSupported(item, chainId))
