@@ -14,7 +14,7 @@ import { LegacySerializedPool, OnChainProvider, UpgradedSerializedPool } from '.
 import { isLegacyPool, isUpgradedPool } from '../utils'
 
 const getLivePoolsWithEnd = async (chainId: ChainId) => {
-  const poolsConfig = getPoolsConfig(chainId)
+  const poolsConfig = await getPoolsConfig(chainId)
   if (!poolsConfig) {
     return null
   }
@@ -148,7 +148,7 @@ export const fetchPoolsTimeLimits = async (chainId: ChainId, provider: OnChainPr
 }
 
 export const fetchPoolsTotalStaking = async (chainId: ChainId, provider: OnChainProvider) => {
-  const poolsConfig = getPoolsConfig(chainId)
+  const poolsConfig = await getPoolsConfig(chainId)
   if (!poolsConfig) {
     return null
   }
@@ -186,7 +186,7 @@ export const fetchPoolsStakingLimitsByBlock = async ({
 }: FetchingPoolsStakingLimitsParams): Promise<{
   [key: string]: { stakingLimit: BigNumber; numberSecondsForUserLimit: number }
 }> => {
-  const poolsConfig = getPoolsConfig(chainId)
+  const poolsConfig = await getPoolsConfig(chainId)
   if (!poolsConfig) {
     throw new Error(`No pools found on chain ${chainId}`)
   }
@@ -238,7 +238,7 @@ const fetchPoolsStakingLimitsByTime = async ({
 }: FetchingPoolsStakingLimitsParams): Promise<{
   [key: string]: { stakingLimit: BigNumber; numberSecondsForUserLimit: number }
 }> => {
-  const poolsConfig = getPoolsConfig(chainId)
+  const poolsConfig = await getPoolsConfig(chainId)
   if (!poolsConfig) {
     throw new Error(`No pools found on chain ${chainId}`)
   }
@@ -304,7 +304,7 @@ export const fetchPoolsProfileRequirement = async (
     thresholdPoints: string
   }
 }> => {
-  const poolsConfig = getPoolsConfig(chainId)
+  const poolsConfig = await getPoolsConfig(chainId)
   if (!poolsConfig) {
     throw new Error(`No pools found on chain ${chainId}`)
   }

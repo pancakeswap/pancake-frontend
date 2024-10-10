@@ -4,8 +4,6 @@ import * as exports from './index'
 test('exports', () => {
   expect(Object.keys(exports)).toMatchInlineSnapshot(`
     [
-      "POOLS_CONFIG_BY_CHAIN",
-      "LIVE_POOLS_CONFIG_BY_CHAIN",
       "getPoolsConfig",
       "getLivePoolsConfig",
       "MAX_LOCK_DURATION",

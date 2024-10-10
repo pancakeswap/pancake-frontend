@@ -24,11 +24,11 @@ import {
   fetchCakeVaultPublicData,
   fetchCakeVaultUserData,
   fetchIfoPublicDataAsync,
+  fetchPoolsConfigAsync,
   fetchPoolsPublicDataAsync,
   fetchPoolsStakingLimitsAsync,
   fetchPoolsUserDataAsync,
   fetchUserIfoCreditDataAsync,
-  setInitialPoolConfig,
 } from '.'
 import { fetchFarmsPublicDataAsync } from '../farms'
 import { VaultKey } from '../types'
@@ -44,7 +44,7 @@ import {
 // Only fetch farms for live pools
 const getActiveFarms = async (chainId: number) => {
   const farmsConfig = (await getLegacyFarmConfig(chainId)) || []
-  const livePools = getLivePoolsConfig(chainId) || []
+  const livePools = (await getLivePoolsConfig(chainId)) || []
   const lPoolAddresses = livePools
     .filter(({ sousId }) => sousId !== 0)
     .map(({ earningToken, stakingToken }) => {
@@ -106,7 +106,7 @@ export const usePoolsConfigInitialize = () => {
   const { chainId } = useActiveChainId()
   useEffect(() => {
     if (chainId) {
-      dispatch(setInitialPoolConfig({ chainId }))
+      dispatch(fetchPoolsConfigAsync({ chainId }))
     }
   }, [dispatch, chainId])
 }

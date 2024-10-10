@@ -9,8 +9,8 @@ import { OnChainProvider, SerializedPool } from '../types'
 
 // Pool 0, Cake / Cake is a different kind of contract (master chef)
 // BNB pools use the native BNB token (wrapping ? unwrapping is done at the contract level)
-const getPoolsFactory = (filter: (pool: SerializedPool) => boolean) => (chainId: ChainId) => {
-  const poolsConfig = getPoolsConfig(chainId)
+const getPoolsFactory = (filter: (pool: SerializedPool) => boolean) => async (chainId: ChainId) => {
+  const poolsConfig = await getPoolsConfig(chainId)
   if (!poolsConfig) {
     throw new Error(`Unable to get pools config on chain ${chainId}`)
   }
@@ -27,7 +27,7 @@ interface FetchUserDataParams {
 }
 
 export const fetchPoolsAllowance = async ({ account, chainId, provider }: FetchUserDataParams) => {
-  const nonBnbPools = getNonBnbPools(chainId)
+  const nonBnbPools = await getNonBnbPools(chainId)
 
   const client = provider({ chainId })
   const allowances = await client.multicall({
@@ -48,8 +48,8 @@ export const fetchPoolsAllowance = async ({ account, chainId, provider }: FetchU
 }
 
 export const fetchUserBalances = async ({ account, chainId, provider }: FetchUserDataParams) => {
-  const nonBnbPools = getNonBnbPools(chainId)
-  const bnbPools = getBnbPools(chainId)
+  const nonBnbPools = await getNonBnbPools(chainId)
+  const bnbPools = await getBnbPools(chainId)
   // Non BNB pools
   const tokens = uniq(nonBnbPools.map((pool) => pool.stakingToken.address))
   const client = provider({ chainId })
@@ -102,7 +102,7 @@ export const fetchUserBalances = async ({ account, chainId, provider }: FetchUse
 }
 
 export const fetchUserStakeBalances = async ({ account, chainId, provider }: FetchUserDataParams) => {
-  const nonMasterPools = getNonMasterPools(chainId)
+  const nonMasterPools = await getNonMasterPools(chainId)
 
   const client = provider({ chainId })
   const userInfo = await client.multicall({
@@ -124,7 +124,7 @@ export const fetchUserStakeBalances = async ({ account, chainId, provider }: Fet
 }
 
 export const fetchUserPendingRewards = async ({ account, chainId, provider }: FetchUserDataParams) => {
-  const nonMasterPools = getNonMasterPools(chainId)
+  const nonMasterPools = await getNonMasterPools(chainId)
 
   const client = provider({ chainId })
   const res = await client.multicall({
