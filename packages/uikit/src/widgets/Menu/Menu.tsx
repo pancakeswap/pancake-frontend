@@ -184,14 +184,14 @@ const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
               <SubMenuItems
                 items={subLinksWithoutMobile}
                 mt={`${totalTopMenuHeight + 1}px`}
-                activeItem={activeSubItem}
+                activeItem={activeSubItemChildItem || activeSubItem}
               />
 
               {subLinksMobileOnly && subLinksMobileOnly?.length > 0 && (
                 <SubMenuItems
                   items={subLinksMobileOnly}
                   mt={`${totalTopMenuHeight + 1}px`}
-                  activeItem={activeSubItem}
+                  activeItem={activeSubItemChildItem || activeSubItem}
                   isMobileOnly
                 />
               )}

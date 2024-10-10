@@ -10,7 +10,6 @@ import useTheme from 'hooks/useTheme'
 import { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { useGauges } from 'views/GaugesVoting/hooks/useGauges'
-import { SubMenu } from 'views/PositionManagers/components/SubMenu'
 import { BenefitCard } from './components/BenefitCard'
 import { CakeRewardsCard } from './components/CakeRewardsCard'
 import { LockCake } from './components/LockCake'
@@ -36,7 +35,6 @@ const CakeStaking = () => {
       <ModalV2 isOpen={cakeRewardModalVisible} closeOnOverlayClick onDismiss={handleDismiss}>
         <CakeRewardsCard onDismiss={handleDismiss} />
       </ModalV2>
-      <SubMenu />
       <StyledPageHeader background={isMobile ? theme.colors.gradientInverseBubblegum : undefined}>
         <PageHead />
         <LockCake />

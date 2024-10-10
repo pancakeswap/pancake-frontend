@@ -11,7 +11,6 @@ import Page from 'components/Layout/Page'
 import { TokenPairImage } from 'components/TokenImage'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { usePoolsPageFetch, usePoolsWithVault } from 'state/pools/hooks'
-import { SubMenu } from 'views/PositionManagers/components/SubMenu'
 import { useAccount } from 'wagmi'
 
 import CakeVaultCard from './components/CakeVaultCard'
@@ -50,7 +49,6 @@ const Pools: React.FC<React.PropsWithChildren> = () => {
 
   return (
     <>
-      <SubMenu />
       <PageHeader>
         <Flex justifyContent="space-between" flexDirection={['column', null, null, 'row']}>
           <Flex flex="1" flexDirection="column" mr={['8px', 0]}>

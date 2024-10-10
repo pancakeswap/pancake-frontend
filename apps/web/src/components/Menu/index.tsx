@@ -27,8 +27,6 @@ const LinkComponent = (linkProps) => {
   return <NextLinkFromReactRouter to={linkProps.href} {...linkProps} prefetch={false} />
 }
 
-const EMPTY_ARRAY = []
-
 const Menu = (props) => {
   const { enabled } = useWebNotifications()
   const { chainId } = useActiveChainId()
@@ -90,7 +88,7 @@ const Menu = (props) => {
   const activeMenuItem = useMemo(() => getActiveMenuItem({ menuConfig: menuItems, pathname }), [menuItems, pathname])
   const activeSubMenuItem = useMemo(
     () => getActiveSubMenuItem({ menuItem: activeMenuItem, pathname }),
-    [menuItems, pathname],
+    [pathname, activeMenuItem],
   )
   const activeSubChildMenuItem = useMemo(
     () => getActiveSubMenuChildItem({ menuItem: activeMenuItem, pathname }),
@@ -129,7 +127,13 @@ const Menu = (props) => {
       setLang={setLanguage}
       cakePriceUsd={cakePrice.eq(BIG_ZERO) ? undefined : cakePrice}
       links={menuItems}
-      subLinks={activeMenuItem?.hideSubNav || activeSubMenuItem?.hideSubNav ? EMPTY_ARRAY : activeMenuItem?.items}
+      subLinks={
+        activeSubMenuItem?.overrideSubNavItems ??
+        activeMenuItem?.overrideSubNavItems ??
+        (activeMenuItem?.hideSubNav || activeSubMenuItem?.hideSubNav
+          ? []
+          : activeSubMenuItem?.items ?? activeMenuItem?.items)
+      }
       footerLinks={getFooterLinks}
       activeItem={activeMenuItem?.href}
       activeSubItem={activeSubMenuItem?.href}

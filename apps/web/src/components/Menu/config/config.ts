@@ -18,9 +18,16 @@ import { SUPPORT_CAKE_STAKING, SUPPORT_FARMS, SUPPORT_ONLY_BSC } from 'config/co
 import { getOptionsUrl } from 'utils/getOptionsUrl'
 import { getPerpetualUrl } from 'utils/getPerpetualUrl'
 
-export type ConfigMenuDropDownItemsType = DropdownMenuItems & { hideSubNav?: boolean }
-export type ConfigMenuItemsType = Omit<MenuItemsType, 'items'> & { hideSubNav?: boolean; image?: string } & {
+export type ConfigMenuDropDownItemsType = DropdownMenuItems & {
+  hideSubNav?: boolean
+  overrideSubNavItems?: DropdownMenuItems['items']
+  matchHrefs?: string[]
+}
+export type ConfigMenuItemsType = Omit<MenuItemsType, 'items'> & {
+  hideSubNav?: boolean
+  image?: string
   items?: ConfigMenuDropDownItemsType[]
+  overrideSubNavItems?: ConfigMenuDropDownItemsType[]
 }
 
 export const addMenuItemSupported = (item, chainId) => {
@@ -83,11 +90,33 @@ const config: (
       fillIcon: EarnFillIcon,
       image: '/images/decorations/pe2.png',
       supportChainIds: SUPPORT_FARMS,
-      hideSubNav: true,
+      overrideSubNavItems: [
+        {
+          label: t('Farm / Liquidity'),
+          href: '/liquidity/pools',
+          supportChainIds: SUPPORT_FARMS,
+        },
+        {
+          label: t('Position Manager'),
+          href: '/position-managers',
+          supportChainIds: POSITION_MANAGERS_SUPPORTED_CHAINS,
+        },
+        {
+          label: t('CAKE Staking'),
+          href: '/cake-staking',
+          supportChainIds: SUPPORT_CAKE_STAKING,
+        },
+        {
+          label: t('Syrup Pools'),
+          href: '/pools',
+          supportChainIds: POOL_SUPPORTED_CHAINS,
+        },
+      ].map((item) => addMenuItemSupported(item, chainId)),
       items: [
         {
           label: t('Farm / Liquidity'),
           href: '/liquidity/pools',
+          matchHrefs: ['/liquidity/positions'],
           supportChainIds: SUPPORT_FARMS,
         },
         {
@@ -150,8 +179,17 @@ const config: (
     {
       label: t('Play'),
       icon: GameIcon,
-      hideSubNav: true,
       href: '/prediction',
+      overrideSubNavItems: [
+        {
+          label: t('Prediction'),
+          href: '/prediction',
+        },
+        {
+          label: t('Lottery'),
+          href: '/lottery',
+        },
+      ],
       items: [
         {
           label: t('Prediction (BETA)'),
@@ -186,6 +224,16 @@ const config: (
           label: t('IFO'),
           href: '/ifo',
           image: '/images/ifos/ifo-bunny.png',
+          overrideSubNavItems: [
+            {
+              label: t('Latest'),
+              href: '/ifo',
+            },
+            {
+              label: t('Finished'),
+              href: '/ifo/history',
+            },
+          ],
         },
         {
           label: t('Voting'),
@@ -215,11 +263,6 @@ const config: (
           label: t('Docs'),
           href: 'https://docs.pancakeswap.finance',
           type: DropdownMenuItemType.EXTERNAL_LINK,
-        },
-        {
-          label: t('v4'),
-          href: '/v4',
-          isMobileOnly: true,
         },
       ].map((item) => addMenuItemSupported(item, chainId)),
     },

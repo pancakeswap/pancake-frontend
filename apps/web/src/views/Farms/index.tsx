@@ -1,6 +1,5 @@
 import { ConnectorNames } from 'config/wallet'
 import { ExtendEthereum } from 'global'
-import { SubMenu } from 'views/PositionManagers/components/SubMenu'
 import { useAccount } from 'wagmi'
 import { mainnet } from 'wagmi/chains'
 import FarmsV3 from './FarmsV3'
@@ -19,12 +18,7 @@ export function useIsBloctoETH() {
 }
 
 export const FarmsV3PageLayout: React.FC<React.PropsWithChildren<unknown>> = ({ children }) => {
-  return (
-    <>
-      <SubMenu />
-      <FarmsV3>{children}</FarmsV3>
-    </>
-  )
+  return <FarmsV3>{children}</FarmsV3>
 }
 
 export { FarmsContext, FarmsV3Context }

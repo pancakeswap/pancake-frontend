@@ -11,7 +11,15 @@ export const getActiveMenuItem = ({ pathname, menuConfig }: { pathname: string; 
 
 export const getActiveSubMenuItem = ({ pathname, menuItem }: { pathname: string; menuItem?: ConfigMenuItemsType }) => {
   const activeSubMenuItems =
-    menuItem?.items?.filter((subMenuItem) => subMenuItem?.href && pathname.startsWith(subMenuItem?.href)) ?? []
+    menuItem?.items?.filter((subMenuItem) => {
+      if (subMenuItem?.href && pathname.startsWith(subMenuItem?.href)) {
+        return true
+      }
+      if (subMenuItem?.matchHrefs?.some((matchHref) => pathname.startsWith(matchHref))) {
+        return true
+      }
+      return false
+    }) ?? []
 
   // Pathname doesn't include any submenu item href - return undefined
   if (!activeSubMenuItems || activeSubMenuItems.length === 0) {
@@ -37,8 +45,8 @@ export const getActiveSubMenuChildItem = ({
   menuItem?: ConfigMenuItemsType
 }) => {
   const getChildItems = menuItem?.items
-    ?.map((i) => i.items)
-    ?.filter((i) => Boolean(i))
+    ?.map((i) => [...(i.items ?? []), ...(i.overrideSubNavItems ?? [])])
+    ?.filter(Boolean)
     .flat()
 
   const activeSubMenuItems =
