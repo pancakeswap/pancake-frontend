@@ -43,10 +43,12 @@ export const SettingsTab = memo(
     return (
       <TabContent>
         <Flex flexDirection="column">
-          <PreTitle>{t('Swaps & Liquidity')}</PreTitle>
-          <Flex justifyContent="space-between" alignItems="center" mt="8px" mb="24px">
-            {chainId === ChainId.BSC && <GasSettings />}
-          </Flex>
+          <PreTitle mb="8px">{t('Swaps & Liquidity')}</PreTitle>
+          {chainId === ChainId.BSC && (
+            <Flex justifyContent="space-between" alignItems="center" mb="24px">
+              <GasSettings />
+            </Flex>
+          )}
           <TransactionSettings />
 
           <PreTitle>{t('Interface Settings')}</PreTitle>
