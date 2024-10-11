@@ -18,7 +18,7 @@ export function TradePrice({ price, loading }: TradePriceProps) {
     <FlexGap justifyContent="center" alignItems="center">
       {show ? (
         <>
-          <SkeletonV2 width="50px" height="16px" borderRadius="8px" minHeight="auto" isDataReady={!loading}>
+          <SkeletonV2 width="50px" height="18px" borderRadius="8px" minHeight="auto" isDataReady={!loading}>
             <Text fontSize="14px">
               {`1 ${showInverted ? price?.baseCurrency?.symbol : price?.quoteCurrency?.symbol}`}
             </Text>
@@ -31,7 +31,7 @@ export function TradePrice({ price, loading }: TradePriceProps) {
             ml="4px"
             mr="4px"
           />
-          <SkeletonV2 width="100px" height="16px" borderRadius="8px" minHeight="auto" isDataReady={!loading}>
+          <SkeletonV2 width="100px" height="18px" borderRadius="8px" minHeight="auto" isDataReady={!loading}>
             <Text fontSize="14px">
               {`${formattedPrice} ${showInverted ? price?.quoteCurrency?.symbol : price?.baseCurrency?.symbol}`}
             </Text>

@@ -161,7 +161,12 @@ export function V4SwapForm() {
               }}
               alignItems="center"
             >
-              <RefreshButton onRefresh={refreshOrder} refreshDisabled={refreshDisabled} chainId={activeChianId} />
+              <RefreshButton
+                onRefresh={refreshOrder}
+                refreshDisabled={refreshDisabled}
+                chainId={activeChianId}
+                loading={!tradeLoaded}
+              />
               <PricingAndSlippage
                 priceLoading={!tradeLoaded}
                 price={executionPrice ?? undefined}
