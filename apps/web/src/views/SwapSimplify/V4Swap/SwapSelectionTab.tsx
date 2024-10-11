@@ -15,9 +15,11 @@ const ColoredIconButton = styled(IconButton)`
   overflow: hidden;
 `
 const StyledButtonMenuItem = styled(ButtonMenuItem)`
-  padding: 0 16px;
-  ${({ theme }) => theme.mediaQueries.md} {
-    padding: 0 24px;
+  height: 40px;
+  padding: 0px 16px;
+  * ${({ theme }) => theme.mediaQueries.md} {
+    width: 124px;
+    padding: 0px 24px;
   }
 `
 
@@ -89,7 +91,14 @@ export const SwapSelection = ({
 
   return (
     <SwapSelectionWrapper style={style}>
-      <ButtonMenu scale="md" fullWidth activeIndex={swapType} onItemClick={(index) => onSelect(index)} variant="subtle">
+      <ButtonMenu
+        scale="md"
+        activeIndex={swapType}
+        onItemClick={(index) => onSelect(index)}
+        variant="subtle"
+        noButtonMargin
+        fullWidth
+      >
         <StyledButtonMenuItem>Swap</StyledButtonMenuItem>
         <StyledButtonMenuItem {...tSwapProps}>TWAP</StyledButtonMenuItem>
         <StyledButtonMenuItem {...tSwapProps}>Limit</StyledButtonMenuItem>
@@ -105,8 +114,14 @@ export const SwapSelection = ({
           variant="text"
           scale="sm"
           data-dd-action-name="Price chart button"
+          width="24px"
+          p="0"
         >
-          {isChartDisplayed ? <ChartDisableIcon color="textSubtle" /> : <ChartIcon width="24px" color="textSubtle" />}
+          {isChartDisplayed ? (
+            <ChartDisableIcon width="24px" color="textSubtle" />
+          ) : (
+            <ChartIcon width="24px" color="textSubtle" />
+          )}
         </ColoredIconButton>
       )}
       {withToolkit && (
@@ -115,6 +130,7 @@ export const SwapSelection = ({
           mr="0"
           mode={SettingsMode.SWAP_LIQUIDITY}
           data-dd-action-name="Swap settings button"
+          width="24px"
         />
       )}
     </SwapSelectionWrapper>
