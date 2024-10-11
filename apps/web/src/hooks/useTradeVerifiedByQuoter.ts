@@ -1,8 +1,8 @@
 import { V4Router } from '@pancakeswap/smart-router'
-import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/swap-sdk-core'
+import { CurrencyAmount, Fraction, TradeType } from '@pancakeswap/swap-sdk-core'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
-import { fetchQuotes } from '@pancakeswap/routing-sdk-addon-quoter'
+import { fetchQuotes, Quote } from '@pancakeswap/routing-sdk-addon-quoter'
 
 import { getViemClients } from 'utils/viem'
 import { toRoutingSDKTrade } from 'utils/convertTrade'
@@ -37,19 +37,27 @@ export function useTradeVerifiedByQuoter<P extends Params>(p: P): P {
       if (quotes.some((q) => q === undefined)) {
         throw new Error('Fail to validate')
       }
-      const quote = quotes.reduce<CurrencyAmount<Currency>>(
-        (total, q) => total.add(CurrencyAmount.fromRawAmount(quoteCurrency, q!.quotient)),
-        CurrencyAmount.fromRawAmount(quoteCurrency, 0n),
+      const { quote, gasUseEstimate } = quotes.reduce<NonNullable<Quote>>(
+        (total, q) => ({
+          quote: total.quote.add(CurrencyAmount.fromRawAmount(quoteCurrency, q!.quote.quotient)),
+          gasUseEstimate: total.gasUseEstimate + q!.gasUseEstimate,
+        }),
+        {
+          quote: CurrencyAmount.fromRawAmount(quoteCurrency, 0n),
+          gasUseEstimate: 0n,
+        },
       )
       return {
         ...trade,
         routes: trade.routes.map((r, index) => ({
           ...r,
-          inputAmount: isExactIn ? r.inputAmount : quotes[index],
-          outputAmount: isExactIn ? quotes[index] : r.outputAmount,
+          inputAmount: isExactIn ? r.inputAmount : quotes[index]?.quote,
+          outputAmount: isExactIn ? quotes[index]?.quote : r.outputAmount,
+          ...reviseGasUseEstimate(trade.tradeType, r, quotes[index]!.gasUseEstimate),
         })),
         inputAmount: isExactIn ? trade.inputAmount : quote,
         outputAmount: isExactIn ? quote : trade.outputAmount,
+        ...reviseGasUseEstimate(trade.tradeType, trade, gasUseEstimate),
       }
     },
     refetchOnWindowFocus: false,
@@ -62,5 +70,39 @@ export function useTradeVerifiedByQuoter<P extends Params>(p: P): P {
     isLoading: isPlaceholderData || isLoading,
     trade: error ? trade : data,
     error: error ?? p.error,
+  }
+}
+
+type GasUseEstimate = Pick<
+  V4Router.V4TradeWithoutGraph<TradeType>,
+  | 'gasUseEstimate'
+  | 'inputAmountWithGasAdjusted'
+  | 'outputAmountWithGasAdjusted'
+  | 'gasUseEstimateBase'
+  | 'gasUseEstimateQuote'
+>
+
+function reviseGasUseEstimate(
+  tradeType: TradeType,
+  estimate: GasUseEstimate,
+  actualGasUseEstimate: bigint,
+): GasUseEstimate {
+  const isExactIn = tradeType === TradeType.EXACT_INPUT
+  const factor = new Fraction(actualGasUseEstimate, estimate.gasUseEstimate)
+  const gasUseEstimateBase = estimate.gasUseEstimateBase.multiply(factor)
+  const gasUseEstimateQuote = estimate.gasUseEstimateQuote.multiply(factor)
+  const inputAmountWithGasAdjusted = isExactIn
+    ? estimate.inputAmountWithGasAdjusted
+    : estimate.inputAmountWithGasAdjusted.subtract(estimate.gasUseEstimateQuote).add(gasUseEstimateQuote)
+  const outputAmountWithGasAdjusted = isExactIn
+    ? estimate.outputAmountWithGasAdjusted.add(estimate.gasUseEstimateQuote).subtract(gasUseEstimateQuote)
+    : estimate.outputAmountWithGasAdjusted
+
+  return {
+    gasUseEstimateBase,
+    gasUseEstimateQuote,
+    inputAmountWithGasAdjusted,
+    outputAmountWithGasAdjusted,
+    gasUseEstimate: actualGasUseEstimate,
   }
 }
