@@ -378,7 +378,7 @@ export const getStablePairDetails = async (
     const nativeDeposited1 = CurrencyAmount.fromRawAmount(token1.wrapped, nativeToken1Amount.toString())
 
     const [farmingToken0Amount, farmingToken1Amount] = farmingReserveResults[index]
-    const farmingDeposited0 = CurrencyAmount.fromRawAmount(token1.wrapped, farmingToken0Amount.toString())
+    const farmingDeposited0 = CurrencyAmount.fromRawAmount(token0.wrapped, farmingToken0Amount.toString())
     const farmingDeposited1 = CurrencyAmount.fromRawAmount(token1.wrapped, farmingToken1Amount.toString())
 
     const isStaked = !!STABLE_UNIVERSAL_FARMS.find((farm) => farm.lpAddress === pair.lpAddress)
