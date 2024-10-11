@@ -90,9 +90,9 @@ export const SwapSelection = ({
   return (
     <SwapSelectionWrapper style={style}>
       <ButtonMenu scale="md" fullWidth activeIndex={swapType} onItemClick={(index) => onSelect(index)} variant="subtle">
-        <StyledButtonMenuItem>SWAP</StyledButtonMenuItem>
+        <StyledButtonMenuItem>Swap</StyledButtonMenuItem>
         <StyledButtonMenuItem {...tSwapProps}>TWAP</StyledButtonMenuItem>
-        <StyledButtonMenuItem {...tSwapProps}>LIMIT</StyledButtonMenuItem>
+        <StyledButtonMenuItem {...tSwapProps}>Limit</StyledButtonMenuItem>
       </ButtonMenu>
       {isChartSupported && withToolkit && (
         <ColoredIconButton
