@@ -6,9 +6,10 @@ import {
   BackForwardIcon,
   Box,
   Button,
+  DottedHelpText,
   Flex,
   Link,
-  QuestionHelper,
+  QuestionHelperV2,
   Text,
   WarningIcon,
   useMatchBreakpoints,
@@ -149,42 +150,45 @@ export const SwapModalFooterV2 = memo(function SwapModalFooterV2({
         </RowBetween>
         <RowBetween mb="8px">
           <RowFixed>
-            <Text fontSize="14px">{t('Price Impact')}</Text>
-            <QuestionHelper
+            <QuestionHelperV2
               ml="4px"
               placement="top"
               text={<>{t('The difference between the market price and your price due to trade size.')}</>}
-            />
+            >
+              <DottedHelpText fontSize="14px">{t('Price Impact')}</DottedHelpText>
+            </QuestionHelperV2>
           </RowFixed>
           <FormattedPriceImpact isX={isXOrder(order)} priceImpact={priceImpactWithoutFee} />
         </RowBetween>
         {!isXOrder(order) && (
           <RowBetween mb="8px">
             <RowFixed>
-              <Text fontSize="14px">{t('Slippage Tolerance')}</Text>
-              <QuestionHelper
+              <QuestionHelperV2
                 ml="4px"
                 placement="top"
                 text={t(
                   'Setting a high slippage tolerance can help transactions succeed, but you may not get such a good price. Use with caution.',
                 )}
-              />
+              >
+                <DottedHelpText fontSize="14px">{t('Slippage Tolerance')}</DottedHelpText>
+              </QuestionHelperV2>
             </RowFixed>
             <SlippageButton slippage={allowedSlippage} />
           </RowBetween>
         )}
         <RowBetween mb="8px">
           <RowFixed>
-            <Text fontSize="14px">
-              {tradeType === TradeType.EXACT_INPUT ? t('Minimum received') : t('Maximum sold')}
-            </Text>
-            <QuestionHelper
+            <QuestionHelperV2
               text={t(
                 'Your transaction will revert if there is a large, unfavorable price movement before it is confirmed.',
               )}
               ml="4px"
               placement="top"
-            />
+            >
+              <DottedHelpText fontSize="14px">
+                {tradeType === TradeType.EXACT_INPUT ? t('Minimum received') : t('Maximum sold')}
+              </DottedHelpText>
+            </QuestionHelperV2>
           </RowFixed>
           <RowFixed>
             <Text fontSize="14px">
@@ -200,8 +204,7 @@ export const SwapModalFooterV2 = memo(function SwapModalFooterV2({
 
         <RowBetween mt="2px">
           <RowFixed>
-            <Text fontSize="14px">{t('Trading Fee')}</Text>
-            <QuestionHelper
+            <QuestionHelperV2
               ml="4px"
               placement="top"
               text={
@@ -223,7 +226,9 @@ export const SwapModalFooterV2 = memo(function SwapModalFooterV2({
                   </Text>
                 </>
               }
-            />
+            >
+              <DottedHelpText fontSize="14px">{t('Trading Fee')}</DottedHelpText>
+            </QuestionHelperV2>
           </RowFixed>
           {realizedLPFee || isXOrder(order) ? (
             <Flex alignItems="center">
