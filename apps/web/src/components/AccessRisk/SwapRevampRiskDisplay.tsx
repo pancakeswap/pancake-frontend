@@ -1,11 +1,23 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId, ERC20Token } from '@pancakeswap/sdk'
-import { Box, FlexGap, LinkExternal, Modal, ModalV2, RiskAlertIcon, Text, WarningIcon } from '@pancakeswap/uikit'
+import {
+  Box,
+  Button,
+  FlexGap,
+  LinkExternal,
+  Modal,
+  ModalV2,
+  RiskAlertIcon,
+  Text,
+  WarningIcon,
+} from '@pancakeswap/uikit'
 import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import { SwapUIV2 } from '@pancakeswap/widgets-internal'
 import { useEffect, useMemo, useState } from 'react'
 import { keyframes, styled } from 'styled-components'
 
+import { useUserSlippage } from '@pancakeswap/utils/user'
+import { DEFAULT_SLIPPAGE_TOLERANCE } from 'components/Menu/GlobalSettings/TransactionSettings'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { TOKEN_RISK, TOKEN_RISK_T, useTokenRisk } from './index'
 
@@ -32,6 +44,11 @@ const RiskModalDetailCardWrapper = styled.div`
 `
 
 const StyledLinkExternal = styled(LinkExternal).attrs({ color: 'primary60' })`
+  font-weight: normal;
+`
+
+const StyledTextButton = styled(Button).attrs({ variant: 'text' })`
+  color: ${({ theme }) => theme.colors.primary60};
   font-weight: normal;
 `
 
@@ -189,6 +206,8 @@ const PriceImpactDetails: React.FC = () => {
 
 const SlippageDetails: React.FC = () => {
   const { t } = useTranslation()
+  const [, setUserSlippageTolerance] = useUserSlippage()
+
   return (
     <FlexGap alignItems="flex-start">
       <FlexGap justifyContent="center" alignItems="flex-start" flexDirection="column" gap="8px">
@@ -197,6 +216,9 @@ const SlippageDetails: React.FC = () => {
             'You may only get the amount of “Minimum received” with a high slippage setting. Reset your slippage to avoid potential losses.',
           )}
         </Text>
+        <StyledTextButton onClick={() => setUserSlippageTolerance(DEFAULT_SLIPPAGE_TOLERANCE)} scale="sm" px="0">
+          {t('Reset Slippage')}
+        </StyledTextButton>
         {/* <StyledLinkExternal color="primary60" external href="https://www.hashdit.io" showExternalIcon={false}>
           {t('Learn More')}
         </StyledLinkExternal> */}
