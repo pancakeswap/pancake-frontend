@@ -1,4 +1,3 @@
-import { useCountdown } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import {
@@ -14,6 +13,7 @@ import {
 } from '@pancakeswap/widgets-internal'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import styled from 'styled-components'
+import { Countdown } from './Countdown'
 
 type ActionsType = { href: string; text: string; icon?: 'arrowForward' | 'openNew'; target?: string }
 type IActions = ActionsType & Partial<CSSStyleDeclaration>
@@ -77,51 +77,6 @@ const DisclaimerText = styled(Text).attrs({ bold: true })`
   }
 `
 
-const CountDownWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: self-start;
-  width: fit-content;
-  background-color: #b8b5d9;
-  font-family: Kanit;
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 90%;
-  color: #08060b;
-  padding: 6px;
-  border-radius: 8px;
-  margin-top: 10px;
-  gap: 0px;
-  flex-direction: column;
-  ${({ theme }) => theme.mediaQueries.sm} {
-    flex-direction: row;
-    gap: 8px;
-    padding: 8px;
-    font-size: 20px;
-    line-height: 110%; /* 22px */
-  }
-`
-
-export function Countdown() {
-  const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpoints()
-  const countdown = useCountdown(1727172900)
-  if (!countdown) {
-    return null
-  }
-  const hours = countdown?.hours < 10 ? `0${countdown?.hours}` : countdown?.hours
-  const minutes = countdown?.minutes < 10 ? `0${countdown?.minutes}` : countdown?.minutes
-  return (
-    <CountDownWrapper>
-      <Box style={{ fontSize: isMobile ? '12px' : '20px' }}>{t('Starts in')}</Box>
-      <Box>
-        0{countdown?.days}d:{hours}h:{minutes}m
-      </Box>
-    </CountDownWrapper>
-  )
-}
-
 export const EigenpieIFOBanner = () => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
@@ -149,7 +104,7 @@ export const EigenpieIFOBanner = () => {
           </Flex>
         }
         title={<BannerTitle variant={yellowVariant}>{t('Eigenpie IFO')}</BannerTitle>}
-        desc={<Countdown />}
+        desc={<Countdown startTime={1727172900} />}
         actions={
           <BannerActionContainer>
             <Action

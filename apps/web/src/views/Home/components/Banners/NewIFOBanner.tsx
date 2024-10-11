@@ -1,12 +1,12 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Button, Flex, Link, OpenNewIcon, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Button, Flex, Link, OpenNewIcon, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 
-import { useCountdown } from '@pancakeswap/hooks'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import useTheme from 'hooks/useTheme'
 import { memo } from 'react'
 import { styled } from 'styled-components'
 import * as S from './Styled'
+import { Countdown } from './Countdown'
 
 const { partnerCakePie, cakeLogo, partnerBnbChain, board, cakePie, cakePieMobile } = {
   partnerBnbChain: `${ASSET_CDN}/web/banners/partner/bnbchain-partner.png`,
@@ -107,31 +107,6 @@ const StyledSubheading = styled.div`
   }
 `
 
-export const CountDownWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: self-start;
-  background-color: #e8a571;
-  font-family: Kanit;
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 90%;
-  color: #08060b;
-  padding: 6px;
-  border-radius: 8px;
-  margin-top: 5px;
-  gap: 0px;
-  flex-direction: column;
-  ${({ theme }) => theme.mediaQueries.sm} {
-    flex-direction: row;
-    gap: 8px;
-    padding: 8px;
-    font-size: 20px;
-    line-height: 110%; /* 22px */
-  }
-`
-
 const BackGroundCircle = styled.div`
   position: absolute;
   top: 41px;
@@ -167,25 +142,6 @@ const BackGroundCircle3 = styled.div`
   filter: blur(64.5px);
 `
 
-export function Countdown() {
-  const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpoints()
-  const countdown = useCountdown(1704369600)
-  if (!countdown) {
-    return null
-  }
-  const hours = countdown?.hours < 10 ? `0${countdown?.hours}` : countdown?.hours
-  const minutes = countdown?.minutes < 10 ? `0${countdown?.minutes}` : countdown?.minutes
-  return (
-    <CountDownWrapper>
-      <Box style={{ fontSize: isMobile ? '12px' : '20px' }}>{t('starts in')}</Box>
-      <Box>
-        0{countdown?.days}d:{hours}h:{minutes}m
-      </Box>
-    </CountDownWrapper>
-  )
-}
-
 const NewIFOBanner = () => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
@@ -211,7 +167,7 @@ const NewIFOBanner = () => {
             <Image src={partnerBnbChain} alt="liquidStakingTitle" width={104} height={24} />
           </Flex>
           <StyledSubheading>{t('CKP cIFO')}</StyledSubheading>
-          <Countdown />
+          <Countdown startTime={1704369600} />
           <Flex style={{ gap: isMobile ? 4 : 16 }}>
             <Link href="/ifo" style={{ textDecoration: 'none' }}>
               <Button variant="text" pl="0px" pt="0px" scale={isMobile ? 'sm' : 'md'}>
