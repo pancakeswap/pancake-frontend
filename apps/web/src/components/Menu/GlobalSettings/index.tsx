@@ -13,11 +13,13 @@ type Props = {
 const GlobalSettings = ({ color, mr = '8px', mode = SettingsMode.GLOBAL, overrideButton, ...rest }: Props) => {
   const { isOpen, setIsOpen, onDismiss } = useModalV2()
 
+  const openModal = () => setIsOpen(true)
+
   return (
     <Flex>
-      {overrideButton?.(() => setIsOpen(true)) || (
+      {overrideButton?.(openModal) || (
         <IconButton
-          onClick={() => setIsOpen(true)}
+          onClick={openModal}
           variant="text"
           scale="sm"
           mr={mr}
