@@ -14,7 +14,6 @@ import {
   PancakeSwapBadge,
 } from '@pancakeswap/widgets-internal'
 import { ASSET_CDN } from 'config/constants/endpoints'
-import bunnyImage from '../../../../../public/images/turkey-meetup-bunny.png'
 import { Countdown } from './Countdown'
 
 const VerticalDivider = styled.span`
@@ -73,7 +72,7 @@ export const TurkeyMeetupBanner: React.FC = () => {
 
       <BannerGraphics>
         <BackgroundGraphic
-          src={bunnyImage.src}
+          src={`${ASSET_CDN}/web/banners/turkey-meetup/turkey-meetup-bunny.png`}
           width={isMobile ? 185 : isTablet ? 265 : 360}
           height={isMobile ? 120 : isTablet ? 170 : 227}
         />
