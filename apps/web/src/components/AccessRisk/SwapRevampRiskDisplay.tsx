@@ -276,6 +276,11 @@ export const RiskDetailsPanel: React.FC<RiskDetailsPanelProps> = ({
     }
     return count > 1
   }, [isRiskToken0, isRiskToken1, isPriceImpactTooHigh, isSlippageTooHigh])
+  useEffect(() => {
+    if (isRiskMoreThanOne) {
+      setIsOpen(false)
+    }
+  }, [isRiskMoreThanOne])
   return (
     <>
       <RiskDetailsPanelWrapper width="100%" flexDirection="column" justifyContent="center" alignItems="center">
