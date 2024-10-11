@@ -38,9 +38,10 @@ interface CollapseProps {
   content?: React.ReactNode;
   isOpen?: boolean;
   onToggle?: () => void;
+  recalculateDep?: boolean;
 }
 
-export const Collapse: React.FC<CollapseProps> = ({ title, content, isOpen, onToggle }) => {
+export const Collapse: React.FC<CollapseProps> = ({ title, content, isOpen, onToggle, recalculateDep = false }) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -58,7 +59,7 @@ export const Collapse: React.FC<CollapseProps> = ({ title, content, isOpen, onTo
     } else {
       wrapperElement.style.height = `${titleHeight + contentHeight + PADDING * 2}px`;
     }
-  }, [isOpen, titleRef.current?.scrollHeight]);
+  }, [isOpen, titleRef.current?.scrollHeight, recalculateDep]);
 
   return (
     <Container ref={wrapperRef}>

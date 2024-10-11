@@ -286,6 +286,7 @@ export const RiskDetailsPanel: React.FC<RiskDetailsPanelProps> = ({
       <RiskDetailsPanelWrapper width="100%" flexDirection="column" justifyContent="center" alignItems="center">
         <SwapUIV2.Collapse
           isOpen={isOpen}
+          recalculateDep={isRiskMoreThanOne}
           onToggle={isRiskMoreThanOne ? () => setModalOpen(true) : () => setIsOpen(!isOpen)}
           title={
             <FlexGap flexDirection="column">
