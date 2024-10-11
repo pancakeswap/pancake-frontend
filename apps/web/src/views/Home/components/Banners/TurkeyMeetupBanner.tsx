@@ -83,7 +83,7 @@ export const TurkeyMeetupBanner: React.FC = () => {
           top={isMobile ? '15%' : isTablet ? '10%' : null}
         >
           <FloatingGraphic
-            src={`${ASSET_CDN}/web/banners/nigeria-meet-up/floating-cake.png`}
+            src={`${ASSET_CDN}/web/banners/floating-cake.png`}
             width={isMobile ? 70 : isTablet ? 86 : 104}
             height={isMobile ? 68 : isTablet ? 84 : 101}
           />
