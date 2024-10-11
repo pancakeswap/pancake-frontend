@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useContext, useEffect, useRef } from "react";
+import React, { PropsWithChildren, useContext, useLayoutEffect, useRef } from "react";
 import { useTheme } from "styled-components";
 import { Box } from "../../components/Box";
 import Heading from "../../components/Heading/Heading";
@@ -22,32 +22,14 @@ export const ModalWrapper = ({
   const wrapperRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
 
-  const previousHeight = useRef(600);
-
-  useEffect(() => {
+  useLayoutEffect(() => {
     const resizeObserver = new ResizeObserver((entries) => {
       for (const entry of entries) {
         const { height } = entry.contentRect;
 
         if (wrapperRef.current) {
-          wrapperRef.current.animate(
-            [
-              {
-                height: `${previousHeight.current}px`,
-              },
-              {
-                height: `${height}px`,
-              },
-            ],
-            {
-              duration: 300,
-              fill: "forwards",
-              easing: "cubic-bezier(.19,.23,.75,1.05)",
-            }
-          );
+          wrapperRef.current.style.height = `${height}px`;
         }
-
-        previousHeight.current = height;
       }
     });
 
@@ -74,7 +56,11 @@ export const ModalWrapper = ({
         if (info.velocity.y > MODAL_SWIPE_TO_CLOSE_VELOCITY && onDismiss) onDismiss();
       }}
       ref={wrapperRef}
-      style={{ overflow: "hidden", height: `${previousHeight.current}px`, willChange: "height" }}
+      style={{
+        overflow: "hidden",
+        willChange: "height",
+        transition: "height 0.3s cubic-bezier(.19,.23,.75,1.05)",
+      }}
       $minHeight={minHeight}
     >
       <Box ref={innerRef} overflow="hidden" borderRadius="32px" {...props}>
