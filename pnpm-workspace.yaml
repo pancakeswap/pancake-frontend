@@ -7,6 +7,6 @@ packages:
   - 'scripts'
 
 catalog:
-  viem: ^2.21.9
-  wagmi: ^2.12.12
-  next: '14.2.14'
+  viem: ^2.21.22
+  wagmi: ^2.12.17
+  next: 14.2.14
