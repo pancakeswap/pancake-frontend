@@ -148,7 +148,7 @@ export const SettingsModalV2 = ({
     <MotionModal
       minWidth={['unset', 'unset', '420px']}
       minHeight={isMobile ? '500px' : undefined}
-      headerPadding="6px 24px 0"
+      headerPadding="6px 14px 0 24px"
       headerRightSlot={
         activeTabIndex === TabIndex.CUSTOMIZE_ROUTING &&
         isRoutingSettingChange && (
