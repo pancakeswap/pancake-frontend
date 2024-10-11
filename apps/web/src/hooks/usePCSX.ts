@@ -6,7 +6,6 @@ import { useMemo } from 'react'
 import { useUserXEnable } from 'state/user/smartRouter'
 
 export function usePCSXFeatureEnabled() {
-  return true // TODO: remove this after QA
   return useExperimentalFeatureEnabled(EXPERIMENTAL_FEATURES.PCSX)
 }
 
