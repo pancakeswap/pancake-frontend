@@ -36,6 +36,7 @@ import { useSwapConfig } from '../../Swap/V3Swap/hooks/useSwapConfig'
 import { useSwapCurrency } from '../../Swap/V3Swap/hooks/useSwapCurrency'
 import { CommitButtonProps } from '../../Swap/V3Swap/types'
 import { computeTradePriceBreakdown } from '../../Swap/V3Swap/utils/exchange'
+import { useIsRecipientError } from '../hooks/useIsRecipientError'
 
 const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModalV2)
 
@@ -73,11 +74,16 @@ const WrapCommitButtonReplace: React.FC<React.PropsWithChildren> = ({ children }
   } = useWrapCallback(inputCurrency, outputCurrency, typedValue)
   const showWrap = wrapType !== WrapType.NOT_APPLICABLE
 
+  const buttonText = useMemo(() => {
+    return (
+      wrapInputError ?? (wrapType === WrapType.WRAP ? t('Wrap') : wrapType === WrapType.UNWRAP ? t('Unwrap') : null)
+    )
+  }, [t, wrapInputError, wrapType])
   if (!showWrap) return children
 
   return (
     <CommitButton width="100%" disabled={Boolean(wrapInputError)} onClick={onWrap}>
-      {wrapInputError ?? (wrapType === WrapType.WRAP ? t('Wrap') : wrapType === WrapType.UNWRAP ? t('Unwrap') : null)}
+      {buttonText}
     </CommitButton>
   )
 }
@@ -134,6 +140,7 @@ const SwapCommitButtonInner = memo(function SwapCommitButtonInner({
   const { independentField } = useSwapState()
   const [inputCurrency, outputCurrency] = useSwapCurrency()
   const { isExpertMode } = useSwapConfig()
+  const { isRecipientEmpty, isRecipientError } = useIsRecipientError()
 
   const tradePriceBreakdown = useMemo(
     () => computeTradePriceBreakdown(isXOrder(order) ? undefined : order?.trade),
@@ -199,8 +206,8 @@ const SwapCommitButtonInner = memo(function SwapCommitButtonInner({
   )
   const isValid = useMemo(() => !swapInputError && !tradeLoading, [swapInputError, tradeLoading])
   const disabled = useMemo(
-    () => !isValid || (priceImpactSeverity > 3 && !isExpertMode),
-    [isExpertMode, isValid, priceImpactSeverity],
+    () => !isValid || (priceImpactSeverity > 3 && !isExpertMode) || isRecipientEmpty || isRecipientError,
+    [isExpertMode, isRecipientEmpty, isRecipientError, isValid, priceImpactSeverity],
   )
 
   const userHasSpecifiedInputOutput = Boolean(
@@ -259,6 +266,20 @@ const SwapCommitButtonInner = memo(function SwapCommitButtonInner({
     }
   }, [indirectlyOpenConfirmModalState, openConfirmSwapModal])
 
+  const buttonText = useMemo(() => {
+    if (isRecipientEmpty) return t('Enter a recipient')
+    if (isRecipientError) return t('Invalid recipient')
+    return (
+      swapInputError ||
+      (tradeLoading && <Dots>{t('Searching For The Best Price')}</Dots>) ||
+      (priceImpactSeverity > 3 && !isExpertMode
+        ? t('Price Impact Too High')
+        : priceImpactSeverity > 2
+        ? t('Swap Anyway')
+        : t('Swap'))
+    )
+  }, [isExpertMode, isRecipientEmpty, isRecipientError, priceImpactSeverity, swapInputError, t, tradeLoading])
+
   if (noRoute && userHasSpecifiedInputOutput && !tradeLoading) {
     return <ResetRoutesButton />
   }
@@ -273,13 +294,7 @@ const SwapCommitButtonInner = memo(function SwapCommitButtonInner({
         disabled={disabled}
         onClick={handleSwap}
       >
-        {swapInputError ||
-          (tradeLoading && <Dots>{t('Searching For The Best Price')}</Dots>) ||
-          (priceImpactSeverity > 3 && !isExpertMode
-            ? t('Price Impact Too High')
-            : priceImpactSeverity > 2
-            ? t('Swap Anyway')
-            : t('Swap'))}
+        {buttonText}
       </CommitButton>
     </Box>
   )
