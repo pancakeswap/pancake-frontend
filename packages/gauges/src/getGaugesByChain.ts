@@ -20,7 +20,7 @@ export const getGaugesByChain = createGaugesByChainFetcher()
 
 export async function safeGetGaugesByChain(chainId?: ChainId) {
   try {
-    return getGaugesByChain(chainId)
+    return await getGaugesByChain(chainId)
   } catch (e) {
     console.error(e)
     return []
