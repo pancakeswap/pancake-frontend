@@ -3,6 +3,7 @@ import { Box, Modal, useToast } from '@pancakeswap/uikit'
 import snapshot from '@snapshot-labs/snapshot.js'
 import useTheme from 'hooks/useTheme'
 import { useState } from 'react'
+import { ProposalTypeName } from 'state/types'
 import { PANCAKE_SPACE } from 'views/Voting/config'
 import { VECAKE_VOTING_POWER_BLOCK } from 'views/Voting/helpers'
 import { useAccount, useWalletClient } from 'wagmi'
@@ -82,7 +83,7 @@ const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
         space: PANCAKE_SPACE,
         choice: vote.value,
         reason: '',
-        type: 'single-choice',
+        type: ProposalTypeName.SINGLE_CHOICE, // TODO
         proposal: proposalId,
         app: 'snapshot',
       })

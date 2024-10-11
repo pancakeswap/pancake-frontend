@@ -391,6 +391,11 @@ export enum ProposalState {
   CLOSED = 'closed',
 }
 
+export enum ProposalTypeName {
+  SINGLE_CHOICE = 'single-choice',
+  WEIGHTED = 'weighted',
+}
+
 export interface Proposal {
   author: string
   body: string
@@ -403,6 +408,9 @@ export interface Proposal {
   state: ProposalState
   title: string
   ipfs: string
+  type: ProposalTypeName
+  scores: number[]
+  scores_total: number
 }
 
 export interface Vote {

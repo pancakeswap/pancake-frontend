@@ -1,12 +1,12 @@
-import { Box, Text, Flex, Card, CardBody, CardHeader, Heading, Progress, Skeleton } from '@pancakeswap/uikit'
-import { FarmWidget } from '@pancakeswap/widgets-internal'
-import { useAccount } from 'wagmi'
-import { Vote } from 'state/types'
-import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import { useTranslation } from '@pancakeswap/localization'
+import { Box, Card, CardBody, CardHeader, Flex, Heading, Progress, Skeleton, Text } from '@pancakeswap/uikit'
+import { formatNumber } from '@pancakeswap/utils/formatBalance'
+import { FarmWidget } from '@pancakeswap/widgets-internal'
 import { FetchStatus, TFetchStatus } from 'config/constants/types'
-import { calculateVoteResults, getTotalFromVotes } from '../helpers'
+import { Vote } from 'state/types'
+import { useAccount } from 'wagmi'
 import TextEllipsis from '../components/TextEllipsis'
+import { calculateVoteResults, getTotalFromVotes } from '../helpers'
 
 const { VotedTag } = FarmWidget.Tags
 
