@@ -50,6 +50,9 @@ export const getProposal = async (id: string): Promise<Proposal> => {
           author
           votes
           ipfs
+          type
+          scores
+          scores_total
         }
       }
     `,
