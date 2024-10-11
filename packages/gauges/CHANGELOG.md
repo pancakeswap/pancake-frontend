@@ -1,5 +1,12 @@
 # @pancakeswap/gauges
 
+## 2.0.1
+
+### Patch Changes
+
+- bab8589: Fix unable to get pair combination when failed to get gauge list
+- 447ceb3: Fix missing gauge
+
 ## 2.0.0
 
 ### Major Changes
