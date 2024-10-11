@@ -9,6 +9,7 @@ export const SwapFormWrapper = styled.div`
   justify-content: center;
   align-items: center;
   height: 100%;
+  margin-bottom: 56px;
 `;
 
 export const InputPanelWrapper = styled(Flex)`
