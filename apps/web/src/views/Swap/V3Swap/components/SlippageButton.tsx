@@ -1,6 +1,6 @@
 import { useTheme } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, PencilIcon, RiskAlertIcon, useTooltip, WarningIcon } from '@pancakeswap/uikit'
+import { Button, PencilIcon, RiskAlertIcon, useMatchBreakpoints, useTooltip, WarningIcon } from '@pancakeswap/uikit'
 import GlobalSettings from 'components/Menu/GlobalSettings'
 import { SettingsMode } from 'components/Menu/GlobalSettings/types'
 import { ReactElement } from 'react'
@@ -23,6 +23,7 @@ interface SlippageButtonProps {
 export const SlippageButton = ({ slippage }: SlippageButtonProps) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
+  const { isMobile } = useMatchBreakpoints()
 
   const isRiskyLow = typeof slippage === 'number' && slippage < 50
   const isRiskyHigh = typeof slippage === 'number' && slippage > 100
@@ -51,7 +52,7 @@ export const SlippageButton = ({ slippage }: SlippageButtonProps) => {
         mode={SettingsMode.SWAP_LIQUIDITY}
         overrideButton={(onClick) => (
           <>
-            <div ref={targetRef}>
+            <div ref={!isMobile ? targetRef : undefined}>
               <TertiaryButton
                 $color={color}
                 startIcon={
