@@ -50,23 +50,25 @@ export const SlippageButton = ({ slippage }: SlippageButtonProps) => {
         key="slippage_btn_global_settings"
         mode={SettingsMode.SWAP_LIQUIDITY}
         overrideButton={(onClick) => (
-          <div ref={targetRef}>
-            <TertiaryButton
-              $color={color}
-              startIcon={
-                isRiskyVeryHigh ? (
-                  <RiskAlertIcon color={color} width={16} />
-                ) : isRiskyLow || isRiskyHigh ? (
-                  <WarningIcon color={color} width={16} />
-                ) : undefined
-              }
-              endIcon={<PencilIcon color={color} width={12} />}
-              onClick={onClick}
-            >
-              {typeof slippage === 'number' ? `${basisPointsToPercent(slippage).toFixed(2)}%` : slippage}
-            </TertiaryButton>
+          <>
+            <div ref={targetRef}>
+              <TertiaryButton
+                $color={color}
+                startIcon={
+                  isRiskyVeryHigh ? (
+                    <RiskAlertIcon color={color} width={16} />
+                  ) : isRiskyLow || isRiskyHigh ? (
+                    <WarningIcon color={color} width={16} />
+                  ) : undefined
+                }
+                endIcon={<PencilIcon color={color} width={12} />}
+                onClick={onClick}
+              >
+                {typeof slippage === 'number' ? `${basisPointsToPercent(slippage).toFixed(2)}%` : slippage}
+              </TertiaryButton>
+            </div>
             {(isRiskyLow || isRiskyHigh) && tooltipVisible && tooltip}
-          </div>
+          </>
         )}
       />
     </>
