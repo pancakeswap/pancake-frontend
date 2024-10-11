@@ -32,6 +32,7 @@ const Container = styled.div`
   will-change: height;
   transition: height 0.25s ease-in-out;
 `;
+
 interface CollapseProps {
   title?: React.ReactNode;
   content?: React.ReactNode;
@@ -43,6 +44,7 @@ export const Collapse: React.FC<CollapseProps> = ({ title, content, isOpen, onTo
   const contentRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
+
   useLayoutEffect(() => {
     if (!contentRef.current || !titleRef.current || !wrapperRef.current) return;
     const titleElement = titleRef.current;
@@ -50,12 +52,14 @@ export const Collapse: React.FC<CollapseProps> = ({ title, content, isOpen, onTo
     const wrapperElement = wrapperRef.current;
     const contentHeight = contentElement.scrollHeight;
     const titleHeight = titleElement.scrollHeight;
+
     if (!isOpen) {
       wrapperElement.style.height = `${titleHeight + PADDING * 2}px`;
     } else {
       wrapperElement.style.height = `${titleHeight + contentHeight + PADDING * 2}px`;
     }
-  }, [isOpen]);
+  }, [isOpen, titleRef.current?.scrollHeight]);
+
   return (
     <Container ref={wrapperRef}>
       <TitleWrapper
