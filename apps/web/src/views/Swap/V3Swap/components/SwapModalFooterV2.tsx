@@ -131,7 +131,10 @@ export const SwapModalFooterV2 = memo(function SwapModalFooterV2({
     <>
       <SwapModalFooterContainer>
         <RowBetween align="center" mb="8px">
-          <Text fontSize="14px">{t('Price')}</Text>
+          <Text color="textSubtle" fontSize="14px" ml="4px">
+            {t('Price')}
+          </Text>
+
           <Text
             fontSize="14px"
             style={{
