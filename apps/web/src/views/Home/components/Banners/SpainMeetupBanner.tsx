@@ -1,9 +1,8 @@
-import { memo, useMemo } from 'react'
+import { memo } from 'react'
 import styled from 'styled-components'
 import Image from 'next/image'
-import { Flex, FlexGap, useMatchBreakpoints, Link, Text } from '@pancakeswap/uikit'
+import { Flex, FlexGap, useMatchBreakpoints, Link } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { useCountdown } from '@pancakeswap/hooks'
 
 import { ASSET_CDN } from 'config/constants/endpoints'
 
@@ -11,6 +10,7 @@ import { Wrapper, Inner } from './Styled'
 import bg from './images/spain-meetup-bg.png'
 import bunny from './images/spain-meetup-bunny.png'
 import ticketBtn from './images/spain-meetup-ticket-btn.png'
+import { Countdown } from './Countdown'
 
 const pancakeSwapLogo = `${ASSET_CDN}/web/banners/ethXpancakeswap.png`
 
@@ -126,52 +126,6 @@ const TicketBtnContainer = styled.div`
   }
 `
 
-const NumberDisplayContainer = styled(FlexGap)`
-  border-radius: 1.5rem;
-  background: #190b36;
-  border: 2px solid #ffffff;
-  padding: 0 0.625rem;
-  width: 6rem;
-  height: 8.3rem;
-`
-
-type NumberDisplayProps = {
-  label: string
-  value?: number
-}
-
-export function NumberDisplay({ label, value }: NumberDisplayProps) {
-  const valueDisplay = useMemo(() => (value === undefined ? '-' : String(value).padStart(2, '0')), [value])
-
-  return (
-    <NumberDisplayContainer flexDirection="column" alignItems="center" justifyContent="center" gap="0.5rem" flex={1}>
-      <Text fontSize="4rem" lineHeight="100%" fontFamily="Inter, Sans-Serif" color="white">
-        {valueDisplay}
-      </Text>
-      <Text textTransform="uppercase" fontSize="0.825rem" color="white">
-        {label}
-      </Text>
-    </NumberDisplayContainer>
-  )
-}
-
-export function Countdown() {
-  const { t } = useTranslation()
-  const countdown = useCountdown(1702659600)
-  if (!countdown) {
-    return null
-  }
-
-  return (
-    <FlexGap gap="0.25rem" width="100%">
-      <NumberDisplay value={countdown?.days} label={t('Days')} />
-      <NumberDisplay value={countdown?.hours} label={t('Hours')} />
-      <NumberDisplay value={countdown?.minutes} label={t('Minutes')} />
-      <NumberDisplay value={countdown?.seconds} label={t('Seconds')} />
-    </FlexGap>
-  )
-}
-
 export const SpainMeetupBanner = memo(function SpainMeetupBanner() {
   const { t } = useTranslation()
   const { isMobile, isDesktop } = useMatchBreakpoints()
@@ -198,7 +152,7 @@ export const SpainMeetupBanner = memo(function SpainMeetupBanner() {
           </FlexGap>
           {isDesktop && (
             <FlexGap>
-              <Countdown />
+              <Countdown startTime={1702659600} />
             </FlexGap>
           )}
           <Flex height="100%">

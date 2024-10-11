@@ -26,7 +26,7 @@ const VerticalDivider = styled.span`
 type ActionsType = { href: string; text: string; icon?: 'arrowForward' | 'openNew' }
 type IActions = ActionsType & Partial<CSSStyleDeclaration>
 
-export const NigeriaMeetupBanner: React.FC = () => {
+export const TurkeyMeetupBanner: React.FC = () => {
   const { t } = useTranslation()
   const { isMobile, isTablet, isMd } = useMatchBreakpoints()
 
@@ -39,27 +39,27 @@ export const NigeriaMeetupBanner: React.FC = () => {
   )
 
   return (
-    <BannerContainer background="radial-gradient(94.59% 117.72% at 26.47% 0%, #B1F5CE 0%, #50936B 46.5%, #125429 79.02%)">
+    <BannerContainer background="radial-gradient(91.98% 80.9% at 26.47% 0%, #F4D2D4 0%, #C23D46 30.4%, #71151A 79.36%)">
       <BannerMain
         badges={
           <Flex alignItems="center" height="20px" style={{ gap: '4px' }} minWidth="220px">
             <PancakeSwapBadge />
             <VerticalDivider />
             <BannerTitle variant="gold" fontSize={18} strokeSize={1}>
-              {t('Nigeria')}
+              {t('Turkey')}
             </BannerTitle>
           </Flex>
         }
         title={
           <BannerTitle variant="white" marginTop={isMd ? '-10px' : '0px'}>
-            {t('PancakeSwap Workshop')}
+            {t('PancakeSwap Meetup')}
           </BannerTitle>
         }
-        desc={<Countdown startTime={1728723600} />}
+        desc={<Countdown startTime={1729263600} />}
         actions={
           <BannerActionContainer>
             <Action
-              href="https://lu.ma/n2v007vd"
+              href="https://lu.ma/c3a9ehmj"
               display="flex"
               icon="openNew"
               alignItems="center"
@@ -72,7 +72,7 @@ export const NigeriaMeetupBanner: React.FC = () => {
 
       <BannerGraphics>
         <BackgroundGraphic
-          src={`${ASSET_CDN}/web/banners/nigeria-meet-up/nigeria-meetup-bunny.png`}
+          src={`${ASSET_CDN}/web/banners/turkey-meetup/turkey-meetup-bunny.png`}
           width={isMobile ? 185 : isTablet ? 265 : 360}
           height={isMobile ? 120 : isTablet ? 170 : 227}
         />
