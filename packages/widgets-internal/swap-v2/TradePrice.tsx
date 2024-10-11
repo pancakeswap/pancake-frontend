@@ -1,7 +1,7 @@
-import { Price, Currency } from "@pancakeswap/swap-sdk-core";
+import { Currency, Price } from "@pancakeswap/swap-sdk-core";
+import { FlexGap, SkeletonV2, SwapHorizIcon, Text } from "@pancakeswap/uikit";
 import { formatPrice } from "@pancakeswap/utils/formatFractions";
 import { useState } from "react";
-import { AtomBox, SyncAltIcon, AutoRenewIcon, Text, Loading, SwapCSS } from "@pancakeswap/uikit";
 
 interface TradePriceProps {
   price?: Price<Currency, Currency>;
@@ -15,28 +15,31 @@ export function TradePrice({ price, loading }: TradePriceProps) {
   const show = Boolean(price?.baseCurrency && price?.quoteCurrency);
 
   return (
-    <Text
-      fontSize="14px"
-      style={{ justifyContent: "center", alignItems: "center", display: "flex", opacity: loading ? 0.6 : 1 }}
-    >
+    <FlexGap justifyContent="center" alignItems="center">
       {show ? (
         <>
-          {`1 ${showInverted ? price?.baseCurrency?.symbol : price?.quoteCurrency?.symbol}`}
-          <SyncAltIcon width="14px" height="14px" color="textSubtle" ml="4px" mr="4px" />
-          {`${formattedPrice} ${showInverted ? price?.quoteCurrency?.symbol : price?.baseCurrency?.symbol}`}
-          {loading ? (
-            <AtomBox className={SwapCSS.iconButtonClass}>
-              <Loading width="12px" height="12px" />
-            </AtomBox>
-          ) : (
-            <AtomBox role="button" className={SwapCSS.iconButtonClass} onClick={() => setShowInverted(!showInverted)}>
-              <AutoRenewIcon width="14px" />
-            </AtomBox>
-          )}
+          <SkeletonV2 width="50px" height="16px" borderRadius="8px" minHeight="auto" isDataReady={!loading}>
+            <Text fontSize="14px">
+              {`1 ${showInverted ? price?.baseCurrency?.symbol : price?.quoteCurrency?.symbol}`}
+            </Text>
+          </SkeletonV2>
+          <SwapHorizIcon
+            onClick={() => setShowInverted(!showInverted)}
+            width="18px"
+            height="18px"
+            color="primary"
+            ml="4px"
+            mr="4px"
+          />
+          <SkeletonV2 width="100px" height="16px" borderRadius="8px" minHeight="auto" isDataReady={!loading}>
+            <Text fontSize="14px">
+              {`${formattedPrice} ${showInverted ? price?.quoteCurrency?.symbol : price?.baseCurrency?.symbol}`}
+            </Text>
+          </SkeletonV2>
         </>
       ) : (
         "-"
       )}
-    </Text>
+    </FlexGap>
   );
 }
