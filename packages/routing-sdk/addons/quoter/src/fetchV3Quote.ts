@@ -33,7 +33,10 @@ export const fetchV3Quote: FetchQuote<SupportedPool> = async ({ route, client })
     allowFailure: false,
   })
 
-  const [[quote]] = result
+  const [[quote, , , gasUseEstimate]] = result
   const outCurrency = isExactOut ? path[0] : path[path.length - 1]
-  return CurrencyAmount.fromRawAmount(outCurrency, quote)
+  return {
+    quote: CurrencyAmount.fromRawAmount(outCurrency, quote),
+    gasUseEstimate,
+  }
 }

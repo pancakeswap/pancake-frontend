@@ -16,10 +16,11 @@ export type FetchQuotesParams<P extends Pool = Pool> = {
   routes: QuoteRoute<P>[]
 }
 
-export type FetchQuote<P extends Pool = Pool> = (
-  params: FetchQuoteParams<P>,
-) => Promise<CurrencyAmount<Currency> | undefined>
+export type Quote = {
+  quote: CurrencyAmount<Currency>
+  gasUseEstimate: bigint
+}
 
-export type FetchQuotes<P extends Pool = Pool> = (
-  params: FetchQuotesParams<P>,
-) => Promise<(CurrencyAmount<Currency> | undefined)[]>
+export type FetchQuote<P extends Pool = Pool> = (params: FetchQuoteParams<P>) => Promise<Quote | undefined>
+
+export type FetchQuotes<P extends Pool = Pool> = (params: FetchQuotesParams<P>) => Promise<(Quote | undefined)[]>

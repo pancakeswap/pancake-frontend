@@ -25,7 +25,10 @@ export const fetchQuotes: FetchQuotes<SupportedPool> = async ({ routes, client }
     }
     const { path: currentPath } = routes[i]
     const outCurrency = isExactOut ? currentPath[0] : currentPath[currentPath.length - 1]
-    const [quote] = result.result
-    return CurrencyAmount.fromRawAmount(outCurrency, quote)
+    const [quote, , , gasUseEstimate] = result.result
+    return {
+      quote: CurrencyAmount.fromRawAmount(outCurrency, quote),
+      gasUseEstimate,
+    }
   })
 }
