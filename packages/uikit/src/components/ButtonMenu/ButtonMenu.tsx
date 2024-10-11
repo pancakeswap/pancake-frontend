@@ -1,5 +1,5 @@
-import React, { cloneElement, Children, ReactElement } from "react";
-import { styled, DefaultTheme } from "styled-components";
+import React, { Children, cloneElement, ReactElement } from "react";
+import { DefaultTheme, styled } from "styled-components";
 import { space } from "styled-system";
 import { scales, variants } from "../Button/types";
 import { ButtonMenuProps } from "./types";
@@ -39,7 +39,7 @@ const StyledButtonMenu = styled.div.withConfig({
 
   & > button + button,
   & > a + a {
-    margin-left: 2px; // To avoid focus shadow overlap
+    margin-left: ${({ noButtonMargin }) => (noButtonMargin ? "0px" : "2px")}; // To avoid focus shadow overlap
   }
 
   & > button,
