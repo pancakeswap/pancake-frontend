@@ -42,6 +42,8 @@ const THREE_DAYS_IN_SECONDS = 60 * 60 * 24 * 3
 
 const DEFAULT_TXN_DEADLINE = 20 // In Minutes
 
+export const DEFAULT_SLIPPAGE_TOLERANCE = 50
+
 const SlippageTabs = () => {
   const [userSlippageTolerance, setUserSlippageTolerance] = useUserSlippage()
   const [ttl, setTTL] = useUserTransactionTTL()
@@ -204,7 +206,7 @@ const SlippageTabs = () => {
                 role="button"
                 onClick={() => {
                   setSlippageInput('')
-                  setUserSlippageTolerance(50)
+                  setUserSlippageTolerance(DEFAULT_SLIPPAGE_TOLERANCE)
                 }}
                 style={{
                   textDecoration: 'underline',
