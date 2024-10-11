@@ -6,8 +6,7 @@ import { encodeFunctionData, toHex } from 'viem'
 import { UniversalRouterABI } from './abis/UniversalRouter'
 import { PancakeSwapTrade } from './entities/protocols/pancakeswap'
 import { PancakeSwapOptions, SwapRouterConfig } from './entities/types'
-import { encodePermit } from './utils/inputTokens'
-import { RoutePlanner } from './utils/routerCommands'
+import { RoutePlanner } from './utils/RoutePlanner'
 
 export abstract class PancakeSwapUniversalRouter {
   /**
@@ -19,16 +18,13 @@ export abstract class PancakeSwapUniversalRouter {
     trade: Omit<SmartRouterTrade<TradeType>, 'gasEstimate'>,
     options: PancakeSwapOptions,
   ): MethodParameters {
-    // TODO: use permit if signature included in swapOptions
-    const planner = new RoutePlanner()
-
     const tradeCommand: PancakeSwapTrade = new PancakeSwapTrade(trade, options)
 
     const inputCurrency = tradeCommand.trade.inputAmount.currency
     invariant(!(inputCurrency.isNative && !!options.inputTokenPermit), 'NATIVE_INPUT_PERMIT')
 
     if (options.inputTokenPermit && typeof options.inputTokenPermit === 'object') {
-      encodePermit(planner, options.inputTokenPermit)
+      tradeCommand.addPermit(options.inputTokenPermit)
     }
 
     const nativeCurrencyValue = inputCurrency.isNative

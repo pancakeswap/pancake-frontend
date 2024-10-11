@@ -1,18 +1,19 @@
 import { Currency, CurrencyAmount, Percent, TradeType, validateAndParseAddress } from '@pancakeswap/sdk'
 import {
   BaseRoute,
+  getPoolAddress,
   RouteType,
   SmartRouter,
   SmartRouterTrade,
   StablePool,
-  getPoolAddress,
 } from '@pancakeswap/smart-router'
 import invariant from 'tiny-invariant'
 import { Address } from 'viem'
 
 import { CONTRACT_BALANCE, ROUTER_AS_RECIPIENT, SENDER_AS_RECIPIENT } from '../../constants'
 import { encodeFeeBips } from '../../utils/numbers'
-import { ABIParametersType, CommandType, RoutePlanner } from '../../utils/routerCommands'
+import { RoutePlanner } from '../../utils/RoutePlanner'
+import { ABIParametersType, CommandType } from '../../utils/routerCommands'
 import { Command, RouterTradeType } from '../Command'
 import { PancakeSwapOptions } from '../types'
 
@@ -219,6 +220,62 @@ function addV3Swap(
   ]
   planner.addCommand(CommandType.V3_SWAP_EXACT_OUT, exactOutputSingleParams)
 }
+
+// function addV4Swap(
+//   planner: RoutePlanner,
+//   trade: Omit<SmartRouterTrade<TradeType>, 'gasEstimate'>,
+//   options: PancakeSwapOptions,
+//   routerMustCustody: boolean,
+//   payerIsUser: boolean,
+// ): void {
+//   invariant(trade.routes.length === 1 && trade.routes[0].type === RouteType.V3, 'Only allow single route v3 trade')
+//   const [route] = trade.routes
+
+//   const { inputAmount, outputAmount } = route
+
+//   // we need to generaate v3 path as a hash string. we can still use encodeMixedRoute
+//   // as a v3 swap is essentially a for of mixedRoute
+//   const path = SmartRouter.encodeMixedRouteToPath(
+//     { ...route, input: inputAmount.currency, output: outputAmount.currency },
+//     trade.tradeType === TradeType.EXACT_OUTPUT,
+//   )
+//   const amountIn: bigint = SmartRouter.maximumAmountIn(trade, options.slippageTolerance, inputAmount).quotient
+//   const amountOut: bigint = SmartRouter.minimumAmountOut(trade, options.slippageTolerance, outputAmount).quotient
+
+//   const recipient = routerMustCustody
+//     ? ROUTER_AS_RECIPIENT
+//     : validateAndParseAddress(options.recipient ?? SENDER_AS_RECIPIENT)
+
+//   if (trade.tradeType === TradeType.EXACT_INPUT) {
+//     route.
+//     const poolKey = {
+//       currency0: route.path[0].wrapped.address,
+//       currency1: currency1Address,
+//       hooks: hooksAddress,
+//       poolManager: poolManagerAddress,
+//       fee: 500, // Example fee
+//       parameters: ethers.utils.formatBytes32String('parameters_value'),
+//     }
+//     const exactInputSingleParams: V4ActionsABIParametersType<V4ActionType.CL_SWAP_EXACT_IN> = [
+//       recipient,
+//       amountIn,
+//       amountOut,
+//       path,
+//       payerIsUser,
+//     ]
+//     planner.addCommand(CommandType.V3_SWAP_EXACT_IN, exactInputSingleParams)
+//     return
+//   }
+
+//   const exactOutputSingleParams: ABIParametersType<CommandType.V3_SWAP_EXACT_OUT> = [
+//     recipient,
+//     amountOut,
+//     amountIn,
+//     path,
+//     payerIsUser,
+//   ]
+//   planner.addCommand(CommandType.V3_SWAP_EXACT_OUT, exactOutputSingleParams)
+// }
 
 function addStableSwap(
   planner: RoutePlanner,

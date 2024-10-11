@@ -1,8 +1,13 @@
-import { AbiParametersToPrimitiveTypes } from 'abitype'
+import { AbiParameter, AbiParametersToPrimitiveTypes } from 'abitype'
 import { Hex, encodeAbiParameters, parseAbiParameters } from 'viem'
 
-export type ABIType = typeof ABI_PARAMETER
-export type ABIParametersType<TCommandType extends CommandUsed> = AbiParametersToPrimitiveTypes<ABIType[TCommandType]>
+export type ABIType = { [key in CommandUsed]: readonly AbiParameter[] }
+export type ABIParametersType<TCommandType extends CommandUsed> = AbiParametersToPrimitiveTypes<
+  (typeof ABI_PARAMETER)[TCommandType]
+>
+export type V4ActionsABIParametersType<TCommandType extends ActionUsed> = AbiParametersToPrimitiveTypes<
+  (typeof V4ACTIONS_ABI_PARAMETER)[TCommandType]
+>
 
 /**
  * CommandTypes
@@ -40,6 +45,12 @@ export enum CommandType {
   BALANCE_CHECK_ERC20 = 0x0e,
   // COMMAND_PLACEHOLDER = 0x0f;
 
+  V4_SWAP = 0x10,
+  V3_POSITION_MANAGER_PERMIT = 0x11,
+  V3_POSITION_MANAGER_CALL = 0x12,
+  V4_CL_POSITION_CALL = 0x13,
+  V4_BIN_POSITION_CALL = 0x14,
+
   // The commands are executed in nested if blocks to minimise gas consumption
   // The following constant defines one of the boundaries where the if blocks split commands
   // SECOND_IF_BOUNDARY = 0x10,
@@ -76,16 +87,16 @@ export enum CommandType {
   // PANCAKE_NFT_WBNB = 0x25,
 }
 
-const ALLOW_REVERT_FLAG = 0x80
-
-const REVERTIBLE_COMMANDS = new Set<CommandType>([
-  // CommandType.SEAPORT_V1_5,
-  // CommandType.SEAPORT_V1_4,
-  // CommandType.LOOKS_RARE_V2,
-  // CommandType.X2Y2_721,
-  // CommandType.X2Y2_1155,
-  CommandType.EXECUTE_SUB_PLAN,
-])
+export enum V4ActionType {
+  CL_SWAP_EXACT_IN_SINGLE = 0x04,
+  CL_SWAP_EXACT_IN = 0x05,
+  CL_SWAP_EXACT_OUT_SINGLE = 0x06,
+  CL_SWAP_EXACT_OUT = 0x07,
+  BIN_SWAP_EXACT_IN_SINGLE = 0x24,
+  BIN_SWAP_EXACT_IN = 0x25,
+  BIN_SWAP_EXACT_OUT_SINGLE = 0x26,
+  BIN_SWAP_EXACT_OUT = 0x27,
+}
 
 const ABI_STRUCT_PERMIT_DETAILS = `
 struct PermitDetails {
@@ -117,6 +128,17 @@ struct AllowanceTransferDetails {
   address to;
   uint160 amount;
   address token;
+}
+`.replaceAll('\n', '')
+
+const ABI_STRUCT_POOL_KEY = `
+struct PoolKey {
+    Currency currency0;
+    Currency currency1;
+    IHooks hooks;
+    IPoolManager poolManager;
+    uint24 fee;
+    bytes32 parameters;
 }
 `.replaceAll('\n', '')
 
@@ -195,46 +217,42 @@ export const ABI_PARAMETER = {
   // [CommandType.NFT20]: parseAbiParameters('uint256 value, bytes data'),
   // [CommandType.CRYPTOPUNKS]: parseAbiParameters('uint256 punkId, address recipient, uint256 value'),
   // [CommandType.ELEMENT_MARKET]: parseAbiParameters('uint256 value, bytes data'),
+  [CommandType.V4_SWAP]: parseAbiParameters('bytes actions, bytes[] params'),
+}
+
+export const V4ACTIONS_ABI_PARAMETER = {
+  [V4ActionType.CL_SWAP_EXACT_IN_SINGLE]: parseAbiParameters([
+    'PoolKey poolKey, bool zeroForOne, uint128 amountIn, uint128 amountOutMinimum, uint160 sqrtPriceLimitX96, bytes hookData',
+  ]),
+  [V4ActionType.CL_SWAP_EXACT_IN]: parseAbiParameters('uint256 amountIn, uint256 amountOutMin, bytes path'),
+  [V4ActionType.CL_SWAP_EXACT_OUT_SINGLE]: parseAbiParameters('uint256 amountOut, uint256 amountInMax, bytes path'),
+  [V4ActionType.CL_SWAP_EXACT_OUT]: parseAbiParameters('uint256 amountOut, uint256 amountInMax, bytes path'),
+  [V4ActionType.BIN_SWAP_EXACT_IN_SINGLE]: parseAbiParameters('uint256 amountIn, uint256 amountOutMin, bytes path'),
+  [V4ActionType.BIN_SWAP_EXACT_IN]: parseAbiParameters('uint256 amountIn, uint256 amountOutMin, bytes path'),
+  [V4ActionType.BIN_SWAP_EXACT_OUT_SINGLE]: parseAbiParameters('uint256 amountOut, uint256 amountInMax, bytes path'),
+  [V4ActionType.BIN_SWAP_EXACT_OUT]: parseAbiParameters('uint256 amountOut, uint256 amountInMax, bytes path'),
 }
 
 export type CommandUsed = keyof typeof ABI_PARAMETER
-
-export class RoutePlanner {
-  commands: Hex
-
-  inputs: Hex[]
-
-  constructor() {
-    this.commands = '0x'
-    this.inputs = []
-  }
-
-  addSubPlan(subplan: RoutePlanner): void {
-    this.addCommand(CommandType.EXECUTE_SUB_PLAN, [subplan.commands, subplan.inputs], true)
-  }
-
-  addCommand<TCommandType extends CommandUsed>(
-    type: TCommandType,
-    parameters: ABIParametersType<TCommandType>,
-    allowRevert = false,
-  ): void {
-    const command = createCommand(type, parameters)
-    this.inputs.push(command.encodedInput)
-    if (allowRevert) {
-      if (!REVERTIBLE_COMMANDS.has(command.type)) {
-        throw new Error(`command type: ${command.type} cannot be allowed to revert`)
-      }
-      // eslint-disable-next-line no-bitwise
-      command.type |= ALLOW_REVERT_FLAG
-    }
-
-    this.commands = this.commands.concat(command.type.toString(16).padStart(2, '0')) as Hex
-  }
-}
+export type ActionUsed = keyof typeof V4ACTIONS_ABI_PARAMETER
 
 export type RouterCommand = {
   type: CommandUsed
   encodedInput: Hex
+}
+
+export type RouterAction = {
+  type: ActionUsed
+  encodedInput: Hex
+}
+
+export function createAction<TCommandType extends ActionUsed>(
+  type: TCommandType,
+  parameters: V4ActionsABIParametersType<TCommandType>,
+): RouterAction {
+  // const params = parameters.filter((param) => param !== null)
+  const encodedInput = encodeAbiParameters(V4ACTIONS_ABI_PARAMETER[type], parameters as any)
+  return { type, encodedInput }
 }
 
 export function createCommand<TCommandType extends CommandUsed>(
