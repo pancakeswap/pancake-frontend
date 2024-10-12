@@ -12,6 +12,7 @@ import { AppState } from 'state'
 import { safeGetAddress } from 'utils'
 import { publicClient } from 'utils/viem'
 import { Address, erc20Abi, zeroAddress } from 'viem'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { StablePoolInfo, V2PoolInfo } from '../type'
 import { StableLPDetail, V2LPDetail } from './type'
 
@@ -225,7 +226,7 @@ export const getAccountV2LpDetails = async (
       let farmingBoostedAmount = CurrencyAmount.fromRawAmount(validLpTokens[index], '0')
       if (farmingInfo) {
         farmingBalance = CurrencyAmount.fromRawAmount(validLpTokens[index], farmingInfo[0].toString())
-        farmingBoosterMultiplier = new BigNumber(Number(farmingInfo[2])).div(1000000000000).toNumber()
+        farmingBoosterMultiplier = getBalanceNumber(new BigNumber(Number(farmingInfo[2])), 12)
         farmingBoostedAmount = CurrencyAmount.fromRawAmount(validLpTokens[index], farmingInfo[3].toString())
       }
       const tokens = validReserveTokens[index]
