@@ -21,7 +21,6 @@ export const useEstimateUserMultiplier = (chainId: number, tokenId?: bigint) => 
     refetchOnWindowFocus: false,
     refetchOnMount: false,
     refetchOnReconnect: false,
-    refetchInterval: false,
     staleTime: Infinity,
   })
 }

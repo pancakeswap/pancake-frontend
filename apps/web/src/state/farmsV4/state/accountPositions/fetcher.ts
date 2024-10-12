@@ -136,10 +136,7 @@ export const getAccountV2LpDetails = async (
 
   const validLpTokens = lpTokens.filter((token) => token.chainId === chainId)
 
-  const bCakeWrapperAddresses = validReserveTokens.map((tokens) => {
-    const lpAddress = getV2LiquidityToken(tokens).address
-    return getBCakeWrapperAddress(lpAddress, chainId)
-  })
+  const bCakeWrapperAddresses = validLpTokens.map((token) => getBCakeWrapperAddress(token.address, chainId))
 
   const balanceCalls = validLpTokens.map((token) => {
     return {
@@ -212,7 +209,14 @@ export const getAccountV2LpDetails = async (
     .map((result, index) => {
       const { result: _balance = 0n, status } = result
       // LP not exist
-      if (status === 'failure') return undefined
+      if (status === 'failure') {
+        if (reserves[index].status === 'failure' && totalSupplies[index].status === 'failure') {
+          return undefined
+        }
+        throw new Error(
+          `Mismatch between balances, reserves, and supplies: Token: ${validLpTokens[index].address} Balance (${status}), Reserve (${reserves[index].status}), Supply (${totalSupplies[index].status})`,
+        )
+      }
 
       const nativeBalance = CurrencyAmount.fromRawAmount(validLpTokens[index], _balance)
       const farmingInfo = farming[index]
@@ -256,7 +260,7 @@ export const getAccountV2LpDetails = async (
         protocol: Protocol.V2,
       }
     })
-    .filter((r) => typeof r !== 'undefined') as V2LPDetail[]
+    .filter(Boolean) as V2LPDetail[]
 }
 
 export const getStablePairDetails = async (
