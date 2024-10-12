@@ -2884,10 +2884,6 @@
   "Once confirmed, voting action cannot be undone.": "A megerősítést követően a szavazási műveletet nem lehet visszavonni.",
   "selected": "kiválasztva",
   "Collapse": "Összecsuk",
-  "Days": "Nap",
-  "Hours": "Óra",
-  "Minutes": "Perc",
-  "Seconds": "Másodperc",
   "PancakeSwap Meetup": "PancakeSwap Találkozó",
   "Spain": "Spanyolország",
   "Automated Liquidity Optimization": "Automatizált likviditás optimalizálás",
@@ -3541,5 +3537,6 @@
   "Legacy products": "Örökölt termékek",
   "Nigeria": "Nigéria",
   "PancakeSwap Workshop": "PancakeSwap műhely",
-  "DeFiEdge will stop maintaining its vaults from 10 Oct 2024 onwards. Please remove your funds before that to avoid any issues. Beyond 10 Oct, they will place the liquidity in a wide range, and will no longer actively manage it.": "A DeFiEdge 2024. október 10-től nem tartja fenn a trezorjait. Kérjük, hogy a problémák elkerülése érdekében még ezt megelőzően távolítsa el pénzeszközeit. Október 10. után a likviditást széles skálán fogják elhelyezni, és nem fogják többé aktívan kezelni."
+  "DeFiEdge will stop maintaining its vaults from 10 Oct 2024 onwards. Please remove your funds before that to avoid any issues. Beyond 10 Oct, they will place the liquidity in a wide range, and will no longer actively manage it.": "A DeFiEdge 2024. október 10-től nem tartja fenn a trezorjait. Kérjük, hogy a problémák elkerülése érdekében még ezt megelőzően távolítsa el pénzeszközeit. Október 10. után a likviditást széles skálán fogják elhelyezni, és nem fogják többé aktívan kezelni.",
+  "Turkey": "Turkey"
 }
