@@ -2884,10 +2884,6 @@
   "Once confirmed, voting action cannot be undone.": "După confirmare, acțiunea de vot nu poate fi anulată.",
   "selected": "selectat",
   "Collapse": "Restrânge",
-  "Days": "Zile",
-  "Hours": "Ore",
-  "Minutes": "Minute",
-  "Seconds": "Secunde",
   "PancakeSwap Meetup": "PancakeSwap Meetup",
   "Spain": "Spania",
   "Automated Liquidity Optimization": "Optimizare automată a lichidității",
@@ -3541,5 +3537,6 @@
   "Legacy products": "Legacy products",
   "Nigeria": "Nigeria",
   "PancakeSwap Workshop": "PancakeSwap Workshop",
-  "DeFiEdge will stop maintaining its vaults from 10 Oct 2024 onwards. Please remove your funds before that to avoid any issues. Beyond 10 Oct, they will place the liquidity in a wide range, and will no longer actively manage it.": "DeFiEdge will stop maintaining its vaults from 10 Oct 2024 onwards. Please remove your funds before that to avoid any issues. Beyond 10 Oct, they will place the liquidity in a wide range, and will no longer actively manage it."
+  "DeFiEdge will stop maintaining its vaults from 10 Oct 2024 onwards. Please remove your funds before that to avoid any issues. Beyond 10 Oct, they will place the liquidity in a wide range, and will no longer actively manage it.": "DeFiEdge will stop maintaining its vaults from 10 Oct 2024 onwards. Please remove your funds before that to avoid any issues. Beyond 10 Oct, they will place the liquidity in a wide range, and will no longer actively manage it.",
+  "Turkey": "Turkey"
 }
