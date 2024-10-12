@@ -2884,10 +2884,6 @@
   "Once confirmed, voting action cannot be undone.": "확인한 후에는 투표 액션을 취소할 수 없습니다.",
   "selected": "선택됨",
   "Collapse": "축소",
-  "Days": "일",
-  "Hours": "시간",
-  "Minutes": "분",
-  "Seconds": "초",
   "PancakeSwap Meetup": "PancakeSwap 밋업",
   "Spain": "스페인",
   "Automated Liquidity Optimization": "자동화된 유동성 최적화",
@@ -3541,5 +3537,6 @@
   "Legacy products": "레거시 제품",
   "Nigeria": "나이지리아",
   "PancakeSwap Workshop": "PancakeSwap 워크숍",
-  "DeFiEdge will stop maintaining its vaults from 10 Oct 2024 onwards. Please remove your funds before that to avoid any issues. Beyond 10 Oct, they will place the liquidity in a wide range, and will no longer actively manage it.": "DeFiEdge는 2024년 10월 10일부터 볼트 유지 관리를 중지합니다. 문제가 발생하지 않도록 이 날짜 이전에 자금을 인출하시기 바랍니다. 10월 10일 이후에는 유동성을 다양한 범위에 두고 더 이상 적극적으로 관리하지 않습니다."
+  "DeFiEdge will stop maintaining its vaults from 10 Oct 2024 onwards. Please remove your funds before that to avoid any issues. Beyond 10 Oct, they will place the liquidity in a wide range, and will no longer actively manage it.": "DeFiEdge는 2024년 10월 10일부터 볼트 유지 관리를 중지합니다. 문제가 발생하지 않도록 이 날짜 이전에 자금을 인출하시기 바랍니다. 10월 10일 이후에는 유동성을 다양한 범위에 두고 더 이상 적극적으로 관리하지 않습니다.",
+  "Turkey": "Turkey"
 }
