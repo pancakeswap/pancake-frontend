@@ -4,6 +4,7 @@ import { masterChefV2ABI } from 'config/abi/masterchefV2'
 import { getMasterChefV2Address } from 'utils/addressHelpers'
 import { formatEther } from 'viem'
 import { useReadContract } from '@pancakeswap/wagmi'
+import { useCallback } from 'react'
 
 const CAKE_PER_BLOCK = 40
 const masterChefAddress = getMasterChefV2Address(ChainId.BSC)!
@@ -16,10 +17,10 @@ export const useCakeEmissionPerBlock = (inView?: boolean) => {
     functionName: 'cakePerBlockToBurn',
     query: {
       enabled: inView,
-      select: (d) => {
+      select: useCallback((d: bigint) => {
         const burn = formatEther(d)
         return new BigNumber(CAKE_PER_BLOCK).minus(burn).toNumber()
-      },
+      }, []),
     },
   })
 

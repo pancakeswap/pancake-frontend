@@ -10,6 +10,7 @@ import {
 } from '@pancakeswap/wagmi'
 
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useCallback } from 'react'
 
 export const usePollBlockNumber = () => {
   const { chainId } = useActiveChainId()
@@ -65,7 +66,7 @@ export const useChainCurrentBlock = (chainId: number) => {
     watch: true,
     query: {
       enabled: isTargetDifferent,
-      select: (data) => (data !== undefined ? Number(data) : undefined),
+      select: useCallback((data: bigint) => (data !== undefined ? Number(data) : undefined), []),
     },
   })
 

@@ -3,7 +3,7 @@ import { useReadContract } from '@pancakeswap/wagmi'
 import dayjs from 'dayjs'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useVeCakeContract } from 'hooks/useContract'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { Address } from 'viem'
 import { CakeLockStatus, CakePoolType } from '../types'
 import { useCakePoolLockInfo } from './useCakePoolLockInfo'
@@ -55,7 +55,7 @@ export const useVeCakeUserInfo = (
     functionName: 'getUserInfo',
     query: {
       enabled: Boolean(veCakeContract?.address && account),
-      select: (d) => {
+      select: useCallback((d: readonly [bigint, bigint, `0x${string}`, bigint, number, number, number, number]) => {
         if (!d) return undefined
         const [amount, end, cakePoolProxy, cakeAmount, lockEndTime, migrationTime, cakePoolType, withdrawFlag] = d
         return {
@@ -68,7 +68,7 @@ export const useVeCakeUserInfo = (
           cakePoolType,
           withdrawFlag,
         } as VeCakeUserInfo
-      },
+      }, []),
     },
     args: [account!],
     watch: true,

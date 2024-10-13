@@ -6,6 +6,7 @@ import dayjs from 'dayjs'
 import { chainIdToExplorerInfoChainName, explorerApiClient } from 'state/info/api/client'
 import { components } from 'state/info/api/schema'
 import { Address, Hash } from 'viem'
+import { useCallback } from 'react'
 import { Transaction, TransactionType } from '../components/Transactions/type'
 
 const urlMap = {
@@ -67,6 +68,6 @@ export const usePoolTransactions = (address?: string, protocol?: Protocol, chain
     queryFn: () =>
       fetchPoolTransactions(address!, protocol!, chainName! as components['schemas']['ChainName'], chainId!),
     enabled: !!address && !!protocol && !!chainName && !!chainId,
-    select: (data) => data.filter((tx) => tx.amountUSD > 0),
+    select: useCallback((data: Transaction[]) => data.filter((tx) => tx.amountUSD > 0), []),
   })
 }
