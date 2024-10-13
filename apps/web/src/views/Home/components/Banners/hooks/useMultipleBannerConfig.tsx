@@ -4,7 +4,6 @@ import { TurkeyMeetupBanner } from 'views/Home/components/Banners/TurkeyMeetupBa
 import CompetitionBanner from '../CompetitionBanner'
 import { EigenpieIFOBanner } from '../EigenpieIFOBanner'
 import { FourMemeBanner } from '../FourMemeBanner'
-import { NigeriaMeetupBanner } from '../NigeriaMeetupBanner'
 import { OptionsBanner } from '../OptionsBanner'
 import { QuestBanner } from '../QuestBanner'
 import { TgPredictionBotBanner } from '../TgPredictionBotBanner'
@@ -46,10 +45,6 @@ export const useMultipleBannerConfig = () => {
       {
         shouldRender: true,
         banner: <TurkeyMeetupBanner />,
-      },
-      {
-        shouldRender: true,
-        banner: <NigeriaMeetupBanner />,
       },
       {
         shouldRender: isRenderIFOBannerFromConfig,
