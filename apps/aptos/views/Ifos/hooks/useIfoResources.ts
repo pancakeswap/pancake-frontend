@@ -12,6 +12,8 @@ import { RootObject as IFOPoolStore } from 'views/Ifos/generated/IFOPoolStore'
 import { RootObject as VestingMetadata } from 'views/Ifos/generated/VestingMetadata'
 import { Ifo } from 'config/constants/types'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useCallback } from 'react'
+import { FetchAccountResourcesResult } from '@pancakeswap/awgmi/core'
 
 interface ResourceType {
   [IFO_RESOURCE_ACCOUNT_TYPE_METADATA]?: IFOMetadata
@@ -27,45 +29,48 @@ export const useIfoResourcesListByUserInfoType = (userInfoTypes?: string[]) => {
     enabled: Boolean(userInfoTypes?.length),
     address: IFO_ADDRESS,
     watch: true,
-    select: (data) => {
-      let resourcesList = {}
+    select: useCallback(
+      (data: FetchAccountResourcesResult) => {
+        let resourcesList = {}
 
-      for (const it of data) {
-        const res: ResourceType = {}
-        const [raisingCoin, offeringCoin, uid] = splitTypeTag(it.type)
+        for (const it of data) {
+          const res: ResourceType = {}
+          const [raisingCoin, offeringCoin, uid] = splitTypeTag(it.type)
 
-        const foundType = userInfoTypes?.find((type) => {
-          const [userRaisingCoin, userOfferingCoin, userUid] = splitTypeTag(type)
+          const foundType = userInfoTypes?.find((type) => {
+            const [userRaisingCoin, userOfferingCoin, userUid] = splitTypeTag(type)
 
-          if (raisingCoin === userRaisingCoin && offeringCoin === userOfferingCoin) {
-            if (uid && uid !== userUid) return false
+            if (raisingCoin === userRaisingCoin && offeringCoin === userOfferingCoin) {
+              if (uid && uid !== userUid) return false
 
-            return true
-          }
+              return true
+            }
 
-          return false
-        })
+            return false
+          })
 
-        if (foundType) {
-          const parsedTypeTag = parseTypeTag(it.type)
-          if (parsedTypeTag.isStruct()) {
-            const key = parsedTypeTag.value.name.identifier
+          if (foundType) {
+            const parsedTypeTag = parseTypeTag(it.type)
+            if (parsedTypeTag.isStruct()) {
+              const key = parsedTypeTag.value.name.identifier
 
-            res[key] = it
+              res[key] = it
 
-            resourcesList = {
-              ...resourcesList,
-              [foundType]: {
-                ...resourcesList[foundType],
-                [key]: it,
-              },
+              resourcesList = {
+                ...resourcesList,
+                [foundType]: {
+                  ...resourcesList[foundType],
+                  [key]: it,
+                },
+              }
             }
           }
         }
-      }
 
-      return resourcesList
-    },
+        return resourcesList
+      },
+      [userInfoTypes],
+    ),
   })
 }
 
@@ -79,28 +84,31 @@ export const useIfoResources = (ifo: Ifo | undefined) => {
     networkName,
     address: IFO_ADDRESS,
     watch: true,
-    select: (data) => {
-      const res: {
-        [IFO_RESOURCE_ACCOUNT_TYPE_METADATA]?: IFOMetadata
-        [IFO_RESOURCE_ACCOUNT_TYPE_POOL_STORE]?: IFOPoolStore
-        [IFO_RESOURCE_ACCOUNT_TYPE_VESTING_METADATA]?: VestingMetadata
-      } = {}
+    select: useCallback(
+      (data: FetchAccountResourcesResult) => {
+        const res: {
+          [IFO_RESOURCE_ACCOUNT_TYPE_METADATA]?: IFOMetadata
+          [IFO_RESOURCE_ACCOUNT_TYPE_POOL_STORE]?: IFOPoolStore
+          [IFO_RESOURCE_ACCOUNT_TYPE_VESTING_METADATA]?: VestingMetadata
+        } = {}
 
-      for (const it of data) {
-        const [raisingCoin, offeringCoin, uid] = splitTypeTag(it.type)
+        for (const it of data) {
+          const [raisingCoin, offeringCoin, uid] = splitTypeTag(it.type)
 
-        if (ifoRaisingCoin === raisingCoin && ifoOfferingCoin === offeringCoin) {
-          if (uid && uid !== ifoUid) break
+          if (ifoRaisingCoin === raisingCoin && ifoOfferingCoin === offeringCoin) {
+            if (uid && uid !== ifoUid) break
 
-          const parsedTypeTag = parseTypeTag(it.type)
+            const parsedTypeTag = parseTypeTag(it.type)
 
-          if (parsedTypeTag.isStruct()) {
-            res[parsedTypeTag.value.name.identifier] = it
+            if (parsedTypeTag.isStruct()) {
+              res[parsedTypeTag.value.name.identifier] = it
+            }
           }
         }
-      }
 
-      return res
-    },
+        return res
+      },
+      [ifoOfferingCoin, ifoOfferingCoin, ifoUid],
+    ),
   })
 }
