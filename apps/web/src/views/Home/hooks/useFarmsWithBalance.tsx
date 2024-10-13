@@ -30,7 +30,7 @@ export type FarmWithBalance = {
 
 const useFarmsWithBalance = () => {
   const { account, chainId } = useAccountActiveChain()
-  const { data: poolLength } = useFarmsLength()
+  const { data: poolLength } = useFarmsLength({ enabled: Boolean(account) })
   const { proxyAddress, isLoading: isProxyContractAddressLoading } = useBCakeProxyContractAddress(account, chainId)
   const bCakeProxy = useBCakeProxyContract(proxyAddress)
   const masterChefContract = useMasterchef()

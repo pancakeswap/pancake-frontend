@@ -19,7 +19,7 @@ const useBCakeProxyBalance = () => {
     queryKey: ['bCakeProxyBalance', account],
 
     queryFn: async () => {
-      const rawBalance = await cakeContract?.read.balanceOf([bCakeProxy.address])
+      const rawBalance = await cakeContract?.read.balanceOf([bCakeProxy!.address])
       return rawBalance ? new BigNumber(rawBalance.toString()) : new BigNumber(0)
     },
 

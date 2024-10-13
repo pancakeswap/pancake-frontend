@@ -18,7 +18,7 @@ export const useBCakeProxyContractAddress = (account?: Address, chainId?: number
   const isLoading = isSupportedChain ? status !== 'success' : false
 
   return {
-    proxyAddress: data as Address,
+    proxyAddress: data as Address | undefined,
     isLoading,
     proxyCreated: data && data !== NO_PROXY_CONTRACT,
     refreshProxyAddress: refetch,
