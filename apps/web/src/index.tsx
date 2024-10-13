@@ -7,6 +7,7 @@ import { useAccount } from 'wagmi'
 import ListsUpdater from './state/lists/updater'
 import MulticallUpdater from './state/multicall/updater'
 import TransactionUpdater from './state/transactions/updater'
+import './utils/abortcontroller-polyfill'
 import { chains } from './utils/wagmi'
 
 export function Updaters() {
