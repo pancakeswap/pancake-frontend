@@ -24,6 +24,7 @@ import Head from 'next/head'
 import Script from 'next/script'
 import { Fragment } from 'react'
 import { PersistGate } from 'redux-persist/integration/react'
+import 'utils/abortcontroller-polyfill'
 import { V4CakeIcon } from 'views/Home/components/V4CakeIcon'
 
 import { ZKSyncAirdropModalWithAutoPopup } from 'components/ClaimZksyncAirdropModal'
