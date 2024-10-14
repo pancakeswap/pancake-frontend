@@ -19,32 +19,27 @@ export type FeatureRollOutConfig = {
 
 export type ExperimentalFeatureConfigs = FeatureRollOutConfig[]
 
-const readPercentage = (feature: EXPERIMENTAL_FEATURES): number => {
-  const urlParams = new URLSearchParams(window.location.search)
-  const urlValue = urlParams.get(`percentage_${feature}`)
-  return urlValue ? parseFloat(urlValue) : 0 // Default to 0 if not found
-}
-
 // Add new AB TESTS here as well as their config
 export const EXPERIMENTAL_FEATURE_CONFIGS: ExperimentalFeatureConfigs = [
   {
     feature: EXPERIMENTAL_FEATURES.WebNotifications,
-    percentage: readPercentage(EXPERIMENTAL_FEATURES.WebNotifications) || 1,
+    percentage: 1,
     whitelist: [],
   },
   {
     feature: EXPERIMENTAL_FEATURES.SpeedQuote,
-    percentage: readPercentage(EXPERIMENTAL_FEATURES.SpeedQuote) || 1,
+    percentage: 1,
     whitelist: [],
   },
   {
     feature: EXPERIMENTAL_FEATURES.PriceAPI,
-    percentage: readPercentage(EXPERIMENTAL_FEATURES.PriceAPI) || 0.5,
+    percentage: 0.5,
     whitelist: [],
   },
   {
     feature: EXPERIMENTAL_FEATURES.PCSX,
-    percentage: readPercentage(EXPERIMENTAL_FEATURES.PCSX) || 1,
+    percentage: 1,
+    // percentage: 0.2, // original value. TODO: reset to this after testing
     whitelist: [],
   },
 ]
