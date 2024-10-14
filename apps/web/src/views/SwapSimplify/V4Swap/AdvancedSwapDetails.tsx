@@ -65,7 +65,7 @@ export const TradeSummary = memo(function TradeSummary({
   const [allowedSlippage] = useUserSlippage()
 
   return (
-    <AutoColumn>
+    <AutoColumn px="4px">
       {gasTokenSelector}
       <RowBetween>
         <RowFixed>
@@ -89,7 +89,7 @@ export const TradeSummary = memo(function TradeSummary({
         </RowFixed>
       </RowBetween>
       {feeSavedAmount ? (
-        <RowBetween align="flex-start" mt="8px">
+        <RowBetween align="flex-start" mt="10px">
           <RowFixed>
             <QuestionHelperV2
               text={
@@ -125,7 +125,7 @@ export const TradeSummary = memo(function TradeSummary({
         </RowBetween>
       ) : null}
       {priceImpactWithoutFee && (
-        <RowBetween mt="8px">
+        <RowBetween mt="10px">
           <RowFixed>
             <QuestionHelperV2
               text={
@@ -182,7 +182,7 @@ export const TradeSummary = memo(function TradeSummary({
       </RowBetween>
 
       {(realizedLPFee || isX) && (
-        <RowBetween mt="8px">
+        <RowBetween mt="10px">
           <RowFixed>
             <QuestionHelperV2
               text={
