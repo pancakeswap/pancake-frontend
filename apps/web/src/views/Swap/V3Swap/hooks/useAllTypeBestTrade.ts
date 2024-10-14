@@ -3,11 +3,11 @@ import { SmartRouterTrade, V4Router } from '@pancakeswap/smart-router'
 import { Currency, TradeType } from '@pancakeswap/swap-sdk-core'
 import { useCallback, useMemo, useRef, useState } from 'react'
 
-import { useBetterQuote } from 'hooks/useBestAMMTrade'
+import { usePCSX } from 'hooks/usePCSX'
 import { useThrottleFn } from 'hooks/useThrottleFn'
 import { InterfaceOrder } from 'views/Swap/utils'
-import { usePCSX } from 'hooks/usePCSX'
 
+import { useBetterQuote } from 'hooks/useBestAMMTrade'
 import { useSwapBestOrder, useSwapBestTrade } from './useSwapBestTrade'
 
 type Trade = SmartRouterTrade<TradeType> | V4Router.V4TradeWithoutGraph<TradeType>
@@ -73,7 +73,15 @@ export const useAllTypeBestTrade = () => {
 
   const hasAvailableDutchOrder =
     bestOrder.enabled && bestOrder.order?.type === OrderType.DUTCH_LIMIT && bestOrder.isValidQuote
-  const betterQuote = useBetterQuote(classicAmmOrder, hasAvailableDutchOrder ? currentOrder : undefined)
+
+  // const betterQuote = useBetterQuote(classicAmmOrder, hasAvailableDutchOrder ? currentOrder : undefined)
+
+  // TODO: Preferring PCSX only for testing. Revert back later
+  const betterQuote = useBetterQuote(
+    hasAvailableDutchOrder ? undefined : classicAmmOrder,
+    hasAvailableDutchOrder ? currentOrder : undefined,
+  )
+
   const finalOrder = xEnabled ? betterQuote : classicAmmOrder
   const tradeLoaded = Boolean(finalOrder && !finalOrder.isLoading)
 
