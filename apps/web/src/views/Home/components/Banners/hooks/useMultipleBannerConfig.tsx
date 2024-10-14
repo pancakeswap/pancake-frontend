@@ -13,7 +13,6 @@ import { VeCakeBanner } from '../VeCakeBanner'
 import WebNotificationBanner from '../WebNotificationBanner'
 import useIsRenderCompetitionBanner from './useIsRenderCompetitionBanner'
 import { useIsRenderIfoBannerFromConfig } from './useIsRenderIFOBanner'
-import { useIsRenderTgPredictionBotBanner } from './useIsRenderTgPredictionBotBanner'
 import useIsRenderUserBanner from './useIsRenderUserBanner'
 
 interface IBannerConfig {
@@ -37,7 +36,6 @@ interface IBannerConfig {
 export const useMultipleBannerConfig = () => {
   const isRenderCompetitionBanner = useIsRenderCompetitionBanner()
   const isRenderUserBanner = useIsRenderUserBanner()
-  const isRenderTgPredictionBotBanner = useIsRenderTgPredictionBotBanner()
   const isRenderIFOBannerFromConfig = useIsRenderIfoBannerFromConfig()
 
   return useMemo(() => {
@@ -55,7 +53,7 @@ export const useMultipleBannerConfig = () => {
         banner: <UserBanner />,
       },
       {
-        shouldRender: isRenderTgPredictionBotBanner,
+        shouldRender: true,
         banner: <TgPredictionBotBanner />,
       },
       {
@@ -100,7 +98,6 @@ export const useMultipleBannerConfig = () => {
       .map((bannerConfig: IBannerConfig) => bannerConfig.banner)
   }, [
     isRenderCompetitionBanner,
-    isRenderTgPredictionBotBanner,
     isRenderUserBanner.isEarningsBusdZero,
     isRenderUserBanner.shouldRender,
     isRenderIFOBannerFromConfig,
