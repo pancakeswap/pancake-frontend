@@ -108,7 +108,7 @@ const MotionModal: React.FC<React.PropsWithChildren<ModalProps>> = ({
           <Heading>{title}</Heading>
         </ModalTitle>
         {headerRightSlot}
-        {!hideCloseButton && <ModalCloseButton onDismiss={onDismiss} />}
+        {!hideCloseButton && <ModalCloseButton onDismiss={onDismiss} mb="-4px" />}
       </ModalHeader>
       <ModalBody
         position="relative"

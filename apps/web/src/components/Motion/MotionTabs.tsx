@@ -16,9 +16,10 @@ const MotionBoxUnderline = styled(MotionBox)`
   bottom: 0;
   left: 0;
   right: 0;
-  height: 2px;
+  height: 3px;
   background: ${({ theme }) => theme.colors.primary};
   width: 100%;
+  border-radius: 2px 2px 0 0;
 `
 
 const StyledTab = styled(Box)`

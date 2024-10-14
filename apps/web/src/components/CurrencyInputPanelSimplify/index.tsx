@@ -14,9 +14,8 @@ import {
 } from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { CurrencyLogo, DoubleCurrencyLogo, SwapUIV2 } from '@pancakeswap/widgets-internal'
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { memo, useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { styled } from 'styled-components'
-import { safeGetAddress } from 'utils'
 
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import { useStablecoinPriceAmount } from 'hooks/useStablecoinPrice'
@@ -32,12 +31,12 @@ const CurrencySelectButton = styled(Button).attrs({ variant: 'text', scale: 'sm'
   padding: 0px;
 `
 const SymbolText = styled(Text)`
-  font-size: 24px;
+  font-size: 20px;
 `
 
 const SIZE_ADAPTION_BOUNDARY_MIN_PX_ = 96
 const SIZE_ADAPTION_BOUNDARY_MAX_PX = 116
-const MAX_FONT_SIZE = 24
+const MAX_FONT_SIZE = 20
 const MIN_FONT_SIZE = 16
 const MAX_LOGO_SIZE = 40
 const MIN_LOGO_SIZE = 24
@@ -61,7 +60,8 @@ const useSizeAdaption = (value: string, currencySymbol?: string) => {
     }
     return currencySymbol
   }, [currencySymbol])
-  useEffect(() => {
+
+  useLayoutEffect(() => {
     if (!inputRef.current || !symbolRef.current || !wrapperRef.current || !tokenImageRef.current) return
     const inputElement = inputRef.current
     const symbolElement = symbolRef.current
@@ -159,7 +159,7 @@ const CurrencyInputPanelSimplify = memo(function CurrencyInputPanel({
 
   const mode = id
   const token = pair ? pair.liquidityToken : currency?.isToken ? currency : null
-  const tokenAddress = token ? safeGetAddress(token.address) : null
+  // const tokenAddress = token ? safeGetAddress(token.address) : null
   const [isInputFocus, setIsInputFocus] = useState(false)
 
   const amountInDollar = useStablecoinPriceAmount(
@@ -276,7 +276,7 @@ const CurrencyInputPanelSimplify = memo(function CurrencyInputPanel({
                 ) : (
                   <Flex alignItems="start" flexDirection="column">
                     <Flex alignItems="center" justifyContent="space-between">
-                      <SymbolText id="pair" bold ref={symbolRef} style={{ fontSize: '24px' }}>
+                      <SymbolText id="pair" bold ref={symbolRef}>
                         {(currency && currency.symbol && currency.symbol.length > 10
                           ? shortedSymbol
                           : currency?.symbol) || t('Select a currency')}
