@@ -64,8 +64,7 @@ const MenuItem: React.FC<React.PropsWithChildren<FooterProps>> = ({
                     <Link
                       data-theme="dark"
                       href={href}
-                      target="_blank"
-                      rel="noreferrer noopener"
+                      external
                       color={isHighlighted ? vars.colors.warning : "text"}
                       bold={false}
                       style={{ textTransform: "none" }}

@@ -77,7 +77,7 @@ export const useBCakeTooltipContent = () => {
       </Box>
       <Box>
         {t('To learn more, check out the')}
-        <Link target="_blank" href="https://medium.com/pancakeswap/introducing-bcake-farm-yield-boosters-b27b7a6f0f84">
+        <Link external href="https://medium.com/pancakeswap/introducing-bcake-farm-yield-boosters-b27b7a6f0f84">
           {t('Medium Article')}
         </Link>
       </Box>

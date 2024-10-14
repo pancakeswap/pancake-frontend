@@ -59,7 +59,7 @@ export const FarmCell: React.FunctionComponent<
           <Box>
             <Text lineHeight="110%" as="span">
               {t('Stake CAKE, Earn PEPE in our')}
-              <Link ml="4px" lineHeight="110%" display="inline !important" href="/pools?chain=bsc" target="_blank">
+              <Link ml="4px" lineHeight="110%" display="inline !important" href="/pools?chain=bsc" external>
                 PEPE Syrup Pool
               </Link>
               .

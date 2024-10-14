@@ -27,7 +27,7 @@ export default function WithdrawalMessage({ lockPeriod }: { lockPeriod: number }
             fontSize: '14px',
           }}
           href="https://docs.pancakeswap.finance/products/simple-staking#when-can-i-claim-my-rewards"
-          target="_blank"
+          external
         >
           {t('Click here for more information')}
         </Link>

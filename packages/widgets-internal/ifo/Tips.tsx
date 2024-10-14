@@ -1,8 +1,7 @@
 import BigNumber from "bignumber.js";
 import { useMemo } from "react";
 import { SpaceProps } from "styled-system";
-import { FlexGap, Message, MessageText, InfoFilledIcon, Box, MessageProps } from "@pancakeswap/uikit";
-import Link from "next/link";
+import { FlexGap, Message, MessageText, InfoFilledIcon, Box, MessageProps, Link } from "@pancakeswap/uikit";
 import { useTranslation } from "@pancakeswap/localization";
 import styled from "styled-components";
 
@@ -84,7 +83,10 @@ export function InsufficientNativeVeCakeTips(props: SpaceProps) {
             )}
           </MessageText>
           <LinkMessageText bold>
-            <Link href="https://docs.pancakeswap.finance/products/vecake/migrate-from-cake-pool#10ffc408-be58-4fa8-af56-be9f74d03f42">
+            <Link
+              external
+              href="https://docs.pancakeswap.finance/products/vecake/migrate-from-cake-pool#10ffc408-be58-4fa8-af56-be9f74d03f42"
+            >
               {t("Learn more")} {">>"}
             </Link>
           </LinkMessageText>
