@@ -88,7 +88,7 @@ export const SettingsModalV2 = ({
 
       default:
         return (
-          <Box mb="-8px">
+          <Box mb="-5px">
             <MotionTabs activeIndex={activeTabIndex} onItemClick={onTabChange} animateOnMobile={false}>
               <Text>{t('Settings')}</Text>
               <Text>{t('Recent Transactions')}</Text>
@@ -146,7 +146,7 @@ export const SettingsModalV2 = ({
     <MotionModal
       minWidth={['unset', 'unset', '420px']}
       minHeight={isMobile ? '500px' : undefined}
-      headerPadding="0 14px 0 24px"
+      headerPadding="2px 14px 0 24px"
       headerRightSlot={
         activeTabIndex === TabIndex.CUSTOMIZE_ROUTING &&
         isRoutingSettingChange && (
