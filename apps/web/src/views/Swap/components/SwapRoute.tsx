@@ -14,11 +14,11 @@ export default memo(function SwapRoute({ path }: { path?: Currency[] }) {
           // eslint-disable-next-line react/no-array-index-key
           <Fragment key={`${currency?.symbol}_${i}`}>
             <Flex alignItems="end">
-              <Text fontSize="14px" ml="0.125rem" mr="0.125rem" color="textSubtle">
+              <Text fontSize="14px" ml="0.125rem" mr="0.125rem">
                 {currency?.symbol}
               </Text>
             </Flex>
-            {!isLastItem && <ChevronRightIcon width="12px" />}
+            {!isLastItem && <ChevronRightIcon color="textSubtle" width="20px" />}
           </Fragment>
         )
       })}

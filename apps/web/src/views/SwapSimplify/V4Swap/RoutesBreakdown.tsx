@@ -1,7 +1,7 @@
 import { useDebounce } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { Route } from '@pancakeswap/smart-router'
-import { Box, IconButton, QuestionHelperV2, SearchIcon, SkeletonV2, Text, useModalV2 } from '@pancakeswap/uikit'
+import { Box, IconButton, InfoIcon, QuestionHelperV2, SkeletonV2, Text, useModalV2 } from '@pancakeswap/uikit'
 import { memo } from 'react'
 import { styled } from 'styled-components'
 
@@ -61,8 +61,8 @@ export const RoutesBreakdown = memo(function RoutesBreakdown({ routes = [], wrap
               ) : (
                 <RouteComp route={routes[0]} />
               )}
-              <IconButton ml="8px" variant="text" color="textSubtle" scale="xs">
-                <SearchIcon width="16px" height="16px" color="textSubtle" />
+              <IconButton mt="1px" variant="text" color="positive60" scale="xs">
+                <InfoIcon width="16px" height="16px" color="positive60" />
               </IconButton>
             </span>
           </SkeletonV2>
@@ -113,7 +113,7 @@ function RouteComp({ route }: RouteProps) {
   const { path } = route
 
   return (
-    <RowBetween>
+    <RowBetween mt="4px">
       <SwapRoute path={path} />
     </RowBetween>
   )
