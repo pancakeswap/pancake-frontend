@@ -53,7 +53,7 @@ export const TradeDetails = memo(function TradeDetails({ loaded, order }: Props)
           priceImpactWithoutFee={priceImpactWithoutFee ?? undefined}
           realizedLPFee={lpFeeAmount ?? undefined}
           hasStablePair={hasStablePool}
-          gasTokenSelector={isPaymasterAvailable && <GasTokenSelector currency={order?.trade.inputAmount.currency} />}
+          gasTokenSelector={isPaymasterAvailable && inputAmount && <GasTokenSelector currency={inputAmount.currency} />}
         />
         {isXOrder(order) ? <XRoutesBreakdown /> : <RoutesBreakdown routes={order?.trade?.routes} />}
       </AutoColumn>
