@@ -410,7 +410,7 @@ export function useBCakeFarmBoosterProxyFactoryContract() {
   return useMemo(() => getBCakeFarmBoosterProxyFactoryContract(signer ?? undefined), [signer])
 }
 
-export function useBCakeProxyContract(proxyContractAddress: Address) {
+export function useBCakeProxyContract(proxyContractAddress: Address | undefined) {
   const { data: signer } = useWalletClient()
   return useMemo(
     () => proxyContractAddress && getBCakeProxyContract(proxyContractAddress, signer ?? undefined),

@@ -2,7 +2,7 @@ import { Permit2ABI, getPermit2Address } from '@pancakeswap/permit2-sdk'
 import { CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
 import { useQuery } from '@tanstack/react-query'
 import { FAST_INTERVAL } from 'config/constants'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { publicClient } from 'utils/wagmi'
 import { Address, zeroAddress } from 'viem'
 import { useActiveChainId } from './useActiveChainId'
@@ -50,14 +50,17 @@ export const usePermit2Details = (
     retry: true,
     refetchOnWindowFocus: false,
     enabled: Boolean(chainId && token && !token.isNative && spender && owner),
-    select: (data): Permit2Details | undefined => {
-      if (!data || token?.isNative) return undefined
-      const [amount, expiration, nonce] = data
-      return {
-        amount: CurrencyAmount.fromRawAmount(token!, amount),
-        expiration: Number(expiration),
-        nonce: Number(nonce),
-      }
-    },
+    select: useCallback(
+      (data: readonly [bigint, number, number]): Permit2Details | undefined => {
+        if (!data || token?.isNative) return undefined
+        const [amount, expiration, nonce] = data
+        return {
+          amount: CurrencyAmount.fromRawAmount(token!, amount),
+          expiration: Number(expiration),
+          nonce: Number(nonce),
+        }
+      },
+      [token],
+    ),
   })
 }

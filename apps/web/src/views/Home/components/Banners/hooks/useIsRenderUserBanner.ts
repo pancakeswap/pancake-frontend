@@ -11,10 +11,8 @@ const useIsRenderUserBanner = () => {
   const { account, chainId } = useActiveWeb3React()
 
   const { earningsSum: farmEarningsSum } = useFarmsWithBalance()
-  const cakePrice = useCakePrice()
-  const isEarningsBusdZero = new BigNumber(farmEarningsSum).multipliedBy(cakePrice).isZero()
 
-  const { data: shouldRenderUserBanner } = useQuery({
+  const { data: shouldRenderUserBanner = false } = useQuery({
     queryKey: ['shouldRenderUserBanner', account],
     queryFn: async () => {
       const v2FarmsConfigSize = (await getLegacyFarmConfig(chainId))?.length || 0
@@ -25,9 +23,12 @@ const useIsRenderUserBanner = () => {
     enabled: Boolean(account),
   })
 
+  const cakePrice = useCakePrice({ enabled: shouldRenderUserBanner })
+
   return useMemo(() => {
-    return { shouldRender: Boolean(shouldRenderUserBanner), isEarningsBusdZero }
-  }, [isEarningsBusdZero, shouldRenderUserBanner])
+    const isEarningsBusdZero = new BigNumber(farmEarningsSum).multipliedBy(cakePrice).isZero()
+    return { shouldRender: shouldRenderUserBanner, isEarningsBusdZero }
+  }, [shouldRenderUserBanner, farmEarningsSum, cakePrice])
 }
 
 export default useIsRenderUserBanner

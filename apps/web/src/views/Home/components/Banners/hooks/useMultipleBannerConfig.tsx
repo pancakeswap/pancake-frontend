@@ -4,7 +4,6 @@ import { TurkeyMeetupBanner } from 'views/Home/components/Banners/TurkeyMeetupBa
 import CompetitionBanner from '../CompetitionBanner'
 import { EigenpieIFOBanner } from '../EigenpieIFOBanner'
 import { FourMemeBanner } from '../FourMemeBanner'
-import { NigeriaMeetupBanner } from '../NigeriaMeetupBanner'
 import { OptionsBanner } from '../OptionsBanner'
 import { QuestBanner } from '../QuestBanner'
 import { TgPredictionBotBanner } from '../TgPredictionBotBanner'
@@ -14,7 +13,6 @@ import { VeCakeBanner } from '../VeCakeBanner'
 import WebNotificationBanner from '../WebNotificationBanner'
 import useIsRenderCompetitionBanner from './useIsRenderCompetitionBanner'
 import { useIsRenderIfoBannerFromConfig } from './useIsRenderIFOBanner'
-import { useIsRenderTgPredictionBotBanner } from './useIsRenderTgPredictionBotBanner'
 import useIsRenderUserBanner from './useIsRenderUserBanner'
 
 interface IBannerConfig {
@@ -38,7 +36,6 @@ interface IBannerConfig {
 export const useMultipleBannerConfig = () => {
   const isRenderCompetitionBanner = useIsRenderCompetitionBanner()
   const isRenderUserBanner = useIsRenderUserBanner()
-  const isRenderTgPredictionBotBanner = useIsRenderTgPredictionBotBanner()
   const isRenderIFOBannerFromConfig = useIsRenderIfoBannerFromConfig()
 
   return useMemo(() => {
@@ -46,10 +43,6 @@ export const useMultipleBannerConfig = () => {
       {
         shouldRender: true,
         banner: <TurkeyMeetupBanner />,
-      },
-      {
-        shouldRender: true,
-        banner: <NigeriaMeetupBanner />,
       },
       {
         shouldRender: isRenderIFOBannerFromConfig,
@@ -60,7 +53,7 @@ export const useMultipleBannerConfig = () => {
         banner: <UserBanner />,
       },
       {
-        shouldRender: isRenderTgPredictionBotBanner,
+        shouldRender: true,
         banner: <TgPredictionBotBanner />,
       },
       {
@@ -105,7 +98,6 @@ export const useMultipleBannerConfig = () => {
       .map((bannerConfig: IBannerConfig) => bannerConfig.banner)
   }, [
     isRenderCompetitionBanner,
-    isRenderTgPredictionBotBanner,
     isRenderUserBanner.isEarningsBusdZero,
     isRenderUserBanner.shouldRender,
     isRenderIFOBannerFromConfig,

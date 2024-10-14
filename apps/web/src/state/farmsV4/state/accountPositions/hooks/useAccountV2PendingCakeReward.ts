@@ -1,6 +1,7 @@
 import { BCakeWrapperFarmConfig } from '@pancakeswap/farms'
 import { useQuery } from '@tanstack/react-query'
 import { Address } from 'viem'
+import { useCallback } from 'react'
 import { getAccountV2FarmingBCakeWrapperEarning } from '../fetcher'
 
 export const useAccountV2PendingCakeReward = (
@@ -19,6 +20,6 @@ export const useAccountV2PendingCakeReward = (
         bCakeWrapperConfig as BCakeWrapperFarmConfig,
       ]),
     enabled: Boolean(account && bCakeWrapperConfig.chainId && bCakeWrapperConfig.bCakeWrapperAddress),
-    select: (data) => data?.[0],
+    select: useCallback((data: string[]) => data?.[0], []),
   })
 }

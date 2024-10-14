@@ -49,11 +49,14 @@ export function useMerklInfo(poolAddress: string | null): {
     enabled: Boolean(chainId && poolAddress),
     staleTime: FAST_INTERVAL,
     retryDelay: (attemptIndex) => Math.min(2000 * 2 ** attemptIndex, 30000),
-    select: (data) => {
-      return data?.[chainId ?? 0]?.pools?.[poolAddress ?? '']?.aprs?.['Average APR (rewards / pool TVL)'] as
-        | number
-        | undefined
-    },
+    select: useCallback(
+      (data) => {
+        return data?.[chainId ?? 0]?.pools?.[poolAddress ?? '']?.aprs?.['Average APR (rewards / pool TVL)'] as
+          | number
+          | undefined
+      },
+      [chainId, poolAddress],
+    ),
   })
 
   const { data, isPending, refetch } = useQuery({

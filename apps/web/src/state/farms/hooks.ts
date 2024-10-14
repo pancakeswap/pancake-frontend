@@ -29,7 +29,7 @@ import {
   makeUserFarmFromPidSelector,
 } from './selectors'
 
-export function useFarmsLength() {
+export function useFarmsLength({ enabled = true } = {}) {
   const { chainId } = useActiveChainId()
   return useQuery({
     queryKey: ['farmsLength', chainId],
@@ -44,7 +44,7 @@ export function useFarmsLength() {
       return Number(await mc.read.poolLength())
     },
 
-    enabled: Boolean(chainId && supportedChainIdV2.includes(chainId)),
+    enabled: Boolean(enabled && chainId && supportedChainIdV2.includes(chainId)),
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
     refetchOnMount: false,
