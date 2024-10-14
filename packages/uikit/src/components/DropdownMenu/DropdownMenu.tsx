@@ -73,7 +73,7 @@ const MenuItem: React.FC<{
   return (
     <StyledDropdownMenuItemContainer key={label?.toString()}>
       {type === DropdownMenuItemType.BUTTON && (
-        <DropdownMenuItem $isActive={isActive} disabled={disabled || isDisabled} type="button">
+        <DropdownMenuItem $isActive={isActive} disabled={disabled || isDisabled} type="button" {...itemProps}>
           {MenuItemContent}
         </DropdownMenuItem>
       )}

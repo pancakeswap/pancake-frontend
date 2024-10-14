@@ -1,4 +1,3 @@
-import noop from "lodash/noop";
 import { DropdownMenuItems, DropdownMenuItemType } from "./types";
 
 const ItemsMock: DropdownMenuItems[] = [
@@ -20,7 +19,10 @@ const ItemsMock: DropdownMenuItems[] = [
   },
   {
     label: "Disconnect",
-    onClick: noop,
+    onClick: () => {
+      // eslint-disable-next-line no-alert
+      alert("disconnect");
+    },
     type: DropdownMenuItemType.BUTTON,
   },
 ];
