@@ -1,6 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import {
   AtomBox,
+  Box,
   Button,
   ButtonProps,
   Flex,
@@ -32,8 +33,6 @@ enum TabIndex {
 }
 
 interface SettingsModalV2Props {
-  onDismiss?: () => void
-
   /**
    * Tab Index:
    * (0) Settings |
@@ -44,6 +43,7 @@ interface SettingsModalV2Props {
   defaultTabIndex?: TabIndex
 
   mode?: SettingsMode
+  onDismiss?: () => void
 }
 
 export const SettingsModalV2 = ({
@@ -88,10 +88,12 @@ export const SettingsModalV2 = ({
 
       default:
         return (
-          <MotionTabs activeIndex={activeTabIndex} onItemClick={onTabChange} animateOnMobile={false}>
-            <Text>{t('Settings')}</Text>
-            <Text>{t('Recent Transactions')}</Text>
-          </MotionTabs>
+          <Box mb="-8px">
+            <MotionTabs activeIndex={activeTabIndex} onItemClick={onTabChange} animateOnMobile={false}>
+              <Text>{t('Settings')}</Text>
+              <Text>{t('Recent Transactions')}</Text>
+            </MotionTabs>
+          </Box>
         )
     }
   }, [activeTabIndex, t, onTabChange])
@@ -103,9 +105,7 @@ export const SettingsModalV2 = ({
           <SettingsTab
             key="settings_tab"
             onCustomizeRoutingClick={() => setActiveTabIndex(TabIndex.CUSTOMIZE_ROUTING)}
-            setShowConfirmExpertModal={(show) =>
-              show ? setActiveTabIndex(TabIndex.EXPERT_MODE) : setActiveTabIndex(TabIndex.SETTINGS)
-            }
+            setShowConfirmExpertModal={(show) => setActiveTabIndex(show ? TabIndex.EXPERT_MODE : TabIndex.SETTINGS)}
             showExpertModeAcknowledgement={showExpertModeAcknowledgement}
             expertMode={expertMode}
             setExpertMode={setExpertMode}
@@ -120,9 +120,7 @@ export const SettingsModalV2 = ({
         return (
           <ExpertModeTab
             key="expert_mode_tab"
-            setShowConfirmExpertModal={(show) =>
-              show ? setActiveTabIndex(TabIndex.EXPERT_MODE) : setActiveTabIndex(TabIndex.SETTINGS)
-            }
+            setShowConfirmExpertModal={(show) => setActiveTabIndex(show ? TabIndex.EXPERT_MODE : TabIndex.SETTINGS)}
             toggleExpertMode={() => setExpertMode((s) => !s)}
             setShowExpertModeAcknowledgement={setShowExpertModeAcknowledgement}
           />
@@ -148,7 +146,7 @@ export const SettingsModalV2 = ({
     <MotionModal
       minWidth={['unset', 'unset', '420px']}
       minHeight={isMobile ? '500px' : undefined}
-      headerPadding="6px 14px 0 24px"
+      headerPadding="0 14px 0 24px"
       headerRightSlot={
         activeTabIndex === TabIndex.CUSTOMIZE_ROUTING &&
         isRoutingSettingChange && (
