@@ -131,7 +131,11 @@ export function FormMain({ inputAmount, outputAmount, tradeLoading, isUserInsuff
         onCurrencySelect={handleInputSelect}
         otherCurrency={outputCurrency}
         commonBasesType={CommonBasesType.SWAP_LIMITORDER}
-        title={<Text fontSize={12}>{t('From')}</Text>}
+        title={
+          <Text color="textSubtle" fontSize={12} bold>
+            {t('From')}
+          </Text>
+        }
         isUserInsufficientBalance={isUserInsufficientBalance}
       />
       <FlipButton />
@@ -149,7 +153,11 @@ export function FormMain({ inputAmount, outputAmount, tradeLoading, isUserInsuff
         onCurrencySelect={handleOutputSelect}
         otherCurrency={outputCurrency}
         commonBasesType={CommonBasesType.SWAP_LIMITORDER}
-        title={<Text fontSize={12}>{t('To')}</Text>}
+        title={
+          <Text color="textSubtle" fontSize={12} bold>
+            {t('To')}
+          </Text>
+        }
       />
       <AssignRecipientButton />
       <Recipient />
