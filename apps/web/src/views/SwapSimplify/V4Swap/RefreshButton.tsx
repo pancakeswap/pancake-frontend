@@ -17,7 +17,7 @@ export const RefreshButton: React.FC<{
       disabled={loading}
       onClick={onRefresh}
       data-dd-action-name="Swap refresh button"
-      style={{ backgroundColor: loading ? 'transparent' : undefined }}
+      style={{ backgroundColor: loading ? 'transparent' : undefined, transform: 'rotate(-45deg)' }}
     >
       {loading ? (
         <SwapLoading />
@@ -25,6 +25,7 @@ export const RefreshButton: React.FC<{
         <RefreshIcon
           disabled={refreshDisabled}
           color="textSubtle"
+          innerColor="#02919D"
           width="20px"
           duration={chainId && CHAIN_REFRESH_TIME[chainId] ? CHAIN_REFRESH_TIME[chainId] / 1000 : undefined}
         />
