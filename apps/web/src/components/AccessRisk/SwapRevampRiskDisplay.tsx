@@ -127,7 +127,7 @@ export const RiskInputPanelDisplay: React.FC<RiskInputPanelDisplayProps> = ({ to
   return null
 }
 
-export const RiskTitle: React.FC<RiskDetailsProps & { bold?: boolean }> = ({ token, isInputToken, bold }) => {
+export const RiskTitle: React.FC<RiskDetailsProps> = ({ token, isInputToken }) => {
   const { t } = useTranslation()
   const { isDataLoading, riskLevel, tagColor } = useRiskCheckData(token)
   if (!isDataLoading && riskLevel && riskLevel <= TOKEN_RISK.SIGNIFICANT && riskLevel >= TOKEN_RISK.MEDIUM) {
@@ -138,7 +138,7 @@ export const RiskTitle: React.FC<RiskDetailsProps & { bold?: boolean }> = ({ tok
             <RiskAlertIcon width={24} color={tagColor} />
           </Box>
           <FlexGap justifyContent="center" alignItems="flex-start" flexDirection="column" gap="8px">
-            <Text fontSize="16px" bold={bold}>
+            <Text fontSize="16px" bold>
               {TOKEN_RISK_T[riskLevel]}{' '}
               {t('detected for %tokenType% token:', {
                 tokenType: isInputToken ? t('input') : t('output'),
@@ -154,7 +154,7 @@ export const RiskTitle: React.FC<RiskDetailsProps & { bold?: boolean }> = ({ tok
   return null
 }
 
-export const PriceImpactTitle: React.FC<{ bold?: boolean }> = ({ bold }) => {
+export const PriceImpactTitle: React.FC = () => {
   const { t } = useTranslation()
   return (
     <FlexGap alignItems="flex-start" gap="8px">
@@ -162,7 +162,7 @@ export const PriceImpactTitle: React.FC<{ bold?: boolean }> = ({ bold }) => {
         <WarningIcon width={24} color="failure" />
       </Box>
       <FlexGap justifyContent="center" alignItems="flex-start" flexDirection="column" gap="8px">
-        <Text fontSize="16px" bold={bold}>
+        <Text fontSize="16px" bold>
           {t('Price impact too high. Proceed with caution.')}
         </Text>
       </FlexGap>
@@ -170,7 +170,7 @@ export const PriceImpactTitle: React.FC<{ bold?: boolean }> = ({ bold }) => {
   )
 }
 
-export const SlippageTitle: React.FC<{ bold?: boolean }> = ({ bold }) => {
+export const SlippageTitle: React.FC = () => {
   const { t } = useTranslation()
   return (
     <FlexGap alignItems="flex-start" gap="8px">
@@ -178,7 +178,7 @@ export const SlippageTitle: React.FC<{ bold?: boolean }> = ({ bold }) => {
         <WarningIcon width={24} color="failure" />
       </Box>
       <FlexGap justifyContent="center" alignItems="flex-start" flexDirection="column" gap="8px">
-        <Text fontSize="16px" bold={bold}>
+        <Text fontSize="16px" bold>
           {t('Slippage settings too high. Proceed with caution.')}
         </Text>
       </FlexGap>
@@ -312,10 +312,10 @@ export const RiskDetailsPanel: React.FC<RiskDetailsPanelProps> = ({
           onToggle={isRiskMoreThanOne ? () => setModalOpen(true) : () => setIsOpen(!isOpen)}
           title={
             <FlexGap flexDirection="column">
-              <RiskTitle token={token0} isInputToken bold={!isRiskMoreThanOne} />
-              <RiskTitle token={token1} isInputToken={false} bold={!isRiskMoreThanOne} />
-              {isPriceImpactTooHigh && <PriceImpactTitle bold={!isRiskMoreThanOne} />}
-              {isSlippageTooHigh && <SlippageTitle bold={!isRiskMoreThanOne} />}
+              <RiskTitle token={token0} isInputToken />
+              <RiskTitle token={token1} isInputToken={false} />
+              {isPriceImpactTooHigh && <PriceImpactTitle />}
+              {isSlippageTooHigh && <SlippageTitle />}
             </FlexGap>
           }
           content={
@@ -332,25 +332,25 @@ export const RiskDetailsPanel: React.FC<RiskDetailsPanelProps> = ({
         <FlexGap flexDirection="column" gap="16px">
           {isRiskToken0 && (
             <RiskModalDetailCardWrapper>
-              <RiskTitle token={token0} isInputToken bold />
+              <RiskTitle token={token0} isInputToken />
               <RiskDetails token={token0} riskLevelDescription={token0RiskLevelDescription} />
             </RiskModalDetailCardWrapper>
           )}
           {isRiskToken1 && (
             <RiskModalDetailCardWrapper>
-              <RiskTitle token={token1} isInputToken={false} bold />
+              <RiskTitle token={token1} isInputToken={false} />
               <RiskDetails token={token1} riskLevelDescription={token1RiskLevelDescription} />
             </RiskModalDetailCardWrapper>
           )}
           {isPriceImpactTooHigh && (
             <RiskModalDetailCardWrapper>
-              <PriceImpactTitle bold />
+              <PriceImpactTitle />
               <PriceImpactDetails />
             </RiskModalDetailCardWrapper>
           )}
           {isSlippageTooHigh && (
             <RiskModalDetailCardWrapper>
-              <SlippageTitle bold />
+              <SlippageTitle />
               <SlippageDetails />
             </RiskModalDetailCardWrapper>
           )}
@@ -368,7 +368,7 @@ export const RiskDetailsModal: React.FC<React.PropsWithChildren<RiskDetailsModal
   const { t } = useTranslation()
   return (
     <ModalV2 isOpen={isOpen} closeOnOverlayClick onDismiss={onDismiss}>
-      <Modal title={t('Note for this swap')} hideCloseButton maxWidth="480px">
+      <Modal title={t('Note for this swap')} hideCloseButton maxWidth={['unset', 'unset', 'unset', '480px']}>
         {children}
       </Modal>
     </ModalV2>
