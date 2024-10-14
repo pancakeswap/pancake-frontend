@@ -39,7 +39,7 @@ export const NumericalInput = memo(function InnerInput({
   };
 
   const { t } = useTranslation();
-  console.log();
+
   return (
     <StyledInput
       className={clsx(
