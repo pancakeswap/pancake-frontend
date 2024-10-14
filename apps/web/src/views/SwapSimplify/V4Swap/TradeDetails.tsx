@@ -1,5 +1,5 @@
 import { SmartRouter } from '@pancakeswap/smart-router'
-import { AutoColumn } from '@pancakeswap/uikit'
+import { AutoColumn, Box } from '@pancakeswap/uikit'
 import { memo, useMemo } from 'react'
 
 import { styled } from 'styled-components'
@@ -67,11 +67,13 @@ export const TradeDetails = memo(function TradeDetails({ loaded, order }: Props)
           gasTokenSelector={isPaymasterAvailable && <GasTokenSelector currency={order?.trade.inputAmount.currency} />}
           loading={!loaded}
         />
-        {isXOrder(order) ? (
-          <XRoutesBreakdown wrapperStyle={{ padding: 0 }} loading={!loaded} />
-        ) : (
-          <RoutesBreakdown routes={order?.trade?.routes} wrapperStyle={{ padding: 0 }} loading={!loaded} />
-        )}
+        <Box mt="8px">
+          {isXOrder(order) ? (
+            <XRoutesBreakdown wrapperStyle={{ padding: 0 }} loading={!loaded} />
+          ) : (
+            <RoutesBreakdown routes={order?.trade?.routes} wrapperStyle={{ padding: 0 }} loading={!loaded} />
+          )}
+        </Box>
       </AutoColumn>
     </AdvancedDetailsFooter>
   )

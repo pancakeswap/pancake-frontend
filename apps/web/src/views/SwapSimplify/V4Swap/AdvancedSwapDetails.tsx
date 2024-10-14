@@ -89,7 +89,7 @@ export const TradeSummary = memo(function TradeSummary({
         </RowFixed>
       </RowBetween>
       {feeSavedAmount ? (
-        <RowBetween align="flex-start">
+        <RowBetween align="flex-start" mt="8px">
           <RowFixed>
             <QuestionHelperV2
               text={
@@ -109,12 +109,12 @@ export const TradeSummary = memo(function TradeSummary({
                 fontSize={14}
                 value={formatAmount(feeSavedAmount, 2)}
                 suffix={` ${outputAmount?.currency?.symbol}`}
-                color="success"
+                color="positive60"
               />
               <NumberDisplay
                 as="span"
                 fontSize={14}
-                color="success"
+                color="positive60"
                 value={formatFraction(feeSavedUsdValue, 2)}
                 prefix="(~$"
                 suffix=")"
@@ -125,7 +125,7 @@ export const TradeSummary = memo(function TradeSummary({
         </RowBetween>
       ) : null}
       {priceImpactWithoutFee && (
-        <RowBetween style={{ padding: '4px 0 0 0' }}>
+        <RowBetween mt="8px">
           <RowFixed>
             <QuestionHelperV2
               text={
@@ -154,7 +154,7 @@ export const TradeSummary = memo(function TradeSummary({
           </SkeletonV2>
         </RowBetween>
       )}
-      <RowBetween style={{ padding: '4px 0 0 0' }}>
+      <RowBetween mt="8px">
         <RowFixed>
           <QuestionHelperV2
             text={
@@ -182,7 +182,7 @@ export const TradeSummary = memo(function TradeSummary({
       </RowBetween>
 
       {(realizedLPFee || isX) && (
-        <RowBetween style={{ padding: '4px 0 0 0' }}>
+        <RowBetween mt="8px">
           <RowFixed>
             <QuestionHelperV2
               text={
