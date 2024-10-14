@@ -67,7 +67,7 @@ export const TradeDetails = memo(function TradeDetails({ loaded, order }: Props)
           gasTokenSelector={isPaymasterAvailable && <GasTokenSelector currency={order?.trade.inputAmount.currency} />}
           loading={!loaded}
         />
-        <Box mt="8px">
+        <Box mt="10px" pl="4px">
           {isXOrder(order) ? (
             <XRoutesBreakdown wrapperStyle={{ padding: 0 }} loading={!loaded} />
           ) : (

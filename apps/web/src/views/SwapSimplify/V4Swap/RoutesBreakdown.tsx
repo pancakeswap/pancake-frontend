@@ -61,8 +61,8 @@ export const RoutesBreakdown = memo(function RoutesBreakdown({ routes = [], wrap
               ) : (
                 <RouteComp route={routes[0]} />
               )}
-              <IconButton mt="1px" variant="text" color="positive60" scale="xs">
-                <InfoIcon width="16px" height="16px" color="positive60" />
+              <IconButton mt="5px" variant="text" color="primary60" scale="xs">
+                <InfoIcon width="16px" height="16px" color="primary60" />
               </IconButton>
             </span>
           </SkeletonV2>
