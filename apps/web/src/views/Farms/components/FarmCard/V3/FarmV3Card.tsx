@@ -71,7 +71,7 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({ f
   const { status: boostStatus } = useBoostStatus(farm.pid)
   const merklUserLink = useMerklUserLink()
   const merklLink = getMerklLink({ chainId, lpAddress })
-  const { merklApr } = useMerklInfo(merklLink ? lpAddress : null)
+  const { merklApr } = useMerklInfo(merklLink ? lpAddress : undefined)
   const infoUrl = useMemo(() => {
     return chainId ? `/info/v3${multiChainPaths[chainId]}/pairs/${lpAddress}?chain=${CHAIN_QUERY_NAME[chainId]}` : ''
   }, [chainId, lpAddress])

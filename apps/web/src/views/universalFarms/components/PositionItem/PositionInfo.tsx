@@ -11,6 +11,7 @@ import { PositionDetail, StableLPDetail, V2LPDetail } from 'state/farmsV4/state/
 import { PoolInfo } from 'state/farmsV4/state/type'
 import styled from 'styled-components'
 import { useV2CakeEarning, useV3CakeEarning } from 'views/universalFarms/hooks/useCakeEarning'
+import { MerklTag } from 'components/Merkl/MerklTag'
 import { PoolGlobalAprButton, V2PoolPositionAprButton, V3PoolPositionAprButton } from '../PoolAprButton'
 
 const displayTokenReserve = (amount?: CurrencyAmount<Token>) => {
@@ -90,6 +91,7 @@ export const PositionInfo = memo(
                 </Tag>
               )}
               {protocol === Protocol.V3 && <RangeTag lowContrast removed={removed} outOfRange={outOfRange} />}
+              <MerklTag poolAddress={pool?.lpAddress} />
             </Row>
           </DetailInfoTitle>
         ) : (
@@ -104,10 +106,25 @@ export const PositionInfo = memo(
                 </Tag>
               )}
               {protocol === Protocol.V3 && <RangeTag lowContrast removed={removed} outOfRange={outOfRange} />}
+              <MerklTag poolAddress={pool?.lpAddress} />
             </TagCell>
           </DetailInfoTitle>
         ),
-      [feeTierBase, currency0, currency1, fee, isMobile, isTablet, isStaked, outOfRange, protocol, removed, t, tokenId],
+      [
+        feeTierBase,
+        currency0,
+        currency1,
+        fee,
+        isMobile,
+        isTablet,
+        isStaked,
+        outOfRange,
+        protocol,
+        removed,
+        t,
+        tokenId,
+        pool,
+      ],
     )
 
     return (
