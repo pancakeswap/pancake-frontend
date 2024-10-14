@@ -5,11 +5,12 @@ export const SwapFormWrapper = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 16px;
   justify-content: center;
   align-items: center;
+  gap: 16px;
   height: 100%;
-  margin-bottom: 56px;
+  max-width: 480px;
+  margin: 0 auto 56px;
 `;
 
 export const InputPanelWrapper = styled(Flex)`
