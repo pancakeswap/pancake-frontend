@@ -3511,7 +3511,6 @@
   "Unfilled orders will automatically expires after the countdown.": "Order yang tidak terisi akan kedaluwarsa secara otomatis setelah hitung mundur.",
   "Order has been successfully filled.": "Order telah berhasil diisi.",
   "Output tokens have been sent to your wallet.": "Token output telah dikirimkan ke dompet Anda.",
-  "Experimental Trading": "Perdagangan Eksperimental",
   "Swap order filled": "Order tukar terisi",
   "We are having some trouble filling your order. Please retry.": "Kami mengalami masalah saat mengisi order Anda. Silakan coba lagi.",
   "No gas cost or fee will be charged on failed orders.": "Tidak ada biaya atau ongkos transaksi yang akan ditagih untuk order yang gagal.",
