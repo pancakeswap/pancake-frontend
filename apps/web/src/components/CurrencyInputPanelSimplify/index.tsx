@@ -10,6 +10,7 @@ import {
   Loading,
   Skeleton,
   Text,
+  useMatchBreakpoints,
   useModal,
 } from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
@@ -58,12 +59,19 @@ const useSizeAdaption = (value: string, currencySymbol?: string) => {
   const symbolRef = useRef<HTMLDivElement>(null)
   const wrapperRef = useRef<HTMLDivElement>(null)
 
+  const { isMobile } = useMatchBreakpoints()
+
   const shortedSymbol = useMemo(() => {
+    const CUTOFF_FONT_SIZE = isMobile ? { left: 3, right: 3 } : { left: 5, right: 4 }
+
     if (currencySymbol && currencySymbol.length > 10) {
-      return `${currencySymbol.slice(0, 4)}...${currencySymbol.slice(currencySymbol.length - 5, currencySymbol.length)}`
+      return `${currencySymbol.slice(0, CUTOFF_FONT_SIZE.left)}...${currencySymbol.slice(
+        currencySymbol.length - CUTOFF_FONT_SIZE.right,
+        currencySymbol.length,
+      )}`
     }
     return currencySymbol
-  }, [currencySymbol])
+  }, [currencySymbol, isMobile])
 
   useLayoutEffect(() => {
     if (!inputRef.current || !symbolRef.current || !wrapperRef.current || !tokenImageRef.current) return
