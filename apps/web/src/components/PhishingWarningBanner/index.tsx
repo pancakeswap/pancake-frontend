@@ -7,8 +7,10 @@ import 'swiper/css/effect-fade'
 
 import { ASSET_CDN } from 'config/constants/endpoints'
 import { Countdown } from './Countdown'
+
 import { Step1 } from './Step1'
 import { Step2 } from './Step2'
+import { Step3 } from './Step3'
 
 const Container = styled(Flex).withConfig({ shouldForwardProp: (prop) => !['$background'].includes(prop) })<{
   $background?: string
@@ -107,6 +109,12 @@ const CONFIG: BannerConfig[] = [
     stripeImage: `${ASSET_CDN}/web/phishing-warning/phishing-warning-bunny-2.png`,
     stripeImageWidth: '92px',
     stripeImageAlt: 'Phishing Warning',
+  },
+  {
+    component: Step3,
+    stripeImage: `${ASSET_CDN}/web/banners/pcsx/pcsx-bg-medium.png`,
+    stripeImageWidth: '92px',
+    stripeImageAlt: 'PCSX',
   },
 ]
 

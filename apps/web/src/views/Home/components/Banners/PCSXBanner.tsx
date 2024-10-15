@@ -17,8 +17,9 @@ import { ASSET_CDN } from 'config/constants/endpoints'
 import styled from 'styled-components'
 
 const StyledBackgroundGraphic = styled(BackgroundGraphic)`
-  left: calc(100% - 196px);
-
+  & > div {
+    background-size: contain !important;
+  }
   ${({ theme }) => theme.mediaQueries.sm} {
     left: calc(100% - 272px);
   }
@@ -44,29 +45,36 @@ const StyledBannerDesc = styled(Text)`
   }
 `
 
-const PATH = `${ASSET_CDN}/web/banners/pcsx`
-const BG = `${PATH}/pcsx-bg-large.png`
-const XLOGO = `${PATH}/pcsx-xlogo.png`
-
-const bgSmVariant: GraphicDetail = {
-  src: `${PATH}/bunny-md.png`,
-  width: 272,
-  height: 224,
-}
-
-const bgXsVariant: GraphicDetail = {
-  src: `${PATH}/bunny-md.png`,
-  width: 196,
-  height: 164,
-}
-
-const whiteVariant = {
+const StyledBannerTitle = styled(BannerTitle)`
   color: 'white',
   strokeColor: '#143360',
   strokeSize: 2,
-  fontSize: 23,
   lineHeight: 30,
   fontWeight: 800,
+  ${({ theme }) => theme.mediaQueries.md} {
+    font-size: 20px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    font-size: 23px;
+  }
+`
+
+const PATH = `${ASSET_CDN}/web/banners/pcsx`
+const BG = `${PATH}/pcsx-bg-large.png`
+const BG_MEDIUM = `${PATH}/pcsx-bg-medium.png`
+const XLOGO = `${PATH}/pcsx-xlogo.png`
+
+const bgSmVariant: GraphicDetail = {
+  src: BG_MEDIUM,
+  width: 196,
+  height: 112,
+}
+
+const bgXsVariant: GraphicDetail = {
+  src: BG_MEDIUM,
+  width: 170,
+  height: 140,
 }
 
 const Desc = () => {
@@ -82,10 +90,15 @@ const Desc = () => {
 
 export const PCSXBanner = () => {
   const { t } = useTranslation()
-  const { isMobile, isSm } = useMatchBreakpoints()
+  const { isMobile, isSm, isDesktop } = useMatchBreakpoints()
+  console.log({ isMobile, isSm, isDesktop })
 
   const PlayNowAction = (
-    <LinkExternalAction href="https://t.me/pancakefi_bot" color="#280D5F" externalIcon="arrowForward">
+    <LinkExternalAction
+      href="https://pancakeswap.finance/swap?utm_source=Website&utm_medium=homepage&utm_campaign=PCSX&utm_id=PCSX"
+      color="#280D5F"
+      externalIcon="arrowForward"
+    >
       <Flex color="#280D5F" alignItems="center" style={{ whiteSpace: 'nowrap' }}>
         {t('Swap Now')}
       </Flex>
@@ -93,7 +106,10 @@ export const PCSXBanner = () => {
   )
 
   const LearnMoreAction = (
-    <LinkExternalAction href="https://t.me/pancakefi_bot" color="#280D5F">
+    <LinkExternalAction
+      href="https://blog.pancakeswap.finance/articles/introducing-pancake-swap-x-zero-fee-and-gasless-swaps-on-ethereum-and-arbitrum?utm_source=Website&utm_medium=homepage&utm_campaign=PCSX&utm_id=PCSX"
+      color="#280D5F"
+    >
       <Flex color="#280D5F" alignItems="center" style={{ whiteSpace: 'nowrap' }}>
         {t('Learn More')}
       </Flex>
@@ -109,11 +125,11 @@ export const PCSXBanner = () => {
           </Flex>
         }
         title={
-          <BannerTitle variant={whiteVariant} marginTop={isSm ? '-6px' : '0px'} strokeSize={isSm ? 1 : 2}>
+          <StyledBannerTitle variant="white" marginTop={isSm ? '-6px' : '0px'} strokeSize={isMobile ? 1 : 2}>
             <span
               style={{
                 color: '#FFE33E',
-                textShadow: isSm
+                textShadow: isMobile
                   ? `1px 1px 0 #143360, -1px -1px 0 #143360, 
                    1px -1px 0 #143360, -1px 1px 0 #143360`
                   : `2px 2px 0 #143360, -2px -2px 0 #143360, 
@@ -124,20 +140,24 @@ export const PCSXBanner = () => {
             </span>
             &nbsp;
             {t('Fee Swaps on Ethereum and Arbitrum')}
-          </BannerTitle>
+          </StyledBannerTitle>
         }
         desc={isMobile ? null : <Desc />}
         actions={
           <BannerActionContainer>
             {PlayNowAction}
-            <VerticalDivider
-              bg="#1F084B"
-              style={{
-                opacity: 0.4,
-              }}
-            />
+            {!isMobile && (
+              <>
+                <VerticalDivider
+                  bg="#1F084B"
+                  style={{
+                    opacity: 0.4,
+                  }}
+                />
 
-            {LearnMoreAction}
+                {LearnMoreAction}
+              </>
+            )}
           </BannerActionContainer>
         }
       />
@@ -145,7 +165,7 @@ export const PCSXBanner = () => {
       <BannerGraphics>
         <StyledBackgroundGraphic src={BG} sm={bgSmVariant} xs={bgXsVariant} width={468} height={224} className="" />
         <Box position="absolute" width="100%" top={isMobile ? '10%' : '0'} left="3%">
-          <FloatingGraphic src={XLOGO} width={isMobile ? 50 : 100} height={isMobile ? 50 : 100} />
+          <FloatingGraphic src={XLOGO} width={isMobile ? 70 : 100} height={isMobile ? 70 : 100} />
         </Box>
       </BannerGraphics>
     </BannerContainer>
