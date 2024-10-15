@@ -28,7 +28,11 @@ import { useAccount } from 'wagmi'
 import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
 
 const CurrencySelectButton = styled(Button).attrs({ variant: 'text', scale: 'sm' })`
-  padding: 0px;
+  padding: 24px 4px;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.invertedContrast};
+  }
 `
 const SymbolText = styled(Text)`
   font-size: 20px;
