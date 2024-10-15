@@ -3511,7 +3511,6 @@
   "Unfilled orders will automatically expires after the countdown.": "Toimittamattomat tilaukset vanhenevart automaattisesti laskurin jälkeen.",
   "Order has been successfully filled.": "Tilaus on toimitettu.",
   "Output tokens have been sent to your wallet.": "Tuotospoletit on lähetetty lompakkoosi.",
-  "Experimental Trading": "Kokeellinen kaupankäynti",
   "Swap order filled": "Vaihtotilaus toimitettu",
   "We are having some trouble filling your order. Please retry.": "Meillä on vaikeuksia tilauksesi toimittamisessa. Yritä uudelleen.",
   "No gas cost or fee will be charged on failed orders.": "Epäonnistuneista tilauksista ei veloiteta kaasumaksua.",
