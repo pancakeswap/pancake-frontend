@@ -3511,7 +3511,6 @@
   "Unfilled orders will automatically expires after the countdown.": "Οι ανεκτέλεστες παραγγελίες λήγουν αυτόματα μετά την αντίστροφη μέτρηση.",
   "Order has been successfully filled.": "Η παραγγελία ολοκληρώθηκε με επιτυχία.",
   "Output tokens have been sent to your wallet.": "Τα νομίσματα εξόδου έχουν σταλεί στο πορτοφόλι σας.",
-  "Experimental Trading": "Πειραματική συναλλαγή",
   "Swap order filled": "Η παραγγελία ανταλλαγής εκτελέστηκε",
   "We are having some trouble filling your order. Please retry.": "Αντιμετωπίζουμε πρόβλημα με την εκτέλεση της παραγγελίας σας. Προσπαθήστε ξανά.",
   "No gas cost or fee will be charged on failed orders.": "Δεν θα χρεωθεί κόστος βενζίνης ή τέλη για αποτυχημένες παραγγελίες.",
