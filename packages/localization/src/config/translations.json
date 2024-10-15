@@ -3514,7 +3514,6 @@
   "Unfilled orders will automatically expires after the countdown.": "Unfilled orders will automatically expires after the countdown.",
   "Order has been successfully filled.": "Order has been successfully filled.",
   "Output tokens have been sent to your wallet.": "Output tokens have been sent to your wallet.",
-  "Experimental Trading": "Experimental Trading",
   "Swap order filled": "Swap order filled",
   "We are having some trouble filling your order. Please retry.": "We are having some trouble filling your order. Please retry.",
   "No gas cost or fee will be charged on failed orders.": "No gas cost or fee will be charged on failed orders.",

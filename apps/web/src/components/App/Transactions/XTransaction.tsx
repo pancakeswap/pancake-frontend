@@ -48,7 +48,7 @@ export function XTransaction({ order }: { order: GetXOrderReceiptResponseOrder }
       <TransactionListItem
         onClick={modal.onOpen}
         status={status}
-        title={<TransactionListItemTitle>{t('Experimental Trading')}</TransactionListItemTitle>}
+        title={<TransactionListItemTitle>PancakeSwap X</TransactionListItemTitle>}
         action={
           <FlexGap gap="0.25rem" justifyContent="flex-end">
             {status === TransactionStatus.Pending ? <Countdown to={order.deadline} /> : null}
