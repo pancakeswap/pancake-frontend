@@ -3511,7 +3511,6 @@
   "Unfilled orders will automatically expires after the countdown.": "A nem teljesített megrendelések automatikusan érvényüket vesztik a visszaszámlálás után.",
   "Order has been successfully filled.": "A megrendelés sikeresen teljesült.",
   "Output tokens have been sent to your wallet.": "Kapott zsetonjait átküldtük a pénztárcájába.",
-  "Experimental Trading": "Kísérleti forgalmazás",
   "Swap order filled": "Csere megbízás teljesítve",
   "We are having some trouble filling your order. Please retry.": "Nehézségeink vannak a megrendelésének teljesítésével. Kérjük, próbálja meg újra.",
   "No gas cost or fee will be charged on failed orders.": "A meghiúsult megrendelések után nem számítunk fel gázköltséget vagy díjat.",
