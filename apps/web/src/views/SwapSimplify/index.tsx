@@ -76,6 +76,7 @@ export default function V4Swap() {
         height="100%"
         justifyContent="center"
         position="relative"
+        mt={isChartExpanded ? undefined : isMobile ? '18px' : '42px'}
         p={isChartExpanded ? undefined : isMobile ? '16px' : '24px'}
       >
         {isDesktop && isChartSupported && (
@@ -112,9 +113,10 @@ export default function V4Swap() {
         )}
         <Flex
           flexDirection="column"
-          width={isChartDisplayed && !isMobile ? 'auto' : '100%'}
-          height="100%"
           alignItems="center"
+          height="100%"
+          width={isChartDisplayed && !isMobile ? 'auto' : '100%'}
+          mt={isChartExpanded && !isMobile ? '42px' : undefined}
         >
           <StyledSwapContainer
             justifyContent="center"
