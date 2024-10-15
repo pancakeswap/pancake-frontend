@@ -3511,7 +3511,6 @@
   "Unfilled orders will automatically expires after the countdown.": "Невыполненные ордеры автоматически аннулируются после определенного периода.",
   "Order has been successfully filled.": "Ордер выполнен.",
   "Output tokens have been sent to your wallet.": "Выходные токены отправлены на ваш кошелек.",
-  "Experimental Trading": "Экспериментальная торговля",
   "Swap order filled": "Ордер на обмен выполнен",
   "We are having some trouble filling your order. Please retry.": "Возникли проблемы с выполнением ордера. Повторите попытку.",
   "No gas cost or fee will be charged on failed orders.": "За невыполненные ордеры комиссия и плата за газ взиматься не будут.",
