@@ -3511,7 +3511,6 @@
   "Unfilled orders will automatically expires after the countdown.": "Ordinele necompletate vor expira automat după numărătoarea inversă.",
   "Order has been successfully filled.": "Ordinul a fost completat cu succes.",
   "Output tokens have been sent to your wallet.": "Jetoanele de ieșire au fost trimise în portofelul tău.",
-  "Experimental Trading": "Tranzacționare experimentală",
   "Swap order filled": "Schimbă ordinul completat",
   "We are having some trouble filling your order. Please retry.": "Avem unele probleme la completarea ordinului tău. Încearcă din nou.",
   "No gas cost or fee will be charged on failed orders.": "Nu se vor percepe cheltuieli sau taxe pentru ordinele eșuate.",
