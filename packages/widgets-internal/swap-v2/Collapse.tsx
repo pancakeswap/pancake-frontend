@@ -59,7 +59,7 @@ export const Collapse: React.FC<CollapseProps> = ({ title, content, isOpen, onTo
     } else {
       wrapperElement.style.height = `${titleHeight + contentHeight + PADDING * 2}px`;
     }
-  }, [isOpen, titleRef.current?.scrollHeight, recalculateDep]);
+  }, [isOpen, titleRef.current?.scrollHeight, contentRef.current?.scrollHeight, recalculateDep]);
 
   return (
     <Container ref={wrapperRef}>
