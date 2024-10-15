@@ -3511,7 +3511,6 @@
   "Unfilled orders will automatically expires after the countdown.": "Awtomatikong mag-e-expire ang mga order na hindi napunan pagkatapos ng countdown.",
   "Order has been successfully filled.": "Napunan ang order.",
   "Output tokens have been sent to your wallet.": "Naipadala na sa wallet mo ang mga token ng output.",
-  "Experimental Trading": "Pang-eksperimentong Trading",
   "Swap order filled": "Napunan ang swap order",
   "We are having some trouble filling your order. Please retry.": "Nagkakaproblema kami sa pagpunan ng iyong order. Pakisubukan ulit.",
   "No gas cost or fee will be charged on failed orders.": "Walang sisingiling gas cost sa mga nabigong order.",
