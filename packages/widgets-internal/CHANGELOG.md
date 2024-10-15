@@ -1,5 +1,12 @@
 # @pancakeswap/widgets-internal
 
+## 0.3.12
+
+### Patch Changes
+
+- Updated dependencies [a0e17e0]
+  - @pancakeswap/uikit@0.67.2
+
 ## 0.3.11
 
 ### Patch Changes
