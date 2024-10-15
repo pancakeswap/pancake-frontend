@@ -3511,7 +3511,6 @@
   "Unfilled orders will automatically expires after the countdown.": "작성되지 않은 주문은 카운트다운 후 자동으로 만료됩니다.",
   "Order has been successfully filled.": "주문이 작성되었습니다.",
   "Output tokens have been sent to your wallet.": "출력 토큰이 지갑에 전송되었습니다.",
-  "Experimental Trading": "실험적 거래",
   "Swap order filled": "스왑 주문 작성됨",
   "We are having some trouble filling your order. Please retry.": "주문을 작성하는 데 문제가 있습니다. 다시 시도하세요.",
   "No gas cost or fee will be charged on failed orders.": "주문 실패 시 가스 비용이나 수수료가 청구되지 않습니다.",
