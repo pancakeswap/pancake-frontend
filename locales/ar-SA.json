@@ -3511,7 +3511,6 @@
   "Unfilled orders will automatically expires after the countdown.": "سوف تنتهي صلاحية الطلبات التي لم يتم ملؤها تلقائيًا بعد العد التنازلي.",
   "Order has been successfully filled.": "تم ملء الطلب بنجاح.",
   "Output tokens have been sent to your wallet.": "تم إرسال الرموز المميزة الناتجة إلى محفظتك.",
-  "Experimental Trading": "تداول تجريبي",
   "Swap order filled": "تم ملء طلب المبادلة",
   "We are having some trouble filling your order. Please retry.": "لدينا بعض المشكلات في ملء طلبك. الرجاء إعادة المحاولة.",
   "No gas cost or fee will be charged on failed orders.": "لن يتم فرض أي تكاليف وقود أو رسوم على الطلبات الفاشلة.",
