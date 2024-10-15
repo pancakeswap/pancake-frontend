@@ -2884,10 +2884,6 @@
   "Once confirmed, voting action cannot be undone.": "En bekräftad röstningsåtgärd kan inte ångras.",
   "selected": "valt",
   "Collapse": "Förminska",
-  "Days": "Dagar",
-  "Hours": "Timmar",
-  "Minutes": "Minuter",
-  "Seconds": "Sekunder",
   "PancakeSwap Meetup": "PancakeSwap Meetup",
   "Spain": "Spanien",
   "Automated Liquidity Optimization": "Automatiserad optimering av likviditet",
@@ -3043,7 +3039,6 @@
   "This liquidity position is currently earning rewards on Merkl.": "Denna likviditetsposition ger för närvarande avkastning på Merkl.",
   "This liquidity position will NOT earn any rewards on Merkl due to its total USD value being less than $20.": "Denna likviditetsposition kommer INTE att ge några belöningar på Merkl på grund av att dess totala USD-värde är mindre än $20.",
   "Approve transaction filled, but Approval still not enough to fill current trade. Please try again.": "Godkänd överföring slutförd, men godkännandet är fortfarande inte tillräckligt för att slutföra den aktuella överföringen. Försök igen.",
-  "v4": "v4",
   "PancakeSwap v4": "PancakeSwap v4",
   "Innovation": "Innovation",
   "Empower, Build and Innovate with PancakeSwap v4": "Stärk, bygg och förnya med PancakeSwap v4",
@@ -3067,8 +3062,6 @@
   "Read the Whitepaper": "Läs rapporten",
   "Get the Tools": "Skaffa verktygen",
   "Join the Community": "Gå med i vårt community",
-  "Introducing v4": "Presenterar v4",
-  "Events and News": "Evenemang och nyheter",
   "Load More": "Läs in mer",
   "The Full Range Hook allows users to add liquidity across the entire price range within concentrated liquidity pools, similar to v2 pools. This hook eases liquidity position management for the LPs.": "Med Full Range Hook kan användare lägga till likviditet över hela prisintervallet inom koncentrerade likviditetspooler, liknande v2-pooler. Denna Hook underlättar hanteringen av likviditetspositioner för LP:er.",
   "Geomean Oracle": "Geomean Orakel",
@@ -3518,7 +3511,6 @@
   "Unfilled orders will automatically expires after the countdown.": "Ej slutförda ordrar förfaller automatiskt efter nedräkningen.",
   "Order has been successfully filled.": "Ordern har slutförts.",
   "Output tokens have been sent to your wallet.": "Utgående tokens har skickats till din plånbok.",
-  "Experimental Trading": "Experimentell handel",
   "Swap order filled": "Växlingsorder slutförd",
   "We are having some trouble filling your order. Please retry.": "Vi har problem med att slutföra din order. Försök igen.",
   "No gas cost or fee will be charged on failed orders.": "Ingen bensinkostnad eller avgift kommer att debiteras för misslyckade ordrar.",
@@ -3544,5 +3536,6 @@
   "Legacy products": "Äldre produkter",
   "Nigeria": "Nigeria",
   "PancakeSwap Workshop": "PancakeSwap Workshop",
-  "DeFiEdge will stop maintaining its vaults from 10 Oct 2024 onwards. Please remove your funds before that to avoid any issues. Beyond 10 Oct, they will place the liquidity in a wide range, and will no longer actively manage it.": "DeFiEdge will stop maintaining its vaults from 10 Oct 2024 onwards. Please remove your funds before that to avoid any issues. Beyond 10 Oct, they will place the liquidity in a wide range, and will no longer actively manage it."
+  "DeFiEdge will stop maintaining its vaults from 10 Oct 2024 onwards. Please remove your funds before that to avoid any issues. Beyond 10 Oct, they will place the liquidity in a wide range, and will no longer actively manage it.": "DeFiEdge will stop maintaining its vaults from 10 Oct 2024 onwards. Please remove your funds before that to avoid any issues. Beyond 10 Oct, they will place the liquidity in a wide range, and will no longer actively manage it.",
+  "Turkey": "Turkey"
 }

@@ -2884,10 +2884,6 @@
   "Once confirmed, voting action cannot be undone.": "După confirmare, acțiunea de vot nu poate fi anulată.",
   "selected": "selectat",
   "Collapse": "Restrânge",
-  "Days": "Zile",
-  "Hours": "Ore",
-  "Minutes": "Minute",
-  "Seconds": "Secunde",
   "PancakeSwap Meetup": "PancakeSwap Meetup",
   "Spain": "Spania",
   "Automated Liquidity Optimization": "Optimizare automată a lichidității",
@@ -3043,7 +3039,6 @@
   "This liquidity position is currently earning rewards on Merkl.": "Această poziție de lichiditate câștigă momentan recompense pe Merkl.",
   "This liquidity position will NOT earn any rewards on Merkl due to its total USD value being less than $20.": "Această poziție de lichiditate NU va câștiga recompense pe Merkl deoarece valoarea sa totală în USD este de sub 20 $.",
   "Approve transaction filled, but Approval still not enough to fill current trade. Please try again.": "Aprobă tranzacția completată, dar aprobarea nu este suficientă pentru a completa tranzacția curentă. Încearcă din nou.",
-  "v4": "v4",
   "PancakeSwap v4": "PancakeSwap v4",
   "Innovation": "Inovație",
   "Empower, Build and Innovate with PancakeSwap v4": "Abilitează, construiește și inovează cu PancakeSwap v4",
@@ -3067,8 +3062,6 @@
   "Read the Whitepaper": "Citește Lista de permisiuni",
   "Get the Tools": "Obține instrumentele",
   "Join the Community": "Intră în comunitate",
-  "Introducing v4": "Prezentarea v4",
-  "Events and News": "Evenimente și actualități",
   "Load More": "Încarcă mai multe",
   "The Full Range Hook allows users to add liquidity across the entire price range within concentrated liquidity pools, similar to v2 pools. This hook eases liquidity position management for the LPs.": "Full Range Hook le permite utilizatorilor să adauge lichiditate pe întregul interval de preț în portofoliile de lichiditate concentrată, similare cu portofoliile v2. Acest hook facilitează gestionarea poziției de lichiditate pentru LP-uri.",
   "Geomean Oracle": "Geomean Oracle",
@@ -3518,7 +3511,6 @@
   "Unfilled orders will automatically expires after the countdown.": "Ordinele necompletate vor expira automat după numărătoarea inversă.",
   "Order has been successfully filled.": "Ordinul a fost completat cu succes.",
   "Output tokens have been sent to your wallet.": "Jetoanele de ieșire au fost trimise în portofelul tău.",
-  "Experimental Trading": "Tranzacționare experimentală",
   "Swap order filled": "Schimbă ordinul completat",
   "We are having some trouble filling your order. Please retry.": "Avem unele probleme la completarea ordinului tău. Încearcă din nou.",
   "No gas cost or fee will be charged on failed orders.": "Nu se vor percepe cheltuieli sau taxe pentru ordinele eșuate.",
@@ -3544,5 +3536,6 @@
   "Legacy products": "Legacy products",
   "Nigeria": "Nigeria",
   "PancakeSwap Workshop": "PancakeSwap Workshop",
-  "DeFiEdge will stop maintaining its vaults from 10 Oct 2024 onwards. Please remove your funds before that to avoid any issues. Beyond 10 Oct, they will place the liquidity in a wide range, and will no longer actively manage it.": "DeFiEdge will stop maintaining its vaults from 10 Oct 2024 onwards. Please remove your funds before that to avoid any issues. Beyond 10 Oct, they will place the liquidity in a wide range, and will no longer actively manage it."
+  "DeFiEdge will stop maintaining its vaults from 10 Oct 2024 onwards. Please remove your funds before that to avoid any issues. Beyond 10 Oct, they will place the liquidity in a wide range, and will no longer actively manage it.": "DeFiEdge will stop maintaining its vaults from 10 Oct 2024 onwards. Please remove your funds before that to avoid any issues. Beyond 10 Oct, they will place the liquidity in a wide range, and will no longer actively manage it.",
+  "Turkey": "Turkey"
 }

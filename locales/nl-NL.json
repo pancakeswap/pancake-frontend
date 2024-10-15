@@ -2884,10 +2884,6 @@
   "Once confirmed, voting action cannot be undone.": "Een bevestigde stem kan niet ongedaan worden gemaakt.",
   "selected": "geselecteerd",
   "Collapse": "Samenvouwen",
-  "Days": "Dagen",
-  "Hours": "Uur",
-  "Minutes": "Minuten",
-  "Seconds": "Seconden",
   "PancakeSwap Meetup": "PancakeSwap meet-up",
   "Spain": "Spanje",
   "Automated Liquidity Optimization": "Geautomatiseerde liquiditeitsoptimalisatie",
@@ -3043,7 +3039,6 @@
   "This liquidity position is currently earning rewards on Merkl.": "Deze liquiditeitspositie verdient momenteel beloningen op Merkl.",
   "This liquidity position will NOT earn any rewards on Merkl due to its total USD value being less than $20.": "Deze liquiditeitspositie zal GEEN beloningen verdienen op Merkl omdat de totale USD-waarde minder dan $ 20 bedraagt.",
   "Approve transaction filled, but Approval still not enough to fill current trade. Please try again.": "Goedkeuringstransactie uitgevoerd, maar de goedkeuring volstaat nog niet om de huidige handelstransactie uit te voeren. Probeer het opnieuw.",
-  "v4": "v4",
   "PancakeSwap v4": "PancakeSwap v4",
   "Innovation": "Innovatie",
   "Empower, Build and Innovate with PancakeSwap v4": "Empower, ontwikkel en innoveer met PancakeSwap v4",
@@ -3067,8 +3062,6 @@
   "Read the Whitepaper": "Lees de whitepaper",
   "Get the Tools": "Verkrijg de tools",
   "Join the Community": "Sluit je aan bij de community",
-  "Introducing v4": "Maak kennis met v4",
-  "Events and News": "Evenementen en nieuws",
   "Load More": "Meer laden",
   "The Full Range Hook allows users to add liquidity across the entire price range within concentrated liquidity pools, similar to v2 pools. This hook eases liquidity position management for the LPs.": "Met de Full Range Hook kunnen gebruikers liquiditeit over het hele prijsbereik toevoegen binnen geconcentreerde liquiditeitspools, vergelijkbaar met v2-pools. Deze hook vereenvoudigt het beheer van liquiditeitsposities voor liquiditeitsverstrekkers.",
   "Geomean Oracle": "Geomean Oracle",
@@ -3518,7 +3511,6 @@
   "Unfilled orders will automatically expires after the countdown.": "Niet-uitgevoerde orders verlopen automatisch na de countdown.",
   "Order has been successfully filled.": "Order uitgevoerd.",
   "Output tokens have been sent to your wallet.": "De outputtokens zijn naar je wallet gestuurd.",
-  "Experimental Trading": "Experimenteel handelen",
   "Swap order filled": "Swaporder uitgevoerd",
   "We are having some trouble filling your order. Please retry.": "We ondervinden wat problemen bij het uitvoeren van je order. Probeer het opnieuw.",
   "No gas cost or fee will be charged on failed orders.": "Voor mislukte orders wordt geen gaskost of vergoeding in rekening gebracht.",
@@ -3544,5 +3536,6 @@
   "Legacy products": "Verouderde producten",
   "Nigeria": "Nigeria",
   "PancakeSwap Workshop": "PancakeSwap-workshop",
-  "DeFiEdge will stop maintaining its vaults from 10 Oct 2024 onwards. Please remove your funds before that to avoid any issues. Beyond 10 Oct, they will place the liquidity in a wide range, and will no longer actively manage it.": "DeFiEdge will stop maintaining its vaults from 10 Oct 2024 onwards. Please remove your funds before that to avoid any issues. Beyond 10 Oct, they will place the liquidity in a wide range, and will no longer actively manage it."
+  "DeFiEdge will stop maintaining its vaults from 10 Oct 2024 onwards. Please remove your funds before that to avoid any issues. Beyond 10 Oct, they will place the liquidity in a wide range, and will no longer actively manage it.": "DeFiEdge stopt vanaf 10 oktober 2024 met het onderhoud van zijn kluizen. Verwijder je fondsen vóór deze datum om problemen te vermijden. Na 10 oktober wordt de liquiditeit in een ruimere range geplaatst en niet meer actief beheerd.",
+  "Turkey": "Turkey"
 }

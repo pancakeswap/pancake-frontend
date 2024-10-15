@@ -2884,10 +2884,6 @@
   "Once confirmed, voting action cannot be undone.": "一度確定すると、投票操作を取り消すことはできません。",
   "selected": "選択済み",
   "Collapse": "折りたたむ",
-  "Days": "日",
-  "Hours": "時間",
-  "Minutes": "分",
-  "Seconds": "秒",
   "PancakeSwap Meetup": "PancakeSwapミートアップ",
   "Spain": "スペイン",
   "Automated Liquidity Optimization": "自動流動性最適化",
@@ -3043,7 +3039,6 @@
   "This liquidity position is currently earning rewards on Merkl.": "この流動性ポジションは現在Merklで報酬を獲得中です。",
   "This liquidity position will NOT earn any rewards on Merkl due to its total USD value being less than $20.": "この流動性ポジションは、USD合計額が$20未満であるためMerklで報酬を獲得しません。",
   "Approve transaction filled, but Approval still not enough to fill current trade. Please try again.": "取引の承認は完了しましたが、現在のトレードを完了するのに十分な承認がありません。もう一度お試しください。",
-  "v4": "v4",
   "PancakeSwap v4": "PancakeSwap v4",
   "Innovation": "イノベーション",
   "Empower, Build and Innovate with PancakeSwap v4": "PancakeSwap v4で強化、構築、イノベーション",
@@ -3067,8 +3062,6 @@
   "Read the Whitepaper": "ホワイトペーパーを読む",
   "Get the Tools": "ツールを入手",
   "Join the Community": "コミュニティに参加",
-  "Introducing v4": "v4の紹介",
-  "Events and News": "イベントとニュース",
   "Load More": "さらに読み込む",
   "The Full Range Hook allows users to add liquidity across the entire price range within concentrated liquidity pools, similar to v2 pools. This hook eases liquidity position management for the LPs.": "Full Rangeフックでは、v2プールと同様に、ユーザーが集中流動性プール内の全価格範囲に渡って流動性を追加できます。このフックではLPの流動性ポジション管理を簡単に行えます。",
   "Geomean Oracle": "Geomean Oracle",
@@ -3518,7 +3511,6 @@
   "Unfilled orders will automatically expires after the countdown.": "未執行の注文はカウントダウン後に自動的に期限切れになります。",
   "Order has been successfully filled.": "注文は正常に執行されました。",
   "Output tokens have been sent to your wallet.": "出力トークンがウォレットに送金されました。",
-  "Experimental Trading": "実験的な取引",
   "Swap order filled": "スワップ注文が執行されました",
   "We are having some trouble filling your order. Please retry.": "ご注文の処理中に問題が発生しました。もう一度お試しください。",
   "No gas cost or fee will be charged on failed orders.": "注文が失敗した場合、ガス料金や手数料は請求されません。",
@@ -3544,5 +3536,6 @@
   "Legacy products": "Legacy products",
   "Nigeria": "Nigeria",
   "PancakeSwap Workshop": "PancakeSwap Workshop",
-  "DeFiEdge will stop maintaining its vaults from 10 Oct 2024 onwards. Please remove your funds before that to avoid any issues. Beyond 10 Oct, they will place the liquidity in a wide range, and will no longer actively manage it.": "DeFiEdge will stop maintaining its vaults from 10 Oct 2024 onwards. Please remove your funds before that to avoid any issues. Beyond 10 Oct, they will place the liquidity in a wide range, and will no longer actively manage it."
+  "DeFiEdge will stop maintaining its vaults from 10 Oct 2024 onwards. Please remove your funds before that to avoid any issues. Beyond 10 Oct, they will place the liquidity in a wide range, and will no longer actively manage it.": "DeFiEdge will stop maintaining its vaults from 10 Oct 2024 onwards. Please remove your funds before that to avoid any issues. Beyond 10 Oct, they will place the liquidity in a wide range, and will no longer actively manage it.",
+  "Turkey": "Turkey"
 }

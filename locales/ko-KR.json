@@ -2884,10 +2884,6 @@
   "Once confirmed, voting action cannot be undone.": "확인한 후에는 투표 액션을 취소할 수 없습니다.",
   "selected": "선택됨",
   "Collapse": "축소",
-  "Days": "일",
-  "Hours": "시간",
-  "Minutes": "분",
-  "Seconds": "초",
   "PancakeSwap Meetup": "PancakeSwap 밋업",
   "Spain": "스페인",
   "Automated Liquidity Optimization": "자동화된 유동성 최적화",
@@ -3043,7 +3039,6 @@
   "This liquidity position is currently earning rewards on Merkl.": "이 유동성 포지션은 Merkl에서 리워드를 현재 받고 있습니다.",
   "This liquidity position will NOT earn any rewards on Merkl due to its total USD value being less than $20.": "이 유동성 포지션은 총 USD 가치가 $20 미만이므로 Merkl에서 어떠한 리워드도 받지 못합니다.",
   "Approve transaction filled, but Approval still not enough to fill current trade. Please try again.": "트랜잭션 승인이 이루어졌지만 아직 현재 거래를 이행하기에 승인이 충분하지 않습니다. 다시 시도해 주세요.",
-  "v4": "v4",
   "PancakeSwap v4": "PancakeSwap v4",
   "Innovation": "혁신",
   "Empower, Build and Innovate with PancakeSwap v4": "PancakeSwap v4를 사용하여 강화하고 빌드하고 혁신하세요",
@@ -3067,8 +3062,6 @@
   "Read the Whitepaper": "백서 읽기",
   "Get the Tools": "도구 다운로드",
   "Join the Community": "커뮤니티 가입",
-  "Introducing v4": "v4 소개",
-  "Events and News": "이벤트 및 뉴스",
   "Load More": "더 로드",
   "The Full Range Hook allows users to add liquidity across the entire price range within concentrated liquidity pools, similar to v2 pools. This hook eases liquidity position management for the LPs.": "Full Range Hook에서 사용자는 v2 풀과 유사하게, 집중된 유동성 풀 내의 전체 가격 범위에서 유동성을 추가할 수 있습니다. 이 Hook는 LP의 유동성 포지션 관리를 용이하게 해줍니다.",
   "Geomean Oracle": "Geomean Oracle",
@@ -3518,7 +3511,6 @@
   "Unfilled orders will automatically expires after the countdown.": "작성되지 않은 주문은 카운트다운 후 자동으로 만료됩니다.",
   "Order has been successfully filled.": "주문이 작성되었습니다.",
   "Output tokens have been sent to your wallet.": "출력 토큰이 지갑에 전송되었습니다.",
-  "Experimental Trading": "실험적 거래",
   "Swap order filled": "스왑 주문 작성됨",
   "We are having some trouble filling your order. Please retry.": "주문을 작성하는 데 문제가 있습니다. 다시 시도하세요.",
   "No gas cost or fee will be charged on failed orders.": "주문 실패 시 가스 비용이나 수수료가 청구되지 않습니다.",
@@ -3544,5 +3536,6 @@
   "Legacy products": "레거시 제품",
   "Nigeria": "나이지리아",
   "PancakeSwap Workshop": "PancakeSwap 워크숍",
-  "DeFiEdge will stop maintaining its vaults from 10 Oct 2024 onwards. Please remove your funds before that to avoid any issues. Beyond 10 Oct, they will place the liquidity in a wide range, and will no longer actively manage it.": "DeFiEdge는 2024년 10월 10일부터 볼트 유지 관리를 중지합니다. 문제가 발생하지 않도록 이 날짜 이전에 자금을 인출하시기 바랍니다. 10월 10일 이후에는 유동성을 다양한 범위에 두고 더 이상 적극적으로 관리하지 않습니다."
+  "DeFiEdge will stop maintaining its vaults from 10 Oct 2024 onwards. Please remove your funds before that to avoid any issues. Beyond 10 Oct, they will place the liquidity in a wide range, and will no longer actively manage it.": "DeFiEdge는 2024년 10월 10일부터 볼트 유지 관리를 중지합니다. 문제가 발생하지 않도록 이 날짜 이전에 자금을 인출하시기 바랍니다. 10월 10일 이후에는 유동성을 다양한 범위에 두고 더 이상 적극적으로 관리하지 않습니다.",
+  "Turkey": "Turkey"
 }

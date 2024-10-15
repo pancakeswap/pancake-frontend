@@ -2884,10 +2884,6 @@
   "Once confirmed, voting action cannot be undone.": "Once confirmed, voting action cannot be undone.",
   "selected": "selected",
   "Collapse": "Collapse",
-  "Days": "Days",
-  "Hours": "Hours",
-  "Minutes": "Minutes",
-  "Seconds": "Seconds",
   "PancakeSwap Meetup": "PancakeSwap Meetup",
   "Spain": "Spain",
   "Automated Liquidity Optimization": "Automated Liquidity Optimization",
@@ -3043,7 +3039,6 @@
   "This liquidity position is currently earning rewards on Merkl.": "This liquidity position is currently earning rewards on Merkl.",
   "This liquidity position will NOT earn any rewards on Merkl due to its total USD value being less than $20.": "This liquidity position will NOT earn any rewards on Merkl due to its total USD value being less than $20.",
   "Approve transaction filled, but Approval still not enough to fill current trade. Please try again.": "Approve transaction filled, but Approval still not enough to fill current trade. Please try again.",
-  "v4": "v4",
   "PancakeSwap v4": "PancakeSwap v4",
   "Innovation": "Innovation",
   "Empower, Build and Innovate with PancakeSwap v4": "Empower, Build and Innovate with PancakeSwap v4",
@@ -3067,8 +3062,6 @@
   "Read the Whitepaper": "Read the Whitepaper",
   "Get the Tools": "Get the Tools",
   "Join the Community": "Join the Community",
-  "Introducing v4": "Introducing v4",
-  "Events and News": "Events and News",
   "Load More": "Load More",
   "The Full Range Hook allows users to add liquidity across the entire price range within concentrated liquidity pools, similar to v2 pools. This hook eases liquidity position management for the LPs.": "The Full Range Hook allows users to add liquidity across the entire price range within concentrated liquidity pools, similar to v2 pools. This hook eases liquidity position management for the LPs.",
   "Geomean Oracle": "Geomean Oracle",
@@ -3518,7 +3511,6 @@
   "Unfilled orders will automatically expires after the countdown.": "Unfilled orders will automatically expires after the countdown.",
   "Order has been successfully filled.": "Order has been successfully filled.",
   "Output tokens have been sent to your wallet.": "Output tokens have been sent to your wallet.",
-  "Experimental Trading": "Experimental Trading",
   "Swap order filled": "Swap order filled",
   "We are having some trouble filling your order. Please retry.": "We are having some trouble filling your order. Please retry.",
   "No gas cost or fee will be charged on failed orders.": "No gas cost or fee will be charged on failed orders.",
@@ -3544,5 +3536,6 @@
   "Legacy products": "Legacy products",
   "Nigeria": "Nigeria",
   "PancakeSwap Workshop": "PancakeSwap Workshop",
-  "DeFiEdge will stop maintaining its vaults from 10 Oct 2024 onwards. Please remove your funds before that to avoid any issues. Beyond 10 Oct, they will place the liquidity in a wide range, and will no longer actively manage it.": "DeFiEdge will stop maintaining its vaults from 10 Oct 2024 onwards. Please remove your funds before that to avoid any issues. Beyond 10 Oct, they will place the liquidity in a wide range, and will no longer actively manage it."
+  "DeFiEdge will stop maintaining its vaults from 10 Oct 2024 onwards. Please remove your funds before that to avoid any issues. Beyond 10 Oct, they will place the liquidity in a wide range, and will no longer actively manage it.": "DeFiEdge will stop maintaining its vaults from 10 Oct 2024 onwards. Please remove your funds before that to avoid any issues. Beyond 10 Oct, they will place the liquidity in a wide range, and will no longer actively manage it.",
+  "Turkey": "Turkey"
 }

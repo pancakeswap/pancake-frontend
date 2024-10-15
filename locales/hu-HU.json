@@ -2884,10 +2884,6 @@
   "Once confirmed, voting action cannot be undone.": "A megerősítést követően a szavazási műveletet nem lehet visszavonni.",
   "selected": "kiválasztva",
   "Collapse": "Összecsuk",
-  "Days": "Nap",
-  "Hours": "Óra",
-  "Minutes": "Perc",
-  "Seconds": "Másodperc",
   "PancakeSwap Meetup": "PancakeSwap Találkozó",
   "Spain": "Spanyolország",
   "Automated Liquidity Optimization": "Automatizált likviditás optimalizálás",
@@ -3043,7 +3039,6 @@
   "This liquidity position is currently earning rewards on Merkl.": "Ez a likviditási pozíció jelenleg jutalomakban részesül a Merkl-en.",
   "This liquidity position will NOT earn any rewards on Merkl due to its total USD value being less than $20.": "Ez a likviditási pozíció NEM hoz semmilyen jutalmat a Merkl-en, mivel a teljes USD-értéke kevesebb, mint 20 dollár.",
   "Approve transaction filled, but Approval still not enough to fill current trade. Please try again.": "A tranzakció jóváhagyása kitöltve, de a jóváhagyás még mindig nem elég az aktuális kereskedés kitöltéséhez. Kérjük, próbálja meg újra.",
-  "v4": "v4",
   "PancakeSwap v4": "PancakeSwap v4",
   "Innovation": "Innováció",
   "Empower, Build and Innovate with PancakeSwap v4": "Fejlesszen, építsen és újítson a PancakeSwap v4 segítségével",
@@ -3067,8 +3062,6 @@
   "Read the Whitepaper": "Olvassa el a fehér könyvet (Whitepaper)",
   "Get the Tools": "Szerezze meg az eszközöket",
   "Join the Community": "Csatlakozzon a közösséghez",
-  "Introducing v4": "Bemutatkozik a v4",
-  "Events and News": "Események és hírek",
   "Load More": "Bővebben",
   "The Full Range Hook allows users to add liquidity across the entire price range within concentrated liquidity pools, similar to v2 pools. This hook eases liquidity position management for the LPs.": "A Full Range Hook segítségével a felhasználók a v2 alapokhoz hasonlóan likviditást nyújthatnak a teljes ársávban koncentrált likviditási alapokon belül. Ez a kampó (hook) megkönnyíti a likviditási pozíció kezelését az LP-k számára.",
   "Geomean Oracle": "Geomean Oracle",
@@ -3518,7 +3511,6 @@
   "Unfilled orders will automatically expires after the countdown.": "A nem teljesített megrendelések automatikusan érvényüket vesztik a visszaszámlálás után.",
   "Order has been successfully filled.": "A megrendelés sikeresen teljesült.",
   "Output tokens have been sent to your wallet.": "Kapott zsetonjait átküldtük a pénztárcájába.",
-  "Experimental Trading": "Kísérleti forgalmazás",
   "Swap order filled": "Csere megbízás teljesítve",
   "We are having some trouble filling your order. Please retry.": "Nehézségeink vannak a megrendelésének teljesítésével. Kérjük, próbálja meg újra.",
   "No gas cost or fee will be charged on failed orders.": "A meghiúsult megrendelések után nem számítunk fel gázköltséget vagy díjat.",
@@ -3544,5 +3536,6 @@
   "Legacy products": "Örökölt termékek",
   "Nigeria": "Nigéria",
   "PancakeSwap Workshop": "PancakeSwap műhely",
-  "DeFiEdge will stop maintaining its vaults from 10 Oct 2024 onwards. Please remove your funds before that to avoid any issues. Beyond 10 Oct, they will place the liquidity in a wide range, and will no longer actively manage it.": "A DeFiEdge 2024. október 10-től nem tartja fenn a trezorjait. Kérjük, hogy a problémák elkerülése érdekében még ezt megelőzően távolítsa el pénzeszközeit. Október 10. után a likviditást széles skálán fogják elhelyezni, és nem fogják többé aktívan kezelni."
+  "DeFiEdge will stop maintaining its vaults from 10 Oct 2024 onwards. Please remove your funds before that to avoid any issues. Beyond 10 Oct, they will place the liquidity in a wide range, and will no longer actively manage it.": "A DeFiEdge 2024. október 10-től nem tartja fenn a trezorjait. Kérjük, hogy a problémák elkerülése érdekében még ezt megelőzően távolítsa el pénzeszközeit. Október 10. után a likviditást széles skálán fogják elhelyezni, és nem fogják többé aktívan kezelni.",
+  "Turkey": "Turkey"
 }

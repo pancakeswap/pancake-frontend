@@ -2884,10 +2884,6 @@
   "Once confirmed, voting action cannot be undone.": "Setelah dikonfirmasi, tindakan pemberian suara tidak dapat diurungkan.",
   "selected": "dipilih",
   "Collapse": "Ciutkan",
-  "Days": "Hari",
-  "Hours": "Jam",
-  "Minutes": "Menit",
-  "Seconds": "Detik",
   "PancakeSwap Meetup": "Pertemuan PancakeSwap",
   "Spain": "Spanyol",
   "Automated Liquidity Optimization": "Pengoptimalan Likuiditas Terautomasi",
@@ -3043,7 +3039,6 @@
   "This liquidity position is currently earning rewards on Merkl.": "Posisi likuiditas ini sedang memperoleh hadiah dari Merkl.",
   "This liquidity position will NOT earn any rewards on Merkl due to its total USD value being less than $20.": "Posisi likuiditas ini TIDAK akan memperoleh hadiah apa pun dari Merkl karena nilai total USD-nya kurang dari $20.",
   "Approve transaction filled, but Approval still not enough to fill current trade. Please try again.": "Setujui transaksi terisi, tetapi Persetujuan masih belum cukup untuk mengisi perdagangan yang berjalan. Silakan coba lagi.",
-  "v4": "v4",
   "PancakeSwap v4": "PancakeSwap v4",
   "Innovation": "Inovasi",
   "Empower, Build and Innovate with PancakeSwap v4": "Berdayakan, Bangun, dan Berinovasi dengan PancakeSwap v4",
@@ -3067,8 +3062,6 @@
   "Read the Whitepaper": "Baca Whitepaper",
   "Get the Tools": "Dapatkan Alat",
   "Join the Community": "Bergabung dengan Komunitas",
-  "Introducing v4": "Memperkenalkan v4",
-  "Events and News": "Acara dan Berita",
   "Load More": "Muat Lebih Banyak",
   "The Full Range Hook allows users to add liquidity across the entire price range within concentrated liquidity pools, similar to v2 pools. This hook eases liquidity position management for the LPs.": "Hook Rentang Penuh memungkinkan para pengguna untuk menambahkan likuiditas, di seluruh rentang harga dalam pool likuiditas yang terkonsentrasi (terkumpul), serupa dengan pool-pool v2. Hook ini mempermudah manajemen posisi likuiditas untuk LP.",
   "Geomean Oracle": "Geomean Oracle",
@@ -3518,7 +3511,6 @@
   "Unfilled orders will automatically expires after the countdown.": "Order yang tidak terisi akan kedaluwarsa secara otomatis setelah hitung mundur.",
   "Order has been successfully filled.": "Order telah berhasil diisi.",
   "Output tokens have been sent to your wallet.": "Token output telah dikirimkan ke dompet Anda.",
-  "Experimental Trading": "Perdagangan Eksperimental",
   "Swap order filled": "Order tukar terisi",
   "We are having some trouble filling your order. Please retry.": "Kami mengalami masalah saat mengisi order Anda. Silakan coba lagi.",
   "No gas cost or fee will be charged on failed orders.": "Tidak ada biaya atau ongkos transaksi yang akan ditagih untuk order yang gagal.",
@@ -3544,5 +3536,6 @@
   "Legacy products": "Produk legasi",
   "Nigeria": "Nigeria",
   "PancakeSwap Workshop": "Bengkel Kerja PancakeSwap",
-  "DeFiEdge will stop maintaining its vaults from 10 Oct 2024 onwards. Please remove your funds before that to avoid any issues. Beyond 10 Oct, they will place the liquidity in a wide range, and will no longer actively manage it.": "DeFiEdge will stop maintaining its vaults from 10 Oct 2024 onwards. Please remove your funds before that to avoid any issues. Beyond 10 Oct, they will place the liquidity in a wide range, and will no longer actively manage it."
+  "DeFiEdge will stop maintaining its vaults from 10 Oct 2024 onwards. Please remove your funds before that to avoid any issues. Beyond 10 Oct, they will place the liquidity in a wide range, and will no longer actively manage it.": "DeFiEdge akan berhenti mengelola brankasnya mulai tanggal 10 Oktober 2024 dan seterusnya. Harap keluarkan dana Anda sebelum tanggal tersebut untuk menghindari masalah apa pun. Setelah tanggal 10 Oktober, mereka akan menempatkan likuiditas dalam rentang yang luas, dan tidak akan lagi mengelolanya secara aktif.",
+  "Turkey": "Turkey"
 }

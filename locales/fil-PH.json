@@ -2884,10 +2884,6 @@
   "Once confirmed, voting action cannot be undone.": "Kapag nakumpirma na, hindi puwedeng i-undo ang aksyon ng pagboto.",
   "selected": "napili",
   "Collapse": "I-collapese",
-  "Days": "Mga Araw",
-  "Hours": "Mga Oras",
-  "Minutes": "Mga Minuto",
-  "Seconds": "Mga Segundo",
   "PancakeSwap Meetup": "Meetup ng PancakeSwap",
   "Spain": "Spain",
   "Automated Liquidity Optimization": "Automated na Pag-optimize ng Liquidity",
@@ -3043,7 +3039,6 @@
   "This liquidity position is currently earning rewards on Merkl.": "Kasalukuyang nakakakuha ng mga reward sa Merkl ang position ng liquidity na ito.",
   "This liquidity position will NOT earn any rewards on Merkl due to its total USD value being less than $20.": "HINDI makakakuha ng anumang mga reward sa Merkl ang position ng liquidity na ito dahil wala pang $20 ang kabuuang USD value nito.",
   "Approve transaction filled, but Approval still not enough to fill current trade. Please try again.": "Hindi nagawa ang pag-apruba sa transaksyon, pero hindi pa rin sapat ang Pag-apruba para punan ang kasalukuyang trade. Pakisubukan ulit.",
-  "v4": "v4",
   "PancakeSwap v4": "PancakeSwap v4",
   "Innovation": "Innovation",
   "Empower, Build and Innovate with PancakeSwap v4": "Mag-empower, Bumuo at Mag-innovate sa PancakeSwap v4",
@@ -3067,8 +3062,6 @@
   "Read the Whitepaper": "Basahin ang Whitepaper",
   "Get the Tools": "Kunin ang Mga Tool",
   "Join the Community": "Sumali sa Komunidad",
-  "Introducing v4": "Ipinakikilala ang v4",
-  "Events and News": "Mga Kaganapan at Balita",
   "Load More": "Mag-load Pa",
   "The Full Range Hook allows users to add liquidity across the entire price range within concentrated liquidity pools, similar to v2 pools. This hook eases liquidity position management for the LPs.": "Binibigyang-daan ng Full Range Hook ang mga user na magdagdag ng liquidity sa lahat ng buong price range sa concentrated na mga liquidity pool, katulad ng mga v2 pool. Pinapadali ng hook na ito ang management ng position ng liquidity para sa mga LP.",
   "Geomean Oracle": "Geomean Oracle",
@@ -3518,7 +3511,6 @@
   "Unfilled orders will automatically expires after the countdown.": "Awtomatikong mag-e-expire ang mga order na hindi napunan pagkatapos ng countdown.",
   "Order has been successfully filled.": "Napunan ang order.",
   "Output tokens have been sent to your wallet.": "Naipadala na sa wallet mo ang mga token ng output.",
-  "Experimental Trading": "Pang-eksperimentong Trading",
   "Swap order filled": "Napunan ang swap order",
   "We are having some trouble filling your order. Please retry.": "Nagkakaproblema kami sa pagpunan ng iyong order. Pakisubukan ulit.",
   "No gas cost or fee will be charged on failed orders.": "Walang sisingiling gas cost sa mga nabigong order.",
@@ -3544,5 +3536,6 @@
   "Legacy products": "Legacy products",
   "Nigeria": "Nigeria",
   "PancakeSwap Workshop": "PancakeSwap Workshop",
-  "DeFiEdge will stop maintaining its vaults from 10 Oct 2024 onwards. Please remove your funds before that to avoid any issues. Beyond 10 Oct, they will place the liquidity in a wide range, and will no longer actively manage it.": "DeFiEdge will stop maintaining its vaults from 10 Oct 2024 onwards. Please remove your funds before that to avoid any issues. Beyond 10 Oct, they will place the liquidity in a wide range, and will no longer actively manage it."
+  "DeFiEdge will stop maintaining its vaults from 10 Oct 2024 onwards. Please remove your funds before that to avoid any issues. Beyond 10 Oct, they will place the liquidity in a wide range, and will no longer actively manage it.": "DeFiEdge will stop maintaining its vaults from 10 Oct 2024 onwards. Please remove your funds before that to avoid any issues. Beyond 10 Oct, they will place the liquidity in a wide range, and will no longer actively manage it.",
+  "Turkey": "Turkey"
 }

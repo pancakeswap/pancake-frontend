@@ -2884,10 +2884,6 @@
   "Once confirmed, voting action cannot be undone.": "Oylama eylemi, onaylandıktan sonra geri alınamaz.",
   "selected": "seçildi",
   "Collapse": "Daralt",
-  "Days": "Gün",
-  "Hours": "Saat",
-  "Minutes": "Dakika",
-  "Seconds": "Saniye",
   "PancakeSwap Meetup": "PancakeSwap Buluşması",
   "Spain": "İspanya",
   "Automated Liquidity Optimization": "Automated Liquidity Optimization",
@@ -3043,7 +3039,6 @@
   "This liquidity position is currently earning rewards on Merkl.": "Bu likidite pozisyonu şu anda Merkl'de ödüller kazandırıyor.",
   "This liquidity position will NOT earn any rewards on Merkl due to its total USD value being less than $20.": "Bu likidite pozisyonu; toplam ABD doları değeri, 20 ABD dolarından az olduğu için Merkl'de herhangi bir ödül KAZANDIRMAYACAK.",
   "Approve transaction filled, but Approval still not enough to fill current trade. Please try again.": "İşlem onayı tamamlandı ancak Onay mevcut işlemi tamamlamak için hâlâ yeterli değil. Lütfen tekrar deneyin.",
-  "v4": "v4",
   "PancakeSwap v4": "PancakeSwap v4",
   "Innovation": "Yenilik",
   "Empower, Build and Innovate with PancakeSwap v4": "PancakeSwap v4 ile Güçlendirin, Oluşturun ve Yenilik Yapın",
@@ -3067,8 +3062,6 @@
   "Read the Whitepaper": "Whitepaper'ı okuyun",
   "Get the Tools": "Araçları alın",
   "Join the Community": "Topluluğa katılın",
-  "Introducing v4": "Karşınızda v4",
-  "Events and News": "Etkinlikler ve Haberler",
   "Load More": "Daha Fazlasını Yükle",
   "The Full Range Hook allows users to add liquidity across the entire price range within concentrated liquidity pools, similar to v2 pools. This hook eases liquidity position management for the LPs.": "Tam Aralık Kancası, kullanıcıların v2 havuzlarına benzer şekilde odaklanmış likidite havuzları içinde tüm fiyat aralığında likidite eklemesine olanak tanır. Bu kanca, LP'ler için likidite pozisyonu yönetimini kolaylaştırır.",
   "Geomean Oracle": "Geomean Oracle",
@@ -3518,7 +3511,6 @@
   "Unfilled orders will automatically expires after the countdown.": "Gerçekleştirilmeyen emirler geri sayımdan sonra otomatik olarak sonlandırılır.",
   "Order has been successfully filled.": "Emir başarıyla gerçekleştirildi.",
   "Output tokens have been sent to your wallet.": "Çıktı token'ları, cüzdanınıza gönderildi.",
-  "Experimental Trading": "Deneysel Yatırım",
   "Swap order filled": "Dönüştürme emri gerçekleştirildi",
   "We are having some trouble filling your order. Please retry.": "Emrinizi gerçekleştirmede sorun yaşıyoruz. Lütfen tekrar deneyin.",
   "No gas cost or fee will be charged on failed orders.": "Başarısız emirlerde gas veya işlem ücreti alınmaz.",
@@ -3544,5 +3536,6 @@
   "Legacy products": "Eski ürünler",
   "Nigeria": "Nijerya",
   "PancakeSwap Workshop": "PancakeSwap Atölyesi",
-  "DeFiEdge will stop maintaining its vaults from 10 Oct 2024 onwards. Please remove your funds before that to avoid any issues. Beyond 10 Oct, they will place the liquidity in a wide range, and will no longer actively manage it.": "DeFiEdge will stop maintaining its vaults from 10 Oct 2024 onwards. Please remove your funds before that to avoid any issues. Beyond 10 Oct, they will place the liquidity in a wide range, and will no longer actively manage it."
+  "DeFiEdge will stop maintaining its vaults from 10 Oct 2024 onwards. Please remove your funds before that to avoid any issues. Beyond 10 Oct, they will place the liquidity in a wide range, and will no longer actively manage it.": "DeFiEdge, 10 Ekim 2024'ten itibaren kasalarının bakımını yapmayacak. Herhangi bir sorun yaşamamak için lütfen fonlarınızı bu tarihten önce çekin. 10 Ekim'den sonra likidite geniş kapsamlı bir şekilde serbest bırakılacak ve bundan sonra aktif bir şekilde yönetilmeyecek.",
+  "Turkey": "Türkiye"
 }
