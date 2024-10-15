@@ -3511,7 +3511,6 @@
   "Unfilled orders will automatically expires after the countdown.": "কাউন্টডাউনের পর অনিষ্পন্ন অর্ডার স্বয়ংক্রিয়ভাবে মেয়াদোত্তীর্ণ হয়ে যাবে।",
   "Order has been successfully filled.": "অর্ডার সফলভাবে সম্পন্ন করা হয়েছে।",
   "Output tokens have been sent to your wallet.": "আপনার ওয়ালেটে আউটপুট টোকেন পাঠানো হয়েছে।",
-  "Experimental Trading": "পরীক্ষামূলক ট্রেডিং",
   "Swap order filled": "সোয়াপ অর্ডার সম্পন্ন হয়েছে",
   "We are having some trouble filling your order. Please retry.": "আপনার অর্ডার সম্পন্ন করতে আমাদের কিছু সমস্যা হচ্ছে। অনুগ্রহ করে আবার চেষ্টা করুন।",
   "No gas cost or fee will be charged on failed orders.": "অসম্পন্ন অর্ডারের জন্য কোনো গ্যাস খরচ বা ফি নেওয়া হবে না।",
