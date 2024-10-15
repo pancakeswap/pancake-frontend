@@ -135,12 +135,12 @@ export function useBetterQuote<A extends QuoteResult, B extends QuoteResult>(
     return quoteA.trade.tradeType === TradeType.EXACT_INPUT
       ? (
           (factorGasCost ? quoteB.trade.outputAmountWithGasAdjusted : undefined) ?? quoteB.trade.outputAmount
-        ).greaterThan(
+        )?.greaterThan(
           (factorGasCost ? quoteA.trade!.outputAmountWithGasAdjusted : undefined) ?? quoteA.trade!.outputAmount,
         )
         ? quoteB
         : quoteA
-      : ((factorGasCost ? quoteB.trade.inputAmountWithGasAdjusted : undefined) ?? quoteB.trade.inputAmount).lessThan(
+      : ((factorGasCost ? quoteB.trade.inputAmountWithGasAdjusted : undefined) ?? quoteB.trade.inputAmount)?.lessThan(
           (factorGasCost ? quoteA.trade!.inputAmountWithGasAdjusted : undefined) ?? quoteA.trade!.inputAmount,
         )
       ? quoteB

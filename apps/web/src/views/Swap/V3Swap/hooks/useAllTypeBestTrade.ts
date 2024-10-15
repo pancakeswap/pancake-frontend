@@ -75,14 +75,19 @@ export const useAllTypeBestTrade = () => {
     bestOrder.enabled && bestOrder.order?.type === OrderType.DUTCH_LIMIT && bestOrder.isValidQuote
   const betterQuote = useBetterQuote(classicAmmOrder, hasAvailableDutchOrder ? currentOrder : undefined)
   const finalOrder = xEnabled ? betterQuote : classicAmmOrder
+  const tradeLoaded = Boolean(finalOrder && !finalOrder.isLoading)
 
   return {
     ammOrder: classicAmmOrder,
     xOrder: currentOrder,
     // TODO: for log purpose in this stage
     betterOrder: betterQuote,
-    bestOrder: finalOrder as InterfaceOrder | undefined,
-    tradeLoaded: Boolean(finalOrder && !finalOrder.isLoading),
+    bestOrder: (tradeLoaded
+      ? finalOrder?.trade?.inputAmount && finalOrder?.trade?.outputAmount
+        ? finalOrder
+        : undefined
+      : finalOrder) as InterfaceOrder | undefined,
+    tradeLoaded,
     tradeError: finalOrder?.error,
     refreshDisabled:
       finalOrder?.type === OrderType.DUTCH_LIMIT
