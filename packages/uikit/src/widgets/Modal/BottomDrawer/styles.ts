@@ -21,6 +21,7 @@ export const unmountAnimation = keyframes`
 
 export const DrawerContainer = styled.div`
   width: 100%;
+  max-width: 100vw;
   height: 80vh;
   background-color: ${({ theme }) => theme.colors.backgroundAlt};
   border-top-left-radius: 32px;
