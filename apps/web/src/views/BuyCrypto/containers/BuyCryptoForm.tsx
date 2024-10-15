@@ -264,8 +264,7 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
               display="flex"
               fontSize="14px"
               href="https://pancakeswap.finance/terms-of-service"
-              referrerPolicy="no-referrer"
-              target="_blank"
+              external
             >
               {t('terms of service')}
             </Link>
