@@ -3511,7 +3511,6 @@
   "Unfilled orders will automatically expires after the countdown.": "Gerçekleştirilmeyen emirler geri sayımdan sonra otomatik olarak sonlandırılır.",
   "Order has been successfully filled.": "Emir başarıyla gerçekleştirildi.",
   "Output tokens have been sent to your wallet.": "Çıktı token'ları, cüzdanınıza gönderildi.",
-  "Experimental Trading": "Deneysel Yatırım",
   "Swap order filled": "Dönüştürme emri gerçekleştirildi",
   "We are having some trouble filling your order. Please retry.": "Emrinizi gerçekleştirmede sorun yaşıyoruz. Lütfen tekrar deneyin.",
   "No gas cost or fee will be charged on failed orders.": "Başarısız emirlerde gas veya işlem ücreti alınmaz.",
