@@ -75,8 +75,7 @@ export default function V4Swap() {
         height="100%"
         justifyContent="center"
         position="relative"
-        alignItems="center"
-        p={isMobile ? '16px' : '24px'}
+        p={isChartExpanded ? undefined : isMobile ? '16px' : '24px'}
       >
         {isDesktop && isChartSupported && (
           <PriceChartContainer
