@@ -3511,7 +3511,6 @@
   "Unfilled orders will automatically expires after the countdown.": "Các lệnh không được khớp sẽ tự động hết hạn sau khi đồng hồ kết thúc.",
   "Order has been successfully filled.": "Lệnh đã được khớp thành công.",
   "Output tokens have been sent to your wallet.": "Các token đầu ra đã được gửi đến ví của bạn.",
-  "Experimental Trading": "Giao dịch thử nghiệm",
   "Swap order filled": "Lệnh hoán đổi đã được khớp",
   "We are having some trouble filling your order. Please retry.": "Chúng tôi đang gặp vấn đề với việc khớp lệnh của bạn. Vui lòng thử lại.",
   "No gas cost or fee will be charged on failed orders.": "Chi phí hoặc phí năng lượng sẽ không bị tính cho các lệnh không thành công.",
