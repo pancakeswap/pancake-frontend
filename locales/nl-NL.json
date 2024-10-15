@@ -3511,7 +3511,6 @@
   "Unfilled orders will automatically expires after the countdown.": "Niet-uitgevoerde orders verlopen automatisch na de countdown.",
   "Order has been successfully filled.": "Order uitgevoerd.",
   "Output tokens have been sent to your wallet.": "De outputtokens zijn naar je wallet gestuurd.",
-  "Experimental Trading": "Experimenteel handelen",
   "Swap order filled": "Swaporder uitgevoerd",
   "We are having some trouble filling your order. Please retry.": "We ondervinden wat problemen bij het uitvoeren van je order. Probeer het opnieuw.",
   "No gas cost or fee will be charged on failed orders.": "Voor mislukte orders wordt geen gaskost of vergoeding in rekening gebracht.",
