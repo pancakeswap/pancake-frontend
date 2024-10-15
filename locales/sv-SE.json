@@ -3511,7 +3511,6 @@
   "Unfilled orders will automatically expires after the countdown.": "Ej slutförda ordrar förfaller automatiskt efter nedräkningen.",
   "Order has been successfully filled.": "Ordern har slutförts.",
   "Output tokens have been sent to your wallet.": "Utgående tokens har skickats till din plånbok.",
-  "Experimental Trading": "Experimentell handel",
   "Swap order filled": "Växlingsorder slutförd",
   "We are having some trouble filling your order. Please retry.": "Vi har problem med att slutföra din order. Försök igen.",
   "No gas cost or fee will be charged on failed orders.": "Ingen bensinkostnad eller avgift kommer att debiteras för misslyckade ordrar.",
