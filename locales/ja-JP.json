@@ -3511,7 +3511,6 @@
   "Unfilled orders will automatically expires after the countdown.": "未執行の注文はカウントダウン後に自動的に期限切れになります。",
   "Order has been successfully filled.": "注文は正常に執行されました。",
   "Output tokens have been sent to your wallet.": "出力トークンがウォレットに送金されました。",
-  "Experimental Trading": "実験的な取引",
   "Swap order filled": "スワップ注文が執行されました",
   "We are having some trouble filling your order. Please retry.": "ご注文の処理中に問題が発生しました。もう一度お試しください。",
   "No gas cost or fee will be charged on failed orders.": "注文が失敗した場合、ガス料金や手数料は請求されません。",
