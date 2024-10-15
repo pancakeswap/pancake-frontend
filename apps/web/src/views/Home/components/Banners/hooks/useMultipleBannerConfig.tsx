@@ -5,6 +5,7 @@ import CompetitionBanner from '../CompetitionBanner'
 import { EigenpieIFOBanner } from '../EigenpieIFOBanner'
 import { FourMemeBanner } from '../FourMemeBanner'
 import { OptionsBanner } from '../OptionsBanner'
+import { PCSXBanner } from '../PCSXBanner'
 import { QuestBanner } from '../QuestBanner'
 import { TgPredictionBotBanner } from '../TgPredictionBotBanner'
 import UserBanner from '../UserBanner'
@@ -43,6 +44,10 @@ export const useMultipleBannerConfig = () => {
       {
         shouldRender: isRenderUserBanner.shouldRender && !isRenderUserBanner.isEarningsBusdZero,
         banner: <UserBanner />,
+      },
+      {
+        shouldRender: true,
+        banner: <PCSXBanner />,
       },
       {
         shouldRender: true,

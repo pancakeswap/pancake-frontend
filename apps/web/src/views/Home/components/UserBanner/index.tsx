@@ -1,5 +1,5 @@
-import { useCallback } from 'react'
 import { Box, Flex } from '@pancakeswap/uikit'
+import { useCallback } from 'react'
 import { styled } from 'styled-components'
 import { useSwiper } from 'swiper/react'
 import HarvestCard from './HarvestCard'
