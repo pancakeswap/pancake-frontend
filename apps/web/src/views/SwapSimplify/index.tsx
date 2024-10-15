@@ -17,7 +17,8 @@ import { V4SwapForm } from './V4Swap'
 const Wrapper = styled(Box)`
   width: 100%;
   ${({ theme }) => theme.mediaQueries.md} {
-    width: 480px;
+    min-width: 328px;
+    max-width: 480px;
   }
 `
 
@@ -121,7 +122,7 @@ export default function V4Swap() {
             style={{ height: '100%' }}
             $isChartExpanded={isChartExpanded}
           >
-            <Wrapper mt={isChartExpanded ? '24px' : '0'} height="100%">
+            <Wrapper height="100%">
               <V4SwapForm />
             </Wrapper>
           </StyledSwapContainer>

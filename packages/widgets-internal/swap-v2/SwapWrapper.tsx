@@ -8,7 +8,6 @@ export const SwapFormWrapper = styled.div`
   justify-content: center;
   align-items: center;
   gap: 16px;
-  height: 100%;
   max-width: 480px;
   margin: 0 auto 56px;
 `;
