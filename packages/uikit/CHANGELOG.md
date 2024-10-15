@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.67.2
+
+### Patch Changes
+
+- a0e17e0: Fixed DropdownMenu component missed pass `onClick` props
+
 ## 0.67.1
 
 ### Patch Changes

@@ -1,5 +1,12 @@
 # games
 
+## 0.1.18
+
+### Patch Changes
+
+- Updated dependencies [a0e17e0]
+  - @pancakeswap/uikit@0.67.2
+
 ## 0.1.17
 
 ### Patch Changes
