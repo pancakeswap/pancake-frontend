@@ -3511,7 +3511,6 @@
   "Unfilled orders will automatically expires after the countdown.": "未完成的订单将在倒计时后自动过期。",
   "Order has been successfully filled.": "订单已成功完成。",
   "Output tokens have been sent to your wallet.": "输出代币已发送到您的钱包。",
-  "Experimental Trading": "实验性交易",
   "Swap order filled": "已完成兑换订单",
   "We are having some trouble filling your order. Please retry.": "我们在完成您的订单时遇到一些问题。请重试。",
   "No gas cost or fee will be charged on failed orders.": "对于失败的订单，将不会收取任何 Gas 成本或费用。",
