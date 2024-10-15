@@ -3511,7 +3511,6 @@
   "Unfilled orders will automatically expires after the countdown.": "As ordens não executadas expirarão automaticamente após a contagem regressiva.",
   "Order has been successfully filled.": "Ordem executada com sucesso.",
   "Output tokens have been sent to your wallet.": "Os tokens de saída foram enviados para sua carteira.",
-  "Experimental Trading": "Negociação experimental",
   "Swap order filled": "Ordem de swap executada",
   "We are having some trouble filling your order. Please retry.": "Estamos tendo alguns problemas para executar sua ordem. Favor tentar novamente.",
   "No gas cost or fee will be charged on failed orders.": "Nenhum custo de gas ou taxa será cobrado por ordens que falharem.",
