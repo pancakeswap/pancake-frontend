@@ -33,14 +33,17 @@ export const DEFAULT_QUERIES = {
 
 export const extendPoolsQueryAtom = atom<ExtendPoolsQuery>(DEFAULT_QUERIES)
 
-export const extendPoolsAtom = atom([] as PoolInfo[], (get, set, values: PoolInfo[]) => {
-  // remove duplicates pools with farmPoolsAtom
+export const extendPoolsAtom = atom<PoolInfo[]>([])
+
+export const updateExtendPoolsAtom = atom(null, (get, set, values: PoolInfo[]) => {
   const farms = get(farmPoolsAtom)
+  const currentPools = get(extendPoolsAtom)
+
   const newData = values.filter(
     (pool) => !farms.some((farm) => isAddressEqual(farm.lpAddress, pool.lpAddress) && farm.protocol === pool.protocol),
   )
 
-  set(extendPoolsAtom, [...get(extendPoolsAtom), ...newData])
+  set(extendPoolsAtom, [...currentPools, ...newData])
 })
 
 interface PoolsOfPositionType {
