@@ -8,7 +8,7 @@ import Queue from 'mnemonist/queue.js'
 
 import { usdGasTokensByChain } from '../../constants'
 import { BestRoutes, L1ToL2GasCosts, RouteWithQuote } from '../types'
-import { getPoolAddress, isV2Pool, isV3Pool, logger } from '../utils'
+import { getPoolAddress, isStablePool, isV2Pool, isV3Pool, logger } from '../utils'
 
 interface Config {
   minSplits?: number
@@ -257,7 +257,10 @@ export function getBestSwapRouteBy(
                       if (isV3Pool(p)) {
                         return `V3 fee ${p.fee} ${p.token0.symbol}-${p.token1.symbol}`
                       }
-                      return `Stable ${p.balances.map((b) => b.currency).join('-')}`
+                      if (isStablePool(p)) {
+                        return `Stable ${p.balances.map((b) => b.currency).join('-')}`
+                      }
+                      return `Unsupported pool ${p}`
                     })
                     .join(', ')} ${r.quote.toExact()}`,
               )
