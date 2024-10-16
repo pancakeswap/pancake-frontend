@@ -21,10 +21,9 @@ export type LpApr = AprValue
 export const lpAprAtom = atom<LpApr>((get) => {
   const pools = get(poolsAtom)
   return pools.reduce((acc, pool) => {
-    return {
-      ...acc,
-      [`${pool.chainId}:${pool.lpAddress}`]: pool.lpApr ?? '0',
-    }
+    // eslint-disable-next-line no-param-reassign
+    acc[`${pool.chainId}:${pool.lpAddress}`] = pool.lpApr ?? '0'
+    return acc
   }, {} as LpApr)
 })
 
@@ -64,14 +63,13 @@ export const poolAprAtom = atom<PoolApr>((get) => {
   const merklAprs = get(merklAprAtom)
 
   return Object.keys(lpAprs).reduce((acc, key) => {
-    return {
-      ...acc,
-      [key]: {
-        lpApr: lpAprs[key],
-        cakeApr: cakeAprs[key],
-        merklApr: merklAprs[key],
-      },
+    // eslint-disable-next-line no-param-reassign
+    acc[key] = {
+      lpApr: lpAprs[key],
+      cakeApr: cakeAprs[key],
+      merklApr: merklAprs[key],
     }
+    return acc
   }, {} as PoolApr)
 })
 
