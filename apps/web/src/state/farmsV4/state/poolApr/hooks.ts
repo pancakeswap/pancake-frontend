@@ -1,13 +1,11 @@
 import { useQuery } from '@tanstack/react-query'
 import { SLOW_INTERVAL } from 'config/constants'
-import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { useCallback } from 'react'
+import { useAtomValue, useSetAtom } from 'jotai'
 import sha256 from 'crypto-js/sha256'
 import memoize from 'lodash/memoize'
-import { updateExtendPoolsAtom } from '../extendPools/atom'
 import { ChainIdAddressKey, PoolInfo } from '../type'
 import { CakeApr, cakeAprSetterAtom, emptyCakeAprPoolsAtom, merklAprAtom, poolAprAtom } from './atom'
-import { getAllNetworkMerklApr, getCakeApr, getLpApr } from './fetcher'
+import { getAllNetworkMerklApr, getCakeApr } from './fetcher'
 
 const generatePoolKey = memoize((pools) => {
   const poolData = pools.map((pool) => `${pool.chainId}:${pool.lpAddress}`).join(',')
@@ -22,65 +20,64 @@ export const usePoolApr = (
   cakeApr: CakeApr[keyof CakeApr]
   merklApr: `${number}`
 } => {
-  const updatePools = useSetAtom(updateExtendPoolsAtom)
-  const updateCakeApr = useSetAtom(cakeAprSetterAtom)
+  // const updatePools = useSetAtom(updateExtendPoolsAtom)
+  // const updateCakeApr = useSetAtom(cakeAprSetterAtom)
   const poolApr = useAtomValue(poolAprAtom)[key ?? '']
-  const [merklAprs, updateMerklApr] = useAtom(merklAprAtom)
-  const getMerklApr = useCallback(() => {
-    if (Object.values(merklAprs).length === 0) {
-      return getAllNetworkMerklApr().then((aprs) => {
-        updateMerklApr(aprs)
-        return aprs[key!] ?? '0'
-      })
-    }
-    return merklAprs[key!] ?? '0'
-  }, [key, merklAprs, updateMerklApr])
-  const updateCallback = useCallback(async () => {
-    try {
-      const [cakeApr, lpApr, merklApr] = await Promise.all([
-        getCakeApr(pool).then((apr) => {
-          updateCakeApr(apr)
-          return apr
-        }),
-        getLpApr(pool)
-          .then((apr) => {
-            updatePools([{ ...pool, lpApr: `${apr}` }])
-            return `${apr}`
-          })
-          .catch(() => {
-            console.warn('error getLpApr', pool)
-            updatePools([{ ...pool, lpApr: '0' }])
-            return '0'
-          }),
-        ,
-        getMerklApr(),
-      ])
-      return {
-        lpApr: `${lpApr}`,
-        cakeApr,
-        merklApr,
-      }
-    } catch (error) {
-      console.warn('error usePoolApr', error)
-      return {
-        lpApr: '0',
-        cakeApr: { value: '0' },
-        merklApr: '0',
-      }
-    }
-  }, [getMerklApr, pool, updateCakeApr, updatePools])
-
-  useQuery({
-    queryKey: ['apr', key],
-    queryFn: updateCallback,
-    // calcV3PoolApr depend on pool's TvlUsd
-    // so if there are local pool without tvlUsd, don't to fetch queryFn
-    // issue: PAN-3698
-    enabled: typeof pool?.tvlUsd !== 'undefined' && !poolApr?.lpApr && !!key,
-    refetchInterval: 0,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-  })
+  // const getMerklApr = useCallback(() => {
+  //   if (Object.values(merklAprs).length === 0) {
+  //     return getAllNetworkMerklApr().then((aprs) => {
+  //       updateMerklApr(aprs)
+  //       return aprs[key!] ?? '0'
+  //     })
+  //   }
+  //   return merklAprs[key!] ?? '0'
+  // }, [key, merklAprs, updateMerklApr])
+  // const updateCallback = useCallback(async () => {
+  //   try {
+  //     const [cakeApr, lpApr, merklApr] = await Promise.all([
+  //       getCakeApr(pool).then((apr) => {
+  //         updateCakeApr(apr)
+  //         return apr
+  //       }),
+  //       getLpApr(pool)
+  //         .then((apr) => {
+  //           updatePools([{ ...pool, lpApr: `${apr}` }])
+  //           return `${apr}`
+  //         })
+  //         .catch(() => {
+  //           console.warn('error getLpApr', pool)
+  //           updatePools([{ ...pool, lpApr: '0' }])
+  //           return '0'
+  //         }),
+  //       ,
+  //       getMerklApr(),
+  //     ])
+  //     return {
+  //       lpApr: `${lpApr}`,
+  //       cakeApr,
+  //       merklApr,
+  //     }
+  //   } catch (error) {
+  //     console.warn('error usePoolApr', error)
+  //     return {
+  //       lpApr: '0',
+  //       cakeApr: { value: '0' },
+  //       merklApr: '0',
+  //     }
+  //   }
+  // }, [getMerklApr, pool, updateCakeApr, updatePools])
+  //
+  // useQuery({
+  //   queryKey: ['apr', key],
+  //   queryFn: updateCallback,
+  //   // calcV3PoolApr depend on pool's TvlUsd
+  //   // so if there are local pool without tvlUsd, don't to fetch queryFn
+  //   // issue: PAN-3698
+  //   enabled: typeof pool?.tvlUsd !== 'undefined' && !poolApr?.lpApr && !!key,
+  //   refetchOnMount: false,
+  //   refetchOnWindowFocus: false,
+  //   refetchOnReconnect: false,
+  // })
 
   return {
     lpApr: poolApr?.lpApr ?? '0',
