@@ -146,7 +146,12 @@ export const fetchExplorerFarmPools = async (
     params: {
       query: {
         protocols: args.protocols ?? DEFAULT_PROTOCOLS,
-        chains: chains.reduce((acc, cur) => (cur ? [...acc, getChainNameInKebabCase(cur)] : acc), [] as any[]),
+        chains: chains.reduce((acc, cur) => {
+          if (cur) {
+            acc.push(getChainNameInKebabCase(cur))
+          }
+          return acc
+        }, [] as any[]),
       },
     },
   })
