@@ -18,6 +18,6 @@
     "@types/react": "^18.2.21",
     "swiper": "*",
     "react-device-detect": "^2.1.2",
-    "jotai": "^2.2.2"
+    "jotai": "^2.10.1"
   }
 }
