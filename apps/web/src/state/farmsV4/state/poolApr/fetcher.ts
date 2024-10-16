@@ -207,10 +207,9 @@ export const getMerklApr = async (chainId: number) => {
         if (!result[chainId].pools[poolId].aprs || !Object.keys(result[chainId].pools[poolId].aprs).length) return acc
 
         const apr = result[chainId].pools[poolId].aprs?.['Average APR (rewards / pool TVL)'] ?? '0'
-        return {
-          ...acc,
-          [key]: apr / 100,
-        }
+        // eslint-disable-next-line no-param-reassign
+        acc[key] = apr / 100
+        return acc
       }, {} as MerklApr)
     }
     throw resp
