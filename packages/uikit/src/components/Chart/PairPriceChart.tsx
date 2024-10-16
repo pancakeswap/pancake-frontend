@@ -1,6 +1,6 @@
 import { useTranslation } from "@pancakeswap/localization";
-import dayjs from "dayjs";
 import { formatAmount, formatAmountNotation, tokenPrecisionStyle } from "@pancakeswap/utils/formatInfoNumbers";
+import dayjs from "dayjs";
 import {
   BarData,
   createChart,
@@ -12,8 +12,8 @@ import {
 } from "lightweight-charts";
 import { Dispatch, RefObject, SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTheme } from "styled-components";
-import LineChartLoader from "./LineChartLoaderSVG";
 import { useMatchBreakpoints } from "../../contexts";
+import LineChartLoader from "./LineChartLoaderSVG";
 
 const formatOptions = {
   notation: "standard" as formatAmountNotation,

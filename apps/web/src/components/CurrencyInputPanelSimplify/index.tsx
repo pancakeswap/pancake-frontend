@@ -113,14 +113,6 @@ const useSizeAdaption = (value: string, currencySymbol?: string, otherCurrencySy
 
     const targetWidth = wrapperWidth - symbolWidth - inputWidth
 
-    console.log('Values', {
-      currencySymbol,
-      targetWidth,
-      isWithinBounds: targetWidth > SIZE_ADAPTION_BOUNDARY_MIN_PX_ && targetWidth < SIZE_ADAPTION_BOUNDARY_MAX_PX,
-      isBelowBounds: targetWidth < SIZE_ADAPTION_BOUNDARY_MIN_PX_,
-      isAboveBounds: targetWidth > SIZE_ADAPTION_BOUNDARY_MAX_PX,
-    })
-
     // Is below lower bound
     if (targetWidth < SIZE_ADAPTION_BOUNDARY_MIN_PX_) {
       const newInputFontSize = handleFontSizeChange(inputElement.style.fontSize, -2)
