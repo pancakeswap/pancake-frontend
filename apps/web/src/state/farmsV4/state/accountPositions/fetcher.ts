@@ -150,15 +150,13 @@ export const getAccountV2LpDetails = async (
   const farmingCalls = bCakeWrapperAddresses.reduce(
     (acc, address) => {
       if (!address || address === '0x') return acc
-      return [
-        ...acc,
-        {
-          abi: v2BCakeWrapperABI,
-          address,
-          functionName: 'userInfo',
-          args: [account] as const,
-        } as const,
-      ]
+      acc.push({
+        abi: v2BCakeWrapperABI,
+        address,
+        functionName: 'userInfo',
+        args: [account] as const,
+      })
+      return acc
     },
     [] as Array<{
       abi: typeof v2BCakeWrapperABI
@@ -201,11 +199,14 @@ export const getAccountV2LpDetails = async (
   ])
 
   const farming = bCakeWrapperAddresses.reduce((acc, address) => {
-    if (!address || address === '0x') return [...acc, undefined]
-    const { result } = _farming.shift() ?? { result: undefined }
-    return [...acc, result]
+    if (!address || address === '0x') {
+      acc.push(undefined)
+    } else {
+      const { result } = _farming.shift() ?? { result: undefined }
+      acc.push(result)
+    }
+    return acc
   }, [] as Array<readonly [bigint, bigint, bigint, bigint, bigint] | undefined>)
-
   return balances
     .map((result, index) => {
       const { result: _balance = 0n, status } = result
@@ -275,7 +276,8 @@ export const getStablePairDetails = async (
   if (!account || !client || !validStablePairs.length) return []
 
   const bCakeWrapperAddresses = validStablePairs.reduce((acc, pair) => {
-    return [...acc, getBCakeWrapperAddress(pair.lpAddress, chainId)]
+    acc.push(getBCakeWrapperAddress(pair.lpAddress, chainId))
+    return acc
   }, [] as Array<Address>)
 
   const balanceCalls = validStablePairs.map((pair) => {
