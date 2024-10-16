@@ -4,7 +4,7 @@ import groupBy from 'lodash/groupBy'
 import { createPublicClient, fallback, getAddress, http, parseAbiItem, PublicClient } from 'viem'
 import * as CHAINS from 'viem/chains'
 import { describe, expect, test } from 'vitest'
-import { UNIVERSAL_FARMS } from '.'
+import { fetchAllUniversalFarms } from '.'
 import { masterChefV3Addresses, supportedChainIdV4 } from '../const'
 import { UniversalFarmConfig, UniversalFarmConfigV3 } from '../types'
 
@@ -40,7 +40,9 @@ const publicClient: Record<string, PublicClient> = supportedChainIdV4.reduce((ac
 
 describe.concurrent(
   'Universal Farms config',
-  () => {
+  async () => {
+    const UNIVERSAL_FARMS = await fetchAllUniversalFarms()
+
     test('lpAddress should be unique', () => {
       const configByChains = groupBy(UNIVERSAL_FARMS, 'chainId')
 
