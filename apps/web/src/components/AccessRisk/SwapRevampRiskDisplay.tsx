@@ -95,12 +95,13 @@ const useRiskCheckData = (token?: ERC20Token) => {
     }
     return undefined
   }, [data])
+
   const tagColor = useMemo(() => {
     if (!data?.riskLevel) {
       return 'textDisabled'
     }
     if (data.riskLevel > TOKEN_RISK.MEDIUM) {
-      return 'failure'
+      return 'destructive60'
     }
     if (data.riskLevel >= TOKEN_RISK.LOW && data.riskLevel <= TOKEN_RISK.MEDIUM) {
       return 'yellow'
@@ -159,7 +160,7 @@ export const PriceImpactTitle: React.FC = () => {
   return (
     <FlexGap alignItems="flex-start" gap="8px">
       <Box>
-        <WarningIcon width={24} color="failure" />
+        <WarningIcon width={24} color="destructive60" />
       </Box>
       <FlexGap justifyContent="center" alignItems="flex-start" flexDirection="column" gap="8px">
         <Text fontSize="16px" bold>
@@ -175,7 +176,7 @@ export const SlippageTitle: React.FC = () => {
   return (
     <FlexGap alignItems="flex-start" gap="8px">
       <Box>
-        <WarningIcon width={24} color="failure" />
+        <WarningIcon width={24} color="destructive60" />
       </Box>
       <FlexGap justifyContent="center" alignItems="flex-start" flexDirection="column" gap="8px">
         <Text fontSize="16px" bold>
