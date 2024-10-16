@@ -28,7 +28,7 @@ export type AMMOrder = V4Router.Transformer.SerializedV4Trade & {
 }
 
 export type AMMRequestConfig = {
-  protocols: ('V2' | 'V3' | 'STABLE')[]
+  protocols: PoolTypeKey[]
   routingType: OrderType.PCS_CLASSIC
   gasPriceWei?: string
   maxHops?: number
