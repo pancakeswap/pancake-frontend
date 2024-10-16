@@ -1,4 +1,4 @@
-import { BCakeWrapperFarmConfig, Protocol, UNIVERSAL_FARMS, UNIVERSAL_FARMS_MAP } from '@pancakeswap/farms'
+import { BCakeWrapperFarmConfig, Protocol, fetchAllUniversalFarms, fetchAllUniversalFarmsMap } from '@pancakeswap/farms'
 import { CurrencyAmount, ERC20Token, Pair, Token, pancakePairV2ABI } from '@pancakeswap/sdk'
 import { LegacyStableSwapPair } from '@pancakeswap/smart-router/legacy-router'
 import { deserializeToken } from '@pancakeswap/token-lists'
@@ -66,18 +66,20 @@ type ITokenPair = [ERC20Token, ERC20Token]
 // for v2 pools, we cannot fetch all positions from one contract
 // so we simple get the most used pairs for fetch LP position
 export const getTrackedV2LpTokens = memoize(
-  (
+  async (
     chainId: number,
     presetTokens: { [address: Address]: ERC20Token },
     userSavedPairs: AppState['user']['pairs'],
-  ): [ERC20Token, ERC20Token][] => {
+  ): Promise<[ERC20Token, ERC20Token][]> => {
     const pairTokens: ITokenPair[] = []
+    const fetchFarmConfig = await fetchAllUniversalFarms()
+
     // from farms
-    UNIVERSAL_FARMS.filter(
-      (farm) => farm.protocol === 'v2' && farm.bCakeWrapperAddress && farm.chainId === chainId,
-    ).forEach((farm) => {
-      pairTokens.push(farm.token0.sortsBefore(farm.token1) ? [farm.token0, farm.token1] : [farm.token1, farm.token0])
-    })
+    fetchFarmConfig
+      .filter((farm) => farm.protocol === 'v2' && farm.bCakeWrapperAddress && farm.chainId === chainId)
+      .forEach((farm) => {
+        pairTokens.push(farm.token0.sortsBefore(farm.token1) ? [farm.token0, farm.token1] : [farm.token1, farm.token0])
+      })
     // from pinned pairs
     if (PINNED_PAIRS[chainId]) {
       PINNED_PAIRS[chainId].forEach((tokens: ITokenPair) => {
@@ -113,11 +115,10 @@ export const getTrackedV2LpTokens = memoize(
     `${chainId}:${Object.keys(presetTokens).length}:${Object.values(userSavedPairs).length}`,
 )
 
-const V2_UNIVERSAL_FARMS = UNIVERSAL_FARMS.filter((farm) => farm.protocol === Protocol.V2)
-const STABLE_UNIVERSAL_FARMS = UNIVERSAL_FARMS.filter((farm) => farm.protocol === Protocol.STABLE)
+export const getBCakeWrapperAddress = async (lpAddress: Address, chainId: number) => {
+  const fetchUniversalFarmsMap = await fetchAllUniversalFarmsMap()
 
-export const getBCakeWrapperAddress = (lpAddress: Address, chainId: number) => {
-  const f = UNIVERSAL_FARMS_MAP[`${chainId}:${lpAddress}`] as V2PoolInfo | StablePoolInfo | undefined
+  const f = fetchUniversalFarmsMap[`${chainId}:${lpAddress}`] as V2PoolInfo | StablePoolInfo | undefined
 
   return f?.bCakeWrapperAddress ?? '0x'
 }
@@ -207,6 +208,9 @@ export const getAccountV2LpDetails = async (
     const { result } = _farming.shift() ?? { result: undefined }
     return [...acc, result]
   }, [] as Array<readonly [bigint, bigint, bigint, bigint, bigint] | undefined>)
+
+  const farmConfig = await fetchAllUniversalFarms()
+  const V2_UNIVERSAL_FARMS = farmConfig.filter((farm) => farm.protocol === Protocol.V2)
 
   return balances
     .map((result, index) => {
@@ -359,6 +363,8 @@ export const getStablePairDetails = async (
       .then((res) => res.map((item) => item.result ?? [0n, 0n])),
   ])
 
+  const farmConfig = await fetchAllUniversalFarms()
+
   const result = validStablePairs.map((pair, index) => {
     const nativeBalance = CurrencyAmount.fromRawAmount(pair.liquidityToken, balances[index])
     const farmingInfo = farming[index]
@@ -381,6 +387,7 @@ export const getStablePairDetails = async (
     const farmingDeposited0 = CurrencyAmount.fromRawAmount(token1.wrapped, farmingToken0Amount.toString())
     const farmingDeposited1 = CurrencyAmount.fromRawAmount(token1.wrapped, farmingToken1Amount.toString())
 
+    const STABLE_UNIVERSAL_FARMS = farmConfig.filter((farm) => farm.protocol === Protocol.STABLE)
     const isStaked = !!STABLE_UNIVERSAL_FARMS.find((farm) => farm.lpAddress === pair.lpAddress)
 
     return {
