@@ -42,7 +42,6 @@ export type CakeApr = Record<
 >
 export const cakeAprAtom = atom<CakeApr>({})
 
-export const cakeAprGetterAtom = atom
 export const cakeAprSetterAtom = atom(null, (get, set, newApr: CakeApr) => {
   const cakeApr = get(cakeAprAtom)
   set(cakeAprAtom, { ...cakeApr, ...newApr })
