@@ -368,7 +368,7 @@ const CurrencyInputPanelSimplify = memo(function CurrencyInputPanel({
       }
       bottom={
         inputLoading || (showUSDPrice && Number.isFinite(amountInDollar)) ? (
-          <Box position="absolute" bottom="10px" right="0px">
+          <Box position="absolute" bottom="12px" right="0px">
             <Flex justifyContent="flex-end" mr="1rem">
               <Flex maxWidth="200px">
                 {inputLoading ? (
