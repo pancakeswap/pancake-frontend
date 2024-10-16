@@ -15,7 +15,7 @@ import {
 } from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { CurrencyLogo, DoubleCurrencyLogo, SwapUIV2 } from '@pancakeswap/widgets-internal'
-import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { styled } from 'styled-components'
 
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
@@ -29,6 +29,7 @@ import { useAccount } from 'wagmi'
 import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
 import {
   MAX_FONT_SIZE,
+  MAX_INPUT_FONT_SIZE,
   MAX_LOGO_SIZE,
   MIN_FONT_SIZE,
   MIN_LOGO_SIZE,
@@ -46,11 +47,14 @@ const CurrencySelectButton = styled(Button).attrs({ variant: 'text', scale: 'sm'
 `
 const SymbolText = styled(Text)`
   font-size: ${MAX_FONT_SIZE}px;
+
+  will-change: font-size;
+  transition: font-size 0.1s linear;
 `
 
 const handleFontSizeChange = (fontSize: string, operation: number) => {
   const currentFontSize = parseInt(fontSize.replace('px', ''), 10)
-  if ((currentFontSize > MIN_FONT_SIZE && operation < 0) || (currentFontSize < MAX_FONT_SIZE && operation > 0))
+  if ((currentFontSize > MIN_FONT_SIZE && operation < 0) || (currentFontSize < MAX_INPUT_FONT_SIZE && operation > 0))
     return `${currentFontSize + operation}px`
   return fontSize
 }
@@ -59,7 +63,7 @@ const handleFontSizeChangeNumerical = (fontSize: string, operation: number) => {
   const currentFontSize = parseInt(fontSize.replace('px', ''), 10)
   if ((currentFontSize > MIN_FONT_SIZE && operation < 0) || (currentFontSize < MAX_FONT_SIZE && operation > 0))
     return currentFontSize + operation
-  return parseInt(fontSize.replace('px', ''), 10)
+  return Math.min(parseInt(fontSize.replace('px', ''), 10), MAX_FONT_SIZE)
 }
 
 const useSizeAdaption = (value: string, currencySymbol?: string, otherCurrencySymbol?: string) => {
@@ -67,6 +71,13 @@ const useSizeAdaption = (value: string, currencySymbol?: string, otherCurrencySy
   const tokenImageRef = useRef<HTMLImageElement>(null)
   const symbolRef = useRef<HTMLDivElement>(null)
   const wrapperRef = useRef<HTMLDivElement>(null)
+
+  // TESTING
+  // if (inputRef.current && symbolRef.current && wrapperRef.current) {
+  //   inputRef.current.style.border = '2px solid red'
+  //   symbolRef.current.style.border = '2px solid green'
+  //   wrapperRef.current.style.border = '2px solid blue'
+  // }
 
   // Linked font sizes are for Symbol and Logo only and not Input
   const { symbolFontSize, logoFontSize, setFontSizesBySymbol } = useFontSize(
@@ -88,7 +99,7 @@ const useSizeAdaption = (value: string, currencySymbol?: string, otherCurrencySy
     return currencySymbol
   }, [currencySymbol, isMobile])
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!inputRef.current || !symbolRef.current || !wrapperRef.current || !tokenImageRef.current) return
 
     const inputElement = inputRef.current
@@ -100,43 +111,49 @@ const useSizeAdaption = (value: string, currencySymbol?: string, otherCurrencySy
     const inputWidth = inputElement.scrollWidth
     const logoWidth = logoElement.offsetWidth
 
+    const targetWidth = wrapperWidth - symbolWidth - inputWidth
+
     console.log('Values', {
       currencySymbol,
-      wrapperWidth,
-      symbolWidth,
-      inputWidth,
-      logoWidth,
-      SIZE_ADAPTION_BOUNDARY_MIN_PX_,
-      SIZE_ADAPTION_BOUNDARY_MAX_PX,
-      firstCondition: wrapperWidth - symbolWidth - inputWidth < SIZE_ADAPTION_BOUNDARY_MIN_PX_,
-      secondCondition: wrapperWidth - symbolWidth - inputWidth > SIZE_ADAPTION_BOUNDARY_MAX_PX,
+      targetWidth,
+      isWithinBounds: targetWidth > SIZE_ADAPTION_BOUNDARY_MIN_PX_ && targetWidth < SIZE_ADAPTION_BOUNDARY_MAX_PX,
+      isBelowBounds: targetWidth < SIZE_ADAPTION_BOUNDARY_MIN_PX_,
+      isAboveBounds: targetWidth > SIZE_ADAPTION_BOUNDARY_MAX_PX,
     })
 
-    if (wrapperWidth - symbolWidth - inputWidth < SIZE_ADAPTION_BOUNDARY_MIN_PX_) {
-      inputElement.style.fontSize = handleFontSizeChange(inputElement.style.fontSize, -2)
+    // Is below lower bound
+    if (targetWidth < SIZE_ADAPTION_BOUNDARY_MIN_PX_) {
+      const newInputFontSize = handleFontSizeChange(inputElement.style.fontSize, -2)
+      inputElement.style.fontSize = newInputFontSize
 
       const logoSize = Math.max(logoWidth - 2, MIN_LOGO_SIZE)
 
-      setFontSizesBySymbol(
-        currencySymbol ?? '',
-        handleFontSizeChangeNumerical(inputElement.style.fontSize, -2),
-        logoSize,
-      )
-    } else if (wrapperWidth - symbolWidth - inputWidth > SIZE_ADAPTION_BOUNDARY_MAX_PX) {
-      inputElement.style.fontSize = handleFontSizeChange(inputElement.style.fontSize, 2)
+      setFontSizesBySymbol(currencySymbol ?? '', handleFontSizeChangeNumerical(newInputFontSize, -2), logoSize)
+      // Is above upper bound
+    } else if (targetWidth > SIZE_ADAPTION_BOUNDARY_MAX_PX) {
+      const newInputFontSize = handleFontSizeChange(inputElement.style.fontSize, 2)
+
+      inputElement.style.fontSize = newInputFontSize
 
       const logoSize = Math.min(logoWidth + 2, MAX_LOGO_SIZE)
+      setFontSizesBySymbol(currencySymbol ?? '', handleFontSizeChangeNumerical(newInputFontSize, 2), logoSize)
+    } else if (
+      // Within lower and upper Bounds
+      targetWidth > SIZE_ADAPTION_BOUNDARY_MIN_PX_ &&
+      targetWidth < SIZE_ADAPTION_BOUNDARY_MAX_PX
+    ) {
       setFontSizesBySymbol(
         currencySymbol ?? '',
         handleFontSizeChangeNumerical(inputElement.style.fontSize, 2),
-        logoSize,
+        MAX_LOGO_SIZE,
       )
+      inputElement.style.fontSize = `${MAX_INPUT_FONT_SIZE}px`
     }
 
     if (value === '') {
-      inputElement.style.fontSize = '24px'
+      inputElement.style.fontSize = `${MAX_INPUT_FONT_SIZE}px`
 
-      setFontSizesBySymbol(currencySymbol ?? '', MAX_FONT_SIZE, 40)
+      setFontSizesBySymbol(currencySymbol ?? '', MAX_FONT_SIZE, MAX_LOGO_SIZE)
     }
   }, [value, currencySymbol, setFontSizesBySymbol])
 
@@ -321,13 +338,17 @@ const CurrencyInputPanelSimplify = memo(function CurrencyInputPanel({
                   <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={16} margin />
                 ) : currency ? (
                   id === 'onramp-input' ? (
-                    <FiatLogo currency={currency} size="40px" style={{ marginRight: '8px' }} />
+                    <FiatLogo currency={currency} size={`${MAX_LOGO_SIZE}px`} style={{ marginRight: '8px' }} />
                   ) : (
                     <CurrencyLogo
                       imageRef={tokenImageRef}
                       currency={currency}
-                      size="40px"
-                      style={{ marginRight: '8px' }}
+                      size={`${MAX_LOGO_SIZE}px`}
+                      style={{
+                        marginRight: '8px',
+                        willChange: 'width, height',
+                        transition: 'width, height 0.1s linear',
+                      }}
                     />
                   )
                 ) : currencyLoading ? (
@@ -354,7 +375,7 @@ const CurrencyInputPanelSimplify = memo(function CurrencyInputPanel({
         </>
       }
       bottom={
-        <Box position="absolute" bottom="5px" right="0px">
+        <Box position="absolute" bottom="10px" right="0px">
           {!!showUSDPrice && (
             <Flex justifyContent="flex-end" mr="1rem">
               <Flex maxWidth="200px">

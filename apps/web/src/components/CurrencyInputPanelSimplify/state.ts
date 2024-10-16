@@ -3,9 +3,10 @@ import { useCallback } from 'react'
 
 export const SIZE_ADAPTION_BOUNDARY_MIN_PX_ = 96
 export const SIZE_ADAPTION_BOUNDARY_MAX_PX = 116
-export const MAX_FONT_SIZE = 24
+export const MAX_FONT_SIZE = 20
+export const MAX_INPUT_FONT_SIZE = 24
 export const MIN_FONT_SIZE = 16
-export const MAX_LOGO_SIZE = 40
+export const MAX_LOGO_SIZE = 32
 export const MIN_LOGO_SIZE = 24
 
 export const fontSizeBySymbolAtom = atom<Record<string, { symbol?: number; logo?: number }>>({})

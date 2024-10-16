@@ -61,7 +61,7 @@ export function CurrencyInputPanelSimplify({
             fontSize="12px"
             lineHeight="16px"
             px="16px"
-            py="12px"
+            py="0px"
             className="targetInput"
             position="relative"
             style={{ height: 80 }}
@@ -79,6 +79,7 @@ export function CurrencyInputPanelSimplify({
                 onUserInput(val);
               }}
               fontSize={inputFontSize}
+              padding={Number(value) && bottom ? "0 0 12px" : undefined}
             />
             {inputLeft}
           </AtomBox>
