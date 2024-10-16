@@ -6,7 +6,7 @@ import { useAccount } from 'wagmi'
 export function useUserAcknowledgement(id: string) {
   const { address } = useAccount()
   const atom = useMemo(
-    () => atomWithStorage(`pcs_user_ack_${id}_${address}`, false, undefined, { unstable_getOnInit: true }),
+    () => atomWithStorage(`pcs_user_ack_${id}_${address}`, false, undefined, { getOnInit: true }),
     [id, address],
   )
   const [userACK, setUserACK] = useAtom(atom)
