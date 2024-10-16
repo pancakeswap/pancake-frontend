@@ -88,10 +88,8 @@ export const useV3PoolsLength = (chainIds: number[]) => {
     (results: UseQueryResult<bigint, Error>[]) => {
       return {
         data: results.reduce((acc, result, idx) => {
-          return {
-            ...acc,
-            [chainIds[idx]]: Number(result.data ?? 0),
-          }
+          Object.assign(acc, { [chainIds[idx]]: Number(result.data ?? 0) })
+          return acc
         }, {} as { [key: `${number}`]: number }),
         pending: results.some((result) => result.isPending),
       }
@@ -130,10 +128,7 @@ export const useV2PoolsLength = (chainIds: number[]) => {
     (results: UseQueryResult<bigint, Error>[]) => {
       return {
         data: results.reduce((acc, result, idx) => {
-          return {
-            ...acc,
-            [chainIds[idx]]: Number(result.data ?? 0),
-          }
+          return Object.assign(acc, { [chainIds[idx]]: Number(result.data ?? 0) })
         }, {} as { [key: `${number}`]: number }),
         pending: results.some((result) => result.isPending),
       }
@@ -172,10 +167,9 @@ export const useMultiChainV3PoolsStatus = (pools: UniversalFarmConfig[]) => {
     (results: UseQueryResult<UnwrapPromise<ReturnType<typeof fetchV3PoolsStatusByChainId>>, Error>[]) => {
       return {
         data: results.reduce((acc, result, idx) => {
-          return {
-            ...acc,
+          return Object.assign(acc, {
             [poolsEntries[idx][0]]: keyBy(result.data ?? [], ([, lpAddress]) => lpAddress),
-          }
+          })
         }, {} as IPoolsStatusType),
         pending: results.some((result) => result.isPending),
       }
@@ -259,12 +253,11 @@ export const useMultiChainPoolsTimeFrame = (pools: UniversalFarmConfig[]) => {
       return {
         data: results.reduce((acc, result, idx) => {
           let dataIdx = 0
-          return {
-            ...acc,
+          return Object.assign(acc, {
             [poolsEntries[idx][0]]: keyBy(result.data ?? [], () => {
               return poolsEntries[idx][1][dataIdx++].lpAddress
             }),
-          }
+          })
         }, {} as IPoolsTimeFrameType),
         pending: results.some((result) => result.isPending),
       }
