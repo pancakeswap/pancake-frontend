@@ -3,7 +3,6 @@ import { Box, Modal, useToast } from '@pancakeswap/uikit'
 import snapshot from '@snapshot-labs/snapshot.js'
 import useTheme from 'hooks/useTheme'
 import { useState } from 'react'
-import { ProposalTypeName } from 'state/types'
 import { PANCAKE_SPACE } from 'views/Voting/config'
 import { VECAKE_VOTING_POWER_BLOCK } from 'views/Voting/helpers'
 import { useAccount, useWalletClient } from 'wagmi'
@@ -20,6 +19,7 @@ const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
   proposalId,
   vote,
   block,
+  voteType,
   onDismiss,
 }) => {
   const [view, setView] = useState<ConfirmVoteView>(ConfirmVoteView.MAIN)
@@ -82,8 +82,12 @@ const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
       await client.vote(web3 as any, account, {
         space: PANCAKE_SPACE,
         choice: vote.value,
+        // ProposalTypeName.WEIGHTED
+        // choice: {
+        //   1: 1,
+        // },
         reason: '',
-        type: ProposalTypeName.SINGLE_CHOICE, // TODO
+        type: voteType,
         proposal: proposalId,
         app: 'snapshot',
       })

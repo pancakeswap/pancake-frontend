@@ -1,4 +1,5 @@
 import { InjectedModalProps } from '@pancakeswap/uikit'
+import { ProposalTypeName } from 'state/types'
 
 export enum ConfirmVoteView {
   MAIN = 'main',
@@ -13,4 +14,5 @@ export interface CastVoteModalProps extends InjectedModalProps {
     value: number
   }
   block?: number
+  voteType: ProposalTypeName
 }
