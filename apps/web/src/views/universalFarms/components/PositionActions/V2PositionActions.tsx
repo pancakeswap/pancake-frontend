@@ -8,7 +8,7 @@ import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useCakePrice } from 'hooks/useCakePrice'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useTokenAllowanceByChainId } from 'hooks/useTokenAllowance'
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { usePoolApr } from 'state/farmsV4/hooks'
 import { getBCakeWrapperAddress } from 'state/farmsV4/state/accountPositions/fetcher'
 import { useAccountV2PendingCakeReward } from 'state/farmsV4/state/accountPositions/hooks/useAccountV2PendingCakeReward'
@@ -75,7 +75,17 @@ const useDepositModal = (props: V2PositionActionsProps) => {
     return sumApr(lpApr, cakeApr.value, merklApr)
   }, [lpApr, cakeApr.value, merklApr])
 
-  const bCakeAddress = getBCakeWrapperAddress(lpAddress, chainId)
+  const [bCakeAddress, setBCakeAddress] = useState<Address | undefined>()
+
+  useEffect(() => {
+    const fetchBCakeAddress = async () => {
+      const address = await getBCakeWrapperAddress(lpAddress, chainId)
+      setBCakeAddress(address)
+    }
+
+    fetchBCakeAddress()
+  }, [lpAddress, chainId])
+
   const { allowance } = useTokenAllowanceByChainId({
     chainId,
     token: data.pair.liquidityToken,
