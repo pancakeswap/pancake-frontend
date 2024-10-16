@@ -14,9 +14,10 @@ const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`); // match escaped "." charac
 
 export type NumericalInputProps = {
   value: string | number | undefined;
-  onUserInput: (input: string) => void;
   fontSize?: string;
   inputRef?: React.RefObject<HTMLInputElement>;
+  padding?: string;
+  onUserInput: (input: string) => void;
 } & SwapCSS.InputVariants &
   Omit<React.HTMLProps<HTMLInputElement>, "ref" | "onChange" | "as">;
 
@@ -30,6 +31,7 @@ export const NumericalInput = memo(function InnerInput({
   loading,
   fontSize,
   inputRef,
+  padding,
   ...rest
 }: NumericalInputProps) {
   const enforcer = (nextUserInput: string) => {
@@ -68,7 +70,7 @@ export const NumericalInput = memo(function InnerInput({
       minLength={1}
       maxLength={79}
       spellCheck="false"
-      style={{ fontWeight: 600, fontSize: fontSize ?? "24px" }}
+      style={{ fontWeight: 600, fontSize: fontSize ?? "24px", padding }}
       ref={inputRef}
     />
   );
