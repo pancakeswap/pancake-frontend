@@ -2,10 +2,17 @@ import { useQuery } from '@tanstack/react-query'
 import { SLOW_INTERVAL } from 'config/constants'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useCallback } from 'react'
+import sha256 from 'crypto-js/sha256'
+import memoize from 'lodash/memoize'
 import { extendPoolsAtom } from '../extendPools/atom'
 import { ChainIdAddressKey, PoolInfo } from '../type'
 import { CakeApr, cakeAprSetterAtom, emptyCakeAprPoolsAtom, merklAprAtom, poolAprAtom } from './atom'
 import { getAllNetworkMerklApr, getCakeApr, getLpApr } from './fetcher'
+
+const generatePoolKey = memoize((pools) => {
+  const poolData = pools.map((pool) => `${pool.chainId}:${pool.lpAddress}`).join(',')
+  return sha256(poolData).toString()
+})
 
 export const usePoolApr = (
   key: ChainIdAddressKey | null,
@@ -100,7 +107,7 @@ export const usePoolAprUpdater = () => {
   })
 
   useQuery({
-    queryKey: ['apr', 'cake', 'fetchCakeApr', pools],
+    queryKey: ['apr', 'cake', 'fetchCakeApr', generatePoolKey(pools)],
     queryFn: () =>
       Promise.all(pools.map((pool) => getCakeApr(pool))).then((aprList) => {
         updateCakeApr(aprList.reduce((acc, apr) => Object.assign(acc, apr), {}))
