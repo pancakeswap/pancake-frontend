@@ -5,7 +5,7 @@ import { getSwapOutput } from '@pancakeswap/stable-swap-sdk'
 import memoize from 'lodash/memoize.js'
 import { Address } from 'viem'
 
-import { Pool, PoolType, StablePool, V2Pool, V3Pool } from '../types'
+import { Pool, PoolType, StablePool, V2Pool, V3Pool, V4BinPool, V4ClPool } from '../types'
 
 export function isV2Pool(pool: Pool): pool is V2Pool {
   return pool.type === PoolType.V2
@@ -17,6 +17,14 @@ export function isV3Pool(pool: Pool): pool is V3Pool {
 
 export function isStablePool(pool: Pool): pool is StablePool {
   return pool.type === PoolType.STABLE && pool.balances.length >= 2
+}
+
+export function isV4BinPool(pool: Pool): pool is V4BinPool {
+  return pool.type === PoolType.V4BIN
+}
+
+export function isV4ClPool(pool: Pool): pool is V4ClPool {
+  return pool.type === PoolType.V4CL
 }
 
 export function involvesCurrency(pool: Pool, currency: Currency) {
@@ -84,9 +92,11 @@ export const getPoolAddress = memoize(
     }
     const [token0, token1] = isV2Pool(pool)
       ? [pool.reserve0.currency.wrapped, pool.reserve1.currency.wrapped]
-      : [pool.token0.wrapped, pool.token1.wrapped]
+      : isV3Pool(pool)
+      ? [pool.token0.wrapped, pool.token1.wrapped]
+      : [pool.currency0, pool.currency1]
     const fee = isV3Pool(pool) ? pool.fee : 'V2_FEE'
-    return `${pool.type}_${token0.chainId}_${token0.address}_${token1.address}_${fee}`
+    return `${pool.type}_${token0.chainId}_${token0.isNative}_${token0.wrapped.address}_${token1.isNative}_${token1.wrapped.address}_${fee}`
   },
 )
 
