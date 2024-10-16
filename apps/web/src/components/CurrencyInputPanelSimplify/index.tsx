@@ -346,8 +346,8 @@ const CurrencyInputPanelSimplify = memo(function CurrencyInputPanel({
                       size={`${MAX_LOGO_SIZE}px`}
                       style={{
                         marginRight: '8px',
-                        willChange: 'width, height',
-                        transition: 'width, height 0.1s linear',
+                        willChange: 'width',
+                        transition: 'width 0.1s linear',
                       }}
                     />
                   )
