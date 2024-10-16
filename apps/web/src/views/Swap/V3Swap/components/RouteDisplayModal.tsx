@@ -97,7 +97,12 @@ export const RouteDisplay = memo(function RouteDisplay({ route }: RouteDisplayPr
           const pool = pools[index]
           const isV3Pool = SmartRouter.isV3Pool(pool)
           const isV2Pool = SmartRouter.isV2Pool(pool)
-          const key = isV2Pool ? `v2_${pool.reserve0.currency.symbol}_${pool.reserve1.currency.symbol}` : pool.address
+          const key = isV2Pool
+            ? `v2_${pool.reserve0.currency.symbol}_${pool.reserve1.currency.symbol}`
+            : SmartRouter.isStablePool(pool)
+            ? pool.address
+            : undefined
+          if (!key) return null
           const text = isV2Pool
             ? 'V2'
             : isV3Pool
