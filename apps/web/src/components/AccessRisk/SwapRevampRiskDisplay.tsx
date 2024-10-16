@@ -103,7 +103,7 @@ const useRiskCheckData = (token?: ERC20Token) => {
       return 'failure'
     }
     if (data.riskLevel >= TOKEN_RISK.LOW && data.riskLevel <= TOKEN_RISK.MEDIUM) {
-      return 'warning'
+      return 'yellow'
     }
     if (data.riskLevel >= TOKEN_RISK.VERY_LOW && data.riskLevel <= TOKEN_RISK.SOME_RISK) {
       return 'primary'
@@ -119,7 +119,7 @@ export const RiskInputPanelDisplay: React.FC<RiskInputPanelDisplayProps> = ({ to
     return (
       <FlexGap justifyContent="center" alignContent="center">
         <RiskAlertIcon width={16} color={tagColor} />
-        <Text fontSize="12px" color={tagColor}>
+        <Text ml="2px" fontSize="12px" color={tagColor}>
           {TOKEN_RISK_T[riskLevel]}
         </Text>
       </FlexGap>
