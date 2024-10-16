@@ -33,9 +33,10 @@ export const fetchExplorerPoolsList = async (query: Required<ExtendPoolsQuery>, 
   }
 
   const { rows, endCursor, startCursor, hasNextPage, hasPrevPage } = resp.data
+  const pools = await parseFarmPools(rows)
 
   return {
-    pools: parseFarmPools(rows),
+    pools,
     endCursor,
     startCursor,
     hasNextPage,
