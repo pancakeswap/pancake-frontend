@@ -151,7 +151,7 @@ export function FormMain({ inputAmount, outputAmount, tradeLoading, isUserInsuff
         currency={outputCurrency}
         onUserInput={handleTypeOutput}
         onCurrencySelect={handleOutputSelect}
-        otherCurrency={outputCurrency}
+        otherCurrency={inputCurrency}
         commonBasesType={CommonBasesType.SWAP_LIMITORDER}
         title={
           <Text color="textSubtle" fontSize={12} bold>
