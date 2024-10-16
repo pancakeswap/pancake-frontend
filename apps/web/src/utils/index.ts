@@ -1,11 +1,12 @@
 import { ChainId } from '@pancakeswap/chains'
 import { Currency } from '@pancakeswap/sdk'
 import { TokenAddressMap } from '@pancakeswap/token-lists'
+import memoize from 'lodash/memoize'
+import { multiChainScanName } from 'state/info/constant'
 import { Address } from 'viem'
 import { bsc } from 'wagmi/chains'
-import memoize from 'lodash/memoize'
-import { chains } from './wagmi'
 import { checksumAddress } from './checksumAddress'
+import { chains } from './wagmi'
 
 export const isAddressEqual = (a?: any, b?: any) => {
   if (!a || !b) return false
@@ -60,7 +61,7 @@ export function getBlockExploreName(chainIdOverride?: number) {
   const chainId = chainIdOverride || ChainId.BSC
   const chain = chains.find((c) => c.id === chainId)
 
-  return chain?.blockExplorers?.default.name || bsc.blockExplorers.default.name
+  return multiChainScanName[chain?.id || -1] || chain?.blockExplorers?.default.name || bsc.blockExplorers.default.name
 }
 
 export function getBscScanLinkForNft(collectionAddress: string | undefined, tokenId?: string): string {

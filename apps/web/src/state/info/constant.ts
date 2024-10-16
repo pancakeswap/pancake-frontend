@@ -91,6 +91,14 @@ export const multiChainScan: Record<MultiChainName, string> = {
   OPBNB: opBNB.blockExplorers.default.name,
 }
 
+/** Override Explorer Names if default for chain is "Etherscan" */
+export const multiChainScanName: Partial<Record<ChainId, string>> = {
+  [ChainId.ZKSYNC]: 'ZKSync Explorer',
+  [ChainId.ZKSYNC_TESTNET]: 'ZKSync Explorer',
+  [ChainId.LINEA]: 'LineaScan',
+  [ChainId.LINEA_TESTNET]: 'LineaScan',
+}
+
 export const multiChainTokenBlackList: Record<MultiChainName, string[]> = mapValues(
   {
     BSC: TOKEN_BLACKLIST,
