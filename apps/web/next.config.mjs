@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import BundleAnalyzer from '@next/bundle-analyzer'
 import { withWebSecurityHeaders } from '@pancakeswap/next-config/withWebSecurityHeaders'
-import smartRouterPkgs from '@pancakeswap/smart-router/package.json' with { type: 'json' }
+import smartRouterPkgs from '@pancakeswap/smart-router/package.json' assert { type: 'json' }
 import { withSentryConfig } from '@sentry/nextjs'
 import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin'
 import vercelToolbarPlugin from '@vercel/toolbar/plugins/next'
@@ -225,14 +225,22 @@ const config = {
         destination: 'https://tokens.pancakeswap.finance/images/:address',
         permanent: false,
       },
-     process.env.VERCEL_ENV === 'production' ? { // TODO: remove after revamp is live
-        source: '/revamp-swap',
-        destination:  '/swap' ,
-        permanent: false,
-      }:{
-        source: '/swap-revamp',
-        destination:  '/revamp-swap' ,
-        permanent: false,
+      process.env.VERCEL_ENV === 'production'
+        ? {
+            // TODO: remove after revamp is live
+            source: '/revamp-swap',
+            destination: '/swap',
+            permanent: false,
+          }
+        : {
+            source: '/swap-revamp',
+            destination: '/revamp-swap',
+            permanent: false,
+          },
+      {
+        source: '/swap',
+        destination: '/',
+        permanent: true,
       },
     ]
   },
