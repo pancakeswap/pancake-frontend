@@ -46,12 +46,14 @@ export default function FeeSelector({
 
   useEffect(() => {
     const fetchFarmV3Config = async () => {
-      const farms = await fetchUniversalFarms(chainId, Protocol.V3)
-      setFarmV3Config(defineFarmV3ConfigsFromUniversalFarm(farms as UniversalFarmConfigV3[]))
+      if (currencyA?.chainId) {
+        const farms = await fetchUniversalFarms(currencyA?.chainId, Protocol.V3)
+        setFarmV3Config(defineFarmV3ConfigsFromUniversalFarm(farms as UniversalFarmConfigV3[]))
+      }
     }
 
     fetchFarmV3Config()
-  }, [])
+  }, [currencyA])
 
   const farmV3 = useMemo(() => {
     if (currencyA && currencyB) {
