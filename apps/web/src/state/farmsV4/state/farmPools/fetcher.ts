@@ -14,7 +14,6 @@ import { publicClient } from 'utils/viem'
 import { isAddressEqual, type Address } from 'viem'
 import { PoolInfo } from '../type'
 import { parseFarmPools } from '../utils'
-import schema from './data.json'
 
 const DEFAULT_PROTOCOLS: Protocol[] = [Protocol.V3, Protocol.V2, Protocol.STABLE]
 const DEFAULT_CHAINS: FarmV4SupportedChainId[] = Object.values(supportedChainIdV4)
@@ -32,13 +31,21 @@ export const fetchExplorerFarmPools = async (
   let chains = Array.isArray(args?.chainId) ? args.chainId ?? [] : [args?.chainId]
   chains = chains.filter(Boolean)
 
-  const resp = await new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(schema)
-    }, 5000)
+  const resp = await explorerApiClient.GET('/cached/pools/farming', {
+    signal,
+    params: {
+      query: {
+        protocols: args.protocols ?? DEFAULT_PROTOCOLS,
+        chains: chains.reduce((acc, cur) => (cur ? [...acc, getChainNameInKebabCase(cur)] : acc), [] as any[]),
+      },
+    },
   })
 
-  return parseFarmPools(resp as any, { isFarming: true })
+  if (!resp.data) {
+    return []
+  }
+
+  return parseFarmPools(resp.data, { isFarming: true })
 }
 
 export const fetchFarmPools = async (

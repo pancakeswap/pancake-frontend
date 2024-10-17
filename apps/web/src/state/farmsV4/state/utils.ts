@@ -5,7 +5,7 @@ import { getTokenByAddress } from '@pancakeswap/tokens'
 import BN from 'bignumber.js'
 import { paths } from 'state/info/api/schema'
 import { safeGetAddress } from 'utils'
-import { Address, isAddressEqual } from 'viem'
+import { Address } from 'viem'
 import { PoolInfo } from './type'
 
 export const parseFarmPools = (
@@ -21,7 +21,7 @@ export const parseFarmPools = (
     let feeTier = Number(pool.feeTier ?? 2500)
     if (pool.protocol === 'stable') {
       const stableConfig = LegacyRouter.stableSwapPairsByChainId[pool.chainId]?.find((pair) => {
-        return isAddressEqual(pair.stableSwapAddress, pool.id as Address)
+        return safeGetAddress(pair.stableSwapAddress) === safeGetAddress(pool.id as Address)
       })
       if (stableConfig) {
         stableSwapAddress = safeGetAddress(stableConfig.stableSwapAddress)
@@ -30,7 +30,7 @@ export const parseFarmPools = (
       }
     }
     const localFarm = UNIVERSAL_FARMS.find(
-      (farm) => isAddressEqual(farm.lpAddress, lpAddress) && farm.chainId === pool.chainId,
+      (farm) => safeGetAddress(farm.lpAddress) === safeGetAddress(lpAddress) && farm.chainId === pool.chainId,
     )
     let pid: number | undefined
     if (localFarm) {
