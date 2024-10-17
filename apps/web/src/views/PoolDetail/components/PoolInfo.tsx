@@ -29,7 +29,7 @@ export const PoolInfo = () => {
   const poolInfo = usePoolInfoByQuery()
   const chainId = useChainIdByQuery()
   const networkName = useChainNameByQuery()
-
+  console.log('hi', poolInfo)
   const [currency0, currency1] = useMemo(() => {
     if (!poolInfo) return [undefined, undefined]
     const { token0, token1 } = poolInfo
