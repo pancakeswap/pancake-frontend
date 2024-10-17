@@ -25,15 +25,15 @@ export const useFarmPools = () => {
   const [loaded, setLoaded] = useState(false)
   const [pools, setPools] = useAtom(farmPoolsAtom)
 
-  useEffect(() => {
-    if (!loaded) {
-      fetchFarmPools()
-        .then(setPools)
-        .finally(() => setLoaded(true))
-    }
-    // only fetch once when mount
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  // useEffect(() => {
+  //   if (!loaded) {
+  //     fetchFarmPools()
+  //       .then(setPools)
+  //       .finally(() => setLoaded(true))
+  //   }
+  //   // only fetch once when mount
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [])
 
   const { data: poolsStatus, pending: isPoolStatusPending } = useMultiChainV3PoolsStatus(UNIVERSAL_FARMS)
   const { data: poolsTimeFrame, pending: isPoolsTimeFramePending } = useMultiChainPoolsTimeFrame(UNIVERSAL_FARMS)
