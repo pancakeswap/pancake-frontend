@@ -11,7 +11,7 @@ import {
   Toggle,
   TradeIcon,
 } from '@pancakeswap/uikit'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { styled } from 'styled-components'
 
 interface FarmTypesFilterProps {
@@ -64,7 +64,18 @@ export const FarmTypesFilter: React.FC<FarmTypesFilterProps> = ({
   const [isOpen, setIsOpen] = useState(false)
   const wrapperRef = useRef<HTMLDivElement>(null)
   const menuRef = useRef<HTMLDivElement>(null)
-  const handleMenuClick = () => setIsOpen(!isOpen)
+  const handleMenuClick = useCallback(() => {
+    setIsOpen((prevIsOpen) => !prevIsOpen)
+  }, [])
+
+  const handleToggle = useCallback(
+    (currentValue, setter) => {
+      const totalFarmsEnableCount = farmTypesEnableCount + (!currentValue ? 1 : -1)
+      handleSetFarmTypesEnableCount(totalFarmsEnableCount)
+      setter(!currentValue)
+    },
+    [farmTypesEnableCount, handleSetFarmTypesEnableCount],
+  )
 
   useEffect(() => {
     const handleClickOutside = ({ target }: Event) => {
@@ -86,19 +97,19 @@ export const FarmTypesFilter: React.FC<FarmTypesFilterProps> = ({
   }, [setIsOpen, wrapperRef, menuRef])
 
   return (
-    <>
-      <Flex alignItems="center" mr="4px" mb="4px">
-        <Box ref={wrapperRef}>
-          <InlineMenu
-            component={
-              <Button onClick={handleMenuClick} variant="light" scale="sm">
-                {t('Farm Types')}
-                {farmTypesEnableCount > 0 && `(${farmTypesEnableCount})`}
-              </Button>
-            }
-            isOpen={isOpen}
-            options={{ placement: 'top' }}
-          >
+    <Flex alignItems="center" mr="4px" mb="4px">
+      <Box ref={wrapperRef}>
+        <InlineMenu
+          component={
+            <Button onClick={handleMenuClick} variant="light" scale="sm">
+              {t('Farm Types')}
+              {farmTypesEnableCount > 0 && `(${farmTypesEnableCount})`}
+            </Button>
+          }
+          isOpen={isOpen}
+          options={{ placement: 'top' }}
+        >
+          {({ update }) => (
             <Box width={['100%', '345px']} ref={menuRef}>
               <FarmTypesWrapper alignItems="center" p="16px">
                 <Text fontSize={20} bold color="text" display="inline-block" ml="8px">
@@ -116,10 +127,8 @@ export const FarmTypesFilter: React.FC<FarmTypesFilterProps> = ({
                       id="v3-only-farms"
                       checked={v3FarmOnly}
                       onChange={() => {
-                        const totalFarmsEnableCount = farmTypesEnableCount + (!v3FarmOnly ? 1 : -1)
-                        handleSetFarmTypesEnableCount(totalFarmsEnableCount)
-
-                        handleSetV3FarmOnly?.(!v3FarmOnly)
+                        handleToggle(v3FarmOnly, handleSetV3FarmOnly)
+                        update?.()
                       }}
                       scale="sm"
                     />
@@ -135,10 +144,8 @@ export const FarmTypesFilter: React.FC<FarmTypesFilterProps> = ({
                       id="v2-only-farms"
                       checked={v2FarmOnly}
                       onChange={() => {
-                        const totalFarmsEnableCount = farmTypesEnableCount + (!v2FarmOnly ? 1 : -1)
-                        handleSetFarmTypesEnableCount(totalFarmsEnableCount)
-
-                        handleSetV2FarmOnly?.(!v2FarmOnly)
+                        handleToggle(v2FarmOnly, handleSetV2FarmOnly)
+                        update?.()
                       }}
                       scale="sm"
                     />
@@ -154,9 +161,8 @@ export const FarmTypesFilter: React.FC<FarmTypesFilterProps> = ({
                       id="boosted-only-farms"
                       checked={boostedOnly}
                       onChange={() => {
-                        const totalFarmsEnableCount = farmTypesEnableCount + (!boostedOnly ? 1 : -1)
-                        handleSetFarmTypesEnableCount(totalFarmsEnableCount)
-                        handleSetBoostedOnly(!boostedOnly)
+                        handleToggle(boostedOnly, handleSetBoostedOnly)
+                        update?.()
                       }}
                       scale="sm"
                     />
@@ -172,10 +178,8 @@ export const FarmTypesFilter: React.FC<FarmTypesFilterProps> = ({
                       id="stableSwap-only-farms"
                       checked={stableSwapOnly}
                       onChange={() => {
-                        const totalFarmsEnableCount = farmTypesEnableCount + (!stableSwapOnly ? 1 : -1)
-                        handleSetFarmTypesEnableCount(totalFarmsEnableCount)
-
-                        handleSetStableSwapOnly(!stableSwapOnly)
+                        handleToggle(stableSwapOnly, handleSetStableSwapOnly)
+                        update?.()
                       }}
                       scale="sm"
                     />
@@ -183,9 +187,9 @@ export const FarmTypesFilter: React.FC<FarmTypesFilterProps> = ({
                 </StyledItemRow>
               </Box>
             </Box>
-          </InlineMenu>
-        </Box>
-      </Flex>
-    </>
+          )}
+        </InlineMenu>
+      </Box>
+    </Flex>
   )
 }
