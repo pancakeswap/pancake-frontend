@@ -86,7 +86,8 @@ export const fetchExplorerPoolInfo = async <TPoolType extends PoolInfo>(
   console.log('farmConfig', farmConfig)
   console.log('isFarming', isFarming)
 
-  const data = await composeFarmConfig(parseFarmPools([resp.data], { isFarming })[0])
+  const farm = await parseFarmPools([resp.data], { isFarming })[0]
+  const data = await composeFarmConfig(farm)
   console.log('ggg', data)
   return data as TPoolType
 }
