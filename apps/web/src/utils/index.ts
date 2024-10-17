@@ -8,7 +8,18 @@ import { chains } from './wagmi'
 
 export const isAddressEqual = (a?: any, b?: any) => {
   if (!a || !b) return false
-  return safeGetAddress(a) === safeGetAddress(b)
+  if (typeof a === 'string' && typeof b === 'string') {
+    let a_ = a
+    let b_ = b
+    if (!a.startsWith('0x')) {
+      a_ = `0x${a}`
+    }
+    if (!b.startsWith('0x')) {
+      b_ = `0x${b}`
+    }
+    return a_.toLowerCase() === b_.toLowerCase()
+  }
+  return false
 }
 
 // returns the checksummed address if the address is valid, otherwise returns undefined
