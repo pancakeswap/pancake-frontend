@@ -8,6 +8,7 @@ import {
   PositionDetails,
   Protocol,
   SerializedFarmsV3Response,
+  UniversalFarmConfigV3,
   bCakeSupportedChainId,
   createFarmFetcherV3,
   defineFarmV3ConfigsFromUniversalFarm,
