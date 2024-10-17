@@ -22,18 +22,18 @@ type UnwrapPromise<T> = T extends Promise<infer U> ? U : T
 type ArrayItemType<T> = T extends Array<infer U> ? U : T
 
 export const useFarmPools = () => {
-  const [loaded, setLoaded] = useState(false)
   const [pools, setPools] = useAtom(farmPoolsAtom)
 
-  // useEffect(() => {
-  //   if (!loaded) {
-  //     fetchFarmPools()
-  //       .then(setPools)
-  //       .finally(() => setLoaded(true))
-  //   }
-  //   // only fetch once when mount
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [])
+  const { isLoading } = useQuery({
+    queryKey: ['fetchFarmPools'],
+    queryFn: async () => {
+      const data = await fetchFarmPools()
+      setPools(data)
+    },
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+  })
 
   const { data: poolsStatus, pending: isPoolStatusPending } = useMultiChainV3PoolsStatus(UNIVERSAL_FARMS)
   const { data: poolsTimeFrame, pending: isPoolsTimeFramePending } = useMultiChainPoolsTimeFrame(UNIVERSAL_FARMS)
@@ -60,7 +60,7 @@ export const useFarmPools = () => {
     })
   }, [pools, poolsStatus, isPoolStatusPending, poolsTimeFrame, isPoolsTimeFramePending])
 
-  return { loaded, data: poolsWithStatus }
+  return { loaded: !isLoading, data: poolsWithStatus }
 }
 
 export const useV3PoolsLength = (chainIds: number[]) => {
