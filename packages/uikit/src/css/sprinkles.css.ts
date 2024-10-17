@@ -43,7 +43,7 @@ const responsiveProperties = defineProperties({
   responsiveArray: ["xs", "sm", "md", "lg", "xl", "xxl"],
   properties: {
     display: ["block", "flex", "grid", "inline", "inline-flex", "inline-block", "none"],
-    flexDirection: ["column", "row", "column-reverse"],
+    flexDirection: ["column", "row", "column-reverse", "row-reverse"],
     alignItems: ["center", "end", "baseLine", "inherit", ...flexAlignment],
     alignSelf: flexAlignment,
     flexWrap: ["wrap", "nowrap"],

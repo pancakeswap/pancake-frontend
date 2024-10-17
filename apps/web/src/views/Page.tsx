@@ -1,8 +1,8 @@
+import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { Swap } from '@pancakeswap/widgets-internal'
-import { ChainId } from '@pancakeswap/chains'
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import { EXCHANGE_HELP_URLS } from 'config/constants'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 
 const Page: React.FC<
   React.PropsWithChildren<{
@@ -10,6 +10,8 @@ const Page: React.FC<
     hideFooterOnDesktop?: boolean
     noMinHeight?: boolean
     helpUrl?: string
+    showExternalLink?: boolean
+    showHelpLink?: boolean
   }>
 > = ({
   children,
@@ -17,6 +19,8 @@ const Page: React.FC<
   hideFooterOnDesktop = false,
   noMinHeight = false,
   helpUrl = EXCHANGE_HELP_URLS,
+  showExternalLink = true,
+  showHelpLink = true,
   ...props
 }) => {
   const { t } = useTranslation()
@@ -30,9 +34,9 @@ const Page: React.FC<
       removePadding={removePadding}
       noMinHeight={noMinHeight}
       hideFooterOnDesktop={hideFooterOnDesktop}
-      helpUrl={helpUrl}
+      helpUrl={showHelpLink ? helpUrl : undefined}
       externalText={externalText}
-      externalLinkUrl={externalLinkUrl}
+      externalLinkUrl={showExternalLink ? externalLinkUrl : undefined}
       {...props}
     >
       {children}

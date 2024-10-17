@@ -117,6 +117,7 @@ const SwapChart = ({
       <Flex
         flexDirection={['column', null, null, null, null, null, 'row']}
         alignItems={['flex-start', null, null, null, null, null, 'center']}
+        minWidth={[null, null, null, null, null, '500px', '500px']}
         justifyContent="space-between"
         px="24px"
         flexWrap="wrap"

@@ -3,11 +3,11 @@ import { SmartRouterTrade, V4Router } from '@pancakeswap/smart-router'
 import { Currency, TradeType } from '@pancakeswap/swap-sdk-core'
 import { useCallback, useMemo, useRef, useState } from 'react'
 
-import { useBetterQuote } from 'hooks/useBestAMMTrade'
+import { usePCSX } from 'hooks/usePCSX'
 import { useThrottleFn } from 'hooks/useThrottleFn'
 import { InterfaceOrder } from 'views/Swap/utils'
-import { usePCSX } from 'hooks/usePCSX'
 
+import { useBetterQuote } from 'hooks/useBestAMMTrade'
 import { useSwapBestOrder, useSwapBestTrade } from './useSwapBestTrade'
 
 type Trade = SmartRouterTrade<TradeType> | V4Router.V4TradeWithoutGraph<TradeType>
