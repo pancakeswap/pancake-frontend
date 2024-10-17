@@ -73,15 +73,7 @@ export const useAllTypeBestTrade = () => {
 
   const hasAvailableDutchOrder =
     bestOrder.enabled && bestOrder.order?.type === OrderType.DUTCH_LIMIT && bestOrder.isValidQuote
-
-  // const betterQuote = useBetterQuote(classicAmmOrder, hasAvailableDutchOrder ? currentOrder : undefined)
-
-  // TODO: Preferring PCSX only for testing. Revert back later
-  const betterQuote = useBetterQuote(
-    hasAvailableDutchOrder ? undefined : classicAmmOrder,
-    hasAvailableDutchOrder ? currentOrder : undefined,
-  )
-
+  const betterQuote = useBetterQuote(classicAmmOrder, hasAvailableDutchOrder ? currentOrder : undefined)
   const finalOrder = xEnabled ? betterQuote : classicAmmOrder
   const tradeLoaded = Boolean(finalOrder && !finalOrder.isLoading)
 
