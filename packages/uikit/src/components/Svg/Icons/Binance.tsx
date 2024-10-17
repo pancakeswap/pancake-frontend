@@ -2,7 +2,7 @@ import React from "react";
 import Svg from "../Svg";
 import { SvgProps } from "../types";
 
-const Icon: React.FC<React.PropsWithChildren<SvgProps & { imageRef: any }>> = ({ imageRef, ...props }) => {
+const Icon: React.FC<React.PropsWithChildren<SvgProps & { imageRef?: any }>> = ({ imageRef, ...props }) => {
   return (
     <Svg viewBox="0 0 96 96" ref={imageRef} {...props}>
       <circle cx="48" cy="48" r="48" fill="#F0B90B" />

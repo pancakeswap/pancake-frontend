@@ -40,32 +40,11 @@ const SymbolText = styled(Text)`
   font-size: ${FONT_SIZE.LARGE}px;
 `
 
-// const handleFontSizeChange = (fontSize: string, operation: number) => {
-//   const currentFontSize = parseInt(fontSize.replace('px', ''), 10)
-//   if ((currentFontSize > MIN_FONT_SIZE && operation < 0) || (currentFontSize < MAX_INPUT_FONT_SIZE && operation > 0))
-//     return `${currentFontSize + operation}px`
-//   return fontSize
-// }
-
-// const handleFontSizeChangeNumerical = (fontSize: string, operation: number) => {
-//   const currentFontSize = parseInt(fontSize.replace('px', ''), 10)
-//   if ((currentFontSize > MIN_FONT_SIZE && operation < 0) || (currentFontSize < MAX_FONT_SIZE && operation > 0))
-//     return currentFontSize + operation
-//   return Math.min(parseInt(fontSize.replace('px', ''), 10), MAX_FONT_SIZE)
-// }
-
 const useSizeAdaption = (value: string, currencySymbol?: string, otherCurrencySymbol?: string) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const tokenImageRef = useRef<HTMLImageElement>(null)
   const symbolRef = useRef<HTMLDivElement>(null)
   const wrapperRef = useRef<HTMLDivElement>(null)
-
-  // TESTING
-  // if (inputRef.current && symbolRef.current && wrapperRef.current) {
-  //   inputRef.current.style.border = '2px solid red'
-  //   symbolRef.current.style.border = '2px solid green'
-  //   wrapperRef.current.style.border = '2px solid blue'
-  // }
 
   // Linked font sizes are for Symbol and Logo only and not Input
   const { symbolFontSize, logoFontSize, setFontSizesBySymbol } = useFontSize(
@@ -91,26 +70,12 @@ const useSizeAdaption = (value: string, currencySymbol?: string, otherCurrencySy
     if (!inputRef.current || !symbolRef.current || !wrapperRef.current || !tokenImageRef.current) return
 
     const inputElement = inputRef.current
-    // const symbolElement = symbolRef.current
-    // const logoElement = tokenImageRef.current
 
     const wrapperWidth = wrapperRef.current.offsetWidth
-    // const symbolWidth = symbolElement.offsetWidth
-    // const inputWidth = inputElement.scrollWidth
-    // const logoWidth = logoElement.offsetWidth
-
-    // const targetWidth = wrapperWidth - symbolWidth - inputWidth
 
     const fontWidth = 8 // approx width of a character in pixels when large font size
 
     const valueIsPercentWidthOfWrapper = (value.length * fontWidth * 100) / wrapperWidth
-
-    // console.log('Important Values for Testing', currencySymbol, {
-    //   textLength: value.length,
-    //   inputWidth,
-    //   textWidth: value.length * fontWidth,
-    //   valueIsPercentWidthOfWrapper,
-    // })
 
     // Breakpoints according to wrapperWidth as container width
     const BREAKPOINT = isMobile
@@ -127,28 +92,26 @@ const useSizeAdaption = (value: string, currencySymbol?: string, otherCurrencySy
           FOURTH: 57,
         }
 
-    if (valueIsPercentWidthOfWrapper >= BREAKPOINT.FOURTH) {
-      // console.log(currencySymbol, '---FOURTH BREAKPOINT HIT---')
+    // Since the breakpoints are calibrated for 4 character symbols, we need to adjust for longer symbols
+    const symbolExcessLength = shortedSymbol && shortedSymbol.length > 4 ? shortedSymbol?.length - 4 : 0
+
+    if (valueIsPercentWidthOfWrapper >= BREAKPOINT.FOURTH - symbolExcessLength) {
       inputElement.style.fontSize = `${FONT_SIZE.SMALL}px`
       setFontSizesBySymbol(currencySymbol ?? '', FONT_SIZE.SMALL, LOGO_SIZE.SMALL)
-    } else if (valueIsPercentWidthOfWrapper >= BREAKPOINT.THIRD) {
-      // console.log(currencySymbol, '---THIRD BREAKPOINT HIT---')
+    } else if (valueIsPercentWidthOfWrapper >= BREAKPOINT.THIRD - symbolExcessLength) {
       inputElement.style.fontSize = `${FONT_SIZE.MEDIUM}px`
       setFontSizesBySymbol(currencySymbol ?? '', FONT_SIZE.SMALL, LOGO_SIZE.MEDIUM)
-    } else if (valueIsPercentWidthOfWrapper >= BREAKPOINT.SECOND) {
-      // console.log(currencySymbol, '---SECOND BREAKPOINT HIT---')
+    } else if (valueIsPercentWidthOfWrapper >= BREAKPOINT.SECOND - symbolExcessLength) {
       inputElement.style.fontSize = `${FONT_SIZE.LARGE}px`
       setFontSizesBySymbol(currencySymbol ?? '', FONT_SIZE.MEDIUM, LOGO_SIZE.LARGE)
-    } else if (valueIsPercentWidthOfWrapper >= BREAKPOINT.FIRST) {
-      // console.log(currencySymbol, '---FIRST BREAKPOINT HIT---')
+    } else if (valueIsPercentWidthOfWrapper >= BREAKPOINT.FIRST - symbolExcessLength) {
       inputElement.style.fontSize = `${FONT_SIZE.X_LARGE}px`
       setFontSizesBySymbol(currencySymbol ?? '', FONT_SIZE.MEDIUM, LOGO_SIZE.X_LARGE)
     } else {
-      // console.log(currencySymbol, '---BACK TO NORMAL NO BREAKPOINT HIT---')
       inputElement.style.fontSize = `${FONT_SIZE.MAX}px`
       setFontSizesBySymbol(currencySymbol ?? '', FONT_SIZE.LARGE, LOGO_SIZE.MAX)
     }
-  }, [value, currencySymbol, setFontSizesBySymbol, otherCurrencySymbol, isMobile])
+  }, [value, currencySymbol, setFontSizesBySymbol, otherCurrencySymbol, isMobile, shortedSymbol])
 
   useEffect(() => {
     const symbolElement = symbolRef.current
