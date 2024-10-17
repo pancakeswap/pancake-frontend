@@ -77,22 +77,22 @@ export const usePoolApr = (
     }
   }, [getMerklApr, pool, updateCakeApr, updatePools])
 
-  const { data } = useQuery({
-    queryKey: ['apr', key],
-    queryFn: updateCallback,
-    // calcV3PoolApr depend on pool's TvlUsd
-    // so if there are local pool without tvlUsd, don't to fetch queryFn
-    // issue: PAN-3698
-    enabled: typeof pool?.tvlUsd !== 'undefined' && !poolApr?.lpApr && !!key,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-  })
+  // const { data } = useQuery({
+  //   queryKey: ['apr', key],
+  //   queryFn: updateCallback,
+  //   // calcV3PoolApr depend on pool's TvlUsd
+  //   // so if there are local pool without tvlUsd, don't to fetch queryFn
+  //   // issue: PAN-3698
+  //   enabled: typeof pool?.tvlUsd !== 'undefined' && !poolApr?.lpApr && !!key,
+  //   refetchOnMount: false,
+  //   refetchOnWindowFocus: false,
+  //   refetchOnReconnect: false,
+  // })
 
   return {
-    lpApr: poolApr?.lpApr ?? data?.lpApr ?? '0',
-    cakeApr: poolApr?.cakeApr ?? data?.cakeApr ?? { value: '0' },
-    merklApr: poolApr?.merklApr ?? data?.merklApr ?? '0',
+    lpApr: poolApr?.lpApr ?? '0',
+    cakeApr: poolApr?.cakeApr ?? { value: '0' },
+    merklApr: poolApr?.merklApr ?? '0',
   }
 }
 
