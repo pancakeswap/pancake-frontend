@@ -8,8 +8,7 @@ const hidePhishingBannerAtom = atom(
   (get) => {
     const now = dayjs()
     const last = dayjs(get(phishingBannerAtom)).add(1, 'day')
-    const notPreview = process.env.NEXT_PUBLIC_VERCEL_ENV !== 'preview'
-    return last ? now.unix() > last.unix() && notPreview : notPreview
+    return last && now.unix() > last.unix()
   },
   (_, set) => set(phishingBannerAtom, Date.now()),
 )
