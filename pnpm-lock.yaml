@@ -1041,7 +1041,7 @@ importers:
         specifier: ^0.4.40
         version: 0.4.110(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       '@tanstack/react-query':
-        specifier: ^5.59.15
+        specifier: ^5.52.1
         version: 5.59.15(react@18.2.0)
       '@usdv/usdv-widget':
         specifier: ^0.9.9
