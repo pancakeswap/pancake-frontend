@@ -3333,7 +3333,7 @@ export const bscTokens = {
     'xPufETH',
     'https://www.puffer.fi/',
   ),
-  ynBNB: new ERC20Token(
+  ynbnb: new ERC20Token(
     ChainId.BSC,
     '0x304B5845b9114182ECb4495Be4C91a273b74B509',
     18,
