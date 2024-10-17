@@ -14,7 +14,7 @@ import { IdType, useUserNotUsCitizenAcknowledgement } from 'hooks/useUserIsUsCit
 import { useWebNotifications } from 'hooks/useWebNotifications'
 import { useRouter } from 'next/router'
 import { Suspense, lazy, useCallback, useMemo } from 'react'
-import { getOptionsUrl } from 'utils/getOptionsUrl'
+import { OPTIONS_URL } from 'config/constants'
 import GlobalSettings from './GlobalSettings'
 import { SettingsMode } from './GlobalSettings/types'
 import UserMenu from './UserMenu'
@@ -48,7 +48,7 @@ const Menu = (props) => {
     <USCitizenConfirmModal
       title={t('PancakeSwap Options')}
       id={IdType.OPTIONS}
-      href={getOptionsUrl()}
+      href={OPTIONS_URL}
       desc={
         <Text mt="0.5rem">
           {t(
