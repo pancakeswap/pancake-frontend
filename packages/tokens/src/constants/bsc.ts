@@ -3333,4 +3333,12 @@ export const bscTokens = {
     'xPufETH',
     'https://www.puffer.fi/',
   ),
+  ynbnb: new ERC20Token(
+    ChainId.BSC,
+    '0x304B5845b9114182ECb4495Be4C91a273b74B509',
+    18,
+    'ynBNB',
+    'YieldNest: BNB Liquid Restaking',
+    'https://app.yieldnest.finance/restake/ynBNB',
+  ),
 }
