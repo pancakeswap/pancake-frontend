@@ -8,11 +8,9 @@ import {
   ChevronUpIcon,
   Flex,
   Heading,
-  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { FetchStatus, TFetchStatus } from 'config/constants/types'
-import orderBy from 'lodash/orderBy'
-import { useState } from 'react'
+import { useCallback } from 'react'
 import { Vote } from 'state/types'
 import { useAccount } from 'wagmi'
 import VoteRow from '../components/Proposal/VoteRow'
@@ -20,30 +18,27 @@ import VotesLoading from '../components/Proposal/VotesLoading'
 
 interface VotesProps {
   votes: Vote[]
+  showAll: boolean
+  setShowAll: (value: ((prevState: boolean) => boolean) | boolean) => void
   totalVotes?: number
   votesLoadingStatus: TFetchStatus
 }
 
-const parseVotePower = (incomingVote: Vote) => {
-  let votingPower = incomingVote?.metadata?.votingPower && parseFloat(incomingVote?.metadata?.votingPower)
-  if (!votingPower) votingPower = 0
-  return votingPower
-}
-
-const Votes: React.FC<React.PropsWithChildren<VotesProps>> = ({ votes, votesLoadingStatus, totalVotes }) => {
-  const [showAll, setShowAll] = useState(false)
-  const { isMobile } = useMatchBreakpoints()
+const Votes: React.FC<React.PropsWithChildren<VotesProps>> = ({
+  votes,
+  showAll,
+  setShowAll,
+  votesLoadingStatus,
+  totalVotes,
+}) => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
-  const orderedVotes = orderBy(votes, [parseVotePower, 'created'], ['desc', 'desc'])
 
-  const VOTES_PER_VIEW = isMobile ? 10 : 20
-  const displayVotes = showAll ? orderedVotes : orderedVotes.slice(0, VOTES_PER_VIEW)
   const isFetched = votesLoadingStatus === FetchStatus.Fetched
 
-  const handleClick = () => {
-    setShowAll(!showAll)
-  }
+  const handleClick = useCallback(() => {
+    setShowAll((prevShowAll) => !prevShowAll)
+  }, [setShowAll])
 
   return (
     <Card>
@@ -57,9 +52,9 @@ const Votes: React.FC<React.PropsWithChildren<VotesProps>> = ({ votes, votesLoad
       </CardHeader>
       {!isFetched && <VotesLoading />}
 
-      {isFetched && displayVotes.length > 0 && (
+      {isFetched && votes.length > 0 && (
         <>
-          {displayVotes.map((vote) => {
+          {votes.map((vote) => {
             const isVoter = account && vote.voter.toLowerCase() === account.toLowerCase()
             return <VoteRow key={vote.id} vote={vote} isVoter={Boolean(isVoter)} />
           })}
@@ -83,7 +78,7 @@ const Votes: React.FC<React.PropsWithChildren<VotesProps>> = ({ votes, votesLoad
         </>
       )}
 
-      {isFetched && displayVotes.length === 0 && (
+      {isFetched && votes.length === 0 && (
         <Flex alignItems="center" justifyContent="center" py="32px">
           <Heading as="h5">{t('No votes found')}</Heading>
         </Flex>
