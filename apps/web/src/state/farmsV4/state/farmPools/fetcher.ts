@@ -32,28 +32,13 @@ export const fetchExplorerFarmPools = async (
   let chains = Array.isArray(args?.chainId) ? args.chainId ?? [] : [args?.chainId]
   chains = chains.filter(Boolean)
 
-  // const resp = await explorerApiClient.GET('/cached/pools/farming', {
-  //   signal,
-  //   params: {
-  //     query: {
-  //       protocols: args.protocols ?? DEFAULT_PROTOCOLS,
-  //       chains: chains.reduce((acc, cur) => {
-  //         if (cur) {
-  //           acc.push(getChainNameInKebabCase(cur))
-  //         }
-  //         return acc
-  //       }, [] as any[]),
-  //     },
-  //   },
-  // })
-  //
-  // if (!resp.data) {
-  //   return []
-  // }
-  //
-  // console.info(JSON.stringify(resp.data))
+  const resp = await new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(schema)
+    }, 5000)
+  })
 
-  return parseFarmPools(schema as any, { isFarming: true })
+  return parseFarmPools(resp as any, { isFarming: true })
 }
 
 export const fetchFarmPools = async (
