@@ -38,25 +38,21 @@ export const usePoolApr = (
   const updateCallback = useCallback(async () => {
     try {
       const [cakeApr, lpApr, merklApr] = await Promise.all([
-        !poolApr?.cakeApr
-          ? getCakeApr(pool).then((apr) => {
-              updateCakeApr(apr)
-              return apr
-            })
-          : poolApr?.cakeApr,
-        !poolApr?.lpApr
-          ? getLpApr(pool)
-              .then((apr) => {
-                updatePools({ ...pool, lpApr: `${apr}` })
-                return `${apr}`
-              })
-              .catch(() => {
-                console.warn('error getLpApr', pool)
-                updatePools({ ...pool, lpApr: '0' })
-                return '0'
-              })
-          : poolApr?.lpApr,
-        !poolApr?.merklApr ? getMerklApr() : poolApr?.merklApr,
+        getCakeApr(pool).then((apr) => {
+          updateCakeApr(apr)
+          return apr
+        }),
+        getLpApr(pool)
+          .then((apr) => {
+            updatePools({ ...pool, lpApr: `${apr}` })
+            return `${apr}`
+          })
+          .catch(() => {
+            console.warn('error getLpApr', pool)
+            updatePools({ ...pool, lpApr: '0' })
+            return '0'
+          }),
+        getMerklApr(),
       ])
       return {
         lpApr: `${lpApr}`,
@@ -87,8 +83,7 @@ export const usePoolApr = (
     // calcV3PoolApr depend on pool's TvlUsd
     // so if there are local pool without tvlUsd, don't to fetch queryFn
     // issue: PAN-3698
-    enabled:
-      typeof pool?.tvlUsd !== 'undefined' && !!key && (!poolApr?.lpApr || !poolApr?.cakeApr || !poolApr?.merklApr),
+    enabled: typeof pool?.tvlUsd !== 'undefined' && !!key,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
