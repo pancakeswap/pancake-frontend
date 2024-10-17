@@ -1,5 +1,5 @@
 import invariant from 'tiny-invariant'
-import { ONE, THREE, TWO, VMType, VM_TYPE_MAXIMA, ZERO } from './constants'
+import { ONE, THREE, TWO, VMType, VM_TYPE_MAXIMA, ZERO, ZERO_ADDRESS } from './constants'
 import { Currency } from './currency'
 import { CurrencyAmount, Percent, Price } from './fractions'
 import { Token } from './token'
@@ -127,4 +127,11 @@ export function sortCurrencies<T extends Currency>(currencies: T[]): T[] {
     }
     return a.sortsBefore(b) ? -1 : 1
   })
+}
+
+export function getCurrencyAddress(currency: Currency) {
+  if (currency.isNative) {
+    return ZERO_ADDRESS
+  }
+  return currency.address
 }

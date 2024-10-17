@@ -51,6 +51,7 @@ export interface V3Pool extends BasePool {
 }
 
 export type V4ClPool = BasePool & {
+  id: `0x${string}`
   type: PoolType.V4CL
   currency0: Currency
   currency1: Currency
@@ -75,6 +76,7 @@ type Reserve = {
   reserveY: bigint
 }
 export type V4BinPool = BasePool & {
+  id: `0x${string}`
   type: PoolType.V4BIN
   currency0: Currency
   currency1: Currency
