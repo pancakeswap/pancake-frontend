@@ -18,16 +18,16 @@ export const fetchUniversalFarms = async (chainId: ChainId, protocol?: Protocol)
         p.token0.chainId,
         p.token0.address,
         p.token0.decimals,
-        p.token0.name,
         p.token0.symbol,
+        p.token0.name,
         p.token0.projectLink,
       ),
       token1: new ERC20Token(
         p.token1.chainId,
         p.token1.address,
         p.token1.decimals,
-        p.token1.name,
         p.token1.symbol,
+        p.token1.name,
         p.token1.projectLink,
       ),
     }))
