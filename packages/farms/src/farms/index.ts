@@ -3,15 +3,6 @@ import set from 'lodash/set'
 import { fetchUniversalFarms } from '../fetchUniversalFarms'
 import { UniversalFarmConfig } from '../types'
 
-// import { arbFarmConfig } from './arb'
-// import { baseFarmConfig } from './base'
-// import { bscFarmConfig } from './bsc'
-// import { ethereumFarmConfig } from './eth'
-// import { lineaFarmConfig } from './linea'
-// import { opBNBFarmConfig } from './opBNB'
-// import { polygonZkEVMFarmConfig } from './polygonZkEVM'
-// import { zkSyncFarmConfig } from './zkSync'
-
 const chainIds: ChainId[] = [
   ChainId.BSC,
   ChainId.ETHEREUM,
