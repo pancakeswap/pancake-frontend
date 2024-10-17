@@ -2,10 +2,17 @@ import { useQuery } from '@tanstack/react-query'
 import { SLOW_INTERVAL } from 'config/constants'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useCallback } from 'react'
-import { extendPoolsAtom } from '../extendPools/atom'
+import sha256 from 'crypto-js/sha256'
+import memoize from 'lodash/memoize'
+import { updateExtendPoolsAtom } from 'state/farmsV4/state/extendPools/atom'
 import { ChainIdAddressKey, PoolInfo } from '../type'
 import { CakeApr, cakeAprSetterAtom, emptyCakeAprPoolsAtom, merklAprAtom, poolAprAtom } from './atom'
 import { getAllNetworkMerklApr, getCakeApr, getLpApr } from './fetcher'
+
+const generatePoolKey = memoize((pools) => {
+  const poolData = pools.map((pool) => `${pool.chainId}:${pool.lpAddress}`).join(',')
+  return sha256(poolData).toString()
+})
 
 export const usePoolApr = (
   key: ChainIdAddressKey | null,
@@ -15,7 +22,7 @@ export const usePoolApr = (
   cakeApr: CakeApr[keyof CakeApr]
   merklApr: `${number}`
 } => {
-  const updatePools = useSetAtom(extendPoolsAtom)
+  const updatePools = useSetAtom(updateExtendPoolsAtom)
   const updateCakeApr = useSetAtom(cakeAprSetterAtom)
   const poolApr = useAtomValue(poolAprAtom)[key ?? '']
   const [merklAprs, updateMerklApr] = useAtom(merklAprAtom)
@@ -45,13 +52,16 @@ export const usePoolApr = (
             updatePools([{ ...pool, lpApr: '0' }])
             return '0'
           }),
-        ,
         getMerklApr(),
       ])
       return {
         lpApr: `${lpApr}`,
         cakeApr,
         merklApr,
+      } as {
+        lpApr: `${number}`
+        cakeApr: CakeApr[keyof CakeApr]
+        merklApr: `${number}`
       }
     } catch (error) {
       console.warn('error usePoolApr', error)
@@ -59,6 +69,10 @@ export const usePoolApr = (
         lpApr: '0',
         cakeApr: { value: '0' },
         merklApr: '0',
+      } as {
+        lpApr: `${number}`
+        cakeApr: CakeApr[keyof CakeApr]
+        merklApr: `${number}`
       }
     }
   }, [getMerklApr, pool, updateCakeApr, updatePools])
@@ -70,9 +84,9 @@ export const usePoolApr = (
     // so if there are local pool without tvlUsd, don't to fetch queryFn
     // issue: PAN-3698
     enabled: typeof pool?.tvlUsd !== 'undefined' && !poolApr?.lpApr && !!key,
-    refetchInterval: 0,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   })
 
   return {
@@ -90,35 +104,22 @@ export const usePoolAprUpdater = () => {
   const pools = useAtomValue(emptyCakeAprPoolsAtom)
   const updateCakeApr = useSetAtom(cakeAprSetterAtom)
   const updateMerklApr = useSetAtom(merklAprAtom)
-  const fetchMerklApr = useCallback(async () => {
-    const merklAprs = await getAllNetworkMerklApr()
-    updateMerklApr(merklAprs)
-  }, [updateMerklApr])
-  const fetchCakeApr = useCallback(
-    async (newPools: PoolInfo[]) => {
-      if (newPools && newPools.length) {
-        newPools.forEach((pool) => {
-          getCakeApr(pool).then((apr) => {
-            updateCakeApr(apr)
-          })
-        })
-      }
-    },
-    [updateCakeApr],
-  )
 
   useQuery({
-    queryKey: ['apr', 'merkl', fetchMerklApr],
-    queryFn: fetchMerklApr,
+    queryKey: ['apr', 'merkl', 'fetchMerklApr'],
+    queryFn: () => getAllNetworkMerklApr().then(updateMerklApr),
     refetchInterval: SLOW_INTERVAL,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
   })
 
   useQuery({
-    queryKey: ['apr', 'cake', fetchCakeApr],
-    queryFn: () => fetchCakeApr(pools),
-    enabled: pools && pools.length > 0,
+    queryKey: ['apr', 'cake', 'fetchCakeApr', generatePoolKey(pools)],
+    queryFn: () =>
+      Promise.all(pools.map((pool) => getCakeApr(pool))).then((aprList) => {
+        updateCakeApr(aprList.reduce((acc, apr) => Object.assign(acc, apr), {}))
+      }),
+    enabled: pools?.length > 0,
     refetchInterval: SLOW_INTERVAL,
     refetchOnMount: false,
     refetchOnWindowFocus: false,

@@ -37,7 +37,6 @@ export const useAccountV2LpDetails = (chainIds: number[], account?: Address | nu
         refetchOnMount: false,
         refetchOnWindowFocus: false,
         refetchOnReconnect: false,
-        refetchInterval: false,
         // Prevents re-fetching while the data is still fresh
         staleTime: SLOW_INTERVAL,
       } satisfies UseQueryOptions<V2LPDetail[]>

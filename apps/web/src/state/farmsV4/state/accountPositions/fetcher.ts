@@ -12,6 +12,7 @@ import { AppState } from 'state'
 import { safeGetAddress } from 'utils'
 import { publicClient } from 'utils/viem'
 import { Address, erc20Abi, zeroAddress } from 'viem'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { StablePoolInfo, V2PoolInfo } from '../type'
 import { StableLPDetail, V2LPDetail } from './type'
 
@@ -136,10 +137,7 @@ export const getAccountV2LpDetails = async (
 
   const validLpTokens = lpTokens.filter((token) => token.chainId === chainId)
 
-  const bCakeWrapperAddresses = validReserveTokens.map((tokens) => {
-    const lpAddress = getV2LiquidityToken(tokens).address
-    return getBCakeWrapperAddress(lpAddress, chainId)
-  })
+  const bCakeWrapperAddresses = validLpTokens.map((token) => getBCakeWrapperAddress(token.address, chainId))
 
   const balanceCalls = validLpTokens.map((token) => {
     return {
@@ -152,15 +150,13 @@ export const getAccountV2LpDetails = async (
   const farmingCalls = bCakeWrapperAddresses.reduce(
     (acc, address) => {
       if (!address || address === '0x') return acc
-      return [
-        ...acc,
-        {
-          abi: v2BCakeWrapperABI,
-          address,
-          functionName: 'userInfo',
-          args: [account] as const,
-        } as const,
-      ]
+      acc.push({
+        abi: v2BCakeWrapperABI,
+        address,
+        functionName: 'userInfo',
+        args: [account] as const,
+      })
+      return acc
     },
     [] as Array<{
       abi: typeof v2BCakeWrapperABI
@@ -203,16 +199,26 @@ export const getAccountV2LpDetails = async (
   ])
 
   const farming = bCakeWrapperAddresses.reduce((acc, address) => {
-    if (!address || address === '0x') return [...acc, undefined]
-    const { result } = _farming.shift() ?? { result: undefined }
-    return [...acc, result]
+    if (!address || address === '0x') {
+      acc.push(undefined)
+    } else {
+      const { result } = _farming.shift() ?? { result: undefined }
+      acc.push(result)
+    }
+    return acc
   }, [] as Array<readonly [bigint, bigint, bigint, bigint, bigint] | undefined>)
-
   return balances
     .map((result, index) => {
       const { result: _balance = 0n, status } = result
       // LP not exist
-      if (status === 'failure') return undefined
+      if (status === 'failure') {
+        if (reserves[index].status === 'failure' && totalSupplies[index].status === 'failure') {
+          return undefined
+        }
+        throw new Error(
+          `Mismatch between balances, reserves, and supplies: Token: ${validLpTokens[index].address} Balance (${status}), Reserve (${reserves[index].status}), Supply (${totalSupplies[index].status})`,
+        )
+      }
 
       const nativeBalance = CurrencyAmount.fromRawAmount(validLpTokens[index], _balance)
       const farmingInfo = farming[index]
@@ -221,7 +227,7 @@ export const getAccountV2LpDetails = async (
       let farmingBoostedAmount = CurrencyAmount.fromRawAmount(validLpTokens[index], '0')
       if (farmingInfo) {
         farmingBalance = CurrencyAmount.fromRawAmount(validLpTokens[index], farmingInfo[0].toString())
-        farmingBoosterMultiplier = new BigNumber(Number(farmingInfo[2])).div(1000000000000).toNumber()
+        farmingBoosterMultiplier = getBalanceNumber(new BigNumber(Number(farmingInfo[2])), 12)
         farmingBoostedAmount = CurrencyAmount.fromRawAmount(validLpTokens[index], farmingInfo[3].toString())
       }
       const tokens = validReserveTokens[index]
@@ -256,7 +262,7 @@ export const getAccountV2LpDetails = async (
         protocol: Protocol.V2,
       }
     })
-    .filter((r) => typeof r !== 'undefined') as V2LPDetail[]
+    .filter(Boolean) as V2LPDetail[]
 }
 
 export const getStablePairDetails = async (
@@ -270,7 +276,8 @@ export const getStablePairDetails = async (
   if (!account || !client || !validStablePairs.length) return []
 
   const bCakeWrapperAddresses = validStablePairs.reduce((acc, pair) => {
-    return [...acc, getBCakeWrapperAddress(pair.lpAddress, chainId)]
+    acc.push(getBCakeWrapperAddress(pair.lpAddress, chainId))
+    return acc
   }, [] as Array<Address>)
 
   const balanceCalls = validStablePairs.map((pair) => {

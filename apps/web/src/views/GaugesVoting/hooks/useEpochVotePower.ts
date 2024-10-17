@@ -1,7 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useVeCakeContract } from 'hooks/useContract'
-import { Address, isAddressEqual, zeroAddress } from 'viem'
+import { isAddressEqual } from 'utils'
+import { Address, zeroAddress } from 'viem'
 import { useVeCakeUserInfo } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { useNextEpochStart } from './useEpochTime'
 

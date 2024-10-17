@@ -11,7 +11,8 @@ import { getStableSwapPools } from '@pancakeswap/stable-swap-sdk'
 import { FeeAmount, masterChefV3ABI } from '@pancakeswap/v3-sdk'
 import { explorerApiClient } from 'state/info/api/client'
 import { publicClient } from 'utils/viem'
-import { isAddressEqual, type Address } from 'viem'
+import { isAddressEqual } from 'utils'
+import { type Address } from 'viem'
 import { PoolInfo } from '../type'
 import { parseFarmPools } from '../utils'
 
@@ -36,7 +37,12 @@ export const fetchExplorerFarmPools = async (
     params: {
       query: {
         protocols: args.protocols ?? DEFAULT_PROTOCOLS,
-        chains: chains.reduce((acc, cur) => (cur ? [...acc, getChainNameInKebabCase(cur)] : acc), [] as any[]),
+        chains: chains.reduce((acc, cur) => {
+          if (cur) {
+            acc.push(getChainNameInKebabCase(cur))
+          }
+          return acc
+        }, [] as any[]),
       },
     },
   })
