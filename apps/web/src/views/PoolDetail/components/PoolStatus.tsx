@@ -6,8 +6,9 @@ import { useMemo } from 'react'
 import { PoolInfo } from 'state/farmsV4/state/type'
 import { getLpFeesAndApr } from 'utils/getLpFeesAndApr'
 import { getPercentChange } from 'utils/infoDataHelpers'
-import { Address, isAddressEqual } from 'viem'
+import { Address } from 'viem'
 import { formatDollarAmount } from 'views/V3Info/utils/numbers'
+import { safeGetAddress } from 'utils'
 import { ChangePercent } from './ChangePercent'
 import { PoolTokens } from './PoolTokens'
 
@@ -45,7 +46,7 @@ export const PoolStatus: React.FC<PoolStatusProps> = ({ poolInfo }) => {
     }
 
     const stablePair = LegacyRouter.stableSwapPairsByChainId[poolInfo.chainId].find((pair) => {
-      return isAddressEqual(pair.stableSwapAddress, poolInfo?.stableSwapAddress as Address)
+      return safeGetAddress(pair.stableSwapAddress) === (poolInfo?.stableSwapAddress as Address)
     })
 
     if (!stablePair) return 0

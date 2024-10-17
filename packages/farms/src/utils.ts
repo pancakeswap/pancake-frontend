@@ -1,6 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
 import { getStableSwapPools } from '@pancakeswap/stable-swap-sdk'
-import { isAddressEqual } from 'viem'
 import {
   ComputedFarmConfigV3,
   FarmV3Data,
@@ -47,7 +46,7 @@ const formatStableUniversalFarmToSerializedFarm = (
 ): LegacyStableFarmConfig | undefined => {
   const { chainId, lpAddress, pid, token0, token1, stableSwapAddress, bCakeWrapperAddress } = farm
   const stablePair = getStableSwapPools(chainId).find((pair) => {
-    return isAddressEqual(pair.stableSwapAddress, stableSwapAddress)
+    return pair.stableSwapAddress?.toLowerCase() === stableSwapAddress?.toLowerCase()
   })
 
   if (!stablePair) {

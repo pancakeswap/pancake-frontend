@@ -19,10 +19,11 @@ import { SwellTooltip } from 'components/SwellTooltip/SwellTooltip'
 import { TokenPairImage } from 'components/TokenImage'
 import { useHasSwellReward } from 'hooks/useHasSwellReward'
 import { styled } from 'styled-components'
-import { Address, isAddressEqual } from 'viem'
+import { Address } from 'viem'
 import { bsc } from 'viem/chains'
 import { useHasCustomFarmLpTooltips } from 'views/Farms/hooks/useHasCustomFarmLpTooltips'
 import { useChainId } from 'wagmi'
+import { safeGetAddress } from 'utils'
 import BoostedTag from '../YieldBooster/components/BoostedTag'
 
 const { FarmAuctionTag, StableFarmTag, V2Tag, V3FeeTag } = FarmWidget.Tags
@@ -121,7 +122,7 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
 
             {chainId === bsc.id &&
             lpAddress &&
-            isAddressEqual(lpAddress, '0xdD82975ab85E745c84e497FD75ba409Ec02d4739') ? (
+            safeGetAddress(lpAddress) === '0xdD82975ab85E745c84e497FD75ba409Ec02d4739' ? (
               <GiftTooltip>
                 <Box>
                   <Text lineHeight="110%" as="span">

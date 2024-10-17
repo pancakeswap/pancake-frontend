@@ -10,10 +10,9 @@ import { useCallback, useMemo, useState } from 'react'
 import { type V3Farm } from 'state/farms/types'
 import { multiChainPaths } from 'state/info/constant'
 import { styled } from 'styled-components'
-import { getBlockExploreLink } from 'utils'
+import { getBlockExploreLink, safeGetAddress } from 'utils'
 import { getMerklLink, useMerklUserLink } from 'utils/getMerklLink'
 import { unwrappedToken } from 'utils/wrappedCurrency'
-import { isAddressEqual } from 'viem'
 import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
 import { useFarmV3Multiplier } from 'views/Farms/hooks/v3/useFarmV3Multiplier'
 import { StatusView } from '../../YieldBooster/components/bCakeV3/StatusView'
@@ -77,7 +76,7 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({ f
   }, [chainId, lpAddress])
   const hasBothFarmAndMerkl = useMemo(
     // for now, only rETH-ETH require both farm and merkl, so we hardcode it here
-    () => Boolean(merklLink) && isAddressEqual(farm.lpAddress, '0x2201d2400d30BFD8172104B4ad046d019CA4E7bd'),
+    () => Boolean(merklLink) && safeGetAddress(farm.lpAddress) === '0x2201d2400d30BFD8172104B4ad046d019CA4E7bd',
     [farm.lpAddress, merklLink],
   )
 

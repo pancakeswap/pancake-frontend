@@ -11,10 +11,11 @@ import { Token } from '@pancakeswap/swap-sdk-core'
 import { bscTokens } from '@pancakeswap/tokens'
 import { GiftTooltip } from 'components/GiftTooltip/GiftTooltip'
 import styled from 'styled-components'
-import { Address, isAddressEqual } from 'viem'
+import { Address } from 'viem'
 import { bsc } from 'viem/chains'
 import { useIsUserDelegated } from 'views/CakeStaking/hooks/useIsUserDelegated'
 import { useChainId } from 'wagmi'
+import { safeGetAddress } from 'utils'
 import ActionPanel from './ActionPanel/ActionPanel'
 import AprCell from './Cells/AprCell'
 import AutoAprCell from './Cells/AutoAprCell'
@@ -107,8 +108,8 @@ const PoolRow: React.FC<React.PropsWithChildren<{ sousId: number; account: strin
     chainId === bsc.id &&
     stakingToken &&
     earningToken &&
-    isAddressEqual(stakingToken.address as Address, bscTokens.cake.address) &&
-    isAddressEqual(earningToken.address as Address, bscTokens.pepe.address) ? (
+    safeGetAddress(stakingToken.address as Address) === safeGetAddress(bscTokens.cake.address) &&
+    safeGetAddress(earningToken.address as Address) === safeGetAddress(bscTokens.pepe.address) ? (
       <GiftTooltip>
         <Box>
           <Text lineHeight="110%" as="span">

@@ -6,10 +6,11 @@ import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useGaugesVotingContract } from 'hooks/useContract'
 import { useEffect, useMemo } from 'react'
 import { publicClient as getPublicClient } from 'utils/viem'
-import { Address, Hex, isAddressEqual, zeroAddress } from 'viem'
+import { Address, Hex, zeroAddress } from 'viem'
 import { useCurrentBlockTimestamp } from 'views/CakeStaking/hooks/useCurrentBlockTimestamp'
 import { useVeCakeUserInfo } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { CakePoolType } from 'views/CakeStaking/types'
+import { safeGetAddress } from 'utils'
 import { useCurrentEpochStart, useNextEpochStart } from './useEpochTime'
 
 export type VotedSlope = {
@@ -56,7 +57,10 @@ export const useUserVote = (gauge: Gauge | undefined, submitted?: boolean, usePr
     queryFn: async (): Promise<VotedSlope> => {
       const delegated = userInfo?.cakePoolType === CakePoolType.DELEGATED
       const hasProxy =
-        useProxyPool && userInfo?.cakePoolProxy && !isAddressEqual(userInfo?.cakePoolProxy, zeroAddress) && !delegated
+        useProxyPool &&
+        userInfo?.cakePoolProxy &&
+        !(safeGetAddress(userInfo?.cakePoolProxy) === zeroAddress) &&
+        !delegated
       const calls = [
         {
           ...contract,

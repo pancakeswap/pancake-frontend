@@ -16,7 +16,8 @@ import groupBy from 'lodash/groupBy'
 import { explorerApiClient } from 'state/info/api/client'
 import { v3Clients } from 'utils/graphql'
 import { publicClient } from 'utils/viem'
-import { isAddressEqual, type Address } from 'viem'
+import { type Address } from 'viem'
+import { safeGetAddress } from 'utils'
 import { PoolInfo } from '../type'
 import { parseFarmPools } from '../utils'
 import schema from './data.json'
@@ -204,7 +205,7 @@ export const fetchFarmPools = async (
     const pool = remotePools?.find((p) => {
       return (
         p.chainId === farm.chainId &&
-        isAddressEqual(p.lpAddress, farm.lpAddress) &&
+        safeGetAddress(p.lpAddress) === safeGetAddress(farm.lpAddress) &&
         p.protocol === farm.protocol &&
         (p.protocol === Protocol.V3 ? p.pid === farm.pid : true)
       )
@@ -226,7 +227,7 @@ export const fetchFarmPools = async (
     const stablePair =
       farm.protocol === Protocol.STABLE
         ? getStableSwapPools(farm.chainId).find((p) => {
-            return isAddressEqual(p.lpAddress, farm.lpAddress)
+            return safeGetAddress(p.lpAddress) === safeGetAddress(farm.lpAddress)
           })
         : undefined
     let feeTier = 100
