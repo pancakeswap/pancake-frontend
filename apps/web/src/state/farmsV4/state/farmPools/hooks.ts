@@ -28,8 +28,8 @@ export const useFarmPools = () => {
   const { isLoading } = useQuery({
     queryKey: ['fetchFarmPools'],
     queryFn: async () => {
-      const data = schema
-      setPools(data as any)
+      const data = await fetchFarmPools()
+      setPools(data)
     },
     refetchOnMount: false,
     refetchOnReconnect: false,
