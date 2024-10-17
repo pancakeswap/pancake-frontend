@@ -90,9 +90,9 @@ export const usePoolApr = (
   })
 
   return {
-    lpApr: data?.lpApr ?? poolApr?.lpApr ?? '0',
-    cakeApr: data?.cakeApr ?? poolApr?.cakeApr ?? { value: '0' },
-    merklApr: data?.merklApr ?? poolApr?.merklApr ?? '0',
+    lpApr: poolApr?.lpApr ?? data?.lpApr ?? '0',
+    cakeApr: poolApr?.cakeApr ?? data?.cakeApr ?? { value: '0' },
+    merklApr: poolApr?.merklApr ?? data?.merklApr ?? '0',
   }
 }
 
