@@ -18,7 +18,7 @@ import { useQuery } from '@tanstack/react-query'
 import AccessRiskTooltips from 'components/AccessRisk/AccessRiskTooltips'
 import { ACCESS_TOKEN_SUPPORT_CHAIN_IDS } from 'components/AccessRisk/config/supportedChains'
 import { fetchRiskToken } from 'components/AccessRisk/utils/fetchTokenRisk'
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useAllLists } from 'state/lists/hooks'
 import { useUserTokenRisk } from 'state/user/hooks/useUserTokenRisk'
 import { styled } from 'styled-components'
@@ -52,16 +52,24 @@ export const TOKEN_RISK_T = {
   [TOKEN_RISK.UNKNOWN]: <Trans>Unknown Risk</Trans>,
 } as const
 
-function RetryRisk({ onClick }: { onClick: () => void }) {
+function RetryRisk({ onClick, isFetching }: { onClick: () => void; isFetching: boolean }) {
   const [retry, setRetry] = useState(false)
   const { t } = useTranslation()
-  const [isTooltipDisplayed, setIsTooltipDisplayed] = useState(false)
-  const displayTooltip = () => {
-    setIsTooltipDisplayed(true)
-    setTimeout(() => {
+  const [isTooltipDisplayed, setIsTooltipDisplayed] = useState(true)
+
+  const handleOnClick = useCallback(() => {
+    setRetry(true)
+    onClick()
+  }, [onClick])
+
+  useEffect(() => {
+    if (isFetching) {
       setIsTooltipDisplayed(false)
-    }, 1000)
-  }
+    } else {
+      setIsTooltipDisplayed(true)
+    }
+  }, [isFetching])
+
   const retryTooltip = useTooltip(
     <>
       {t('Risk scanning failed.')} {!retry && t('Press the button to retry.')}
@@ -76,11 +84,7 @@ function RetryRisk({ onClick }: { onClick: () => void }) {
     <div ref={retryTooltip.targetRef}>
       <IconButton
         ml="4px"
-        onClick={() => {
-          setRetry(true)
-          displayTooltip()
-          onClick()
-        }}
+        onClick={handleOnClick}
         data-dd-action-name="Risk scan retry button"
         disabled={retry}
         variant="text"
@@ -119,11 +123,11 @@ const AccessRisk: React.FC<AccessRiskProps> = ({ token }) => {
 const AccessRiskComponent: React.FC<AccessRiskProps> = ({ token }) => {
   const { t } = useTranslation()
 
-  const { data, refetch } = useTokenRisk(token)
+  const { data, isFetching, refetch } = useTokenRisk(token)
 
   useEffect(() => {
     if (data?.pollingInterval) {
-      const refresh = setTimeout(() => refetch(), data?.pollingInterval)
+      const refresh = setTimeout(refetch, data?.pollingInterval)
       return () => clearTimeout(refresh)
     }
     return undefined
@@ -218,7 +222,8 @@ const AccessRiskComponent: React.FC<AccessRiskProps> = ({ token }) => {
           </Tag>
         </div>
         <RetryRisk
-          onClick={() => refetch()}
+          onClick={refetch}
+          isFetching={isFetching}
           // key for resetting retry state
           key={token.chainId + token.address}
         />
