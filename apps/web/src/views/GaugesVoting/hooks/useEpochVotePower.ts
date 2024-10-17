@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useVeCakeContract } from 'hooks/useContract'
+import { isAddressEqual } from 'utils'
 import { Address, zeroAddress } from 'viem'
 import { useVeCakeUserInfo } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
-import { safeGetAddress } from 'utils'
 import { useNextEpochStart } from './useEpochTime'
 
 export const useEpochVotePower = () => {
@@ -21,7 +21,7 @@ export const useEpochVotePower = () => {
       const proxyVotePower =
         !userInfo?.cakePoolProxy ||
         userInfo?.cakePoolProxy === '0x' ||
-        safeGetAddress(userInfo?.cakePoolProxy) === zeroAddress
+        isAddressEqual(userInfo?.cakePoolProxy, zeroAddress)
           ? 0n
           : await contract.read.balanceOfAtTime([userInfo?.cakePoolProxy as Address, BigInt(nextEpoch)])
       // const proxyVotePower = await contract.read.balanceOfAtForProxy([account!, BigInt(nextEpoch)])

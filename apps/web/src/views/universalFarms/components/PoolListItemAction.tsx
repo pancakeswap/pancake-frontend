@@ -10,10 +10,10 @@ import { memo, useCallback, useMemo } from 'react'
 import type { PoolInfo } from 'state/farmsV4/state/type'
 import { multiChainPaths } from 'state/info/constant'
 import styled, { css } from 'styled-components'
+import { isAddressEqual } from 'utils'
 import { useAccount } from 'wagmi'
 import { PERSIST_CHAIN_KEY } from 'config/constants'
 import { addQueryToPath } from 'utils/addQueryToPath'
-import { safeGetAddress } from 'utils'
 
 const BaseButtonStyle = css`
   color: ${({ theme }) => theme.colors.text};
@@ -58,7 +58,7 @@ export const getPoolDetailPageLink = (pool: PoolInfo) => {
       return `${linkPrefix}/${pool.stableSwapAddress}`
     }
     const ssPair = LegacyRouter.stableSwapPairsByChainId[pool.chainId]?.find((pair) => {
-      return safeGetAddress(pair.lpAddress) === safeGetAddress(pool.lpAddress)
+      return isAddressEqual(pair.lpAddress, pool.lpAddress)
     })
     if (ssPair) {
       return `${linkPrefix}/${ssPair.stableSwapAddress}`
@@ -73,7 +73,7 @@ const getPoolInfoPageLink = (pool: PoolInfo) => {
   }
   if (pool.protocol === Protocol.STABLE) {
     const ssPair = LegacyRouter.stableSwapPairsByChainId[pool.chainId]?.find((pair) => {
-      return safeGetAddress(pair.lpAddress) === safeGetAddress(pool.lpAddress)
+      return isAddressEqual(pair.lpAddress, pool.lpAddress)
     })
     if (ssPair) {
       return toLink(ssPair.stableSwapAddress, '', 'type=stableSwap')

@@ -6,6 +6,11 @@ import { Address, getAddress } from 'viem'
 import { bsc } from 'wagmi/chains'
 import { chains } from './wagmi'
 
+export const isAddressEqual = (a?: any, b?: any) => {
+  if (!a || !b) return false
+  return safeGetAddress(a) === safeGetAddress(b)
+}
+
 // returns the checksummed address if the address is valid, otherwise returns undefined
 export const safeGetAddress = memoize((value: any): Address | undefined => {
   try {

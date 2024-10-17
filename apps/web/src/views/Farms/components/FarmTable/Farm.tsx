@@ -8,10 +8,10 @@ import { TokenPairImage } from 'components/TokenImage'
 import { USDPlusWarningTooltip } from 'components/USDPlusWarningTooltip'
 import { useHasSwellReward } from 'hooks/useHasSwellReward'
 import { useMemo } from 'react'
+import { isAddressEqual } from 'utils'
 import { Address } from 'viem'
 import { bsc } from 'viem/chains'
 import { useHasCustomFarmLpTooltips } from 'views/Farms/hooks/useHasCustomFarmLpTooltips'
-import { safeGetAddress } from 'utils'
 
 const { FarmTokenInfo } = FarmWidget.FarmTable
 
@@ -55,7 +55,7 @@ export const FarmCell: React.FunctionComponent<
       >
         <TokenPairImage width={40} height={40} variant="inverted" primaryToken={token} secondaryToken={quoteToken} />
       </FarmTokenInfo>
-      {chainId === bsc.id && lpAddress && safeGetAddress(lpAddress) === '0xdD82975ab85E745c84e497FD75ba409Ec02d4739' ? (
+      {chainId === bsc.id && lpAddress && isAddressEqual(lpAddress, '0xdD82975ab85E745c84e497FD75ba409Ec02d4739') ? (
         <GiftTooltip>
           <Box>
             <Text lineHeight="110%" as="span">

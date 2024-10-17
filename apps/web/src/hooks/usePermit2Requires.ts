@@ -1,8 +1,8 @@
 import { CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
 import { bscTestnetTokens, ethereumTokens, goerliTestnetTokens } from '@pancakeswap/tokens'
 import { useMemo } from 'react'
+import { isAddressEqual } from 'utils'
 import { Address } from 'viem'
-import { safeGetAddress } from 'utils'
 import useAccountActiveChain from './useAccountActiveChain'
 import useCurrentBlockTimestamp from './useCurrentBlockTimestamp'
 import { usePermit2Allowance } from './usePermit2Allowance'
@@ -20,15 +20,15 @@ export const usePermit2Requires = (amount: CurrencyAmount<Token> | undefined, sp
   const requireRevoke = useMemo((): boolean => {
     const isMainnetUSDT =
       amount?.currency?.chainId === ethereumTokens.usdt.chainId &&
-      safeGetAddress(amount.currency.address) === safeGetAddress(ethereumTokens.usdt.address)
+      isAddressEqual(amount.currency.address, ethereumTokens.usdt.address)
 
     const isBSCTestNetBUSD =
       amount?.currency?.chainId === bscTestnetTokens.busd.chainId &&
-      safeGetAddress(amount.currency.address) === safeGetAddress(bscTestnetTokens.busd.address)
+      isAddressEqual(amount.currency.address, bscTestnetTokens.busd.address)
 
     const isGoerliUSDC =
       amount?.currency?.chainId === goerliTestnetTokens.usdc.chainId &&
-      safeGetAddress(amount.currency.address) === safeGetAddress(goerliTestnetTokens.usdc.address)
+      isAddressEqual(amount.currency.address, goerliTestnetTokens.usdc.address)
 
     if (!isMainnetUSDT && !isBSCTestNetBUSD && !isGoerliUSDC) return false
 
