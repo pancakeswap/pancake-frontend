@@ -10,12 +10,12 @@ import { useAccountPositionDetailByPool } from 'state/farmsV4/hooks'
 import { StablePoolInfo, V2PoolInfo } from 'state/farmsV4/state/type'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { Address } from 'viem'
+import { isAddressEqual } from 'utils'
 import { useMasterChefV2Data } from 'views/Farms/hooks/useMasterChefV2Data'
 import { useV2LpTokenTotalSupply } from 'views/Farms/hooks/useV2LpTokenTotalSupply'
 import { useBCakeWrapperRewardPerSecond } from 'views/universalFarms/hooks/useBCakeWrapperInfo'
 import { displayApr } from 'views/universalFarms/utils/displayApr'
 import { useAccount } from 'wagmi'
-import { safeGetAddress } from 'utils'
 
 type V2PoolAprModalProps = {
   modal: UseModalV2Props
@@ -69,7 +69,7 @@ const AprModal: React.FC<Omit<V2PoolAprModalProps, 'modal'>> = ({ poolInfo, comb
   const stableConfig = useMemo((): LegacyStableSwapPair | undefined => {
     if (poolInfo.protocol === 'stable') {
       return LegacyRouter.stableSwapPairsByChainId[poolInfo.chainId]?.find((pair) => {
-        return safeGetAddress(pair.stableSwapAddress) === safeGetAddress(poolInfo?.lpAddress as Address)
+        return isAddressEqual(pair.stableSwapAddress, poolInfo?.lpAddress as Address)
       })
     }
     return undefined

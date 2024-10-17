@@ -1,8 +1,8 @@
 import { ChainId } from '@pancakeswap/chains'
 import { Protocol, supportedChainIdV4 } from '@pancakeswap/farms'
 import { atom } from 'jotai'
+import { isAddressEqual } from 'utils'
 import { type Address } from 'viem'
-import { safeGetAddress } from 'utils'
 import { farmPoolsAtom } from '../farmPools/atom'
 import { ChainIdAddressKey, PoolInfo } from '../type'
 
@@ -41,10 +41,7 @@ export const updateExtendPoolsAtom = atom(null, (get, set, values: PoolInfo[]) =
   const currentPools = get(extendPoolsAtom)
 
   const newData = values.filter(
-    (pool) =>
-      !farms.some(
-        (farm) => safeGetAddress(farm.lpAddress) === safeGetAddress(pool.lpAddress) && farm.protocol === pool.protocol,
-      ),
+    (pool) => !farms.some((farm) => isAddressEqual(farm.lpAddress, pool.lpAddress) && farm.protocol === pool.protocol),
   )
 
   set(extendPoolsAtom, [...currentPools, ...newData])

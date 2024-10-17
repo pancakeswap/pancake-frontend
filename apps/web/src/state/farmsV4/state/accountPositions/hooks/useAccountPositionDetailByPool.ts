@@ -2,8 +2,8 @@ import { Protocol } from '@pancakeswap/farms'
 import { LegacyRouter } from '@pancakeswap/smart-router/legacy-router'
 import { useQuery, UseQueryResult } from '@tanstack/react-query'
 import { useCallback, useMemo } from 'react'
+import { isAddressEqual } from 'utils'
 import { Address } from 'viem'
-import { safeGetAddress } from 'utils'
 import { PoolInfo } from '../../type'
 import { getAccountV2LpDetails, getStablePairDetails } from '../fetcher'
 import { getAccountV3Positions } from '../fetcher/v3'
@@ -37,7 +37,7 @@ export const useAccountPositionDetailByPool = <TProtocol extends keyof PoolPosit
     }
     if (protocol === 'stable') {
       const stablePair = LegacyRouter.stableSwapPairsByChainId[chainId].find((pair) => {
-        return safeGetAddress(pair.stableSwapAddress) === safeGetAddress(poolInfo?.stableSwapAddress as Address)
+        return isAddressEqual(pair.stableSwapAddress, poolInfo?.stableSwapAddress as Address)
       })
       return getStablePairDetails(chainId, account!, stablePair ? [stablePair] : [])
     }
@@ -54,9 +54,9 @@ export const useAccountPositionDetailByPool = <TProtocol extends keyof PoolPosit
           const { token0, token1, fee } = position as PositionDetail
           return (
             poolInfo?.token0.wrapped.address &&
-            safeGetAddress(token0) === safeGetAddress(poolInfo?.token0.wrapped.address as Address) &&
+            isAddressEqual(token0, poolInfo?.token0.wrapped.address as Address) &&
             poolInfo?.token1.address &&
-            safeGetAddress(token1) === safeGetAddress(poolInfo?.token1.wrapped.address as Address) &&
+            isAddressEqual(token1, poolInfo?.token1.wrapped.address as Address) &&
             fee === poolInfo?.feeTier
           )
         })
