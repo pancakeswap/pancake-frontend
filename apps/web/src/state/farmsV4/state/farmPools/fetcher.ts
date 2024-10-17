@@ -32,26 +32,28 @@ export const fetchExplorerFarmPools = async (
   let chains = Array.isArray(args?.chainId) ? args.chainId ?? [] : [args?.chainId]
   chains = chains.filter(Boolean)
 
-  const resp = await explorerApiClient.GET('/cached/pools/farming', {
-    signal,
-    params: {
-      query: {
-        protocols: args.protocols ?? DEFAULT_PROTOCOLS,
-        chains: chains.reduce((acc, cur) => {
-          if (cur) {
-            acc.push(getChainNameInKebabCase(cur))
-          }
-          return acc
-        }, [] as any[]),
-      },
-    },
-  })
+  // const resp = await explorerApiClient.GET('/cached/pools/farming', {
+  //   signal,
+  //   params: {
+  //     query: {
+  //       protocols: args.protocols ?? DEFAULT_PROTOCOLS,
+  //       chains: chains.reduce((acc, cur) => {
+  //         if (cur) {
+  //           acc.push(getChainNameInKebabCase(cur))
+  //         }
+  //         return acc
+  //       }, [] as any[]),
+  //     },
+  //   },
+  // })
+  //
+  // if (!resp.data) {
+  //   return []
+  // }
+  //
+  // console.info(JSON.stringify(resp.data))
 
-  if (!resp.data) {
-    return []
-  }
-
-  return parseFarmPools(resp.data, { isFarming: true })
+  return parseFarmPools(schema as any, { isFarming: true })
 }
 
 export const fetchFarmPools = async (
@@ -66,7 +68,7 @@ export const fetchFarmPools = async (
 ) => {
   let remotePools: PoolInfo[] | undefined
   try {
-    remotePools = schema as any
+    remotePools = await fetchExplorerFarmPools(args, signal)
   } catch (error) {
     console.error('Failed to fetch remote pools', error)
   }
