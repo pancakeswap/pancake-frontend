@@ -73,7 +73,7 @@ const useSizeAdaption = (value: string, currencySymbol?: string, otherCurrencySy
 
     const wrapperWidth = wrapperRef.current.offsetWidth
 
-    const fontWidth = 8 // approx width of a character in pixels when large font size
+    const fontWidth = 8 // consider for calculation an approx width of a character in large font size
 
     const valueIsPercentWidthOfWrapper = (value.length * fontWidth * 100) / wrapperWidth
 
@@ -93,7 +93,7 @@ const useSizeAdaption = (value: string, currencySymbol?: string, otherCurrencySy
         }
 
     // Since the breakpoints are calibrated for 4 character symbols, we need to adjust for longer symbols
-    const symbolExcessLength = shortedSymbol && shortedSymbol.length > 4 ? shortedSymbol?.length - 3 : 0
+    const symbolExcessLength = shortedSymbol && shortedSymbol.length > 4 ? shortedSymbol?.length - 2 : 0
 
     if (valueIsPercentWidthOfWrapper >= BREAKPOINT.FOURTH - symbolExcessLength) {
       inputElement.style.fontSize = `${FONT_SIZE.SMALL}px`
