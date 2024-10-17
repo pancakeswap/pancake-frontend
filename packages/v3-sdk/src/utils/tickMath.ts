@@ -80,7 +80,7 @@ export abstract class TickMath {
    * @param sqrtRatioX96 the sqrt ratio as a Q64.96 for which to compute the tick
    */
   public static getTickAtSqrtRatio(sqrtRatioX96: bigint): number {
-    invariant(sqrtRatioX96 >= TickMath.MIN_SQRT_RATIO && sqrtRatioX96 < TickMath.MAX_SQRT_RATIO, 'SQRT_RATIO')
+    invariant(sqrtRatioX96 >= TickMath.MIN_SQRT_RATIO && sqrtRatioX96 <= TickMath.MAX_SQRT_RATIO, 'SQRT_RATIO')
 
     const sqrtRatioX128 = sqrtRatioX96 << 32n
 
@@ -107,7 +107,8 @@ export abstract class TickMath {
     const log_sqrt10001 = log_2 * 255738958999603826347141n
 
     const tickLow = Number((log_sqrt10001 - 3402992956809132418596140100660247210n) >> 128n)
-    const tickHigh = Number((log_sqrt10001 + 291339464771989622907027621153398088495n) >> 128n)
+    let tickHigh = Number((log_sqrt10001 + 291339464771989622907027621153398088495n) >> 128n)
+    if (tickHigh >= TickMath.MAX_TICK) tickHigh = TickMath.MAX_TICK - 1
 
     return tickLow === tickHigh ? tickLow : TickMath.getSqrtRatioAtTick(tickHigh) <= sqrtRatioX96 ? tickHigh : tickLow
   }
