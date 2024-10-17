@@ -17,7 +17,6 @@ import { Address } from 'viem/accounts'
 import { PoolInfo, StablePoolInfo, V2PoolInfo } from '../type'
 import { farmPoolsAtom } from './atom'
 import { fetchFarmPools, fetchPoolsTimeFrame, fetchV3PoolsStatusByChainId } from './fetcher'
-import schema from './data.json'
 
 type UnwrapPromise<T> = T extends Promise<infer U> ? U : T
 type ArrayItemType<T> = T extends Array<infer U> ? U : T

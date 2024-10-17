@@ -14,6 +14,7 @@ import { publicClient } from 'utils/viem'
 import { isAddressEqual, type Address } from 'viem'
 import { PoolInfo } from '../type'
 import { parseFarmPools } from '../utils'
+import schema from './data.json'
 
 const DEFAULT_PROTOCOLS: Protocol[] = [Protocol.V3, Protocol.V2, Protocol.STABLE]
 const DEFAULT_CHAINS: FarmV4SupportedChainId[] = Object.values(supportedChainIdV4)
@@ -65,7 +66,7 @@ export const fetchFarmPools = async (
 ) => {
   let remotePools: PoolInfo[] | undefined
   try {
-    remotePools = await fetchExplorerFarmPools(args, signal)
+    remotePools = schema as any
   } catch (error) {
     console.error('Failed to fetch remote pools', error)
   }
