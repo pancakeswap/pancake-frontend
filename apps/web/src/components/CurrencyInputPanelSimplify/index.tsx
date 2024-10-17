@@ -27,7 +27,16 @@ import { FiatLogo } from 'components/Logo/CurrencyLogo'
 import { useCurrencyBalance } from 'state/wallet/hooks'
 import { useAccount } from 'wagmi'
 import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
-import { MAX_FONT_SIZE, MAX_INPUT_FONT_SIZE, MAX_LOGO_SIZE, MIN_FONT_SIZE, useFontSize } from './state'
+import {
+  MAX_FONT_SIZE,
+  MAX_INPUT_FONT_SIZE,
+  MAX_LOGO_SIZE,
+  MIN_FONT_SIZE,
+  MIN_LOGO_SIZE,
+  SIZE_ADAPTION_BOUNDARY_MAX_PX,
+  SIZE_ADAPTION_BOUNDARY_MIN_PX_,
+  useFontSize,
+} from './state'
 
 const CurrencySelectButton = styled(Button).attrs({ variant: 'text', scale: 'sm' })`
   padding: 24px 4px;
@@ -90,55 +99,55 @@ const useSizeAdaption = (value: string, currencySymbol?: string, otherCurrencySy
     return currencySymbol
   }, [currencySymbol, isMobile])
 
-  // useEffect(() => {
-  //   if (!inputRef.current || !symbolRef.current || !wrapperRef.current || !tokenImageRef.current) return
+  useEffect(() => {
+    if (!inputRef.current || !symbolRef.current || !wrapperRef.current || !tokenImageRef.current) return
 
-  //   const inputElement = inputRef.current
-  //   const symbolElement = symbolRef.current
-  //   const logoElement = tokenImageRef.current
+    const inputElement = inputRef.current
+    const symbolElement = symbolRef.current
+    const logoElement = tokenImageRef.current
 
-  //   const wrapperWidth = wrapperRef.current.offsetWidth
-  //   const symbolWidth = symbolElement.offsetWidth
-  //   const inputWidth = inputElement.scrollWidth
-  //   const logoWidth = logoElement.offsetWidth
+    const wrapperWidth = wrapperRef.current.offsetWidth
+    const symbolWidth = symbolElement.offsetWidth
+    const inputWidth = inputElement.scrollWidth
+    const logoWidth = logoElement.offsetWidth
 
-  //   const targetWidth = wrapperWidth - symbolWidth - inputWidth
+    const targetWidth = wrapperWidth - symbolWidth - inputWidth
 
-  //   // Is below lower bound
-  //   if (targetWidth < SIZE_ADAPTION_BOUNDARY_MIN_PX_) {
-  //     const newInputFontSize = handleFontSizeChange(inputElement.style.fontSize, -2)
-  //     inputElement.style.fontSize = newInputFontSize
+    // Is below lower bound
+    if (targetWidth < SIZE_ADAPTION_BOUNDARY_MIN_PX_) {
+      const newInputFontSize = handleFontSizeChange(inputElement.style.fontSize, -2)
+      inputElement.style.fontSize = newInputFontSize
 
-  //     const logoSize = Math.max(logoWidth - 2, MIN_LOGO_SIZE)
+      const logoSize = Math.max(logoWidth - 2, MIN_LOGO_SIZE)
 
-  //     setFontSizesBySymbol(currencySymbol ?? '', handleFontSizeChangeNumerical(newInputFontSize, -2), logoSize)
-  //     // Is above upper bound
-  //   } else if (targetWidth > SIZE_ADAPTION_BOUNDARY_MAX_PX) {
-  //     const newInputFontSize = handleFontSizeChange(inputElement.style.fontSize, 2)
+      setFontSizesBySymbol(currencySymbol ?? '', handleFontSizeChangeNumerical(newInputFontSize, -2), logoSize)
+      // Is above upper bound
+    } else if (targetWidth > SIZE_ADAPTION_BOUNDARY_MAX_PX) {
+      const newInputFontSize = handleFontSizeChange(inputElement.style.fontSize, 2)
 
-  //     inputElement.style.fontSize = newInputFontSize
+      inputElement.style.fontSize = newInputFontSize
 
-  //     const logoSize = Math.min(logoWidth + 2, MAX_LOGO_SIZE)
-  //     setFontSizesBySymbol(currencySymbol ?? '', handleFontSizeChangeNumerical(newInputFontSize, 2), logoSize)
-  //   } else if (
-  //     // Within lower and upper Bounds
-  //     targetWidth > SIZE_ADAPTION_BOUNDARY_MIN_PX_ &&
-  //     targetWidth < SIZE_ADAPTION_BOUNDARY_MAX_PX
-  //   ) {
-  //     setFontSizesBySymbol(
-  //       currencySymbol ?? '',
-  //       handleFontSizeChangeNumerical(inputElement.style.fontSize, 2),
-  //       MAX_LOGO_SIZE,
-  //     )
-  //     inputElement.style.fontSize = `${MAX_INPUT_FONT_SIZE}px`
-  //   }
+      const logoSize = Math.min(logoWidth + 2, MAX_LOGO_SIZE)
+      setFontSizesBySymbol(currencySymbol ?? '', handleFontSizeChangeNumerical(newInputFontSize, 2), logoSize)
+    } else if (
+      // Within lower and upper Bounds
+      targetWidth > SIZE_ADAPTION_BOUNDARY_MIN_PX_ &&
+      targetWidth < SIZE_ADAPTION_BOUNDARY_MAX_PX
+    ) {
+      setFontSizesBySymbol(
+        currencySymbol ?? '',
+        handleFontSizeChangeNumerical(inputElement.style.fontSize, 2),
+        MAX_LOGO_SIZE,
+      )
+      inputElement.style.fontSize = `${MAX_INPUT_FONT_SIZE}px`
+    }
 
-  //   if (value === '') {
-  //     inputElement.style.fontSize = `${MAX_INPUT_FONT_SIZE}px`
+    if (value === '') {
+      inputElement.style.fontSize = `${MAX_INPUT_FONT_SIZE}px`
 
-  //     setFontSizesBySymbol(currencySymbol ?? '', MAX_FONT_SIZE, MAX_LOGO_SIZE)
-  //   }
-  // }, [value, currencySymbol, setFontSizesBySymbol])
+      setFontSizesBySymbol(currencySymbol ?? '', MAX_FONT_SIZE, MAX_LOGO_SIZE)
+    }
+  }, [value, currencySymbol, setFontSizesBySymbol])
 
   useEffect(() => {
     const symbolElement = symbolRef.current
