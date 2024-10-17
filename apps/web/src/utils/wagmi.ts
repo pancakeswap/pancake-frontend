@@ -7,7 +7,7 @@ import memoize from 'lodash/memoize'
 import { Transport } from 'viem'
 import { createConfig, fallback, http } from 'wagmi'
 import { mainnet } from 'wagmi/chains'
-import { coinbaseWallet, injected, safe, walletConnect } from 'wagmi/connectors'
+import { coinbaseWallet, injected, safe, walletConnect, metaMask } from 'wagmi/connectors'
 import { CLIENT_CONFIG, publicClient } from './viem'
 
 export const chains = CHAINS
@@ -33,7 +33,7 @@ export const walletConnectNoQrCodeConnector = walletConnect({
   projectId: 'e542ff314e26ff34de2d4fba98db70bb',
 })
 
-export const metaMaskConnector = injected({ target: 'metaMask', shimDisconnect: false })
+export const metaMaskConnector = metaMask()
 export const trustConnector = injected({ target: 'trust', shimDisconnect: false })
 
 const bloctoConnector = blocto({
@@ -87,6 +87,7 @@ export function createWagmiConfig() {
     ...CLIENT_CONFIG,
 
     connectors: [
+      injected({ target: 'metaMask', shimDisconnect: false }),
       metaMaskConnector,
       injectedConnector,
       safe(),
