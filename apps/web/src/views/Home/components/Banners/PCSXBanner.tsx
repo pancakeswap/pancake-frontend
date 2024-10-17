@@ -79,7 +79,6 @@ const bgXsVariant: GraphicDetail = {
 
 const Desc = () => {
   const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpoints()
 
   return (
     <StyledBannerDesc>
@@ -91,7 +90,6 @@ const Desc = () => {
 export const PCSXBanner = () => {
   const { t } = useTranslation()
   const { isMobile, isSm, isDesktop } = useMatchBreakpoints()
-  console.log({ isMobile, isSm, isDesktop })
 
   const PlayNowAction = (
     <LinkExternalAction

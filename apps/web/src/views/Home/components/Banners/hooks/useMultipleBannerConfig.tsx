@@ -47,15 +47,15 @@ export const useMultipleBannerConfig = () => {
       },
       {
         shouldRender: true,
-        banner: <PCSXBanner />,
-      },
-      {
-        shouldRender: true,
         banner: <TurkeyMeetupBanner />,
       },
       {
         shouldRender: isRenderIFOBannerFromConfig,
         banner: <EigenpieIFOBanner />,
+      },
+      {
+        shouldRender: true,
+        banner: <PCSXBanner />,
       },
       {
         shouldRender: true,

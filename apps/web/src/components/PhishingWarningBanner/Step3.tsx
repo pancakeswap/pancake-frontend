@@ -5,18 +5,6 @@ import { VerticalDivider } from '@pancakeswap/widgets-internal'
 export const Step3 = () => {
   const { t } = useTranslation()
 
-  // const PlayNowAction = (
-  //   <LinkExternalAction
-  //     href="https://pancakeswap.finance/swap?utm_source=Website&utm_medium=homepage&utm_campaign=PCSX&utm_id=PCSX"
-  //     color="#280D5F"
-  //     externalIcon="arrowForward"
-  //   >
-  //     <Flex color="#280D5F" alignItems="center" style={{ whiteSpace: 'nowrap' }}>
-  //       {t('Swap Now')}
-  //     </Flex>
-  //   </LinkExternalAction>
-  // )
-
   return (
     <Flex mr={['6px']} flexDirection="row" alignItems="center">
       <Text bold as="span" color="#FFFFFF" fontSize={['12px', '12px', '14px']}>
