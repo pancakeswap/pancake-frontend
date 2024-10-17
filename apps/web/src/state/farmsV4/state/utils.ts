@@ -16,6 +16,7 @@ export const parseFarmPools = async (
   options: { isFarming?: boolean } = {},
 ): Promise<PoolInfo[]> => {
   const fetchFarmConfig = await fetchAllUniversalFarms()
+  console.log('sss', fetchFarmConfig)
 
   return data.map((pool) => {
     let stableSwapAddress: Address | undefined

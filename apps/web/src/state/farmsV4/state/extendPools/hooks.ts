@@ -98,18 +98,14 @@ export const usePoolInfo = <TPoolType extends PoolInfo>({
   poolAddress: `0x${string}` | undefined
   chainId: number
 }): TPoolType | undefined | null => {
-  console.log('hi', poolAddress, chainId)
   const { data: poolInfo } = useQuery({
     queryKey: ['poolInfo', chainId, poolAddress],
     queryFn: async () => {
       const result = await fetchExplorerPoolInfo(poolAddress ?? '', chainId)
-      console.log('h2', result)
       return result
     },
     enabled: !!poolAddress && !!chainId,
   })
-
-  console.log('usePoolInfo', poolInfo)
 
   return poolInfo as TPoolType | undefined | null
 }
