@@ -56,7 +56,7 @@ function subgraphPoolProviderFactory<M extends PoolMeta, P extends WithTvl>({
     for (const pair of pairs) {
       const metas = getPoolMetas(pair)
       for (const meta of metas) {
-        metaMap.set(meta.address.toLocaleLowerCase() as Address, meta)
+        metaMap.set(meta.id.toLocaleLowerCase() as Address, meta)
       }
     }
     const addresses = Array.from(metaMap.keys())
@@ -75,7 +75,7 @@ function subgraphPoolProviderFactory<M extends PoolMeta, P extends WithTvl>({
 
 const getV3PoolMeta = memoize(
   ([currencyA, currencyB, feeAmount]: [Currency, Currency, FeeAmount]) => ({
-    address: Pool.getAddress(currencyA.wrapped, currencyB.wrapped, feeAmount),
+    id: Pool.getAddress(currencyA.wrapped, currencyB.wrapped, feeAmount),
     currencyA,
     currencyB,
     fee: feeAmount,
@@ -144,7 +144,7 @@ export const getV3PoolSubgraph = subgraphPoolProviderFactory<V3PoolMeta, V3PoolW
         return null
       }
 
-      const { fee, currencyA, currencyB, address } = meta
+      const { fee, currencyA, currencyB, id: address } = meta
       const [token0, token1] = currencyA.wrapped.sortsBefore(currencyB.wrapped)
         ? [currencyA, currencyB]
         : [currencyB, currencyA]
@@ -190,7 +190,7 @@ export const getV2PoolSubgraph = subgraphPoolProviderFactory<PoolMeta, V2PoolWit
     {
       currencyA,
       currencyB,
-      address: computeV2PoolAddress(currencyA.wrapped, currencyB.wrapped),
+      id: computeV2PoolAddress(currencyA.wrapped, currencyB.wrapped),
     },
   ],
   getPoolsFromSubgraph: async ({ addresses, getPoolMetaByAddress, client }) => {
@@ -205,7 +205,7 @@ export const getV2PoolSubgraph = subgraphPoolProviderFactory<PoolMeta, V2PoolWit
         return null
       }
 
-      const { currencyA, currencyB, address } = meta
+      const { currencyA, currencyB, id: address } = meta
       const [token0, token1] = currencyA.wrapped.sortsBefore(currencyB.wrapped)
         ? [currencyA, currencyB]
         : [currencyB, currencyA]
