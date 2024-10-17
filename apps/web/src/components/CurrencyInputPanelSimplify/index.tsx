@@ -148,12 +148,6 @@ const useSizeAdaption = (value: string, currencySymbol?: string, otherCurrencySy
       inputElement.style.fontSize = `${FONT_SIZE.MAX}px`
       setFontSizesBySymbol(currencySymbol ?? '', FONT_SIZE.LARGE, LOGO_SIZE.MAX)
     }
-
-    if (value === '') {
-      inputElement.style.fontSize = `${FONT_SIZE.MAX}px`
-
-      setFontSizesBySymbol(currencySymbol ?? '', FONT_SIZE.LARGE, LOGO_SIZE.MAX)
-    }
   }, [value, currencySymbol, setFontSizesBySymbol, otherCurrencySymbol, isMobile])
 
   useEffect(() => {
