@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Button, ButtonProps } from '@pancakeswap/uikit'
 import { useState } from 'react'
-import { SwitchToBnbChainModal } from './SwitchToBnbCahinModal'
+import { SwitchToBnbChainModal } from './SwitchToBnbChainModal'
 
 export const NextButton: React.FC<ButtonProps> = (props) => {
   const { t } = useTranslation()
