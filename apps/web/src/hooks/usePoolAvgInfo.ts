@@ -3,6 +3,7 @@ import { ChainId } from '@pancakeswap/chains'
 import { useQuery } from '@tanstack/react-query'
 
 import { chainIdToExplorerInfoChainName, explorerApiClient } from 'state/info/api/client'
+import BigNumber from 'bignumber.js'
 
 export interface UsePoolAvgInfoParams {
   address?: string
@@ -22,14 +23,10 @@ export const averageArray = (dataToCalculate: number[]): number => {
 
 interface Info {
   volumeUSD: number
-  tvlUSD: number
-  feeUSD: number
 }
 
 const defaultInfo: Info = {
   volumeUSD: 0,
-  tvlUSD: 0,
-  feeUSD: 0,
 }
 
 export function usePoolAvgInfo({ address = '', chainId, enabled = true }: UsePoolAvgInfoParams) {
@@ -45,7 +42,7 @@ export function usePoolAvgInfo({ address = '', chainId, enabled = true }: UsePoo
         throw new Error('Chain name not found')
       }
 
-      const resp = await explorerApiClient.GET('/cached/pools/v3/{chainName}/{address}', {
+      const resp = await explorerApiClient.GET('/cached/pools/apr/v3/{chainName}/{address}', {
         signal,
         params: {
           path: {
@@ -61,9 +58,7 @@ export function usePoolAvgInfo({ address = '', chainId, enabled = true }: UsePoo
       }
 
       return {
-        volumeUSD: +resp.data.volumeUSD7d / 7,
-        tvlUSD: +resp.data.tvlUSD,
-        feeUSD: (+resp.data.feeUSD7d - +resp.data.protocolFeeUSD7d) / 7,
+        volumeUSD: new BigNumber(resp.data.volumeUSD7d).div(7).decimalPlaces(2).toNumber(),
       }
     },
 
