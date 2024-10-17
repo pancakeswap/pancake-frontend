@@ -74,6 +74,7 @@ export const fetchExplorerPoolInfo = async <TPoolType extends PoolInfo>(
       },
     },
   })
+  console.log('resp', resp)
 
   if (!resp.data) {
     return null
