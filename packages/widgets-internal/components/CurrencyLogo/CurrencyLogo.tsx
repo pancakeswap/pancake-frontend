@@ -49,7 +49,7 @@ export function CurrencyLogo({
 
   if (currency?.isNative) {
     if (currency.chainId === ChainId.BSC) {
-      return <BinanceIcon width={size} style={style} {...props} />;
+      return <BinanceIcon style={style} imageRef={imageRef} width={size} height={size} {...props} />;
     }
     return (
       <StyledLogo
