@@ -52,7 +52,7 @@ const useSizeAdaption = (value: string, currencySymbol?: string, otherCurrencySy
     otherCurrencySymbol ?? '',
   )
 
-  const { isMobile } = useMatchBreakpoints()
+  const { isMobile, isXs, isSm } = useMatchBreakpoints()
 
   const shortedSymbol = useMemo(() => {
     const CUTOFF_FONT_SIZE = isMobile ? { left: 3, right: 3 } : { left: 5, right: 4 }
@@ -78,7 +78,14 @@ const useSizeAdaption = (value: string, currencySymbol?: string, otherCurrencySy
     const valueIsPercentWidthOfWrapper = (value.length * fontWidth * 100) / wrapperWidth
 
     // Breakpoints according to wrapperWidth as container width
-    const BREAKPOINT = isMobile
+    const BREAKPOINT = isXs
+      ? {
+          FIRST: 25,
+          SECOND: 30,
+          THIRD: 37,
+          FOURTH: 45,
+        }
+      : isSm
       ? {
           FIRST: 35,
           SECOND: 40,
@@ -111,7 +118,7 @@ const useSizeAdaption = (value: string, currencySymbol?: string, otherCurrencySy
       inputElement.style.fontSize = `${FONT_SIZE.MAX}px`
       setFontSizesBySymbol(currencySymbol ?? '', FONT_SIZE.LARGE, LOGO_SIZE.MAX)
     }
-  }, [value, currencySymbol, setFontSizesBySymbol, otherCurrencySymbol, isMobile, shortedSymbol])
+  }, [value, currencySymbol, setFontSizesBySymbol, otherCurrencySymbol, isXs, isSm, shortedSymbol])
 
   useEffect(() => {
     const symbolElement = symbolRef.current
