@@ -17,7 +17,7 @@ import useIsRefundable from '../../hooks/useIsRefundable'
 import CollectWinningsButton from '../CollectWinningsButton'
 import PositionTag from '../PositionTag'
 import ReclaimPositionButton from '../ReclaimPositionButton'
-import { formatBnb, getNetPayout } from './helpers'
+import { formatToken, getNetPayout } from './helpers'
 
 interface BetResultProps {
   bet: Bet
@@ -155,12 +155,12 @@ const BetResult: React.FC<React.PropsWithChildren<BetResultProps>> = ({ bet, res
         </Flex>
         <Flex alignItems="center" justifyContent="space-between" mb="16px">
           <Text>{t('Your position')}</Text>
-          <Text>{`${formatBnb(bet.amount, displayedDecimals)} ${tokenSymbol}`}</Text>
+          <Text>{`${formatToken(bet.amount, displayedDecimals)} ${tokenSymbol}`}</Text>
         </Flex>
         <Flex alignItems="start" justifyContent="space-between">
           <Text bold>{isWinner ? t('Your winnings') : t('Your Result')}:</Text>
           <Box style={{ textAlign: 'right' }}>
-            <Text bold color={resultColor}>{`${isWinner ? '+' : '-'}${formatBnb(
+            <Text bold color={resultColor}>{`${isWinner ? '+' : '-'}${formatToken(
               payout,
               displayedDecimals,
             )} ${tokenSymbol}`}</Text>
@@ -177,7 +177,7 @@ const BetResult: React.FC<React.PropsWithChildren<BetResultProps>> = ({ bet, res
                 {t('Amount to collect')}:
               </Text>
               <Flex justifyContent="end">
-                <Text fontSize="14px" color="textSubtle">{`${formatBnb(
+                <Text fontSize="14px" color="textSubtle">{`${formatToken(
                   returned,
                   displayedDecimals,
                 )} ${tokenSymbol}`}</Text>
