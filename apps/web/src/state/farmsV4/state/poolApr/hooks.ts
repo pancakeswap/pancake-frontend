@@ -83,7 +83,7 @@ export const usePoolApr = (
     // calcV3PoolApr depend on pool's TvlUsd
     // so if there are local pool without tvlUsd, don't to fetch queryFn
     // issue: PAN-3698
-    enabled: typeof pool?.tvlUsd !== 'undefined' && !!key,
+    enabled: typeof pool?.tvlUsd !== 'undefined' && !poolApr?.lpApr && !!key,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
