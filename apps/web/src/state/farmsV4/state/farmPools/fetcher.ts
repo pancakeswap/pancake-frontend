@@ -1,10 +1,10 @@
 import { getChainNameInKebabCase } from '@pancakeswap/chains'
 import {
   FarmV4SupportedChainId,
+  fetchAllUniversalFarms,
   masterChefV3Addresses,
   Protocol,
   supportedChainIdV4,
-  UNIVERSAL_FARMS,
 } from '@pancakeswap/farms'
 import { smartChefABI } from '@pancakeswap/pools'
 import { getStableSwapPools } from '@pancakeswap/stable-swap-sdk'
@@ -64,7 +64,9 @@ export const fetchFarmPools = async (
   } catch (error) {
     console.error('Failed to fetch remote pools', error)
   }
-  const localPools = UNIVERSAL_FARMS.filter((farm) => {
+
+  const fetchFarmConfig = await fetchAllUniversalFarms()
+  const localPools = fetchFarmConfig.filter((farm) => {
     return (
       args.protocols?.includes(farm.protocol) &&
       (Array.isArray(args.chainId) ? args.chainId.includes(farm.chainId) : farm.chainId === args.chainId)

@@ -1,15 +1,33 @@
-import { ChainId } from '@pancakeswap/chains'
-import { legacyFarmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
+import {
+  ComputedFarmConfigV3,
+  defineFarmV3ConfigsFromUniversalFarm,
+  fetchUniversalFarms,
+  Protocol,
+  UniversalFarmConfigV3,
+} from '@pancakeswap/farms'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import useAllTradingRewardPair, { RewardStatus, RewardType } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 
 const useTradingRewardTokenList = () => {
   const { chainId } = useActiveChainId()
+  const [farms, setFarms] = useState<ComputedFarmConfigV3[]>([])
+
   const { data } = useAllTradingRewardPair({
     status: RewardStatus.ALL,
     type: RewardType.CAKE_STAKERS,
   })
+
+  useEffect(() => {
+    const fetchFarmV3Config = async () => {
+      if (chainId) {
+        const farmsV3 = await fetchUniversalFarms(chainId, Protocol.V3)
+        setFarms(defineFarmV3ConfigsFromUniversalFarm(farmsV3 as UniversalFarmConfigV3[]))
+      }
+    }
+
+    fetchFarmV3Config()
+  }, [chainId])
 
   const uniqueAddressList = useMemo(() => {
     const currentTime = Date.now() / 1000
@@ -42,13 +60,12 @@ const useTradingRewardTokenList = () => {
       uniqueAddressList
         // eslint-disable-next-line array-callback-return, consistent-return
         .map((list) => {
-          const farms = legacyFarmsV3ConfigChainMap[chainId as ChainId]
           const pair = farms.find((farm) => farm.lpAddress.toLowerCase() === (list as string).toLowerCase())
           if (pair) return pair
         })
         .filter((i) => Boolean(i))
     )
-  }, [uniqueAddressList, chainId])
+  }, [uniqueAddressList, farms])
 
   return {
     tokenPairs,

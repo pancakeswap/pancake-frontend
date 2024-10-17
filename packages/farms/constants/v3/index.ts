@@ -1,35 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
 import { Address } from 'viem'
-import { FarmV3SupportedChainId } from '../../src'
-import { legacyV3ArbFarmConfig } from '../../src/farms/arb'
-import { legacyV3BaseFarmConfig } from '../../src/farms/base'
-import { legacyV3BscFarmConfig } from '../../src/farms/bsc'
-import { legacyV3BscTestnetFarmConfig } from '../../src/farms/bscTestnet'
-import { legacyV3EthereumFarmConfig } from '../../src/farms/eth'
-import { legacyV3LineaFarmConfig } from '../../src/farms/linea'
-import { legacyV3OpBNBFarmConfig } from '../../src/farms/opBNB'
-import { legacyV3OpBNBTestnetFarmConfig } from '../../src/farms/opBnbTestnet'
-import { legacyV3PolygonZkEVMFarmConfig } from '../../src/farms/polygonZkEVM'
-import { legacyV3PolygonZkEVMTestnetFarmConfig } from '../../src/farms/polygonZkEVMTestnet'
-import { legacyV3ZkSyncFarmConfig } from '../../src/farms/zkSync'
-import { legacyV3ZkSyncTestnetFarmConfig } from '../../src/farms/zkSyncTestnet'
-import { ComputedFarmConfigV3 } from '../../src/types'
-
-/** @deprecated */
-export const legacyFarmsV3ConfigChainMap: Record<FarmV3SupportedChainId, ComputedFarmConfigV3[]> = {
-  [ChainId.ETHEREUM]: legacyV3EthereumFarmConfig,
-  [ChainId.BSC]: legacyV3BscFarmConfig,
-  [ChainId.BSC_TESTNET]: legacyV3BscTestnetFarmConfig,
-  [ChainId.ZKSYNC_TESTNET]: legacyV3ZkSyncTestnetFarmConfig,
-  [ChainId.POLYGON_ZKEVM]: legacyV3PolygonZkEVMFarmConfig,
-  [ChainId.POLYGON_ZKEVM_TESTNET]: legacyV3PolygonZkEVMTestnetFarmConfig,
-  [ChainId.ZKSYNC]: legacyV3ZkSyncFarmConfig,
-  [ChainId.ARBITRUM_ONE]: legacyV3ArbFarmConfig,
-  [ChainId.LINEA]: legacyV3LineaFarmConfig,
-  [ChainId.BASE]: legacyV3BaseFarmConfig,
-  [ChainId.OPBNB_TESTNET]: legacyV3OpBNBTestnetFarmConfig,
-  [ChainId.OPBNB]: legacyV3OpBNBFarmConfig,
-}
 
 export type Addresses = {
   [chainId in ChainId]?: Address

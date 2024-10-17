@@ -29,11 +29,13 @@ export const PoolInfo = () => {
   const poolInfo = usePoolInfoByQuery()
   const chainId = useChainIdByQuery()
   const networkName = useChainNameByQuery()
+
   const [currency0, currency1] = useMemo(() => {
     if (!poolInfo) return [undefined, undefined]
     const { token0, token1 } = poolInfo
     return [token0.wrapped, token1.wrapped]
   }, [poolInfo])
+
   const fee = useMemo(() => {
     return new Percent(poolInfo?.feeTier ?? 0n, poolInfo?.feeTierBase)
   }, [poolInfo?.feeTier, poolInfo?.feeTierBase])
