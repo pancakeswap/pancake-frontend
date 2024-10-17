@@ -104,5 +104,7 @@ export const usePoolInfo = <TPoolType extends PoolInfo>({
     enabled: !!poolAddress && !!chainId,
   })
 
+  console.log('usePoolInfo', poolInfo)
+
   return poolInfo as TPoolType | undefined | null
 }
