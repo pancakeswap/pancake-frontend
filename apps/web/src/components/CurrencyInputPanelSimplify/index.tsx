@@ -93,7 +93,7 @@ const useSizeAdaption = (value: string, currencySymbol?: string, otherCurrencySy
         }
 
     // Since the breakpoints are calibrated for 4 character symbols, we need to adjust for longer symbols
-    const symbolExcessLength = shortedSymbol && shortedSymbol.length > 4 ? shortedSymbol?.length - 4 : 0
+    const symbolExcessLength = shortedSymbol && shortedSymbol.length > 4 ? shortedSymbol?.length - 3 : 0
 
     if (valueIsPercentWidthOfWrapper >= BREAKPOINT.FOURTH - symbolExcessLength) {
       inputElement.style.fontSize = `${FONT_SIZE.SMALL}px`
