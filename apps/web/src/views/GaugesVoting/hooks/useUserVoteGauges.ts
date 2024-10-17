@@ -3,9 +3,10 @@ import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useGaugesVotingContract } from 'hooks/useContract'
 import { useMemo } from 'react'
 import { publicClient as getPublicClient } from 'utils/viem'
-import { Hex, isAddressEqual, zeroAddress } from 'viem'
+import { Hex, zeroAddress } from 'viem'
 import { useVeCakeUserInfo } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { CakePoolType } from 'views/CakeStaking/types'
+import { safeGetAddress } from 'utils'
 import { useGauges } from './useGauges'
 
 export type VoteSlope = {
@@ -41,7 +42,7 @@ export const useUserVoteSlopes = () => {
       const delegated = userInfo?.cakePoolType === CakePoolType.DELEGATED
 
       const hasProxy =
-        userInfo?.cakePoolProxy && !isAddressEqual(userInfo?.cakePoolProxy, zeroAddress) && userInfo && !delegated
+        userInfo?.cakePoolProxy && !(safeGetAddress(userInfo?.cakePoolProxy) === zeroAddress) && userInfo && !delegated
 
       const contracts = gauges.map((gauge) => {
         return {

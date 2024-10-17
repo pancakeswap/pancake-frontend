@@ -5,7 +5,8 @@ import { veCakeABI } from 'config/abi/veCake'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useMemo } from 'react'
 import { getVeCakeAddress } from 'utils/addressHelpers'
-import { Address, isAddressEqual, zeroAddress } from 'viem'
+import { Address, zeroAddress } from 'viem'
+import { safeGetAddress } from 'utils'
 import { CakePoolType } from '../types'
 import { useVeCakeUserInfo } from './useVeCakeUserInfo'
 
@@ -15,7 +16,9 @@ export const useProxyVeCakeBalanceOfAtTime = (timestamp: number) => {
 
   const hasProxy = useMemo(() => {
     const delegated = userInfo?.cakePoolType === CakePoolType.DELEGATED
-    return userInfo && userInfo?.cakePoolProxy && !isAddressEqual(userInfo!.cakePoolProxy, zeroAddress) && !delegated
+    return (
+      userInfo && userInfo?.cakePoolProxy && !(safeGetAddress(userInfo!.cakePoolProxy) === zeroAddress) && !delegated
+    )
   }, [userInfo])
 
   const { status, refetch, data } = useReadContract({

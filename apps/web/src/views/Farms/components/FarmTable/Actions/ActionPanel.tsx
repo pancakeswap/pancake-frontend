@@ -24,10 +24,9 @@ import { FC, useContext, useMemo } from 'react'
 import { type V3Farm } from 'state/farms/types'
 import { ChainLinkSupportChains, multiChainPaths } from 'state/info/constant'
 import { css, keyframes, styled } from 'styled-components'
-import { getBlockExploreLink } from 'utils'
+import { getBlockExploreLink, safeGetAddress } from 'utils'
 import { useMerklUserLink } from 'utils/getMerklLink'
 import { unwrappedToken } from 'utils/wrappedCurrency'
-import { isAddressEqual } from 'viem'
 import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
 import { SELECTOR_TYPE } from 'views/AddLiquidityV3/types'
 import { V2Farm } from 'views/Farms/FarmsV3'
@@ -249,7 +248,7 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
 
   const hasBothFarmAndMerkl = useMemo(
     // for now, only rETH-ETH require both farm and merkl, so we hardcode it here
-    () => Boolean(merklLink) && isAddressEqual(farm.lpAddress, '0x2201d2400d30BFD8172104B4ad046d019CA4E7bd'),
+    () => Boolean(merklLink) && safeGetAddress(farm.lpAddress) === '0x2201d2400d30BFD8172104B4ad046d019CA4E7bd',
     [farm.lpAddress, merklLink],
   )
 

@@ -11,7 +11,8 @@ import { getStableSwapPools } from '@pancakeswap/stable-swap-sdk'
 import { FeeAmount, masterChefV3ABI } from '@pancakeswap/v3-sdk'
 import { explorerApiClient } from 'state/info/api/client'
 import { publicClient } from 'utils/viem'
-import { isAddressEqual, type Address } from 'viem'
+import { type Address } from 'viem'
+import { safeGetAddress } from 'utils'
 import { PoolInfo } from '../type'
 import { parseFarmPools } from '../utils'
 
@@ -76,7 +77,7 @@ export const fetchFarmPools = async (
     const pool = remotePools?.find((p) => {
       return (
         p.chainId === farm.chainId &&
-        isAddressEqual(p.lpAddress, farm.lpAddress) &&
+        safeGetAddress(p.lpAddress) === safeGetAddress(farm.lpAddress) &&
         p.protocol === farm.protocol &&
         (p.protocol === Protocol.V3 ? p.pid === farm.pid : true)
       )
@@ -98,7 +99,7 @@ export const fetchFarmPools = async (
     const stablePair =
       farm.protocol === Protocol.STABLE
         ? getStableSwapPools(farm.chainId).find((p) => {
-            return isAddressEqual(p.lpAddress, farm.lpAddress)
+            return safeGetAddress(p.lpAddress) === safeGetAddress(farm.lpAddress)
           })
         : undefined
     let feeTier = 100
