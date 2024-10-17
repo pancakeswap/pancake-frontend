@@ -8,6 +8,8 @@ test('exports', () => {
       "getPositionFarmApr",
       "getPositionFarmAprFactor",
       "FARM_AUCTION_HOSTING_IN_SECONDS",
+      "defineFarmV3Configs",
+      "defineFarmV3ConfigsFromUniversalFarm",
       "fetchAllUniversalFarms",
       "fetchAllUniversalFarmsMap",
       "fetchUniversalFarms",
