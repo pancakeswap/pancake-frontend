@@ -27,16 +27,7 @@ import { FiatLogo } from 'components/Logo/CurrencyLogo'
 import { useCurrencyBalance } from 'state/wallet/hooks'
 import { useAccount } from 'wagmi'
 import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
-import {
-  MAX_FONT_SIZE,
-  MAX_INPUT_FONT_SIZE,
-  MAX_LOGO_SIZE,
-  MIN_FONT_SIZE,
-  MIN_LOGO_SIZE,
-  SIZE_ADAPTION_BOUNDARY_MAX_PX,
-  SIZE_ADAPTION_BOUNDARY_MIN_PX_,
-  useFontSize,
-} from './state'
+import { FONT_SIZE, LOGO_SIZE, useFontSize } from './state'
 
 const CurrencySelectButton = styled(Button).attrs({ variant: 'text', scale: 'sm' })`
   padding: 24px 4px;
@@ -46,25 +37,22 @@ const CurrencySelectButton = styled(Button).attrs({ variant: 'text', scale: 'sm'
   }
 `
 const SymbolText = styled(Text)`
-  font-size: ${MAX_FONT_SIZE}px;
-
-  will-change: font-size;
-  transition: font-size 0.1s linear;
+  font-size: ${FONT_SIZE.LARGE}px;
 `
 
-const handleFontSizeChange = (fontSize: string, operation: number) => {
-  const currentFontSize = parseInt(fontSize.replace('px', ''), 10)
-  if ((currentFontSize > MIN_FONT_SIZE && operation < 0) || (currentFontSize < MAX_INPUT_FONT_SIZE && operation > 0))
-    return `${currentFontSize + operation}px`
-  return fontSize
-}
+// const handleFontSizeChange = (fontSize: string, operation: number) => {
+//   const currentFontSize = parseInt(fontSize.replace('px', ''), 10)
+//   if ((currentFontSize > MIN_FONT_SIZE && operation < 0) || (currentFontSize < MAX_INPUT_FONT_SIZE && operation > 0))
+//     return `${currentFontSize + operation}px`
+//   return fontSize
+// }
 
-const handleFontSizeChangeNumerical = (fontSize: string, operation: number) => {
-  const currentFontSize = parseInt(fontSize.replace('px', ''), 10)
-  if ((currentFontSize > MIN_FONT_SIZE && operation < 0) || (currentFontSize < MAX_FONT_SIZE && operation > 0))
-    return currentFontSize + operation
-  return Math.min(parseInt(fontSize.replace('px', ''), 10), MAX_FONT_SIZE)
-}
+// const handleFontSizeChangeNumerical = (fontSize: string, operation: number) => {
+//   const currentFontSize = parseInt(fontSize.replace('px', ''), 10)
+//   if ((currentFontSize > MIN_FONT_SIZE && operation < 0) || (currentFontSize < MAX_FONT_SIZE && operation > 0))
+//     return currentFontSize + operation
+//   return Math.min(parseInt(fontSize.replace('px', ''), 10), MAX_FONT_SIZE)
+// }
 
 const useSizeAdaption = (value: string, currencySymbol?: string, otherCurrencySymbol?: string) => {
   const inputRef = useRef<HTMLInputElement>(null)
@@ -103,51 +91,70 @@ const useSizeAdaption = (value: string, currencySymbol?: string, otherCurrencySy
     if (!inputRef.current || !symbolRef.current || !wrapperRef.current || !tokenImageRef.current) return
 
     const inputElement = inputRef.current
-    const symbolElement = symbolRef.current
-    const logoElement = tokenImageRef.current
+    // const symbolElement = symbolRef.current
+    // const logoElement = tokenImageRef.current
 
     const wrapperWidth = wrapperRef.current.offsetWidth
-    const symbolWidth = symbolElement.offsetWidth
-    const inputWidth = inputElement.scrollWidth
-    const logoWidth = logoElement.offsetWidth
+    // const symbolWidth = symbolElement.offsetWidth
+    // const inputWidth = inputElement.scrollWidth
+    // const logoWidth = logoElement.offsetWidth
 
-    const targetWidth = wrapperWidth - symbolWidth - inputWidth
+    // const targetWidth = wrapperWidth - symbolWidth - inputWidth
 
-    // Is below lower bound
-    if (targetWidth < SIZE_ADAPTION_BOUNDARY_MIN_PX_) {
-      const newInputFontSize = handleFontSizeChange(inputElement.style.fontSize, -2)
-      inputElement.style.fontSize = newInputFontSize
+    const fontWidth = 8 // approx width of a character in pixels when large font size
 
-      const logoSize = Math.max(logoWidth - 2, MIN_LOGO_SIZE)
+    const valueIsPercentWidthOfWrapper = (value.length * fontWidth * 100) / wrapperWidth
 
-      setFontSizesBySymbol(currencySymbol ?? '', handleFontSizeChangeNumerical(newInputFontSize, -2), logoSize)
-      // Is above upper bound
-    } else if (targetWidth > SIZE_ADAPTION_BOUNDARY_MAX_PX) {
-      const newInputFontSize = handleFontSizeChange(inputElement.style.fontSize, 2)
+    // console.log('Important Values for Testing', currencySymbol, {
+    //   textLength: value.length,
+    //   inputWidth,
+    //   textWidth: value.length * fontWidth,
+    //   valueIsPercentWidthOfWrapper,
+    // })
 
-      inputElement.style.fontSize = newInputFontSize
+    // Breakpoints according to wrapperWidth as container width
+    const BREAKPOINT = isMobile
+      ? {
+          FIRST: 35,
+          SECOND: 40,
+          THIRD: 44,
+          FOURTH: 50,
+        }
+      : {
+          FIRST: 40,
+          SECOND: 45,
+          THIRD: 50,
+          FOURTH: 57,
+        }
 
-      const logoSize = Math.min(logoWidth + 2, MAX_LOGO_SIZE)
-      setFontSizesBySymbol(currencySymbol ?? '', handleFontSizeChangeNumerical(newInputFontSize, 2), logoSize)
-    } else if (
-      // Within lower and upper Bounds
-      targetWidth > SIZE_ADAPTION_BOUNDARY_MIN_PX_ &&
-      targetWidth < SIZE_ADAPTION_BOUNDARY_MAX_PX
-    ) {
-      setFontSizesBySymbol(
-        currencySymbol ?? '',
-        handleFontSizeChangeNumerical(inputElement.style.fontSize, 2),
-        MAX_LOGO_SIZE,
-      )
-      inputElement.style.fontSize = `${MAX_INPUT_FONT_SIZE}px`
+    if (valueIsPercentWidthOfWrapper >= BREAKPOINT.FOURTH) {
+      // console.log(currencySymbol, '---FOURTH BREAKPOINT HIT---')
+      inputElement.style.fontSize = `${FONT_SIZE.SMALL}px`
+      setFontSizesBySymbol(currencySymbol ?? '', FONT_SIZE.SMALL, LOGO_SIZE.SMALL)
+    } else if (valueIsPercentWidthOfWrapper >= BREAKPOINT.THIRD) {
+      // console.log(currencySymbol, '---THIRD BREAKPOINT HIT---')
+      inputElement.style.fontSize = `${FONT_SIZE.MEDIUM}px`
+      setFontSizesBySymbol(currencySymbol ?? '', FONT_SIZE.SMALL, LOGO_SIZE.MEDIUM)
+    } else if (valueIsPercentWidthOfWrapper >= BREAKPOINT.SECOND) {
+      // console.log(currencySymbol, '---SECOND BREAKPOINT HIT---')
+      inputElement.style.fontSize = `${FONT_SIZE.LARGE}px`
+      setFontSizesBySymbol(currencySymbol ?? '', FONT_SIZE.MEDIUM, LOGO_SIZE.LARGE)
+    } else if (valueIsPercentWidthOfWrapper >= BREAKPOINT.FIRST) {
+      // console.log(currencySymbol, '---FIRST BREAKPOINT HIT---')
+      inputElement.style.fontSize = `${FONT_SIZE.X_LARGE}px`
+      setFontSizesBySymbol(currencySymbol ?? '', FONT_SIZE.MEDIUM, LOGO_SIZE.X_LARGE)
+    } else {
+      // console.log(currencySymbol, '---BACK TO NORMAL NO BREAKPOINT HIT---')
+      inputElement.style.fontSize = `${FONT_SIZE.MAX}px`
+      setFontSizesBySymbol(currencySymbol ?? '', FONT_SIZE.LARGE, LOGO_SIZE.MAX)
     }
 
     if (value === '') {
-      inputElement.style.fontSize = `${MAX_INPUT_FONT_SIZE}px`
+      inputElement.style.fontSize = `${FONT_SIZE.MAX}px`
 
-      setFontSizesBySymbol(currencySymbol ?? '', MAX_FONT_SIZE, MAX_LOGO_SIZE)
+      setFontSizesBySymbol(currencySymbol ?? '', FONT_SIZE.LARGE, LOGO_SIZE.MAX)
     }
-  }, [value, currencySymbol, setFontSizesBySymbol])
+  }, [value, currencySymbol, setFontSizesBySymbol, otherCurrencySymbol, isMobile])
 
   useEffect(() => {
     const symbolElement = symbolRef.current
@@ -330,16 +337,14 @@ const CurrencyInputPanelSimplify = memo(function CurrencyInputPanel({
                   <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={16} margin />
                 ) : currency ? (
                   id === 'onramp-input' ? (
-                    <FiatLogo currency={currency} size={`${MAX_LOGO_SIZE}px`} style={{ marginRight: '8px' }} />
+                    <FiatLogo currency={currency} size={`${LOGO_SIZE.MAX}px`} style={{ marginRight: '8px' }} />
                   ) : (
                     <CurrencyLogo
                       imageRef={tokenImageRef}
                       currency={currency}
-                      size={`${MAX_LOGO_SIZE}px`}
+                      size={`${LOGO_SIZE.MAX}px`}
                       style={{
                         marginRight: '8px',
-                        willChange: 'width',
-                        transition: 'width 0.1s linear',
                       }}
                     />
                   )
