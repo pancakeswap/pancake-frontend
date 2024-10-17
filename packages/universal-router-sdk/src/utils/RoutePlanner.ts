@@ -1,13 +1,6 @@
 import { Hex } from 'viem'
-import {
-  ABIParametersType,
-  ActionUsed,
-  CommandType,
-  CommandUsed,
-  createAction,
-  createCommand,
-  V4ActionsABIParametersType,
-} from './routerCommands'
+import { ABIParametersType, CommandType, CommandUsed, createCommand } from './createCommand'
+import { ActionUsed, createAction, V4ActionsABIParametersType } from './createV4Action'
 
 export class RoutePlanner {
   commands: Hex
@@ -24,9 +17,9 @@ export class RoutePlanner {
   }
 
   addAction<TCommandType extends ActionUsed>(type: TCommandType, parameters: V4ActionsABIParametersType<TCommandType>) {
-    const command = createAction(type, parameters)
-    this.inputs.push(command.encodedInput)
-    this.commands = this.commands.concat(command.type.toString(16).padStart(2, '0')) as Hex
+    const action = createAction(type, parameters)
+    this.inputs.push(action.encodedInput)
+    this.commands = this.commands.concat(action.type.toString(16).padStart(2, '0')) as Hex
   }
 
   addCommand<TCommandType extends CommandUsed>(

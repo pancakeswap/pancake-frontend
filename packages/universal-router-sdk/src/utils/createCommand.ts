@@ -5,9 +5,6 @@ export type ABIType = { [key in CommandUsed]: readonly AbiParameter[] }
 export type ABIParametersType<TCommandType extends CommandUsed> = AbiParametersToPrimitiveTypes<
   (typeof ABI_PARAMETER)[TCommandType]
 >
-export type V4ActionsABIParametersType<TCommandType extends ActionUsed> = AbiParametersToPrimitiveTypes<
-  (typeof V4ACTIONS_ABI_PARAMETER)[TCommandType]
->
 
 /**
  * CommandTypes
@@ -87,17 +84,6 @@ export enum CommandType {
   // PANCAKE_NFT_WBNB = 0x25,
 }
 
-export enum V4ActionType {
-  CL_SWAP_EXACT_IN_SINGLE = 0x04,
-  CL_SWAP_EXACT_IN = 0x05,
-  CL_SWAP_EXACT_OUT_SINGLE = 0x06,
-  CL_SWAP_EXACT_OUT = 0x07,
-  BIN_SWAP_EXACT_IN_SINGLE = 0x24,
-  BIN_SWAP_EXACT_IN = 0x25,
-  BIN_SWAP_EXACT_OUT_SINGLE = 0x26,
-  BIN_SWAP_EXACT_OUT = 0x27,
-}
-
 const ABI_STRUCT_PERMIT_DETAILS = `
 struct PermitDetails {
   address token;
@@ -128,17 +114,6 @@ struct AllowanceTransferDetails {
   address to;
   uint160 amount;
   address token;
-}
-`.replaceAll('\n', '')
-
-const ABI_STRUCT_POOL_KEY = `
-struct PoolKey {
-    Currency currency0;
-    Currency currency1;
-    IHooks hooks;
-    IPoolManager poolManager;
-    uint24 fee;
-    bytes32 parameters;
 }
 `.replaceAll('\n', '')
 
@@ -220,39 +195,11 @@ export const ABI_PARAMETER = {
   [CommandType.V4_SWAP]: parseAbiParameters('bytes actions, bytes[] params'),
 }
 
-export const V4ACTIONS_ABI_PARAMETER = {
-  [V4ActionType.CL_SWAP_EXACT_IN_SINGLE]: parseAbiParameters([
-    'PoolKey poolKey, bool zeroForOne, uint128 amountIn, uint128 amountOutMinimum, uint160 sqrtPriceLimitX96, bytes hookData',
-  ]),
-  [V4ActionType.CL_SWAP_EXACT_IN]: parseAbiParameters('uint256 amountIn, uint256 amountOutMin, bytes path'),
-  [V4ActionType.CL_SWAP_EXACT_OUT_SINGLE]: parseAbiParameters('uint256 amountOut, uint256 amountInMax, bytes path'),
-  [V4ActionType.CL_SWAP_EXACT_OUT]: parseAbiParameters('uint256 amountOut, uint256 amountInMax, bytes path'),
-  [V4ActionType.BIN_SWAP_EXACT_IN_SINGLE]: parseAbiParameters('uint256 amountIn, uint256 amountOutMin, bytes path'),
-  [V4ActionType.BIN_SWAP_EXACT_IN]: parseAbiParameters('uint256 amountIn, uint256 amountOutMin, bytes path'),
-  [V4ActionType.BIN_SWAP_EXACT_OUT_SINGLE]: parseAbiParameters('uint256 amountOut, uint256 amountInMax, bytes path'),
-  [V4ActionType.BIN_SWAP_EXACT_OUT]: parseAbiParameters('uint256 amountOut, uint256 amountInMax, bytes path'),
-}
-
 export type CommandUsed = keyof typeof ABI_PARAMETER
-export type ActionUsed = keyof typeof V4ACTIONS_ABI_PARAMETER
 
 export type RouterCommand = {
   type: CommandUsed
   encodedInput: Hex
-}
-
-export type RouterAction = {
-  type: ActionUsed
-  encodedInput: Hex
-}
-
-export function createAction<TCommandType extends ActionUsed>(
-  type: TCommandType,
-  parameters: V4ActionsABIParametersType<TCommandType>,
-): RouterAction {
-  // const params = parameters.filter((param) => param !== null)
-  const encodedInput = encodeAbiParameters(V4ACTIONS_ABI_PARAMETER[type], parameters as any)
-  return { type, encodedInput }
 }
 
 export function createCommand<TCommandType extends CommandUsed>(

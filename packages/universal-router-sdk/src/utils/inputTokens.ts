@@ -22,10 +22,6 @@ export type InputTokenOptions = {
   permit2TransferFrom?: Permit2TransferFrom
 }
 
-export function encodePermit(planner: RoutePlanner, permit2: Permit2Signature): void {
-  planner.addCommand(CommandType.PERMIT2_PERMIT, [permit2, permit2.signature as `0x${string}`])
-}
-
 // Handles the encoding of commands needed to gather input tokens for a trade
 // Approval: The router approving another address to take tokens.
 //   note: Only seaport and sudoswap support this action. Approvals are left open.

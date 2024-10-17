@@ -7,6 +7,7 @@ import { UniversalRouterABI } from './abis/UniversalRouter'
 import { PancakeSwapTrade } from './entities/protocols/pancakeswap'
 import { PancakeSwapOptions, SwapRouterConfig } from './entities/types'
 import { RoutePlanner } from './utils/RoutePlanner'
+import { encodePermit } from './utils/encodePermit'
 
 export abstract class PancakeSwapUniversalRouter {
   /**
@@ -15,6 +16,7 @@ export abstract class PancakeSwapUniversalRouter {
    * @param options options for the call parameters
    */
   public static swapERC20CallParameters(
+    planner: RoutePlanner,
     trade: Omit<SmartRouterTrade<TradeType>, 'gasEstimate'>,
     options: PancakeSwapOptions,
   ): MethodParameters {
@@ -24,7 +26,7 @@ export abstract class PancakeSwapUniversalRouter {
     invariant(!(inputCurrency.isNative && !!options.inputTokenPermit), 'NATIVE_INPUT_PERMIT')
 
     if (options.inputTokenPermit && typeof options.inputTokenPermit === 'object') {
-      tradeCommand.addPermit(options.inputTokenPermit)
+      encodePermit(planner, options.inputTokenPermit)
     }
 
     const nativeCurrencyValue = inputCurrency.isNative
