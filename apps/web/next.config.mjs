@@ -87,6 +87,9 @@ const config = {
       },
     ],
   },
+  env: {
+    NEXT_PUBLIC_EXPLORE_API_ENDPOINT:'https://explorer-api-svvg8.ondigitalocean.app'
+  },
   async rewrites() {
     return [
       {
