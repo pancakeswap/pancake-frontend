@@ -1,12 +1,12 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ArrowForwardIcon, Box, Flex, Link, Text } from '@pancakeswap/uikit'
+import { ArrowForwardIcon, Box, Link, Text } from '@pancakeswap/uikit'
 import { VerticalDivider } from '@pancakeswap/widgets-internal'
 
 export const Step3 = () => {
   const { t } = useTranslation()
 
   return (
-    <Flex mr={['6px']} flexDirection="row" alignItems="center">
+    <Box mr={['6px']}>
       <Text bold as="span" color="#FFFFFF" fontSize={['12px', '12px', '14px']}>
         {t('Enjoy')}
       </Text>
@@ -21,30 +21,27 @@ export const Step3 = () => {
       </Text>
       <Link
         external
-        display="inline !important"
+        display="inline-flex !important"
+        verticalAlign="baseline"
         showExternalIcon
         fontSize={['12px', '12px', '14px']}
         href="https://pancakeswap.finance/swap?utm_source=Website&utm_medium=homepage&utm_campaign=PCSX&utm_id=PCSX"
       >
-        <Box
+        {t('Swap Now')}
+        <ArrowForwardIcon
           style={{
-            display: 'flex',
-            verticalAlign: 'middle',
-            flexDirection: 'row',
+            fill: '#53DEE9',
           }}
-        >
-          {t('Swap Now')}
-          <ArrowForwardIcon
-            style={{
-              fill: '#53DEE9',
-            }}
-          />
-        </Box>
+        />
       </Link>
       <VerticalDivider
         bg="#53DEE9"
         style={{
+          display: 'inline-block',
+          verticalAlign: 'middle',
+          height: '18px',
           opacity: 0.4,
+          width: '1px',
           marginLeft: '0px',
           marginRight: '8px',
         }}
@@ -58,6 +55,6 @@ export const Step3 = () => {
       >
         {t('Learn More')}
       </Link>
-    </Flex>
+    </Box>
   )
 }
