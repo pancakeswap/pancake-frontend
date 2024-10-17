@@ -1,11 +1,11 @@
-import { Flex, Box, Text, Button, LogoRoundIcon, Checkbox, Link } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { useRouter } from 'next/router'
-import { useState, useMemo } from 'react'
+import { Box, Button, Checkbox, Flex, Link, LogoRoundIcon, Text } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
-import { useAccount } from 'wagmi'
 import ConnectWalletButton from 'components/ConnectWalletButton'
+import { useRouter } from 'next/router'
+import { useMemo, useState } from 'react'
 import useUserExist from 'views/AffiliatesProgram/hooks/useUserExist'
+import { useAccount } from 'wagmi'
 
 interface WelcomePageProps {
   isLoading: boolean
@@ -61,10 +61,10 @@ const WelcomePage: React.FC<React.PropsWithChildren<WelcomePageProps>> = ({ isLo
             {!noPerps && (
               <>
                 <Text color="secondary" bold as="span" m="0 4px">
-                  20%
+                  5%
                 </Text>
                 <Text color="textSubtle" as="span" m="0 4px">
-                  {t('discount on most Perpetual trading fees')}
+                  {t('discount on most Orderbook Perpetual trading fees')}
                 </Text>
               </>
             )}
