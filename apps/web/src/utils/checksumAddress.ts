@@ -25,10 +25,7 @@ export function checksumAddress(address_: Address): Address {
 }
 
 function isAddress(address: string): address is Address {
-  const result = (() => {
-    if (!addressRegex.test(address)) return false
-    if (address.toLowerCase() === address) return true
-    return true
-  })()
-  return result
+  if (!addressRegex.test(address)) return false
+  if (address.toLowerCase() === address) return true
+  return true
 }
