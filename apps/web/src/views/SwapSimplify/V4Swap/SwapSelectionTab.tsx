@@ -1,3 +1,4 @@
+import { useTranslation } from '@pancakeswap/localization'
 import { ButtonMenu, ButtonMenuItem, ChartDisableIcon, ChartIcon, IconButton } from '@pancakeswap/uikit'
 import GlobalSettings from 'components/Menu/GlobalSettings'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -47,6 +48,7 @@ export const SwapSelection = ({
   withToolkit?: boolean
   style?: React.CSSProperties
 }) => {
+  const { t } = useTranslation()
   const router = useRouter()
 
   const onSelect = useCallback(
@@ -99,9 +101,9 @@ export const SwapSelection = ({
         noButtonMargin
         fullWidth
       >
-        <StyledButtonMenuItem>Swap</StyledButtonMenuItem>
-        <StyledButtonMenuItem {...tSwapProps}>TWAP</StyledButtonMenuItem>
-        <StyledButtonMenuItem {...tSwapProps}>Limit</StyledButtonMenuItem>
+        <StyledButtonMenuItem>{t('Swap')}</StyledButtonMenuItem>
+        <StyledButtonMenuItem {...tSwapProps}>{t('TWAP')}</StyledButtonMenuItem>
+        <StyledButtonMenuItem {...tSwapProps}>{t('Limit')}</StyledButtonMenuItem>
       </ButtonMenu>
       {isChartSupported && withToolkit && (
         <ColoredIconButton
