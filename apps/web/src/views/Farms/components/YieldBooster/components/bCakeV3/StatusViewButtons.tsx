@@ -5,20 +5,17 @@ import { NextButton } from 'components/CrossChainVeCakeModal/components/NextButt
 import { SyncButton } from 'components/CrossChainVeCakeModal/components/SyncButton'
 import { useStatusViewVeCakeWellSync } from 'components/CrossChainVeCakeModal/hooks/useMultichainVeCakeWellSynced'
 import NextLink from 'next/link'
-import { useMemo } from 'react'
-import { useAccount } from 'wagmi'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 
 export const StatusViewButtons: React.FC<{
   updateButton: React.ReactElement | null
   locked: boolean
   isTableView?: boolean
 }> = ({ updateButton, locked, isTableView = false }) => {
-  const { chainId, address: account } = useAccount()
+  const { account, chainId } = useAccountActiveChain()
   const { t } = useTranslation()
   const { isVeCakeWillSync } = useStatusViewVeCakeWellSync(chainId)
-  const isBnbChain = useMemo(() => {
-    return chainId === ChainId.BSC
-  }, [chainId])
+  const isBnbChain = chainId === ChainId.BSC
   return (
     <>
       {!locked &&
