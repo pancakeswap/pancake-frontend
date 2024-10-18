@@ -1,22 +1,132 @@
-import { getChainNameInKebabCase } from '@pancakeswap/chains'
+import { ChainId, getChainNameInKebabCase } from '@pancakeswap/chains'
 import {
   FarmV4SupportedChainId,
-  masterChefV3Addresses,
   Protocol,
-  supportedChainIdV4,
   UNIVERSAL_FARMS,
+  masterChefV3Addresses,
+  supportedChainIdV4,
 } from '@pancakeswap/farms'
 import { smartChefABI } from '@pancakeswap/pools'
 import { getStableSwapPools } from '@pancakeswap/stable-swap-sdk'
 import { FeeAmount, masterChefV3ABI } from '@pancakeswap/v3-sdk'
+import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
+import { GraphQLClient, gql } from 'graphql-request'
+import groupBy from 'lodash/groupBy'
 import { explorerApiClient } from 'state/info/api/client'
+import { v3Clients } from 'utils/graphql'
 import { publicClient } from 'utils/viem'
 import { isAddressEqual, type Address } from 'viem'
 import { PoolInfo } from '../type'
 import { parseFarmPools } from '../utils'
 
+dayjs.extend(utc)
+
 const DEFAULT_PROTOCOLS: Protocol[] = [Protocol.V3, Protocol.V2, Protocol.STABLE]
 const DEFAULT_CHAINS: FarmV4SupportedChainId[] = Object.values(supportedChainIdV4)
+
+type PoolIdentifier = {
+  id: string
+  chainId: ChainId
+  protocol: 'v2' | 'v3' | 'stable' | 'v4cl' | 'v4bin'
+}
+
+type WithTvlAndVolume = {
+  tvlUSD: string
+  volumeUSD24h: string
+}
+
+type PoolWithTvlVolume = PoolIdentifier & WithTvlAndVolume
+
+type V3PoolResult = {
+  poolDayDatas: {
+    pool: {
+      id: string
+    }
+    volumeUSD: string
+    tvlUSD: string
+  }[]
+}
+
+function getPoolKey({ id, chainId, protocol }: PoolIdentifier): string {
+  return `${chainId}_${id}_${protocol}`
+}
+
+function fetchV3PoolsTvlVolumeFromSubgraph(pools: PoolIdentifier[]): Promise<PoolWithTvlVolume[]>[] {
+  const groupByChain = groupBy(pools, (p) => p.chainId)
+  const res = Object.keys(groupByChain).map(async (chain) => {
+    const poolsOnChain = groupByChain[chain]
+    const chainId = Number(chain) as ChainId
+    // NOTE: only fix bsc tvl and volume
+    if (chainId !== ChainId.BSC) {
+      return []
+    }
+    const client: GraphQLClient = v3Clients[chainId]
+    if (!client) {
+      return []
+    }
+    const result = await client.request<V3PoolResult>(
+      gql`
+        query pools($addresses: [String!]!, $startAt: Int!) {
+          poolDayDatas(first: 1000, where: { date_gt: $startAt, pool_in: $addresses }) {
+            volumeUSD
+            tvlUSD
+            pool {
+              id
+            }
+          }
+        }
+      `,
+      {
+        addresses: poolsOnChain.map((p) => p.id),
+        startAt: dayjs().utc().startOf('day').subtract(1, 'days').unix(),
+      },
+    )
+    return result.poolDayDatas.map((data) => ({
+      id: data.pool.id,
+      chainId,
+      protocol: 'v3' as const,
+      tvlUSD: data.tvlUSD,
+      volumeUSD24h: data.volumeUSD,
+    }))
+  })
+  return res
+}
+
+function createSubgraphTvlVolumeFetcher() {
+  let cache: {
+    [key: string]: PoolWithTvlVolume
+  } = {}
+
+  return async function fetchTvlVolumeFromSubgraph(pools: PoolIdentifier[]): Promise<{
+    [key: string]: PoolWithTvlVolume
+  }> {
+    const groupByProtocol = groupBy(
+      pools.filter((p) => !cache[getPoolKey(p)]),
+      (p) => p.protocol,
+    )
+    const v3Pools = groupByProtocol.v3
+    const res = await Promise.allSettled(fetchV3PoolsTvlVolumeFromSubgraph(v3Pools))
+    const data = res.reduce<{ [key: string]: PoolWithTvlVolume }>((acc, cur) => {
+      if (cur.status === 'rejected') {
+        return acc
+      }
+      return cur.value.reduce(
+        (list, p) => ({
+          ...list,
+          [getPoolKey(p)]: p,
+        }),
+        acc,
+      )
+    }, {})
+    cache = {
+      ...cache,
+      ...data,
+    }
+    return cache
+  }
+}
+const fetchTvlVolumeFromSubgraph = createSubgraphTvlVolumeFetcher()
 
 export const fetchExplorerFarmPools = async (
   args: {
@@ -44,8 +154,20 @@ export const fetchExplorerFarmPools = async (
   if (!resp.data) {
     return []
   }
+  const tvlAndVolume = await fetchTvlVolumeFromSubgraph(resp.data)
 
-  return parseFarmPools(resp.data, { isFarming: true })
+  return parseFarmPools(
+    resp.data.map((p) => {
+      const infoFromSubgraph = tvlAndVolume[getPoolKey(p)]
+      if (!infoFromSubgraph) return p
+      return {
+        ...p,
+        tvlUSD: infoFromSubgraph.tvlUSD,
+        volumeUSD24h: infoFromSubgraph.volumeUSD24h,
+      }
+    }),
+    { isFarming: true },
+  )
 }
 
 export const fetchFarmPools = async (
