@@ -2,24 +2,37 @@ import { ChainId } from '@pancakeswap/chains'
 import { Currency } from '@pancakeswap/sdk'
 import { TokenAddressMap } from '@pancakeswap/token-lists'
 import memoize from 'lodash/memoize'
-import { Address, getAddress } from 'viem'
+import { Address, keccak256, stringToBytes } from 'viem'
 import { bsc } from 'wagmi/chains'
 import { chains } from './wagmi'
 
 export const isAddressEqual = (a?: any, b?: any) => {
   if (!a || !b) return false
-  if (typeof a === 'string' && typeof b === 'string') {
-    let a_ = a
-    let b_ = b
-    if (!a.startsWith('0x')) {
-      a_ = `0x${a}`
+  const a_ = safeGetAddress(a)
+  if (!a_) return false
+  const b_ = safeGetAddress(b)
+  if (!b_) return false
+  return a_ === b_
+}
+
+export function checksumAddress(address_: Address): Address {
+  const hexAddress = address_.substring(2).toLowerCase()
+  const hash = keccak256(stringToBytes(hexAddress), 'bytes')
+
+  const address = hexAddress.split('')
+  for (let i = 0; i < 40; i += 2) {
+    // eslint-disable-next-line no-bitwise
+    if (hash[i >> 1] >> 4 >= 8 && address[i]) {
+      address[i] = address[i].toUpperCase()
     }
-    if (!b.startsWith('0x')) {
-      b_ = `0x${b}`
+    // eslint-disable-next-line no-bitwise
+    if ((hash[i >> 1] & 0x0f) >= 8 && address[i + 1]) {
+      address[i + 1] = address[i + 1].toUpperCase()
     }
-    return a_.toLowerCase() === b_.toLowerCase()
   }
-  return false
+
+  const result = `0x${address.join('')}` as const
+  return result
 }
 
 // returns the checksummed address if the address is valid, otherwise returns undefined
@@ -29,7 +42,7 @@ export const safeGetAddress = memoize((value: any): Address | undefined => {
     if (typeof value === 'string' && !value.startsWith('0x')) {
       value_ = `0x${value}`
     }
-    return getAddress(value_)
+    return checksumAddress(value_)
   } catch {
     return undefined
   }
