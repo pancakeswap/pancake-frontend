@@ -19,6 +19,8 @@ export const GELATO_NATIVE = '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'
 
 export const EXCHANGE_HELP_URLS = 'https://docs.pancakeswap.finance/help'
 
+export const OPTIONS_URL = 'https://pancakeswap.stryke.xyz'
+
 export const QUERY_SETTINGS_IMMUTABLE = {
   refetchOnReconnect: false,
   refetchOnMount: false,
