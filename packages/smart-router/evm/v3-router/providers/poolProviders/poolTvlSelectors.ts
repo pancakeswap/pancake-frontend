@@ -56,7 +56,10 @@ function poolSelectorFactory<P extends WithTvl>({
           .sort(sortByTvl)
           .slice(0, POOL_SELECTION_CONFIG.topNWithEachBaseToken)
       })
-      .reduce<P[]>((acc, cur) => [...acc, ...cur], [])
+      .reduce<P[]>((acc, cur) => {
+        acc.push(...cur)
+        return acc
+      }, [])
       .sort(sortByTvl)
       .slice(0, POOL_SELECTION_CONFIG.topNWithBaseToken)
 
@@ -79,7 +82,10 @@ function poolSelectorFactory<P extends WithTvl>({
           .sort(sortByTvl)
           .slice(0, POOL_SELECTION_CONFIG.topNWithEachBaseToken)
       })
-      .reduce<P[]>((acc, cur) => [...acc, ...cur], [])
+      .reduce<P[]>((acc, cur) => {
+        acc.push(...cur)
+        return acc
+      }, [])
       .sort(sortByTvl)
       .slice(0, POOL_SELECTION_CONFIG.topNWithBaseToken)
 
@@ -185,9 +191,17 @@ function poolSelectorFactory<P extends WithTvl>({
             )
           })
         })
-        .reduce<P[]>((acc, cur) => [...acc, ...cur], [])
+        .reduce<P[]>((acc, cur) => {
+          acc.push(...cur)
+          return acc
+        }, [])
         // Uniq
-        .reduce<P[]>((acc, cur) => (acc.some((p) => p === cur) ? acc : [...acc, cur]), [])
+        .reduce<P[]>((acc, cur) => {
+          if (!acc.some((p) => p === cur)) {
+            acc.push(cur)
+          }
+          return acc
+        }, [])
         .sort(sortByTvl)
         .slice(0, POOL_SELECTION_CONFIG.topNSecondHop)
 

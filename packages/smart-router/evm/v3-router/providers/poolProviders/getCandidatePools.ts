@@ -43,5 +43,8 @@ export async function getCandidatePools({
     }),
   )
 
-  return poolSets.reduce<Pool[]>((acc, cur) => [...acc, ...cur], [])
+  return poolSets.reduce<Pool[]>((acc, cur) => {
+    acc.push(...cur)
+    return acc
+  }, [])
 }
