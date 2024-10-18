@@ -10,7 +10,7 @@ import { getBlockExploreLink } from 'utils'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
 import { useTokenUsdPriceBigNumber } from 'views/Predictions/hooks/useTokenPrice'
 import { useAccount } from 'wagmi'
-import { formatBnb, getMultiplier, getNetPayout } from '../helpers'
+import { formatToken, getMultiplier, getNetPayout } from '../helpers'
 import PnlChart from './PnlChart'
 import SummaryRow from './SummaryRow'
 
@@ -114,15 +114,15 @@ const PnlTab: React.FC<React.PropsWithChildren<PnlTabProps>> = ({ hasBetHistory,
   const netResultAmount = summary.won.payout - summary.lost.amount
   const netResultIsPositive = netResultAmount > 0
   const avgPositionEntered = summary.entered.amount / summary.entered.rounds
-  const avgBnbWonPerRound = netResultAmount / summary.entered.rounds
-  const avgBnbWonIsPositive = avgBnbWonPerRound > 0
+  const avgTokenWonPerRound = netResultAmount / summary.entered.rounds
+  const avgTokenWonIsPositive = avgTokenWonPerRound > 0
 
   // Guard in case user has only lost rounds
   const hasBestRound = summary.won.bestRound.payout !== 0
 
   const netResultInUsd = tokenPrice.multipliedBy(netResultAmount).toNumber()
-  const avgBnbWonInUsd = tokenPrice.multipliedBy(avgBnbWonPerRound).toNumber()
-  const avgBnbWonInUsdDisplay = !Number.isNaN(avgBnbWonInUsd) ? `~${avgBnbWonInUsd.toFixed(2)}` : '~$0.00'
+  const avgTokenWonInUsd = tokenPrice.multipliedBy(avgTokenWonPerRound).toNumber()
+  const avgTokenWonInUsdDisplay = !Number.isNaN(avgTokenWonInUsd) ? `~${avgTokenWonInUsd.toFixed(2)}` : '~$0.00'
   const betRoundInUsd = tokenPrice.multipliedBy(summary.won.bestRound.payout).toNumber()
   const avgPositionEnteredInUsd = tokenPrice.multipliedBy(avgPositionEntered).toNumber()
   const avgPositionEnteredInUsdDisplay = !Number.isNaN(avgPositionEnteredInUsd)
@@ -141,7 +141,7 @@ const PnlTab: React.FC<React.PropsWithChildren<PnlTabProps>> = ({ hasBetHistory,
             {t('Net results')}
           </Text>
           <Text bold fontSize="24px" lineHeight="1" color={netResultIsPositive ? 'success' : 'failure'}>
-            {`${netResultIsPositive ? '+' : ''}${formatBnb(netResultAmount, config?.displayedDecimals ?? 0)} ${
+            {`${netResultIsPositive ? '+' : ''}${formatToken(netResultAmount, config?.displayedDecimals ?? 0)} ${
               config?.token?.symbol
             }`}
           </Text>
@@ -154,13 +154,13 @@ const PnlTab: React.FC<React.PropsWithChildren<PnlTabProps>> = ({ hasBetHistory,
         <Text mt="24px" bold color="textSubtle">
           {t('Average return / round')}
         </Text>
-        <Text bold color={avgBnbWonIsPositive ? 'success' : 'failure'}>
-          {`${avgBnbWonIsPositive ? '+' : ''}${formatBnb(avgBnbWonPerRound, config?.displayedDecimals ?? 0)} ${
+        <Text bold color={avgTokenWonIsPositive ? 'success' : 'failure'}>
+          {`${avgTokenWonIsPositive ? '+' : ''}${formatToken(avgTokenWonPerRound, config?.displayedDecimals ?? 0)} ${
             config?.token?.symbol
           }`}
         </Text>
         <Text small color="textSubtle">
-          {avgBnbWonInUsdDisplay}
+          {avgTokenWonInUsdDisplay}
         </Text>
 
         {hasBestRound && (
@@ -169,7 +169,7 @@ const PnlTab: React.FC<React.PropsWithChildren<PnlTabProps>> = ({ hasBetHistory,
               {t('Best round: #%roundId%', { roundId: summary.won.bestRound.id })}
             </Text>
             <Flex alignItems="flex-end">
-              <Text bold color="success">{`+${formatBnb(
+              <Text bold color="success">{`+${formatToken(
                 summary.won.bestRound.payout,
                 config?.displayedDecimals ?? 0,
               )} ${config?.token?.symbol}`}</Text>
@@ -186,7 +186,9 @@ const PnlTab: React.FC<React.PropsWithChildren<PnlTabProps>> = ({ hasBetHistory,
         <Text mt="16px" bold color="textSubtle">
           {t('Average position entered / round')}
         </Text>
-        <Text bold>{`${formatBnb(avgPositionEntered, config?.displayedDecimals ?? 0)} ${config?.token?.symbol}`}</Text>
+        <Text bold>{`${formatToken(avgPositionEntered, config?.displayedDecimals ?? 0)} ${
+          config?.token?.symbol
+        }`}</Text>
         <Text small color="textSubtle">
           {avgPositionEnteredInUsdDisplay}
         </Text>

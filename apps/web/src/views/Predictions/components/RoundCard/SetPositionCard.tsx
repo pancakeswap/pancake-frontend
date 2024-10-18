@@ -46,12 +46,12 @@ interface SetPositionCardProps {
 const dust = parseUnits('0.001', 18)
 const percentShortcuts = [10, 25, 50, 75]
 
-const getButtonProps = (value: bigint, bnbBalance: bigint, minBetAmountBalance: bigint) => {
+const getButtonProps = (value: bigint, tokenBalance: bigint, minBetAmountBalance: bigint) => {
   const hasSufficientBalance = () => {
     if (value > 0) {
-      return value <= bnbBalance
+      return value <= tokenBalance
     }
-    return bnbBalance > 0
+    return tokenBalance > 0
   }
 
   if (!hasSufficientBalance()) {

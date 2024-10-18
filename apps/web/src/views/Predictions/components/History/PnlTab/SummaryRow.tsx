@@ -2,7 +2,7 @@ import BigNumber from 'bignumber.js'
 import { Flex, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
-import { formatBnb } from '../helpers'
+import { formatToken } from '../helpers'
 
 type SummaryType = 'won' | 'lost' | 'entered'
 
@@ -53,7 +53,9 @@ const SummaryRow: React.FC<React.PropsWithChildren<SummaryRowProps>> = ({ type, 
         </Flex>
         <Flex flex="3" flexDirection="column">
           <Text bold fontSize="20px" color={color}>
-            {`${summaryTypeSigns[type]}${formatBnb(displayAmount, config?.displayedDecimals)} ${config?.token.symbol}`}
+            {`${summaryTypeSigns[type]}${formatToken(displayAmount, config?.displayedDecimals)} ${
+              config?.token.symbol
+            }`}
           </Text>
           <Text fontSize="12px" color="textSubtle">
             {`~$${amountInUsd.toFixed(2)}`}
