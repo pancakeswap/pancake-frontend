@@ -1,5 +1,5 @@
-import { ErrorIcon, Flex, Text, AutoColumn } from '@pancakeswap/uikit'
-import { styled, css } from 'styled-components'
+import { AutoColumn, ErrorIcon, Flex, Text } from '@pancakeswap/uikit'
+import { css, styled } from 'styled-components'
 
 export const Wrapper = styled(Flex)`
   position: relative;
@@ -30,7 +30,7 @@ export const ErrorText = styled(Text)<{ severity?: 0 | 1 | 2 | 3 | 4 }>`
       ? theme.colors.warning
       : severity === 1
       ? theme.colors.text
-      : theme.colors.success};
+      : theme.colors.positive60};
 `
 
 export const StyledBalanceMaxMini = styled.button`

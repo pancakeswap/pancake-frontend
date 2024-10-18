@@ -1,17 +1,18 @@
+import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
-import { BottomDrawer, Flex, Text, StyledLink, useMatchBreakpoints, AutoRow } from '@pancakeswap/uikit'
+import { AutoRow, BottomDrawer, Flex, StyledLink, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { AppBody } from 'components/App'
 import { useCurrency } from 'hooks/Tokens'
 import { useSwapHotTokenDisplay } from 'hooks/useSwapHotTokenDisplay'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useContext, useEffect, useState } from 'react'
 import { Field } from 'state/swap/actions'
 import { useDefaultsFromURLSearch, useSingleTokenSwapInfo, useSwapState } from 'state/swap/hooks'
-import { useTranslation } from '@pancakeswap/localization'
-import Link from 'next/link'
 import Page from '../../Page'
 import PriceChartContainer from '../components/Chart/PriceChartContainer'
-import { SwapSelection } from '../components/SwapSelection'
+// import { SwapSelection } from '../components/SwapSelection'
+import { SwapSelection } from '../../SwapSimplify/V4Swap/SwapSelectionTab'
 import { StyledInputCurrencyWrapper, StyledSwapContainer } from '../styles'
 import { SwapFeaturesContext } from '../SwapFeaturesContext'
 import { SwapType } from '../types'
@@ -103,7 +104,7 @@ export default function TwapAndLimitSwap({ limit }: { limit?: boolean }) {
         <Flex flexDirection="column">
           <StyledSwapContainer $isChartExpanded={isChartExpanded}>
             <StyledInputCurrencyWrapper mt={isChartExpanded ? '24px' : '0'}>
-              <SwapSelection swapType={limit ? SwapType.LIMIT : SwapType.TWAP} />
+              <SwapSelection swapType={limit ? SwapType.LIMIT : SwapType.TWAP} style={{ marginBottom: 16 }} />
               <AppBody>
                 <TWAPPanel limit={limit} />
               </AppBody>

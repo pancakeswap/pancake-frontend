@@ -12,13 +12,14 @@ import { RouteDisplayEssentials, RouteDisplayModal } from './RouteDisplayModal'
 
 interface Props {
   routes?: RouteDisplayEssentials[]
+  wrapperStyle?: React.CSSProperties
 }
 
 const RouteInfoContainer = styled(RowBetween)`
   padding: 4px 24px 0;
 `
 
-export const RoutesBreakdown = memo(function RoutesBreakdown({ routes = [] }: Props) {
+export const RoutesBreakdown = memo(function RoutesBreakdown({ routes = [], wrapperStyle }: Props) {
   const [wallchainStatus] = useWallchainStatus()
   const { t } = useTranslation()
   const routeDisplayModal = useModalV2()
@@ -32,7 +33,7 @@ export const RoutesBreakdown = memo(function RoutesBreakdown({ routes = [] }: Pr
 
   return (
     <>
-      <RouteInfoContainer>
+      <RouteInfoContainer style={wrapperStyle}>
         <span style={{ display: 'flex', alignItems: 'center' }}>
           <Text fontSize="14px" color="textSubtle">
             {deferWallchainStatus === 'found' ? t('Bonus Route') : t('Route')}
@@ -69,12 +70,12 @@ export const RoutesBreakdown = memo(function RoutesBreakdown({ routes = [] }: Pr
   )
 })
 
-export const XRoutesBreakdown = memo(function XRoutesBreakdown() {
+export const XRoutesBreakdown = memo(function XRoutesBreakdown({ wrapperStyle }: Props) {
   const { t } = useTranslation()
 
   return (
     <>
-      <RouteInfoContainer>
+      <RouteInfoContainer style={wrapperStyle}>
         <span style={{ display: 'flex', alignItems: 'center' }}>
           <Text fontSize="14px" color="textSubtle">
             {t('Route')}
