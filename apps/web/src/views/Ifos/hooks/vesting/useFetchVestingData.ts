@@ -47,15 +47,20 @@ const useFetchVestingData = () => {
               return ifo
             }
             const vestingStartTime = new BigNumber(userVestingData.vestingStartTime)
-            const isPoolUnlimitedLive = vestingStartTime
-              .plus(userVestingData[PoolIds.poolUnlimited].vestingInformationDuration)
-              .times(1000)
-              .gte(currentTimeStamp)
+            const vestingStarted = vestingStartTime.times(1000).lt(currentTimeStamp)
+            const isPoolUnlimitedLive =
+              vestingStarted &&
+              vestingStartTime
+                .plus(userVestingData[PoolIds.poolUnlimited].vestingInformationDuration)
+                .times(1000)
+                .gte(currentTimeStamp)
             if (isPoolUnlimitedLive) return ifo
-            const isPoolBasicLive = vestingStartTime
-              .plus(userVestingData[PoolIds.poolBasic].vestingInformationDuration)
-              .times(1000)
-              .gte(currentTimeStamp)
+            const isPoolBasicLive =
+              vestingStarted &&
+              vestingStartTime
+                .plus(userVestingData[PoolIds.poolBasic].vestingInformationDuration)
+                .times(1000)
+                .gte(currentTimeStamp)
             if (isPoolBasicLive) return ifo
             return false
           }
