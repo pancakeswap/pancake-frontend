@@ -94,6 +94,15 @@ const pinnedFarmConfig: UniversalFarmConfig[] = [
 export const bscFarmConfig: UniversalFarmConfig[] = [
   ...pinnedFarmConfig,
   {
+    pid: 188,
+    chainId: ChainId.BSC,
+    protocol: Protocol.V3,
+    token0: bscTokens.ynbnb,
+    token1: bscTokens.wbnb,
+    feeAmount: FeeAmount.LOW,
+    lpAddress: Pool.getAddress(bscTokens.ynbnb, bscTokens.wbnb, FeeAmount.LOW),
+  },
+  {
     pid: 187,
     chainId: ChainId.BSC,
     protocol: Protocol.V3,
