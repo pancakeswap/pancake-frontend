@@ -1,0 +1,3 @@
+{
+  "rewrites": [{ "source": "/info/v3", "destination": "https://deprecated-info.pancake.run/info/v3" }]
+}
