@@ -88,20 +88,45 @@ const config = {
     ],
   },
   async rewrites() {
-    return [
-      {
-        source: '/info/token/:address',
-        destination: '/info/tokens/:address',
-      },
-      {
-        source: '/info/pool/:address',
-        destination: '/info/pools/:address',
-      },
-      {
-        source: '/.well-known/vercel/flags',
-        destination: '/api/vercel/flags',
-      },
-    ]
+    return {
+      afterFiles: [
+        {
+          source: '/info/token/:address',
+          destination: '/info/tokens/:address',
+        },
+        {
+          source: '/info/pool/:address',
+          destination: '/info/pools/:address',
+        },
+        {
+          source: '/.well-known/vercel/flags',
+          destination: '/api/vercel/flags',
+        },
+      ],
+      beforeFiles: [
+        // TODO: remove rewrite once explorer is fixed
+        {
+          source: '/info/v3',
+          destination: 'https://deprecated-info.pancake.run/info/v3',
+        },
+        {
+          source: '/info/v3/pairs',
+          destination: 'https://deprecated-info.pancake.run/info/v3/pairs',
+        },
+        {
+          source: '/info/v3/tokens',
+          destination: 'https://deprecated-info.pancake.run/info/v3/tokens',
+        },
+        {
+          source: '/info/v3/tokens/:path*',
+          destination: 'https://deprecated-info.pancake.run/info/v3/tokens/:path*',
+        },
+        {
+          source: '/info/v3/pairs/:path*',
+          destination: 'https://deprecated-info.pancake.run/info/v3/pairs/:path*',
+        },
+      ],
+    }
   },
   async headers() {
     return [
