@@ -104,15 +104,15 @@ export const multiChainQueryStableClient = {
 }
 
 export const infoChainNameToExplorerChainName = {
-  BSC: ChainId.BSC,
-  ETH: ChainId.ETHEREUM,
-  POLYGON_ZKEVM: ChainId.POLYGON_ZKEVM,
-  ZKSYNC: ChainId.ZKSYNC,
-  ARB: ChainId.ARBITRUM_ONE,
-  LINEA: ChainId.LINEA,
-  BASE: ChainId.BASE,
-  OPBNB: ChainId.OPBNB,
-}
+  BSC: 'bsc',
+  ETH: 'ethereum',
+  POLYGON_ZKEVM: 'polygon-zkevm',
+  ZKSYNC: 'zkync',
+  ARB: 'arbitrum',
+  LINEA: 'linea',
+  BASE: 'base',
+  OPBNB: 'opbnb',
+} as const
 
 export const STABLESWAP_SUBGRAPHS_START_BLOCK = {
   ARB: 169319653,
