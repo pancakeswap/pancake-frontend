@@ -10,7 +10,7 @@ import styled from 'styled-components'
 
 import DisclaimerModal from 'components/DisclaimerModal'
 
-const usdvDisclaimer = atomWithStorage('pcs:usdv-disclaimer-accept', false, undefined, { getOnInit: true })
+const usdvDisclaimer = atomWithStorage('pcs:usdv-disclaimer-accept', false, undefined, { unstable_getOnInit: true })
 
 let initialized = false
 
