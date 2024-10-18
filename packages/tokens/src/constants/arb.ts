@@ -463,4 +463,12 @@ export const arbitrumTokens = {
     'Eigenpie',
     'https://www.eigenlayer.magpiexyz.io/',
   ),
+  fbtc: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0xC96dE26018A54D51c097160568752c4E3BD6C364',
+    8,
+    'FBTC',
+    'Fire Bitcoin',
+    'https://fbtc.com/',
+  ),
 }
