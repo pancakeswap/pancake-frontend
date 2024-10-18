@@ -26,7 +26,7 @@ export const SwapFeaturesContext = createContext<{
 })
 
 // NOTE: Commented out until charts are supported again
-const CHART_SUPPORT_CHAIN_IDS = [
+const CHART_SUPPORT_CHAIN_IDS: ChainId[] = [
   // ChainId.BSC,
   // ChainId.BSC_TESTNET,
   // ChainId.ETHEREUM,
