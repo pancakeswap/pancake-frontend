@@ -120,7 +120,7 @@
     "next-seo": "^5.15.0",
     "next-themes": "^0.2.1",
     "nuqs": "^1.17.4",
-    "openapi-fetch": "^0.12.2",
+    "openapi-fetch": "^0.9.7",
     "polished": "^4.2.2",
     "qs": "^6.0.0",
     "react": "^18.2.0",
