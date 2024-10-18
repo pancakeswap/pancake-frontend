@@ -85,11 +85,13 @@ export const getV3PoolCakeApr = async (pool: V3PoolInfo, cakePrice: BigNumber): 
     masterChefV3.read.poolInfo([BigInt(pool.pid)]),
   ])
 
-  masterChefV3CacheMap.set(pool.chainId, {
-    ...(masterChefV3CacheMap.get(pool.chainId) ?? {}),
-    totalAllocPoint,
-    latestPeriodCakePerSecond,
-  })
+  if (!masterChefV3CacheMap.has(pool.chainId)) {
+    masterChefV3CacheMap.set(pool.chainId, {
+      ...(masterChefV3CacheMap.get(pool.chainId) ?? {}),
+      totalAllocPoint,
+      latestPeriodCakePerSecond,
+    })
+  }
 
   const cakePerYear = new BigNumber(SECONDS_PER_YEAR)
     .times(latestPeriodCakePerSecond.toString())
