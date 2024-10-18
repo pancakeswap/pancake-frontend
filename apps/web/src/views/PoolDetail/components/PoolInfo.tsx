@@ -10,6 +10,7 @@ import styled from 'styled-components'
 import { multiChainNameConverter } from 'utils/chainNameConverter'
 import { PoolGlobalAprButton } from 'views/universalFarms/components/PoolAprButton'
 import { usePoolInfoByQuery } from '../hooks/usePoolInfo'
+import { usePoolSymbol } from '../hooks/usePoolSymbol'
 import { MyPositions } from './MyPositions'
 import { PoolCharts } from './PoolCharts'
 import { PoolCurrencies } from './PoolCurrencies'
@@ -29,6 +30,7 @@ export const PoolInfo = () => {
   const poolInfo = usePoolInfoByQuery()
   const chainId = useChainIdByQuery()
   const networkName = useChainNameByQuery()
+  const { poolSymbol } = usePoolSymbol()
   const [currency0, currency1] = useMemo(() => {
     if (!poolInfo) return [undefined, undefined]
     const { token0, token1 } = poolInfo
@@ -48,7 +50,7 @@ export const PoolInfo = () => {
 
   return (
     <Column gap="24px">
-      <NextSeo title={`${currency0?.symbol} / ${currency1?.symbol}`} />
+      <NextSeo title={poolSymbol} />
       <Header>
         <Flex alignItems="center">
           <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={48} innerMargin="-8px" />
