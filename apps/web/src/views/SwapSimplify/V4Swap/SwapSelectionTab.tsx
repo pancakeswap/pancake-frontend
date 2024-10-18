@@ -1,20 +1,19 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ButtonMenu, ButtonMenuItem, ChartDisableIcon, ChartIcon, IconButton } from '@pancakeswap/uikit'
+import { ButtonMenu, ButtonMenuItem } from '@pancakeswap/uikit'
 import GlobalSettings from 'components/Menu/GlobalSettings'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useSwapHotTokenDisplay } from 'hooks/useSwapHotTokenDisplay'
 import { useRouter } from 'next/router'
-import { useCallback, useContext, useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { styled } from 'styled-components'
 import { SettingsMode } from '../../../components/Menu/GlobalSettings/types'
-import { SwapFeaturesContext } from '../../Swap/SwapFeaturesContext'
 import { SwapType } from '../../Swap/types'
 import { isTwapSupported } from '../../Swap/utils'
 
-const ColoredIconButton = styled(IconButton)`
-  color: ${({ theme }) => theme.colors.textSubtle};
-  overflow: hidden;
-`
+// const ColoredIconButton = styled(IconButton)`
+//   color: ${({ theme }) => theme.colors.textSubtle};
+//   overflow: hidden;
+// `
+
 const StyledButtonMenuItem = styled(ButtonMenuItem)`
   height: 40px;
   padding: 0px 16px;
@@ -56,13 +55,13 @@ export const SwapSelection = ({
       let url = ''
       switch (value) {
         case SwapType.LIMIT:
-          url = '/revamp-swap/limit'
+          url = '/swap/limit'
           break
         case SwapType.TWAP:
-          url = '/revamp-swap/twap'
+          url = '/swap/twap'
           break
         case SwapType.MARKET:
-          url = '/revamp-swap'
+          url = '/'
           break
         default:
           break
@@ -72,12 +71,15 @@ export const SwapSelection = ({
     [router],
   )
   const { chainId } = useActiveChainId()
-  const { isChartSupported, isChartDisplayed, setIsChartDisplayed, isHotTokenSupported } =
-    useContext(SwapFeaturesContext)
-  const [isSwapHotTokenDisplay, setIsSwapHotTokenDisplay] = useSwapHotTokenDisplay()
-  const toggleChartDisplayed = () => {
-    setIsChartDisplayed?.((currentIsChartDisplayed) => !currentIsChartDisplayed)
-  }
+
+  // NOTE: Commented out until charts are supported again
+  // const { isChartSupported, isChartDisplayed, setIsChartDisplayed, isHotTokenSupported } =
+  //   useContext(SwapFeaturesContext)
+  // const [isSwapHotTokenDisplay, setIsSwapHotTokenDisplay] = useSwapHotTokenDisplay()
+  // const toggleChartDisplayed = () => {
+  //   setIsChartDisplayed?.((currentIsChartDisplayed) => !currentIsChartDisplayed)
+  // }
+
   const tSwapProps = useMemo(() => {
     const isTSwapSupported = isTwapSupported(chainId)
     return {
@@ -105,7 +107,8 @@ export const SwapSelection = ({
         <StyledButtonMenuItem {...tSwapProps}>{t('TWAP')}</StyledButtonMenuItem>
         <StyledButtonMenuItem {...tSwapProps}>{t('Limit')}</StyledButtonMenuItem>
       </ButtonMenu>
-      {isChartSupported && withToolkit && (
+      {/* NOTE: Commented out until charts are supported again */}
+      {/* {isChartSupported && withToolkit && (
         <ColoredIconButton
           onClick={() => {
             if (!isChartDisplayed && isSwapHotTokenDisplay) {
@@ -125,7 +128,7 @@ export const SwapSelection = ({
             <ChartIcon width="24px" color="textSubtle" />
           )}
         </ColoredIconButton>
-      )}
+      )} */}
       {withToolkit && (
         <GlobalSettings
           color="textSubtle"
