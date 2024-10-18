@@ -24,7 +24,6 @@ interface ConfirmRemoveLiquidityModalProps {
   }
   onRemove: () => void
   liquidityErrorMessage: string
-  signatureData?: any
   tokenA: Token
   tokenB: Token
   currencyA: Currency | undefined
