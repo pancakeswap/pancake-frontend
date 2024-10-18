@@ -1,6 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Breadcrumbs, CopyButton, Flex, Link, ScanLink, Text } from '@pancakeswap/uikit'
+import { Breadcrumbs, CopyButton, Flex, ScanLink, Text } from '@pancakeswap/uikit'
 import { ChainLinkSupportChains, multiChainId, multiChainScan } from 'state/info/constant'
+import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 import { useChainNameByQuery } from 'state/info/hooks'
 import { getBlockExploreLink } from 'utils'
 import { usePoolSymbol } from '../hooks/usePoolSymbol'
@@ -17,9 +18,9 @@ export const BreadcrumbNav: React.FC = () => {
   return (
     <Flex justifyContent="space-between">
       <Breadcrumbs mb="32px">
-        <Link href="/liquidity/pools">
+        <NextLinkFromReactRouter to="/liquidity/pools">
           <Text color="primary">{t('Farms')}</Text>
-        </Link>
+        </NextLinkFromReactRouter>
         <Flex>
           <Text mr="8px">{poolSymbol}</Text>
         </Flex>
