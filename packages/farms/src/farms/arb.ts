@@ -6,15 +6,6 @@ import { Protocol, SerializedFarmConfig, UniversalFarmConfig, UniversalFarmConfi
 
 const pinnedFarmConfig: UniversalFarmConfig[] = [
   {
-    pid: 44,
-    chainId: ChainId.ARBITRUM_ONE,
-    protocol: Protocol.V3,
-    token0: arbitrumTokens.wbtc,
-    token1: arbitrumTokens.fbtc,
-    feeAmount: FeeAmount.MEDIUM,
-    lpAddress: Pool.getAddress(arbitrumTokens.wbtc, arbitrumTokens.fbtc, FeeAmount.MEDIUM),
-  },
-  {
     pid: 43,
     chainId: ChainId.ARBITRUM_ONE,
     protocol: Protocol.V3,
@@ -54,6 +45,15 @@ const pinnedFarmConfig: UniversalFarmConfig[] = [
 
 export const arbFarmConfig: UniversalFarmConfig[] = [
   ...pinnedFarmConfig,
+  {
+    pid: 95,
+    chainId: ChainId.ARBITRUM_ONE,
+    protocol: Protocol.V3,
+    token0: arbitrumTokens.wbtc,
+    token1: arbitrumTokens.fbtc,
+    feeAmount: FeeAmount.MEDIUM,
+    lpAddress: Pool.getAddress(arbitrumTokens.wbtc, arbitrumTokens.fbtc, FeeAmount.MEDIUM),
+  },
   {
     pid: 94,
     chainId: ChainId.ARBITRUM_ONE,
