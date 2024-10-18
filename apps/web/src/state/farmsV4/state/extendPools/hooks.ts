@@ -100,7 +100,10 @@ export const usePoolInfo = <TPoolType extends PoolInfo>({
 }): TPoolType | undefined | null => {
   const { data: poolInfo } = useQuery({
     queryKey: ['poolInfo', chainId, poolAddress],
-    queryFn: () => fetchExplorerPoolInfo(poolAddress ?? '', chainId),
+    queryFn: async () => {
+      const result = await fetchExplorerPoolInfo(poolAddress ?? '', chainId)
+      return result
+    },
     enabled: !!poolAddress && !!chainId,
   })
 
