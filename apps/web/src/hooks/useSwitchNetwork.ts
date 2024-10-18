@@ -21,13 +21,15 @@ export function useSwitchNetworkLocal() {
   }, [])
 
   return useCallback(
-    (chainId: number) => {
+    (newChainId: number) => {
+      const { chainId, ...restQuery } = router.query
+
       router.replace(
         {
           pathname: router.pathname,
           query: {
-            ...router.query,
-            chain: CHAIN_QUERY_NAME[chainId],
+            ...restQuery,
+            chain: CHAIN_QUERY_NAME[newChainId],
           },
         },
         undefined,
@@ -35,11 +37,11 @@ export function useSwitchNetworkLocal() {
           shallow: true,
         },
       )
-      setQueryChainId(chainId)
+      setQueryChainId(newChainId)
       // Blocto in-app browser throws change event when no account change which causes user state reset therefore
       // this event should not be handled to avoid unexpected behaviour.
       if (!isBloctoMobileApp) {
-        clearUserStates(dispatch, { chainId, newChainId: chainId })
+        clearUserStates(dispatch, { chainId: newChainId, newChainId })
       }
     },
     [dispatch, isBloctoMobileApp, setQueryChainId, router],
