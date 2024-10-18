@@ -39,6 +39,7 @@ import currencyId from 'utils/currencyId'
 
 import { useUserPositionInfo } from 'views/Farms/components/YieldBooster/hooks/bCakeV3/useBCakeV3Info'
 import { BoostStatus, useBoostStatus } from 'views/Farms/components/YieldBooster/hooks/bCakeV3/useBoostStatus'
+import BigNumber from 'bignumber.js'
 import { useV3MintActionHandlers } from '../formViews/V3FormView/form/hooks/useV3MintActionHandlers'
 import { useV3FormState } from '../formViews/V3FormView/form/reducer'
 
@@ -220,7 +221,15 @@ export function AprCalculator({
     const [token0Price, token1Price] = token.sortsBefore(quoteToken)
       ? [tokenPriceBusd, quoteTokenPriceBusd]
       : [quoteTokenPriceBusd, tokenPriceBusd]
-    const positionTvlUsd = +amount0.toExact() * +token0Price + +amount1.toExact() * +token1Price
+    const positionTvlUsd =
+      (amount0 &&
+        amount1 &&
+        token0Price &&
+        token1Price &&
+        new BigNumber(amount0.toExact())
+          .times(token0Price)
+          .plus(new BigNumber(amount1.toExact()).times(token1Price))) ||
+      0
     return {
       positionFarmApr: getPositionFarmApr({
         poolWeight,
