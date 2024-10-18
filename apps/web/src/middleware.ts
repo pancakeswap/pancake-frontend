@@ -24,6 +24,5 @@ export const config = {
     '/limit-orders',
     '/lottery',
     '/nfts',
-    '/info/:path*',
   ],
 }
