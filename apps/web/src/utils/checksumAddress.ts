@@ -1,6 +1,10 @@
-import { Address, keccak256, stringToBytes } from 'viem'
+import { Address, InvalidAddressError, keccak256, stringToBytes } from 'viem'
+
+const addressRegex = /^0x[a-fA-F0-9]{40}$/
 
 export function checksumAddress(address_: Address): Address {
+  if (!isAddress(address_)) throw new InvalidAddressError({ address: address_ })
+
   const hexAddress = address_.substring(2).toLowerCase()
   const hash = keccak256(stringToBytes(hexAddress), 'bytes')
 
@@ -17,5 +21,14 @@ export function checksumAddress(address_: Address): Address {
   }
 
   const result = `0x${address.join('')}` as const
+  return result
+}
+
+function isAddress(address: string): address is Address {
+  const result = (() => {
+    if (!addressRegex.test(address)) return false
+    if (address.toLowerCase() === address) return true
+    return true
+  })()
   return result
 }
