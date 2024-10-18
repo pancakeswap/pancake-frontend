@@ -1,7 +1,6 @@
 import { useModal } from '@pancakeswap/uikit'
 import { SwapUIV2 } from '@pancakeswap/widgets-internal'
 
-import { useTranslation } from '@pancakeswap/localization'
 import { Currency, Price } from '@pancakeswap/sdk'
 import { useUserSlippage } from '@pancakeswap/utils/user'
 import { memo } from 'react'
@@ -21,7 +20,6 @@ export const PricingAndSlippage = memo(function PricingAndSlippage({
   price,
   showSlippage = true,
 }: Props) {
-  const { t } = useTranslation()
   const [allowedSlippage] = useUserSlippage()
   const isWrapping = useIsWrapping()
   const [onPresentSettingsModal] = useModal(<SettingsModal mode={SettingsMode.SWAP_LIQUIDITY} />)
