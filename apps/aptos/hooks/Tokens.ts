@@ -1,7 +1,12 @@
 /* eslint-disable no-param-reassign */
 import { Coin, Currency, CurrencyAmount, Token } from '@pancakeswap/aptos-swap-sdk'
 import { APTOS_COIN, useAccount, useAccountResources, useCoin, useCoins as useCoins_ } from '@pancakeswap/awgmi'
-import { coinStoreResourcesFilter, unwrapTypeFromString } from '@pancakeswap/awgmi/core'
+import {
+  coinStoreResourcesFilter,
+  FetchAccountResourcesResult,
+  FetchCoinResult,
+  unwrapTypeFromString,
+} from '@pancakeswap/awgmi/core'
 import { useAtomValue } from 'jotai'
 import fromPairs from 'lodash/fromPairs'
 import { useCallback, useMemo } from 'react'
@@ -34,12 +39,15 @@ export function useToken(coinId?: string) {
           symbol: token.symbol,
         }
       : undefined,
-    select: (d) => {
-      const { decimals, symbol, name } = d
-      if (token) return token
-      if (!coinId) return undefined
-      return new Coin(chainId, coinId, decimals, symbol, name)
-    },
+    select: useCallback(
+      (d: FetchCoinResult) => {
+        const { decimals, symbol, name } = d
+        if (token) return token
+        if (!coinId) return undefined
+        return new Coin(chainId, coinId, decimals, symbol, name)
+      },
+      [chainId, coinId, token],
+    ),
   })
 
   return coin
@@ -124,22 +132,25 @@ export function useAllTokenBalances() {
   const accountResources = useAccountResources({
     address: useAccount()?.account?.address,
     watch: true,
-    select: (data) => {
-      const coinStore = data
-        .filter(coinStoreResourcesFilter)
-        .map((coin) => {
-          const address = unwrapTypeFromString(coin.type)
+    select: useCallback(
+      (data: FetchAccountResourcesResult) => {
+        const coinStore = data
+          .filter(coinStoreResourcesFilter)
+          .map((coin) => {
+            const address = unwrapTypeFromString(coin.type)
 
-          if (address && allTokens[address]) {
-            return [address, CurrencyAmount.fromRawAmount(allTokens[address], (coin.data as any).coin.value)]
-          }
-          return null
-        })
-        .filter(Boolean) as [string, CurrencyAmount<Coin>][]
+            if (address && allTokens[address]) {
+              return [address, CurrencyAmount.fromRawAmount(allTokens[address], (coin.data as any).coin.value)]
+            }
+            return null
+          })
+          .filter(Boolean) as [string, CurrencyAmount<Coin>][]
 
-      const pairs = fromPairs(coinStore)
-      return pairs
-    },
+        const pairs = fromPairs(coinStore)
+        return pairs
+      },
+      [allTokens],
+    ),
   })
 
   return accountResources.data

@@ -16,7 +16,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { usePriceCakeUsdc } from 'hooks/useStablePrice'
 import { useRouter } from 'next/router'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { logGTMClickStakeFarmEvent, logGTMClickUnStakeFarmEvent } from 'utils/customGTMEventTracking'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import useStakeFarms from '../../../hooks/useStakeFarms'
@@ -49,7 +49,7 @@ export const StakedContainer = ({ children, ...props }) => {
     watch: true,
     address: account,
     coin: props.lpAddress,
-    select: (d) => new BigNumber(d.value),
+    select: useCallback((d) => new BigNumber(d.value), []),
   })
 
   const userData = useMemo(
