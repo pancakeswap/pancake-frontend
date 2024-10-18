@@ -16,7 +16,8 @@ import groupBy from 'lodash/groupBy'
 import { explorerApiClient } from 'state/info/api/client'
 import { v3Clients } from 'utils/graphql'
 import { publicClient } from 'utils/viem'
-import { isAddressEqual, type Address } from 'viem'
+import { isAddressEqual } from 'utils'
+import { type Address } from 'viem'
 import { PoolInfo } from '../type'
 import { parseFarmPools } from '../utils'
 
@@ -146,7 +147,12 @@ export const fetchExplorerFarmPools = async (
     params: {
       query: {
         protocols: args.protocols ?? DEFAULT_PROTOCOLS,
-        chains: chains.reduce((acc, cur) => (cur ? [...acc, getChainNameInKebabCase(cur)] : acc), [] as any[]),
+        chains: chains.reduce((acc, cur) => {
+          if (cur) {
+            acc.push(getChainNameInKebabCase(cur))
+          }
+          return acc
+        }, [] as any[]),
       },
     },
   })
@@ -184,6 +190,11 @@ export const fetchFarmPools = async (
   try {
     remotePools = await fetchExplorerFarmPools(args, signal)
   } catch (error) {
+    if (error instanceof Error) {
+      if (error.name === 'AbortError') {
+        throw error
+      }
+    }
     console.error('Failed to fetch remote pools', error)
   }
   const localPools = UNIVERSAL_FARMS.filter((farm) => {

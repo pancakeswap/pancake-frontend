@@ -9,7 +9,7 @@ import dayjs from 'dayjs'
 import { useAtom } from 'jotai'
 import groupBy from 'lodash/groupBy'
 import keyBy from 'lodash/keyBy'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useMemo } from 'react'
 import { publicClient } from 'utils/viem'
 import { zeroAddress } from 'viem'
 import { Address } from 'viem/accounts'
@@ -22,18 +22,18 @@ type UnwrapPromise<T> = T extends Promise<infer U> ? U : T
 type ArrayItemType<T> = T extends Array<infer U> ? U : T
 
 export const useFarmPools = () => {
-  const [loaded, setLoaded] = useState(false)
   const [pools, setPools] = useAtom(farmPoolsAtom)
 
-  useEffect(() => {
-    if (!loaded) {
-      fetchFarmPools()
-        .then(setPools)
-        .finally(() => setLoaded(true))
-    }
-    // only fetch once when mount
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  const { isLoading } = useQuery({
+    queryKey: ['fetchFarmPools'],
+    queryFn: async ({ signal }) => {
+      const data = await fetchFarmPools(undefined, signal)
+      setPools(data)
+    },
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+  })
 
   const { data: poolsStatus, pending: isPoolStatusPending } = useMultiChainV3PoolsStatus(UNIVERSAL_FARMS)
   const { data: poolsTimeFrame, pending: isPoolsTimeFramePending } = useMultiChainPoolsTimeFrame(UNIVERSAL_FARMS)
@@ -60,7 +60,7 @@ export const useFarmPools = () => {
     })
   }, [pools, poolsStatus, isPoolStatusPending, poolsTimeFrame, isPoolsTimeFramePending])
 
-  return { loaded, data: poolsWithStatus }
+  return { loaded: !isLoading, data: poolsWithStatus }
 }
 
 export const useV3PoolsLength = (chainIds: number[]) => {
@@ -88,10 +88,8 @@ export const useV3PoolsLength = (chainIds: number[]) => {
     (results: UseQueryResult<bigint, Error>[]) => {
       return {
         data: results.reduce((acc, result, idx) => {
-          return {
-            ...acc,
-            [chainIds[idx]]: Number(result.data ?? 0),
-          }
+          Object.assign(acc, { [chainIds[idx]]: Number(result.data ?? 0) })
+          return acc
         }, {} as { [key: `${number}`]: number }),
         pending: results.some((result) => result.isPending),
       }
@@ -130,10 +128,7 @@ export const useV2PoolsLength = (chainIds: number[]) => {
     (results: UseQueryResult<bigint, Error>[]) => {
       return {
         data: results.reduce((acc, result, idx) => {
-          return {
-            ...acc,
-            [chainIds[idx]]: Number(result.data ?? 0),
-          }
+          return Object.assign(acc, { [chainIds[idx]]: Number(result.data ?? 0) })
         }, {} as { [key: `${number}`]: number }),
         pending: results.some((result) => result.isPending),
       }
@@ -172,10 +167,9 @@ export const useMultiChainV3PoolsStatus = (pools: UniversalFarmConfig[]) => {
     (results: UseQueryResult<UnwrapPromise<ReturnType<typeof fetchV3PoolsStatusByChainId>>, Error>[]) => {
       return {
         data: results.reduce((acc, result, idx) => {
-          return {
-            ...acc,
+          return Object.assign(acc, {
             [poolsEntries[idx][0]]: keyBy(result.data ?? [], ([, lpAddress]) => lpAddress),
-          }
+          })
         }, {} as IPoolsStatusType),
         pending: results.some((result) => result.isPending),
       }
@@ -259,12 +253,11 @@ export const useMultiChainPoolsTimeFrame = (pools: UniversalFarmConfig[]) => {
       return {
         data: results.reduce((acc, result, idx) => {
           let dataIdx = 0
-          return {
-            ...acc,
+          return Object.assign(acc, {
             [poolsEntries[idx][0]]: keyBy(result.data ?? [], () => {
               return poolsEntries[idx][1][dataIdx++].lpAddress
             }),
-          }
+          })
         }, {} as IPoolsTimeFrameType),
         pending: results.some((result) => result.isPending),
       }

@@ -12,7 +12,6 @@ export const useMasterChefV3FarmBoosterAddress = (chainId: number) => {
     refetchOnWindowFocus: false,
     refetchOnMount: false,
     refetchOnReconnect: false,
-    refetchInterval: false,
     staleTime: Infinity,
   })
 }

@@ -21,10 +21,9 @@ export type LpApr = AprValue
 export const lpAprAtom = atom<LpApr>((get) => {
   const pools = get(poolsAtom)
   return pools.reduce((acc, pool) => {
-    return {
-      ...acc,
-      [`${pool.chainId}:${pool.lpAddress}`]: pool.lpApr ?? '0',
-    }
+    // eslint-disable-next-line no-param-reassign
+    acc[`${pool.chainId}:${pool.lpAddress}`] = pool.lpApr ?? '0'
+    return acc
   }, {} as LpApr)
 })
 
@@ -43,7 +42,6 @@ export type CakeApr = Record<
 >
 export const cakeAprAtom = atom<CakeApr>({})
 
-export const cakeAprGetterAtom = atom
 export const cakeAprSetterAtom = atom(null, (get, set, newApr: CakeApr) => {
   const cakeApr = get(cakeAprAtom)
   set(cakeAprAtom, { ...cakeApr, ...newApr })
@@ -63,15 +61,14 @@ export const poolAprAtom = atom<PoolApr>((get) => {
   const cakeAprs = get(cakeAprAtom)
   const merklAprs = get(merklAprAtom)
 
-  return Object.keys(lpAprs).reduce((acc, key) => {
-    return {
-      ...acc,
-      [key]: {
-        lpApr: lpAprs[key],
-        cakeApr: cakeAprs[key],
-        merklApr: merklAprs[key],
-      },
+  return Object.entries(lpAprs).reduce((acc, [key, lpApr]) => {
+    // eslint-disable-next-line no-param-reassign
+    acc[key] = {
+      lpApr,
+      cakeApr: cakeAprs[key],
+      merklApr: merklAprs[key],
     }
+    return acc
   }, {} as PoolApr)
 })
 
@@ -79,5 +76,5 @@ export const emptyCakeAprPoolsAtom = atom((get) => {
   const pools = get(poolsAtom)
   const aprs = get(cakeAprAtom)
 
-  return pools.filter((pool) => !aprs[`${pool.chainId}:${pool.lpAddress}`])
+  return pools.filter((pool) => !(`${pool.chainId}:${pool.lpAddress}` in aprs))
 })

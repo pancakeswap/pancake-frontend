@@ -1,7 +1,8 @@
 import { ChainId } from '@pancakeswap/chains'
 import { Protocol, supportedChainIdV4 } from '@pancakeswap/farms'
 import { atom } from 'jotai'
-import { isAddressEqual, type Address } from 'viem'
+import { isAddressEqual } from 'utils'
+import { type Address } from 'viem'
 import { farmPoolsAtom } from '../farmPools/atom'
 import { ChainIdAddressKey, PoolInfo } from '../type'
 

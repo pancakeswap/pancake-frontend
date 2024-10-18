@@ -87,7 +87,10 @@ async function fillPoolsWithTicks({ pools, clientProvider, gasLimit }: FillPools
   const { gasLimit: gasLimitPerCall, retryGasMultiplier } = getV3PoolFetchConfig(chainId)
   const bitmapIndexes = pools
     .map(({ tick, fee }, i) => buildBitmapIndexList<{ poolIndex: number }>({ currentTick: tick, fee, poolIndex: i }))
-    .reduce<{ bitmapIndex: number; poolIndex: number }[]>((acc, cur) => [...acc, ...cur], [])
+    .reduce<{ bitmapIndex: number; poolIndex: number }[]>((acc, cur) => {
+      acc.push(...cur)
+      return acc
+    }, [])
   const res = await multicallByGasLimit(
     bitmapIndexes.map(({ poolIndex, bitmapIndex }) => ({
       target: tickLensAddress as Address,

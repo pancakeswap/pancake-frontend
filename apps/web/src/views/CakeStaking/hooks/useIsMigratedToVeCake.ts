@@ -1,5 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
-import { isAddressEqual, zeroAddress } from 'viem'
+import { isAddressEqual } from 'utils'
+import { zeroAddress } from 'viem'
 import { useVeCakeUserInfo } from './useVeCakeUserInfo'
 
 export const useIsMigratedToVeCake = (targetChainId?: ChainId) => {

@@ -1,10 +1,20 @@
 import { ChainId } from '@pancakeswap/chains'
 import { Currency } from '@pancakeswap/sdk'
 import { TokenAddressMap } from '@pancakeswap/token-lists'
-import memoize from 'lodash/memoize'
-import { Address, getAddress } from 'viem'
+import { Address } from 'viem'
 import { bsc } from 'wagmi/chains'
+import memoize from 'lodash/memoize'
 import { chains } from './wagmi'
+import { checksumAddress } from './checksumAddress'
+
+export const isAddressEqual = (a?: any, b?: any) => {
+  if (!a || !b) return false
+  const a_ = safeGetAddress(a)
+  if (!a_) return false
+  const b_ = safeGetAddress(b)
+  if (!b_) return false
+  return a_ === b_
+}
 
 // returns the checksummed address if the address is valid, otherwise returns undefined
 export const safeGetAddress = memoize((value: any): Address | undefined => {
@@ -13,7 +23,7 @@ export const safeGetAddress = memoize((value: any): Address | undefined => {
     if (typeof value === 'string' && !value.startsWith('0x')) {
       value_ = `0x${value}`
     }
-    return getAddress(value_)
+    return checksumAddress(value_)
   } catch {
     return undefined
   }
