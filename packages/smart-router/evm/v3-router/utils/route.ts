@@ -2,10 +2,11 @@ import { Currency, Price } from '@pancakeswap/sdk'
 import invariant from 'tiny-invariant'
 
 import { BaseRoute, Pool, RouteType, PoolType, Route } from '../types'
-import { getOutputCurrency, getTokenPrice } from './pool'
+import { getOutputCurrency, getTokenPrice, isV4BinPool, isV4ClPool } from './pool'
 
 export function buildBaseRoute(pools: Pool[], currencyIn: Currency, currencyOut: Currency): BaseRoute {
-  const path: Currency[] = [currencyIn.wrapped]
+  const firstPool = pools[0]
+  const path: Currency[] = [isV4ClPool(firstPool) || isV4BinPool(firstPool) ? currencyIn : currencyIn.wrapped]
   let prevIn = path[0]
   let routeType: RouteType | null = null
   const updateRouteType = (pool: Pool, currentRouteType: RouteType | null) => {
@@ -44,6 +45,10 @@ function getRouteTypeFromPool(pool: Pick<Pool, 'type'>) {
       return RouteType.V3
     case PoolType.STABLE:
       return RouteType.STABLE
+    case PoolType.V4CL:
+      return RouteType.V4CL
+    case PoolType.V4BIN:
+      return RouteType.V4BIN
     default:
       return RouteType.MIXED
   }

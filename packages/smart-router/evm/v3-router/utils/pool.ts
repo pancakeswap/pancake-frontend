@@ -37,6 +37,10 @@ export function involvesCurrency(pool: Pool, currency: Currency) {
     const { token0, token1 } = pool
     return token0.equals(token) || token1.equals(token)
   }
+  if (isV4ClPool(pool) || isV4BinPool(pool)) {
+    const { currency0, currency1 } = pool
+    return currency0.equals(currency) || currency1.equals(currency)
+  }
   if (isStablePool(pool)) {
     const { balances } = pool
     return balances.some((b) => b.currency.equals(token))
@@ -58,6 +62,10 @@ export function getOutputCurrency(pool: Pool, currencyIn: Currency): Currency {
   if (isStablePool(pool)) {
     const { balances } = pool
     return balances[0].currency.equals(tokenIn) ? balances[1].currency : balances[0].currency
+  }
+  if (isV4ClPool(pool) || isV4BinPool(pool)) {
+    const { currency0, currency1 } = pool
+    return currency0.equals(currencyIn) ? currency1 : currency0
   }
   throw new Error('Cannot get output currency by invalid pool')
 }
@@ -105,6 +113,13 @@ export function getTokenPrice(pool: Pool, base: Currency, quote: Currency): Pric
     const { token0, token1, fee, liquidity, sqrtRatioX96, tick } = pool
     const v3Pool = new SDKV3Pool(token0.wrapped, token1.wrapped, fee, sqrtRatioX96, liquidity, tick)
     return v3Pool.priceOf(base.wrapped)
+  }
+
+  if (isV4ClPool(pool)) {
+    const { currency0, currency1, fee, liquidity, sqrtRatioX96, tick } = pool
+    const v3Pool = new SDKV3Pool(currency0.wrapped, currency1.wrapped, fee, sqrtRatioX96, liquidity, tick)
+    const tokenPrice = v3Pool.priceOf(base.wrapped)
+    return new Price(base, quote, tokenPrice.denominator, tokenPrice.numerator)
   }
 
   if (isV2Pool(pool)) {
