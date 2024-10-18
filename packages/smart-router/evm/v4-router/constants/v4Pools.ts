@@ -10,6 +10,10 @@ export const CL_PRESETS: {
     fee: 500,
     tickSpacing: 10,
   },
+  {
+    fee: 100,
+    tickSpacing: 1000,
+  },
 ]
 
 export const CL_HOOKS: Address[] = [zeroAddress]

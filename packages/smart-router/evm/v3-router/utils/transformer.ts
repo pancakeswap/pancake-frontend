@@ -2,8 +2,8 @@ import { ChainId } from '@pancakeswap/chains'
 import { Currency, CurrencyAmount, ERC20Token, Native, Percent, TradeType } from '@pancakeswap/sdk'
 import { ADDRESS_ZERO, Tick } from '@pancakeswap/v3-sdk'
 import { Address } from 'viem'
-import { Pool, PoolType, Route, SmartRouterTrade, StablePool, V2Pool, V3Pool } from '../types'
-import { isStablePool, isV2Pool, isV3Pool } from './pool'
+import { Pool, PoolType, Route, SmartRouterTrade, StablePool, V2Pool, V3Pool, V4ClPool } from '../types'
+import { isStablePool, isV2Pool, isV3Pool, isV4ClPool } from './pool'
 
 const ONE_HUNDRED = 100n
 
@@ -53,13 +53,24 @@ export interface SerializedV3Pool
   ticks?: SerializedTick[]
 }
 
+export interface SerializedV4ClPool
+  extends Omit<V4ClPool, 'currency0' | 'currency1' | 'liquidity' | 'sqrtRatioX96' | 'ticks' | 'reserve0' | 'reserve1'> {
+  currency0: SerializedCurrency
+  currency1: SerializedCurrency
+  liquidity: string
+  sqrtRatioX96: string
+  reserve0?: SerializedCurrencyAmount
+  reserve1?: SerializedCurrencyAmount
+  ticks?: SerializedTick[]
+}
+
 export interface SerializedStablePool extends Omit<StablePool, 'balances' | 'amplifier' | 'fee'> {
   balances: SerializedCurrencyAmount[]
   amplifier: string
   fee: string
 }
 
-export type SerializedPool = SerializedV2Pool | SerializedV3Pool | SerializedStablePool
+export type SerializedPool = SerializedV2Pool | SerializedV3Pool | SerializedStablePool | SerializedV4ClPool
 
 export interface SerializedRoute
   extends Omit<Route, 'pools' | 'path' | 'input' | 'output' | 'inputAmount' | 'outputAmount'> {
@@ -134,6 +145,18 @@ export function serializePool(pool: Pool): SerializedPool {
       fee: pool.fee.toSignificant(6),
     }
   }
+  if (isV4ClPool(pool)) {
+    return {
+      ...pool,
+      currency0: serializeCurrency(pool.currency0),
+      currency1: serializeCurrency(pool.currency1),
+      liquidity: pool.liquidity.toString(),
+      sqrtRatioX96: pool.sqrtRatioX96.toString(),
+      ticks: pool.ticks?.map(serializeTick),
+      reserve0: pool.reserve0 && serializeCurrencyAmount(pool.reserve0),
+      reserve1: pool.reserve1 && serializeCurrencyAmount(pool.reserve1),
+    }
+  }
   throw new Error('Cannot serialize unsupoorted pool')
 }
 
@@ -202,6 +225,18 @@ export function parsePool(chainId: ChainId, pool: SerializedPool): Pool {
       balances: pool.balances.map((b) => parseCurrencyAmount(chainId, b)),
       amplifier: BigInt(pool.amplifier),
       fee: new Percent(parseFloat(pool.fee) * 1000000, ONE_HUNDRED * 1000000n),
+    }
+  }
+  if (pool.type === PoolType.V4CL) {
+    return {
+      ...pool,
+      currency0: parseCurrency(chainId, pool.currency0),
+      currency1: parseCurrency(chainId, pool.currency1),
+      liquidity: BigInt(pool.liquidity),
+      sqrtRatioX96: BigInt(pool.sqrtRatioX96),
+      ticks: pool.ticks?.map(parseTick),
+      reserve0: pool.reserve0 && parseCurrencyAmount(chainId, pool.reserve0),
+      reserve1: pool.reserve1 && parseCurrencyAmount(chainId, pool.reserve1),
     }
   }
 
