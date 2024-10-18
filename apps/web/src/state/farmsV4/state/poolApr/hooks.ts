@@ -4,7 +4,7 @@ import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useCallback } from 'react'
 import sha256 from 'crypto-js/sha256'
 import memoize from 'lodash/memoize'
-import { updateExtendPoolsAtom } from 'state/farmsV4/state/extendPools/atom'
+import { extendPoolsAtom } from 'state/farmsV4/state/extendPools/atom'
 import { useCakePrice } from 'hooks/useCakePrice'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { ChainIdAddressKey, PoolInfo } from '../type'
@@ -24,7 +24,7 @@ export const usePoolApr = (
   cakeApr: CakeApr[keyof CakeApr]
   merklApr: `${number}`
 } => {
-  const updatePools = useSetAtom(updateExtendPoolsAtom)
+  const updatePools = useSetAtom(extendPoolsAtom)
   const updateCakeApr = useSetAtom(cakeAprSetterAtom)
   const poolApr = useAtomValue(poolAprAtom)[key ?? '']
   const [merklAprs, updateMerklApr] = useAtom(merklAprAtom)

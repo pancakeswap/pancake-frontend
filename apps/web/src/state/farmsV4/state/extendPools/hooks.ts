@@ -1,20 +1,19 @@
 import { Token } from '@pancakeswap/swap-sdk-core'
 import { computePoolAddress, DEPLOYER_ADDRESSES, FeeAmount } from '@pancakeswap/v3-sdk'
 import { useQuery } from '@tanstack/react-query'
-import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { useAtom } from 'jotai'
 import memoize from 'lodash/memoize'
 import { useCallback, useState } from 'react'
 import { Address } from 'viem/accounts'
 import type { PoolInfo } from '../type'
-import { DEFAULT_QUERIES, extendPoolsAtom, ExtendPoolsQuery, extendPoolsQueryAtom, updateExtendPoolsAtom } from './atom'
+import { DEFAULT_QUERIES, extendPoolsAtom, ExtendPoolsQuery, extendPoolsQueryAtom } from './atom'
 import { fetchExplorerPoolInfo, fetchExplorerPoolsList } from './fetcher'
 
 const RESET_QUERY_KEYS = ['protocols', 'orderBy', 'chains', 'pools', 'tokens'] as Array<keyof ExtendPoolsQuery>
 
 export const useExtendPools = () => {
   const [query, _setQuery] = useAtom(extendPoolsQueryAtom)
-  const updateExtendPools = useSetAtom(updateExtendPoolsAtom)
-  const extendPools = useAtomValue(extendPoolsAtom)
+  const [extendPools, updateExtendPools] = useAtom(extendPoolsAtom)
   const [pageEnd, setPageEnd] = useState(false)
   const fetchPoolList = useCallback(
     async (newQuery: Partial<ExtendPoolsQuery>) => {
