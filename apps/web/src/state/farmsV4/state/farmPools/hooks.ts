@@ -26,8 +26,8 @@ export const useFarmPools = () => {
 
   const { isLoading } = useQuery({
     queryKey: ['fetchFarmPools'],
-    queryFn: async () => {
-      const data = await fetchFarmPools()
+    queryFn: async ({ signal }) => {
+      const data = await fetchFarmPools(undefined, signal)
       setPools(data)
     },
     refetchOnMount: false,

@@ -107,7 +107,7 @@ export const usePoolAprUpdater = () => {
 
   useQuery({
     queryKey: ['apr', 'merkl', 'fetchMerklApr'],
-    queryFn: () => getAllNetworkMerklApr().then(updateMerklApr),
+    queryFn: ({ signal }) => getAllNetworkMerklApr(signal).then(updateMerklApr),
     refetchInterval: SLOW_INTERVAL,
     refetchOnMount: false,
     refetchOnWindowFocus: false,

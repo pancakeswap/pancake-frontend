@@ -190,6 +190,11 @@ export const fetchFarmPools = async (
   try {
     remotePools = await fetchExplorerFarmPools(args, signal)
   } catch (error) {
+    if (error instanceof Error) {
+      if (error.name === 'AbortError') {
+        throw error
+      }
+    }
     console.error('Failed to fetch remote pools', error)
   }
   const localPools = UNIVERSAL_FARMS.filter((farm) => {
