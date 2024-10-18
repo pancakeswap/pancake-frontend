@@ -3,9 +3,9 @@ import { Currency } from '@pancakeswap/sdk'
 import { TokenAddressMap } from '@pancakeswap/token-lists'
 import { Address } from 'viem'
 import { bsc } from 'wagmi/chains'
+import memoize from 'lodash/memoize'
 import { chains } from './wagmi'
 import { checksumAddress } from './checksumAddress'
-import { memoizeCapped } from './memoizeCapped'
 
 export const isAddressEqual = (a?: any, b?: any) => {
   if (!a || !b) return false
@@ -17,7 +17,7 @@ export const isAddressEqual = (a?: any, b?: any) => {
 }
 
 // returns the checksummed address if the address is valid, otherwise returns undefined
-export const safeGetAddress = memoizeCapped((value: any): Address | undefined => {
+export const safeGetAddress = memoize((value: any): Address | undefined => {
   try {
     let value_ = value
     if (typeof value === 'string' && !value.startsWith('0x')) {
