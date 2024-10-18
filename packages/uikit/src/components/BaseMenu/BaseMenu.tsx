@@ -1,30 +1,40 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useMemo, ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { usePopper } from "react-popper";
 import { ClickableElementContainer } from "./styles";
 import { BaseMenuProps } from "./types";
 import getPortalRoot from "../../util/getPortalRoot";
 
-const BaseMenu: React.FC<BaseMenuProps & { children: any }> = ({ component, options, children, isOpen = false }) => {
+export type ChildrenFunctionProps = {
+  toggle: () => void;
+  open: () => void;
+  close: () => void;
+  update: (() => void) | null;
+};
+
+const BaseMenu: React.FC<BaseMenuProps & { children: ReactNode | ((props: ChildrenFunctionProps) => ReactNode) }> = ({
+  component,
+  options,
+  children,
+  isOpen = false,
+}) => {
   const [targetElement, setTargetElement] = useState<HTMLElement | null>(null);
   const [menuElement, setMenuElement] = useState<HTMLElement | null>(null);
-  const placement = options?.placement ?? "bottom";
-  const offset = options?.offset ?? [0, 10];
-  const padding = options?.padding ?? { left: 16, right: 16 };
+  const { placement = "bottom", offset = [0, 10], padding = { left: 16, right: 16 } } = options || {};
 
   const [isMenuOpen, setIsMenuOpen] = useState(isOpen);
 
-  const toggle = () => {
+  const toggle = useCallback(() => {
     setIsMenuOpen((prev) => !prev);
-  };
+  }, []);
 
-  const open = () => {
+  const open = useCallback(() => {
     setIsMenuOpen(true);
-  };
+  }, []);
 
-  const close = () => {
+  const close = useCallback(() => {
     setIsMenuOpen(false);
-  };
+  }, []);
 
   // Allow for component to be controlled
   useEffect(() => {
@@ -46,7 +56,7 @@ const BaseMenu: React.FC<BaseMenuProps & { children: any }> = ({ component, opti
     return undefined;
   }, [menuElement, targetElement]);
 
-  const { styles, attributes } = usePopper(targetElement, menuElement, {
+  const { styles, attributes, update } = usePopper(targetElement, menuElement, {
     placement,
     modifiers: [
       { name: "offset", options: { offset } },
@@ -56,11 +66,11 @@ const BaseMenu: React.FC<BaseMenuProps & { children: any }> = ({ component, opti
 
   const menu = (
     <div ref={setMenuElement} style={styles.popper} {...attributes.popper}>
-      {typeof children === "function" ? children({ toggle, open, close }) : children}
+      {typeof children === "function" ? children({ toggle, open, close, update }) : children}
     </div>
   );
 
-  const portal = getPortalRoot();
+  const portal = useMemo(() => getPortalRoot(), []);
   const renderMenu = portal ? createPortal(menu, portal) : menu;
 
   return (
