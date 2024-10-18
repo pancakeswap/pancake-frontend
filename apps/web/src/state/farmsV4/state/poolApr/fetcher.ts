@@ -7,7 +7,6 @@ import BigNumber from 'bignumber.js'
 import { SECONDS_PER_YEAR } from 'config'
 import { v2BCakeWrapperABI } from 'config/abi/v2BCakeWrapper'
 import dayjs from 'dayjs'
-import { getCakePriceFromOracle } from 'hooks/useCakePrice'
 import groupBy from 'lodash/groupBy'
 import set from 'lodash/set'
 import { chainIdToExplorerInfoChainName, explorerApiClient } from 'state/info/api/client'
@@ -19,13 +18,13 @@ import { erc20Abi } from 'viem'
 import { PoolInfo, StablePoolInfo, V2PoolInfo, V3PoolInfo } from '../type'
 import { CakeApr, MerklApr } from './atom'
 
-export const getCakeApr = (pool: PoolInfo): Promise<CakeApr> => {
+export const getCakeApr = (pool: PoolInfo, cakePrice: BigNumber): Promise<CakeApr> => {
   switch (pool.protocol) {
     case 'v3':
-      return v3PoolCakeAprBatcher.fetch(pool)
+      return v3PoolCakeAprBatcher.fetch({ pool, cakePrice })
     case 'v2':
     case 'stable':
-      return v2PoolCakeAprBatcher.fetch(pool)
+      return v2PoolCakeAprBatcher.fetch({ pool, cakePrice })
     default:
       return Promise.resolve({
         [`${pool.chainId}:${pool.lpAddress}`]: {
@@ -302,8 +301,9 @@ const getV3PoolsCakeAprByChainId = async (pools: V3PoolInfo[], chainId: number, 
   }, {} as CakeApr)
 }
 
-const getV3PoolsCakeApr = async (pools: V3PoolInfo[]): Promise<CakeApr> => {
-  const cakePrice = await getCakePrice()
+const getV3PoolsCakeApr = async (queries: { pool: V3PoolInfo; cakePrice: BigNumber }[]): Promise<CakeApr> => {
+  const pools = queries.map((query) => query.pool)
+  const cakePrice = queries[0]?.cakePrice
   const poolsByChainId = groupBy(pools, 'chainId')
   const aprs = await Promise.all(
     Object.keys(poolsByChainId).map((chainId) =>
@@ -313,10 +313,11 @@ const getV3PoolsCakeApr = async (pools: V3PoolInfo[]): Promise<CakeApr> => {
   return aprs.reduce((acc, apr) => Object.assign(acc, apr), {})
 }
 
-const v3PoolCakeAprBatcher = create<CakeApr, V3PoolInfo, CakeApr>({
+const v3PoolCakeAprBatcher = create<CakeApr, { pool: V3PoolInfo; cakePrice: BigNumber }, CakeApr>({
   fetcher: getV3PoolsCakeApr,
   resolver: (items, query) => {
-    const key = `${query.chainId}:${query.lpAddress}`
+    const { pool } = query
+    const key = `${pool.chainId}:${pool.lpAddress}`
     return { [key]: items[key] }
   },
   scheduler: windowedFiniteBatchScheduler({
@@ -374,7 +375,6 @@ const calcV2PoolApr = ({
   }
 }
 
-const getCakePrice = async () => new BigNumber(await getCakePriceFromOracle())
 const getV2PoolsCakeAprByChainId = async (
   pools: Array<V2PoolInfo | StablePoolInfo>,
   chainId: number,
@@ -495,8 +495,11 @@ const getV2PoolsCakeAprByChainId = async (
     return acc
   }, {} as CakeApr)
 }
-const getV2PoolsCakeApr = async (pools: Array<V2PoolInfo | StablePoolInfo>): Promise<CakeApr> => {
-  const cakePrice = await getCakePrice()
+const getV2PoolsCakeApr = async (
+  queries: { pool: V2PoolInfo | StablePoolInfo; cakePrice: BigNumber }[],
+): Promise<CakeApr> => {
+  const pools = queries.map((query) => query.pool)
+  const cakePrice = queries[0]?.cakePrice
   const poolsByChainId = groupBy(pools, 'chainId')
   const aprs = await Promise.all(
     Object.keys(poolsByChainId).map((chainId) =>
@@ -505,10 +508,11 @@ const getV2PoolsCakeApr = async (pools: Array<V2PoolInfo | StablePoolInfo>): Pro
   )
   return aprs.reduce((acc, apr) => Object.assign(acc, apr), {})
 }
-const v2PoolCakeAprBatcher = create<CakeApr, V2PoolInfo | StablePoolInfo, CakeApr>({
+const v2PoolCakeAprBatcher = create<CakeApr, { pool: V2PoolInfo | StablePoolInfo; cakePrice: BigNumber }, CakeApr>({
   fetcher: getV2PoolsCakeApr,
   resolver: (items, query) => {
-    const key = `${query.chainId}:${query.lpAddress}`
+    const { pool } = query
+    const key = `${pool.chainId}:${pool.lpAddress}`
     return { [key]: items[key] }
   },
   scheduler: windowedFiniteBatchScheduler({
