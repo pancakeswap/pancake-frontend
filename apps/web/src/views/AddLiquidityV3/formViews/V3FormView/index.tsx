@@ -247,10 +247,9 @@ export default function V3FormView({
   const maxAmounts: { [field in Field]?: CurrencyAmount<Currency> } = useMemo(
     () =>
       [Field.CURRENCY_A, Field.CURRENCY_B].reduce((accumulator, field) => {
-        return {
-          ...accumulator,
-          [field]: maxAmountSpend(currencyBalances[field]),
-        }
+        // eslint-disable-next-line no-param-reassign
+        accumulator[field] = maxAmountSpend(currencyBalances[field])
+        return accumulator
       }, {}),
     [currencyBalances],
   )
