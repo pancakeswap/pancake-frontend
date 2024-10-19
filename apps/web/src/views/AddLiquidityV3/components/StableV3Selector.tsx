@@ -51,10 +51,11 @@ export function StableV3Selector({
     () =>
       pools.reduce(
         (acc, [curPoolState, curPool]) => {
-          return {
-            ...acc,
-            ...{ [curPool?.fee as FeeAmount]: curPoolState },
+          if (curPool) {
+            // eslint-disable-next-line no-param-reassign
+            acc[curPool.fee as FeeAmount] = curPoolState
           }
+          return acc
         },
         {
           // default all states to NOT_EXISTS

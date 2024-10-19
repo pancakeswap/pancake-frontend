@@ -73,12 +73,11 @@ export default function FeeSelector({
     () =>
       pools.reduce(
         (acc, [curPoolState, curPool]) => {
-          return curPool
-            ? {
-                ...acc,
-                ...{ [curPool.fee as FeeAmount]: curPoolState },
-              }
-            : acc
+          if (curPool) {
+            // eslint-disable-next-line no-param-reassign
+            acc[curPool.fee as FeeAmount] = curPoolState
+          }
+          return acc
         },
         {
           // default all states to NOT_EXISTS
@@ -86,7 +85,7 @@ export default function FeeSelector({
           [FeeAmount.LOW]: PoolState.NOT_EXISTS,
           [FeeAmount.MEDIUM]: PoolState.NOT_EXISTS,
           [FeeAmount.HIGH]: PoolState.NOT_EXISTS,
-        },
+        } as Record<FeeAmount, PoolState>,
       ),
     [pools],
   )
