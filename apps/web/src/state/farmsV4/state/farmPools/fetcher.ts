@@ -68,8 +68,8 @@ function fetchV3PoolsTvlVolumeFromSubgraph(pools: PoolIdentifier[]): Promise<Poo
     }
     const result = await client.request<V3PoolResult>(
       gql`
-        query pools($addresses: [String!]!, $startAt: Int!) {
-          poolDayDatas(first: 1000, where: { date_gt: $startAt, pool_in: $addresses }) {
+        query pools($addresses: [String!]!, $startAt: Int!, $endAt: Int!) {
+          poolDayDatas(first: 1000, where: { date_gte: $startAt, date_lt: $endAt, pool_in: $addresses }) {
             volumeUSD
             tvlUSD
             pool {
@@ -81,6 +81,7 @@ function fetchV3PoolsTvlVolumeFromSubgraph(pools: PoolIdentifier[]): Promise<Poo
       {
         addresses: poolsOnChain.map((p) => p.id),
         startAt: dayjs().utc().startOf('day').subtract(1, 'days').unix(),
+        endAt: dayjs().utc().startOf('day').unix(),
       },
     )
     return result.poolDayDatas.map((data) => ({
