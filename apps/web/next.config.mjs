@@ -97,29 +97,6 @@ const config = {
         source: '/info/pool/:address',
         destination: '/info/pools/:address',
       },
-
-      // TODO: remove rewrite once explorer is fixed
-      {
-        source: '/info/v3',
-        destination: 'https://deprecated-info.pancake.run/info/v3',
-      },
-      {
-        source: '/info/v3/pairs',
-        destination: 'https://deprecated-info.pancake.run/info/v3/pairs',
-      },
-      {
-        source: '/info/v3/tokens',
-        destination: 'https://deprecated-info.pancake.run/info/v3/tokens',
-      },
-      {
-        source: '/info/v3/tokens/:path*',
-        destination: 'https://deprecated-info.pancake.run/info/v3/tokens/:path*',
-      },
-      {
-        source: '/info/v3/pairs/:path*',
-        destination: 'https://deprecated-info.pancake.run/info/v3/pairs/:path*',
-      },
-
       {
         source: '/.well-known/vercel/flags',
         destination: '/api/vercel/flags',
