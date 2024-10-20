@@ -106,27 +106,7 @@ const config = {
       ],
       beforeFiles: [
         {
-          source: '/info/v3',
-          destination: '/info/v3',
-        },
-        {
-          source: '/info/v3/pairs',
-          destination: '/info/v3/pairs',
-        },
-        {
-          source: '/info/v3/tokens',
-          destination: '/info/v3/tokens',
-        },
-        {
-          source: '/info/v3/tokens/:path*',
-          destination: '/info/v3/tokens/:path*',
-        },
-        {
-          source: '/info/v3/pairs/:path*',
-          destination: '/info/v3/pairs/:path*',
-        },
-        {
-          source: '/:path((?!/info/v3(/pairs|/tokens|/tokens/|/pairs/)).*)',
+          source: '/:path((?!/info/v3$)(?!/info/v3/pairs$)(?!/info/v3/tokens$)(?!/info/v3/tokens/)(?!/info/v3/pairs/).*)',
           destination: 'https://pancakeswap.finance',
         },
       ],
