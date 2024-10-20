@@ -43,6 +43,7 @@ const workerDeps = Object.keys(smartRouterPkgs.dependencies)
 
 /** @type {import('next').NextConfig} */
 const config = {
+  assetPrefix: 'https://deprecated-info.pancake.run',
   typescript: {
     tsconfigPath: 'tsconfig.json',
   },
