@@ -95,7 +95,7 @@ export const XRoutesBreakdown = memo(function XRoutesBreakdown({ wrapperStyle, l
           <SkeletonV2 width="120px" height="16px" borderRadius="8px" minHeight="auto" isDataReady={!loading}>
             <span style={{ display: 'flex', alignItems: 'center' }}>
               <Text color="primary" fontSize="14px">
-                {t('Experimental Trading')}
+                PancakeSwap X
               </Text>
             </span>
           </SkeletonV2>
