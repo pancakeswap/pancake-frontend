@@ -30,7 +30,7 @@
     "@msafe/aptos-wallet": "^3.0.6",
     "@pancakeswap/tsconfig": "workspace:*",
     "@pancakeswap/utils": "workspace:*",
-    "@tanstack/react-query": "^5.52.1",
+    "@tanstack/react-query": "catalog:",
     "@types/react": "^18.2.21",
     "@types/use-sync-external-store": "^0.0.3",
     "aptos": "1.21.0",

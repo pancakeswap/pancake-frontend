@@ -16,7 +16,7 @@
     "@pancakeswap/localization": "workspace:*",
     "@pancakeswap/uikit": "workspace:*",
     "@pancakeswap/utils": "workspace:*",
-    "@tanstack/react-query": "^5.52.1",
+    "@tanstack/react-query": "catalog:",
     "@vanilla-extract/next-plugin": "^2.3.0",
     "dayjs": "^1.11.10",
     "lodash": "^4.17.21",
