@@ -63,30 +63,37 @@ export function computeTradePriceBreakdown(trade?: TradeEssentialForPriceBreakdo
   let feePercent = new Percent(0)
   let outputAmountWithoutPriceImpact = CurrencyAmount.fromRawAmount(trade.outputAmount.wrapped.currency, 0)
   for (const route of routes) {
-    const { inputAmount: routeInputAmount, pools, percent } = route
-    const routeFeePercent = ONE_HUNDRED_PERCENT.subtract(
-      pools.reduce<Percent>((currentFee, pool) => {
-        if (SmartRouter.isV2Pool(pool)) {
-          return currentFee.multiply(INPUT_FRACTION_AFTER_FEE)
-        }
-        if (SmartRouter.isStablePool(pool)) {
-          return currentFee.multiply(ONE_HUNDRED_PERCENT.subtract(pool.fee))
-        }
-        if (SmartRouter.isV3Pool(pool)) {
-          return currentFee.multiply(ONE_HUNDRED_PERCENT.subtract(v3FeeToPercent(pool.fee)))
-        }
-        return currentFee
-      }, ONE_HUNDRED_PERCENT),
-    )
-    // Not accurate since for stable swap, the lp fee is deducted on the output side
-    feePercent = feePercent.add(
-      routeFeePercent.multiply(Percent.toPercent(parseNumberToFraction(percent / 100) || new Fraction(0))),
-    )
+    try {
+      const { inputAmount: routeInputAmount, pools, percent } = route
+      const routeFeePercent = ONE_HUNDRED_PERCENT.subtract(
+        pools.reduce<Percent>((currentFee, pool) => {
+          if (SmartRouter.isV2Pool(pool)) {
+            return currentFee.multiply(INPUT_FRACTION_AFTER_FEE)
+          }
+          if (SmartRouter.isStablePool(pool)) {
+            return currentFee.multiply(ONE_HUNDRED_PERCENT.subtract(pool.fee))
+          }
+          if (SmartRouter.isV3Pool(pool)) {
+            return currentFee.multiply(ONE_HUNDRED_PERCENT.subtract(v3FeeToPercent(pool.fee)))
+          }
+          return currentFee
+        }, ONE_HUNDRED_PERCENT),
+      )
+      // Not accurate since for stable swap, the lp fee is deducted on the output side
+      feePercent = feePercent.add(
+        routeFeePercent.multiply(Percent.toPercent(parseNumberToFraction(percent / 100) || new Fraction(0))),
+      )
 
-    const midPrice = SmartRouter.getMidPrice(route)
-    outputAmountWithoutPriceImpact = outputAmountWithoutPriceImpact.add(
-      midPrice.quote(routeInputAmount.wrapped) as CurrencyAmount<Token>,
-    )
+      const midPrice = SmartRouter.getMidPrice(route)
+      outputAmountWithoutPriceImpact = outputAmountWithoutPriceImpact.add(
+        midPrice.quote(routeInputAmount.wrapped) as CurrencyAmount<Token>,
+      )
+    } catch (error) {
+      return {
+        priceImpactWithoutFee: undefined,
+        lpFeeAmount: null,
+      }
+    }
   }
 
   if (outputAmountWithoutPriceImpact.quotient === ZERO) {
