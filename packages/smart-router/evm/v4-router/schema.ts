@@ -75,6 +75,7 @@ const zStablePool = z
     balances: z.array(zCurrencyAmount),
     amplifier: zBigNumber,
     fee: z.string(),
+    address: zAddress,
   })
   .required()
 
