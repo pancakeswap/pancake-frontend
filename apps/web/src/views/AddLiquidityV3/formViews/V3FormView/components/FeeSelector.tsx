@@ -1,5 +1,10 @@
-import { ChainId } from '@pancakeswap/chains'
-import { legacyFarmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
+import {
+  ComputedFarmConfigV3,
+  defineFarmV3ConfigsFromUniversalFarm,
+  fetchUniversalFarms,
+  Protocol,
+  UniversalFarmConfigV3,
+} from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
 import { AtomBox, AutoColumn, Button, CircleLoader, Text } from '@pancakeswap/uikit'
@@ -37,7 +42,18 @@ export default function FeeSelector({
 }) {
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
-  const farmV3Config = legacyFarmsV3ConfigChainMap[currencyA?.chainId as ChainId]
+  const [farmV3Config, setFarmV3Config] = useState<ComputedFarmConfigV3[]>([])
+
+  useEffect(() => {
+    const fetchFarmV3Config = async () => {
+      if (currencyA?.chainId) {
+        const farms = await fetchUniversalFarms(currencyA?.chainId, Protocol.V3)
+        setFarmV3Config(defineFarmV3ConfigsFromUniversalFarm(farms as UniversalFarmConfigV3[]))
+      }
+    }
+
+    fetchFarmV3Config()
+  }, [currencyA])
 
   const farmV3 = useMemo(() => {
     if (currencyA && currencyB) {

@@ -1,4 +1,4 @@
-import { Protocol, UNIVERSAL_FARMS } from '@pancakeswap/farms'
+import { Protocol, fetchAllUniversalFarms } from '@pancakeswap/farms'
 import { LegacyRouter } from '@pancakeswap/smart-router/legacy-router'
 import { Token } from '@pancakeswap/swap-sdk-core'
 import { getTokenByAddress } from '@pancakeswap/tokens'
@@ -8,13 +8,15 @@ import { safeGetAddress } from 'utils'
 import { Address } from 'viem'
 import { PoolInfo } from './type'
 
-export const parseFarmPools = (
+export const parseFarmPools = async (
   data:
     | paths['/cached/pools/farming']['get']['responses']['200']['content']['application/json']
     | paths['/cached/pools/list']['get']['responses']['200']['content']['application/json']['rows']
     | paths['/cached/pools/{chainName}/{id}']['get']['responses']['200']['content']['application/json'][],
   options: { isFarming?: boolean } = {},
-): PoolInfo[] => {
+): Promise<PoolInfo[]> => {
+  const fetchFarmConfig = await fetchAllUniversalFarms()
+
   return data.map((pool) => {
     let stableSwapAddress: Address | undefined
     let lpAddress = safeGetAddress(pool.id)!
@@ -29,7 +31,7 @@ export const parseFarmPools = (
         feeTier = stableConfig.stableTotalFee * 1000000
       }
     }
-    const localFarm = UNIVERSAL_FARMS.find(
+    const localFarm = fetchFarmConfig.find(
       (farm) => safeGetAddress(farm.lpAddress) === safeGetAddress(lpAddress) && farm.chainId === pool.chainId,
     )
     let pid: number | undefined

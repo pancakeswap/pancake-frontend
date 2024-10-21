@@ -1,5 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
-import { Protocol, UNIVERSAL_FARMS, UniversalFarmConfig, masterChefV3Addresses } from '@pancakeswap/farms'
+import { Protocol, UniversalFarmConfig, fetchAllUniversalFarms, masterChefV3Addresses } from '@pancakeswap/farms'
 import { masterChefAddresses } from '@pancakeswap/farms/src/const'
 import { masterChefV3ABI } from '@pancakeswap/v3-sdk'
 import { UseQueryResult, useQueries, useQuery } from '@tanstack/react-query'
@@ -9,7 +9,7 @@ import dayjs from 'dayjs'
 import { useAtom } from 'jotai'
 import groupBy from 'lodash/groupBy'
 import keyBy from 'lodash/keyBy'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { publicClient } from 'utils/viem'
 import { zeroAddress } from 'viem'
 import { Address } from 'viem/accounts'
@@ -23,6 +23,7 @@ type ArrayItemType<T> = T extends Array<infer U> ? U : T
 
 export const useFarmPools = () => {
   const [pools, setPools] = useAtom(farmPoolsAtom)
+  const [farmConfig, setFarmConfig] = useState<UniversalFarmConfig[]>([])
 
   const { isLoading } = useQuery({
     queryKey: ['fetchFarmPools'],
@@ -35,11 +36,20 @@ export const useFarmPools = () => {
     refetchOnWindowFocus: false,
   })
 
-  const { data: poolsStatus, pending: isPoolStatusPending } = useMultiChainV3PoolsStatus(UNIVERSAL_FARMS)
-  const { data: poolsTimeFrame, pending: isPoolsTimeFramePending } = useMultiChainPoolsTimeFrame(UNIVERSAL_FARMS)
+  useEffect(() => {
+    const fetchFarmConfig = async () => {
+      const response: UniversalFarmConfig[] = await fetchAllUniversalFarms()
+      setFarmConfig(response)
+    }
+
+    fetchFarmConfig()
+  }, [])
+
+  const { data: poolsStatus, pending: isPoolStatusPending } = useMultiChainV3PoolsStatus(farmConfig)
+  const { data: poolsTimeFrame, pending: isPoolsTimeFramePending } = useMultiChainPoolsTimeFrame(farmConfig)
 
   const poolsWithStatus: ((PoolInfo | UniversalFarmConfig) & { isActiveFarm?: boolean })[] = useMemo(() => {
-    const farms = pools.length ? pools : UNIVERSAL_FARMS
+    const farms = pools.length ? pools : farmConfig
     return farms.map((f: PoolInfo | UniversalFarmConfig) => {
       if (f.protocol === Protocol.V3) {
         return {
@@ -58,7 +68,7 @@ export const useFarmPools = () => {
       }
       return f
     })
-  }, [pools, poolsStatus, isPoolStatusPending, poolsTimeFrame, isPoolsTimeFramePending])
+  }, [pools, farmConfig, isPoolStatusPending, poolsStatus, isPoolsTimeFramePending, poolsTimeFrame])
 
   return { loaded: !isLoading, data: poolsWithStatus }
 }

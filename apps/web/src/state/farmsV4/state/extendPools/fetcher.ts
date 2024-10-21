@@ -1,5 +1,5 @@
 import { getChainNameInKebabCase } from '@pancakeswap/chains'
-import { UNIVERSAL_FARMS, UNIVERSAL_FARMS_MAP } from '@pancakeswap/farms'
+import { fetchAllUniversalFarms, fetchAllUniversalFarmsMap } from '@pancakeswap/farms'
 import set from 'lodash/set'
 import { chainIdToExplorerInfoChainName, explorerApiClient } from 'state/info/api/client'
 import { PoolInfo, StablePoolInfo, V2PoolInfo } from '../type'
@@ -33,9 +33,10 @@ export const fetchExplorerPoolsList = async (query: Required<ExtendPoolsQuery>, 
   }
 
   const { rows, endCursor, startCursor, hasNextPage, hasPrevPage } = resp.data
+  const pools = await parseFarmPools(rows)
 
   return {
-    pools: parseFarmPools(rows),
+    pools,
     endCursor,
     startCursor,
     hasNextPage,
@@ -43,10 +44,11 @@ export const fetchExplorerPoolsList = async (query: Required<ExtendPoolsQuery>, 
   }
 }
 
-const composeFarmConfig = (farm: PoolInfo) => {
+const composeFarmConfig = async (farm: PoolInfo) => {
   if (farm.protocol !== 'stable' && farm.protocol !== 'v2') return farm
 
-  const localFarm = UNIVERSAL_FARMS_MAP[`${farm.chainId}:${farm.lpAddress}`] as V2PoolInfo | StablePoolInfo | undefined
+  const farmConfig = await fetchAllUniversalFarmsMap()
+  const localFarm = farmConfig[`${farm.chainId}:${farm.lpAddress}`] as V2PoolInfo | StablePoolInfo | undefined
 
   if (!localFarm) {
     return farm
@@ -78,7 +80,10 @@ export const fetchExplorerPoolInfo = async <TPoolType extends PoolInfo>(
   }
   // @ts-ignore
   resp.data.chainId = chainId
-  const isFarming = UNIVERSAL_FARMS.some((farm) => farm.lpAddress === poolAddress)
+  const farmConfig = await fetchAllUniversalFarms()
+  const isFarming = farmConfig.some((farm) => farm.lpAddress.toLowerCase() === poolAddress.toLowerCase())
+  const farm = await parseFarmPools([resp.data], { isFarming })
+  const data = await composeFarmConfig(farm[0])
 
-  return composeFarmConfig(parseFarmPools([resp.data], { isFarming })[0]) as TPoolType
+  return data as TPoolType
 }
