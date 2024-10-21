@@ -1,9 +1,10 @@
 import { Pair, PAIR_LP_TYPE_TAG, PAIR_RESERVE_TYPE_TAG } from '@pancakeswap/aptos-swap-sdk'
 import { useAccount, useAccountBalances } from '@pancakeswap/awgmi'
 import { unwrapTypeFromString } from '@pancakeswap/awgmi/core'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import { PairState, usePairsFromAddresses } from 'hooks/usePairs'
+import { UseAccountBalancesResult } from '@pancakeswap/awgmi/src/hooks/useAccountBalances'
 
 function filterPair(v2Pairs): Pair[] {
   return v2Pairs?.length
@@ -22,7 +23,11 @@ export default function useLPPairsHaveBalance(): LPPairsResponse {
   const balances = useAccountBalances({
     watch: true,
     address: account?.address,
-    select: (balance) => (balance.address.includes(PAIR_LP_TYPE_TAG) && balance.value !== '0' ? balance : null),
+    select: useCallback(
+      (balance: UseAccountBalancesResult) =>
+        balance.address.includes(PAIR_LP_TYPE_TAG) && balance.value !== '0' ? balance : null,
+      [],
+    ),
   })
   const isPending = useMemo(() => balances.some((b) => b.isPending), [balances])
   const mmV2PairsBalances = useMemo(

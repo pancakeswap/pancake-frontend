@@ -15,6 +15,7 @@ import { Coin, Pair, PAIR_LP_TYPE_TAG } from '@pancakeswap/aptos-swap-sdk'
 import { CAKE_PID } from 'config/constants'
 import { useInterval, useLastUpdated } from '@pancakeswap/hooks'
 
+import { FetchAccountResourcesResult } from '@pancakeswap/awgmi/core'
 import { PoolResource } from '../types'
 import transformCakePool from '../transformers/transformCakePool'
 import transformPool from '../transformers/transformPool'
@@ -35,20 +36,17 @@ export const usePoolsList = () => {
   const { data: pools } = useAccountResources({
     networkName,
     address: SMARTCHEF_ADDRESS,
-    select: (resources) => {
+    select: useCallback((resources: FetchAccountResourcesResult) => {
       return resources.filter(
         // ignore LP Token Type for now
         (resource) => resource.type.includes(SMARTCHEF_POOL_INFO_TYPE_TAG) && !resource.type.includes(PAIR_LP_TYPE_TAG),
       )
-    },
+    }, []),
     staleTime: POOL_RESOURCE_STALE_TIME,
   })
 
   const { data: balances } = useAccountResources({
     address: account,
-    select: (resources) => {
-      return resources
-    },
     staleTime: POOL_RESOURCE_STALE_TIME,
   })
 
