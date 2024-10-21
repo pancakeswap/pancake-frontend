@@ -26,9 +26,9 @@ const DesktopRow: React.FC<React.PropsWithChildren<DesktopRowProps>> = ({ rank, 
     <Td>
       <NetWinnings
         token={token}
-        amount={user.netBNB}
-        textPrefix={user.netBNB > 0 ? '+' : ''}
-        textColor={user.netBNB > 0 ? 'success' : 'failure'}
+        amount={user.netToken}
+        textPrefix={user.netToken > 0 ? '+' : ''}
+        textColor={user.netToken > 0 ? 'success' : 'failure'}
       />
     </Td>
     <Td textAlign="center">

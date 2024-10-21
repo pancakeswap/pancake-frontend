@@ -26,11 +26,11 @@ export const newTransformUserResponse = (userResponse): PredictionUser => {
 
   return {
     ...baseUserResponse,
-    totalBNB: totalAmount ? parseFloat(totalAmount) : 0,
-    totalBNBBull: totalBetsBull ? parseFloat(totalBetsBull) : 0,
-    totalBNBBear: totalBetsBear ? parseFloat(totalBetsBear) : 0,
-    totalBNBClaimed: totalClaimedAmount ? parseFloat(totalClaimedAmount) : 0,
-    averageBNB: averageAmount ? parseFloat(averageAmount) : 0,
-    netBNB: netAmount ? parseFloat(netAmount) : 0,
+    totalToken: totalAmount ? parseFloat(totalAmount) : 0,
+    totalTokenBull: totalBetsBull ? parseFloat(totalBetsBull) : 0,
+    totalTokenBear: totalBetsBear ? parseFloat(totalBetsBear) : 0,
+    totalTokenClaimed: totalClaimedAmount ? parseFloat(totalClaimedAmount) : 0,
+    averageToken: averageAmount ? parseFloat(averageAmount) : 0,
+    netToken: netAmount ? parseFloat(netAmount) : 0,
   }
 }

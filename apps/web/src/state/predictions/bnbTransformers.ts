@@ -5,8 +5,8 @@ export const transformBetResponseBNB = (betResponse): Bet => {
   const baseBet = transformBetResponseToken(betResponse)
   const bet = {
     ...baseBet,
-    claimedBNB: betResponse.claimedBNB ? parseFloat(betResponse.claimedBNB) : 0,
-    claimedNetBNB: betResponse.claimedNetBNB ? parseFloat(betResponse.claimedNetBNB) : 0,
+    claimedToken: betResponse.claimedBNB ? parseFloat(betResponse.claimedBNB) : 0,
+    claimedNetToken: betResponse.claimedNetBNB ? parseFloat(betResponse.claimedNetBNB) : 0,
   } as Bet
 
   if (betResponse.user) {
@@ -26,11 +26,11 @@ export const transformUserResponseBNB = (userResponse): PredictionUser => {
 
   return {
     ...baseUserResponse,
-    totalBNB: totalBNB ? parseFloat(totalBNB) : 0,
-    totalBNBBull: totalBNBBull ? parseFloat(totalBNBBull) : 0,
-    totalBNBBear: totalBNBBear ? parseFloat(totalBNBBear) : 0,
-    totalBNBClaimed: totalBNBClaimed ? parseFloat(totalBNBClaimed) : 0,
-    averageBNB: averageBNB ? parseFloat(averageBNB) : 0,
-    netBNB: netBNB ? parseFloat(netBNB) : 0,
+    totalToken: totalBNB ? parseFloat(totalBNB) : 0,
+    totalTokenBull: totalBNBBull ? parseFloat(totalBNBBull) : 0,
+    totalTokenBear: totalBNBBear ? parseFloat(totalBNBBear) : 0,
+    totalTokenClaimed: totalBNBClaimed ? parseFloat(totalBNBClaimed) : 0,
+    averageToken: averageBNB ? parseFloat(averageBNB) : 0,
+    netToken: netBNB ? parseFloat(netBNB) : 0,
   }
 }
