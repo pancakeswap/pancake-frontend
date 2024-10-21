@@ -285,7 +285,14 @@ export const USDC = {
     'USD Coin',
     'https://www.centre.io/usdc',
   ),
-  [ChainId.LINEA]: new ERC20Token(ChainId.LINEA, '0x176211869cA2b568f2A7D4EE941E073a821EE1ff', 6, 'USDC', 'USD Coin'),
+  [ChainId.LINEA]: new ERC20Token(
+    ChainId.LINEA,
+    '0x176211869cA2b568f2A7D4EE941E073a821EE1ff',
+    6,
+    'USDC',
+    'USD Coin',
+    'https://www.centre.io/usdc',
+  ),
   [ChainId.LINEA_TESTNET]: new ERC20Token(
     ChainId.LINEA_TESTNET,
     '0xf56dc6695cF1f5c364eDEbC7Dc7077ac9B586068',
@@ -302,7 +309,14 @@ export const USDC = {
     'USD Coin',
     'https://www.centre.io/usdc',
   ),
-  [ChainId.BASE]: new ERC20Token(ChainId.BASE, '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913', 6, 'USDC', 'USD Coin'),
+  [ChainId.BASE]: new ERC20Token(
+    ChainId.BASE,
+    '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
+    6,
+    'USDC',
+    'USD Coin',
+    'https://www.centre.io/usdc',
+  ),
   [ChainId.OPBNB_TESTNET]: new ERC20Token(
     ChainId.OPBNB_TESTNET,
     '0x845E27B8A4ad1Fe3dc0b41b900dC8C1Bb45141C3',
