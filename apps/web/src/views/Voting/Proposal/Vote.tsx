@@ -101,7 +101,7 @@ const Vote: React.FC<React.PropsWithChildren<VoteProps>> = ({ proposal, hasAccou
                 m="auto"
                 display="block"
                 disabled={vote === null}
-                endIcon={<VoteIcon width={14} height={14} color="white" />}
+                endIcon={<VoteIcon width={14} height={14} color="currentColor" />}
                 onClick={presentCastVoteModal}
               >
                 {t('Cast Vote')}
