@@ -8,7 +8,7 @@ const zksyncAutoPopup = atomWithStorage<{ [account: string]: boolean }>(
   'pcs:zksync-airdrop-auto-popup-v2',
   {},
   undefined,
-  { unstable_getOnInit: true },
+  { getOnInit: true },
 )
 
 const useAutoPopup = (): [boolean, (value: boolean) => void] => {
