@@ -15,7 +15,7 @@ import {
 } from '@pancakeswap/uikit'
 import { useExpertMode, useUserExpertModeAcknowledgement } from '@pancakeswap/utils/user'
 import { MotionTabs } from 'components/Motion/MotionTabs'
-import { ReactNode, useCallback, useState } from 'react'
+import { ReactNode, useCallback, useId, useState } from 'react'
 import { useRoutingSettingChanged } from 'state/user/smartRouter'
 import SettingsModal from '../SettingsModal'
 import { SettingsMode } from '../types'
@@ -62,6 +62,8 @@ export const SettingsModalV2 = ({
 
   const { onDismiss: onDismissGlobalSettings } = useModalV2()
 
+  const ariaId = useId()
+
   const onTabChange = useCallback(
     (index: TabIndex) => {
       setActiveTabIndex(index)
@@ -89,14 +91,20 @@ export const SettingsModalV2 = ({
       default:
         return (
           <Box mb="-5px">
-            <MotionTabs activeIndex={activeTabIndex} onItemClick={onTabChange} animateOnMobile={false}>
+            <MotionTabs
+              activeIndex={activeTabIndex}
+              onItemClick={onTabChange}
+              animateOnMobile={false}
+              ariaId={ariaId}
+              autoFocus
+            >
               <Text>{t('Settings')}</Text>
               <Text>{t('Recent Transactions')}</Text>
             </MotionTabs>
           </Box>
         )
     }
-  }, [activeTabIndex, t, onTabChange])
+  }, [activeTabIndex, t, onTabChange, ariaId])
 
   const renderTab = useCallback(() => {
     switch (activeTabIndex) {
