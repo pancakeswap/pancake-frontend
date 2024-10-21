@@ -107,23 +107,23 @@ const config = {
         // TODO: remove rewrite once explorer is fixed
         {
           source: '/info/v3',
-          destination: 'https://deprecated-info.pancake.run/info/v3',
+          destination: 'https://info-v1.pancakeswap.finance/info/v3',
         },
         {
           source: '/info/v3/pairs',
-          destination: 'https://deprecated-info.pancake.run/info/v3/pairs',
+          destination: 'https://info-v1.pancakeswap.finance/info/v3/pairs',
         },
         {
           source: '/info/v3/tokens',
-          destination: 'https://deprecated-info.pancake.run/info/v3/tokens',
+          destination: 'https://info-v1.pancakeswap.finance/info/v3/tokens',
         },
         {
           source: '/info/v3/tokens/:path*',
-          destination: 'https://deprecated-info.pancake.run/info/v3/tokens/:path*',
+          destination: 'https://info-v1.pancakeswap.finance/info/v3/tokens/:path*',
         },
         {
           source: '/info/v3/pairs/:path*',
-          destination: 'https://deprecated-info.pancake.run/info/v3/pairs/:path*',
+          destination: 'https://info-v1.pancakeswap.finance/info/v3/pairs/:path*',
         },
       ],
     }
