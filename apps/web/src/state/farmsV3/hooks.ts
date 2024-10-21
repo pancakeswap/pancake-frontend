@@ -301,9 +301,14 @@ const usePositionsByUserFarms = (
   const pendingCakeByTokenIds = useMemo(
     () =>
       (tokenIdResults as bigint[])?.reduce<IPendingCakeByTokenId>((acc, pendingCake, i) => {
-        const position = stakedPositions[i]
-
-        return pendingCake && position?.tokenId ? { ...acc, [position.tokenId.toString()]: pendingCake } : acc
+        if (pendingCake) {
+          const position = stakedPositions[i]
+          if (position?.tokenId) {
+            // eslint-disable-next-line no-param-reassign
+            acc[position.tokenId.toString()] = pendingCake
+          }
+        }
+        return acc
       }, {} as IPendingCakeByTokenId) ?? {},
     [stakedPositions, tokenIdResults],
   )
@@ -337,11 +342,10 @@ const usePositionsByUserFarms = (
           pendingCakeByTokenIds: Object.entries(pendingCakeByTokenIds).reduce<IPendingCakeByTokenId>(
             (acc, [tokenId, cake]) => {
               const foundPosition = staked.find((p) => p?.tokenId === BigInt(tokenId))
-
               if (foundPosition) {
-                return { ...acc, [tokenId]: cake }
+                // eslint-disable-next-line no-param-reassign
+                acc[tokenId] = cake
               }
-
               return acc
             },
             {},
@@ -425,9 +429,9 @@ const useV3BoostedLiquidityX = (): { data: Record<number, number> } => {
 
   const result = useMemo(() => {
     const dataMap = data?.reduce((acc, d) => {
-      const updatedAcc = { ...acc }
-      updatedAcc[d.pid] = Number.isNaN(d.boosterliquidityX) ? 1 : d.boosterliquidityX
-      return updatedAcc
+      // eslint-disable-next-line no-param-reassign
+      acc[d.pid] = Number.isNaN(d.boosterliquidityX) ? 1 : d.boosterliquidityX
+      return acc
     }, {})
     return dataMap
   }, [data])
