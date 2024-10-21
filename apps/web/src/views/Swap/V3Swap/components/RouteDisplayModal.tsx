@@ -95,23 +95,36 @@ export const RouteDisplay = memo(function RouteDisplay({ route }: RouteDisplayPr
       ? pairs.map((p, index) => {
           const [input, output] = p
           const pool = pools[index]
+          const isV4ClPool = SmartRouter.isV4ClPool(pool)
+          const isV4BinPool = SmartRouter.isV4BinPool(pool)
+          const isV4Pool = isV4BinPool || isV4ClPool
           const isV3Pool = SmartRouter.isV3Pool(pool)
           const isV2Pool = SmartRouter.isV2Pool(pool)
-          const key = isV2Pool ? `v2_${pool.reserve0.currency.symbol}_${pool.reserve1.currency.symbol}` : pool.address
+          const key = isV2Pool
+            ? `v2_${pool.reserve0.currency.symbol}_${pool.reserve1.currency.symbol}`
+            : SmartRouter.isStablePool(pool) || isV3Pool
+            ? pool.address
+            : isV4Pool
+            ? pool.id
+            : undefined
+          if (!key) return null
+          const feeDisplay = isV3Pool || isV4Pool ? v3FeeToPercent(pool.fee).toSignificant(6) : ''
           const text = isV2Pool
             ? 'V2'
             : isV3Pool
-            ? `V3 (${v3FeeToPercent(pool.fee).toSignificant(6)}%)`
+            ? `V3 (${feeDisplay}%)`
+            : isV4ClPool
+            ? `V4CL (${feeDisplay}%)`
+            : isV4BinPool
+            ? `V4Bin (${feeDisplay}%)`
             : t('StableSwap')
-          const tooltipText = `${input.symbol}/${output.symbol}${
-            isV3Pool ? ` (${v3FeeToPercent(pool.fee).toSignificant(6)}%)` : ''
-          }`
+          const tooltipText = `${input.symbol}/${output.symbol}${isV3Pool || isV4Pool ? ` (${feeDisplay}%)` : ''}`
           return (
             <PairNode
               pair={p}
               key={key}
               text={text}
-              className={isV3Pool ? 'highlight' : ''}
+              className={isV4Pool || isV3Pool ? 'highlight' : ''}
               tooltipText={tooltipText}
             />
           )

@@ -12,6 +12,7 @@ const zTradeType = z.nativeEnum(TradeType)
 const zAddress = z.custom<Address>((val) => /^0x[a-fA-F0-9]{40}$/.test(val as string))
 const zBigNumber = z.string().regex(/^[0-9]+$/)
 const zSignedBigInt = z.string().regex(/^-?[0-9]+$/)
+const zHex = z.custom<Address>((val) => /^0x[a-fA-F0-9]*$/.test(val as string))
 const zCurrency = z
   .object({
     address: zAddress,
@@ -74,10 +75,32 @@ const zStablePool = z
     balances: z.array(zCurrencyAmount),
     amplifier: zBigNumber,
     fee: z.string(),
+    address: zAddress,
   })
   .required()
 
-export const zPools = z.array(z.union([zV3Pool, zV2Pool, zStablePool]))
+const zV4ClPool = z
+  .object({
+    type: z.literal(PoolType.V4CL),
+    currency0: zCurrency,
+    currency1: zCurrency,
+    fee: zFee,
+    liquidity: zBigNumber,
+    sqrtRatioX96: zBigNumber,
+    tick: z.number(),
+    tickSpacing: z.number(),
+    poolManager: zAddress,
+    id: zHex,
+  })
+  .required()
+  .extend({
+    reserve0: zCurrencyAmountOptional,
+    reserve1: zCurrencyAmountOptional,
+    hooks: zAddress.optional(),
+    ticks: z.array(zTick).optional(),
+  })
+
+export const zPools = z.array(z.union([zV3Pool, zV2Pool, zStablePool, zV4ClPool]))
 
 export const zRouterPostParams = z
   .object({

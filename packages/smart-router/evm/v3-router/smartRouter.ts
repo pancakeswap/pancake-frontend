@@ -11,6 +11,8 @@ export {
   isV2Pool,
   isV3Pool,
   isStablePool,
+  isV4ClPool,
+  isV4BinPool,
   getMidPrice,
   involvesCurrency,
   encodeMixedRouteToPath,
