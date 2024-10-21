@@ -2,7 +2,7 @@ import React, { MouseEvent } from "react";
 import { styled } from "styled-components";
 import { MotionBox } from "../../components/Box";
 import Flex from "../../components/Box/Flex";
-import { IconButton } from "../../components/Button";
+import { BaseButtonProps, IconButton } from "../../components/Button";
 import { ArrowBackIcon, CloseIcon } from "../../components/Svg";
 import { ModalProps } from "./types";
 
@@ -36,9 +36,9 @@ export const ModalBody = styled(Flex)`
   }
 `;
 
-export const ModalCloseButton: React.FC<React.PropsWithChildren<{ onDismiss: ModalProps["onDismiss"] }>> = ({
-  onDismiss,
-}) => {
+export const ModalCloseButton: React.FC<
+  React.PropsWithChildren<{ onDismiss: ModalProps["onDismiss"] }> & BaseButtonProps
+> = ({ onDismiss, ...props }) => {
   return (
     <IconButton
       variant="text"
@@ -47,8 +47,9 @@ export const ModalCloseButton: React.FC<React.PropsWithChildren<{ onDismiss: Mod
         onDismiss?.();
       }}
       aria-label="Close the dialog"
+      {...props}
     >
-      <CloseIcon color="primary" />
+      <CloseIcon color="textSubtle" />
     </IconButton>
   );
 };

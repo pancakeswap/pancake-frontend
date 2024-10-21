@@ -1,10 +1,10 @@
-import { Currency, Token } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
-import { Text, QuestionHelper, AutoColumn } from '@pancakeswap/uikit'
-import { CurrencyLogo } from '@pancakeswap/widgets-internal'
-import { styled } from 'styled-components'
-import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useTranslation } from '@pancakeswap/localization'
+import { Currency, Token } from '@pancakeswap/sdk'
+import { AutoColumn, QuestionHelper, Text } from '@pancakeswap/uikit'
+import { CurrencyLogo } from '@pancakeswap/widgets-internal'
+import useNativeCurrency from 'hooks/useNativeCurrency'
+import { styled } from 'styled-components'
 
 import { SUGGESTED_BASES } from 'config/constants/exchange'
 import { AutoRow } from '../Layout/Row'
@@ -18,16 +18,17 @@ const ButtonWrapper = styled.div`
 
 const BaseWrapper = styled.div<{ disable?: boolean }>`
   border: 1px solid ${({ theme, disable }) => (disable ? 'transparent' : theme.colors.dropdown)};
-  border-radius: 10px;
+  border-radius: ${({ theme }) => theme.radii['20px']};
+  padding-left: 2px;
   display: flex;
-  padding: 6px;
   align-items: center;
   &:hover {
     cursor: ${({ disable }) => !disable && 'pointer'};
     background-color: ${({ theme, disable }) => !disable && theme.colors.background};
   }
-  background-color: ${({ theme, disable }) => disable && theme.colors.dropdown};
+  background-color: ${({ theme }) => theme.colors.tertiary};
   opacity: ${({ disable }) => disable && '0.4'};
+  transition: background-color 0.15s;
 `
 
 const RowWrapper = styled.div`
@@ -56,12 +57,14 @@ export default function CommonBases({
 }) {
   const native = useNativeCurrency()
   const { t } = useTranslation()
-  const pinTokenDescText = commonBasesType === CommonBasesType.SWAP_LIMITORDER ? t('Common tokens') : t('Common bases')
+  const pinTokenDescText = commonBasesType === CommonBasesType.SWAP_LIMITORDER ? t('Select token') : t('Common bases')
 
   return (
-    <AutoColumn gap="md">
+    <AutoColumn gap="sm">
       <AutoRow>
-        <Text fontSize="14px">{pinTokenDescText}</Text>
+        <Text color="textSubtle" fontSize="14px">
+          {pinTokenDescText}
+        </Text>
         {commonBasesType === CommonBasesType.LIQUIDITY && (
           <QuestionHelper text={t('These tokens are commonly paired with other tokens.')} ml="4px" />
         )}
@@ -76,8 +79,8 @@ export default function CommonBases({
             }}
             disable={selectedCurrency?.isNative}
           >
-            <CurrencyLogo currency={native} style={{ marginRight: 8 }} />
-            <Text>{native?.symbol}</Text>
+            <CurrencyLogo currency={native} />
+            <Text p="2px 6px">{native?.symbol}</Text>
           </BaseWrapper>
         </ButtonWrapper>
         {(chainId ? SUGGESTED_BASES[chainId] || [] : []).map((token: Token) => {
@@ -85,8 +88,8 @@ export default function CommonBases({
           return (
             <ButtonWrapper key={`buttonBase#${token.address}`}>
               <BaseWrapper onClick={() => !selected && onSelect(token)} disable={selected}>
-                <CurrencyLogo currency={token} style={{ marginRight: 8, borderRadius: '50%' }} />
-                <Text>{token.symbol}</Text>
+                <CurrencyLogo currency={token} style={{ borderRadius: '50%' }} />
+                <Text p="2px 6px">{token.symbol}</Text>
               </BaseWrapper>
             </ButtonWrapper>
           )

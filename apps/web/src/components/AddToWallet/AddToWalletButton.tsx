@@ -4,10 +4,13 @@ import {
   Button,
   ButtonProps,
   CoinbaseWalletIcon,
+  Flex,
   MetamaskIcon,
   OperaIcon,
   TokenPocketIcon,
+  TooltipOptions,
   TrustWalletIcon,
+  useTooltip,
 } from '@pancakeswap/uikit'
 import { Address } from 'viem'
 import { watchAsset } from 'viem/actions'
@@ -28,6 +31,7 @@ export interface AddToWalletButtonProps {
   tokenLogo?: string
   textOptions?: AddToWalletTextOptions
   marginTextBetweenLogo?: string
+  tooltipPlacement?: TooltipOptions['placement']
 }
 
 const Icons = {
@@ -80,38 +84,52 @@ const AddToWalletButton: React.FC<AddToWalletButtonProps & ButtonProps> = ({
   tokenLogo,
   textOptions = AddToWalletTextOptions.NO_TEXT,
   marginTextBetweenLogo = '0px',
+  tooltipPlacement = 'auto',
+  ml,
+  mr,
   ...props
 }) => {
   const { t } = useTranslation()
   const { connector, isConnected } = useAccount()
   const { data: walletClient } = useWalletClient()
   const isCanRegisterToken = canRegisterToken()
+
+  const { targetRef, tooltipVisible, tooltip } = useTooltip(t('Add to your wallet'), {
+    placement: tooltipPlacement,
+  })
+
   if (!walletClient) return null
   if (connector && connector.name === 'Binance') return null
   if (!(connector && isConnected)) return null
   if (!isCanRegisterToken) return null
 
   return (
-    <Button
-      {...props}
-      onClick={() => {
-        const image = tokenLogo ? (BAD_SRCS[tokenLogo] ? undefined : tokenLogo) : undefined
-        if (!tokenAddress || !tokenSymbol || !tokenDecimals) return
-        watchAsset(walletClient, {
-          // TODO: Add more types
-          type: 'ERC20',
-          options: {
-            address: tokenAddress as Address,
-            symbol: tokenSymbol,
-            image,
-            decimals: tokenDecimals,
-          },
-        })
-      }}
-    >
-      {getWalletText(textOptions, tokenSymbol, t)}
-      {getWalletIcon(marginTextBetweenLogo, connector?.name)}
-    </Button>
+    <>
+      <Flex alignItems="center" justifyContent="center" ref={targetRef} ml={ml} mr={mr}>
+        <Button
+          {...props}
+          title={t('Add to your wallet')}
+          onClick={() => {
+            const image = tokenLogo ? (BAD_SRCS[tokenLogo] ? undefined : tokenLogo) : undefined
+            if (!tokenAddress || !tokenSymbol || !tokenDecimals) return
+            watchAsset(walletClient, {
+              // TODO: Add more types
+              type: 'ERC20',
+              options: {
+                address: tokenAddress as Address,
+                symbol: tokenSymbol,
+                image,
+                decimals: tokenDecimals,
+              },
+            })
+          }}
+        >
+          {getWalletText(textOptions, tokenSymbol, t)}
+          {getWalletIcon(marginTextBetweenLogo, connector?.name)}
+        </Button>
+      </Flex>
+      {tooltipVisible && tooltip}
+    </>
   )
 }
 
