@@ -3544,5 +3544,7 @@
   "trading and gas fees on Ethereum and Arbitrum with": "prowizji transakcyjnych i opłat za gaz na Ethereum i Arbitrum z",
   "0 Trading Fees, Gasless Swaps, MEV Protection, and a Wide Range of Tokens — ALL on PancakeSwapX": "0 prowizji transakcyjnych, wymiany bez gazu, ochrona MEV i szeroka oferta tokenów — WSZYSTKO na PancakeSwapX",
   "ZERO": "ZERO",
-  "Fee Swaps on Ethereum and Arbitrum": "prowizji za wymiany w sieciach Ethereum i Arbitrum"
+  "Fee Swaps on Ethereum and Arbitrum": "prowizji za wymiany w sieciach Ethereum i Arbitrum",
+  "%amount% of your liquidity is currently staking in farm.": "%amount% Twojej płynności jest obecnie stakowane w farmie.",
+  "Based on last 24 hours' performance. Does not account for impermanent loss": "Na podstawie wyników z ostatnich 24 godzin. Nie uwzględnia strat nietrwałych"
 }
