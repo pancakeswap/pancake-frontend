@@ -16,7 +16,7 @@ import {
 } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { CrossChainVeCakeModal } from 'components/CrossChainVeCakeModal'
-import { SwitchToBnbChainModal } from 'components/CrossChainVeCakeModal/components/SwitchToBnbCahinModal'
+import { SwitchToBnbChainModal } from 'components/CrossChainVeCakeModal/components/SwitchToBnbChainModal'
 import { useMultichainVeCakeWellSynced } from 'components/CrossChainVeCakeModal/hooks/useMultichainVeCakeWellSynced'
 import Image from 'next/legacy/image'
 import NextLink from 'next/link'
