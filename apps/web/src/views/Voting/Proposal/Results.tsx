@@ -1,14 +1,10 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Card, CardBody, CardHeader, Flex, Heading, Progress, Skeleton, Text } from '@pancakeswap/uikit'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
-import { FarmWidget } from '@pancakeswap/widgets-internal'
 import { FetchStatus, TFetchStatus } from 'config/constants/types'
 import { Vote } from 'state/types'
-import { useAccount } from 'wagmi'
 import TextEllipsis from '../components/TextEllipsis'
 import { calculateVoteResults, getTotalFromVotes } from '../helpers'
-
-const { VotedTag } = FarmWidget.Tags
 
 interface ResultsProps {
   choices: string[]
@@ -19,7 +15,6 @@ interface ResultsProps {
 const Results: React.FC<React.PropsWithChildren<ResultsProps>> = ({ choices, votes, votesLoadingStatus }) => {
   const { t } = useTranslation()
   const results = calculateVoteResults(votes)
-  const { address: account } = useAccount()
   const totalVotes = getTotalFromVotes(votes)
 
   return (
@@ -35,9 +30,6 @@ const Results: React.FC<React.PropsWithChildren<ResultsProps>> = ({ choices, vot
             const choiceVotes = results[choice] || []
             const totalChoiceVote = getTotalFromVotes(choiceVotes)
             const progress = totalVotes === 0 ? 0 : (totalChoiceVote / totalVotes) * 100
-            const hasVoted = choiceVotes.some((vote) => {
-              return account && vote.voter.toLowerCase() === account.toLowerCase()
-            })
 
             return (
               <Box key={choice} mt={index > 0 ? '24px' : '0px'}>
@@ -45,7 +37,6 @@ const Results: React.FC<React.PropsWithChildren<ResultsProps>> = ({ choices, vot
                   <TextEllipsis mb="4px" title={choice}>
                     {choice}
                   </TextEllipsis>
-                  {hasVoted && <VotedTag mr="4px" />}
                 </Flex>
                 <Box mb="4px">
                   <Progress primaryStep={progress} scale="sm" />
