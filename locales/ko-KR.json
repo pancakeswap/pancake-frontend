@@ -3544,5 +3544,7 @@
   "trading and gas fees on Ethereum and Arbitrum with": "Ethereum 및 Arbitrum의 거래 및 가스 수수료:",
   "0 Trading Fees, Gasless Swaps, MEV Protection, and a Wide Range of Tokens — ALL on PancakeSwapX": "거래 수수료 0, 가스리스 스왑, MEV 보호 및 광범위한 토큰 — PancakeSwapX에서 모두 가능",
   "ZERO": "ZERO",
-  "Fee Swaps on Ethereum and Arbitrum": "Ethereum 및 Arbitrum의 수수료 스왑"
+  "Fee Swaps on Ethereum and Arbitrum": "Ethereum 및 Arbitrum의 수수료 스왑",
+  "%amount% of your liquidity is currently staking in farm.": "%amount% of your liquidity is currently staking in farm.",
+  "Based on last 24 hours' performance. Does not account for impermanent loss": "Based on last 24 hours' performance. Does not account for impermanent loss"
 }
