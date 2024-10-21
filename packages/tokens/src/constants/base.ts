@@ -13,6 +13,7 @@ export const baseTokens = {
     18,
     'cbETH',
     'Coinbase Wrapped Staked ETH',
+    'https://www.coinbase.com/price/coinbase-wrapped-staked-eth',
   ),
   usdbc: new ERC20Token(
     ChainId.BASE,

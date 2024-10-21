@@ -23,7 +23,14 @@ export const zksyncTokens = {
     'Tiny Era Shard',
     'https://tinyworlds.io/',
   ),
-  wbtc: new ERC20Token(ChainId.ZKSYNC, '0xBBeB516fb02a01611cBBE0453Fe3c580D7281011', 8, 'WBTC', 'Wrapped BTC'),
+  wbtc: new ERC20Token(
+    ChainId.ZKSYNC,
+    '0xBBeB516fb02a01611cBBE0453Fe3c580D7281011',
+    8,
+    'WBTC',
+    'Wrapped BTC',
+    'https://wbtc.network/',
+  ),
   busd: new ERC20Token(
     ChainId.ZKSYNC,
     '0x2039bb4116B4EFc145Ec4f0e2eA75012D6C0f181',
