@@ -1,25 +1,33 @@
 import { useTranslation } from '@pancakeswap/localization'
 import {
+  Balance,
   Button,
   Card,
   CardBody,
   CardHeader,
   CardProps,
+  Flex,
   Heading,
+  Image,
+  Message,
+  MessageText,
   Radio,
   Text,
   useModal,
   useToast,
 } from '@pancakeswap/uikit'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import ConnectWalletButton from 'components/ConnectWalletButton'
+import { useVeCakeBalance } from 'hooks/useTokenBalance'
 import { useState } from 'react'
-import { Proposal } from 'state/types'
+import { Proposal, ProposalState } from 'state/types'
 import { styled } from 'styled-components'
 import { useAccount } from 'wagmi'
 import CastVoteModal from '../components/CastVoteModal'
 
 interface VoteProps extends CardProps {
   proposal: Proposal
+  hasAccountVoted: boolean
   onSuccess?: () => void
 }
 
@@ -47,7 +55,7 @@ const ChoiceText = styled.div`
   width: 0;
 `
 
-const Vote: React.FC<React.PropsWithChildren<VoteProps>> = ({ proposal, onSuccess, ...props }) => {
+const Vote: React.FC<React.PropsWithChildren<VoteProps>> = ({ proposal, hasAccountVoted, onSuccess, ...props }) => {
   const [vote, setVote] = useState<State>({
     label: '',
     value: 0,
@@ -55,6 +63,7 @@ const Vote: React.FC<React.PropsWithChildren<VoteProps>> = ({ proposal, onSucces
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const { address: account } = useAccount()
+  const { balance } = useVeCakeBalance()
 
   const handleSuccess = async () => {
     toastSuccess(t('Vote cast!'))
@@ -74,9 +83,23 @@ const Vote: React.FC<React.PropsWithChildren<VoteProps>> = ({ proposal, onSucces
   return (
     <Card {...props}>
       <CardHeader style={{ background: 'transparent' }}>
-        <Heading as="h3" scale="md">
-          {t('Cast your vote')}
-        </Heading>
+        <Flex>
+          <Heading as="h3" scale="md" mr="auto">
+            {t('Cast your vote')}
+          </Heading>
+          <Flex alignItems="center">
+            <Text>{t('veCake Balance')}:</Text>
+            <Balance
+              bold
+              fontSize="20px"
+              m="0 4px 0 8px"
+              lineHeight="110%"
+              decimals={2}
+              value={getBalanceNumber(balance)}
+            />
+            <Image style={{ minWidth: '32px' }} width={32} height={32} src="/images/cake-staking/token-vecake.png" />
+          </Flex>
+        </Flex>
       </CardHeader>
       <CardBody>
         {proposal.choices.map((choice, index) => {
@@ -92,7 +115,13 @@ const Vote: React.FC<React.PropsWithChildren<VoteProps>> = ({ proposal, onSucces
           return (
             <Choice key={choice} isChecked={isChecked} isDisabled={!account}>
               <div style={{ flexShrink: 0 }}>
-                <Radio scale="sm" value={choice} checked={isChecked} onChange={handleChange} disabled={!account} />
+                <Radio
+                  scale="sm"
+                  value={choice}
+                  checked={isChecked}
+                  onChange={handleChange}
+                  disabled={!account || proposal.state === ProposalState.CLOSED}
+                />
               </div>
               <ChoiceText>
                 <Text as="span" title={choice}>
@@ -103,9 +132,23 @@ const Vote: React.FC<React.PropsWithChildren<VoteProps>> = ({ proposal, onSucces
           )
         })}
         {account ? (
-          <Button onClick={presentCastVoteModal} disabled={vote === null}>
-            {t('Cast Vote')}
-          </Button>
+          <>
+            {hasAccountVoted ? (
+              <Message variant="success" style={{ width: 'fit-content', margin: 'auto' }}>
+                <MessageText>
+                  {t('You cast your vote! Please wait until the voting ends to see the end results.')}
+                </MessageText>
+              </Message>
+            ) : proposal.state === ProposalState.CLOSED ? (
+              <Button m="auto" display="block" disabled>
+                {t('Enter the votes to cast')}
+              </Button>
+            ) : (
+              <Button m="auto" display="block" disabled={vote === null} onClick={presentCastVoteModal}>
+                {t('Cast Vote')}
+              </Button>
+            )}
+          </>
         ) : (
           <ConnectWalletButton />
         )}

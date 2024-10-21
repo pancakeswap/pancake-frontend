@@ -56,8 +56,12 @@ const Overview = () => {
   })
 
   const votes = useMemo(() => data || [], [data])
-
-  const hasAccountVoted = account && votes && votes.some((vote) => vote.voter.toLowerCase() === account.toLowerCase())
+  const hasAccountVoted =
+    account &&
+    votes &&
+    proposal &&
+    proposal.state === ProposalState.ACTIVE &&
+    votes.some((vote) => vote.voter.toLowerCase() === account.toLowerCase())
 
   const isPageLoading = votesLoadingStatus === 'pending' || proposalLoadingStatus === 'pending'
 
@@ -96,8 +100,8 @@ const Overview = () => {
               <ReactMarkdown>{proposal.body}</ReactMarkdown>
             </Box>
           </Box>
-          {!isPageLoading && !hasAccountVoted && proposal.state === ProposalState.ACTIVE && (
-            <Vote proposal={proposal} onSuccess={refetch} mb="16px" />
+          {!isPageLoading && (
+            <Vote proposal={proposal} hasAccountVoted={Boolean(hasAccountVoted)} onSuccess={refetch} mb="16px" />
           )}
           <Votes
             votes={votes || []}
