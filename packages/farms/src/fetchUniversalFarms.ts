@@ -1,11 +1,16 @@
 import { ChainId } from '@pancakeswap/chains'
 import { ERC20Token } from '@pancakeswap/sdk'
 import { FARMS_API } from '../config/endpoint'
-import { UniversalFarmConfig } from './types'
+import { Protocol, UniversalFarmConfig } from './types'
 
-export const fetchUniversalFarms = async (chainId: ChainId) => {
+export const fetchUniversalFarms = async (chainId: ChainId, protocol?: Protocol) => {
   try {
-    const response = await fetch(`${FARMS_API}?chainId=${chainId}`)
+    const params = { chainId, ...(protocol && { protocol }) }
+    const queryString = Object.entries(params)
+      .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+      .join('&')
+
+    const response = await fetch(`${FARMS_API}?${queryString}`)
     const result = await response.json()
     const newData: UniversalFarmConfig[] = result.map((p: any) => ({
       ...p,
