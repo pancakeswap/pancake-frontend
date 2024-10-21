@@ -22,7 +22,7 @@
     "react-dom": "^18.0.0",
     "viem": "catalog:",
     "wagmi": "catalog:",
-    "@tanstack/react-query": "5.59.15"
+    "@tanstack/react-query": "catalog:"
   },
   "devDependencies": {
     "@blocto/sdk": "^0.5.4",

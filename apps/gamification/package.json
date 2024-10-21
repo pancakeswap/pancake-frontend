@@ -51,7 +51,7 @@
     "@pancakeswap/v3-sdk": "workspace:*",
     "@pancakeswap/widgets-internal": "workspace:*",
     "@reduxjs/toolkit": "^1.9.1",
-    "@tanstack/react-query": "5.59.15",
+    "@tanstack/react-query": "catalog:",
     "@vanilla-extract/next-plugin": "^2.3.0",
     "@wagmi/core": "2.10.5",
     "bignumber.js": "^9.1.2",
