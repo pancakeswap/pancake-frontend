@@ -138,7 +138,13 @@ export const getAccountV2LpDetails = async (
 
   const validLpTokens = lpTokens.filter((token) => token.chainId === chainId)
 
-  const bCakeWrapperAddresses = validLpTokens.map((token) => getBCakeWrapperAddress(token.address, chainId))
+  const bCakeWrapperAddresses = await Promise.all(
+    validReserveTokens.map(async (tokens) => {
+      const lpAddress = getV2LiquidityToken(tokens).address
+      const bCakeWrapperAddress = await getBCakeWrapperAddress(lpAddress, chainId)
+      return bCakeWrapperAddress
+    }),
+  )
 
   const balanceCalls = validLpTokens.map((token) => {
     return {
@@ -280,10 +286,11 @@ export const getStablePairDetails = async (
 
   if (!account || !client || !validStablePairs.length) return []
 
-  const bCakeWrapperAddresses = validStablePairs.reduce((acc, pair) => {
-    acc.push(getBCakeWrapperAddress(pair.lpAddress, chainId))
-    return acc
-  }, [] as Array<Address>)
+  const bCakeWrapperAddresses = await Promise.all(
+    validStablePairs.reduce((acc, pair) => {
+      return [...acc, getBCakeWrapperAddress(pair.lpAddress, chainId)]
+    }, [] as Array<Promise<Address>>),
+  )
 
   const balanceCalls = validStablePairs.map((pair) => {
     return {
