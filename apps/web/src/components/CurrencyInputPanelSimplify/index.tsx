@@ -80,38 +80,38 @@ const useSizeAdaption = (value: string, currencySymbol?: string, otherCurrencySy
     // Breakpoints according to wrapperWidth as container width
     const BREAKPOINT = isXs
       ? {
-          FIRST: 25,
-          SECOND: 30,
-          THIRD: 37,
-          FOURTH: 45,
+          ONE: 25,
+          TWO: 30,
+          THREE: 37,
+          FOUR: 45,
         }
       : isSm
       ? {
-          FIRST: 35,
-          SECOND: 40,
-          THIRD: 44,
-          FOURTH: 50,
+          ONE: 35,
+          TWO: 40,
+          THREE: 44,
+          FOUR: 50,
         }
       : {
-          FIRST: 40,
-          SECOND: 45,
-          THIRD: 50,
-          FOURTH: 57,
+          ONE: 40,
+          TWO: 45,
+          THREE: 50,
+          FOUR: 57,
         }
 
     // Since the breakpoints are calibrated for 4 character symbols, we need to adjust for longer symbols
     const symbolExcessLength = shortedSymbol && shortedSymbol.length > 4 ? shortedSymbol?.length - 2 : 0
 
-    if (valueIsPercentWidthOfWrapper >= BREAKPOINT.FOURTH - symbolExcessLength) {
+    if (valueIsPercentWidthOfWrapper >= BREAKPOINT.FOUR - symbolExcessLength) {
       inputElement.style.fontSize = `${FONT_SIZE.SMALL}px`
       setFontSizesBySymbol(currencySymbol ?? '', FONT_SIZE.SMALL, LOGO_SIZE.SMALL)
-    } else if (valueIsPercentWidthOfWrapper >= BREAKPOINT.THIRD - symbolExcessLength) {
+    } else if (valueIsPercentWidthOfWrapper >= BREAKPOINT.THREE - symbolExcessLength) {
       inputElement.style.fontSize = `${FONT_SIZE.MEDIUM}px`
       setFontSizesBySymbol(currencySymbol ?? '', FONT_SIZE.SMALL, LOGO_SIZE.MEDIUM)
-    } else if (valueIsPercentWidthOfWrapper >= BREAKPOINT.SECOND - symbolExcessLength) {
+    } else if (valueIsPercentWidthOfWrapper >= BREAKPOINT.TWO - symbolExcessLength) {
       inputElement.style.fontSize = `${FONT_SIZE.LARGE}px`
       setFontSizesBySymbol(currencySymbol ?? '', FONT_SIZE.MEDIUM, LOGO_SIZE.LARGE)
-    } else if (valueIsPercentWidthOfWrapper >= BREAKPOINT.FIRST - symbolExcessLength) {
+    } else if (valueIsPercentWidthOfWrapper >= BREAKPOINT.ONE - symbolExcessLength) {
       inputElement.style.fontSize = `${FONT_SIZE.X_LARGE}px`
       setFontSizesBySymbol(currencySymbol ?? '', FONT_SIZE.MEDIUM, LOGO_SIZE.X_LARGE)
     } else {
@@ -339,13 +339,18 @@ const CurrencyInputPanelSimplify = memo(function CurrencyInputPanel({
         inputLoading || (showUSDPrice && Number.isFinite(amountInDollar)) ? (
           <Box position="absolute" bottom="12px" right="0px">
             <Flex justifyContent="flex-end" mr="1rem">
-              <Flex maxWidth="200px">
+              <Flex maxWidth={['120px', '160px', '200px', '240px']}>
                 {inputLoading ? (
                   <Loading width="14px" height="14px" />
                 ) : showUSDPrice && Number.isFinite(amountInDollar) ? (
-                  <Text fontSize="14px" color="textSubtle" ellipsis>
-                    {`~${amountInDollar ? formatNumber(amountInDollar) : 0} USD`}
-                  </Text>
+                  <>
+                    <Text fontSize="14px" color="textSubtle" ellipsis>
+                      {`~${amountInDollar ? formatNumber(amountInDollar) : 0}`}
+                    </Text>
+                    <Text ml="4px" fontSize="14px" color="textSubtle">
+                      USD
+                    </Text>
+                  </>
                 ) : null}
               </Flex>
             </Flex>
