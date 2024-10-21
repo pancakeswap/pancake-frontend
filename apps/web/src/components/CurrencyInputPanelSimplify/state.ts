@@ -4,9 +4,11 @@ import { useCallback } from 'react'
 export enum FONT_SIZE {
   SMALL = 16,
   MEDIUM = 18,
-  LARGE = 20, // Maximum font size for currency symbol
+  /**  Maximum font size for currency symbol */
+  LARGE = 20,
   X_LARGE = 22,
-  MAX = 24, // Maximum font size for input panel
+  /** Maximum font size for input panel */
+  MAX = 24,
 }
 
 export enum LOGO_SIZE {
