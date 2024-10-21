@@ -385,6 +385,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
                 title={t('Selected Range')}
                 inRange={!outOfRange}
                 ticksAtLimit={ticksAtLimit}
+                baseCurrencyDefault={baseCurrency}
               />
             )}
             <Box mt="16px">
