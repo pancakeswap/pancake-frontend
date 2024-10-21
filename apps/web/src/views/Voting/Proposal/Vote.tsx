@@ -84,7 +84,7 @@ const Vote: React.FC<React.PropsWithChildren<VoteProps>> = ({ proposal, hasAccou
   return (
     <Card {...props}>
       <CardHeader style={{ background: 'transparent' }}>
-        <Flex>
+        <Flex flexDirection={['column', 'column', 'row']}>
           <Heading as="h3" scale="md" mr="auto">
             {t('Cast your vote')}
           </Heading>

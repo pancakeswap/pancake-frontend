@@ -1,5 +1,14 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ArrowBackIcon, Box, Button, Flex, Heading, NotFound, ReactMarkdown } from '@pancakeswap/uikit'
+import {
+  ArrowBackIcon,
+  Box,
+  Button,
+  Flex,
+  Heading,
+  NotFound,
+  ReactMarkdown,
+  useMatchBreakpoints,
+} from '@pancakeswap/uikit'
 import { useQuery } from '@tanstack/react-query'
 import Container from 'components/Layout/Container'
 import PageLoader from 'components/Loader/PageLoader'
@@ -23,6 +32,7 @@ const Overview = () => {
   const id = query.id as string
   const { t } = useTranslation()
   const { address: account } = useAccount()
+  const { isDesktop } = useMatchBreakpoints()
 
   const {
     status: proposalLoadingStatus,
@@ -103,16 +113,24 @@ const Overview = () => {
           {!isPageLoading && (
             <Vote proposal={proposal} hasAccountVoted={Boolean(hasAccountVoted)} onSuccess={refetch} mb="16px" />
           )}
+          {!isDesktop && (
+            <Box mb="16px">
+              <Details proposal={proposal} />
+              <Results choices={proposal.choices} votes={votes || []} votesLoadingStatus={votesLoadingStatus} />
+            </Box>
+          )}
           <Votes
             votes={votes || []}
             totalVotes={votes?.length ?? proposal.votes}
             votesLoadingStatus={votesLoadingStatus}
           />
         </Box>
-        <Box position="sticky" top="60px">
-          <Details proposal={proposal} />
-          <Results choices={proposal.choices} votes={votes || []} votesLoadingStatus={votesLoadingStatus} />
-        </Box>
+        {isDesktop && (
+          <Box position="sticky" top="60px">
+            <Details proposal={proposal} />
+            <Results choices={proposal.choices} votes={votes || []} votesLoadingStatus={votesLoadingStatus} />
+          </Box>
+        )}
       </Layout>
     </Container>
   )
