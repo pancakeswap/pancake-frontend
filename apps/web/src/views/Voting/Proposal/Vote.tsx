@@ -15,6 +15,7 @@ import {
   Text,
   useModal,
   useToast,
+  VoteIcon,
 } from '@pancakeswap/uikit'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import ConnectWalletButton from 'components/ConnectWalletButton'
@@ -144,7 +145,13 @@ const Vote: React.FC<React.PropsWithChildren<VoteProps>> = ({ proposal, hasAccou
                 {t('Enter the votes to cast')}
               </Button>
             ) : (
-              <Button m="auto" display="block" disabled={vote === null} onClick={presentCastVoteModal}>
+              <Button
+                m="auto"
+                display="block"
+                disabled={vote === null}
+                endIcon={<VoteIcon width={14} height={14} color="white" />}
+                onClick={presentCastVoteModal}
+              >
                 {t('Cast Vote')}
               </Button>
             )}
