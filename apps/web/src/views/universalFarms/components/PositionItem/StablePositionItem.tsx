@@ -2,7 +2,7 @@ import { memo, useMemo } from 'react'
 import { usePoolInfo, usePoolTimeFrame } from 'state/farmsV4/hooks'
 import { StableLPDetail } from 'state/farmsV4/state/accountPositions/type'
 import { StablePoolInfo } from 'state/farmsV4/state/type'
-import { useTotalPriceUSD } from 'views/universalFarms/hooks'
+import { useTotalPriceUSD } from 'hooks/useTotalPriceUSD'
 import { V2PositionActions } from '../PositionActions/V2PositionActions'
 import { PositionItem } from './PositionItem'
 

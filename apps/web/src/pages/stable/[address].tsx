@@ -1,4 +1,15 @@
-import { AutoRow, Box, Button, Card, CardBody, Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import {
+  AutoRow,
+  Box,
+  Button,
+  Card,
+  CardBody,
+  Flex,
+  Message,
+  MessageText,
+  Text,
+  useMatchBreakpoints,
+} from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 import { AppHeader } from 'components/App'
 import { useMemo } from 'react'
@@ -15,15 +26,18 @@ import { LightGreyCard } from 'components/Card'
 import { CurrencyLogo } from 'components/Logo'
 import { usePoolTokenPercentage, useTotalUSDValue } from 'components/PositionCard'
 import { useInfoStableSwapContract } from 'hooks/useContract'
-import useTotalSupply from 'hooks/useTotalSupply'
 import { useSingleCallResult } from 'state/multicall/hooks'
-import { useLPApr } from 'state/swap/useLPApr'
-import { useTokenBalance } from 'state/wallet/hooks'
 import currencyId from 'utils/currencyId'
 import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
-import { formatAmount } from 'utils/formatInfoNumbers'
-import { useGetRemovedTokenAmountsNoContext } from 'views/RemoveLiquidity/RemoveStableLiquidity/hooks/useStableDerivedBurnInfo'
 import { useAccount } from 'wagmi'
+import { Protocol } from '@pancakeswap/farms'
+import { useAccountPositionDetailByPool } from 'state/farmsV4/state/accountPositions/hooks'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { usePoolInfo } from 'state/farmsV4/state/extendPools/hooks'
+import { formatFiatNumber } from '@pancakeswap/utils/formatFiatNumber'
+import { useTotalPriceUSD } from 'hooks/useTotalPriceUSD'
+import { useLPApr } from 'state/swap/useLPApr'
+import { formatAmount } from 'utils/formatInfoNumbers'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -39,24 +53,42 @@ export default function StablePoolPage() {
   } = useTranslation()
 
   const router = useRouter()
+
   const { address: account } = useAccount()
 
   const { address: poolAddress } = router.query
 
   const lpTokens = useStableSwapPairs()
 
-  const selectedLp = lpTokens.find(({ liquidityToken }) => liquidityToken.address === poolAddress)
+  const { chainId } = useActiveChainId()
+
+  const selectedLp = useMemo(
+    () => lpTokens.find(({ liquidityToken }) => liquidityToken.address === poolAddress),
+    [lpTokens, poolAddress],
+  )
+
+  const poolInfo = usePoolInfo({ poolAddress: selectedLp ? selectedLp?.stableSwapAddress : null, chainId })
 
   const stableSwapInfoContract = useInfoStableSwapContract(selectedLp?.infoStableSwapAddress)
 
-  const { result } = useSingleCallResult({
+  const { data: positionDetails } = useAccountPositionDetailByPool<Protocol.STABLE>(
+    poolInfo?.chainId ?? chainId,
+    account,
+    poolInfo ?? undefined,
+  )
+
+  const isPoolStaked = useMemo(() => Boolean(positionDetails?.farmingBalance.greaterThan(0)), [positionDetails])
+
+  const isFullyStaked = useMemo(
+    () => (isPoolStaked ? Boolean(positionDetails?.nativeBalance.equalTo(0)) : false),
+    [isPoolStaked, positionDetails],
+  )
+
+  const { result: reserves = [0n, 0n] } = useSingleCallResult({
     contract: stableSwapInfoContract,
     functionName: 'balances',
-    // @ts-ignore
     args: useMemo(() => [selectedLp?.stableSwapAddress] as const, [selectedLp?.stableSwapAddress]),
   })
-
-  const reserves = useMemo(() => result || [0n, 0n], [result])
 
   const stableLp = useMemo(() => {
     return selectedLp
@@ -77,26 +109,38 @@ export default function StablePoolPage() {
     token1Deposited: stableLp?.reserve1,
   })
 
-  const userPoolBalance = useTokenBalance(account ?? undefined, selectedLp?.liquidityToken)
+  const userPoolBalance = useMemo(() => {
+    return isPoolStaked
+      ? positionDetails?.nativeBalance.add(positionDetails?.farmingBalance)
+      : positionDetails?.nativeBalance
+  }, [positionDetails, isPoolStaked])
 
-  const [token0Deposited, token1Deposited] = useGetRemovedTokenAmountsNoContext({
-    lpAmount: userPoolBalance?.quotient?.toString(),
-    token0: selectedLp?.token0.wrapped,
-    token1: selectedLp?.token1.wrapped,
-    stableSwapInfoContract,
-    stableSwapAddress: selectedLp?.stableSwapAddress,
-  })
+  const [token0Deposited, token1Deposited] = useMemo(() => {
+    return [
+      isPoolStaked
+        ? positionDetails?.nativeDeposited0.add(positionDetails?.farmingDeposited0)
+        : positionDetails?.nativeDeposited0,
+      isPoolStaked
+        ? positionDetails?.nativeDeposited1.add(positionDetails?.farmingDeposited1)
+        : positionDetails?.nativeDeposited1,
+    ]
+  }, [positionDetails, isPoolStaked])
 
-  const totalUSDValue = useTotalUSDValue({
+  const totalStakedUSDValue = useTotalPriceUSD({
     currency0: selectedLp?.token0,
     currency1: selectedLp?.token1,
-    token0Deposited,
-    token1Deposited,
+    amount0: isPoolStaked ? positionDetails?.farmingDeposited0 : undefined,
+    amount1: isPoolStaked ? positionDetails?.farmingDeposited1 : undefined,
   })
 
-  const totalPoolTokens = useTotalSupply(selectedLp?.liquidityToken)
+  const totalUSDValue = useTotalPriceUSD({
+    currency0: selectedLp?.token0,
+    currency1: selectedLp?.token1,
+    amount0: token0Deposited,
+    amount1: token1Deposited,
+  })
 
-  const poolTokenPercentage = usePoolTokenPercentage({ totalPoolTokens, userPoolBalance })
+  const poolTokenPercentage = usePoolTokenPercentage({ totalPoolTokens: positionDetails?.totalSupply, userPoolBalance })
 
   const { isMobile } = useMatchBreakpoints()
 
@@ -121,7 +165,7 @@ export default function StablePoolPage() {
                   <Button width="100%">{t('Add')}</Button>
                 </NextLinkFromReactRouter>
                 <NextLinkFromReactRouter to={`/stable/remove/${currencyIdA}/${currencyIdB}`}>
-                  <Button ml="16px" variant="secondary" width="100%">
+                  <Button ml="16px" variant="secondary" width="100%" disabled={isFullyStaked}>
                     {t('Remove')}
                   </Button>
                 </NextLinkFromReactRouter>
@@ -138,26 +182,26 @@ export default function StablePoolPage() {
                 </Button>
               </NextLinkFromReactRouter>
               <NextLinkFromReactRouter to={`/stable/remove/${currencyIdA}/${currencyIdB}`}>
-                <Button mb="8px" variant="secondary" width="100%">
+                <Button mb="8px" variant="secondary" width="100%" disabled={isFullyStaked}>
                   {t('Remove')}
                 </Button>
               </NextLinkFromReactRouter>
             </>
           )}
-          <AutoRow>
-            <Flex alignItems="center" justifyContent="space-between" width="100%" flexWrap={['wrap', 'wrap', 'nowrap']}>
-              <Box width="100%" mr="4px" mb="16px">
+          <AutoRow style={{ gap: 4 }}>
+            <Flex
+              alignItems="center"
+              justifyContent="space-between"
+              style={{ gap: 4 }}
+              width="100%"
+              flexWrap={['wrap', 'wrap', 'nowrap']}
+            >
+              <Box width="100%">
                 <Text fontSize="12px" color="secondary" bold textTransform="uppercase">
                   {t('Liquidity')}
                 </Text>
                 <Text fontSize="24px" fontWeight={600}>
-                  $
-                  {totalUSDValue
-                    ? totalUSDValue.toLocaleString(undefined, {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      })
-                    : '-'}
+                  {totalUSDValue ? formatFiatNumber(totalUSDValue) : '-'}
                 </Text>
                 <LightGreyCard mr="4px">
                   <AutoRow justifyContent="space-between" mb="8px">
@@ -184,18 +228,12 @@ export default function StablePoolPage() {
                   </AutoRow>
                 </LightGreyCard>
               </Box>
-              <Box width="100%" mr="4px" mb="16px">
+              <Box width="100%">
                 <Text fontSize="12px" color="secondary" bold textTransform="uppercase">
                   {t('Pool reserves')}
                 </Text>
                 <Text fontSize="24px" fontWeight={600}>
-                  $
-                  {totalLiquidityUSD
-                    ? totalLiquidityUSD.toLocaleString(undefined, {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      })
-                    : '-'}
+                  {totalLiquidityUSD ? formatFiatNumber(totalLiquidityUSD) : '-'}
                 </Text>
                 <LightGreyCard mr="4px">
                   <AutoRow justifyContent="space-between" mb="8px">
@@ -223,15 +261,41 @@ export default function StablePoolPage() {
                 </LightGreyCard>
               </Box>
             </Flex>
+            <Flex
+              flexDirection={isMobile ? 'column' : 'row'}
+              justifyContent={isPoolStaked ? 'space-between' : 'flex-end'}
+              width="100%"
+              style={{ gap: 4 }}
+            >
+              {isPoolStaked && (
+                <Box width={isMobile ? '100%' : '50%'}>
+                  <Message variant="primary">
+                    <MessageText>
+                      {t('%amount% of your liquidity is currently staking in farm.', {
+                        amount: totalStakedUSDValue ? formatFiatNumber(totalStakedUSDValue) : '-',
+                      })}
+                    </MessageText>
+                  </Message>
+                </Box>
+              )}
+              <Flex
+                flexDirection="column"
+                alignItems={isMobile ? 'flex-start' : 'flex-end'}
+                justifyContent="center"
+                mr="4px"
+                style={{ gap: 4 }}
+              >
+                {poolData && (
+                  <Text ml="4px">
+                    {t('LP reward APR')}: {formatAmount(poolData.lpApr)}%
+                  </Text>
+                )}
+                <Text color="textSubtle" ml="4px">
+                  {t('Your share in pool')}: {poolTokenPercentage ? `${poolTokenPercentage.toFixed(8)}%` : '-'}
+                </Text>
+              </Flex>
+            </Flex>
           </AutoRow>
-          {poolData && (
-            <Text>
-              {t('LP reward APR')}: {formatAmount(poolData.lpApr7d)}%
-            </Text>
-          )}
-          <Text color="textSubtle">
-            {t('Your share in pool')}: {poolTokenPercentage ? `${poolTokenPercentage.toFixed(8)}%` : '-'}
-          </Text>
         </CardBody>
       </BodyWrapper>
     </Page>
