@@ -1,28 +1,9 @@
 import { Radio, Text } from '@pancakeswap/uikit'
 import React, { Dispatch } from 'react'
 import { Proposal, ProposalState } from 'state/types'
-import { styled } from 'styled-components'
 import { State } from 'views/Voting/Proposal/VoteType/types'
+import { Choice, ChoiceText } from 'views/Voting/Proposal/VoteType/VoteStyle'
 import { useAccount } from 'wagmi'
-
-const Choice = styled.label<{ isChecked: boolean; isDisabled: boolean }>`
-  align-items: center;
-  border: 1px solid ${({ theme, isChecked }) => theme.colors[isChecked ? 'success' : 'cardBorder']};
-  border-radius: 16px;
-  cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
-  display: flex;
-  margin-bottom: 16px;
-  padding: 16px;
-`
-
-const ChoiceText = styled.div`
-  flex: 1;
-  padding-left: 16px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  width: 0;
-`
 
 interface SingleVoteProps {
   proposal: Proposal

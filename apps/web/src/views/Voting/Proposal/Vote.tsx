@@ -23,6 +23,7 @@ import { useState } from 'react'
 import { Proposal, ProposalState, ProposalTypeName } from 'state/types'
 import { SingleVote } from 'views/Voting/Proposal/VoteType/SingleVote'
 import { State } from 'views/Voting/Proposal/VoteType/types'
+import { WeightedVote } from 'views/Voting/Proposal/VoteType/WeightedVote'
 import { useAccount } from 'wagmi'
 import CastVoteModal from '../components/CastVoteModal'
 
@@ -82,6 +83,7 @@ const Vote: React.FC<React.PropsWithChildren<VoteProps>> = ({ proposal, hasAccou
         {proposal.type === ProposalTypeName.SINGLE_CHOICE && (
           <SingleVote proposal={proposal} vote={vote} setVote={setVote} />
         )}
+        {proposal.type === ProposalTypeName.WEIGHTED && <WeightedVote proposal={proposal} />}
         {account ? (
           <>
             {hasAccountVoted ? (
