@@ -3544,5 +3544,7 @@
   "trading and gas fees on Ethereum and Arbitrum with": "yatırım ve gas ücreti için Ethereum ve Arbitrum ağlarında şununla işlem yapın:",
   "0 Trading Fees, Gasless Swaps, MEV Protection, and a Wide Range of Tokens — ALL on PancakeSwapX": "0 Yatırım Ücreti, Gas'siz Dönüştürme, MEV Koruması ve Çok Çeşitli Token'lar: HEPSİ PancakeSwapX'te",
   "ZERO": "SIFIR",
-  "Fee Swaps on Ethereum and Arbitrum": "Ücretli Dönüştürme İşlemleri: Ethereum ve Aribtrum Ağlarında"
+  "Fee Swaps on Ethereum and Arbitrum": "Ücretli Dönüştürme İşlemleri: Ethereum ve Aribtrum Ağlarında",
+  "%amount% of your liquidity is currently staking in farm.": "%amount% of your liquidity is currently staking in farm.",
+  "Based on last 24 hours' performance. Does not account for impermanent loss": "Based on last 24 hours' performance. Does not account for impermanent loss"
 }
