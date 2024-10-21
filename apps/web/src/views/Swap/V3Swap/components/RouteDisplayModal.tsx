@@ -102,7 +102,7 @@ export const RouteDisplay = memo(function RouteDisplay({ route }: RouteDisplayPr
           const isV2Pool = SmartRouter.isV2Pool(pool)
           const key = isV2Pool
             ? `v2_${pool.reserve0.currency.symbol}_${pool.reserve1.currency.symbol}`
-            : SmartRouter.isStablePool(pool)
+            : SmartRouter.isStablePool(pool) || isV3Pool
             ? pool.address
             : isV4Pool
             ? pool.id
