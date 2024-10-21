@@ -73,7 +73,7 @@ const Vote: React.FC<React.PropsWithChildren<VoteProps>> = ({ proposal, onSucces
 
   return (
     <Card {...props}>
-      <CardHeader>
+      <CardHeader style={{ background: 'transparent' }}>
         <Heading as="h3" scale="md">
           {t('Cast your vote')}
         </Heading>
