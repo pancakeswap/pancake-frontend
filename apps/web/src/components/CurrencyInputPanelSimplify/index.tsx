@@ -40,6 +40,13 @@ const SymbolText = styled(Text)`
   font-size: ${FONT_SIZE.LARGE}px;
 `
 
+const formatDollarAmount = (amount: number) => {
+  if (amount > 0 && amount < 0.01) {
+    return '<0.01'
+  }
+  return formatNumber(amount)
+}
+
 const useSizeAdaption = (value: string, currencySymbol?: string, otherCurrencySymbol?: string) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const tokenImageRef = useRef<HTMLImageElement>(null)
@@ -77,7 +84,7 @@ const useSizeAdaption = (value: string, currencySymbol?: string, otherCurrencySy
 
     const valueIsPercentWidthOfWrapper = (value.length * fontWidth * 100) / wrapperWidth
 
-    // Breakpoints according to wrapperWidth as container width
+    // Breakpoints of valueIsPercentWidthOfWrapper. Calibrated for ~4 character symbols
     const BREAKPOINT = isXs
       ? {
           ONE: 25,
@@ -345,7 +352,7 @@ const CurrencyInputPanelSimplify = memo(function CurrencyInputPanel({
                 ) : showUSDPrice && Number.isFinite(amountInDollar) ? (
                   <>
                     <Text fontSize="14px" color="textSubtle" ellipsis>
-                      {`~${amountInDollar ? formatNumber(amountInDollar) : 0}`}
+                      {`~${amountInDollar && formatDollarAmount(amountInDollar)}`}
                     </Text>
                     <Text ml="4px" fontSize="14px" color="textSubtle">
                       USD
