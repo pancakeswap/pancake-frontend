@@ -1,4 +1,4 @@
-import { RoutePlanner } from '../utils/routerCommands'
+import { RoutePlanner } from '../utils/RoutePlanner'
 
 export type TradeConfig = {
   allowRevert: boolean

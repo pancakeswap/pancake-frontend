@@ -6,8 +6,8 @@ import { encodeFunctionData, toHex } from 'viem'
 import { UniversalRouterABI } from './abis/UniversalRouter'
 import { PancakeSwapTrade } from './entities/protocols/pancakeswap'
 import { PancakeSwapOptions, SwapRouterConfig } from './entities/types'
-import { encodePermit } from './utils/inputTokens'
-import { RoutePlanner } from './utils/routerCommands'
+import { RoutePlanner } from './utils/RoutePlanner'
+import { encodePermit } from './utils/encodePermit'
 
 export abstract class PancakeSwapUniversalRouter {
   /**
@@ -16,12 +16,10 @@ export abstract class PancakeSwapUniversalRouter {
    * @param options options for the call parameters
    */
   public static swapERC20CallParameters(
+    planner: RoutePlanner,
     trade: Omit<SmartRouterTrade<TradeType>, 'gasEstimate'>,
     options: PancakeSwapOptions,
   ): MethodParameters {
-    // TODO: use permit if signature included in swapOptions
-    const planner = new RoutePlanner()
-
     const tradeCommand: PancakeSwapTrade = new PancakeSwapTrade(trade, options)
 
     const inputCurrency = tradeCommand.trade.inputAmount.currency

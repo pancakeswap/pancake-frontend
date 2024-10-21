@@ -1,18 +1,20 @@
 import { Currency, CurrencyAmount, Percent, TradeType, validateAndParseAddress } from '@pancakeswap/sdk'
 import {
   BaseRoute,
+  getPoolAddress,
   RouteType,
   SmartRouter,
   SmartRouterTrade,
   StablePool,
-  getPoolAddress,
 } from '@pancakeswap/smart-router'
 import invariant from 'tiny-invariant'
 import { Address } from 'viem'
 
 import { CONTRACT_BALANCE, ROUTER_AS_RECIPIENT, SENDER_AS_RECIPIENT } from '../../constants'
+import { CommandType } from '../../router.types'
+import { ABIParametersType } from '../../utils/createCommand'
 import { encodeFeeBips } from '../../utils/numbers'
-import { ABIParametersType, CommandType, RoutePlanner } from '../../utils/routerCommands'
+import { RoutePlanner } from '../../utils/RoutePlanner'
 import { Command, RouterTradeType } from '../Command'
 import { PancakeSwapOptions } from '../types'
 
@@ -73,10 +75,10 @@ export class PancakeSwapTrade implements Command {
         addStableSwap(planner, singleRouteTrade, this.options, routerMustCustody, payerIsUser)
         continue
       }
-      if (route.type === RouteType.V4CL) {
-        // TODO: implementation
-        continue
-      }
+      // if (route.type === RouteType.V4CL) {
+      //   // TODO: implementation
+      //   continue
+      // }
       addMixedSwap(planner, singleRouteTrade, this.options, payerIsUser, routerMustCustody)
     }
 
@@ -222,6 +224,38 @@ function addV3Swap(
     payerIsUser,
   ]
   planner.addCommand(CommandType.V3_SWAP_EXACT_OUT, exactOutputSingleParams)
+}
+
+function addV4Swap(
+  planner: RoutePlanner,
+  trade: Omit<SmartRouterTrade<TradeType>, 'gasEstimate'>,
+  options: PancakeSwapOptions,
+  routerMustCustody: boolean,
+  payerIsUser: boolean,
+) {
+  // const swap = new SwapCommandHelper(trade, options, routerMustCustody, payerIsUser)
+  //   if (trade.tradeType === TradeType.EXACT_INPUT) {
+  //     const planner = new RoutePlanner()
+  //     if (singleHop()) {
+  //     }
+  //     if (route.path.length === 2) {
+  //       const pool = route.pools[0]
+  //       if (pool.type === PoolType.V4CL) {
+  //       }
+  //     }
+  //     planner.addAction(V4ActionType.CL_SWAP_EXACT_IN_SINGLE, [])
+  //     const
+  //     const v4Cmd: ABIParametersType<CommandType.V4_SWAP> = []
+  //     const exactInputSingleParams: ABIParametersType<CommandType.V4_SWAP_EXACT_IN> = [
+  //       recipient,
+  //       amountIn,
+  //       amountOut,
+  //       path,
+  //       payerIsUser,
+  //     ]
+  //     planner.addCommand(CommandType.V4_SWAP_EXACT_IN, exactInputSingleParams)
+  //     return
+  //   }
 }
 
 function addStableSwap(
