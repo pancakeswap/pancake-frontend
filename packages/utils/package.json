@@ -17,7 +17,7 @@
     "@pancakeswap/swap-sdk-core": "workspace:*",
     "@types/lodash": "^4.14.168",
     "bignumber.js": "^9.0.0",
-    "jotai": "^2.4.3",
+    "jotai": "catalog:",
     "styled-components": "6.0.7",
     "viem": "catalog:"
   },

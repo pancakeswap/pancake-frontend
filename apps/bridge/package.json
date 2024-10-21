@@ -36,7 +36,7 @@
     "@wagmi/core": "^0.10.11",
     "@wormhole-foundation/wormhole-connect": "0.1.7",
     "ethers": "^5.0.0",
-    "jotai": "^2.4.3",
+    "jotai": "catalog:",
     "lodash": "^4.17.21",
     "next": "catalog:",
     "next-themes": "^0.2.1",
