@@ -24,7 +24,7 @@ const Results: React.FC<React.PropsWithChildren<ResultsProps>> = ({ choices, vot
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader style={{ background: 'transparent' }}>
         <Heading as="h3" scale="md">
           {t('Current Results')}
         </Heading>

@@ -47,7 +47,7 @@ const Votes: React.FC<React.PropsWithChildren<VotesProps>> = ({ votes, votesLoad
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader style={{ background: 'transparent' }}>
         <Flex alignItems="center" justifyContent="space-between">
           <Heading as="h3" scale="md">
             {t('Votes (%count%)', { count: totalVotes || '-' })}
