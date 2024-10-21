@@ -1,3 +1,4 @@
+import { OrderType } from '@pancakeswap/price-api-sdk'
 import { SmartRouter } from '@pancakeswap/smart-router/evm'
 import { FlexGap } from '@pancakeswap/uikit'
 import { useUserSlippage } from '@pancakeswap/utils/user'
@@ -31,6 +32,7 @@ import { TradingFee } from './TradingFee'
 
 export function V4SwapForm() {
   const {
+    betterOrder,
     bestOrder,
     refreshOrder,
     tradeError,
@@ -42,12 +44,18 @@ export function V4SwapForm() {
     ammOrder,
   } = useAllTypeBestTrade()
 
-  const { data: inputUsdPrice } = useCurrencyUsdPrice(bestOrder?.trade?.inputAmount.currency)
-  const { data: outputUsdPrice } = useCurrencyUsdPrice(bestOrder?.trade?.outputAmount.currency)
   const isWrapping = useIsWrapping()
   const { chainId: activeChianId } = useActiveChainId()
   const isUserInsufficientBalance = useUserInsufficientBalance(bestOrder)
   const { shouldShowBuyCrypto, buyCryptoLink } = useBuyCryptoInfo(bestOrder)
+
+  const { data: inputUsdPrice } = useCurrencyUsdPrice(bestOrder?.trade?.inputAmount.currency)
+  const { data: outputUsdPrice } = useCurrencyUsdPrice(bestOrder?.trade?.outputAmount.currency)
+
+  const executionPrice = useMemo(
+    () => (bestOrder?.trade ? SmartRouter.getExecutionPrice(bestOrder.trade) : undefined),
+    [bestOrder?.trade],
+  )
 
   const commitHooks = useMemo(() => {
     return {
@@ -73,7 +81,7 @@ export function V4SwapForm() {
             outputNative: outputCurrency.isNative,
             inputToken: inputCurrency.wrapped.address,
             outputToken: outputCurrency.wrapped.address,
-            bestOrderType: bestOrder?.type,
+            bestOrderType: betterOrder?.type,
             ammOrder: {
               type: ammOrder?.type,
               inputAmount: ammInputAmount,
@@ -83,6 +91,7 @@ export function V4SwapForm() {
             },
             xOrder: xOrder
               ? {
+                  filler: xOrder.type === OrderType.DUTCH_LIMIT ? xOrder.trade.orderInfo.exclusiveFiller : undefined,
                   type: xOrder.type,
                   inputAmount: xInputAmount,
                   outputAmount: xOutputAmount,
@@ -97,16 +106,12 @@ export function V4SwapForm() {
       },
       afterCommit: resumeQuoting,
     }
-  }, [pauseQuoting, resumeQuoting, xOrder, ammOrder, inputUsdPrice, outputUsdPrice, bestOrder?.type])
+  }, [pauseQuoting, resumeQuoting, xOrder, ammOrder, inputUsdPrice, outputUsdPrice, betterOrder?.type])
   const {
     [Field.INPUT]: { currencyId: inputCurrencyId },
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
   } = useSwapState()
 
-  const executionPrice = useMemo(
-    () => (bestOrder?.trade ? SmartRouter.getExecutionPrice(bestOrder.trade) : undefined),
-    [bestOrder?.trade],
-  )
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
 
