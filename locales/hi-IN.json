@@ -3544,5 +3544,7 @@
   "trading and gas fees on Ethereum and Arbitrum with": "ट्रेडिंग और गैस फ़ीस Ethereum और Arbitrum पर और",
   "0 Trading Fees, Gasless Swaps, MEV Protection, and a Wide Range of Tokens — ALL on PancakeSwapX": "0 ट्रेडिंग फ़ीस, गैसलेस स्वैप, MEV प्रोटेक्शन और कई प्रकार के टोकन — ये सभी PancakeSwapX पर",
   "ZERO": "ज़ीरो",
-  "Fee Swaps on Ethereum and Arbitrum": "फीस स्वैप Ethereum और Arbitrum पर"
+  "Fee Swaps on Ethereum and Arbitrum": "फीस स्वैप Ethereum और Arbitrum पर",
+  "%amount% of your liquidity is currently staking in farm.": "%amount% of your liquidity is currently staking in farm.",
+  "Based on last 24 hours' performance. Does not account for impermanent loss": "Based on last 24 hours' performance. Does not account for impermanent loss"
 }

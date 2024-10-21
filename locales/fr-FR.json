@@ -3538,11 +3538,13 @@
   "PancakeSwap Workshop": "PancakeSwap Workshop",
   "DeFiEdge will stop maintaining its vaults from 10 Oct 2024 onwards. Please remove your funds before that to avoid any issues. Beyond 10 Oct, they will place the liquidity in a wide range, and will no longer actively manage it.": "DeFiEdge cessera de maintenir ses vaults à partir du 10 octobre 2024. Veuillez retirer vos fonds avant cette date pour éviter tout problème. Au-delà du 10 octobre, ils placeront les liquidités dans une large gamme et ne la géreront plus activement.",
   "Turkey": "Turquie",
-  "Swap Now": "Swap Now",
-  "Enjoy": "Enjoy",
-  "Zero": "Zero",
-  "trading and gas fees on Ethereum and Arbitrum with": "trading and gas fees on Ethereum and Arbitrum with",
-  "0 Trading Fees, Gasless Swaps, MEV Protection, and a Wide Range of Tokens — ALL on PancakeSwapX": "0 Trading Fees, Gasless Swaps, MEV Protection, and a Wide Range of Tokens — ALL on PancakeSwapX",
-  "ZERO": "ZERO",
-  "Fee Swaps on Ethereum and Arbitrum": "Fee Swaps on Ethereum and Arbitrum"
+  "Swap Now": "Échanger maintenant",
+  "Enjoy": "Profitez de",
+  "Zero": "zéro",
+  "trading and gas fees on Ethereum and Arbitrum with": "frais de transaction sur Ethereum et Arbitrum avec",
+  "0 Trading Fees, Gasless Swaps, MEV Protection, and a Wide Range of Tokens — ALL on PancakeSwapX": "0 frais de transaction, swaps sans frais, protection MEV et une large gamme de jetons : TOUS sur PancakeSwapX",
+  "ZERO": "ZÉRO",
+  "Fee Swaps on Ethereum and Arbitrum": "frais de transaction sur Ethereum et Arbitrum",
+  "%amount% of your liquidity is currently staking in farm.": "%amount% de votre liquidité est actuellement en staking dans la ferme.",
+  "Based on last 24 hours' performance. Does not account for impermanent loss": "Basé sur le rendement des 24 dernières heures. Ne tient pas compte de la perte impermanente"
 }

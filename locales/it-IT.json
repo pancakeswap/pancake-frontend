@@ -3544,5 +3544,7 @@
   "trading and gas fees on Ethereum and Arbitrum with": "commissioni di trading e benzina su Ethereum e Arbitrum con",
   "0 Trading Fees, Gasless Swaps, MEV Protection, and a Wide Range of Tokens — ALL on PancakeSwapX": "0 commissioni di trading, swap senza benzina, protezione MEV e un'ampia gamma di token: TUTTO su PancakeSwapX",
   "ZERO": "ZERO",
-  "Fee Swaps on Ethereum and Arbitrum": "commissioni di swap su Ethereum e Arbitrum"
+  "Fee Swaps on Ethereum and Arbitrum": "commissioni di swap su Ethereum e Arbitrum",
+  "%amount% of your liquidity is currently staking in farm.": "%amount% of your liquidity is currently staking in farm.",
+  "Based on last 24 hours' performance. Does not account for impermanent loss": "Based on last 24 hours' performance. Does not account for impermanent loss"
 }
