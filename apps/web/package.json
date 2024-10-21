@@ -86,6 +86,7 @@
     "@tanstack/react-query": "^5.52.1",
     "@usdv/usdv-widget": "^0.9.9",
     "@vanilla-extract/next-plugin": "^2.3.0",
+    "@vercel/functions": "catalog:",
     "@wagmi/core": "2.10.5",
     "@wallchain/sdk": "^0.6.8",
     "@walletconnect/notify-client": "^1.0.0",
