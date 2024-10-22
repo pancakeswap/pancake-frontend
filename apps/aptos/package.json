@@ -37,7 +37,7 @@
     "@vanilla-extract/recipes": "^0.5.0",
     "bignumber.js": "^9.0.0",
     "dayjs": "^1.11.10",
-    "jotai": "^2.4.3",
+    "jotai": "catalog:",
     "lodash": "^4.17.21",
     "next": "catalog:",
     "next-seo": "^5.15.0",
