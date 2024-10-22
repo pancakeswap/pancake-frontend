@@ -60,6 +60,7 @@ export function useTradeVerifiedByQuoter<P extends Params>(p: P): P {
         ...reviseGasUseEstimate(trade.tradeType, trade, gasUseEstimate),
       }
     },
+    retry: false,
     refetchOnWindowFocus: false,
     placeholderData: keepPreviousData,
     staleTime: trade?.inputAmount.currency.chainId ? POOLS_NORMAL_REVALIDATE[trade?.inputAmount.currency.chainId] : 0,
@@ -69,7 +70,6 @@ export function useTradeVerifiedByQuoter<P extends Params>(p: P): P {
     syncing: fetchStatus === 'fetching' || syncing,
     isLoading: isPlaceholderData || isLoading,
     trade: error ? trade : data,
-    error: error ?? p.error,
   }
 }
 
