@@ -16,6 +16,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import useCurrentBlockTimestamp from 'hooks/useCurrentBlockTimestamp'
 import { useMemo } from 'react'
 import { ProposalTypeName } from 'state/types'
+import { styled } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import { MyVeCakeCard } from 'views/CakeStaking/components/MyVeCakeCard'
 import { SingleVoteState, VoteState } from 'views/Voting/Proposal/VoteType/types'
@@ -23,6 +24,14 @@ import TextEllipsis from '../TextEllipsis'
 import { StyledScanLink } from './DetailsView'
 import { ModalInner, VotingBoxBorder, VotingBoxCardInner } from './styles'
 import { CastVoteModalProps } from './types'
+
+const TextEllipsisStyled = styled(TextEllipsis)`
+  padding: 12px;
+  border-radius: 16px;
+  margin-bottom: 8px;
+  background: ${({ theme }) => theme.colors.background};
+  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
+`
 
 interface MainViewProps {
   vote: VoteState
@@ -81,9 +90,7 @@ export const VeMainView = ({
             {voteType === ProposalTypeName.WEIGHTED ? (
               <Text>show weighted new UI</Text>
             ) : (
-              <TextEllipsis bold fontSize="20px" mb="8px" title={(vote as SingleVoteState).label}>
-                {vote.label}
-              </TextEllipsis>
+              <TextEllipsisStyled title={(vote as SingleVoteState).label}>{vote.label}</TextEllipsisStyled>
             )}
           </>
         ) : null}
@@ -174,9 +181,7 @@ const MainView: React.FC<React.PropsWithChildren<MainViewProps>> = ({
         {voteType === ProposalTypeName.WEIGHTED ? (
           <Text>show weighted new UI</Text>
         ) : (
-          <TextEllipsis bold fontSize="20px" mb="8px" title={(vote as SingleVoteState).label}>
-            {vote.label}
-          </TextEllipsis>
+          <TextEllipsisStyled title={(vote as SingleVoteState).label}>{vote.label}</TextEllipsisStyled>
         )}
         <Text color="secondary" mb="8px" textTransform="uppercase" fontSize="12px" bold>
           {t('Your Voting Power')}

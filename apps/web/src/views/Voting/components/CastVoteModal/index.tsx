@@ -1,7 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Modal, useToast } from '@pancakeswap/uikit'
 import snapshot from '@snapshot-labs/snapshot.js'
-import useTheme from 'hooks/useTheme'
 import { useState } from 'react'
 import { ProposalTypeName } from 'state/types'
 import { PANCAKE_SPACE } from 'views/Voting/config'
@@ -30,7 +29,6 @@ const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
   const { data: signer } = useWalletClient()
   const { t } = useTranslation()
   const { toastError } = useToast()
-  const { theme } = useTheme()
   const {
     isLoading,
     isError,
@@ -108,7 +106,7 @@ const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
       onBack={handleBack}
       onDismiss={onDismiss}
       hideCloseButton={!isStartView}
-      headerBackground={theme.colors.gradientCardHeader}
+      headerBorderColor="transparent"
     >
       <Box mb="24px">
         {view === ConfirmVoteView.MAIN &&
