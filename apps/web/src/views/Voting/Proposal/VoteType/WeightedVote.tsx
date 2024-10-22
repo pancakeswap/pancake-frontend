@@ -77,10 +77,17 @@ interface WeightedVoteProps {
   proposal: Proposal
   hasAccountVoted: boolean
   vote: WeightedVoteState
+  notEnoughVeCake: boolean
   setVote: Dispatch<WeightedVoteState>
 }
 
-export const WeightedVote: React.FC<WeightedVoteProps> = ({ proposal, hasAccountVoted, vote, setVote }) => {
+export const WeightedVote: React.FC<WeightedVoteProps> = ({
+  proposal,
+  hasAccountVoted,
+  vote,
+  notEnoughVeCake,
+  setVote,
+}) => {
   const totalVote = useMemo(() => Object.values(vote).reduce((acc, value) => acc + value, 0), [vote])
 
   const percentageDisplay = useMemo(() => {
@@ -141,11 +148,13 @@ export const WeightedVote: React.FC<WeightedVoteProps> = ({ proposal, hasAccount
                     pattern="^[0-9]+$"
                     inputMode="numeric"
                     value={inputValue}
+                    disabled={notEnoughVeCake}
                     onChange={(e) => handleInput(e, choiceIndex)}
                   />
                   <IconButtonStyle
                     variant="subtle"
                     scale="sm"
+                    disabled={notEnoughVeCake}
                     onClick={() => handleButton(choiceIndex, inputValue + 1)}
                   >
                     <AddIcon color="currentColor" width="14px" />

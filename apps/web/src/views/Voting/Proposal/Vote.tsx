@@ -54,7 +54,7 @@ const Vote: React.FC<React.PropsWithChildren<VoteProps>> = ({ proposal, hasAccou
 
       setVote(newData)
     }
-  }, [])
+  }, [account])
 
   const handleSuccess = async () => {
     toastSuccess(t('Vote cast!'))
@@ -121,6 +121,7 @@ const Vote: React.FC<React.PropsWithChildren<VoteProps>> = ({ proposal, hasAccou
           <WeightedVote
             proposal={proposal}
             hasAccountVoted={hasAccountVoted}
+            notEnoughVeCake={notEnoughVeCake}
             vote={vote as WeightedVoteState}
             setVote={setVote}
           />
