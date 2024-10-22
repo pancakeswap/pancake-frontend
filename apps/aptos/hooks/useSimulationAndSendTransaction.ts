@@ -22,7 +22,7 @@ export default function useSimulationAndSendTransaction() {
           payload,
           transactionBuildOptions: {
             // only use for simulation
-            expireTimestamp: Math.floor(getNow() / 1000 + 5000),
+            expireTimestamp: Math.floor(getNow() / 1000) + 10,
           },
         })
       } catch (error) {
@@ -38,7 +38,11 @@ export default function useSimulationAndSendTransaction() {
         const maxGasAmount = Math.ceil(results[0].gas_used * SAFE_FACTOR)
         const gasUnitPrice = results[0].gas_unit_price
 
-        options = { max_gas_amount: maxGasAmount, gas_unit_price: gasUnitPrice }
+        options = {
+          max_gas_amount: maxGasAmount,
+          gas_unit_price: gasUnitPrice,
+          expiration_timestamp_secs: (Math.floor(getNow() / 1000) + 10).toString(),
+        }
       }
 
       return sendTransactionAsync({
