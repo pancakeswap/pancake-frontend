@@ -3,8 +3,10 @@ import { Box, Modal, useToast } from '@pancakeswap/uikit'
 import snapshot from '@snapshot-labs/snapshot.js'
 import useTheme from 'hooks/useTheme'
 import { useState } from 'react'
+import { ProposalTypeName } from 'state/types'
 import { PANCAKE_SPACE } from 'views/Voting/config'
 import { VECAKE_VOTING_POWER_BLOCK } from 'views/Voting/helpers'
+import { SingleVoteState, WeightedVoteState } from 'views/Voting/Proposal/VoteType/types'
 import { useAccount, useWalletClient } from 'wagmi'
 import useGetVotingPower from '../../hooks/useGetVotingPower'
 import DetailsView from './DetailsView'
@@ -81,11 +83,8 @@ const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
 
       await client.vote(web3 as any, account, {
         space: PANCAKE_SPACE,
-        choice: vote.value,
-        // ProposalTypeName.WEIGHTED
-        // choice: {
-        //   1: 1,
-        // },
+        choice:
+          voteType === ProposalTypeName.SINGLE_CHOICE ? (vote as SingleVoteState).value : (vote as WeightedVoteState),
         reason: '',
         type: voteType,
         proposal: proposalId,
@@ -117,6 +116,7 @@ const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
             <VeMainView
               block={block}
               vote={vote}
+              voteType={voteType}
               total={total}
               isPending={isPending}
               isLoading={isLoading}
@@ -128,6 +128,7 @@ const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
           ) : (
             <MainView
               vote={vote}
+              voteType={voteType}
               isError={isError}
               isLoading={isLoading}
               isPending={isPending}

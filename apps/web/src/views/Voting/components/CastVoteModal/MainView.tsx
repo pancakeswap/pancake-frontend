@@ -15,18 +15,17 @@ import BigNumber from 'bignumber.js'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useCurrentBlockTimestamp from 'hooks/useCurrentBlockTimestamp'
 import { useMemo } from 'react'
+import { ProposalTypeName } from 'state/types'
 import { getBlockExploreLink } from 'utils'
 import { MyVeCakeCard } from 'views/CakeStaking/components/MyVeCakeCard'
+import { SingleVoteState, VoteState } from 'views/Voting/Proposal/VoteType/types'
 import TextEllipsis from '../TextEllipsis'
 import { StyledScanLink } from './DetailsView'
 import { ModalInner, VotingBoxBorder, VotingBoxCardInner } from './styles'
 import { CastVoteModalProps } from './types'
 
 interface MainViewProps {
-  vote: {
-    label: string
-    value: number
-  }
+  vote: VoteState
   isLoading: boolean
   isPending: boolean
   isError: boolean
@@ -34,22 +33,21 @@ interface MainViewProps {
   disabled?: boolean
   lockedCakeBalance: number
   lockedEndTime: number
+  voteType?: ProposalTypeName
   onConfirm: () => void
   onViewDetails: () => void
   onDismiss: CastVoteModalProps['onDismiss']
 }
 
 type VeMainViewProps = {
-  vote?: {
-    label: string
-    value: number
-  }
+  vote?: VoteState
   isLoading?: boolean
   isPending?: boolean
   isError?: boolean
   total: number
   disabled?: boolean
   veCakeBalance?: number
+  voteType?: ProposalTypeName
   onConfirm?: () => void
   onDismiss?: CastVoteModalProps['onDismiss']
   block: number
@@ -65,6 +63,7 @@ export const VeMainView = ({
   onDismiss,
   disabled,
   block,
+  voteType,
   veCakeBalance,
 }: VeMainViewProps) => {
   const { t } = useTranslation()
@@ -79,9 +78,13 @@ export const VeMainView = ({
             <Text color="secondary" mb="8px" textTransform="uppercase" fontSize="12px" bold>
               {t('Voting For')}
             </Text>
-            <TextEllipsis bold fontSize="20px" mb="8px" title={vote.label}>
-              {vote.label}
-            </TextEllipsis>
+            {voteType === ProposalTypeName.WEIGHTED ? (
+              <Text>show weighted new UI</Text>
+            ) : (
+              <TextEllipsis bold fontSize="20px" mb="8px" title={(vote as SingleVoteState).label}>
+                {vote.label}
+              </TextEllipsis>
+            )}
           </>
         ) : null}
 
@@ -143,6 +146,7 @@ const MainView: React.FC<React.PropsWithChildren<MainViewProps>> = ({
   isPending,
   isLoading,
   isError,
+  voteType,
   onConfirm,
   onViewDetails,
   onDismiss,
@@ -167,9 +171,13 @@ const MainView: React.FC<React.PropsWithChildren<MainViewProps>> = ({
         <Text color="secondary" mb="8px" textTransform="uppercase" fontSize="12px" bold>
           {t('Voting For')}
         </Text>
-        <TextEllipsis bold fontSize="20px" mb="8px" title={vote.label}>
-          {vote.label}
-        </TextEllipsis>
+        {voteType === ProposalTypeName.WEIGHTED ? (
+          <Text>show weighted new UI</Text>
+        ) : (
+          <TextEllipsis bold fontSize="20px" mb="8px" title={(vote as SingleVoteState).label}>
+            {vote.label}
+          </TextEllipsis>
+        )}
         <Text color="secondary" mb="8px" textTransform="uppercase" fontSize="12px" bold>
           {t('Your Voting Power')}
         </Text>

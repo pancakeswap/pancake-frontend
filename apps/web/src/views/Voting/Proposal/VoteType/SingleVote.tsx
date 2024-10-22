@@ -1,14 +1,14 @@
 import { Radio, Text } from '@pancakeswap/uikit'
-import React, { Dispatch } from 'react'
+import { Dispatch } from 'react'
 import { Proposal, ProposalState } from 'state/types'
-import { State } from 'views/Voting/Proposal/VoteType/types'
+import { SingleVoteState } from 'views/Voting/Proposal/VoteType/types'
 import { Choice, ChoiceText } from 'views/Voting/Proposal/VoteType/VoteStyle'
 import { useAccount } from 'wagmi'
 
 interface SingleVoteProps {
   proposal: Proposal
-  vote: State
-  setVote: Dispatch<State>
+  vote: SingleVoteState
+  setVote: Dispatch<SingleVoteState>
 }
 
 export const SingleVote: React.FC<SingleVoteProps> = ({ proposal, vote, setVote }) => {

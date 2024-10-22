@@ -19,10 +19,10 @@ import {
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useVeCakeBalance } from 'hooks/useTokenBalance'
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Proposal, ProposalState, ProposalTypeName } from 'state/types'
 import { SingleVote } from 'views/Voting/Proposal/VoteType/SingleVote'
-import { State } from 'views/Voting/Proposal/VoteType/types'
+import { SingleVoteState, VoteState, WeightedVoteState } from 'views/Voting/Proposal/VoteType/types'
 import { WeightedVote } from 'views/Voting/Proposal/VoteType/WeightedVote'
 import { useAccount } from 'wagmi'
 import CastVoteModal from '../components/CastVoteModal'
@@ -34,7 +34,7 @@ interface VoteProps extends CardProps {
 }
 
 const Vote: React.FC<React.PropsWithChildren<VoteProps>> = ({ proposal, hasAccountVoted, onSuccess, ...props }) => {
-  const [vote, setVote] = useState<State>({
+  const [vote, setVote] = useState<VoteState>({
     label: '',
     value: 0,
   })
@@ -42,6 +42,19 @@ const Vote: React.FC<React.PropsWithChildren<VoteProps>> = ({ proposal, hasAccou
   const { toastSuccess } = useToast()
   const { address: account } = useAccount()
   const { balance } = useVeCakeBalance()
+
+  useEffect(() => {
+    const { type, state, choices } = proposal
+    if (type === ProposalTypeName.WEIGHTED && state === ProposalState.ACTIVE && !hasAccountVoted) {
+      const newData: WeightedVoteState = choices.reduce((acc, _, index) => {
+        // eslint-disable-next-line no-param-reassign
+        acc[index + 1] = 0
+        return acc
+      }, {})
+
+      setVote(newData)
+    }
+  }, [])
 
   const handleSuccess = async () => {
     toastSuccess(t('Vote cast!'))
@@ -58,6 +71,17 @@ const Vote: React.FC<React.PropsWithChildren<VoteProps>> = ({ proposal, hasAccou
     />,
   )
 
+  const notEnoughVeCake = useMemo(() => balance.lte(0), [balance])
+
+  const isAbleToVote = useMemo(() => {
+    if (proposal.type === ProposalTypeName.SINGLE_CHOICE) {
+      return (vote as SingleVoteState).value > 0
+    }
+    // ProposalTypeName.WEIGHTED
+    const totalVote = Object.values(vote).reduce((acc, value) => acc + value, 0)
+    return totalVote > 0
+  }, [proposal, vote])
+
   return (
     <Card {...props}>
       <CardHeader style={{ background: 'transparent' }}>
@@ -66,24 +90,39 @@ const Vote: React.FC<React.PropsWithChildren<VoteProps>> = ({ proposal, hasAccou
             {t('Cast your vote')}
           </Heading>
           <Flex alignItems="center">
-            <Text>{t('veCake Balance')}:</Text>
+            <Text color={notEnoughVeCake ? 'failure' : 'text'}>{t('veCake Balance')}:</Text>
             <Balance
               bold
               fontSize="20px"
               m="0 4px 0 8px"
               lineHeight="110%"
               decimals={2}
+              color={notEnoughVeCake ? 'failure' : 'text'}
               value={getBalanceNumber(balance)}
             />
-            <Image style={{ minWidth: '32px' }} width={32} height={32} src="/images/cake-staking/token-vecake.png" />
+            <Image
+              width={32}
+              height={32}
+              style={{ minWidth: '32px' }}
+              src={
+                notEnoughVeCake ? '/images/cake-staking/not-enough-veCAKE.png' : '/images/cake-staking/token-vecake.png'
+              }
+            />
           </Flex>
         </Flex>
       </CardHeader>
       <CardBody>
         {proposal.type === ProposalTypeName.SINGLE_CHOICE && (
-          <SingleVote proposal={proposal} vote={vote} setVote={setVote} />
+          <SingleVote proposal={proposal} vote={vote as SingleVoteState} setVote={setVote} />
         )}
-        {proposal.type === ProposalTypeName.WEIGHTED && <WeightedVote proposal={proposal} />}
+        {proposal.type === ProposalTypeName.WEIGHTED && (
+          <WeightedVote
+            proposal={proposal}
+            hasAccountVoted={hasAccountVoted}
+            vote={vote as WeightedVoteState}
+            setVote={setVote}
+          />
+        )}
         {account ? (
           <>
             {hasAccountVoted ? (
@@ -92,7 +131,11 @@ const Vote: React.FC<React.PropsWithChildren<VoteProps>> = ({ proposal, hasAccou
                   {t('You cast your vote! Please wait until the voting ends to see the end results.')}
                 </MessageText>
               </Message>
-            ) : proposal.state === ProposalState.CLOSED ? (
+            ) : notEnoughVeCake ? (
+              <Button m="auto" display="block" disabled>
+                {t('Not enough veCAKE')}
+              </Button>
+            ) : !isAbleToVote ? (
               <Button m="auto" display="block" disabled>
                 {t('Enter the votes to cast')}
               </Button>
@@ -100,7 +143,6 @@ const Vote: React.FC<React.PropsWithChildren<VoteProps>> = ({ proposal, hasAccou
               <Button
                 m="auto"
                 display="block"
-                disabled={vote === null}
                 endIcon={<VoteIcon width={14} height={14} color="currentColor" />}
                 onClick={presentCastVoteModal}
               >
