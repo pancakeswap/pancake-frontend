@@ -121,12 +121,14 @@ export const SkeletonV2: React.FC<React.PropsWithChildren<SkeletonV2Props>> = ({
       height={isDataReady ? "auto" : height}
       mr={mr}
       ml={ml}
+      id="Skeleton-SkeletonWrapper"
       {...wrapperProps}
     >
       <LazyMotion features={domAnimation}>
         <AnimatePresence>
           {isDataReady ? (
             <AnimationWrapper
+              id="Skeleton-AnimationWrapper-isDataReady-true"
               key="content"
               ref={animationRef}
               onAnimationStart={() => animationHandler(animationRef.current)}
@@ -138,6 +140,7 @@ export const SkeletonV2: React.FC<React.PropsWithChildren<SkeletonV2Props>> = ({
             </AnimationWrapper>
           ) : (
             <AnimationWrapper
+              id="Skeleton-AnimationWrapper-isDataReady-false"
               key="skeleton"
               style={{ position: "absolute", top: skeletonTop, left: skeletonLeft }}
               ref={skeletonRef}
@@ -147,9 +150,9 @@ export const SkeletonV2: React.FC<React.PropsWithChildren<SkeletonV2Props>> = ({
               transition={{ duration: 0.3 }}
             >
               {animation === ANIMATION.WAVES ? (
-                <Waves variant={variant} {...props} width={width} height={height} />
+                <Waves variant={variant} {...props} width={width} height={height} id="Skeleton-Waves-Animation" />
               ) : (
-                <Pulse variant={variant} {...props} width={width} height={height} />
+                <Pulse variant={variant} {...props} width={width} height={height} id="Skeleton-Pulse-Animation" />
               )}
             </AnimationWrapper>
           )}
