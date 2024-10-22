@@ -154,7 +154,7 @@ const Vote: React.FC<React.PropsWithChildren<VoteProps>> = ({ proposal, hasAccou
             )}
           </>
         ) : (
-          <ConnectWalletButton />
+          <ConnectWalletButton m="auto" display="block" />
         )}
       </CardBody>
     </Card>
