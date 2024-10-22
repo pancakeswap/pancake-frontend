@@ -121,6 +121,7 @@ const Overview = () => {
           )}
           <Votes
             votes={votes || []}
+            proposal={proposal}
             totalVotes={votes?.length ?? proposal.votes}
             votesLoadingStatus={votesLoadingStatus}
           />
