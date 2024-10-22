@@ -125,7 +125,7 @@ export const SkeletonV2: React.FC<React.PropsWithChildren<SkeletonV2Props>> = ({
     >
       <LazyMotion features={domAnimation}>
         <AnimatePresence>
-          {isDataReady && (
+          {isDataReady ? (
             <AnimationWrapper
               key="content"
               ref={animationRef}
@@ -136,8 +136,7 @@ export const SkeletonV2: React.FC<React.PropsWithChildren<SkeletonV2Props>> = ({
             >
               {children}
             </AnimationWrapper>
-          )}
-          {!isDataReady && (
+          ) : (
             <AnimationWrapper
               key="skeleton"
               style={{ position: "absolute", top: skeletonTop, left: skeletonLeft }}
