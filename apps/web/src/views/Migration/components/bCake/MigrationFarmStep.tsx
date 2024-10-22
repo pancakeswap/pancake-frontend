@@ -28,8 +28,8 @@ const MigrationFarmStep: React.FC<React.PropsWithChildren<{ step: number }>> = (
   const stakedOrHasTokenBalance = useMemo(() => {
     const farms = farmsLP
       .filter((farm) => farm.pid !== 0)
-      .filter((farm) => farm.pid !== 11 && farm.token.chainId === ChainId.ETHEREUM)
       .filter((farm) => Boolean(farm?.bCakeWrapperAddress))
+      .filter((farm) => farm.pid !== 11 && farm.token.serialize.chainId !== ChainId.ETHEREUM)
 
     return farms.filter((farm) => {
       return (
