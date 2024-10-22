@@ -10,7 +10,7 @@ interface MotionTabsProps extends FlexGapProps {
   /** Default: true */
   animateOnMobile?: boolean
 
-  /** Unique ID for use by this tablist and its tabpanels */
+  /** Unique Id for use by this tablist and its tabpanels */
   ariaId?: string
 
   autoFocus?: boolean

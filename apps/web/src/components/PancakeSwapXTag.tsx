@@ -1,15 +1,15 @@
 import { Flex, LogoIcon, Tag, TagProps, Text } from '@pancakeswap/uikit'
 
 interface PancakeSwapXTagProps extends TagProps {
-  width?: string
+  logoWidth?: string
   fontSize?: string
 }
 
-export const PancakeSwapXTag = ({ width, fontSize, ...props }: PancakeSwapXTagProps) => {
+export const PancakeSwapXTag = ({ logoWidth, fontSize, ...props }: PancakeSwapXTagProps) => {
   return (
     <Tag variant="success" style={{ width: 'fit-content' }} {...props}>
       <Flex>
-        <LogoIcon width={width} />
+        <LogoIcon width={logoWidth} />
         <Text ml="6px" color="white" fontSize={fontSize} bold>
           PancakeSwap X
         </Text>
