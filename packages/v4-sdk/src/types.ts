@@ -108,3 +108,39 @@ export type EncodedPoolKey = {
   fee: number
   parameters: Bytes32
 }
+
+export interface EncodedSingleSwapParams {
+  poolKey: EncodedPoolKey
+  zeroForOne: boolean
+  sqrtPriceLimitX96?: bigint
+  hookData: Bytes32
+}
+
+export interface EncodedExactInputParams {
+  amountIn: bigint
+  amountOutMinimum: bigint
+}
+export interface EncodedExactOutputParams {
+  amountOut: bigint
+  amountInMaximum: bigint
+}
+
+export interface EncodedSingleSwapInParams extends EncodedSingleSwapParams, EncodedExactInputParams {}
+export interface EncodedSingleSwapOutParams extends EncodedSingleSwapParams, EncodedExactOutputParams {}
+
+export type EncodedPathKey = {
+  intermediateCurrency: Address
+  fee: number
+  hooks: Address
+  poolManager: Address
+  hookData: `0x${string}`
+  parameters: `0x${string}`
+}
+
+export interface EncodedMultiSwapParams {
+  currencyIn: Address
+  path: EncodedPathKey[]
+}
+
+export interface EncodedMultiSwapInParams extends EncodedMultiSwapParams, EncodedExactInputParams {}
+export interface EncodedMultiSwapOutParams extends EncodedMultiSwapParams, EncodedExactOutputParams {}

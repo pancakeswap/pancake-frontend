@@ -17,7 +17,7 @@ export class RoutePlanner {
     this.addCommand(type, [plan.commands, plan.inputs])
   }
 
-  addAction<TCommandType extends ActionUsed>(type: TCommandType, parameters: V4ActionsABIParametersType<TCommandType>) {
+  addAction<TActionType extends ActionUsed>(type: TActionType, parameters: V4ActionsABIParametersType<TActionType>) {
     const action = createAction(type, parameters)
     this.inputs.push(action.encodedInput)
     this.commands = this.commands.concat(action.type.toString(16).padStart(2, '0')) as Hex
@@ -40,15 +40,6 @@ export class RoutePlanner {
 
     this.commands = this.commands.concat(command.type.toString(16).padStart(2, '0')) as Hex
   }
-
-  // addV4Swap(
-  //   trade: Omit<SmartRouterTrade<TradeType>, 'gasEstimate'>,
-  //   options: PancakeSwapOptions,
-  //   routerMustCustody: boolean,
-  //   payerIsUser: boolean,
-  // ) {
-
-  // }
 }
 
 const ALLOW_REVERT_FLAG = 0x80

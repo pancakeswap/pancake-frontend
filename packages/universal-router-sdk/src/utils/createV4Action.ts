@@ -71,7 +71,7 @@ struct CLSwapExactOutputParams {
 const apiStructBinSwapExactInputSingleParams = `
 struct BinSwapExactInputSingleParams {
   PoolKey poolKey;
-  bool swapForY;
+  bool zeroForOne;
   uint128 amountIn;
   uint128 amountOutMinimum;
   bytes hookData;
@@ -90,7 +90,7 @@ struct BinSwapExactInputParams {
 const abiStructBinSwapExactOutputSingleParams = `
 struct BinSwapExactOutputSingleParams {
   PoolKey poolKey;
-  bool swapForY;
+  bool zeroForOne;
   uint128 amountOut;
   uint128 amountInMaximum;
   bytes hookData;

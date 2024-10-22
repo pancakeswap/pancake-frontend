@@ -1,9 +1,9 @@
-import { Address, zeroAddress } from 'viem'
 import { Currency, getCurrencyAddress } from '@pancakeswap/swap-sdk-core'
 import { encodeCLPoolParameters } from '@pancakeswap/v4-sdk'
+import { Address, zeroAddress } from 'viem'
 
-import { BaseRoute, Pool } from '../types'
-import { getOutputCurrency, isV4ClPool } from './pool'
+import { BaseRoute, Pool, V4BinPool, V4ClPool } from '../types'
+import { getOutputCurrency, isV4BinPool, isV4ClPool } from './pool'
 
 export type PathKey = {
   intermediateCurrency: Address
@@ -23,7 +23,10 @@ export function encodeV4ClRouteToPath(route: BaseRoute, exactOutput: boolean): P
   if (route.pools.some((p) => !isV4ClPool(p))) {
     throw new Error('Invalid v4 cl pool')
   }
+  return encodeV4RouteToPath(route, exactOutput)
+}
 
+export function encodeV4RouteToPath(route: BaseRoute, exactOutput: boolean): PathKey[] {
   const firstInputCurrency = route.input
 
   const { path } = route.pools.reduce(
@@ -33,26 +36,26 @@ export function encodeV4ClRouteToPath(route: BaseRoute, exactOutput: boolean): P
       pool: Pool,
     ): { inputCurrency: Currency; path: PathKey[] } => {
       const outputCurrency = getOutputCurrency(pool, inputCurrency)
-      if (!isV4ClPool(pool)) throw new Error('Invalid v4 cl pool')
+      if (!isV4ClPool(pool) || !isV4BinPool(pool)) throw new Error('Not a valid v4 pool')
       return {
         inputCurrency: outputCurrency,
-        path: [
-          ...path,
-          {
-            intermediateCurrency: getCurrencyAddress(outputCurrency),
-            fee: pool.fee,
-            hooks: pool.hooks ?? zeroAddress,
-            poolManager: pool.poolManager,
-            hookData: '0x',
-            parameters: encodeCLPoolParameters({
-              tickSpacing: pool.tickSpacing,
-            }),
-          },
-        ],
+        path: [...path, createPathKey(pool, outputCurrency)],
       }
     },
     { inputCurrency: firstInputCurrency, path: [] },
   )
 
   return exactOutput ? path.reverse() : path
+}
+
+function createPathKey(pool: V4ClPool | V4BinPool, outputCurrency: Currency): PathKey {
+  const params = isV4ClPool(pool) ? encodeCLPoolParameters({ tickSpacing: pool.tickSpacing }) : '0x'
+  return {
+    intermediateCurrency: getCurrencyAddress(outputCurrency),
+    fee: pool.fee,
+    hooks: pool.hooks ?? zeroAddress,
+    poolManager: pool.poolManager,
+    hookData: '0x',
+    parameters: params,
+  }
 }

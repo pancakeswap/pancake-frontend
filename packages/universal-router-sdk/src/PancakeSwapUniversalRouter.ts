@@ -16,10 +16,10 @@ export abstract class PancakeSwapUniversalRouter {
    * @param options options for the call parameters
    */
   public static swapERC20CallParameters(
-    planner: RoutePlanner,
     trade: Omit<SmartRouterTrade<TradeType>, 'gasEstimate'>,
     options: PancakeSwapOptions,
   ): MethodParameters {
+    const planner = new RoutePlanner()
     const tradeCommand: PancakeSwapTrade = new PancakeSwapTrade(trade, options)
 
     const inputCurrency = tradeCommand.trade.inputAmount.currency

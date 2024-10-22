@@ -41,10 +41,3 @@ export interface BinSwapExactInputSingleParams {
   amountOutMinimum: bigint
   hookData: `0x${string}`
 }
-// struct BinSwapExactInputSingleParams {
-//   PoolKey poolKey;
-//   bool swapForY;
-//   uint128 amountIn;
-//   uint128 amountOutMinimum;
-//   bytes hookData;
-// }

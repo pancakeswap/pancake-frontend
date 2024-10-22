@@ -10,6 +10,7 @@ import {
 import invariant from 'tiny-invariant'
 import { Address } from 'viem'
 
+import { isV4BinPool, isV4ClPool } from '@pancakeswap/smart-router/dist/evm/v3-router/utils'
 import { CONTRACT_BALANCE, ROUTER_AS_RECIPIENT, SENDER_AS_RECIPIENT } from '../../constants'
 import { CommandType } from '../../router.types'
 import { ABIParametersType } from '../../utils/createCommand'
@@ -17,6 +18,7 @@ import { encodeFeeBips } from '../../utils/numbers'
 import { RoutePlanner } from '../../utils/RoutePlanner'
 import { Command, RouterTradeType } from '../Command'
 import { PancakeSwapOptions } from '../types'
+import { SwapCommandBuilder } from './SwapCommandBuilder'
 
 // Wrapper for pancakeswap router-sdk trade entity to encode swaps for Universal Router
 export class PancakeSwapTrade implements Command {
@@ -75,10 +77,10 @@ export class PancakeSwapTrade implements Command {
         addStableSwap(planner, singleRouteTrade, this.options, routerMustCustody, payerIsUser)
         continue
       }
-      // if (route.type === RouteType.V4CL) {
-      //   // TODO: implementation
-      //   continue
-      // }
+      if (route.type === RouteType.V4BIN || route.type === RouteType.V4CL) {
+        addV4Swap(planner, singleRouteTrade, this.options)
+        continue
+      }
       addMixedSwap(planner, singleRouteTrade, this.options, payerIsUser, routerMustCustody)
     }
 
@@ -230,32 +232,18 @@ function addV4Swap(
   planner: RoutePlanner,
   trade: Omit<SmartRouterTrade<TradeType>, 'gasEstimate'>,
   options: PancakeSwapOptions,
-  routerMustCustody: boolean,
-  payerIsUser: boolean,
 ) {
-  // const swap = new SwapCommandHelper(trade, options, routerMustCustody, payerIsUser)
-  //   if (trade.tradeType === TradeType.EXACT_INPUT) {
-  //     const planner = new RoutePlanner()
-  //     if (singleHop()) {
-  //     }
-  //     if (route.path.length === 2) {
-  //       const pool = route.pools[0]
-  //       if (pool.type === PoolType.V4CL) {
-  //       }
-  //     }
-  //     planner.addAction(V4ActionType.CL_SWAP_EXACT_IN_SINGLE, [])
-  //     const
-  //     const v4Cmd: ABIParametersType<CommandType.V4_SWAP> = []
-  //     const exactInputSingleParams: ABIParametersType<CommandType.V4_SWAP_EXACT_IN> = [
-  //       recipient,
-  //       amountIn,
-  //       amountOut,
-  //       path,
-  //       payerIsUser,
-  //     ]
-  //     planner.addCommand(CommandType.V4_SWAP_EXACT_IN, exactInputSingleParams)
-  //     return
-  //   }
+  invariant(trade.routes.length === 1, 'Only allow single route trade')
+
+  const route: BaseRoute = {
+    ...trade.routes[0],
+    input: trade.inputAmount.currency,
+    output: trade.outputAmount.currency,
+  }
+  const amountIn = SmartRouter.maximumAmountIn(trade, options.slippageTolerance).quotient
+  const amountOut = SmartRouter.minimumAmountOut(trade, options.slippageTolerance).quotient
+  const builder = new SwapCommandBuilder(planner, trade.tradeType, route, amountIn, amountOut)
+  builder.buildCommand()
 }
 
 function addStableSwap(
@@ -337,6 +325,12 @@ function addMixedSwap(
   const mixedRouteIsAllStable = (r: Omit<BaseRoute, 'input' | 'output'>) => {
     return r.pools.every(SmartRouter.isStablePool)
   }
+  const mixedRouteIsAllV4Bin = (r: Omit<BaseRoute, 'input' | 'output'>) => {
+    return r.pools.every((x) => isV4BinPool(x))
+  }
+  const mixedRouteIsAllV4CL = (r: Omit<BaseRoute, 'input' | 'output'>) => {
+    return r.pools.every((x) => isV4ClPool(x))
+  }
 
   // Check if a mixed route is actually pure v2, v3 or stable route.
   // If that's the case then let the corresponding command adder to handle the encode
@@ -400,6 +394,43 @@ function addMixedSwap(
     )
     return
   }
+  if (mixedRouteIsAllV4Bin(route)) {
+    addV4Swap(
+      planner,
+      {
+        ...trade,
+        routes: [
+          {
+            ...route,
+            type: RouteType.V4BIN,
+          },
+        ],
+        inputAmount,
+        outputAmount,
+      },
+      options,
+    )
+    return
+  }
+
+  if (mixedRouteIsAllV4CL(route)) {
+    addV4Swap(
+      planner,
+      {
+        ...trade,
+        routes: [
+          {
+            ...route,
+            type: RouteType.V4CL,
+          },
+        ],
+        inputAmount,
+        outputAmount,
+      },
+      options,
+    )
+    return
+  }
 
   invariant(trade.tradeType === TradeType.EXACT_INPUT, 'Exact output is not supported for mixed route trade')
 
@@ -459,6 +490,12 @@ function addMixedSwap(
           flags,
           payByUser,
         ])
+        break
+      }
+      case RouteType.V4CL:
+      case RouteType.V4BIN: {
+        const builder = new SwapCommandBuilder(planner, trade.tradeType, newRoute, inAmount, outAmount)
+        builder.buildCommand()
         break
       }
       default:

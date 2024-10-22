@@ -47,6 +47,7 @@
     "@pancakeswap/sdk": "workspace:*",
     "@pancakeswap/smart-router": "workspace:*",
     "@pancakeswap/v3-sdk": "workspace:*",
+    "@pancakeswap/v4-sdk": "workspace:*",
     "abitype": "^0.9.8",
     "tiny-invariant": "^1.1.0",
     "viem": "catalog:"
