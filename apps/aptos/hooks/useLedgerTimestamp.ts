@@ -1,5 +1,5 @@
 import { fetchLedgerInfo } from '@pancakeswap/awgmi/core'
-import { keepPreviousData, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { useCallback } from 'react'
 import { useActiveChainId } from './useNetwork'
 
