@@ -71,7 +71,7 @@
     "turbo": "2.0.6",
     "typescript": "5.2.2",
     "vitest": "^1.5.0",
-    "wrangler": "2.20.2"
+    "wrangler": "catalog:"
   },
   "volta": {
     "node": "20.17.0",

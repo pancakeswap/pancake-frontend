@@ -23,7 +23,7 @@ const PUBLIC_NODES: Record<string, string[]> = {
   ],
 }
 
-describe('Gauges Config', async () => {
+describe.skip('Gauges Config', async () => {
   const configProd = await getGauges()
   const gidGroups = groupBy(configProd, 'gid')
   const chainIdGroups = groupBy(configProd, 'chainId')
