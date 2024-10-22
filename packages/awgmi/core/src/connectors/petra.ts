@@ -1,4 +1,4 @@
-import { InputGenerateTransactionPayloadData } from '@aptos-labs/ts-sdk'
+import { InputGenerateTransactionOptions, InputGenerateTransactionPayloadData } from '@aptos-labs/ts-sdk'
 
 import { Chain } from '../chain'
 import { ConnectorNotFoundError } from '../errors'
@@ -96,10 +96,13 @@ export class PetraConnector extends Connector<Window['aptos'], PetraConnectorOpt
     }
   }
 
-  async signAndSubmitTransaction(tx: InputGenerateTransactionPayloadData) {
+  async signAndSubmitTransaction(
+    tx: InputGenerateTransactionPayloadData,
+    options?: Partial<InputGenerateTransactionOptions>,
+  ) {
     const provider = await this.getProvider()
     if (!provider) throw new ConnectorNotFoundError()
-    return provider.signAndSubmitTransaction(convertTransactionPayloadToOldFormat(tx) as any)
+    return provider.signAndSubmitTransaction(convertTransactionPayloadToOldFormat(tx) as any, options)
   }
 
   async signTransaction(tx: InputGenerateTransactionPayloadData) {

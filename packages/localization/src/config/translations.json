@@ -3549,5 +3549,6 @@
   "ZERO": "ZERO",
   "Fee Swaps on Ethereum and Arbitrum": "Fee Swaps on Ethereum and Arbitrum",
   "%amount% of your liquidity is currently staking in farm.": "%amount% of your liquidity is currently staking in farm.",
-  "Based on last 24 hours' performance. Does not account for impermanent loss": "Based on last 24 hours' performance. Does not account for impermanent loss"
+  "Based on last 24 hours' performance. Does not account for impermanent loss": "Based on last 24 hours' performance. Does not account for impermanent loss",
+  "Please check your date and time settings, and ensure that they are synced correctly.": "Please check your date and time settings, and ensure that they are synced correctly."
 }
