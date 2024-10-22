@@ -12,13 +12,11 @@ import { useMemo } from 'react'
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
 import { logger } from 'utils/datadog'
-import { warningSeverity } from 'utils/exchange'
-import { isXOrder } from 'views/Swap/utils'
 import { SwapType } from '../../Swap/types'
 import { useIsWrapping } from '../../Swap/V3Swap/hooks'
 import { useAllTypeBestTrade } from '../../Swap/V3Swap/hooks/useAllTypeBestTrade'
-import { computeTradePriceBreakdown } from '../../Swap/V3Swap/utils/exchange'
 import { useBuyCryptoInfo } from '../hooks/useBuyCryptoInfo'
+import { useIsPriceImpactTooHigh } from '../hooks/useIsPriceImpactTooHigh'
 import { useUserInsufficientBalance } from '../hooks/useUserInsufficientBalance'
 import { ButtonAndDetailsPanel } from './ButtonAndDetailsPanel'
 import { BuyCryptoPanel } from './BuyCryptoPanel'
@@ -56,6 +54,7 @@ export function V4SwapForm() {
     () => (bestOrder?.trade ? SmartRouter.getExecutionPrice(bestOrder.trade) : undefined),
     [bestOrder?.trade],
   )
+  const { isPriceImpactTooHigh } = useIsPriceImpactTooHigh(bestOrder, !tradeLoaded)
 
   const commitHooks = useMemo(() => {
     return {
@@ -115,14 +114,6 @@ export function V4SwapForm() {
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
 
-  const { priceImpactWithoutFee } = useMemo(
-    () => computeTradePriceBreakdown(isXOrder(bestOrder) ? bestOrder?.ammTrade : bestOrder?.trade),
-    [bestOrder],
-  )
-  const isPriceImpactTooHigh = useMemo(() => {
-    const warningLevel = warningSeverity(priceImpactWithoutFee)
-    return warningLevel >= 3
-  }, [priceImpactWithoutFee])
   const [userSlippageTolerance] = useUserSlippage()
   const isSlippageTooHigh = useMemo(() => userSlippageTolerance > 500, [userSlippageTolerance])
   const shouldRiskPanelDisplay = useShouldRiskPanelDisplay(inputCurrency?.wrapped, outputCurrency?.wrapped)
