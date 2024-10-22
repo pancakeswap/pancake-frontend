@@ -80,7 +80,7 @@ type VeMainViewProps = {
   onConfirm?: () => void
   onDismiss?: CastVoteModalProps['onDismiss']
   block: number
-  proposal: Proposal
+  proposal?: Proposal
 }
 
 export const VeMainView = ({
@@ -109,7 +109,7 @@ export const VeMainView = ({
             <Text color="secondary" mb="8px" textTransform="uppercase" fontSize="12px" bold>
               {t('Voting For')}
             </Text>
-            {voteType === ProposalTypeName.WEIGHTED ? (
+            {voteType === ProposalTypeName.WEIGHTED && proposal ? (
               <WeightedVoteResultsContainer>
                 <WeightedVoteResults choicesVotes={[vote as WeightedVoteState]} choices={proposal.choices} />
               </WeightedVoteResultsContainer>
