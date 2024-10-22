@@ -1,21 +1,21 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Card, CardBody, CardHeader, Flex, Heading, Progress, Skeleton, Text } from '@pancakeswap/uikit'
-import { formatNumber } from '@pancakeswap/utils/formatBalance'
+import { Box, Card, CardBody, CardHeader, Flex, Heading, Skeleton } from '@pancakeswap/uikit'
 import { FetchStatus, TFetchStatus } from 'config/constants/types'
-import { Vote } from 'state/types'
+import { Proposal, ProposalTypeName, Vote } from 'state/types'
+import { SingleVoteResults } from 'views/Voting/Proposal/ResultType/SingleVoteResults'
+import { WeightedVoteResults } from 'views/Voting/Proposal/ResultType/WeightedVoteResults'
+import { WeightedVoteState } from 'views/Voting/Proposal/VoteType/types'
 import TextEllipsis from '../components/TextEllipsis'
-import { calculateVoteResults, getTotalFromVotes } from '../helpers'
 
 interface ResultsProps {
+  proposal: Proposal
   choices: string[]
   votes: Vote[]
   votesLoadingStatus: TFetchStatus
 }
 
-const Results: React.FC<React.PropsWithChildren<ResultsProps>> = ({ choices, votes, votesLoadingStatus }) => {
+const Results: React.FC<React.PropsWithChildren<ResultsProps>> = ({ proposal, choices, votes, votesLoadingStatus }) => {
   const { t } = useTranslation()
-  const results = calculateVoteResults(votes)
-  const totalVotes = getTotalFromVotes(votes)
 
   return (
     <Card>
@@ -25,31 +25,17 @@ const Results: React.FC<React.PropsWithChildren<ResultsProps>> = ({ choices, vot
         </Heading>
       </CardHeader>
       <CardBody>
-        {votesLoadingStatus === FetchStatus.Fetched &&
-          choices.map((choice, index) => {
-            const choiceVotes = results[choice] || []
-            const totalChoiceVote = getTotalFromVotes(choiceVotes)
-            const progress = totalVotes === 0 ? 0 : (totalChoiceVote / totalVotes) * 100
-
-            return (
-              <Box key={choice} mt={index > 0 ? '24px' : '0px'}>
-                <Flex alignItems="center" mb="8px">
-                  <TextEllipsis mb="4px" title={choice}>
-                    {choice}
-                  </TextEllipsis>
-                </Flex>
-                <Box mb="4px">
-                  <Progress primaryStep={progress} scale="sm" />
-                </Box>
-                <Flex alignItems="center" justifyContent="space-between">
-                  <Text color="textSubtle">{t('%total% Votes', { total: formatNumber(totalChoiceVote, 0, 2) })}</Text>
-                  <Text>
-                    {progress.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%
-                  </Text>
-                </Flex>
-              </Box>
-            )
-          })}
+        {votesLoadingStatus === FetchStatus.Fetched && (
+          <>
+            {proposal.type === ProposalTypeName.SINGLE_CHOICE && <SingleVoteResults choices={choices} votes={votes} />}
+            {proposal.type === ProposalTypeName.WEIGHTED && (
+              <WeightedVoteResults
+                choices={choices}
+                choicesVotes={votes.map((i) => i.choice) as unknown as WeightedVoteState[]}
+              />
+            )}
+          </>
+        )}
 
         {votesLoadingStatus === FetchStatus.Fetching &&
           choices.map((choice, index) => {

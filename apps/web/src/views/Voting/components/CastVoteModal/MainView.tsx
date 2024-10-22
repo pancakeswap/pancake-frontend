@@ -15,11 +15,12 @@ import BigNumber from 'bignumber.js'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useCurrentBlockTimestamp from 'hooks/useCurrentBlockTimestamp'
 import { useMemo } from 'react'
-import { ProposalTypeName } from 'state/types'
+import { Proposal, ProposalTypeName } from 'state/types'
 import { styled } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import { MyVeCakeCard } from 'views/CakeStaking/components/MyVeCakeCard'
-import { SingleVoteState, VoteState } from 'views/Voting/Proposal/VoteType/types'
+import { WeightedVoteResults } from 'views/Voting/Proposal/ResultType/WeightedVoteResults'
+import { SingleVoteState, VoteState, WeightedVoteState } from 'views/Voting/Proposal/VoteType/types'
 import TextEllipsis from '../TextEllipsis'
 import { StyledScanLink } from './DetailsView'
 import { ModalInner, VotingBoxBorder, VotingBoxCardInner } from './styles'
@@ -33,6 +34,24 @@ const TextEllipsisStyled = styled(TextEllipsis)`
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
 `
 
+const WeightedVoteResultsContainer = styled(Flex)`
+  padding: 0 12px 12px 12px;
+  border-radius: 16px;
+  margin-bottom: 24px;
+  flex-direction: column;
+  background: ${({ theme }) => theme.colors.background};
+  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
+
+  > div {
+    margin-top: 12px;
+    > div {
+      &:first-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+`
+
 interface MainViewProps {
   vote: VoteState
   isLoading: boolean
@@ -42,6 +61,7 @@ interface MainViewProps {
   disabled?: boolean
   lockedCakeBalance: number
   lockedEndTime: number
+  proposal: Proposal
   voteType?: ProposalTypeName
   onConfirm: () => void
   onViewDetails: () => void
@@ -60,11 +80,13 @@ type VeMainViewProps = {
   onConfirm?: () => void
   onDismiss?: CastVoteModalProps['onDismiss']
   block: number
+  proposal: Proposal
 }
 
 export const VeMainView = ({
   vote,
   total,
+  proposal,
   isPending,
   isLoading,
   isError,
@@ -88,7 +110,9 @@ export const VeMainView = ({
               {t('Voting For')}
             </Text>
             {voteType === ProposalTypeName.WEIGHTED ? (
-              <Text>show weighted new UI</Text>
+              <WeightedVoteResultsContainer>
+                <WeightedVoteResults choicesVotes={[vote as WeightedVoteState]} choices={proposal.choices} />
+              </WeightedVoteResultsContainer>
             ) : (
               <TextEllipsisStyled title={(vote as SingleVoteState).label}>{vote.label}</TextEllipsisStyled>
             )}
@@ -154,6 +178,7 @@ const MainView: React.FC<React.PropsWithChildren<MainViewProps>> = ({
   isLoading,
   isError,
   voteType,
+  proposal,
   onConfirm,
   onViewDetails,
   onDismiss,
@@ -179,7 +204,9 @@ const MainView: React.FC<React.PropsWithChildren<MainViewProps>> = ({
           {t('Voting For')}
         </Text>
         {voteType === ProposalTypeName.WEIGHTED ? (
-          <Text>show weighted new UI</Text>
+          <WeightedVoteResultsContainer>
+            <WeightedVoteResults choicesVotes={[vote as WeightedVoteState]} choices={proposal.choices} />
+          </WeightedVoteResultsContainer>
         ) : (
           <TextEllipsisStyled title={(vote as SingleVoteState).label}>{vote.label}</TextEllipsisStyled>
         )}

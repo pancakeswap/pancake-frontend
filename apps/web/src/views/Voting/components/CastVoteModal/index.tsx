@@ -16,6 +16,7 @@ const hub = 'https://hub.snapshot.org'
 const client = new snapshot.Client712(hub)
 
 const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
+  proposal,
   onSuccess,
   proposalId,
   vote,
@@ -114,6 +115,7 @@ const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
             <VeMainView
               block={block}
               vote={vote}
+              proposal={proposal}
               voteType={voteType}
               total={total}
               isPending={isPending}
@@ -128,6 +130,7 @@ const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
               vote={vote}
               voteType={voteType}
               isError={isError}
+              proposal={proposal}
               isLoading={isLoading}
               isPending={isPending}
               total={total}

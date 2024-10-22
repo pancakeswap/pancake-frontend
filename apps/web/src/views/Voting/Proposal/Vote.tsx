@@ -63,6 +63,7 @@ const Vote: React.FC<React.PropsWithChildren<VoteProps>> = ({ proposal, hasAccou
 
   const [presentCastVoteModal] = useModal(
     <CastVoteModal
+      proposal={proposal}
       proposalId={proposal.id}
       voteType={proposal.type}
       vote={vote}
@@ -77,6 +78,7 @@ const Vote: React.FC<React.PropsWithChildren<VoteProps>> = ({ proposal, hasAccou
     if (proposal.type === ProposalTypeName.SINGLE_CHOICE) {
       return (vote as SingleVoteState).value > 0
     }
+
     // ProposalTypeName.WEIGHTED
     const totalVote = Object.values(vote).reduce((acc, value) => acc + value, 0)
     return totalVote > 0

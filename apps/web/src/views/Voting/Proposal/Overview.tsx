@@ -116,7 +116,12 @@ const Overview = () => {
           {!isDesktop && (
             <Box mb="16px">
               <Details proposal={proposal} />
-              <Results choices={proposal.choices} votes={votes || []} votesLoadingStatus={votesLoadingStatus} />
+              <Results
+                proposal={proposal}
+                choices={proposal.choices}
+                votes={votes || []}
+                votesLoadingStatus={votesLoadingStatus}
+              />
             </Box>
           )}
           <Votes
@@ -129,7 +134,12 @@ const Overview = () => {
         {isDesktop && (
           <Box position="sticky" top="60px">
             <Details proposal={proposal} />
-            <Results choices={proposal.choices} votes={votes || []} votesLoadingStatus={votesLoadingStatus} />
+            <Results
+              proposal={proposal}
+              choices={proposal.choices}
+              votes={votes || []}
+              votesLoadingStatus={votesLoadingStatus}
+            />
           </Box>
         )}
       </Layout>
