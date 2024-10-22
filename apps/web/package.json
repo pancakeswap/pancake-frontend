@@ -83,7 +83,7 @@
     "@reduxjs/toolkit": "^1.9.1",
     "@sentry/nextjs": "^8.16.0",
     "@snapshot-labs/snapshot.js": "^0.4.40",
-    "@tanstack/react-query": "^5.52.1",
+    "@tanstack/react-query": "catalog:",
     "@usdv/usdv-widget": "^0.9.9",
     "@vanilla-extract/next-plugin": "^2.3.0",
     "@wagmi/core": "2.10.5",
