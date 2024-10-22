@@ -162,6 +162,7 @@ export function V4SwapForm() {
                 e.stopPropagation()
               }}
               alignItems="center"
+              flexWrap="wrap"
             >
               <RefreshButton
                 onRefresh={refreshOrder}
