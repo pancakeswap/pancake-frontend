@@ -10,7 +10,10 @@ interface MotionTabsProps extends FlexGapProps {
   /** Default: true */
   animateOnMobile?: boolean
 
+  /** Unique ID for use by this tablist and its tabpanels */
   ariaId?: string
+
+  autoFocus?: boolean
 }
 
 const MotionBoxUnderline = styled(MotionBox)`
@@ -27,7 +30,6 @@ const MotionBoxUnderline = styled(MotionBox)`
 const StyledTab = styled(Box)`
   cursor: pointer;
   user-select: none;
-  transition: all 0.25s;
 `
 
 export const MotionTabs: React.FC<React.PropsWithChildren<MotionTabsProps>> = ({
@@ -36,15 +38,16 @@ export const MotionTabs: React.FC<React.PropsWithChildren<MotionTabsProps>> = ({
   activeIndex = 0,
   animateOnMobile = true,
   ariaId,
+  autoFocus,
   ...props
 }) => {
   const { isMobile } = useMatchBreakpoints()
 
   useEffect(() => {
-    if (props.autoFocus) {
+    if (autoFocus) {
       document.getElementById(`${ariaId}_motion-tab-0`)?.focus()
     }
-  }, [props.autoFocus, ariaId])
+  }, [autoFocus, ariaId])
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLElement>, index: number) => {
     if (e.key === 'Enter' || e.key === ' ') {

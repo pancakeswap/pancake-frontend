@@ -117,11 +117,12 @@ export const SettingsModalV2 = ({
             showExpertModeAcknowledgement={showExpertModeAcknowledgement}
             expertMode={expertMode}
             setExpertMode={setExpertMode}
+            ariaId={ariaId}
           />
         )
       }
       case TabIndex.RECENT_TRANSACTIONS:
-        return <RecentTransactionsTab key="recent_txns_tab" />
+        return <RecentTransactionsTab key="recent_txns_tab" ariaId={ariaId} />
       case TabIndex.CUSTOMIZE_ROUTING:
         return <CustomizeRoutingTab key="customize_routing_tab" />
       case TabIndex.EXPERT_MODE:
