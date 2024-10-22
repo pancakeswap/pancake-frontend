@@ -30,9 +30,9 @@ const MigrationFarmStep: React.FC<React.PropsWithChildren<{ step: number }>> = (
     return farms.filter((farm) => {
       return (
         (farm.userData &&
-          (new BigNumber(farm.userData.stakedBalance).isGreaterThan(-1) ||
-            new BigNumber(farm.userData.tokenBalance).isGreaterThan(-1))) ||
-        new BigNumber(farm.userData?.proxy?.stakedBalance ?? 0).isGreaterThan(-1)
+          (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
+            new BigNumber(farm.userData.tokenBalance).isGreaterThan(0))) ||
+        new BigNumber(farm.userData?.proxy?.stakedBalance ?? 0).isGreaterThan(0)
       )
     })
   }, [farmsLP])
