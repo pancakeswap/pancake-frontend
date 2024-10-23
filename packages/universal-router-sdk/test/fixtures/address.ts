@@ -1,7 +1,7 @@
 import { ChainId } from '@pancakeswap/chains'
 import { getPermit2Address } from '@pancakeswap/permit2-sdk'
 import { CurrencyAmount, ERC20Token, Pair, Percent } from '@pancakeswap/sdk'
-import { PoolType, SmartRouter, StablePool, V2Pool, V3Pool } from '@pancakeswap/smart-router'
+import { PoolType, SmartRouter, StablePool, V2Pool, V3Pool, V4ClPool } from '@pancakeswap/smart-router'
 import {
   DEPLOYER_ADDRESSES,
   FeeAmount,
@@ -76,6 +76,21 @@ export const convertPoolToV3Pool = (pool: Pool): V3Pool => {
     address: Pool.getAddress(pool.token0, pool.token1, pool.fee),
     token0ProtocolFee: new Percent(0, 100),
     token1ProtocolFee: new Percent(0, 100),
+  }
+}
+
+export const convertPoolToV4CLPool = (pool: Pool): V4ClPool => {
+  return {
+    type: PoolType.V4CL,
+    currency0: pool.token0,
+    currency1: pool.token1,
+    fee: pool.fee,
+    tickSpacing: TICK_SPACINGS[pool.fee],
+    liquidity: pool.liquidity,
+    sqrtRatioX96: pool.sqrtRatioX96,
+    tick: pool.tickCurrent,
+    poolManager: DEPLOYER_ADDRESSES[pool.token0.chainId],
+    id: Pool.getAddress(pool.token0, pool.token1, pool.fee),
   }
 }
 export const convertPairToV2Pool = (pair: Pair): V2Pool => ({

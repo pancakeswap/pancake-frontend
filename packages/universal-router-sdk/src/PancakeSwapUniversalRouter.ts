@@ -7,8 +7,10 @@ import { UniversalRouterABI } from './abis/UniversalRouter'
 import { PancakeSwapTrade } from './entities/protocols/pancakeswap'
 import { PancakeSwapOptions, SwapRouterConfig } from './entities/types'
 import { RoutePlanner } from './utils/RoutePlanner'
+import { debugLogger } from './utils/debugLogger'
 import { encodePermit } from './utils/encodePermit'
 
+const logger = debugLogger('UniversalRouter')
 export abstract class PancakeSwapUniversalRouter {
   /**
    * Produces the on-chain method name to call and the hex encoded parameters to pass as arguments for a given trade.
@@ -22,6 +24,7 @@ export abstract class PancakeSwapUniversalRouter {
     const planner = new RoutePlanner()
     const tradeCommand: PancakeSwapTrade = new PancakeSwapTrade(trade, options)
 
+    logger('swapERC20CallParameters', tradeCommand, options)
     const inputCurrency = tradeCommand.trade.inputAmount.currency
     invariant(!(inputCurrency.isNative && !!options.inputTokenPermit), 'NATIVE_INPUT_PERMIT')
 

@@ -1,5 +1,5 @@
 export * as SmartRouter from './smartRouter'
-export { Transformer } from './utils'
+export { Transformer, encodeV4RouteToPath, isV4BinPool, isV4ClPool } from './utils'
 export { getPoolAddress } from './utils/pool'
 export { getRouteTypeByPools } from './utils/route'
 export { SwapRouter } from './utils/swapRouter'

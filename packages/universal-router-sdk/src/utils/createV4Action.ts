@@ -11,7 +11,7 @@ struct PoolKey {
     address currency0;
     address currency1;
     address hooks;
-    IPoolManager poolManager;
+    address poolManager;
     uint24 fee;
     bytes32 parameters;
 }
@@ -19,10 +19,10 @@ struct PoolKey {
 
 const abiStructPathKey = `
 struct PathKey {
-    Currency intermediateCurrency;
+    address intermediateCurrency;
     uint24 fee;
-    IHooks hooks;
-    IPoolManager poolManager;
+    address hooks;
+    address poolManager;
     bytes hookData;
     bytes32 parameters;
 }
@@ -99,7 +99,7 @@ struct BinSwapExactOutputSingleParams {
 
 const abiStructBinSwapExactOutputParams = `
 struct BinSwapExactOutputParams {
-  Currency currencyOut;
+  address currencyOut;
   PathKey[] path;
   uint128 amountOut;
   uint128 amountInMaximum;

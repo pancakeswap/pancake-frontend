@@ -1,5 +1,4 @@
-import { V4BinPool, V4ClPool } from '@pancakeswap/smart-router'
-import { isV4BinPool } from '@pancakeswap/smart-router/dist/evm/v3-router/utils'
+import { isV4BinPool, V4BinPool, V4ClPool } from '@pancakeswap/smart-router'
 import { EncodedPoolKey, encodePoolParameters } from '@pancakeswap/v4-sdk'
 import { zeroAddress } from 'viem'
 import { currencyAddressV4 } from './currencyAddressV4'

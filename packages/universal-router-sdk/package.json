@@ -29,6 +29,7 @@
     "dev": "tsup --watch",
     "coverage": "vitest run --coverage",
     "test": "vitest --run",
+    "testv4": "vitest -t v4 --run",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "format:check": "prettier --check --loglevel error \"{src,test}/**/*.{js,jsx,ts,tsx,json}\"",
     "format:write": "prettier --write \"{src,test}/**/*.{js,jsx,ts,tsx,json}\"",

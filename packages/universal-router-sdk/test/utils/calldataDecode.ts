@@ -1,6 +1,7 @@
-import { decodeFunctionData, Hex, decodeAbiParameters, ParseAbiParameters } from 'viem'
+import { decodeAbiParameters, decodeFunctionData, Hex, ParseAbiParameters } from 'viem'
 import { UniversalRouterABI } from '../../src/abis/UniversalRouter'
-import { ABI_PARAMETER, CommandType } from '../../src/utils/routerCommands'
+import { CommandType } from '../../src/router.types'
+import { ABI_PARAMETER } from '../../src/utils/createCommand'
 
 export type DecodedCommand = {
   command: string
@@ -28,10 +29,8 @@ export function decodeUniversalCalldata(calldata: Hex): DecodedCommand[] {
   const decoded: DecodedCommand[] = []
 
   for (const [index, command] of Object.entries(commands)) {
-    // @ts-expect-error do not check this
     const abi: ParseAbiParameters<string> = ABI_PARAMETER[command]
 
-    // @ts-expect-error do not check this
     const commandName = CommandType[command]
 
     const parameters = decodeAbiParameters(abi, args[1][Number(index)])

@@ -9,17 +9,17 @@ import {
   Route as V2Route,
   Trade as V2Trade,
 } from '@pancakeswap/sdk'
-import { PoolType, SmartRouter, SmartRouterTrade, V2Pool, V3Pool } from '@pancakeswap/smart-router'
+import { PoolType, SmartRouter, SmartRouterTrade, V2Pool, V3Pool, V4ClPool } from '@pancakeswap/smart-router'
 import { Pool, Route as V3Route, Trade as V3Trade } from '@pancakeswap/v3-sdk'
 import { Address, isHex, parseEther, parseUnits, stringify } from 'viem'
 import { beforeEach, describe, expect, it } from 'vitest'
 import { PancakeSwapUniversalRouter, ROUTER_AS_RECIPIENT } from '../src'
 import { CONTRACT_BALANCE, SENDER_AS_RECIPIENT } from '../src/constants'
 import { PancakeSwapOptions, Permit2Signature } from '../src/entities/types'
-import { CommandType } from '../src/utils/routerCommands'
-import { convertPoolToV3Pool, fixtureAddresses, getStablePool } from './fixtures/address'
+import { CommandType } from '../src/router.types'
+import { convertPoolToV3Pool, convertPoolToV4CLPool, fixtureAddresses, getStablePool } from './fixtures/address'
 import { getPublicClient } from './fixtures/clients'
-import { buildMixedRouteTrade, buildStableTrade, buildV2Trade, buildV3Trade } from './utils/buildTrade'
+import { buildMixedRouteTrade, buildStableTrade, buildV2Trade, buildV3Trade, buildV4Trade } from './utils/buildTrade'
 import { decodeUniversalCalldata } from './utils/calldataDecode'
 import { makePermit } from './utils/permit'
 
@@ -1805,6 +1805,45 @@ describe('PancakeSwap Universal Router Trade', () => {
       expect(decodedCommands[4].args[1].value).toEqual(SENDER_AS_RECIPIENT)
       expect(decodedCommands[4].args[2].name).toEqual('amountMin')
       expect(decodedCommands[4].args[2].value).toBeGreaterThan(0n)
+    })
+  })
+
+  describe('v4', () => {
+    it('[v4]should encode a single exactInput ETH->USDC swap', async () => {
+      const amountIn = parseEther('1')
+      const v3Trade = await V3Trade.fromRoute(
+        new V3Route([WETH_USDC_V3_MEDIUM], ETHER, USDC),
+        CurrencyAmount.fromRawAmount(ETHER, amountIn),
+        TradeType.EXACT_INPUT,
+      )
+      const v4Pool: V4ClPool = convertPoolToV4CLPool(WETH_USDC_V3_MEDIUM)
+
+      const trade = buildV4Trade(v3Trade, [v4Pool])
+      const options = swapOptions({})
+
+      const { calldata, value } = PancakeSwapUniversalRouter.swapERC20CallParameters(trade, options)
+
+      expect(BigInt(value)).toEqual(amountIn)
+      expect(calldata).toMatchSnapshot()
+
+      const decodedCommands = decodeUniversalCalldata(calldata)
+      expect(decodedCommands.length).toEqual(2)
+      console.log(decodedCommands)
+
+      // expect(decodedCommands[0].command).toEqual(CommandType[CommandType.WRAP_ETH])
+      // expect(decodedCommands[0].args[0].name).toEqual('recipient')
+      // expect(decodedCommands[0].args[0].value).toEqual(ROUTER_AS_RECIPIENT)
+
+      // expect(decodedCommands[1].command).toEqual(CommandType[CommandType.V4_SWAP])
+      // console.log(decodedCommands[1].args)
+      // expect(decodedCommands[1].args[0].name).toEqual('actions')
+      // expect(decodedCommands[1].args[0].value).toEqual(SENDER_AS_RECIPIENT)
+      // expect(decodedCommands[1].args[1].name).toEqual('amountIn')
+      // expect(decodedCommands[1].args[1].value).toEqual(amountIn)
+      // expect(decodedCommands[1].args[2].name).toEqual('amountOutMin')
+      // expect(decodedCommands[1].args[2].value).toEqual(v3Trade.minimumAmountOut(options.slippageTolerance).quotient)
+      // expect(decodedCommands[1].args[4].name).toEqual('payerIsUser')
+      // expect(decodedCommands[1].args[4].value).toEqual(false)
     })
   })
 })

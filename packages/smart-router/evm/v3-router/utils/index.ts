@@ -1,6 +1,7 @@
 export * from './encodeMixedRouteToPath'
 export * from './encodeV4ClRouteToPath'
 export * from './getExecutionPrice'
+export * from './getInputOfPools'
 export * from './getNativeWrappedToken'
 export * from './getOutputOfPools'
 export * from './getPriceImpact'
