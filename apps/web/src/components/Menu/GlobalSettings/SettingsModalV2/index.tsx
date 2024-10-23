@@ -8,13 +8,14 @@ import {
   Heading,
   ModalV2,
   MotionModal,
+  MotionTabMenu,
   NotificationDot,
   Text,
   useMatchBreakpoints,
   useModalV2,
 } from '@pancakeswap/uikit'
 import { useExpertMode, useUserExpertModeAcknowledgement } from '@pancakeswap/utils/user'
-import { MotionTabs } from 'components/Motion/MotionTabs'
+
 import { ReactNode, useCallback, useId, useState } from 'react'
 import { useRoutingSettingChanged } from 'state/user/smartRouter'
 import SettingsModal from '../SettingsModal'
@@ -91,7 +92,7 @@ export const SettingsModalV2 = ({
       default:
         return (
           <Box mb="-5px">
-            <MotionTabs
+            <MotionTabMenu
               activeIndex={activeTabIndex}
               onItemClick={onTabChange}
               animateOnMobile={false}
@@ -100,7 +101,7 @@ export const SettingsModalV2 = ({
             >
               <Text>{t('Settings')}</Text>
               <Text>{t('Recent Transactions')}</Text>
-            </MotionTabs>
+            </MotionTabMenu>
           </Box>
         )
     }
@@ -138,6 +139,7 @@ export const SettingsModalV2 = ({
         return null
     }
   }, [
+    ariaId,
     expertMode,
     activeTabIndex,
     showExpertModeAcknowledgement,
