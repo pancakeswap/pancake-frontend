@@ -55,7 +55,7 @@ export const WeightedVoteResults: React.FC<WeightedVoteResultsProps> = ({ choice
                       minimumFractionDigits: 2,
                       maximumFractionDigits: 2,
                     })}
-                  }%`}
+                  %`}
               </Text>
             </Flex>
           </Box>
