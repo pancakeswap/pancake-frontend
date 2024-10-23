@@ -39,7 +39,12 @@ export function involvesCurrency(pool: Pool, currency: Currency) {
   }
   if (isV4ClPool(pool) || isV4BinPool(pool)) {
     const { currency0, currency1 } = pool
-    return currency0.equals(currency) || currency1.equals(currency)
+    return (
+      currency0.equals(currency) ||
+      currency1.equals(currency) ||
+      currency0.wrapped.equals(token) ||
+      currency1.wrapped.equals(token)
+    )
   }
   if (isStablePool(pool)) {
     const { balances } = pool
@@ -48,7 +53,7 @@ export function involvesCurrency(pool: Pool, currency: Currency) {
   return false
 }
 
-// FIXME current version is not working with stable pools that have more than 2 tokens
+// FIXME: current version is not working with stable pools that have more than 2 tokens
 export function getOutputCurrency(pool: Pool, currencyIn: Currency): Currency {
   const tokenIn = currencyIn.wrapped
   if (isV2Pool(pool)) {
@@ -65,7 +70,7 @@ export function getOutputCurrency(pool: Pool, currencyIn: Currency): Currency {
   }
   if (isV4ClPool(pool) || isV4BinPool(pool)) {
     const { currency0, currency1 } = pool
-    return currency0.equals(currencyIn) ? currency1 : currency0
+    return currency0.wrapped.equals(tokenIn) ? currency1 : currency0
   }
   throw new Error('Cannot get output currency by invalid pool')
 }
