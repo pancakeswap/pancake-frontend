@@ -48,7 +48,15 @@ export const WeightedVoteResults: React.FC<WeightedVoteResultsProps> = ({ choice
             </Box>
             <Flex alignItems="center" justifyContent="space-between">
               <Text color="textSubtle">{t('%total% Votes', { total: formatNumber(totalChoiceVote, 0, 2) })}</Text>
-              <Text>{progress.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</Text>
+              <Text>
+                {totalChoiceVote === 0 && totalSum === 0
+                  ? '0.00%'
+                  : `${progress.toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}
+                  }%`}
+              </Text>
             </Flex>
           </Box>
         )
