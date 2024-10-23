@@ -25,7 +25,7 @@ export class MartianConnector extends Connector<Window['martian'], MartianConnec
   readonly name: string
   provider?: Window['martian']
 
-  readonly ready = typeof window !== 'undefined' && !!window.martian && !window.safePal
+  readonly ready = typeof window !== 'undefined' && !!window.martian
   constructor(config: { chains?: Chain[]; options?: MartianConnectorOptions } = {}) {
     super(config)
 
