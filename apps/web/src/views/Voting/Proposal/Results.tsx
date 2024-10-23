@@ -4,7 +4,6 @@ import { FetchStatus, TFetchStatus } from 'config/constants/types'
 import { Proposal, ProposalTypeName, Vote } from 'state/types'
 import { SingleVoteResults } from 'views/Voting/Proposal/ResultType/SingleVoteResults'
 import { WeightedVoteResults } from 'views/Voting/Proposal/ResultType/WeightedVoteResults'
-import { WeightedVoteState } from 'views/Voting/Proposal/VoteType/types'
 import TextEllipsis from '../components/TextEllipsis'
 
 interface ResultsProps {
@@ -31,7 +30,7 @@ const Results: React.FC<React.PropsWithChildren<ResultsProps>> = ({ proposal, ch
             {proposal.type === ProposalTypeName.WEIGHTED && (
               <WeightedVoteResults
                 choices={choices}
-                choicesVotes={votes.map((i) => i.choice) as unknown as WeightedVoteState[]}
+                choicesVotes={choices.map((_, index) => ({ [index + 1]: proposal.scores[index] }))}
               />
             )}
           </>

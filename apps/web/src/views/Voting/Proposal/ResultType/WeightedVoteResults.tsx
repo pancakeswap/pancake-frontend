@@ -17,6 +17,7 @@ export const WeightedVoteResults: React.FC<WeightedVoteResultsProps> = ({ choice
     () => choicesVotes.reduce((sum, item) => sum + Object.values(item).reduce((a, b) => a + b, 0), 0),
     [choicesVotes],
   )
+  console.log('totalSum', totalSum)
 
   const percentageResults = useMemo(
     () =>
