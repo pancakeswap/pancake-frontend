@@ -243,8 +243,8 @@ importers:
   apps/aptos:
     dependencies:
       '@aptos-labs/ts-sdk':
-        specifier: 1.12.2
-        version: 1.12.2
+        specifier: 1.30.0
+        version: 1.30.0
       '@ethersproject/bignumber':
         specifier: ^5.7.0
         version: 5.7.0
@@ -1676,7 +1676,7 @@ importers:
     dependencies:
       '@layerzerolabs/scan-client':
         specifier: ^0.0.6
-        version: 0.0.6(axios@1.7.2)
+        version: 0.0.6(axios@1.7.4)
       '@pancakeswap/chains':
         specifier: workspace:*
         version: link:../chains
@@ -2950,12 +2950,24 @@ packages:
     resolution: {integrity: sha512-lFMjJTrFL3j7L9yBxwYfCq2k6qqwHyzuUl/XBnif78PWTJYyL/dfowQHWE3sp6U6ZzqWiiIZnpTMO96zhkjwtg==}
     engines: {node: '>=6.0.0'}
 
+  '@aptos-labs/aptos-cli@1.0.1':
+    resolution: {integrity: sha512-ANHX8O6akexkJgWu+aWEO09gRmg7NjIwztdLd/09sZw+XTZEWx1CPN3RsGESosM0c0uiWpjSGRa2phcYKZkjmw==}
+    hasBin: true
+
   '@aptos-labs/aptos-client@0.1.0':
     resolution: {integrity: sha512-q3s6pPq8H2buGp+tPuIRInWsYOuhSEwuNJPwd2YnsiID3YSLihn2ug39ktDJAcSOprUcp7Nid8WK7hKqnUmSdA==}
     engines: {node: '>=15.10.0'}
 
+  '@aptos-labs/aptos-client@0.1.1':
+    resolution: {integrity: sha512-kJsoy4fAPTOhzVr7Vwq8s/AUg6BQiJDa7WOqRzev4zsuIS3+JCuIZ6vUd7UBsjnxtmguJJulMRs9qWCzVBt2XA==}
+    engines: {node: '>=15.10.0'}
+
   '@aptos-labs/ts-sdk@1.12.2':
     resolution: {integrity: sha512-AjKkM5mc5Qx5W5uRFK0R3/PXNnBBheHm2qZwWsvFkhVv2WbHDwvZ/e3httcR1f1grM6VMIALpjqBKkq4WQE/SQ==}
+    engines: {node: '>=11.0.0'}
+
+  '@aptos-labs/ts-sdk@1.30.0':
+    resolution: {integrity: sha512-zlb8+YLcq+daKJUbNZvKr4JvV+tRLwCRQnn1PRebgYJ1pieZfhT3Dtz5Ve130cGOLpTcxMHRW9siXukvUUMHiQ==}
     engines: {node: '>=11.0.0'}
 
   '@aw-web-design/x-default-browser@1.4.126':
@@ -8997,6 +9009,9 @@ packages:
   axios@1.7.2:
     resolution: {integrity: sha512-2A8QhOMrbomlDuiLeK9XibIBzuHeRcqqNOHp0Cyp5EoJ1IFDh+XZH3A6BkXtv0K4gFGCI0Y4BM7B1wOEi0Rmgw==}
 
+  axios@1.7.4:
+    resolution: {integrity: sha512-DukmaFRnY6AzAALSH4J2M3k6PkaC+MfaAGdEERRWcC9q3/TWQwLpHR8ZRLKTdQ3aBDL64EdluRDjJqKw+BPZEw==}
+
   axobject-query@3.2.1:
     resolution: {integrity: sha512-jsyHu61e6N4Vbz/v18DHwWYKK0bSWLqn47eeDSKPB7m8tqMHF9YJ+mhIk2lVteyZrY8tnSj/jHOv4YiTCuCJgg==}
 
@@ -9613,6 +9628,10 @@ packages:
     resolution: {integrity: sha512-y4Mg2tXshplEbSGzx7amzPwKKOCGuoSRP/CjEdwwk0FOGlUbq6lKuoyDZTNZkmxHdJtp54hdfY/JUrdL7Xfdug==}
     engines: {node: '>=14'}
 
+  commander@12.1.0:
+    resolution: {integrity: sha512-Vw8qHK3bZM9y/P10u3Vib8o/DdkvA2OtPtZvD871QKjy74Wj1WSKFILMPRPSdUSx5RFK1arlJzEtA4PkFgnbuA==}
+    engines: {node: '>=18'}
+
   commander@2.20.3:
     resolution: {integrity: sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==}
 
@@ -10159,9 +10178,6 @@ packages:
   define-properties@1.2.1:
     resolution: {integrity: sha512-8QmQKqEASLd5nx0U1B1okLElbUuuttJ/AnYmRXbbbGDWh6uS208EjD4Xqq/I9wK7u0v6O08XhTWnt5XtEbR6Dg==}
     engines: {node: '>= 0.4'}
-
-  defu@6.1.3:
-    resolution: {integrity: sha512-Vy2wmG3NTkmHNg/kzpuvHhkqeIx3ODWqasgCRbKtbXEN0G+HpEEv9BtJLp7ZG1CZloFaC41Ah3ZFbq7aqCqMeQ==}
 
   defu@6.1.4:
     resolution: {integrity: sha512-mEQCMmwJu317oSz8CwdIOdwf3xMif1ttiM8LTufzc3g6kR+9Pe236twL8j3IYT1F7GfRgGcW6MWxzZjLIkuHIg==}
@@ -12292,6 +12308,10 @@ packages:
   jwt-decode@3.1.2:
     resolution: {integrity: sha512-UfpWE/VZn0iP50d8cz9NrZLM9lSWhcJ+0Gt/nm4by88UL+J1SiKN8/5dkjMmbEzwL2CAe+67GsegCbIKtbp75A==}
 
+  jwt-decode@4.0.0:
+    resolution: {integrity: sha512-+KJGIyHgkGuIq3IEBNftfhW/LfWhXUIY6OmyVWjliu5KH1y0fw7VQ8YndE2O4qZdMSd9SqbnC8GOcZEy0Om7sA==}
+    engines: {node: '>=18'}
+
   keccak@3.0.4:
     resolution: {integrity: sha512-3vKuW0jV8J3XNTzvfyicFR5qvxrSAGl7KIhvgOu5cmWwM7tZRj3fMbj/pfIf4be7aznbc+prBWGjywox/g2Y6Q==}
     engines: {node: '>=10.0.0'}
@@ -13739,6 +13759,9 @@ packages:
 
   popper.js@1.16.1-lts:
     resolution: {integrity: sha512-Kjw8nKRl1m+VrSFCoVGPph93W/qrSO7ZkqPpTf7F4bk/sqcfWK019dWBUpE/fBOsOQY1dks/Bmcbfn1heM/IsA==}
+
+  poseidon-lite@0.2.1:
+    resolution: {integrity: sha512-xIr+G6HeYfOhCuswdqcFpSX47SPhm0EpisWJ6h7fHlWwaVIvH3dLnejpatrtw6Xc6HaLrpq05y7VRfvDmDGIog==}
 
   postcss-import@15.1.0:
     resolution: {integrity: sha512-hpr+J05B2FVYUAXHeK1YyI267J/dDDhMU6B6civm8hSY1jYJnBXxzKDKDswzJmtLHryrjhnDjqqp/49t8FALew==}
@@ -16908,9 +16931,20 @@ snapshots:
       '@jridgewell/gen-mapping': 0.3.3
       '@jridgewell/trace-mapping': 0.3.20
 
+  '@aptos-labs/aptos-cli@1.0.1':
+    dependencies:
+      commander: 12.1.0
+
   '@aptos-labs/aptos-client@0.1.0':
     dependencies:
       axios: 1.6.2
+      got: 11.8.6
+    transitivePeerDependencies:
+      - debug
+
+  '@aptos-labs/aptos-client@0.1.1':
+    dependencies:
+      axios: 1.7.4
       got: 11.8.6
     transitivePeerDependencies:
       - debug
@@ -16925,6 +16959,22 @@ snapshots:
       eventemitter3: 5.0.1
       form-data: 4.0.0
       tweetnacl: 1.0.3
+    transitivePeerDependencies:
+      - debug
+
+  '@aptos-labs/ts-sdk@1.30.0':
+    dependencies:
+      '@aptos-labs/aptos-cli': 1.0.1
+      '@aptos-labs/aptos-client': 0.1.1
+      '@noble/curves': 1.6.0
+      '@noble/hashes': 1.5.0
+      '@scure/bip32': 1.5.0
+      '@scure/bip39': 1.4.0
+      eventemitter3: 5.0.1
+      form-data: 4.0.0
+      js-base64: 3.7.7
+      jwt-decode: 4.0.0
+      poseidon-lite: 0.2.1
     transitivePeerDependencies:
       - debug
 
@@ -20428,9 +20478,9 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@layerzerolabs/scan-client@0.0.6(axios@1.7.2)':
+  '@layerzerolabs/scan-client@0.0.6(axios@1.7.4)':
     dependencies:
-      axios: 1.7.2(debug@4.3.4)
+      axios: 1.7.4
 
   '@ledgerhq/connect-kit-loader@1.1.2(patch_hash=xlsebypdiwsukm3c2ow7voujra)': {}
 
@@ -27219,6 +27269,14 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
+  axios@1.7.4:
+    dependencies:
+      follow-redirects: 1.15.6(debug@4.3.4)
+      form-data: 4.0.0
+      proxy-from-env: 1.1.0
+    transitivePeerDependencies:
+      - debug
+
   axobject-query@3.2.1:
     dependencies:
       dequal: 2.0.3
@@ -27987,6 +28045,8 @@ snapshots:
   commander@10.0.1:
     optional: true
 
+  commander@12.1.0: {}
+
   commander@2.20.3: {}
 
   commander@3.0.2:
@@ -28636,8 +28696,6 @@ snapshots:
       define-data-property: 1.1.1
       has-property-descriptors: 1.0.1
       object-keys: 1.1.1
-
-  defu@6.1.3: {}
 
   defu@6.1.4: {}
 
@@ -30188,11 +30246,11 @@ snapshots:
   giget@1.1.3:
     dependencies:
       colorette: 2.0.20
-      defu: 6.1.3
+      defu: 6.1.4
       https-proxy-agent: 7.0.2
       mri: 1.2.0
       node-fetch-native: 1.4.1
-      pathe: 1.1.1
+      pathe: 1.1.2
       tar: 6.2.0
     transitivePeerDependencies:
       - supports-color
@@ -30408,11 +30466,11 @@ snapshots:
   h3@1.8.2:
     dependencies:
       cookie-es: 1.0.0
-      defu: 6.1.3
+      defu: 6.1.4
       destr: 2.0.2
       iron-webcrypto: 0.10.1
       radix3: 1.1.0
-      ufo: 1.3.1
+      ufo: 1.5.4
       uncrypto: 0.1.3
       unenv: 1.7.4
 
@@ -31470,6 +31528,8 @@ snapshots:
 
   jwt-decode@3.1.2: {}
 
+  jwt-decode@4.0.0: {}
+
   keccak@3.0.4:
     dependencies:
       node-addon-api: 2.0.2
@@ -31636,16 +31696,16 @@ snapshots:
       citty: 0.1.4
       clipboardy: 3.0.0
       consola: 3.2.3
-      defu: 6.1.3
+      defu: 6.1.4
       get-port-please: 3.1.1
       h3: 1.8.2
       http-shutdown: 1.2.2
       jiti: 1.21.0
       mlly: 1.4.2
       node-forge: 1.3.1
-      pathe: 1.1.1
+      pathe: 1.1.2
       std-env: 3.7.0
-      ufo: 1.3.1
+      ufo: 1.5.4
       untun: 0.1.2
       uqr: 0.1.2
 
@@ -32795,7 +32855,7 @@ snapshots:
     dependencies:
       destr: 2.0.2
       node-fetch-native: 1.4.1
-      ufo: 1.3.1
+      ufo: 1.5.4
 
   ohash@1.1.4: {}
 
@@ -33194,6 +33254,8 @@ snapshots:
   pony-cause@2.1.10: {}
 
   popper.js@1.16.1-lts: {}
+
+  poseidon-lite@0.2.1: {}
 
   postcss-import@15.1.0(postcss@8.4.33):
     dependencies:
@@ -36127,7 +36189,7 @@ snapshots:
       mri: 1.2.0
       node-fetch-native: 1.4.1
       ofetch: 1.3.3
-      ufo: 1.3.1
+      ufo: 1.5.4
     optionalDependencies:
       idb-keyval: 6.2.1
     transitivePeerDependencies:
@@ -36139,7 +36201,7 @@ snapshots:
     dependencies:
       citty: 0.1.4
       consola: 3.2.3
-      pathe: 1.1.1
+      pathe: 1.1.2
 
   update-browserslist-db@1.0.13(browserslist@4.22.1):
     dependencies:
