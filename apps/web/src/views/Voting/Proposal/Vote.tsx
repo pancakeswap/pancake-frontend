@@ -20,7 +20,7 @@ import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useVeCakeBalance } from 'hooks/useTokenBalance'
 import { useEffect, useMemo, useState } from 'react'
-import { Proposal, ProposalState, ProposalTypeName } from 'state/types'
+import { Proposal, ProposalState, ProposalTypeName, Vote } from 'state/types'
 import { SingleVote } from 'views/Voting/Proposal/VoteType/SingleVote'
 import { SingleVoteState, VoteState, WeightedVoteState } from 'views/Voting/Proposal/VoteType/types'
 import { WeightedVote } from 'views/Voting/Proposal/VoteType/WeightedVote'
@@ -29,11 +29,18 @@ import CastVoteModal from '../components/CastVoteModal'
 
 interface VoteProps extends CardProps {
   proposal: Proposal
+  votes: Vote[]
   hasAccountVoted: boolean
   onSuccess?: () => void
 }
 
-const Vote: React.FC<React.PropsWithChildren<VoteProps>> = ({ proposal, hasAccountVoted, onSuccess, ...props }) => {
+const VoteComponent: React.FC<React.PropsWithChildren<VoteProps>> = ({
+  proposal,
+  votes,
+  hasAccountVoted,
+  onSuccess,
+  ...props
+}) => {
   const [vote, setVote] = useState<VoteState>({
     label: '',
     value: 0,
@@ -44,15 +51,28 @@ const Vote: React.FC<React.PropsWithChildren<VoteProps>> = ({ proposal, hasAccou
   const { balance } = useVeCakeBalance()
 
   useEffect(() => {
-    const { type, state, choices } = proposal
-    if (type === ProposalTypeName.WEIGHTED && state === ProposalState.ACTIVE && !hasAccountVoted) {
-      const newData: WeightedVoteState = choices.reduce((acc, _, index) => {
-        // eslint-disable-next-line no-param-reassign
-        acc[index + 1] = 0
-        return acc
-      }, {})
+    const { type, choices } = proposal
+    if (type === ProposalTypeName.WEIGHTED) {
+      let newData: null | WeightedVoteState = null
 
-      setVote(newData)
+      if (hasAccountVoted && account) {
+        const voteData = votes.find((i) => i.voter.toLowerCase() === account.toLowerCase())
+        newData = choices.reduce((acc, _, index) => {
+          // eslint-disable-next-line no-param-reassign
+          acc[index + 1] = voteData?.choice[index + 1]
+          return acc
+        }, {})
+      } else {
+        newData = choices.reduce((acc, _, index) => {
+          // eslint-disable-next-line no-param-reassign
+          acc[index + 1] = 0
+          return acc
+        }, {})
+      }
+
+      if (newData) {
+        setVote(newData)
+      }
     }
   }, [account])
 
@@ -128,29 +148,33 @@ const Vote: React.FC<React.PropsWithChildren<VoteProps>> = ({ proposal, hasAccou
         )}
         {account ? (
           <>
-            {hasAccountVoted ? (
-              <Message variant="success" style={{ width: 'fit-content', margin: 'auto' }}>
-                <MessageText>
-                  {t('You cast your vote! Please wait until the voting ends to see the end results.')}
-                </MessageText>
-              </Message>
-            ) : notEnoughVeCake ? (
-              <Button m="auto" display="block" disabled>
-                {t('Not enough veCAKE')}
-              </Button>
-            ) : !isAbleToVote ? (
-              <Button m="auto" display="block" disabled>
-                {t('Enter the votes to cast')}
-              </Button>
-            ) : (
-              <Button
-                m="auto"
-                display="block"
-                endIcon={<VoteIcon width={14} height={14} color="currentColor" />}
-                onClick={presentCastVoteModal}
-              >
-                {t('Cast Vote')}
-              </Button>
+            {proposal.state === ProposalState.ACTIVE && (
+              <>
+                {hasAccountVoted ? (
+                  <Message variant="success" style={{ width: 'fit-content', margin: 'auto' }}>
+                    <MessageText>
+                      {t('You cast your vote! Please wait until the voting ends to see the end results.')}
+                    </MessageText>
+                  </Message>
+                ) : notEnoughVeCake ? (
+                  <Button m="auto" display="block" disabled>
+                    {t('Not enough veCAKE')}
+                  </Button>
+                ) : !isAbleToVote ? (
+                  <Button m="auto" display="block" disabled>
+                    {t('Enter the votes to cast')}
+                  </Button>
+                ) : (
+                  <Button
+                    m="auto"
+                    display="block"
+                    endIcon={<VoteIcon width={14} height={14} color="currentColor" />}
+                    onClick={presentCastVoteModal}
+                  >
+                    {t('Cast Vote')}
+                  </Button>
+                )}
+              </>
             )}
           </>
         ) : (
@@ -161,4 +185,4 @@ const Vote: React.FC<React.PropsWithChildren<VoteProps>> = ({ proposal, hasAccou
   )
 }
 
-export default Vote
+export default VoteComponent

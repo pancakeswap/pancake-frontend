@@ -111,7 +111,13 @@ const Overview = () => {
             </Box>
           </Box>
           {!isPageLoading && (
-            <Vote proposal={proposal} hasAccountVoted={Boolean(hasAccountVoted)} onSuccess={refetch} mb="16px" />
+            <Vote
+              mb="16px"
+              proposal={proposal}
+              votes={votes}
+              hasAccountVoted={Boolean(hasAccountVoted)}
+              onSuccess={refetch}
+            />
           )}
           {!isDesktop && (
             <Box mb="16px">
