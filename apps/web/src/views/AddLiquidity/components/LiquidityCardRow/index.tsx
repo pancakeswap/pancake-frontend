@@ -24,7 +24,7 @@ interface LiquidityCardRowProps {
   currency1?: Currency
   pairText: string | React.ReactElement
   feeAmount?: number
-  hasMerkl?: boolean
+  outOfRange?: boolean
   tokenId?: bigint
   tags: React.ReactElement
   subtitle: string
@@ -41,12 +41,14 @@ export const LiquidityCardRow = ({
   subtitle,
   tokenId,
   onSwitch,
-  hasMerkl,
+  outOfRange,
 }: LiquidityCardRowProps) => {
   const poolAddress = useMemo(
     () =>
-      currency0 && currency1 && feeAmount ? Pool.getAddress(currency0.wrapped, currency1.wrapped, feeAmount) : null,
-    [currency0, currency1, feeAmount],
+      currency0 && currency1 && feeAmount && !outOfRange
+        ? Pool.getAddress(currency0.wrapped, currency1.wrapped, feeAmount)
+        : undefined,
+    [currency0, currency1, feeAmount, outOfRange],
   )
 
   const content = (
@@ -65,7 +67,7 @@ export const LiquidityCardRow = ({
               {new Percent(feeAmount, 1_000_000).toSignificant()}%
             </Tag>
           )}
-          {!hasMerkl && <MerklRewardsTag poolAddress={poolAddress} />}
+          <MerklRewardsTag poolAddress={poolAddress} />
           <TagCell>{tags}</TagCell>
         </Flex>
         <Flex>

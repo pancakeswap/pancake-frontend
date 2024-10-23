@@ -60,7 +60,7 @@ export default function PoolV2Page() {
 
   const [, pair] = useV2Pair(baseCurrency ?? undefined, currencyB ?? undefined)
 
-  const poolInfo = usePoolInfo({ poolAddress: pair ? pair.liquidityToken.address : null, chainId })
+  const poolInfo = usePoolInfo({ poolAddress: pair ? pair.liquidityToken.address : undefined, chainId })
 
   const { data: positionDetails } = useAccountPositionDetailByPool<Protocol.V2>(
     poolInfo?.chainId ?? chainId,

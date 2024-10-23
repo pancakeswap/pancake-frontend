@@ -67,7 +67,7 @@ export default function StablePoolPage() {
     [lpTokens, poolAddress],
   )
 
-  const poolInfo = usePoolInfo({ poolAddress: selectedLp ? selectedLp?.stableSwapAddress : null, chainId })
+  const poolInfo = usePoolInfo({ poolAddress: selectedLp ? selectedLp?.stableSwapAddress : undefined, chainId })
 
   const stableSwapInfoContract = useInfoStableSwapContract(selectedLp?.infoStableSwapAddress)
 

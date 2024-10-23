@@ -398,7 +398,7 @@ export function AddLiquidityV3Layout({
     () =>
       baseCurrency?.wrapped && quoteCurrency?.wrapped && feeAmount
         ? Pool.getAddress(baseCurrency.wrapped, quoteCurrency.wrapped, feeAmount)
-        : null,
+        : undefined,
     [baseCurrency?.wrapped, feeAmount, quoteCurrency?.wrapped],
   )
 

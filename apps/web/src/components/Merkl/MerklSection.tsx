@@ -15,6 +15,9 @@ import { CurrencyLogo } from '@pancakeswap/widgets-internal'
 import { LightGreyCard } from 'components/Card'
 
 import { Currency, CurrencyAmount } from '@pancakeswap/swap-sdk-core'
+import { useMemo } from 'react'
+import { getMerklLink } from 'utils/getMerklLink'
+import { ChainId } from '@pancakeswap/chains'
 import useMerkl from '../../hooks/useMerkl'
 
 function TextWarning({ tokenAmount }: { tokenAmount: CurrencyAmount<Currency> }) {
@@ -51,18 +54,22 @@ const LearnMoreLink = () => {
 
 export function MerklSection({
   poolAddress,
+  chainId,
   notEnoughLiquidity,
   outRange,
   disabled,
 }: {
+  poolAddress?: `0x${string}`
+  chainId?: ChainId
+  notEnoughLiquidity: boolean
   outRange: boolean
   disabled: boolean
-  poolAddress: string | null
-  notEnoughLiquidity: boolean
 }) {
   const { t } = useTranslation()
 
   const { claimTokenReward, isClaiming, rewardsPerToken, hasMerkl } = useMerkl(poolAddress)
+
+  const merklLink = useMemo(() => getMerklLink({ chainId, lpAddress: poolAddress }), [chainId, poolAddress])
 
   if (!rewardsPerToken.length || (!hasMerkl && rewardsPerToken.every((r) => r.equalTo('0')))) return null
 
@@ -118,7 +125,7 @@ export function MerklSection({
               external
               color="currentColor"
               style={{ display: 'inline-flex' }}
-              href="https://merkl.angle.money/?search=PancakeSwap&status=live%2Csoon"
+              href={merklLink ?? 'https://merkl.angle.money/?search=PancakeSwap&status=live%2Csoon'}
             >
               {t('here')}
             </Link>
