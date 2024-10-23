@@ -197,9 +197,6 @@ const PriceImpactDetails: React.FC = () => {
             'Final execution price may be differ from the market price due to trader size, available liquidity, and trading route. Please proceed with caution.',
           )}
         </Text>
-        {/* <StyledLinkExternal color="primary60" external href="https://www.hashdit.io" showExternalIcon={false}>
-          {t('Learn More')}
-        </StyledLinkExternal> */}
       </FlexGap>
     </FlexGap>
   )
@@ -220,9 +217,6 @@ const SlippageDetails: React.FC = () => {
         <StyledTextButton onClick={() => setUserSlippageTolerance(DEFAULT_SLIPPAGE_TOLERANCE)} scale="sm" px="0">
           {t('Reset Slippage')}
         </StyledTextButton>
-        {/* <StyledLinkExternal color="primary60" external href="https://www.hashdit.io" showExternalIcon={false}>
-          {t('Learn More')}
-        </StyledLinkExternal> */}
       </FlexGap>
     </FlexGap>
   )
