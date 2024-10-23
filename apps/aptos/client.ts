@@ -45,9 +45,7 @@ export const client = createClient({
         ? {
             API_KEY: APTOS_GATEWAY_API_KEY,
           }
-        : {
-            WITH_CREDENTIALS: false,
-          }
+        : undefined
 
     if (networkNameLowerCase) {
       const foundChain = chains.find((c) => c.network === networkNameLowerCase)
@@ -57,7 +55,9 @@ export const client = createClient({
             new AptosConfig({
               network: NetworkToNetworkName[networkNameLowerCase],
               fullnode: `${foundChain.nodeUrls.nodeReal}/${nodeReal[networkNameLowerCase]}/v1`,
-              clientConfig,
+              clientConfig: {
+                WITH_CREDENTIALS: false,
+              },
             }),
           )
         }
