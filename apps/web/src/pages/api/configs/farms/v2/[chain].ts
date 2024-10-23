@@ -1,5 +1,5 @@
-import { ChainId, chainNames, chainNameToChainId } from '@pancakeswap/chains'
-import { formatUniversalFarmToSerializedFarm, UNIVERSAL_FARMS } from '@pancakeswap/farms'
+import { ChainId, chainNameToChainId, chainNames } from '@pancakeswap/chains'
+import { UNIVERSAL_FARMS_WITH_TESTNET, formatUniversalFarmToSerializedFarm } from '@pancakeswap/farms'
 import { NextApiHandler } from 'next'
 import { stringify } from 'viem'
 import { enum as enum_, nativeEnum } from 'zod'
@@ -24,7 +24,7 @@ const handler: NextApiHandler = async (req, res) => {
   }
 
   try {
-    const farmConfig = UNIVERSAL_FARMS.filter((farm) => farm.chainId === chainId)
+    const farmConfig = UNIVERSAL_FARMS_WITH_TESTNET.filter((farm) => farm.chainId === chainId)
     const legacyFarmConfig = formatUniversalFarmToSerializedFarm(farmConfig)
     // cache for long time, it should revalidate on every deployment
     res.setHeader('Cache-Control', `max-age=10800, s-maxage=31536000`)
