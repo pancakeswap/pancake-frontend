@@ -2,17 +2,22 @@ import orderBy from 'lodash/orderBy'
 import { ConfigMenuItemsType } from './config/config'
 
 export const getActiveMenuItem = ({ pathname, menuConfig }: { pathname: string; menuConfig: ConfigMenuItemsType[] }) =>
-  menuConfig.find(
-    (menuItem) =>
-      pathname.startsWith(menuItem.href) ||
+  menuConfig.find((menuItem) => {
+    return (
+      (pathname.startsWith(menuItem.href) && menuItem.href !== '/') ||
+      menuItem.href === pathname ||
       getActiveSubMenuItem({ menuItem, pathname }) ||
-      getActiveSubMenuChildItem({ menuItem, pathname }),
-  )
+      getActiveSubMenuChildItem({ menuItem, pathname })
+    )
+  })
 
 export const getActiveSubMenuItem = ({ pathname, menuItem }: { pathname: string; menuItem?: ConfigMenuItemsType }) => {
   const activeSubMenuItems =
     menuItem?.items?.filter((subMenuItem) => {
-      if (subMenuItem?.href && pathname.startsWith(subMenuItem?.href)) {
+      if (
+        (subMenuItem?.href && pathname.startsWith(subMenuItem?.href) && subMenuItem?.href !== '/') ||
+        pathname === subMenuItem?.href
+      ) {
         return true
       }
       if (subMenuItem?.matchHrefs?.some((matchHref) => pathname.startsWith(matchHref))) {
