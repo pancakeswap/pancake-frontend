@@ -749,7 +749,7 @@ exports[`renders correctly 1`] = `
 }
 
 <div
-    class="c0 reset_base__14t2dq60 sprinkles_minHeight_auto_xs__15lkarx15c sprinkles_minHeight_100vh_md__15lkarx16k"
+    class="c0 reset_base__14t2dq60 sprinkles_minHeight_auto_xs__15lkarx15i sprinkles_minHeight_100vh_md__15lkarx16q"
   >
     <div
       class="c1"
@@ -767,7 +767,7 @@ exports[`renders correctly 1`] = `
             <a
               aria-label="Pancake home page"
               class="c5"
-              href="/"
+              href="/home"
             >
               <svg
                 class="c6 mobile-icon"
@@ -1180,7 +1180,7 @@ exports[`renders correctly 1`] = `
           class="c26 c4"
         >
           <div
-            class="reset_base__14t2dq60 sprinkles_marginRight_12px_xs__15lkarxlo sprinkles_display_none_xs__15lkarx10 sprinkles_display_block_xxl__15lkarx5"
+            class="reset_base__14t2dq60 sprinkles_marginRight_12px_xs__15lkarxlu sprinkles_display_none_xs__15lkarx10 sprinkles_display_block_xxl__15lkarx5"
           >
             <a
               class="c27"
