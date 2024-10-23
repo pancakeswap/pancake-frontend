@@ -27,13 +27,14 @@ export const msafeConnector = new MsafeConnector({ chains })
 export const client = createClient({
   connectors: [
     new PetraConnector({ chains }),
-    new MartianConnector({ chains }),
     new PontemConnector({ chains }),
     new FewchaConnector({ chains }),
     new BloctoConnector({ chains, options: { appId: 'e2f2f0cd-3ceb-4dec-b293-bb555f2ed5af' } }),
     new PetraConnector({ chains, options: { name: 'Trust Wallet', id: 'trustWallet' } }),
-    new SafePalConnector({ chains }),
     new RiseConnector({ chains }),
+    // Give precedence to SafePalConnector, as the SafePal wallet also assigns itself to the Martian window object
+    new SafePalConnector({ chains }),
+    new MartianConnector({ chains }),
     msafeConnector,
   ],
   provider: ({ networkName }) => {

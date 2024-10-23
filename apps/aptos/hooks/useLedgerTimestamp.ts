@@ -1,31 +1,21 @@
 import { fetchLedgerInfo } from '@pancakeswap/awgmi/core'
-import { keepPreviousData, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { useCallback } from 'react'
 import { useActiveChainId } from './useNetwork'
 
 export const useLedgerTimestamp = () => {
   const chainId = useActiveChainId()
-  const queryClient = useQueryClient()
-  const { data: lastCheck } = useQuery<number>({
-    queryKey: ['ledgerTimestampLastCheck', chainId],
-    enabled: false,
-    refetchOnReconnect: false,
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
-  })
 
-  const { data: ledgerTimestamp, error } = useQuery({
+  const {
+    data: ledgerTimestamp,
+    error,
+    dataUpdatedAt,
+  } = useQuery({
     queryKey: ['ledgerTimestamp', chainId],
 
     queryFn: async () => {
       /* eslint-disable camelcase */
       const { ledger_timestamp } = await fetchLedgerInfo()
-      queryClient
-        .getQueryCache()
-        .find({
-          queryKey: ['ledgerTimestampLastCheck', chainId],
-        })
-        ?.setData(Date.now())
       return Math.floor(parseInt(ledger_timestamp) / 1000)
       /* eslint-enable camelcase */
     },
@@ -34,18 +24,17 @@ export const useLedgerTimestamp = () => {
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
     refetchOnMount: false,
-    placeholderData: keepPreviousData,
     refetchInterval: 1000 * 15,
     staleTime: 1000 * 15,
   })
 
   return useCallback(() => {
-    if (!error && lastCheck && ledgerTimestamp) {
-      const timeDiff = Date.now() - lastCheck
+    if (!error && ledgerTimestamp && dataUpdatedAt) {
+      const timeDiff = Date.now() - dataUpdatedAt
       return ledgerTimestamp + timeDiff
     }
     return Date.now()
-  }, [error, lastCheck, ledgerTimestamp])
+  }, [error, ledgerTimestamp, dataUpdatedAt])
 }
 
 export default useLedgerTimestamp
