@@ -3580,5 +3580,8 @@
   "+ Assign Recipient": "+ Assign Recipient",
   "TWAP": "TWAP",
   "Fee": "Fee",
-  "Copy": "Copy"
+  "Copy": "Copy",
+  "X": "X",
+  "The difference between the latest quoted price and the minimum receiving amount set in the trade order.": "The difference between the latest quoted price and the minimum receiving amount set in the trade order.",
+  "No fee when trade is going through PancakeSwap X. Subject to change in the future.": "No fee when trade is going through PancakeSwap X. Subject to change in the future."
 }

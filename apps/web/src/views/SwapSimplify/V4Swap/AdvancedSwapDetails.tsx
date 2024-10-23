@@ -138,9 +138,11 @@ export const TradeSummary = memo(function TradeSummary({
                   </Text>
                   <Text mt="10px">
                     <Text bold display="inline-block">
-                      {t('MM')}
+                      {t('X')}
                     </Text>
-                    {`: ${t('No slippage against quote from market maker')}`}
+                    {`: ${t(
+                      'The difference between the latest quoted price and the minimum receiving amount set in the trade order.',
+                    )}`}
                   </Text>
                 </>
               }
@@ -167,9 +169,11 @@ export const TradeSummary = memo(function TradeSummary({
                 </Text>
                 <Text mt="10px">
                   <Text bold display="inline-block">
-                    {t('MM')}
+                    {t('X')}
                   </Text>
-                  {`: ${t('No slippage against quote from market maker')}`}
+                  {`: ${t(
+                    'The difference between the latest quoted price and the minimum receiving amount set in the trade order.',
+                  )}`}
                 </Text>
               </>
             }
@@ -208,12 +212,9 @@ export const TradeSummary = memo(function TradeSummary({
                   </Text>
                   <Text mt="10px">
                     <Text bold display="inline-block">
-                      {t('MM')}
+                      {t('X')}
                     </Text>
-                    :{' '}
-                    {t(
-                      'PancakeSwap does not charge any fees for trades. However, the market makers charge an implied fee of 0.05% - 0.25% (non-stablecoin) / 0.01% (stablecoin) factored into the quotes provided by them.',
-                    )}
+                    : {t('No fee when trade is going through PancakeSwap X. Subject to change in the future.')}
                   </Text>
                 </>
               }
