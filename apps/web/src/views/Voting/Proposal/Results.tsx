@@ -29,6 +29,7 @@ const Results: React.FC<React.PropsWithChildren<ResultsProps>> = ({ proposal, ch
             {proposal.type === ProposalTypeName.SINGLE_CHOICE && <SingleVoteResults choices={choices} votes={votes} />}
             {proposal.type === ProposalTypeName.WEIGHTED && (
               <WeightedVoteResults
+                sortData
                 choices={choices}
                 choicesVotes={choices.map((_, index) => ({ [index + 1]: proposal?.scores?.[index] ?? 0 }))}
               />

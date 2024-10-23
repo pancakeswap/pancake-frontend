@@ -7,10 +7,11 @@ import TextEllipsis from '../../components/TextEllipsis'
 
 interface WeightedVoteResultsProps {
   choices: string[]
+  sortData?: boolean
   choicesVotes: WeightedVoteState[]
 }
 
-export const WeightedVoteResults: React.FC<WeightedVoteResultsProps> = ({ choices, choicesVotes }) => {
+export const WeightedVoteResults: React.FC<WeightedVoteResultsProps> = ({ choices, sortData, choicesVotes }) => {
   const { t } = useTranslation()
 
   const totalSum = useMemo(
@@ -30,37 +31,42 @@ export const WeightedVoteResults: React.FC<WeightedVoteResultsProps> = ({ choice
     [choicesVotes],
   )
 
+  const sortedChoices = useMemo(() => {
+    const list = choices.map((choice, index) => {
+      const totalChoiceVote = percentageResults[index + 1] ?? 0
+      const progress = (totalChoiceVote / totalSum) * 100
+      return { choice, totalChoiceVote, progress }
+    })
+
+    return sortData ? list.sort((a, b) => b.progress - a.progress) : list
+  }, [choices, percentageResults, sortData, totalSum])
+
   return (
     <>
-      {choices.map((choice, index) => {
-        const totalChoiceVote = percentageResults[index + 1] ?? 0
-        const progress = (totalChoiceVote / totalSum) * 100
-
-        return (
-          <Box key={choice} mt={index > 0 ? '24px' : '0px'}>
-            <Flex alignItems="center" mb="8px">
-              <TextEllipsis mb="4px" title={choice}>
-                {choice}
-              </TextEllipsis>
-            </Flex>
-            <Box mb="4px">
-              <Progress primaryStep={progress} scale="sm" />
-            </Box>
-            <Flex alignItems="center" justifyContent="space-between">
-              <Text color="textSubtle">{t('%total% Votes', { total: formatNumber(totalChoiceVote, 0, 2) })}</Text>
-              <Text>
-                {totalChoiceVote === 0 && totalSum === 0
-                  ? '0.00%'
-                  : `${progress.toLocaleString(undefined, {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}
-                  %`}
-              </Text>
-            </Flex>
+      {sortedChoices.map(({ choice, totalChoiceVote, progress }, index) => (
+        <Box key={choice} mt={index > 0 ? '24px' : '0px'}>
+          <Flex alignItems="center" mb="8px">
+            <TextEllipsis mb="4px" title={choice}>
+              {choice}
+            </TextEllipsis>
+          </Flex>
+          <Box mb="4px">
+            <Progress primaryStep={progress} scale="sm" />
           </Box>
-        )
-      })}
+          <Flex alignItems="center" justifyContent="space-between">
+            <Text color="textSubtle">{t('%total% Votes', { total: formatNumber(totalChoiceVote, 0, 2) })}</Text>
+            <Text>
+              {totalChoiceVote === 0 && totalSum === 0
+                ? '0.00%'
+                : `${progress.toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}
+                %`}
+            </Text>
+          </Flex>
+        </Box>
+      ))}
     </>
   )
 }
