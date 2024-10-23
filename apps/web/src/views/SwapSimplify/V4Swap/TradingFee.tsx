@@ -31,7 +31,7 @@ export const TradingFee: React.FC<TradingFeeProps> = memo(({ order, loaded }) =>
       <Text color="textSubtle" fontSize="14px">
         {t('Fee')}
       </Text>
-      <SkeletonV2 width="70px" height="16px" borderRadius="8px" minHeight="auto" isDataReady={loaded}>
+      <SkeletonV2 width="108px" height="16px" borderRadius="8px" minHeight="auto" isDataReady={loaded}>
         {isXOrder(order) ? (
           <Text color="primary" fontSize="14px">
             0 {inputAmount?.currency?.symbol}

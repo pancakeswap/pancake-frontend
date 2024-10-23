@@ -47,8 +47,7 @@ const AnimationWrapper = styled(motion.div)`
 const SkeletonWrapper = styled.div.withConfig({ shouldForwardProp })<SkeletonProps>`
   position: relative;
   ${layout}
-  ${space}
-  overflow: hidden;
+  ${space} /* overflow: hidden; */
 `;
 
 const Root = styled.div.withConfig({ shouldForwardProp })<SkeletonProps>`
@@ -124,7 +123,7 @@ export const SkeletonV2: React.FC<React.PropsWithChildren<SkeletonV2Props>> = ({
       {...wrapperProps}
     >
       <LazyMotion features={domAnimation}>
-        <AnimatePresence>
+        <AnimatePresence initial={false}>
           {isDataReady ? (
             <AnimationWrapper
               id="Skeleton-AnimationWrapper-isDataReady-true"
