@@ -209,7 +209,6 @@ const CurrencyInputPanelSimplify = memo(function CurrencyInputPanel({
 
   const mode = id
   const token = pair ? pair.liquidityToken : currency?.isToken ? currency : null
-  // const tokenAddress = token ? safeGetAddress(token.address) : null
   const [isInputFocus, setIsInputFocus] = useState(false)
 
   const amountInDollar = useStablecoinPriceAmount(
