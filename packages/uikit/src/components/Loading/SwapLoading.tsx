@@ -2,7 +2,7 @@ import { styled } from "styled-components";
 import { Box } from "../Box";
 
 const SwapLoading = styled(Box)`
-  background-image: url("/images/swap-spinner.png");
+  background-image: url("https://assets.pancakeswap.finance/web/swap-spinner.png");
   background-size: contain;
   -webkit-animation: spin 2s linear infinite;
   animation: spin 2s linear infinite;
