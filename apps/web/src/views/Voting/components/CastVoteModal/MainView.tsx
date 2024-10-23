@@ -98,7 +98,6 @@ export const VeMainView = ({
   veCakeBalance,
 }: VeMainViewProps) => {
   const { t } = useTranslation()
-
   const { chainId } = useActiveChainId()
 
   return (
@@ -131,6 +130,14 @@ export const VeMainView = ({
           <Message variant="danger" mb="12px">
             <Text color="text">{t('Error occurred, please try again later')}</Text>
           </Message>
+        ) : total === 0 || total === undefined ? (
+          <Message variant="danger" mb="12px">
+            <Text color="danger">
+              {t(
+                'Hold some CAKE in your wallet or on PancakeSwap at the snapshot block to get voting power for future proposals.',
+              )}
+            </Text>
+          </Message>
         ) : (
           <>
             <br />
@@ -154,7 +161,7 @@ export const VeMainView = ({
         <Button
           isLoading={isPending}
           endIcon={isPending ? <AutoRenewIcon spin color="currentColor" /> : null}
-          disabled={disabled || isLoading || total === 0}
+          disabled={disabled || isLoading || total === 0 || total === undefined}
           width="100%"
           mb="8px"
           onClick={onConfirm}
