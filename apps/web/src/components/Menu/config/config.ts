@@ -55,7 +55,6 @@ const config: (
       icon: SwapIcon,
       fillIcon: SwapFillIcon,
       href: '/',
-      showItemsOnMobile: false,
       hideSubNav: true,
       items: [
         {
