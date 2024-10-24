@@ -1,7 +1,16 @@
 import { AllArticleType, getArticle } from '@pancakeswap/blog'
 import { useQuery } from '@tanstack/react-query'
+import { useEffect, useState } from 'react'
 
-export const useAllNewsArticle = (): AllArticleType => {
+export const useAllNewsArticle = (enabled: boolean): AllArticleType => {
+  const [internalEnabled, setInternalEnabled] = useState(enabled)
+
+  useEffect(() => {
+    if (enabled) {
+      setInternalEnabled(true)
+    }
+  }, [enabled])
+
   const { data: articlesData, isPending } = useQuery({
     queryKey: ['/allNews'],
 
@@ -21,7 +30,7 @@ export const useAllNewsArticle = (): AllArticleType => {
           },
         },
       }),
-
+    enabled: internalEnabled,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
   })
@@ -40,7 +49,15 @@ export const useAllNewsArticle = (): AllArticleType => {
   }
 }
 
-export const useLatestArticle = (): AllArticleType => {
+export const useLatestArticle = (enabled: boolean): AllArticleType => {
+  const [internalEnabled, setInternalEnabled] = useState(enabled)
+
+  useEffect(() => {
+    if (enabled) {
+      setInternalEnabled(true)
+    }
+  }, [enabled])
+
   const { data: articlesData, isPending } = useQuery({
     queryKey: ['/latestArticle'],
 
@@ -53,7 +70,7 @@ export const useLatestArticle = (): AllArticleType => {
           pagination: { limit: 1 },
         },
       }),
-
+    enabled: internalEnabled,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
   })
