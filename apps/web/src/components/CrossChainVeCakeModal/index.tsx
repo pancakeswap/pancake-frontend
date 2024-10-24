@@ -21,8 +21,8 @@ import {
   Svg,
   SvgProps,
   Text,
-  useMatchBreakpoints,
   useToast,
+  WarningIcon,
 } from '@pancakeswap/uikit'
 import { formatNumber, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
@@ -140,14 +140,13 @@ export const CrossChainVeCakeModal: React.FC<{
   isOpen?: boolean
   setIsOpen?: (isOpen: boolean) => void
   targetChainId?: (typeof OtherChainsConfig)[number]['chainId']
-}> = ({ onDismiss, modalTitle, isOpen, targetChainId }) => {
+}> = ({ onDismiss, modalTitle, isOpen, setIsOpen, targetChainId }) => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
-  const { isDesktop } = useMatchBreakpoints()
   const { address: account, chain } = useAccount()
   const { switchNetworkAsync } = useSwitchNetwork()
   const veCakeSenderV2Contract = usePancakeVeSenderV2Contract(ChainId.BSC)
-  const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
+  const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError({ throwUserRejectError: true })
   const { balance: veCakeOnBsc } = useVeCakeBalance(ChainId.BSC)
   const { balance: bnbBalance } = useGetBnbBalance()
 
@@ -155,7 +154,7 @@ export const CrossChainVeCakeModal: React.FC<{
 
   const [txByChain, setTxByChain] = useTxnByChain()
 
-  const [modalState, setModalState] = useState<'list' | 'ready' | 'submitted' | 'done'>('list')
+  const [modalState, setModalState] = useState<'list' | 'insufficent' | 'ready' | 'submitted' | 'done'>('list')
   const [nativeFee, setNativeFee] = useState<bigint>(0n)
   const [isSwitching, setIsSwitching] = useState(false)
 
@@ -191,7 +190,6 @@ export const CrossChainVeCakeModal: React.FC<{
   const syncVeCake = useCallback(
     async (chainId: ChainId) => {
       if (!account || !veCakeSenderV2Contract || !chainId || !isInitialized) return
-      setModalState('ready')
       let syncFee = BigInt(
         new BigNumber(CROSS_CHAIN_CONFIG[chainId].layerZeroFee.toString())
           .times(CROSS_CHAIN_CONFIG[chainId].layerZeroFeeBufferTimes ?? 1.1)
@@ -218,26 +216,34 @@ export const CrossChainVeCakeModal: React.FC<{
         setNativeFee(syncFee)
       }
 
-      if (bnbBalance <= syncFee) return
-      const receipt = await fetchWithCatchTxError(async () => {
-        return veCakeSenderV2Contract.write.sendSyncMsg(
-          [CROSS_CHAIN_CONFIG[chainId].eid, account, true, hasProfile, CROSS_CHAIN_CONFIG[chainId].dstGas],
-          {
-            account,
-            chain,
-            value: syncFee, // payable BNB for cross chain fee
-          },
-        )
-      })
-      if (receipt?.status) {
-        toastSuccess(
-          `${t('Syncing veCAKE')}!`,
-          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-            {t('Your veCAKE is Syncing to')} {CROSS_CHAIN_CONFIG[chainId].name}
-          </ToastDescriptionWithTx>,
-        )
-        setTxByChain((prev) => ({ ...prev, [chainId]: receipt.transactionHash }))
-        setModalState('submitted')
+      if (bnbBalance <= syncFee) {
+        setModalState('insufficent')
+      } else {
+        setModalState('ready')
+        try {
+          const receipt = await fetchWithCatchTxError(async () => {
+            return veCakeSenderV2Contract.write.sendSyncMsg(
+              [CROSS_CHAIN_CONFIG[chainId].eid, account, true, hasProfile, CROSS_CHAIN_CONFIG[chainId].dstGas],
+              {
+                account,
+                chain,
+                value: syncFee, // payable BNB for cross chain fee
+              },
+            )
+          })
+          if (receipt?.status) {
+            toastSuccess(
+              `${t('Syncing veCAKE')}!`,
+              <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+                {t('Your veCAKE is Syncing to')} {CROSS_CHAIN_CONFIG[chainId].name}
+              </ToastDescriptionWithTx>,
+            )
+            setTxByChain((prev) => ({ ...prev, [chainId]: receipt.transactionHash }))
+            setModalState('submitted')
+          }
+        } catch (error) {
+          setModalState('list')
+        }
       }
     },
     [
@@ -262,7 +268,7 @@ export const CrossChainVeCakeModal: React.FC<{
       }}
       closeOnOverlayClick
     >
-      <ModalContainer style={{ minWidth: '375px', padding: isDesktop ? '24px' : '24px 24px 0 24px' }}>
+      <ModalContainer style={{ minWidth: '375px', padding: '24px' }}>
         {modalState === 'list' ? (
           <AtomBox justifyContent="space-between" p="24px" maxWidth="420px" height="100%" style={{ margin: '-24px' }}>
             <StyledModalHeader headerBorderColor="transparent">
@@ -340,8 +346,13 @@ export const CrossChainVeCakeModal: React.FC<{
               <ModalTitle />
               <ModalCloseButton onDismiss={() => setModalState('list')} />
             </StyledModalHeader>
-            {modalState === 'ready' && selectChainId && (
-              <ReadyToSyncView chainId={selectChainId} nativeFee={nativeFee} bnbBalance={bnbBalance} />
+            {(modalState === 'ready' || modalState === 'insufficent') && selectChainId && (
+              <ReadyToSyncView
+                chainId={selectChainId}
+                nativeFee={nativeFee}
+                bnbBalance={bnbBalance}
+                modalState={modalState}
+              />
             )}
             {modalState === 'submitted' && selectChainId && (
               <SubmittedView chainId={selectChainId} hash={txByChain[selectChainId] ?? ''} />
@@ -446,15 +457,16 @@ const OtherChainsCard: React.FC<{
   )
 }
 
-const ReadyToSyncView: React.FC<{ chainId: ChainId; nativeFee: bigint; bnbBalance: bigint }> = ({
-  chainId,
-  nativeFee,
-  bnbBalance,
-}) => {
+const ReadyToSyncView: React.FC<{
+  chainId: ChainId
+  nativeFee: bigint
+  bnbBalance: bigint
+  modalState: 'insufficent' | 'ready'
+}> = ({ chainId, nativeFee, bnbBalance, modalState }) => {
   const { t } = useTranslation()
   return (
     <Flex flexDirection="column" alignItems="center" justifyContent="center" style={{ gap: 10 }}>
-      <Spinner size={120} />
+      {modalState === 'ready' ? <Spinner size={120} /> : <WarningIcon color="warning" width="120px" />}
       <Text fontSize={16} fontWeight={600} mt="16px">
         {t('veCAKE Sync')}
       </Text>
@@ -473,12 +485,16 @@ const ReadyToSyncView: React.FC<{ chainId: ChainId; nativeFee: bigint; bnbBalanc
         {t('Cross chain fee')}: {getBalanceNumber(new BigNumber(nativeFee.toString()))} BNB
       </Text>
       {bnbBalance <= nativeFee && <Text color="warning">{t('Insufficient %symbol% balance', { symbol: 'BNB' })}</Text>}
-      <Text mt="16px" color="textSubtle">
-        {t('Proceed in your wallet')}
-      </Text>
-      <Text mt="16px" color="textSubtle">
-        {t('Est. time: 2-5 minutes')}
-      </Text>
+      {modalState === 'ready' ? (
+        <>
+          <Text mt="16px" color="textSubtle">
+            {t('Proceed in your wallet')}
+          </Text>
+          <Text mt="16px" color="textSubtle">
+            {t('Est. time: 2-5 minutes')}
+          </Text>
+        </>
+      ) : null}
     </Flex>
   )
 }
