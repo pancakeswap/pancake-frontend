@@ -21,9 +21,12 @@ import {
 import { encodeMixedRouteToPath, getQuoteCurrency, isStablePool, isV2Pool, isV3Pool } from '../utils'
 import { Result } from './multicallProvider'
 import { PancakeMulticallProvider } from './multicallSwapProvider'
-import { V4_CL_QUOTER_ADDRESSES } from '../../constants/v4'
+import { V4_CL_QUOTER_ADDRESSES, V4_MIXED_ROUTE_QUOTER_ADDRESSES } from '../../constants/v4'
 import { clQuoterAbi } from '../../abis/ICLQuoter'
 import { PathKey, encodeV4ClRouteToPath } from '../utils/encodeV4ClRouteToPath'
+import { v4MixedRouteQuoterAbi } from '../../abis/IV4MixedRouteQuoter'
+import { encodeV4MixedRouteActions } from '../utils/encodeV4MixedRouteActions'
+import { encodeV4MixedRouteParams } from '../utils/encodeV4MixedRouteParams'
 
 const DEFAULT_BATCH_RETRIES = 2
 
@@ -59,7 +62,8 @@ type V4ClInputs = [
 ]
 type V3Inputs = [string, string]
 type MixedInputs = [string, number[], string]
-type CallInputs = V3Inputs | MixedInputs | V4ClInputs
+type V4MixedInputs = [string[], string, string[], string]
+type CallInputs = V3Inputs | MixedInputs | V4ClInputs | V4MixedInputs
 
 type AdjustQuoteForGasHandler = (params: {
   isExactIn?: boolean
@@ -462,5 +466,17 @@ export const createV4ClOnChainQuoteProvider = onChainQuoteProviderFactory({
       path: encodeV4ClRouteToPath(route, !isExactIn),
       exactAmount: `0x${route.amount.quotient.toString(16)}`,
     },
+  ],
+})
+
+export const createMixedRouteOnChainQuoteProviderV2 = onChainQuoteProviderFactory({
+  getQuoterAddress: (chainId) => (V4_MIXED_ROUTE_QUOTER_ADDRESSES as any)[chainId],
+  getQuoteFunctionName: () => 'quoteMixedExactInput',
+  abi: v4MixedRouteQuoterAbi,
+  getCallInputs: (route) => [
+    route.path.map((p) => getCurrencyAddress(p)),
+    encodeV4MixedRouteActions(route),
+    encodeV4MixedRouteParams(route),
+    `0x${route.amount.quotient.toString(16)}`,
   ],
 })
