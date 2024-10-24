@@ -33,8 +33,8 @@ export const useUpdateBCakeFarms = (bCakeWrapperAddress: Address, pid: number) =
     return Tx
   }, [V2SSBCakeContract, gasPrice])
 
-  const updateBCakeMultiplier = async () => {
-    const receipt = await fetchWithCatchTxError(() => handleStake())
+  const updateBCakeMultiplier = useCallback(async () => {
+    const receipt = await fetchWithCatchTxError(handleStake)
     if (receipt?.status) {
       toastSuccess(
         `${t('Updated')}!`,
@@ -44,7 +44,7 @@ export const useUpdateBCakeFarms = (bCakeWrapperAddress: Address, pid: number) =
       )
       onDone()
     }
-  }
+  }, [onDone, toastSuccess, handleStake, t])
 
   return { onUpdate: updateBCakeMultiplier }
 }

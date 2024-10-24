@@ -133,7 +133,7 @@ const useBCakeMessage = (
   isMultiplierApplied: boolean,
 ) => {
   const { t } = useTranslation()
-  const bCakeMessage = useMemo(() => {
+  return useMemo(() => {
     if (!account) return t('Connect wallet to activate yield booster')
     if (!isFarmStaking) {
       if (!isVeCakeWillSync) {
@@ -167,5 +167,4 @@ const useBCakeMessage = (
     isMultiplierApplied,
     chainId,
   ])
-  return bCakeMessage
 }

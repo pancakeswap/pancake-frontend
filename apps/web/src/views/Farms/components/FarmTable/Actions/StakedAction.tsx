@@ -421,7 +421,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
 
   const [onPresentTransactionModal] = useModal(<WalletModal initialView={WalletView.TRANSACTIONS} />)
 
-  const onClickLoadingIcon = () => {
+  const onClickLoadingIcon = useCallback(() => {
     const { length } = pendingFarm
     if (length) {
       if (length > 1) {
@@ -430,13 +430,12 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
         dispatch(pickFarmTransactionTx({ tx: pendingFarm[0].txid, chainId }))
       }
     }
-  }
+  }, [pendingFarm, dispatch, chainId])
 
   if (!account) {
     return (
-      <FarmWidget.FarmTable.AccountNotConnect>
-        <ConnectWalletButton width={bCakeInfoSlot ? '50%' : '100%'} />
-        {bCakeInfoSlot}
+      <FarmWidget.FarmTable.AccountNotConnect bCakeInfoSlot={bCakeInfoSlot}>
+        <ConnectWalletButton width="100%" />
       </FarmWidget.FarmTable.AccountNotConnect>
     )
   }
