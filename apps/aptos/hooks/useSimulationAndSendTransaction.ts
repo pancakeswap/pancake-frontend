@@ -1,11 +1,14 @@
-import { useSendTransaction, useSimulateTransaction } from '@pancakeswap/awgmi'
+import { SimulateTransactionError, useSendTransaction, useSimulateTransaction } from '@pancakeswap/awgmi'
 import { useCallback } from 'react'
+import { useTranslation } from '@pancakeswap/localization'
 import { useLedgerTimestamp } from './useLedgerTimestamp'
 
 const SAFE_FACTOR = 1.5
 
 export default function useSimulationAndSendTransaction() {
   const getNow = useLedgerTimestamp()
+
+  const { t } = useTranslation()
 
   const { simulateTransactionAsync } = useSimulateTransaction()
 
@@ -26,6 +29,14 @@ export default function useSimulationAndSendTransaction() {
           },
         })
       } catch (error) {
+        if (error instanceof SimulateTransactionError) {
+          if (error.tx.vm_status.includes('TRANSACTION_EXPIRED')) {
+            // eslint-disable-next-line no-param-reassign
+            error.tx.vm_status += `\n${t(
+              'Please check your date and time settings, and ensure that they are synced correctly.',
+            )}`
+          }
+        }
         // ignore error
         if (simulateError) {
           simulateError(error)
@@ -48,9 +59,17 @@ export default function useSimulationAndSendTransaction() {
       return sendTransactionAsync({
         payload,
         options,
+      }).catch((error) => {
+        if (error.message.includes('TRANSACTION_EXPIRED')) {
+          // eslint-disable-next-line no-param-reassign
+          error.message += `\n${t(
+            'Please check your date and time settings, and ensure that they are synced correctly.',
+          )}`
+        }
+        throw error
       })
     },
-    [sendTransactionAsync, simulateTransactionAsync, getNow],
+    [sendTransactionAsync, simulateTransactionAsync, getNow, t],
   )
 
   return execute

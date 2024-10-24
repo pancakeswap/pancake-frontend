@@ -49,12 +49,15 @@ export function useSendTransaction({
   )
 
   const _sendTransactionAsync = React.useCallback(
-    (args?: UseSendTransactionMutationArgs) =>
-      mutateAsync({
+    (args?: UseSendTransactionMutationArgs) => {
+      console.info(args)
+      console.trace()
+      return mutateAsync({
         networkName,
         payload,
         ...args,
-      } as SendTransactionArgs),
+      } as SendTransactionArgs)
+    },
     [mutateAsync, networkName, payload],
   )
 
