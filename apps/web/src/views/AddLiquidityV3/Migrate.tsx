@@ -317,78 +317,10 @@ function V2PairMigrate({
   const isMigrationPending = useIsTransactionPending(pendingMigrationHash ?? undefined)
 
   const migrator = useV3MigratorContract()
-  const [
-    signatureData,
-    // setSignatureData
-  ] = useState<{
-    v: number
-    r: `0x${string}`
-    s: `0x${string}`
-    deadline: number
-  } | null>(null)
   const { approvalState, approveCallback } = useApproveCallback(
     CurrencyAmount.fromRawAmount(pair.liquidityToken, pairBalance.toString()),
     migrator.address,
   )
-
-  const approve = useCallback(async () => {
-    return approveCallback()
-    // // try to gather a signature for permission
-    // const nonce = await pairContractRead?.read.nonces([account!])
-
-    // const EIP712Domain = [
-    //   { name: 'name', type: 'string' },
-    //   { name: 'version', type: 'string' },
-    //   { name: 'chainId', type: 'uint256' },
-    //   { name: 'verifyingContract', type: 'address' },
-    // ]
-    // const domain = {
-    //   name: 'Pancake LPs',
-    //   version: '1',
-    //   chainId,
-    //   verifyingContract: pair.liquidityToken.address as `0x${string}`,
-    // }
-    // const Permit = [
-    //   { name: 'owner', type: 'address' },
-    //   { name: 'spender', type: 'address' },
-    //   { name: 'value', type: 'uint256' },
-    //   { name: 'nonce', type: 'uint256' },
-    //   { name: 'deadline', type: 'uint256' },
-    // ]
-    // const message = {
-    //   owner: account,
-    //   spender: migrator.address,
-    //   value: pairBalance.toString(),
-    //   nonce: toHex(nonce ?? 0),
-    //   deadline: Number(deadline),
-    // }
-
-    // signTypedDataAsync({
-    //   // @ts-ignore
-    //   domain,
-    //   primaryType: 'Permit',
-    //   types: {
-    //     EIP712Domain,
-    //     Permit,
-    //   },
-    //   message,
-    // })
-    //   .then(splitSignature)
-    //   .then((signature) => {
-    //     setSignatureData({
-    //       v: signature.v,
-    //       r: signature.r,
-    //       s: signature.s,
-    //       deadline: Number(deadline),
-    //     })
-    //   })
-    //   .catch((err) => {
-    //     // for all errors other than 4001 (EIP-1193 user rejected request), fall back to manual approve
-    //     if (!isUserRejected(err)) {
-    //       approveCallback()
-    //     }
-    //   })
-  }, [approveCallback])
 
   const migrate = useCallback(() => {
     if (
@@ -401,27 +333,7 @@ function V2PairMigrate({
     )
       return
 
-    const deadlineToUse = signatureData?.deadline ? BigInt(signatureData.deadline) : deadline
-
     const data: Hex[] = []
-
-    // permit if necessary
-    if (signatureData) {
-      data.push(
-        encodeFunctionData({
-          abi: migrator.abi,
-          functionName: 'selfPermit',
-          args: [
-            pair.liquidityToken.address,
-            BigInt(pairBalance.toString()),
-            deadlineToUse,
-            signatureData.v,
-            signatureData.r,
-            signatureData.s,
-          ],
-        }),
-      )
-    }
 
     // create/initialize pool if necessary
     if (noLiquidity) {
@@ -452,7 +364,7 @@ function V2PairMigrate({
             amount0Min: v3Amount0Min ?? 0n,
             amount1Min: v3Amount1Min ?? 0n,
             recipient: account,
-            deadline: deadlineToUse,
+            deadline,
             refundAsETH: true, // hard-code this for now
           },
         ],
@@ -505,7 +417,6 @@ function V2PairMigrate({
     v3Amount1Min,
     account,
     deadline,
-    signatureData,
     addTransaction,
     pair,
     currency0,
@@ -775,20 +686,15 @@ function V2PairMigrate({
             {!isSuccessfullyMigrated && !isMigrationPending ? (
               <AutoColumn gap="md" style={{ flex: '1' }}>
                 <CommitButton
-                  variant={approvalState === ApprovalState.APPROVED || signatureData !== null ? 'success' : 'primary'}
-                  disabled={
-                    approvalState !== ApprovalState.NOT_APPROVED ||
-                    signatureData !== null ||
-                    invalidRange ||
-                    confirmingMigration
-                  }
-                  onClick={approve}
+                  variant={approvalState === ApprovalState.APPROVED ? 'success' : 'primary'}
+                  disabled={approvalState !== ApprovalState.NOT_APPROVED || invalidRange || confirmingMigration}
+                  onClick={approveCallback}
                 >
                   {approvalState === ApprovalState.PENDING ? (
                     <Dots>
                       <Trans>Enabling</Trans>
                     </Dots>
-                  ) : approvalState === ApprovalState.APPROVED || signatureData !== null ? (
+                  ) : approvalState === ApprovalState.APPROVED ? (
                     <Trans>Enabled</Trans>
                   ) : (
                     <Trans>Enable</Trans>
@@ -801,7 +707,7 @@ function V2PairMigrate({
                 variant={isSuccessfullyMigrated ? 'success' : 'primary'}
                 disabled={
                   invalidRange ||
-                  (approvalState !== ApprovalState.APPROVED && signatureData === null) ||
+                  approvalState !== ApprovalState.APPROVED ||
                   confirmingMigration ||
                   isMigrationPending ||
                   isSuccessfullyMigrated

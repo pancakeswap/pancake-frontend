@@ -50,6 +50,7 @@ import { useGasPrice } from 'state/user/hooks'
 import { logGTMClickRemoveLiquidityEvent } from 'utils/customGTMEventTracking'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { isUserRejected, logError } from 'utils/sentry'
+import { checkSlippageError } from 'views/RemoveLiquidity/utils'
 import { RemoveLiquidityLayout } from '..'
 import ConnectWalletButton from '../../../components/ConnectWalletButton'
 import CurrencyInputPanel from '../../../components/CurrencyInputPanel'
@@ -135,7 +136,6 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
     needUnwrapped ? nativeHelperContract?.address : stableSwapConfig?.stableSwapAddress,
   )
 
-  // wrapped onUserInput to clear signatures
   const onUserInput = useCallback(
     (field: Field, value: string) => {
       return _onUserInput(field, value)
@@ -197,20 +197,22 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
           [amountsMin[Field.CURRENCY_A].toString(), amountsMin[Field.CURRENCY_B].toString()],
         ]
       }
-    }
-    // we have a signature, use permit versions of remove liquidity
-    else {
-      toastError(t('Error'), t('Attempting to confirm without approval or a signature'))
-      throw new Error('Attempting to confirm without approval or a signature')
+    } else {
+      toastError(t('Error'), t('Attempting to confirm without approval'))
+      throw new Error('Attempting to confirm without approval')
     }
 
     let methodSafeGasEstimate: { methodName: string; safeGasEstimate: bigint } | undefined
+    let hasSlippageError = false
     for (let i = 0; i < methodNames.length; i++) {
       let safeGasEstimate
       try {
         // eslint-disable-next-line no-await-in-loop
         safeGasEstimate = calculateGasMargin(await contract.estimateGas[methodNames[i]](args, { account }))
       } catch (e) {
+        if (checkSlippageError(e)) {
+          hasSlippageError = true
+        }
         console.error(`estimateGas failed`, methodNames[i], args, e)
       }
 
@@ -222,7 +224,15 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
 
     // all estimations failed...
     if (!methodSafeGasEstimate) {
-      toastError(t('Error'), t('This transaction would fail'))
+      setLiquidityState({
+        attemptingTxn: false,
+        liquidityErrorMessage: !hasSlippageError
+          ? t('This transaction would fail')
+          : t(
+              'This transaction will not succeed either due to price movement or fee on transfer. Try increasing your slippage tolerance.',
+            ),
+        txHash: undefined,
+      })
     } else {
       const { methodName, safeGasEstimate } = methodSafeGasEstimate
 
