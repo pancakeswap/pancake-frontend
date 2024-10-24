@@ -131,22 +131,22 @@ const DetailsView: React.FC<React.PropsWithChildren<DetailsViewProps>> = ({
           {block}
         </StyledScanLink>
       </Text>
-      {cakeBalance && Number.isFinite(cakeBalance) && (
+      {cakeBalance && Number.isFinite(cakeBalance) ? (
         <Flex alignItems="center" justifyContent="space-between" mb="4px">
           <Text color="textSubtle" fontSize="16px">
             {t('Wallet')}
           </Text>
           <Text textAlign="right">{formatNumber(cakeBalance, 0, 3)}</Text>
         </Flex>
-      )}
-      {cakeVaultBalance && Number.isFinite(cakeVaultBalance) && (
+      ) : null}
+      {cakeVaultBalance && Number.isFinite(cakeVaultBalance) ? (
         <Flex alignItems="center" justifyContent="space-between" mb="4px">
           <Text color="textSubtle" fontSize="16px">
             {t('Flexible CAKE Staking')}
           </Text>
           <Text textAlign="right">{formatNumber(cakeVaultBalance, 0, 3)}</Text>
         </Flex>
-      )}
+      ) : null}
       {cakePoolBalance && Number.isFinite(cakePoolBalance) && (
         <>
           {lockedCakeBalance === 0 ? (
@@ -192,7 +192,7 @@ const DetailsView: React.FC<React.PropsWithChildren<DetailsViewProps>> = ({
           )}
         </>
       )}
-      {ifoPoolBalance && Number.isFinite(ifoPoolBalance) && Number(ifoPoolBalance) > 0 && (
+      {ifoPoolBalance && Number.isFinite(ifoPoolBalance) && (
         <Flex alignItems="center" justifyContent="space-between" mb="4px">
           <Text color="textSubtle" fontSize="16px">
             {t('IFO Pool')}
@@ -200,22 +200,22 @@ const DetailsView: React.FC<React.PropsWithChildren<DetailsViewProps>> = ({
           <Text textAlign="right">{formatNumber(ifoPoolBalance, 0, 3)}</Text>
         </Flex>
       )}
-      {poolsBalance && Number.isFinite(poolsBalance) && (
+      {poolsBalance && Number.isFinite(poolsBalance) ? (
         <Flex alignItems="center" justifyContent="space-between" mb="4px">
           <Text color="textSubtle" fontSize="16px">
             {t('Other Syrup Pools')}
           </Text>
           <Text textAlign="right">{formatNumber(poolsBalance, 0, 3)}</Text>
         </Flex>
-      )}
-      {cakeBnbLpBalance && Number.isFinite(cakeBnbLpBalance) && (
+      ) : null}
+      {cakeBnbLpBalance && Number.isFinite(cakeBnbLpBalance) ? (
         <Flex alignItems="center" justifyContent="space-between" mb="4px">
           <Text color="textSubtle" fontSize="16px">
             {t('CAKE BNB LP')}
           </Text>
           <Text textAlign="right">{formatNumber(cakeBnbLpBalance, 0, 3)}</Text>
         </Flex>
-      )}
+      ) : null}
     </ModalInner>
   )
 }

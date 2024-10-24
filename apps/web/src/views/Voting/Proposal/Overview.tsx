@@ -1,5 +1,14 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ArrowBackIcon, Box, Button, Flex, Heading, NotFound, ReactMarkdown } from '@pancakeswap/uikit'
+import {
+  ArrowBackIcon,
+  Box,
+  Button,
+  Flex,
+  Heading,
+  NotFound,
+  ReactMarkdown,
+  useMatchBreakpoints,
+} from '@pancakeswap/uikit'
 import { useQuery } from '@tanstack/react-query'
 import Container from 'components/Layout/Container'
 import PageLoader from 'components/Loader/PageLoader'
@@ -23,6 +32,7 @@ const Overview = () => {
   const id = query.id as string
   const { t } = useTranslation()
   const { address: account } = useAccount()
+  const { isDesktop } = useMatchBreakpoints()
 
   const {
     status: proposalLoadingStatus,
@@ -56,8 +66,12 @@ const Overview = () => {
   })
 
   const votes = useMemo(() => data || [], [data])
-
-  const hasAccountVoted = account && votes && votes.some((vote) => vote.voter.toLowerCase() === account.toLowerCase())
+  const hasAccountVoted =
+    account &&
+    votes &&
+    proposal &&
+    proposal.state === ProposalState.ACTIVE &&
+    votes.some((vote) => vote.voter.toLowerCase() === account.toLowerCase())
 
   const isPageLoading = votesLoadingStatus === 'pending' || proposalLoadingStatus === 'pending'
 
@@ -96,19 +110,44 @@ const Overview = () => {
               <ReactMarkdown>{proposal.body}</ReactMarkdown>
             </Box>
           </Box>
-          {!isPageLoading && !hasAccountVoted && proposal.state === ProposalState.ACTIVE && (
-            <Vote proposal={proposal} onSuccess={refetch} mb="16px" />
+          {!isPageLoading && (
+            <Vote
+              mb="16px"
+              proposal={proposal}
+              votes={votes}
+              hasAccountVoted={Boolean(hasAccountVoted)}
+              onSuccess={refetch}
+            />
+          )}
+          {!isDesktop && (
+            <Box mb="16px">
+              <Details proposal={proposal} />
+              <Results
+                proposal={proposal}
+                choices={proposal.choices}
+                votes={votes || []}
+                votesLoadingStatus={votesLoadingStatus}
+              />
+            </Box>
           )}
           <Votes
             votes={votes || []}
+            proposal={proposal}
             totalVotes={votes?.length ?? proposal.votes}
             votesLoadingStatus={votesLoadingStatus}
           />
         </Box>
-        <Box position="sticky" top="60px">
-          <Details proposal={proposal} />
-          <Results choices={proposal.choices} votes={votes || []} votesLoadingStatus={votesLoadingStatus} />
-        </Box>
+        {isDesktop && (
+          <Box position="sticky" top="60px">
+            <Details proposal={proposal} />
+            <Results
+              proposal={proposal}
+              choices={proposal.choices}
+              votes={votes || []}
+              votesLoadingStatus={votesLoadingStatus}
+            />
+          </Box>
+        )}
       </Layout>
     </Container>
   )

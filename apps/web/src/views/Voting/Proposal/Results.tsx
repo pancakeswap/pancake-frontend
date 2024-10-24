@@ -1,64 +1,41 @@
-import { Box, Text, Flex, Card, CardBody, CardHeader, Heading, Progress, Skeleton } from '@pancakeswap/uikit'
-import { FarmWidget } from '@pancakeswap/widgets-internal'
-import { useAccount } from 'wagmi'
-import { Vote } from 'state/types'
-import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import { useTranslation } from '@pancakeswap/localization'
+import { Box, Card, CardBody, CardHeader, Flex, Heading, Skeleton } from '@pancakeswap/uikit'
 import { FetchStatus, TFetchStatus } from 'config/constants/types'
-import { calculateVoteResults, getTotalFromVotes } from '../helpers'
+import { Proposal, ProposalTypeName, Vote } from 'state/types'
+import { SingleVoteResults } from 'views/Voting/Proposal/ResultType/SingleVoteResults'
+import { WeightedVoteResults } from 'views/Voting/Proposal/ResultType/WeightedVoteResults'
 import TextEllipsis from '../components/TextEllipsis'
 
-const { VotedTag } = FarmWidget.Tags
-
 interface ResultsProps {
+  proposal: Proposal
   choices: string[]
   votes: Vote[]
   votesLoadingStatus: TFetchStatus
 }
 
-const Results: React.FC<React.PropsWithChildren<ResultsProps>> = ({ choices, votes, votesLoadingStatus }) => {
+const Results: React.FC<React.PropsWithChildren<ResultsProps>> = ({ proposal, choices, votes, votesLoadingStatus }) => {
   const { t } = useTranslation()
-  const results = calculateVoteResults(votes)
-  const { address: account } = useAccount()
-  const totalVotes = getTotalFromVotes(votes)
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader style={{ background: 'transparent' }}>
         <Heading as="h3" scale="md">
           {t('Current Results')}
         </Heading>
       </CardHeader>
       <CardBody>
-        {votesLoadingStatus === FetchStatus.Fetched &&
-          choices.map((choice, index) => {
-            const choiceVotes = results[choice] || []
-            const totalChoiceVote = getTotalFromVotes(choiceVotes)
-            const progress = totalVotes === 0 ? 0 : (totalChoiceVote / totalVotes) * 100
-            const hasVoted = choiceVotes.some((vote) => {
-              return account && vote.voter.toLowerCase() === account.toLowerCase()
-            })
-
-            return (
-              <Box key={choice} mt={index > 0 ? '24px' : '0px'}>
-                <Flex alignItems="center" mb="8px">
-                  <TextEllipsis mb="4px" title={choice}>
-                    {choice}
-                  </TextEllipsis>
-                  {hasVoted && <VotedTag mr="4px" />}
-                </Flex>
-                <Box mb="4px">
-                  <Progress primaryStep={progress} scale="sm" />
-                </Box>
-                <Flex alignItems="center" justifyContent="space-between">
-                  <Text color="textSubtle">{t('%total% Votes', { total: formatNumber(totalChoiceVote, 0, 2) })}</Text>
-                  <Text>
-                    {progress.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%
-                  </Text>
-                </Flex>
-              </Box>
-            )
-          })}
+        {votesLoadingStatus === FetchStatus.Fetched && (
+          <>
+            {proposal.type === ProposalTypeName.SINGLE_CHOICE && <SingleVoteResults choices={choices} votes={votes} />}
+            {proposal.type === ProposalTypeName.WEIGHTED && (
+              <WeightedVoteResults
+                sortData
+                choices={choices}
+                choicesVotes={choices.map((_, index) => ({ [index + 1]: proposal?.scores?.[index] ?? 0 }))}
+              />
+            )}
+          </>
+        )}
 
         {votesLoadingStatus === FetchStatus.Fetching &&
           choices.map((choice, index) => {

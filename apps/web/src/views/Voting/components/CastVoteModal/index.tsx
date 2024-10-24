@@ -1,10 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Modal, useToast } from '@pancakeswap/uikit'
 import snapshot from '@snapshot-labs/snapshot.js'
-import useTheme from 'hooks/useTheme'
 import { useState } from 'react'
+import { ProposalTypeName } from 'state/types'
 import { PANCAKE_SPACE } from 'views/Voting/config'
 import { VECAKE_VOTING_POWER_BLOCK } from 'views/Voting/helpers'
+import { SingleVoteState, WeightedVoteState } from 'views/Voting/Proposal/VoteType/types'
 import { useAccount, useWalletClient } from 'wagmi'
 import useGetVotingPower from '../../hooks/useGetVotingPower'
 import DetailsView from './DetailsView'
@@ -15,10 +16,12 @@ const hub = 'https://hub.snapshot.org'
 const client = new snapshot.Client712(hub)
 
 const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
+  proposal,
   onSuccess,
   proposalId,
   vote,
   block,
+  voteType,
   onDismiss,
 }) => {
   const [view, setView] = useState<ConfirmVoteView>(ConfirmVoteView.MAIN)
@@ -27,7 +30,6 @@ const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
   const { data: signer } = useWalletClient()
   const { t } = useTranslation()
   const { toastError } = useToast()
-  const { theme } = useTheme()
   const {
     isLoading,
     isError,
@@ -80,9 +82,10 @@ const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
 
       await client.vote(web3 as any, account, {
         space: PANCAKE_SPACE,
-        choice: vote.value,
+        choice:
+          voteType === ProposalTypeName.SINGLE_CHOICE ? (vote as SingleVoteState).value : (vote as WeightedVoteState),
         reason: '',
-        type: 'single-choice',
+        type: voteType,
         proposal: proposalId,
         app: 'snapshot',
       })
@@ -104,7 +107,7 @@ const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
       onBack={handleBack}
       onDismiss={onDismiss}
       hideCloseButton={!isStartView}
-      headerBackground={theme.colors.gradientCardHeader}
+      headerBorderColor="transparent"
     >
       <Box mb="24px">
         {view === ConfirmVoteView.MAIN &&
@@ -112,6 +115,8 @@ const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
             <VeMainView
               block={block}
               vote={vote}
+              proposal={proposal}
+              voteType={voteType}
               total={total}
               isPending={isPending}
               isLoading={isLoading}
@@ -123,7 +128,9 @@ const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
           ) : (
             <MainView
               vote={vote}
+              voteType={voteType}
               isError={isError}
+              proposal={proposal}
               isLoading={isLoading}
               isPending={isPending}
               total={total}

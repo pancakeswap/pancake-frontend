@@ -13,13 +13,14 @@ import {
 import { FetchStatus, TFetchStatus } from 'config/constants/types'
 import orderBy from 'lodash/orderBy'
 import { useState } from 'react'
-import { Vote } from 'state/types'
+import { Proposal, Vote } from 'state/types'
 import { useAccount } from 'wagmi'
 import VoteRow from '../components/Proposal/VoteRow'
 import VotesLoading from '../components/Proposal/VotesLoading'
 
 interface VotesProps {
   votes: Vote[]
+  proposal: Proposal
   totalVotes?: number
   votesLoadingStatus: TFetchStatus
 }
@@ -30,7 +31,7 @@ const parseVotePower = (incomingVote: Vote) => {
   return votingPower
 }
 
-const Votes: React.FC<React.PropsWithChildren<VotesProps>> = ({ votes, votesLoadingStatus, totalVotes }) => {
+const Votes: React.FC<React.PropsWithChildren<VotesProps>> = ({ votes, proposal, votesLoadingStatus, totalVotes }) => {
   const [showAll, setShowAll] = useState(false)
   const { isMobile } = useMatchBreakpoints()
   const { t } = useTranslation()
@@ -47,7 +48,7 @@ const Votes: React.FC<React.PropsWithChildren<VotesProps>> = ({ votes, votesLoad
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader style={{ background: 'transparent' }}>
         <Flex alignItems="center" justifyContent="space-between">
           <Heading as="h3" scale="md">
             {t('Votes (%count%)', { count: totalVotes || '-' })}
@@ -61,7 +62,7 @@ const Votes: React.FC<React.PropsWithChildren<VotesProps>> = ({ votes, votesLoad
         <>
           {displayVotes.map((vote) => {
             const isVoter = account && vote.voter.toLowerCase() === account.toLowerCase()
-            return <VoteRow key={vote.id} vote={vote} isVoter={Boolean(isVoter)} />
+            return <VoteRow key={vote.id} vote={vote} isVoter={Boolean(isVoter)} proposal={proposal} />
           })}
           <Flex alignItems="center" justifyContent="center" py="8px" px="24px">
             <Button
