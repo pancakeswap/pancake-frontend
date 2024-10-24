@@ -39,7 +39,7 @@ const MobileRow: React.FC<React.PropsWithChildren<MobileRowProps>> = ({ rank, us
           {`${user.winRate.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}%`}
         </Text>
       </Row>
-      <NetWinningsRow amount={user.netBNB} token={token} />
+      <NetWinningsRow amount={user.netToken} token={token} />
       <Row>
         <Text fontSize="12px" color="textSubtle">
           {t('Rounds Won')}

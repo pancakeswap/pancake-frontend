@@ -93,7 +93,7 @@ const PreviousBetsTable: React.FC<React.PropsWithChildren<PreviousBetsTableProps
                   <Td textAlign="right">
                     <NetWinningsView
                       token={token}
-                      amount={!isCancelled && isWinner ? bet.claimedNetBNB : bet.amount}
+                      amount={!isCancelled && isWinner ? bet.claimedNetToken : bet.amount}
                       textPrefix={isCancelled ? '' : isWinner ? '+' : '-'}
                       textColor={isCancelled ? 'textSubtle' : isWinner ? 'success' : 'failure'}
                     />

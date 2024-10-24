@@ -26,7 +26,7 @@ import CollectWinningsButton from '../CollectWinningsButton'
 import ReclaimPositionButton from '../ReclaimPositionButton'
 import { AIBetDetails } from './AIPredictions/AIBetDetails'
 import BetDetails from './BetDetails'
-import { formatBnb, getNetPayout } from './helpers'
+import { formatToken, getNetPayout } from './helpers'
 
 interface BetProps {
   bet: Bet
@@ -146,7 +146,7 @@ const HistoricalBet: React.FC<React.PropsWithChildren<BetProps>> = ({ bet }) => 
               </Flex>
             </>
           ) : (
-            `${resultTextPrefix}${formatBnb(payout, config?.balanceDecimals ?? config?.displayedDecimals ?? 4)}`
+            `${resultTextPrefix}${formatToken(payout, config?.balanceDecimals ?? config?.displayedDecimals ?? 4)}`
           )}
         </Text>
       </>
