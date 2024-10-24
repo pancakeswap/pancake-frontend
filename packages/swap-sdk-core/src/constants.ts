@@ -36,3 +36,5 @@ export const VM_TYPE_MAXIMA = {
   [VMType.uint8]: BigInt('0xff'),
   [VMType.uint256]: BigInt('0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'),
 }
+
+export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000' as const

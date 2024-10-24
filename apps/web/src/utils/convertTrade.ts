@@ -18,7 +18,10 @@ export function toRoutingSDKPool(p: SmartRouterPool): Pool {
   if (SmartRouter.isV2Pool(p)) {
     return createV2Pool(p)
   }
-  return createStablePool(p)
+  if (SmartRouter.isStablePool(p)) {
+    return createStablePool(p)
+  }
+  throw new Error(`Unsupported pool type: ${p.type}`)
 }
 
 export function toSmartRouterPool(p: any): SmartRouterPool {

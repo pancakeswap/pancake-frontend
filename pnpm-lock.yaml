@@ -2108,6 +2108,9 @@ importers:
       '@pancakeswap/v3-sdk':
         specifier: workspace:*
         version: link:../v3-sdk
+      '@pancakeswap/v4-sdk':
+        specifier: workspace:*
+        version: link:../v4-sdk
       async-retry:
         specifier: ^1.3.1
         version: 1.3.3
@@ -10317,6 +10320,7 @@ packages:
 
   eciesjs@0.3.18:
     resolution: {integrity: sha512-RQhegEtLSyIiGJmFTZfvCTHER/fymipXFVx6OwSRYD6hOuy+6Kjpk0dGvIfP9kxn/smBpxQy71uxpGO406ITCw==}
+    deprecated: Please upgrade to v0.4+
 
   ee-first@1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
@@ -15885,10 +15889,6 @@ packages:
   undici-types@5.26.5:
     resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
 
-  undici@5.20.0:
-    resolution: {integrity: sha512-J3j60dYzuo6Eevbawwp1sdg16k5Tf768bxYK4TUJRH7cBM4kFCbf3mOnM/0E3vQYXvpxITbbWmBafaDbxLDz3g==}
-    engines: {node: '>=12.18'}
-
   undici@5.28.4:
     resolution: {integrity: sha512-72RFADWFqKmUb2hmmvNODKL3p9hcB6Gt2DOQMis1SEBaV6a4MH8soBvzg+95CYhCKPFedut2JY9bMfrDl9D23g==}
     engines: {node: '>=14.0'}
@@ -18795,7 +18795,7 @@ snapshots:
     dependencies:
       '@binance/w3w-types': 1.1.4
       '@binance/w3w-utils': 1.1.4
-      ws: 8.17.1(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      ws: 8.18.0(bufferutil@4.0.8)(utf-8-validate@5.0.10)
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -21089,7 +21089,7 @@ snapshots:
       lodash: 4.17.21
       semver: 6.3.1
       table: 6.8.1
-      undici: 5.20.0
+      undici: 5.28.4
     transitivePeerDependencies:
       - supports-color
     optional: true
@@ -21589,9 +21589,9 @@ snapshots:
       '@types/ws': 8.5.10
       axios: 1.7.2(debug@4.3.4)
       axios-retry: 3.9.1
-      isomorphic-ws: 4.0.1(ws@8.17.1(bufferutil@4.0.8)(utf-8-validate@5.0.10))
+      isomorphic-ws: 4.0.1(ws@8.18.0(bufferutil@4.0.8)(utf-8-validate@5.0.10))
       ts-log: 2.2.5
-      ws: 8.17.1(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      ws: 8.18.0(bufferutil@4.0.8)(utf-8-validate@5.0.10)
     transitivePeerDependencies:
       - bufferutil
       - debug
@@ -23503,7 +23503,7 @@ snapshots:
       util: 0.12.5
       util-deprecate: 1.0.2
       watchpack: 2.4.0
-      ws: 8.17.1(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      ws: 8.18.0(bufferutil@4.0.8)(utf-8-validate@5.0.10)
     transitivePeerDependencies:
       - bufferutil
       - encoding
@@ -25567,7 +25567,7 @@ snapshots:
       '@walletconnect/jsonrpc-provider': 1.0.14
       '@walletconnect/jsonrpc-types': 1.0.4
       '@walletconnect/jsonrpc-utils': 1.0.8
-      '@walletconnect/modal': 2.6.2(@types/react@18.2.37)(react@18.2.0)
+      '@walletconnect/modal': 2.7.0(@types/react@18.2.37)(react@18.2.0)
       '@walletconnect/sign-client': 2.11.0(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       '@walletconnect/types': 2.11.0
       '@walletconnect/universal-provider': 2.11.0(bufferutil@4.0.8)(utf-8-validate@5.0.10)
@@ -30408,11 +30408,11 @@ snapshots:
   h3@1.8.2:
     dependencies:
       cookie-es: 1.0.0
-      defu: 6.1.3
+      defu: 6.1.4
       destr: 2.0.2
       iron-webcrypto: 0.10.1
       radix3: 1.1.0
-      ufo: 1.3.1
+      ufo: 1.5.4
       uncrypto: 0.1.3
       unenv: 1.7.4
 
@@ -30507,7 +30507,7 @@ snapshots:
       source-map-support: 0.5.21
       stacktrace-parser: 0.1.10
       tsort: 0.0.1
-      undici: 5.20.0
+      undici: 5.28.4
       uuid: 8.3.2
       ws: 7.5.9(bufferutil@4.0.8)(utf-8-validate@5.0.10)
     optionalDependencies:
@@ -31060,9 +31060,9 @@ snapshots:
     dependencies:
       ws: 7.5.9(bufferutil@4.0.8)(utf-8-validate@5.0.10)
 
-  isomorphic-ws@4.0.1(ws@8.17.1(bufferutil@4.0.8)(utf-8-validate@5.0.10)):
+  isomorphic-ws@4.0.1(ws@8.18.0(bufferutil@4.0.8)(utf-8-validate@5.0.10)):
     dependencies:
-      ws: 8.17.1(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      ws: 8.18.0(bufferutil@4.0.8)(utf-8-validate@5.0.10)
 
   isows@1.0.3(ws@8.13.0(bufferutil@4.0.8)(utf-8-validate@5.0.10)):
     dependencies:
@@ -31636,16 +31636,16 @@ snapshots:
       citty: 0.1.4
       clipboardy: 3.0.0
       consola: 3.2.3
-      defu: 6.1.3
+      defu: 6.1.4
       get-port-please: 3.1.1
       h3: 1.8.2
       http-shutdown: 1.2.2
       jiti: 1.21.0
       mlly: 1.4.2
       node-forge: 1.3.1
-      pathe: 1.1.1
+      pathe: 1.1.2
       std-env: 3.7.0
-      ufo: 1.3.1
+      ufo: 1.5.4
       untun: 0.1.2
       uqr: 0.1.2
 
@@ -32795,7 +32795,7 @@ snapshots:
     dependencies:
       destr: 2.0.2
       node-fetch-native: 1.4.1
-      ufo: 1.3.1
+      ufo: 1.5.4
 
   ohash@1.1.4: {}
 
@@ -36019,11 +36019,6 @@ snapshots:
 
   undici-types@5.26.5: {}
 
-  undici@5.20.0:
-    dependencies:
-      busboy: 1.6.0
-    optional: true
-
   undici@5.28.4:
     dependencies:
       '@fastify/busboy': 2.1.1
@@ -36139,7 +36134,7 @@ snapshots:
     dependencies:
       citty: 0.1.4
       consola: 3.2.3
-      pathe: 1.1.1
+      pathe: 1.1.2
 
   update-browserslist-db@1.0.13(browserslist@4.22.1):
     dependencies:
@@ -37232,11 +37227,6 @@ snapshots:
       utf-8-validate: 5.0.10
 
   ws@8.13.0(bufferutil@4.0.8)(utf-8-validate@5.0.10):
-    optionalDependencies:
-      bufferutil: 4.0.8
-      utf-8-validate: 5.0.10
-
-  ws@8.17.1(bufferutil@4.0.8)(utf-8-validate@5.0.10):
     optionalDependencies:
       bufferutil: 4.0.8
       utf-8-validate: 5.0.10

@@ -1,34 +1,59 @@
+import { ChainId } from '@pancakeswap/chains'
+import { V4_SUPPORTED_CHAINS } from '../../constants/v4'
 import { QuoteProvider, QuoterConfig, QuoterOptions, RouteType, RouteWithQuote, RouteWithoutQuote } from '../types'
 import { isV3Pool } from '../utils'
 import { createOffChainQuoteProvider } from './offChainQuoteProvider'
-import { createMixedRouteOnChainQuoteProvider, createV3OnChainQuoteProvider } from './onChainQuoteProvider'
+import {
+  createMixedRouteOnChainQuoteProvider,
+  createV3OnChainQuoteProvider,
+  createV4ClOnChainQuoteProvider,
+  createMixedRouteOnChainQuoteProviderV2,
+} from './onChainQuoteProvider'
 
 // For evm
 export function createQuoteProvider(config: QuoterConfig): QuoteProvider<QuoterConfig> {
   const { onChainProvider, multicallConfigs, gasLimit } = config
   const offChainQuoteProvider = createOffChainQuoteProvider()
-  const mixedRouteOnChainQuoteProvider = createMixedRouteOnChainQuoteProvider({
+  const mixedRouteOnChainQuoteProviderV1 = createMixedRouteOnChainQuoteProvider({
+    onChainProvider,
+    multicallConfigs,
+    gasLimit,
+  })
+  const mixedRouteOnChainQuoteProviderV2 = createMixedRouteOnChainQuoteProviderV2({
     onChainProvider,
     multicallConfigs,
     gasLimit,
   })
   const v3OnChainQuoteProvider = createV3OnChainQuoteProvider({ onChainProvider, multicallConfigs, gasLimit })
+  const v4ClOnChainQuoteProvider = createV4ClOnChainQuoteProvider({ onChainProvider, multicallConfigs, gasLimit })
 
   const createGetRouteWithQuotes = (isExactIn = true) => {
     const getOffChainQuotes = isExactIn
       ? offChainQuoteProvider.getRouteWithQuotesExactIn
       : offChainQuoteProvider.getRouteWithQuotesExactOut
-    const getMixedRouteQuotes = isExactIn
-      ? mixedRouteOnChainQuoteProvider.getRouteWithQuotesExactIn
-      : mixedRouteOnChainQuoteProvider.getRouteWithQuotesExactOut
     const getV3Quotes = isExactIn
       ? v3OnChainQuoteProvider.getRouteWithQuotesExactIn
       : v3OnChainQuoteProvider.getRouteWithQuotesExactOut
+    const getV4ClQuotes = isExactIn
+      ? v4ClOnChainQuoteProvider.getRouteWithQuotesExactIn
+      : v4ClOnChainQuoteProvider.getRouteWithQuotesExactOut
+    const createMixedRouteQuoteFetcher = (chainId: ChainId) => {
+      const mixedRouteOnChainQuoteProvider = V4_SUPPORTED_CHAINS.includes(chainId)
+        ? mixedRouteOnChainQuoteProviderV2
+        : mixedRouteOnChainQuoteProviderV1
+      return isExactIn
+        ? mixedRouteOnChainQuoteProvider.getRouteWithQuotesExactIn
+        : mixedRouteOnChainQuoteProvider.getRouteWithQuotesExactOut
+    }
 
     return async function getRoutesWithQuotes(
       routes: RouteWithoutQuote[],
       { blockNumber, gasModel, signal }: QuoterOptions,
     ): Promise<RouteWithQuote[]> {
+      const { chainId } = routes[0].input
+      const getMixedRouteQuotes = createMixedRouteQuoteFetcher(chainId)
+
+      const v4ClRoutes: RouteWithoutQuote[] = []
       const v3SingleHopRoutes: RouteWithoutQuote[] = []
       const v3MultihopRoutes: RouteWithoutQuote[] = []
       const mixedRoutesHaveV3Pool: RouteWithoutQuote[] = []
@@ -46,6 +71,10 @@ export function createQuoteProvider(config: QuoterConfig): QuoteProvider<QuoterC
           v3MultihopRoutes.push(route)
           continue
         }
+        if (route.type === RouteType.V4CL) {
+          v4ClRoutes.push(route)
+          continue
+        }
         const { pools } = route
         if (pools.some((pool) => isV3Pool(pool))) {
           mixedRoutesHaveV3Pool.push(route)
@@ -59,6 +88,7 @@ export function createQuoteProvider(config: QuoterConfig): QuoteProvider<QuoterC
         getMixedRouteQuotes(mixedRoutesHaveV3Pool, { blockNumber, gasModel, retry: { retries: 0 }, signal }),
         getV3Quotes(v3SingleHopRoutes, { blockNumber, gasModel, signal }),
         getV3Quotes(v3MultihopRoutes, { blockNumber, gasModel, retry: { retries: 1 }, signal }),
+        getV4ClQuotes(v4ClRoutes, { blockNumber, gasModel, signal }),
       ])
       if (results.every((result) => result.status === 'rejected')) {
         throw new Error(results.map((result) => (result as PromiseRejectedResult).reason).join(','))

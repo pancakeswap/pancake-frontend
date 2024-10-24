@@ -14,9 +14,9 @@ import { PoolMeta, V3PoolMeta } from './internalTypes'
 export const getV2PoolsOnChain = createOnChainPoolFactory<V2Pool, PoolMeta>({
   abi: pancakePairABI,
   getPossiblePoolMetas: ([currencyA, currencyB]) => [
-    { address: computeV2PoolAddress(currencyA.wrapped, currencyB.wrapped), currencyA, currencyB },
+    { id: computeV2PoolAddress(currencyA.wrapped, currencyB.wrapped), currencyA, currencyB },
   ],
-  buildPoolInfoCalls: ({ address }) => [
+  buildPoolInfoCalls: ({ id: address }) => [
     {
       address,
       functionName: 'getReserves',
@@ -53,12 +53,12 @@ export const getStablePoolsOnChain = createOnChainPoolFactory<StablePool, PoolMe
         )
       })
       .map(({ stableSwapAddress }) => ({
-        address: stableSwapAddress,
+        id: stableSwapAddress,
         currencyA,
         currencyB,
       }))
   },
-  buildPoolInfoCalls: ({ address }) => [
+  buildPoolInfoCalls: ({ id: address }) => [
     {
       address,
       functionName: 'balances',
@@ -85,7 +85,7 @@ export const getStablePoolsOnChain = createOnChainPoolFactory<StablePool, PoolMe
       args: [],
     },
   ],
-  buildPool: ({ currencyA, currencyB, address }, [balance0, balance1, a, fee, feeDenominator]) => {
+  buildPool: ({ currencyA, currencyB, id: address }, [balance0, balance1, a, fee, feeDenominator]) => {
     if (!balance0 || !balance1 || !a || !fee || !feeDenominator) {
       return null
     }
@@ -113,7 +113,7 @@ export const getV3PoolsWithoutTicksOnChain = createOnChainPoolFactory<V3Pool, V3
       return []
     }
     return [FeeAmount.LOWEST, FeeAmount.LOW, FeeAmount.MEDIUM, FeeAmount.HIGH].map((fee) => ({
-      address: computeV3PoolAddress({
+      id: computeV3PoolAddress({
         deployerAddress,
         tokenA: currencyA.wrapped,
         tokenB: currencyB.wrapped,
@@ -124,7 +124,7 @@ export const getV3PoolsWithoutTicksOnChain = createOnChainPoolFactory<V3Pool, V3
       fee,
     }))
   },
-  buildPoolInfoCalls: ({ address, currencyA, currencyB }) => [
+  buildPoolInfoCalls: ({ id: address, currencyA, currencyB }) => [
     {
       address,
       functionName: 'liquidity',
@@ -146,7 +146,7 @@ export const getV3PoolsWithoutTicksOnChain = createOnChainPoolFactory<V3Pool, V3
       args: [address],
     },
   ],
-  buildPool: ({ currencyA, currencyB, fee, address }, [liquidity, slot0, balanceA, balanceB]) => {
+  buildPool: ({ currencyA, currencyB, fee, id: address }, [liquidity, slot0, balanceA, balanceB]) => {
     if (!slot0) {
       return null
     }
@@ -187,7 +187,7 @@ interface OnChainPoolFactoryParams<TPool extends Pool, TPoolMeta extends PoolMet
   buildPool: (poolMeta: TPoolMeta, data: any[]) => TPool | null
 }
 
-function createOnChainPoolFactory<
+export function createOnChainPoolFactory<
   TPool extends Pool,
   TPoolMeta extends PoolMeta = PoolMeta,
   TAbi extends Abi | unknown[] = Abi,
@@ -213,9 +213,9 @@ function createOnChainPoolFactory<
     for (const pair of pairs) {
       const possiblePoolMetas = getPossiblePoolMetas(pair)
       for (const meta of possiblePoolMetas) {
-        if (!poolAddressSet.has(meta.address)) {
+        if (!poolAddressSet.has(meta.id)) {
           poolMetas.push(meta)
-          poolAddressSet.add(meta.address)
+          poolAddressSet.add(meta.id)
         }
       }
     }

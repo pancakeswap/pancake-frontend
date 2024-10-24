@@ -1,5 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
-import { BigintIsh, Currency, CurrencyAmount } from '@pancakeswap/sdk'
+import { BigintIsh, Currency, CurrencyAmount, getCurrencyAddress } from '@pancakeswap/swap-sdk-core'
 import { AbortControl, isAbortError } from '@pancakeswap/utils/abortControl'
 import retry from 'async-retry'
 import { Abi, Address } from 'viem'
@@ -21,6 +21,12 @@ import {
 import { encodeMixedRouteToPath, getQuoteCurrency, isStablePool, isV2Pool, isV3Pool } from '../utils'
 import { Result } from './multicallProvider'
 import { PancakeMulticallProvider } from './multicallSwapProvider'
+import { V4_CL_QUOTER_ADDRESSES, V4_MIXED_ROUTE_QUOTER_ADDRESSES } from '../../constants/v4'
+import { clQuoterAbi } from '../../abis/ICLQuoter'
+import { PathKey, encodeV4ClRouteToPath } from '../utils/encodeV4ClRouteToPath'
+import { v4MixedRouteQuoterAbi } from '../../abis/IV4MixedRouteQuoter'
+import { encodeV4MixedRouteActions } from '../utils/encodeV4MixedRouteActions'
+import { encodeV4MixedRouteParams } from '../utils/encodeV4MixedRouteParams'
 
 const DEFAULT_BATCH_RETRIES = 2
 
@@ -47,9 +53,17 @@ const SUCCESS_RATE_CONFIG = {
   [ChainId.BASE_SEPOLIA]: 0.1,
 } as const satisfies Record<ChainId, number>
 
+type V4ClInputs = [
+  {
+    exactAmount: string
+    exactCurrency: string
+    path: PathKey[]
+  },
+]
 type V3Inputs = [string, string]
 type MixedInputs = [string, number[], string]
-type CallInputs = V3Inputs | MixedInputs
+type V4MixedInputs = [string[], string, string[], string]
+type CallInputs = V3Inputs | MixedInputs | V4ClInputs | V4MixedInputs
 
 type AdjustQuoteForGasHandler = (params: {
   isExactIn?: boolean
@@ -325,7 +339,7 @@ function validateSuccessRate(
 // }
 
 function processQuoteResults(
-  quoteResults: (Result<[bigint, bigint[], number[], bigint]> | null)[],
+  quoteResults: (Result<[bigint, bigint[], number[], bigint] | [bigint, bigint]> | null)[],
   routes: RouteWithoutQuote[],
   gasModel: GasModel,
   adjustQuoteForGas: AdjustQuoteForGasHandler,
@@ -358,14 +372,16 @@ function processQuoteResults(
       continue
     }
 
+    const [quoteRaw] = quoteResult.result
+    const initializedTickCrossedList = quoteResult.result.length === 4 ? quoteResult.result[2] : []
     const quoteCurrency = getQuoteCurrency(route, route.amount.currency)
-    const quote = CurrencyAmount.fromRawAmount(quoteCurrency.wrapped, quoteResult.result[0].toString())
+    const quote = CurrencyAmount.fromRawAmount(quoteCurrency, quoteRaw.toString())
     const { gasEstimate, gasCostInToken, gasCostInUSD } = gasModel.estimateGasCost(
       {
         ...route,
         quote,
       },
-      { initializedTickCrossedList: quoteResult.result[2] },
+      { initializedTickCrossedList },
     )
 
     routesWithQuote.push({
@@ -436,6 +452,31 @@ export const createV3OnChainQuoteProvider = onChainQuoteProviderFactory({
   abi: quoterV2ABI,
   getCallInputs: (route, isExactIn) => [
     encodeMixedRouteToPath(route, !isExactIn),
+    `0x${route.amount.quotient.toString(16)}`,
+  ],
+})
+
+export const createV4ClOnChainQuoteProvider = onChainQuoteProviderFactory({
+  getQuoterAddress: (chainId) => (V4_CL_QUOTER_ADDRESSES as any)[chainId],
+  getQuoteFunctionName: (isExactIn) => (isExactIn ? 'quoteExactInput' : 'quoteExactOutput'),
+  abi: clQuoterAbi,
+  getCallInputs: (route, isExactIn) => [
+    {
+      exactCurrency: getCurrencyAddress(isExactIn ? route.input : route.output),
+      path: encodeV4ClRouteToPath(route, !isExactIn),
+      exactAmount: `0x${route.amount.quotient.toString(16)}`,
+    },
+  ],
+})
+
+export const createMixedRouteOnChainQuoteProviderV2 = onChainQuoteProviderFactory({
+  getQuoterAddress: (chainId) => (V4_MIXED_ROUTE_QUOTER_ADDRESSES as any)[chainId],
+  getQuoteFunctionName: () => 'quoteMixedExactInput',
+  abi: v4MixedRouteQuoterAbi,
+  getCallInputs: (route) => [
+    route.path.map((p) => getCurrencyAddress(p)),
+    encodeV4MixedRouteActions(route),
+    encodeV4MixedRouteParams(route),
     `0x${route.amount.quotient.toString(16)}`,
   ],
 })
