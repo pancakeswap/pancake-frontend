@@ -131,7 +131,7 @@ const DetailsView: React.FC<React.PropsWithChildren<DetailsViewProps>> = ({
           {block}
         </StyledScanLink>
       </Text>
-      {cakeBalance && Number.isFinite(cakeBalance) && (
+      {cakeBalance && Number.isFinite(cakeBalance) && Number(cakeBalance) > 0 && (
         <Flex alignItems="center" justifyContent="space-between" mb="4px">
           <Text color="textSubtle" fontSize="16px">
             {t('Wallet')}
@@ -139,7 +139,7 @@ const DetailsView: React.FC<React.PropsWithChildren<DetailsViewProps>> = ({
           <Text textAlign="right">{formatNumber(cakeBalance, 0, 3)}</Text>
         </Flex>
       )}
-      {cakeVaultBalance && Number.isFinite(cakeVaultBalance) && (
+      {cakeVaultBalance && Number.isFinite(cakeVaultBalance) && Number(cakeVaultBalance) > 0 && (
         <Flex alignItems="center" justifyContent="space-between" mb="4px">
           <Text color="textSubtle" fontSize="16px">
             {t('Flexible CAKE Staking')}
@@ -200,7 +200,7 @@ const DetailsView: React.FC<React.PropsWithChildren<DetailsViewProps>> = ({
           <Text textAlign="right">{formatNumber(ifoPoolBalance, 0, 3)}</Text>
         </Flex>
       )}
-      {poolsBalance && Number.isFinite(poolsBalance) && (
+      {poolsBalance && Number.isFinite(poolsBalance) && Number(poolsBalance) > 0 && (
         <Flex alignItems="center" justifyContent="space-between" mb="4px">
           <Text color="textSubtle" fontSize="16px">
             {t('Other Syrup Pools')}
