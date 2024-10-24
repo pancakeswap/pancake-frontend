@@ -70,7 +70,7 @@ export default function V4Swap() {
   )
 
   return (
-    <Page removePadding hideFooterOnDesktop={isChartExpanded || true} showExternalLink={false} showHelpLink={false}>
+    <Page removePadding hideFooterOnDesktop={isChartExpanded || false} showExternalLink={false} showHelpLink>
       <Flex
         width="100%"
         height="100%"

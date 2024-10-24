@@ -363,7 +363,7 @@ export const RiskDetailsModal: React.FC<React.PropsWithChildren<RiskDetailsModal
   const { t } = useTranslation()
   return (
     <ModalV2 isOpen={isOpen} closeOnOverlayClick onDismiss={onDismiss}>
-      <Modal title={t('Note for this swap')} hideCloseButton maxWidth={['unset', 'unset', 'unset', '480px']}>
+      <Modal title={t('Note for this swap')} hideCloseButton maxWidth={[null, null, null, '480px']}>
         {children}
       </Modal>
     </ModalV2>

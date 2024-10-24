@@ -155,7 +155,7 @@ export const SettingsModalV2 = ({
 
   return (
     <MotionModal
-      minWidth={['unset', 'unset', '420px']}
+      minWidth={[null, null, '420px']}
       minHeight={isMobile ? '500px' : undefined}
       headerPadding="2px 14px 0 24px"
       headerRightSlot={
