@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Text, useMatchBreakpoints, useModal } from '@pancakeswap/uikit'
 import {
   BackgroundGraphic,
   BannerActionContainer,
@@ -15,6 +15,10 @@ import {
 } from '@pancakeswap/widgets-internal'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import styled from 'styled-components'
+import USCitizenConfirmModal from 'components/Modal/USCitizenConfirmModal'
+import { IdType, useUserNotUsCitizenAcknowledgement } from 'hooks/useUserIsUsCitizenAcknowledgement'
+import { OPTIONS_URL } from 'config/constants'
+import { useCallback } from 'react'
 
 const floatingAsset = `${ASSET_CDN}/web/banners/options/floating-item.png`
 const bgDesktop = `${ASSET_CDN}/web/banners/options/bg-desktop.png`
@@ -46,29 +50,67 @@ const StyledButtonLinkAction = styled(ButtonLinkAction)`
   white-space: nowrap;
 `
 
-const tryItNowLink = 'https://pancakeswap.stryke.xyz'
 const learnMoreLink =
   'https://blog.pancakeswap.finance/articles/introducing-clamm-options-trading-on-pancake-swap-in-collaboration-with-stryke-formerly-dopex'
+
+const TryItNowAction: React.FC = () => {
+  const { t } = useTranslation()
+  const { isMobile } = useMatchBreakpoints()
+  const [optionsConfirmed] = useUserNotUsCitizenAcknowledgement(IdType.OPTIONS)
+
+  const [onOptionsConfirmModalPresent] = useModal(
+    <USCitizenConfirmModal
+      title={t('PancakeSwap Options')}
+      id={IdType.OPTIONS}
+      href={OPTIONS_URL}
+      desc={
+        <Text mt="0.5rem">
+          {t(
+            'Please note that you are being redirected to an externally hosted website associated with our partner Stryke (formerly Dopex).',
+          )}
+        </Text>
+      }
+    />,
+    true,
+    false,
+    'optionsConfirmModal',
+  )
+
+  const onClick = useCallback(
+    (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
+      const preventRedirect = () => {
+        e.preventDefault()
+        e.stopPropagation()
+      }
+
+      if (!optionsConfirmed) {
+        preventRedirect()
+        onOptionsConfirmModalPresent()
+      }
+    },
+    [optionsConfirmed, onOptionsConfirmModalPresent],
+  )
+
+  return isMobile ? (
+    <LinkExternalAction
+      fontSize={['14px']}
+      color="primary"
+      href={OPTIONS_URL}
+      onClick={onClick}
+      externalIcon="arrowForward"
+    >
+      {t('Try it now')}
+    </LinkExternalAction>
+  ) : (
+    <StyledButtonLinkAction color="#3A3057" href={OPTIONS_URL} onClick={onClick} externalIcon="arrowForward">
+      {t('Try it now')}
+    </StyledButtonLinkAction>
+  )
+}
 
 export const OptionsBanner = () => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
-
-  const TryItNowAction = isMobile ? (
-    <LinkExternalAction fontSize={['14px']} color="primary" href={tryItNowLink} externalIcon="arrowForward">
-      {t('Try it now')}
-    </LinkExternalAction>
-  ) : (
-    <StyledButtonLinkAction color="#3A3057" href={tryItNowLink} externalIcon="arrowForward">
-      {t('Try it now')}
-    </StyledButtonLinkAction>
-  )
-
-  const learnMoreAction = (
-    <LinkExternalAction color="primary" href={learnMoreLink}>
-      {t('Learn more')}
-    </LinkExternalAction>
-  )
 
   return (
     <BannerContainer background="linear-gradient(180deg, #313C5C 0%, #3C2C55 100%)">
@@ -93,8 +135,12 @@ export const OptionsBanner = () => {
         }
         actions={
           <BannerActionContainer>
-            {TryItNowAction}
-            {isMobile ? null : learnMoreAction}
+            <TryItNowAction />
+            {isMobile ? null : (
+              <LinkExternalAction color="primary" href={learnMoreLink}>
+                {t('Learn more')}
+              </LinkExternalAction>
+            )}
           </BannerActionContainer>
         }
       />

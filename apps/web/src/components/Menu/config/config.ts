@@ -15,8 +15,8 @@ import {
   SwapIcon,
 } from '@pancakeswap/uikit'
 import { SUPPORT_CAKE_STAKING, SUPPORT_FARMS, SUPPORT_ONLY_BSC } from 'config/constants/supportChains'
-import { getOptionsUrl } from 'utils/getOptionsUrl'
 import { getPerpetualUrl } from 'utils/getPerpetualUrl'
+import { OPTIONS_URL } from 'config/constants'
 
 export type ConfigMenuDropDownItemsType = DropdownMenuItems & {
   hideSubNav?: boolean
@@ -73,7 +73,7 @@ const config: (
         },
         {
           label: t('Options'),
-          href: getOptionsUrl(),
+          href: OPTIONS_URL,
           confirmModalId: 'optionsConfirmModal',
           type: DropdownMenuItemType.EXTERNAL_LINK,
         },
