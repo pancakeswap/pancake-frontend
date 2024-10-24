@@ -136,14 +136,14 @@ export default function AddLiquidity({
   const [allowedSlippage] = useUserSlippage() // custom from users
 
   // get the max amounts user can add
-  const maxAmounts: { [field in Field]?: CurrencyAmount<Token> } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
-    (accumulator, field) => {
-      return {
-        ...accumulator,
-        [field]: maxAmountSpend(currencyBalances[field]),
-      }
-    },
-    {},
+  const maxAmounts: { [field in Field]?: CurrencyAmount<Token> } = useMemo(
+    () =>
+      [Field.CURRENCY_A, Field.CURRENCY_B].reduce((accumulator, field) => {
+        // eslint-disable-next-line no-param-reassign
+        accumulator[field] = maxAmountSpend(currencyBalances[field])
+        return accumulator
+      }, {}),
+    [currencyBalances],
   )
 
   const { handleCurrencyASelect, handleCurrencyBSelect } = useCurrencySelectRoute()

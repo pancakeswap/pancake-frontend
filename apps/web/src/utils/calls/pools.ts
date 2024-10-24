@@ -85,6 +85,7 @@ export const getActivePools = async (chainId: ChainId, block?: number): Promise<
       return accum
     }
 
-    return [...accum, poolCheck]
+    accum.push(poolCheck)
+    return accum
   }, [])
 }
