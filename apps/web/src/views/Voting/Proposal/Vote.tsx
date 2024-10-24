@@ -111,26 +111,30 @@ const VoteComponent: React.FC<React.PropsWithChildren<VoteProps>> = ({
           <Heading as="h3" scale="md" mr="auto">
             {t('Cast your vote')}
           </Heading>
-          <Flex alignItems="center">
-            <Text color={notEnoughVeCake ? 'failure' : 'text'}>{t('veCake Balance')}:</Text>
-            <Balance
-              bold
-              fontSize="20px"
-              m="0 4px 0 8px"
-              lineHeight="110%"
-              decimals={2}
-              color={notEnoughVeCake ? 'failure' : 'text'}
-              value={getBalanceNumber(balance)}
-            />
-            <Image
-              width={32}
-              height={32}
-              style={{ minWidth: '32px' }}
-              src={
-                notEnoughVeCake ? '/images/cake-staking/not-enough-veCAKE.png' : '/images/cake-staking/token-vecake.png'
-              }
-            />
-          </Flex>
+          {account && (
+            <Flex alignItems="center">
+              <Text color={notEnoughVeCake ? 'failure' : 'text'}>{t('veCake Balance')}:</Text>
+              <Balance
+                bold
+                fontSize="20px"
+                m="0 4px 0 8px"
+                lineHeight="110%"
+                decimals={2}
+                color={notEnoughVeCake ? 'failure' : 'text'}
+                value={getBalanceNumber(balance)}
+              />
+              <Image
+                width={32}
+                height={32}
+                style={{ minWidth: '32px' }}
+                src={
+                  notEnoughVeCake
+                    ? '/images/cake-staking/not-enough-veCAKE.png'
+                    : '/images/cake-staking/token-vecake.png'
+                }
+              />
+            </Flex>
+          )}
         </Flex>
       </CardHeader>
       <CardBody>
