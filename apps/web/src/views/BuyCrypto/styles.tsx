@@ -78,7 +78,7 @@ export const FilterdNetworkWrapper = styled(Flex)<{ showPopOver: boolean }>`
   position: absolute;
   width: 100%;
   background: ${({ theme }) => theme.colors.backgroundAlt};
-
+  max-height: 100%;
   display: flex;
   flex-direction: column;
   height: max-content;
