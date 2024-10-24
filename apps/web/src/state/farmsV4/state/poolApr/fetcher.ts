@@ -389,39 +389,6 @@ const getV2PoolsCakeAprByChainId = async (
     } as const
   })
 
-  const totalSupplyCalls = validPools.map((pool) => {
-    return {
-      address: pool.lpAddress,
-      functionName: 'totalSupply',
-      abi: erc20Abi,
-    } as const
-  })
-
-  const reserve0Calls = validPools.map((pool) => {
-    return {
-      address: pool.token0.wrapped.address,
-      functionName: 'balanceOf',
-      abi: erc20Abi,
-      args: [pool.stableSwapAddress ?? pool.lpAddress],
-    } as const
-  })
-  const reserve1Calls = validPools.map((pool) => {
-    return {
-      address: pool.token1.wrapped.address,
-      functionName: 'balanceOf',
-      abi: erc20Abi,
-      args: [pool.stableSwapAddress ?? pool.lpAddress],
-    } as const
-  })
-
-  const totalBoostedShareCalls = validPools.map((pool) => {
-    return {
-      address: pool.bCakeWrapperAddress!,
-      functionName: 'totalBoostedShare',
-      abi: v2BCakeWrapperABI,
-    } as const
-  })
-
   const endTimestampCalls = validPools.map((pool) => {
     return {
       address: pool.bCakeWrapperAddress!,
@@ -430,48 +397,94 @@ const getV2PoolsCakeAprByChainId = async (
     } as const
   })
 
-  const priceCalls = validPools.map(async (pool) => {
+  const [rewardPerSecondResults, endTimestamps] = await Promise.all([
+    client.multicall({
+      contracts: rewardPerSecondCalls,
+      allowFailure: false,
+    }),
+    client.multicall({
+      contracts: endTimestampCalls,
+      allowFailure: false,
+    }),
+  ])
+
+  const activeRewardPerSecondResults: bigint[] = []
+
+  const now = dayjs().unix()
+
+  const activeValidPools = validPools.filter((pool, index) => {
+    const rewardPerSecond = rewardPerSecondResults[index]
+    if (!rewardPerSecond) return false
+    const endTimestamp = endTimestamps[index]
+    const expired = endTimestamp && Number(endTimestamp) < now
+    if (expired) return false
+    activeRewardPerSecondResults.push(rewardPerSecond)
+    return true
+  })
+
+  const totalSupplyCalls = activeValidPools.map((pool) => {
+    return {
+      address: pool.lpAddress,
+      functionName: 'totalSupply',
+      abi: erc20Abi,
+    } as const
+  })
+
+  const reserve0Calls = activeValidPools.map((pool) => {
+    return {
+      address: pool.token0.wrapped.address,
+      functionName: 'balanceOf',
+      abi: erc20Abi,
+      args: [pool.stableSwapAddress ?? pool.lpAddress],
+    } as const
+  })
+  const reserve1Calls = activeValidPools.map((pool) => {
+    return {
+      address: pool.token1.wrapped.address,
+      functionName: 'balanceOf',
+      abi: erc20Abi,
+      args: [pool.stableSwapAddress ?? pool.lpAddress],
+    } as const
+  })
+
+  const totalBoostedShareCalls = activeValidPools.map((pool) => {
+    return {
+      address: pool.bCakeWrapperAddress!,
+      functionName: 'totalBoostedShare',
+      abi: v2BCakeWrapperABI,
+    } as const
+  })
+
+  const priceCalls = activeValidPools.map(async (pool) => {
     return Promise.all([usdPriceBatcher.fetch(pool.token0), usdPriceBatcher.fetch(pool.token1)])
   })
 
-  const [rewardPerSecondResults, totalBoostedShareResults, totalSupplies, reserve0s, reserve1s, endTimestamps, prices] =
-    await Promise.all([
-      client.multicall({
-        contracts: rewardPerSecondCalls,
-        allowFailure: false,
-      }),
-      client.multicall({
-        contracts: totalBoostedShareCalls,
-        allowFailure: false,
-      }),
-      client.multicall({
-        contracts: totalSupplyCalls,
-        allowFailure: false,
-      }),
-      client.multicall({
-        contracts: reserve0Calls,
-        allowFailure: false,
-      }),
-      client.multicall({
-        contracts: reserve1Calls,
-        allowFailure: false,
-      }),
-      client.multicall({
-        contracts: endTimestampCalls,
-        allowFailure: false,
-      }),
-      Promise.all(priceCalls),
-    ])
+  const [totalBoostedShareResults, totalSupplies, reserve0s, reserve1s, prices] = await Promise.all([
+    client.multicall({
+      contracts: totalBoostedShareCalls,
+      allowFailure: false,
+    }),
+    client.multicall({
+      contracts: totalSupplyCalls,
+      allowFailure: false,
+    }),
+    client.multicall({
+      contracts: reserve0Calls,
+      allowFailure: false,
+    }),
+    client.multicall({
+      contracts: reserve1Calls,
+      allowFailure: false,
+    }),
+    Promise.all(priceCalls),
+  ])
 
-  return validPools.reduce((acc, pool, index) => {
-    const rewardPerSecond = rewardPerSecondResults[index]
+  return activeValidPools.reduce((acc, pool, index) => {
+    const rewardPerSecond = activeRewardPerSecondResults[index]
     const totalBoostShare = totalBoostedShareResults[index]
-    const endTimestamp = endTimestamps[index]
-    const expired = endTimestamp && Number(endTimestamp) < dayjs().unix()
     const [token0PriceUsd, token1PriceUsd] = prices[index]
     const token0Reserve = reserve0s[index]
     const token1Reserve = reserve1s[index]
-    if (!rewardPerSecond || expired) return acc
     const key = `${chainId}:${safeGetAddress(pool.lpAddress)}`
     set(
       acc,
