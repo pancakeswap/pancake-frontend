@@ -1,4 +1,8 @@
-import { UNIVERSAL_FARMS, UNIVERSAL_FARMS_WITH_TESTNET, formatUniversalFarmToSerializedFarm } from '@pancakeswap/farms'
+import {
+  fetchAllUniversalFarms,
+  formatUniversalFarmToSerializedFarm,
+  UNIVERSAL_FARMS_WITH_TESTNET,
+} from '@pancakeswap/farms'
 import { NextApiHandler } from 'next'
 import { stringify } from 'viem'
 
@@ -6,7 +10,8 @@ const handler: NextApiHandler = async (req, res) => {
   const includeTestnet = !!req.query.includeTestnet
 
   try {
-    const farmConfig = includeTestnet ? UNIVERSAL_FARMS_WITH_TESTNET : UNIVERSAL_FARMS
+    const fetchFarmConfig = await fetchAllUniversalFarms()
+    const farmConfig = includeTestnet ? [...fetchFarmConfig, ...UNIVERSAL_FARMS_WITH_TESTNET] : fetchFarmConfig
     const legacyFarmConfig = formatUniversalFarmToSerializedFarm(farmConfig)
     // cache for long time, it should revalidate on every deployment
     res.setHeader('Cache-Control', `max-age=10800, s-maxage=31536000`)
