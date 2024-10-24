@@ -7,17 +7,21 @@ function filterHookFactory(filterName: string) {
     const router = useRouter()
     const filter = useMemo(() => {
       const value = router.query[filterName]
-      if (Array.isArray(value)) {
-        return value[0]
+      if (value) {
+        if (Array.isArray(value)) {
+          return decodeURIComponent(value[0])
+        }
+        return decodeURIComponent(value)
       }
-      return value
+      return undefined
     }, [router.query])
 
     const setFilter = useCallback(
       (value?: string) => {
+        const trimmedValue = value?.trim()
         router.push(
           updateQuery(router.asPath, {
-            [filterName]: value,
+            [filterName]: trimmedValue && encodeURIComponent(trimmedValue),
           }),
           '',
           { scroll: false },
