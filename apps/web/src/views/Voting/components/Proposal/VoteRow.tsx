@@ -52,9 +52,11 @@ const VoteRow: React.FC<React.PropsWithChildren<VoteRowProps>> = ({ vote, propos
     <>
       {proposal.type === ProposalTypeName.WEIGHTED ? (
         <Flex flexDirection="column">
-          {percentages.map((i) => (
-            <Text fontSize="14px">{`${i.choiceText} - ${i.percentage}%`}</Text>
-          ))}
+          {percentages
+            .filter((j) => j.percentage !== '0.00')
+            .map((i) => (
+              <Text fontSize="14px">{`${i.choiceText} - ${i.percentage}%`}</Text>
+            ))}
         </Flex>
       ) : (
         <Text fontSize="14px">{vote.proposal.choices[vote.choice - 1]}</Text>
