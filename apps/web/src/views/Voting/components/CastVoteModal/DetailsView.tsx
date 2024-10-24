@@ -107,6 +107,14 @@ const DetailsView: React.FC<React.PropsWithChildren<DetailsViewProps>> = ({
     },
   )
 
+  console.log({
+    cakeBalance,
+    cakeVaultBalance,
+    ifoPoolBalance,
+    poolsBalance,
+    cakeBnbLpBalance,
+  })
+
   return (
     <ModalInner mb="0">
       <Text as="p" mb="24px" fontSize="14px" color="textSubtle">
@@ -208,7 +216,7 @@ const DetailsView: React.FC<React.PropsWithChildren<DetailsViewProps>> = ({
           <Text textAlign="right">{formatNumber(poolsBalance, 0, 3)}</Text>
         </Flex>
       )}
-      {cakeBnbLpBalance && Number.isFinite(cakeBnbLpBalance) && (
+      {cakeBnbLpBalance && Number.isFinite(cakeBnbLpBalance) && Number(cakeBnbLpBalance) > 0 && (
         <Flex alignItems="center" justifyContent="space-between" mb="4px">
           <Text color="textSubtle" fontSize="16px">
             {t('CAKE BNB LP')}

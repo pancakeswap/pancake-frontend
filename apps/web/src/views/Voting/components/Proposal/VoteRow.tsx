@@ -39,7 +39,9 @@ const VoteRow: React.FC<React.PropsWithChildren<VoteRowProps>> = ({ vote, propos
 
   const displayText = useMemo(() => {
     if (proposal.type === ProposalTypeName.WEIGHTED) {
-      const weightedData = percentages.map((i) => `${i.percentage}% for ${i.choiceText}`)
+      const weightedData = percentages
+        .filter((j) => j.percentage !== '0.00')
+        .map((i) => `${i.percentage}% for ${i.choiceText}`)
       return weightedData.join(', ')
     }
 
