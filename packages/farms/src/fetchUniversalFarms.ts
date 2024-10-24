@@ -3,14 +3,25 @@ import { ERC20Token } from '@pancakeswap/sdk'
 import { FARMS_API } from '../config/endpoint'
 import { Protocol, UniversalFarmConfig } from './types'
 
+const farmCache: Record<string, UniversalFarmConfig[]> = {}
+
 export const fetchUniversalFarms = async (chainId: ChainId, protocol?: Protocol) => {
+  const cacheKey = `${chainId}-${protocol || 'all'}`
+
+  // Return cached data if it exists
+  if (farmCache[cacheKey]) {
+    return farmCache[cacheKey]
+  }
+
   try {
     const params = { chainId, ...(protocol && { protocol }) }
     const queryString = Object.entries(params)
       .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
       .join('&')
 
-    const response = await fetch(`${FARMS_API}?${queryString}`)
+    const response = await fetch(`${FARMS_API}?${queryString}`, {
+      signal: AbortSignal.timeout(3000),
+    })
     const result = await response.json()
     const newData: UniversalFarmConfig[] = result.map((p: any) => ({
       ...p,
@@ -31,6 +42,9 @@ export const fetchUniversalFarms = async (chainId: ChainId, protocol?: Protocol)
         p.token1.projectLink,
       ),
     }))
+
+    // Cache the result before returning it
+    farmCache[cacheKey] = newData
 
     return newData
   } catch (error) {
