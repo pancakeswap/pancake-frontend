@@ -3583,5 +3583,12 @@
   "Copy": "Copy",
   "X": "X",
   "The difference between the latest quoted price and the minimum receiving amount set in the trade order.": "The difference between the latest quoted price and the minimum receiving amount set in the trade order.",
-  "No fee when trade is going through PancakeSwap X. Subject to change in the future.": "No fee when trade is going through PancakeSwap X. Subject to change in the future."
+  "No fee when trade is going through PancakeSwap X. Subject to change in the future.": "No fee when trade is going through PancakeSwap X. Subject to change in the future.",
+  "Voting system": "Voting system",
+  "Binary": "Binary",
+  "Weighted": "Weighted",
+  "veCake Balance": "veCake Balance",
+  "You cast your vote! Please wait until the voting ends to see the end results.": "You cast your vote! Please wait until the voting ends to see the end results.",
+  "Not enough veCAKE": "Not enough veCAKE",
+  "Enter the votes to cast": "Enter the votes to cast"
 }
