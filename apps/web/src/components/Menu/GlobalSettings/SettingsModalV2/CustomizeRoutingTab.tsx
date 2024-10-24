@@ -11,9 +11,10 @@ import {
   Text,
   Toggle,
 } from '@pancakeswap/uikit'
-import { useSpeedQuote, useUserSingleHopOnly } from '@pancakeswap/utils/user'
+import { useUserSingleHopOnly } from '@pancakeswap/utils/user'
 import { PancakeSwapXTag } from 'components/PancakeSwapXTag'
 import { usePCSX, usePCSXFeatureEnabled } from 'hooks/usePCSX'
+import { useSpeedQuote } from 'hooks/useSpeedQuote'
 import { memo } from 'react'
 import {
   useOnlyOneAMMSourceEnabled,
