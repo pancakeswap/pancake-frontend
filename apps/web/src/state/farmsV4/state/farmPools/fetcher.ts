@@ -2,7 +2,7 @@ import { ChainId, getChainNameInKebabCase } from '@pancakeswap/chains'
 import {
   FarmV4SupportedChainId,
   Protocol,
-  UNIVERSAL_FARMS,
+  fetchAllUniversalFarms,
   masterChefV3Addresses,
   supportedChainIdV4,
 } from '@pancakeswap/farms'
@@ -14,9 +14,9 @@ import utc from 'dayjs/plugin/utc'
 import { GraphQLClient, gql } from 'graphql-request'
 import groupBy from 'lodash/groupBy'
 import { explorerApiClient } from 'state/info/api/client'
+import { isAddressEqual } from 'utils'
 import { v3Clients } from 'utils/graphql'
 import { publicClient } from 'utils/viem'
-import { isAddressEqual } from 'utils'
 import { type Address } from 'viem'
 import { PoolInfo } from '../type'
 import { parseFarmPools } from '../utils'
@@ -198,7 +198,9 @@ export const fetchFarmPools = async (
     }
     console.error('Failed to fetch remote pools', error)
   }
-  const localPools = UNIVERSAL_FARMS.filter((farm) => {
+
+  const fetchFarmConfig = await fetchAllUniversalFarms()
+  const localPools = fetchFarmConfig.filter((farm) => {
     return (
       args.protocols?.includes(farm.protocol) &&
       (Array.isArray(args.chainId) ? args.chainId.includes(farm.chainId) : farm.chainId === args.chainId)

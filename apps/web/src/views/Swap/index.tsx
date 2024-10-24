@@ -19,16 +19,9 @@ import { SwapType } from './types'
 export default function Swap() {
   const { query } = useRouter()
   const { isDesktop } = useMatchBreakpoints()
-  const {
-    isChartExpanded,
-    isChartDisplayed,
-    setIsChartDisplayed,
-    setIsChartExpanded,
-    isChartSupported,
-    // isHotTokenSupported,
-  } = useContext(SwapFeaturesContext)
+  const { isChartExpanded, isChartDisplayed, setIsChartDisplayed, setIsChartExpanded, isChartSupported } =
+    useContext(SwapFeaturesContext)
   const [isSwapHotTokenDisplay, setIsSwapHotTokenDisplay] = useSwapHotTokenDisplay()
-  // const { t } = useTranslation()
   const [firstTime, setFirstTime] = useState(true)
 
   useEffect(() => {
@@ -98,27 +91,6 @@ export default function Swap() {
             setIsOpen={(isOpen) => setIsChartDisplayed?.(isOpen)}
           />
         )}
-        {/* {isDesktop && isSwapHotTokenDisplay && isHotTokenSupported && (
-          <HotTokenList handleOutputSelect={handleOutputSelect} />
-        )} */}
-        {/* <ModalV2
-          isOpen={!isDesktop && isSwapHotTokenDisplay && isHotTokenSupported}
-          onDismiss={() => setIsSwapHotTokenDisplay(false)}
-        >
-          <Modal
-            style={{ padding: 0 }}
-            title={t('Top Token')}
-            onDismiss={() => setIsSwapHotTokenDisplay(false)}
-            bodyPadding="0px"
-          >
-            <HotTokenList
-              handleOutputSelect={(newCurrencyOutput: Currency) => {
-                handleOutputSelect(newCurrencyOutput)
-                setIsSwapHotTokenDisplay(false)
-              }}
-            />
-          </Modal>
-        </ModalV2> */}
         <Flex flexDirection="column">
           <StyledSwapContainer $isChartExpanded={isChartExpanded}>
             <StyledInputCurrencyWrapper mt={isChartExpanded ? '24px' : '0'}>

@@ -1,6 +1,7 @@
 import { ChainId, getChainName } from '@pancakeswap/chains'
 import { getStableSwapPools } from '@pancakeswap/stable-swap-sdk'
 import { supportedChainIdV4 } from './const'
+import { fetchUniversalFarms } from './fetchUniversalFarms'
 import { SerializedFarmConfig, SerializedFarmPublicData, UniversalFarmConfig } from './types'
 
 /**
@@ -11,7 +12,7 @@ export async function getLegacyFarmConfig(chainId?: ChainId): Promise<Serialized
     const chainName = getChainName(chainId)
     try {
       const config = await import(`./farms/${chainName}.ts`)
-      let universalConfig: UniversalFarmConfig[] = config.default
+      let universalConfig: UniversalFarmConfig[] = await fetchUniversalFarms(chainId)
       // eslint-disable-next-line prefer-destructuring
       const legacyFarmConfig: SerializedFarmConfig[] = config.legacyFarmConfig
       if (legacyFarmConfig && legacyFarmConfig.length > 0) {
@@ -24,8 +25,8 @@ export async function getLegacyFarmConfig(chainId?: ChainId): Promise<Serialized
       }
 
       const transformedFarmConfig: SerializedFarmConfig[] = universalConfig
-        .filter((f) => f.pid && (f.protocol === 'v2' || f.protocol === 'stable'))
-        .map((farm) => {
+        ?.filter((f) => f.pid && (f.protocol === 'v2' || f.protocol === 'stable'))
+        ?.map((farm) => {
           const stablePair =
             farm.protocol === 'stable'
               ? getStableSwapPools(chainId).find((s) => {

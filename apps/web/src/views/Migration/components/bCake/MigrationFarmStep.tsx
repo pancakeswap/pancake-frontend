@@ -1,3 +1,4 @@
+import { ChainId } from '@pancakeswap/chains'
 import { DeserializedFarm, FarmWithStakedValue } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
 import BigNumber from 'bignumber.js'
@@ -25,7 +26,10 @@ const MigrationFarmStep: React.FC<React.PropsWithChildren<{ step: number }>> = (
   const userDataReady = !account || (!!account && userDataLoaded)
 
   const stakedOrHasTokenBalance = useMemo(() => {
-    const farms = farmsLP.filter((farm) => farm.pid !== 0).filter((farm) => Boolean(farm?.bCakeWrapperAddress))
+    const farms = farmsLP
+      .filter((farm) => farm.pid !== 0)
+      .filter((farm) => Boolean(farm?.bCakeWrapperAddress))
+      .filter((farm) => farm.pid !== 11 && farm.token.serialize.chainId !== ChainId.ETHEREUM)
 
     return farms.filter((farm) => {
       return (

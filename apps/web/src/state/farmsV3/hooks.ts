@@ -6,13 +6,16 @@ import {
   FarmsV3Response,
   IPendingCakeByTokenId,
   PositionDetails,
+  Protocol,
   SerializedFarmsV3Response,
+  UniversalFarmConfigV3,
   bCakeSupportedChainId,
   createFarmFetcherV3,
+  defineFarmV3ConfigsFromUniversalFarm,
+  fetchUniversalFarms,
   supportedChainIdV3,
 } from '@pancakeswap/farms'
 import { priceHelperTokens } from '@pancakeswap/farms/constants/common'
-import { legacyFarmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
 import { bCakeFarmBoosterVeCakeABI } from '@pancakeswap/farms/constants/v3/abi/bCakeFarmBoosterVeCake'
 import { TvlMap, fetchCommonTokenUSDValue } from '@pancakeswap/farms/src/fetchFarmsV3'
 import { deserializeToken } from '@pancakeswap/token-lists'
@@ -83,8 +86,8 @@ export const useFarmsV3Public = () => {
       }
 
       // direct copy from api routes, the client side fetch is preventing cache due to migration phase we want fresh data
-      const farms = legacyFarmsV3ConfigChainMap[chainId as ChainId]
-
+      const fetchFarmsV3 = await fetchUniversalFarms(chainId, Protocol.V3)
+      const farms = defineFarmV3ConfigsFromUniversalFarm(fetchFarmsV3 as UniversalFarmConfigV3[])
       const commonPrice = await fetchCommonTokenUSDValue(priceHelperTokens[chainId ?? -1])
 
       try {

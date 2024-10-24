@@ -1,12 +1,18 @@
-import { ComputedFarmConfigV3, createFarmFetcherV3, fetchTokenUSDValues } from '@pancakeswap/farms'
+import {
+  ComputedFarmConfigV3,
+  createFarmFetcherV3,
+  defineFarmV3ConfigsFromUniversalFarm,
+  fetchTokenUSDValues,
+  fetchUniversalFarms,
+  Protocol,
+  UniversalFarmConfigV3,
+} from '@pancakeswap/farms'
 import { priceHelperTokens } from '@pancakeswap/farms/constants/common'
 import { Currency, ERC20Token } from '@pancakeswap/sdk'
 import { FeeAmount, Pool } from '@pancakeswap/v3-sdk'
 import { useQuery } from '@tanstack/react-query'
-import { useMemo } from 'react'
-
-import { legacyFarmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
 import { FAST_INTERVAL } from 'config/constants'
+import { useEffect, useMemo, useState } from 'react'
 import { getViemClients } from 'utils/viem'
 
 const farmFetcherV3 = createFarmFetcherV3(getViemClients)
@@ -19,18 +25,31 @@ interface FarmParams {
 
 export function useFarm({ currencyA, currencyB, feeAmount }: FarmParams) {
   const chainId = currencyA?.chainId
+  const [farms, setFarms] = useState<ComputedFarmConfigV3[]>([])
+
+  useEffect(() => {
+    const fetchFarmV3Config = async () => {
+      if (chainId) {
+        const farmsV3 = await fetchUniversalFarms(chainId, Protocol.V3)
+        setFarms(defineFarmV3ConfigsFromUniversalFarm(farmsV3 as UniversalFarmConfigV3[]))
+      }
+    }
+
+    fetchFarmV3Config()
+  }, [chainId])
+
   const farmConfig = useMemo(() => {
     if (!chainId || !currencyA || !currencyB || !feeAmount) {
       return null
     }
-    const farms: ComputedFarmConfigV3[] = legacyFarmsV3ConfigChainMap[chainId]
+
     if (!farms) {
       return null
     }
     const lpAddress = Pool.getAddress(currencyA.wrapped, currencyB.wrapped, feeAmount)
     const farm = farms.find((f) => f.lpAddress === lpAddress)
     return farm ?? null
-  }, [chainId, currencyA, currencyB, feeAmount])
+  }, [chainId, currencyA, currencyB, farms, feeAmount])
 
   return useQuery({
     queryKey: [chainId, farmConfig?.token0.symbol, farmConfig?.token1.symbol, farmConfig?.feeAmount],
