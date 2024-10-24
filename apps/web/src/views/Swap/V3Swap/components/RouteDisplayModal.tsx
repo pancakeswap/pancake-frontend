@@ -15,7 +15,7 @@ import {
 import { CurrencyLogo } from '@pancakeswap/widgets-internal'
 import { memo, useMemo } from 'react'
 
-import { RoutingSettingsButton } from 'components/Menu/GlobalSettings/SettingsModal'
+import { RoutingSettingsButton } from 'components/Menu/GlobalSettings/SettingsModalV2'
 import { CurrencyLogoWrapper, RouterBox, RouterPoolBox, RouterTypeText } from 'views/Swap/components/RouterViewer'
 import { v3FeeToPercent } from '../utils/exchange'
 

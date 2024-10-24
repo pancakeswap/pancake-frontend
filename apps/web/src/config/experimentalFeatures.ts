@@ -4,6 +4,7 @@ export enum EXPERIMENTAL_FEATURES {
   PriceAPI = 'price-api',
   PCSX = 'pcsx',
 }
+
 export type EnumValues<T> = T extends { [key: string]: infer U } ? U : never
 
 export type FeatureKeys = EnumValues<typeof EXPERIMENTAL_FEATURES>[]
@@ -18,7 +19,7 @@ export type FeatureRollOutConfig = {
 
 export type ExperimentalFeatureConfigs = FeatureRollOutConfig[]
 
-// Add new AB TESTS here aswell as their config
+// Add new AB TESTS here as well as their config
 export const EXPERIMENTAL_FEATURE_CONFIGS: ExperimentalFeatureConfigs = [
   {
     feature: EXPERIMENTAL_FEATURES.WebNotifications,

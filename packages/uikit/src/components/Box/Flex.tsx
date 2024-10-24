@@ -1,6 +1,7 @@
+import { motion } from "framer-motion";
 import { styled } from "styled-components";
 import { flexbox } from "styled-system";
-import Box, { MotionBox } from "./Box";
+import Box from "./Box";
 import { FlexProps } from "./types";
 
 const Flex = styled(Box)<FlexProps>`
@@ -8,7 +9,7 @@ const Flex = styled(Box)<FlexProps>`
   ${flexbox}
 `;
 
-export const MotionFlex = styled(MotionBox)<FlexProps>`
+export const MotionFlex = styled(motion.div)<FlexProps>`
   display: flex;
   ${flexbox}
 `;

@@ -1,1 +1,1 @@
-export { default as LazyAnimatePresence } from "./AnimatePresence";
+export { default as LazyAnimatePresence, domAnimation } from "./AnimatePresence";

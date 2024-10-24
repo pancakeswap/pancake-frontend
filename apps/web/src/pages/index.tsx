@@ -1,26 +1,14 @@
-import { dehydrate, QueryClient } from '@tanstack/react-query'
-import { GetStaticProps } from 'next'
-import { getTotalTvl } from 'utils/getTotalTVL'
-import Home from '../views/Home'
+import { CHAIN_IDS } from 'utils/wagmi'
+import SwapLayout from 'views/Swap/SwapLayout'
+import Swap from 'views/SwapSimplify'
 
-const IndexPage = () => {
-  return <Home />
-}
+const SwapPage = () => (
+  <SwapLayout>
+    <Swap />
+  </SwapLayout>
+)
 
-export const getStaticProps: GetStaticProps = async () => {
-  const queryClient = new QueryClient()
-  const results = await getTotalTvl()
-  queryClient.setQueryData(['totalTx30Days'], results.totalTx30Days)
-  queryClient.setQueryData(['tvl'], results.tvl)
-  queryClient.setQueryData(['addressCount30Days'], results.addressCount30Days)
-  return {
-    props: {
-      dehydratedState: dehydrate(queryClient),
-    },
-  }
-}
+SwapPage.chains = CHAIN_IDS
+SwapPage.screen = true
 
-IndexPage.chains = []
-IndexPage.isShowV4IconButton = true
-
-export default IndexPage
+export default SwapPage

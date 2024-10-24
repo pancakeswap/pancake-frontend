@@ -1,15 +1,36 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Button, Flex, Input, QuestionHelper, Text } from '@pancakeswap/uikit'
+import { Box, Button, Flex, FlexGap, Input, Message, QuestionHelper, Text } from '@pancakeswap/uikit'
 import { useUserSlippage } from '@pancakeswap/utils/user'
 import { useState } from 'react'
 import { escapeRegExp } from 'utils'
 
+import { VerticalDivider } from '@pancakeswap/widgets-internal'
 import { useUserTransactionTTL } from 'hooks/useTransactionDeadline'
+import styled from 'styled-components'
+import { PrimaryOutlineButton } from './styles'
+
+const ButtonsContainer = styled(FlexGap).attrs({ flexWrap: 'wrap', gap: '4px' })`
+  background-color: ${({ theme }) => theme.colors.input};
+  border-radius: ${({ theme }) => theme.radii.default};
+  padding: 1px;
+  width: fit-content;
+
+  box-shadow: ${({ theme }) => theme.shadows.inset};
+`
+
+const StyledButton = styled(Button)`
+  height: 52px;
+`
+
+const StyledVerticalDivider = styled(VerticalDivider).attrs(({ theme }) => ({ bg: theme.colors.inputSecondary }))`
+  margin: 0 4px;
+`
 
 enum SlippageError {
   InvalidInput = 'InvalidInput',
   RiskyLow = 'RiskyLow',
   RiskyHigh = 'RiskyHigh',
+  RiskyVeryHigh = 'RiskyVeryHigh',
 }
 
 enum DeadlineError {
@@ -18,6 +39,10 @@ enum DeadlineError {
 
 const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`) // match escaped "." characters via in a non-capturing group
 const THREE_DAYS_IN_SECONDS = 60 * 60 * 24 * 3
+
+const DEFAULT_TXN_DEADLINE = 20 // In Minutes
+
+export const DEFAULT_SLIPPAGE_TOLERANCE = 50
 
 const SlippageTabs = () => {
   const [userSlippageTolerance, setUserSlippageTolerance] = useUserSlippage()
@@ -36,8 +61,13 @@ const SlippageTabs = () => {
   if (slippageInput !== '' && !slippageInputIsValid) {
     slippageError = SlippageError.InvalidInput
   } else if (slippageInputIsValid && userSlippageTolerance < 50) {
+    // Slippage < 0.5%
     slippageError = SlippageError.RiskyLow
-  } else if (slippageInputIsValid && userSlippageTolerance > 500) {
+  } else if (slippageInputIsValid && userSlippageTolerance > 2000) {
+    // Slippage > 20%
+    slippageError = SlippageError.RiskyVeryHigh
+  } else if (slippageInputIsValid && userSlippageTolerance > 100) {
+    // Slippage > 1%
     slippageError = SlippageError.RiskyHigh
   } else {
     slippageError = undefined
@@ -93,47 +123,41 @@ const SlippageTabs = () => {
             ml="4px"
           />
         </Flex>
-        <Flex flexWrap="wrap">
-          <Button
-            mt="4px"
-            mr="4px"
+        <ButtonsContainer>
+          <StyledButton
             scale="sm"
             onClick={() => {
               setSlippageInput('')
               setUserSlippageTolerance(10)
             }}
-            variant={userSlippageTolerance === 10 ? 'primary' : 'tertiary'}
+            variant={userSlippageTolerance === 10 ? 'subtle' : 'light'}
           >
             0.1%
-          </Button>
-          <Button
-            mt="4px"
-            mr="4px"
+          </StyledButton>
+          <StyledButton
             scale="sm"
             onClick={() => {
               setSlippageInput('')
               setUserSlippageTolerance(50)
             }}
-            variant={userSlippageTolerance === 50 ? 'primary' : 'tertiary'}
+            variant={userSlippageTolerance === 50 ? 'subtle' : 'light'}
           >
             0.5%
-          </Button>
-          <Button
-            mr="4px"
-            mt="4px"
+          </StyledButton>
+          <StyledButton
             scale="sm"
             onClick={() => {
               setSlippageInput('')
               setUserSlippageTolerance(100)
             }}
-            variant={userSlippageTolerance === 100 ? 'primary' : 'tertiary'}
+            variant={userSlippageTolerance === 100 ? 'subtle' : 'light'}
           >
             1.0%
-          </Button>
-          <Flex alignItems="center">
-            <Box width="76px" mt="4px">
+          </StyledButton>
+          <Flex ml="8px" pr="8px" alignItems="center">
+            <Box position="relative" width="82px">
               <Input
-                scale="sm"
+                scale="md"
                 inputMode="decimal"
                 pattern="^[0-9]*[.,]?[0-9]{0,2}$"
                 placeholder={(userSlippageTolerance / 100).toFixed(2)}
@@ -148,36 +172,72 @@ const SlippageTabs = () => {
                 }}
                 isWarning={!slippageInputIsValid}
                 isSuccess={![10, 50, 100].includes(userSlippageTolerance)}
+                style={{
+                  paddingRight: '28px',
+                }}
               />
+              <Flex position="absolute" right="8px" top="8px" alignItems="center">
+                <StyledVerticalDivider />
+                <Text color="textSubtle"> %</Text>
+              </Flex>
             </Box>
-            <Text color="primary" bold ml="2px">
-              %
-            </Text>
           </Flex>
-        </Flex>
+        </ButtonsContainer>
         {!!slippageError && (
-          <Text fontSize="14px" color={slippageError === SlippageError.InvalidInput ? 'red' : '#F3841E'} mt="8px">
-            {slippageError === SlippageError.InvalidInput
-              ? t('Enter a valid slippage percentage')
-              : slippageError === SlippageError.RiskyLow
-              ? t('Your transaction may fail')
-              : t('Your transaction may be frontrun')}
-          </Text>
+          <Message
+            mt="8px"
+            variant={
+              slippageError === SlippageError.InvalidInput
+                ? 'primary'
+                : slippageError === SlippageError.RiskyLow || slippageError === SlippageError.RiskyHigh
+                ? 'warning'
+                : 'danger'
+            }
+          >
+            <Text>
+              {slippageError === SlippageError.InvalidInput
+                ? t('Enter a valid slippage percentage')
+                : slippageError === SlippageError.RiskyLow
+                ? t('Your transaction may fail')
+                : t('Your transaction may be frontrun')}
+              .<br />
+              <Text
+                as="button"
+                role="button"
+                onClick={() => {
+                  setSlippageInput('')
+                  setUserSlippageTolerance(DEFAULT_SLIPPAGE_TOLERANCE)
+                }}
+                style={{
+                  textDecoration: 'underline',
+                  cursor: 'pointer',
+                  display: 'inline-block',
+                  background: 'none',
+                  border: 'none',
+                  padding: 0,
+                }}
+                bold
+              >
+                {t('Reset slippage settings')}
+              </Text>{' '}
+              {t('to avoid potential loss')}.
+            </Text>
+          </Message>
         )}
       </Flex>
-      <Flex justifyContent="space-between" alignItems="center" mb="24px">
+      <Box mb="24px">
         <Flex alignItems="center">
-          <Text>{t('Tx deadline (mins)')}</Text>
+          <Text>{t('Tx deadline')}</Text>
           <QuestionHelper
             text={t('Your transaction will revert if it is left confirming for longer than this time.')}
             placement="top"
             ml="4px"
           />
         </Flex>
-        <Flex>
-          <Box width="52px" mt="4px">
+        <Flex alignItems="center">
+          <Box position="relative" width="128px" mt="4px">
             <Input
-              scale="sm"
+              scale="md"
               inputMode="numeric"
               pattern="^[0-9]+$"
               isWarning={!!deadlineError}
@@ -188,10 +248,26 @@ const SlippageTabs = () => {
                   parseCustomDeadline(event.target.value)
                 }
               }}
+              style={{
+                paddingRight: '48px',
+              }}
             />
+            <Flex position="absolute" right="8px" top="8px" alignItems="center">
+              <StyledVerticalDivider />
+              <Text color="textSubtle">{t('Mins')}</Text>
+            </Flex>
           </Box>
+          <PrimaryOutlineButton
+            ml="8px"
+            mt="3px"
+            variant="text"
+            scale="sm"
+            onClick={() => parseCustomDeadline(DEFAULT_TXN_DEADLINE.toString())}
+          >
+            {t('Reset')}
+          </PrimaryOutlineButton>
         </Flex>
-      </Flex>
+      </Box>
     </Flex>
   )
 }

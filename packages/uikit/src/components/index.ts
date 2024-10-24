@@ -34,6 +34,7 @@ export * from "./Loading";
 export * from "./LoadingDot";
 export * from "./Message";
 export * from "./Motion";
+export * from "./MotionTabMenu";
 export * from "./MultiSelect";
 export * from "./MultiSelector";
 export * from "./NotFound";

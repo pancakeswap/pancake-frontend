@@ -4,6 +4,7 @@ import { BoxProps, Modal } from '@pancakeswap/uikit'
 interface ConfirmSwapModalContainerProps extends BoxProps {
   hideTitleAndBackground?: boolean
   headerPadding?: string
+  headerBackground?: string
   bodyTop?: string
   bodyPadding?: string
   handleDismiss: () => void
@@ -15,6 +16,7 @@ const ConfirmSwapModalContainer: React.FC<React.PropsWithChildren<ConfirmSwapMod
   bodyTop,
   bodyPadding,
   hideTitleAndBackground,
+  headerBackground,
   handleDismiss,
   ...props
 }) => {
@@ -27,7 +29,7 @@ const ConfirmSwapModalContainer: React.FC<React.PropsWithChildren<ConfirmSwapMod
       headerPadding={hideTitleAndBackground && headerPadding ? headerPadding : '12px 24px'}
       bodyPadding={hideTitleAndBackground && bodyPadding ? bodyPadding : '24px'}
       bodyTop={bodyTop}
-      headerBackground={hideTitleAndBackground ? 'transparent' : 'gradientCardHeader'}
+      headerBackground={headerBackground || (hideTitleAndBackground ? 'transparent' : 'gradientCardHeader')}
       headerBorderColor={hideTitleAndBackground ? 'transparent' : undefined}
       onDismiss={handleDismiss}
     >

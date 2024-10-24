@@ -1,17 +1,17 @@
-import { Flex, Button, Text, QuestionHelper } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { useDefaultGasPrice, useGasPriceManager } from 'state/user/hooks'
-import { GAS_PRICE_GWEI, GAS_PRICE } from 'state/types'
-import { formatGwei } from 'viem'
+import { Flex, QuestionHelper, Text } from '@pancakeswap/uikit'
+import { GAS_PRICE, GAS_PRICE_GWEI } from 'state/types'
+import { useGasPriceManager } from 'state/user/hooks'
+import { PrimaryOutlineButton } from './styles'
 
 const GasSettings = () => {
   const { t } = useTranslation()
   const [gasPrice, setGasPrice] = useGasPriceManager()
-  const defaultGasPrice = useDefaultGasPrice()
+  // const defaultGasPrice = useDefaultGasPrice()
 
   return (
     <Flex flexDirection="column">
-      <Flex mb="12px" alignItems="center">
+      <Flex mb="6px" alignItems="center">
         <Text>{t('Default Transaction Speed (GWEI)')}</Text>
         <QuestionHelper
           text={
@@ -29,51 +29,51 @@ const GasSettings = () => {
         />
       </Flex>
       <Flex flexWrap="wrap">
-        <Button
+        <PrimaryOutlineButton
           mt="4px"
           mr="4px"
           scale="sm"
           onClick={() => {
             setGasPrice(GAS_PRICE_GWEI.rpcDefault)
           }}
-          variant={gasPrice === GAS_PRICE_GWEI.rpcDefault ? 'primary' : 'tertiary'}
+          variant={gasPrice === GAS_PRICE_GWEI.rpcDefault ? 'primary' : 'text'}
         >
           {t('Default')}
-          {defaultGasPrice ? ` (${formatGwei(defaultGasPrice)})` : null}
-        </Button>
-        <Button
-          mt="4px"
-          mr="4px"
-          scale="sm"
-          onClick={() => {
-            setGasPrice(GAS_PRICE_GWEI.default)
-          }}
-          variant={gasPrice === GAS_PRICE_GWEI.default ? 'primary' : 'tertiary'}
-        >
-          {t('Standard (%gasPrice%)', { gasPrice: GAS_PRICE.default })}
-        </Button>
-        <Button
-          mt="4px"
-          mr="4px"
-          scale="sm"
-          onClick={() => {
-            setGasPrice(GAS_PRICE_GWEI.fast)
-          }}
-          variant={gasPrice === GAS_PRICE_GWEI.fast ? 'primary' : 'tertiary'}
-        >
-          {t('Fast (%gasPrice%)', { gasPrice: GAS_PRICE.fast })}
-        </Button>
-        <Button
+          {/* {defaultGasPrice ? ` (${formatGwei(defaultGasPrice)})` : null} */}
+        </PrimaryOutlineButton>
+        <PrimaryOutlineButton
           mr="4px"
           mt="4px"
           scale="sm"
           onClick={() => {
             setGasPrice(GAS_PRICE_GWEI.instant)
           }}
-          variant={gasPrice === GAS_PRICE_GWEI.instant ? 'primary' : 'tertiary'}
+          variant={gasPrice === GAS_PRICE_GWEI.instant ? 'primary' : 'text'}
         >
           {t('Instant (%gasPrice%)', { gasPrice: GAS_PRICE.instant })}
-        </Button>
+        </PrimaryOutlineButton>
+        <PrimaryOutlineButton
+          mt="4px"
+          mr="4px"
+          scale="sm"
+          onClick={() => {
+            setGasPrice(GAS_PRICE_GWEI.default)
+          }}
+          variant={gasPrice === GAS_PRICE_GWEI.default ? 'primary' : 'text'}
+        >
+          {t('Standard (%gasPrice%)', { gasPrice: GAS_PRICE.default })}
+        </PrimaryOutlineButton>
+        <PrimaryOutlineButton
+          mt="4px"
+          mr="4px"
+          scale="sm"
+          onClick={() => {
+            setGasPrice(GAS_PRICE_GWEI.fast)
+          }}
+          variant={gasPrice === GAS_PRICE_GWEI.fast ? 'primary' : 'text'}
+        >
+          {t('Fast (%gasPrice%)', { gasPrice: GAS_PRICE.fast })}
+        </PrimaryOutlineButton>
       </Flex>
     </Flex>
   )
