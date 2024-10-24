@@ -5,7 +5,7 @@ import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useFarmUserInfoCache } from 'state/farms/hook'
 import { FARM_DEFAULT_DECIMALS } from '../../constants'
 
@@ -55,7 +55,7 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
     watch: true,
     address: account,
     coin: lpAddress,
-    select: (d) => new BigNumber(d.value),
+    select: useCallback((d) => new BigNumber(d.value), []),
   })
 
   let userBalanceInFarm = BIG_ZERO

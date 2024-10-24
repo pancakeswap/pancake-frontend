@@ -75,9 +75,12 @@ function CurrencyRow({
     address: account,
     coin: key,
     watch: true,
-    select: (d) => {
-      return CurrencyAmount.fromRawAmount(currency, d.value)
-    },
+    select: useCallback(
+      (d) => {
+        return CurrencyAmount.fromRawAmount(currency, d.value)
+      },
+      [currency],
+    ),
   })
 
   // only show add or remove buttons if not on selected list
