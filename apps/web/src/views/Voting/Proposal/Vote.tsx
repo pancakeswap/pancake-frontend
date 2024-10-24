@@ -52,14 +52,14 @@ const VoteComponent: React.FC<React.PropsWithChildren<VoteProps>> = ({
 
   useEffect(() => {
     const { type, choices } = proposal
-    if (type === ProposalTypeName.WEIGHTED) {
+    if (type === ProposalTypeName.WEIGHTED && account) {
       let newData: null | WeightedVoteState = null
+      const voteData = votes.find((i) => i.voter.toLowerCase() === account.toLowerCase())
 
-      if (hasAccountVoted && account) {
-        const voteData = votes.find((i) => i.voter.toLowerCase() === account.toLowerCase())
+      if (voteData) {
         newData = choices.reduce((acc, _, index) => {
           // eslint-disable-next-line no-param-reassign
-          acc[index + 1] = voteData?.choice[index + 1]
+          acc[index + 1] = voteData?.choice[index + 1] ?? 0
           return acc
         }, {})
       } else {
