@@ -12,6 +12,7 @@ test('exports', () => {
       "defineFarmV3ConfigsFromUniversalFarm",
       "fetchAllUniversalFarms",
       "fetchAllUniversalFarmsMap",
+      "UNIVERSAL_FARMS_WITH_TESTNET",
       "fetchUniversalFarms",
       "getLegacyFarmConfig",
       "isStableFarm",
