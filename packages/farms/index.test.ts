@@ -10,7 +10,6 @@ test('exports', () => {
       "FARM_AUCTION_HOSTING_IN_SECONDS",
       "fetchAllUniversalFarms",
       "fetchAllUniversalFarmsMap",
-      "UNIVERSAL_FARMS_WITH_TESTNET",
       "fetchUniversalFarms",
       "getLegacyFarmConfig",
       "isStableFarm",
